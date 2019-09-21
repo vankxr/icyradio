@@ -1,7 +1,7 @@
 module fir_decimator
 (
-    input                       clk,        // System clock
-    input                       reset,      // System POR
+    input                       clk,        // Clock
+    input                       reset,      // Reset
     input                       in_valid,   // New input sample available
     input   signed [ISZ - 1:0]  in,         // Input data
     output                      out_valid,  // New output sample available
@@ -127,7 +127,7 @@ reg signed [CSZ - 1:0] coeff_rom [0:255];
 reg signed [CSZ - 1:0] c_data;
 
 initial
-    $readmemh("./src/fir8dec_coeff.memh", coeff_rom);
+    $readmemh("./src/fir_coeffs.memh", coeff_rom);
 
 always @(posedge clk)
     c_data <= coeff_rom[c_addr];

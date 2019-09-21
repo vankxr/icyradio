@@ -29,7 +29,7 @@ TARGETASC = $(addsuffix .asc, $(TARGETDIR)/$(TARGET_NAME))
 TARGETBLIF = $(addsuffix .blif, $(TARGETDIR)/$(TARGET_NAME))
 TARGETJSON = $(addsuffix .json, $(TARGETDIR)/$(TARGET_NAME))
 
-synthesize: make-dir $(TARGETBIN)
+synthesize: make-dir $(TARGETBIN) timing
 
 $(TARGETBLIF): $(VSOURCES)
 	@echo Synthesizing blif file...
@@ -61,7 +61,7 @@ erase:
 
 timing: $(TARGETASC)
 	@echo Running timing analysis tool...
-	@icetime -p $(PCFILE) -P $(PACKAGE) -tm -d $(DEVICE) -r $(TARGETDIR)/$(TARGET_NAME)-timing.txt $<
+	@icetime -p $(PCFILE) -P $(PACKAGE) -tm -d $(DEVICE) -r $(TARGETDIR)/$(TARGET_NAME)-timing.txt $< | grep "Timing estimate"
 
 pnr-gui: $(TARGETJSON) $(PCFILE)
 	@nextpnr-ice40 --gui -q --$(DEVICE) --package $(PACKAGE) --json $(TARGETJSON) --pcf $(PCFILE)

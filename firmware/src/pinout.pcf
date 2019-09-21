@@ -214,9 +214,13 @@
 
 #################################################
 
+set_io DDC_CLK          C8      # IN    # DDC clock
+set_io GP_CLK1          F7      # IN    # General Purpose clock 1
+set_io GP_CLK2          H16     # IN    # General Purpose clock 2
+set_io RESETn           R9      # IN    # Global reset
 set_io LED              C3      # OUT   # LED
-set_io CLK_50M          C8      # IN    # 50MHz Clock
-set_io ADC_CLK          D3      # OUT   # ADC Clock
+set_io IRQn             B10     # IN    # Interrupt Request output
+set_io ADC_CLK          D3      # OUT   # ADC clock
 set_io ADC_D0           N6      # IN    # ADC Data input 0
 set_io ADC_D1           T1      # IN    # ADC Data input 1
 set_io ADC_D2           P4      # IN    # ADC Data input 2
@@ -235,3 +239,26 @@ set_io ADC_D14          M8      # IN    # ADC Data input 14
 set_io ADC_D15          T5      # IN    # ADC Data input 15
 set_io ADC_OF           D7      # IN    # ADC Overflow input
 set_io ADC_OEn          A6      # OUT   # ADC Output enable output
+set_io SPI_SCK          C10     # IN    # Control SPI Slave SCK input
+set_io SPI_MOSI         A10     # IN    # Control SPI Slave MOSI input
+set_io SPI_MISO         A11     # OUT   # Control SPI Slave MISO output
+set_io SPI_CSn          B11     # IN    # Control SPI Slave CS input
+set_io BB_I2S_BCLK      C11     # OUT   # Baseband I2S BCLK output
+set_io BB_I2S_LRCLK     D10     # OUT   # Baseband I2S LRCLK output
+set_io BB_I2S_MCU_SDOUT D11     # IN    # Baseband I2S MCU SDOUT input
+set_io BB_I2S_MCU_SDIN  E10     # OUT   # Baseband I2S MCU SDIN output
+set_io I2S_MCU_MCLK     E11     # IO    # Audio I2S MCU MCLK input/output
+set_io I2S_MCU_BCLK     F9      # IO    # Audio I2S MCU BCLK input/output
+set_io I2S_MCU_LRCLK    F11     # IO    # Audio I2S MCU LRCLK input/output
+set_io I2S_MCU_SDOUT    D9      # IN    # Audio I2S MCU SDOUT input
+set_io I2S_MCU_SDIN     H11     # OUT   # Audio I2S MCU SDIN output
+set_io I2S_CODEC_MCLK   K9      # OUT   # Audio I2S CODEC MCLK output
+set_io I2S_CODEC_BCLK   K11     # OUT   # Audio I2S CODEC BCLK output
+set_io I2S_CODEC_LRCLK  L10     # OUT   # Audio I2S CODEC LRCLK output
+set_io I2S_CODEC_SDOUT  L11     # IN    # Audio I2S CODEC SDOUT input
+set_io I2S_CODEC_SDIN   M9      # OUT   # Audio I2S CODEC SDIN output
+set_io I2S_BRG_MCLK     M11     # IN    # Audio I2S USB Bridge MCLK input
+set_io I2S_BRG_BCLK     N10     # IN    # Audio I2S USB Bridge BCLK input
+set_io I2S_BRG_LRCLK    N9      # IN    # Audio I2S USB Bridge LRCLK input
+set_io I2S_BRG_SDOUT    J10     # IN    # Audio I2S USB Bridge SDOUT input
+set_io I2S_BRG_SDIN     J11     # OUT   # Audio I2S USB Bridge SDIN output

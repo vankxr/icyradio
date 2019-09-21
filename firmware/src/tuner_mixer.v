@@ -1,18 +1,18 @@
-module tuner_slice
+module tuner_mixer
 (
-    input                     clk,
-    input                     reset,
-    input                     shf_90,
-    input  signed [DSZ - 1:0] in,
-    input         [PSZ - 1:0] phs,
-    output signed [DSZ - 1:0] out
+    input                     clk,      // Clock
+    input                     reset,    // Reset
+    input                     cos,      // Phase (1 for cos (+90º) 0 for sin)
+    input  signed [DSZ - 1:0] in,       // Input data
+    input         [PSZ - 1:0] phs,      // Input phase from NCO
+    output signed [DSZ - 1:0] out       // Output data
 );
 
 localparam DSZ = 16;  // Data word size
 localparam PSZ = 12;  // Phase word size
 
 // Split accumulator into quadrant and address and delay sign bit
-wire [1:0]       p_quad = phs[PSZ - 1:PSZ - 2] + {1'b0, shf_90};
+wire [1:0]       p_quad = phs[PSZ - 1:PSZ - 2] + {1'b0, cos};
 reg  [1:0]       quad;
 reg  [PSZ - 3:0] addr;
 reg              sincos_sign;
@@ -38,7 +38,7 @@ reg signed [15:0] sine_lut [0:1023];
 reg signed [15:0] sincos_raw;
 
 initial
-    $readmemh("./src/sine_table_1k.memh", sine_lut);
+    $readmemh("./src/sine_lut.memh", sine_lut);
 
 always @(posedge clk)
     sincos_raw <= sine_lut[addr];

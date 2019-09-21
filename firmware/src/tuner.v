@@ -1,12 +1,12 @@
 module tuner
 (
-    input                     clk,
-    input                     reset,
-    input  signed [DSZ - 1:0] in,
-    input         [FSZ - 1:0] freq,
-    input                     ns_en,
-    output signed [DSZ - 1:0] out_i,
-    output signed [DSZ - 1:0] out_q
+    input                     clk,      // Clock
+    input                     reset,    // Reset
+    input  signed [DSZ - 1:0] in,       // Input data
+    input         [FSZ - 1:0] lo_freq,  // NCO Frequency tuning word
+    input                     lo_ns_en, // NCO noise shaping enable
+    output signed [DSZ - 1:0] out_i,    // In-phase output
+    output signed [DSZ - 1:0] out_q     // Quadrature output
 );
 
 localparam DSZ = 16;  // Data word size
@@ -21,7 +21,7 @@ always @(posedge clk)
         if(reset)
             acc <= {FSZ{1'b0}};
         else
-            acc <= acc + freq;
+            acc <= acc + lo_freq;
     end
 
 // Noise shaping
@@ -34,26 +34,26 @@ always @(posedge clk)
         if(reset == 1'b1)
             ns_acc <= {FSZ{1'b0}};
         else
-            ns_acc <= acc + (ns_en ? {{PSZ{res[FSZ - PSZ - 1]}}, res} : 0);
+            ns_acc <= acc + (lo_ns_en ? {{PSZ{res[FSZ - PSZ - 1]}}, res} : 0);
     end
 
 // I tuner slice
-tuner_slice i_slice
+tuner_mixer i_mixer
 (
     .clk(clk),
     .reset(reset),
-    .shf_90(1'b1),
+    .cos(1'b1),
     .in(in),
     .phs(phs),
     .out(out_i)
 );
 
-// I tuner slice
-tuner_slice q_slice
+// Q tuner slice
+tuner_mixer q_mixer
 (
     .clk(clk),
     .reset(reset),
-    .shf_90(1'b0),
+    .cos(1'b0),
     .in(in),
     .phs(phs),
     .out(out_q)

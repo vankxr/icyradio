@@ -1,10 +1,10 @@
 module ddc
 (
-    input                       clk,       // System clock
-    input                       reset,     // System POR
+    input                       clk,       // Clock
+    input                       reset,     // Reset
     input           [ISZ - 1:0] in,        // Input data
-    input           [FSZ - 1:0] freq,      // NCO tuning word
-    input                       ns_en,     // Noise shaping enable
+    input           [FSZ - 1:0] lo_freq,   // NCO tuning word
+    input                       lo_ns_en,  // NCO noise shaping enable
     output                      out_valid, // Output valid
     output  signed  [OSZ - 1:0] out_i,     // In-phase output
     output  signed  [OSZ - 1:0] out_q      // Quadrature output
@@ -13,7 +13,7 @@ module ddc
 localparam ISZ = 16;   // Input word size
 localparam FSZ = 26;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
-localparam CICSZ = 24; // CIC output word size
+localparam CICSZ = 36; // CIC output word size -> (see cic localparam OSZ)
 
 // Clock divider
 reg [4:0]   clkdiv;
@@ -23,13 +23,21 @@ always @(posedge clk)
     begin
         if(reset)
             begin
-                clkdiv <= 8'b0;
+                clkdiv <= 5'b0;
                 cic_en <= 1'b0;
             end
         else
             begin
-                clkdiv <= clkdiv + 1;
-                cic_en <= clkdiv == 5'b11111;
+                if(clkdiv == 5'b11111) // Decimation ratio (32) - 1
+                    begin
+                        cic_en <= 1'b1;
+                        clkdiv <= 5'b0;
+                    end
+                else
+                    begin
+                        cic_en <= 1'b0;
+                        clkdiv <= clkdiv + 1;
+                    end
             end
     end
 
@@ -53,8 +61,8 @@ tuner in_tuner
     .clk(clk),
     .reset(reset),
     .in(in_sig),
-    .freq(freq),
-    .ns_en(ns_en),
+    .lo_freq(lo_freq),
+    .lo_ns_en(lo_ns_en),
     .out_i(tuner_i),
     .out_q(tuner_q)
 );
