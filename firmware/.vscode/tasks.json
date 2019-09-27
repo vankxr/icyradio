@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Build (Synth + PnR + Gen bin)",
             "type": "shell",
             "command": "make",
             "group": {
@@ -13,9 +13,14 @@
             }
         },
         {
-            "label": "Rebuild",
+            "label": "Rebuild (Synth + PnR + Gen bin)",
             "type": "shell",
             "command": "make clean; make"
+        },
+        {
+            "label": "PnR GUI",
+            "type": "shell",
+            "command": "make pnr-gui"
         },
         {
             "label": "Clean",
@@ -26,6 +31,21 @@
             "label": "Timing Analysis",
             "type": "shell",
             "command": "make timing"
+        },
+        {
+            "label": "Build (Synth + PnR + Gen bin) (Increment Version)",
+            "type": "shell",
+            "command": "make INC_VERSION=y"
+        },
+        {
+            "label": "Increment Version",
+            "type": "shell",
+            "command": "make inc-version"
+        },
+        {
+            "label": "Decrement Version",
+            "type": "shell",
+            "command": "make dec-version"
         }
     ]
 }

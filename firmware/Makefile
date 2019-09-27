@@ -1,10 +1,7 @@
-TARGET_NAME = ice40-dev
 
-# Directories
-TARGETDIR = bin
-SOURCEDIR = src
+DESIGN_NAME = icyradio
 
-# flags
+# Device
 # lp384 set device type to iCE40LP384
 # lp1k  set device type to iCE40LP1K
 # lp8k  set device type to iCE40LP8K
@@ -14,44 +11,74 @@ SOURCEDIR = src
 # u4k	set device type to iCE5LP4K
 DEVICE = hx8k
 PACKAGE = ct256
-TOPMODULE = top
+
+# Directories
+TARGETDIR = bin
+SOURCEDIR = src
+
+# Version
+$(shell if ! test -f $(TARGETDIR)/.version; then echo 0 > $(TARGETDIR)/.version; fi)
+
+INC_VERSION ?= n
+DESIGN_VERSION = $(shell cat $(TARGETDIR)/.version)
+
+ifeq ($(INC_VERSION), y)
+$(shell echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version)
+$(shell rm $(TARGETDIR)/v*.$(DESIGN_NAME)*)
+DESIGN_VERSION = $(shell cat $(TARGETDIR)/.version)
+endif
+
+ifeq ($(DESIGN_VERSION), 0)
+$(shell echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version)
+$(shell rm $(TARGETDIR)/v*.$(DESIGN_NAME)*)
+DESIGN_VERSION = $(shell cat $(TARGETDIR)/.version)
+endif
+
+# Pinout
+PCFILE = $(SOURCEDIR)/$(DESIGN_NAME).pcf
+
+# Target
+TARGET = $(TARGETDIR)/v$(DESIGN_VERSION).$(DESIGN_NAME)
 
 # Sources
 SRCFILES := $(addsuffix /*, $(SOURCEDIR))
 SRCFILES := $(wildcard $(SRCFILES))
 
 VSOURCES := $(filter %.v, $(SRCFILES))
-PCFILE	:= $(filter %.pcf, $(SRCFILES))
 
-# Targets
-TARGETBIN = $(addsuffix .bin, $(TARGETDIR)/$(TARGET_NAME))
-TARGETASC = $(addsuffix .asc, $(TARGETDIR)/$(TARGET_NAME))
-TARGETBLIF = $(addsuffix .blif, $(TARGETDIR)/$(TARGET_NAME))
-TARGETJSON = $(addsuffix .json, $(TARGETDIR)/$(TARGET_NAME))
+all: make-dir version $(TARGET).bin timing
 
-synthesize: make-dir $(TARGETBIN) timing
-
-$(TARGETBLIF): $(VSOURCES)
+$(TARGET).blif: $(VSOURCES)
 	@echo Synthesizing blif file...
-	@yosys -q -p "synth_ice40 -top $(TOPMODULE) -asc $@" $(VSOURCES)
+	@yosys -q -p "synth_ice40 -top $(DESIGN_NAME) -asc $@" $(VSOURCES)
 
-$(TARGETJSON): $(VSOURCES)
+$(TARGET).json: $(VSOURCES)
 	@echo Synthesizing json file...
-	@yosys -q -p "synth_ice40 -top $(TOPMODULE) -json $@" $(VSOURCES)
+	@yosys -q -p "synth_ice40 -top $(DESIGN_NAME) -json $@" $(VSOURCES)
 
-$(TARGETASC): $(TARGETJSON) $(PCFILE)
+$(TARGET).asc: $(TARGET).json
 	@echo Runing place and route...
-	@nextpnr-ice40 -q --$(DEVICE) --package $(PACKAGE) --json $(TARGETJSON) --pcf $(PCFILE) --asc $@
+	@nextpnr-ice40 -q --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE) --asc $@
 
-$(TARGETBIN): $(TARGETASC)
+$(TARGET).bin: $(TARGET).asc
 	@echo Packing bin file...
 	@icepack $< $@
 
-write-sram: $(TARGETBIN)
+inc-version: clean
+	@echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version
+
+dec-version: clean
+	@echo $$(($(DESIGN_VERSION) - 1)) > $(TARGETDIR)/.version
+
+version:
+	@echo Design version: v$(DESIGN_VERSION)
+	@echo ---------------------------------------------------------------------------
+
+write-sram: $(TARGET).bin
 	@echo Writing SRAM...
 	@icecream -S $<
 
-write-flash: $(TARGETBIN)
+write-flash: $(TARGET).bin
 	@echo Writing external FLASH...
 	@icecream $<
 
@@ -59,12 +86,12 @@ erase:
 	@echo Erasing external FLASH...
 	@icecream -e 1 -b
 
-timing: $(TARGETASC)
+timing: $(TARGET).asc
 	@echo Running timing analysis tool...
-	@icetime -p $(PCFILE) -P $(PACKAGE) -tm -d $(DEVICE) -r $(TARGETDIR)/$(TARGET_NAME)-timing.txt $< | grep "Timing estimate"
+	@icetime -p $(PCFILE) -P $(PACKAGE) -tm -d $(DEVICE) -r $(TARGET)-timing.txt $< | grep "Timing estimate"
 
-pnr-gui: $(TARGETJSON) $(PCFILE)
-	@nextpnr-ice40 --gui -q --$(DEVICE) --package $(PACKAGE) --json $(TARGETJSON) --pcf $(PCFILE)
+pnr-gui: $(TARGET).json
+	@nextpnr-ice40 --gui -q --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE)
 
 make-dir:
 	@mkdir -p $(TARGETDIR)
@@ -72,4 +99,4 @@ make-dir:
 clean:
 	@rm -rf $(TARGETDIR)/*
 
-.PHONY: clean make-dir write-sram erase timing timing-net-list pnr-gui write-flash synthesize
+.PHONY: clean make-dir write-sram erase timing timing-net-list pnr-gui write-flash version dec-version inc-version all

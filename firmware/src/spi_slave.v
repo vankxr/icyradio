@@ -16,17 +16,17 @@ module spi_slave
 parameter ASZ = 7; // 2 ^ 7 = 128
 parameter DSZ = 32;
 
-reg  [5:0]          mosi_cnt;              // Input bit counter
+reg  [5:0]          bit_cnt;               // Bit counter
 reg  [DSZ - 1:0]    mosi_shift;            // MOSI shift register
 reg  [DSZ - 1:0]    miso_shift;            // MISO shift register
 reg                 rnw;                   // Data direction (1 = read, 0 = write)
-reg                 eot;                   // End of transfer flag
 reg                 eoa;                   // End of address flag
+reg                 eot;                   // End of transfer flag
 reg  [ASZ - 1:0]    addr;                  // Address
 reg  [DSZ - 1:0]    data_out;              // Data from MOSI
 reg                 rd_en;                 // Read strobe
 reg                 wr_en;                 // Write strobe
-wire                rst = reset | spi_ncs; // Reset line
+wire                rst = reset | spi_ncs; // Reset line combined with CS
 
 assign spi_miso = miso_shift[DSZ - 1]; // MISO is the MSB of the shift register
 
@@ -35,30 +35,29 @@ always @(posedge spi_sck or posedge rst)
     begin
         if(rst)
             begin
-                mosi_cnt <= 6'b000000;
-                mosi_shift <= 32'h00000000;
+                bit_cnt <= 6'b000000;
+                mosi_shift <= {DSZ{1'b0}};
                 eoa <= 1'b0;
                 rnw <= 1'b1;
                 eot <= 1'b0;
             end
         else
             begin
-                mosi_cnt <= mosi_cnt + 1;
+                bit_cnt <= bit_cnt + 1;
 
                 mosi_shift <= {mosi_shift[DSZ - 2:0], spi_mosi}; // Shift data in
 
-                if(mosi_cnt == 0) // First bit is RnW bit (data direction)
+                if(bit_cnt == 0) // First bit is RnW bit (data direction)
                     rnw <= spi_mosi;
 
-                if(mosi_cnt == ASZ) // Next 7 bits are address
+                if(bit_cnt == ASZ) // Next 7 bits are address
                     begin
                         addr <= {mosi_shift[ASZ - 2:0], spi_mosi};
+
                         eoa <= 1'b1;
                     end
 
-                rd_en <= rnw & (mosi_cnt == ASZ); // Read strobe after address
-
-                if(mosi_cnt == (ASZ + DSZ))
+                if(bit_cnt == (ASZ + DSZ))
                     begin
                         data_out <= {mosi_shift[DSZ - 2:0], spi_mosi};
 
@@ -72,31 +71,38 @@ always @(negedge spi_sck or posedge rst)
     begin
         if(rst)
             begin
-                miso_shift <= 32'h00000000;
+                miso_shift <= {DSZ{1'b0}};
             end
         else
             begin
-                if(rd_en)
+                if((bit_cnt == (ASZ + 1)) && rnw)
                     miso_shift <= data_in; // Load shift register with outgoing data
                 else
                     miso_shift <= {miso_shift[DSZ - 2:0], 1'b0};
             end
     end
 
-// Edge detection on end-of-transfer signal to generate write enable
-reg [2:0] eot_ed; // EOT edge detector
+// Edge detection on end-of-address and end-of-transfer signals to generate synchronous read and write enables
+reg [1:0] eoa_ed; // EOA edge detector
+reg [1:0] eot_ed; // EOT edge detector
 
 always @(posedge clk)
     begin
         if(rst)
             begin
-                eot_ed <= 3'b000;
+                eoa_ed <= 2'b00;
+                eot_ed <= 2'b00;
+
+                rd_en <= 1'b0;
                 wr_en <= 1'b0;
             end
         else
             begin
-                eot_ed <= {eot_ed[1:0], eot};
-                wr_en <= !eot_ed[2] && eot_ed[1] && !rnw;
+                eoa_ed <= {eoa_ed[0], eoa};
+                eot_ed <= {eot_ed[0], eot};
+
+                rd_en <= !eoa_ed[1] && eoa_ed[0] && rnw;
+                wr_en <= !eot_ed[1] && eot_ed[0] && !rnw;
             end
     end
 endmodule

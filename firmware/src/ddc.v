@@ -160,16 +160,28 @@ always @(posedge clk)
             begin
                 prev_fir_valid <= fir_valid;
 
-                if((prev_fir_valid == 1'b1) & (fir_valid == 1'b1))
-                    out_i <= fir_qi_mux;
+                case({prev_fir_valid, fir_valid})
+                    2'b00:
+                        begin
+                            out_valid <= 1'b0;
+                        end
+                    2'b01:
+                        begin
+                            out_q <= fir_qi_mux;
 
-                if((prev_fir_valid == 1'b0) & (fir_valid == 1'b1))
-                    begin
-                        out_q <= fir_qi_mux;
-                        out_valid <= 1'b1;
-                    end
-                else
-                    out_valid <= 1'b0;
+                            out_valid <= 1'b0;
+                        end
+                    2'b11:
+                        begin
+                            out_i <= fir_qi_mux;
+
+                            out_valid <= 1'b1;
+                        end
+                    2'b10:
+                        begin
+                            out_valid <= 1'b0;
+                        end
+                endcase
             end
     end
 
