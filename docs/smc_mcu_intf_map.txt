@@ -1,0 +1,38 @@
+DSP Control SPI:
+US3_TX #0   PA0     C2
+US3_RX #0   PA1     C1
+US3_CLK #0  PA2     D2
+US3_CS #0   PA3     D1
+
+TFT SPI:
+US2_TX #2   PA7     H4
+US2_RX #2   PA8     H5
+US2_CLK #2  PA9     J5
+US2_CS #2   PA10    J6
+
+FPGA Control SPI:
+US1_TX #4   PC1     J1
+US1_RX #4   PC2     H2
+US1_CLK #4  PC3     J2
+US1_CS #4   PC0     H1
+
+RX Tuner Control I2C:
+I2C1_SDA #0 PC4     K2
+I2C1_SCL #0 PC5     L2
+
+TX PLL Control SPI:
+US4_TX #1   PD9     D6
+US4_CLK #1  PD11    B5
+US4_CS #1   PD12    C5
+
+TX DAC Control SPI:
+US5_TX #0   PE8     B4
+US5_CLK #1  PD13    C4
+
+Clock Manager + TFT Touch Control I2C:
+I2C0_SDA #0 PE4     A9
+I2C0_SCL #0 PE5     B9
+
+Audio CODEC + USB Bridge Control I2C:
+I2C2_SDA #2 PF10    A10
+I2C2_SCL #2 PF11    A11

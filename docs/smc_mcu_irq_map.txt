@@ -1,0 +1,16 @@
+FPGA_CDONE      EXTI0   PB1
+FPGA_CBSEL0     EXTI1   PB2
+TFT_TOUCH_IRQ   EXTI2   PD2
+-               EXTI3   -
+CLK_MNGR_IRQ    EXTI4   PE6
+-               EXTI5   -
+-               EXTI6   -
+-               EXTI7   -
+3V6_ANA_PGOOD   EXTI8   PC10
+TXPLL_MUXOUT    EXTI9   PD10
+TXPA_OC         EXTI10  PE11
+TXPLL_LOCK      EXTI11  PF9
+DSP_IRQ         EXTI12  PE13
+-               EXTI13  -
+-               EXTI14  -
+-               EXTI15  -
