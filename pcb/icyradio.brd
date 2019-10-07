@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.75" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
+<grid distance="0.1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="16" fill="1" visible="yes" active="yes"/>
@@ -1659,6 +1659,31 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <circle x="-0.45" y="1.081" radius="0.254" width="0" layer="21"/>
 <text x="-1.214" y="1.8825" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 <text x="-1.214" y="-3.089" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+<package name="WSOIC8">
+<wire x1="2.645" y1="2.6" x2="2.645" y2="-2.6" width="0.127" layer="21"/>
+<wire x1="2.645" y1="-2.6" x2="-2.655" y2="-2.6" width="0.127" layer="51"/>
+<wire x1="-2.655" y1="-2.6" x2="-2.655" y2="2.6" width="0.127" layer="21"/>
+<wire x1="-2.655" y1="2.6" x2="2.645" y2="2.6" width="0.127" layer="51"/>
+<circle x="-1.651" y="-1.2738" radius="0.4422" width="0" layer="21"/>
+<smd name="2" x="-0.635" y="-3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="7" x="-0.635" y="3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="1" x="-1.905" y="-3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="3" x="0.635" y="-3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="4" x="1.905" y="-3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="8" x="-1.905" y="3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="6" x="0.635" y="3.33" dx="0.6" dy="2.2" layer="1"/>
+<smd name="5" x="1.905" y="3.33" dx="0.6" dy="2.2" layer="1"/>
+<text x="-3.175" y="-2.8575" size="1.016" layer="25" ratio="18" rot="R90">&gt;NAME</text>
+<text x="3.81" y="-2.8575" size="0.8128" layer="27" ratio="10" rot="R90">&gt;VALUE</text>
+<rectangle x1="-2.1501" y1="-4.068" x2="-1.6599" y2="-2.5481" layer="51"/>
+<rectangle x1="-0.8801" y1="-4.068" x2="-0.3899" y2="-2.5481" layer="51"/>
+<rectangle x1="0.3899" y1="-4.068" x2="0.8801" y2="-2.5481" layer="51"/>
+<rectangle x1="1.6599" y1="-4.068" x2="2.1501" y2="-2.5481" layer="51"/>
+<rectangle x1="1.6599" y1="2.5481" x2="2.1501" y2="4.068" layer="51"/>
+<rectangle x1="0.3899" y1="2.5481" x2="0.8801" y2="4.068" layer="51"/>
+<rectangle x1="-0.8801" y1="2.5481" x2="-0.3899" y2="4.068" layer="51"/>
+<rectangle x1="-2.1501" y1="2.5481" x2="-1.6599" y2="4.068" layer="51"/>
 </package>
 </packages>
 </library>
@@ -10382,6 +10407,20 @@ design rules under a new name.</description>
 <attribute name="NAME" x="131.1536" y="96.016" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="135.3464" y="96.632" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
+<element name="U302" library="Microchip" package="WSOIC8" value="SST26VF064B" x="81.1" y="63.15" smashed="yes" rot="R90">
+<attribute name="NAME" x="83.5575" y="66.575" size="0.8" layer="25" font="vector" ratio="10" rot="R180" align="center-left"/>
+<attribute name="VALUE" x="83.9575" y="66.96" size="0.8128" layer="27" ratio="10" rot="R180"/>
+</element>
+<element name="C319" library="Capacitor" package="CAP0603" value="100nF" x="77.1" y="58.9" smashed="yes">
+<attribute name="NAME" x="72.6536" y="58.916" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="VALUE" x="74.1536" y="56.868" size="1.016" layer="27" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" value="" x="77.1" y="58.9" size="1.778" layer="27" display="off"/>
+</element>
+<element name="R305" library="Resistor" package="RES0603" value="100K Ohms" x="77.1" y="57.1" smashed="yes" rot="R180">
+<attribute name="NAME" x="75.6456" y="55.616" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="TOLERANCE" value="" x="77.1" y="57.1" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="VALUE" x="80.5544" y="59.132" size="1.016" layer="27" ratio="10" rot="SR180"/>
+</element>
 </elements>
 <signals>
 <signal name="GND">
@@ -12565,6 +12604,11 @@ design rules under a new name.</description>
 <via x="87.75" y="78.75" extent="1-16" drill="0.2"/>
 <via x="90" y="78" extent="1-16" drill="0.2"/>
 <via x="96.4" y="80.6" extent="1-16" drill="0.2"/>
+<contactref element="U302" pad="4"/>
+<contactref element="C319" pad="2"/>
+<via x="75.55" y="61.1" extent="1-16" drill="0.2"/>
+<via x="73.9" y="52.05" extent="1-16" drill="0.2"/>
+<via x="73.4" y="51.55" extent="1-16" drill="0.2"/>
 </signal>
 <signal name="3V3">
 <contactref element="TC101" pad="1"/>
@@ -13148,6 +13192,15 @@ design rules under a new name.</description>
 <via x="142.8" y="70.6" extent="1-16" drill="0.3"/>
 <wire x1="142.8" y1="70.6" x2="136.8" y2="70.6" width="0.508" layer="15"/>
 <wire x1="136.8" y1="70.6" x2="136.1" y2="69.9" width="0.508" layer="15"/>
+<contactref element="U302" pad="8"/>
+<contactref element="C319" pad="1"/>
+<contactref element="R305" pad="2"/>
+<wire x1="77.77" y1="61.245" x2="76.745" y2="61.245" width="0.6096" layer="1"/>
+<wire x1="76.28085" y1="60.78085" x2="76.28085" y2="60.1" width="0.6096" layer="1"/>
+<wire x1="76.28085" y1="60.1" x2="76.28085" y2="58.9" width="0.6096" layer="1"/>
+<wire x1="76.745" y1="61.245" x2="76.28085" y2="60.78085" width="0.6096" layer="1"/>
+<via x="76.28085" y="60.1" extent="1-16" drill="0.3"/>
+<wire x1="76.28085" y1="58.9" x2="76.28085" y2="57.1" width="0.8128" layer="1"/>
 </signal>
 <signal name="SMC_VCORE">
 <contactref element="C111" pad="1"/>
@@ -13274,9 +13327,9 @@ design rules under a new name.</description>
 <wire x1="73.4" y1="49.6" x2="74.9" y2="51.1" width="0.4064" layer="15"/>
 <via x="74.9" y="51.1" extent="1-16" drill="0.2"/>
 <wire x1="74.9" y1="51.1" x2="76.28085" y2="51.1" width="0.4064" layer="1"/>
-<wire x1="74.9" y1="51.1" x2="74.9" y2="55.3" width="0.4064" layer="15"/>
-<via x="74.9" y="55.3" extent="1-16" drill="0.2"/>
-<wire x1="74.9" y1="55.3" x2="74.9" y2="62.3" width="0.4064" layer="16"/>
+<wire x1="74.9" y1="51.1" x2="74.9" y2="56.4" width="0.4064" layer="15"/>
+<via x="74.9" y="56.4" extent="1-16" drill="0.2"/>
+<wire x1="74.9" y1="56.4" x2="74.9" y2="62.3" width="0.4064" layer="16"/>
 <via x="74.9" y="62.3" extent="1-16" drill="0.2"/>
 <wire x1="70.5" y1="56" x2="70.5" y2="56.8" width="0.3048" layer="1"/>
 <via x="70.5" y="56.8" extent="1-16" drill="0.2"/>
@@ -15060,7 +15113,7 @@ design rules under a new name.</description>
 <wire x1="117.639925" y1="67.9" x2="120" y2="65.539925" width="0.095" layer="16"/>
 <wire x1="120" y1="65.539925" x2="120" y2="58.5" width="0.095" layer="16"/>
 </signal>
-<signal name="FPGA_GP_CLK2">
+<signal name="FPGA_CLK3">
 <contactref element="U301" pad="R9"/>
 <contactref element="R904" pad="1"/>
 <wire x1="88" y1="73.28085" x2="88" y2="72.1" width="0.127" layer="1"/>
@@ -15083,7 +15136,7 @@ design rules under a new name.</description>
 <via x="97.3" y="72.1" extent="1-16" drill="0.2"/>
 <wire x1="97.3" y1="72.1" x2="97.3" y2="73.28085" width="0.2" layer="1"/>
 </signal>
-<signal name="FPGA_GP_CLK1">
+<signal name="FPGA_CLK2">
 <contactref element="U301" pad="K9"/>
 <contactref element="R907" pad="1"/>
 <wire x1="86.2" y1="73.28085" x2="86.2" y2="72.1" width="0.127" layer="1"/>
@@ -15096,7 +15149,7 @@ design rules under a new name.</description>
 <wire x1="73.3" y1="67.5" x2="66.7" y2="60.9" width="0.127" layer="16"/>
 <wire x1="66.7" y1="60.9" x2="66.7" y2="49.8" width="0.127" layer="16"/>
 </signal>
-<signal name="FPGA_DDC_CLK">
+<signal name="FPGA_CLK1">
 <contactref element="U301" pad="C8"/>
 <contactref element="R905" pad="1"/>
 <wire x1="65.7" y1="54.4" x2="66.1" y2="54.8" width="0.127" layer="1"/>
@@ -16146,7 +16199,7 @@ design rules under a new name.</description>
 <wire x1="56.803553125" y1="83.403553125" x2="56.5" y2="83.1" width="0.254" layer="1"/>
 <via x="56.5" y="83.1" extent="1-16" drill="0.2"/>
 </signal>
-<signal name="FPGA_GP_CLK3">
+<signal name="FPGA_CLK4">
 <contactref element="R908" pad="1"/>
 <contactref element="U301" pad="F7"/>
 <wire x1="82.6" y1="73.28085" x2="82.6" y2="72.1" width="0.127" layer="1"/>
@@ -16973,27 +17026,28 @@ design rules under a new name.</description>
 <contactref element="U301" pad="D16"/>
 <wire x1="72.099996875" y1="53.6" x2="72.9" y2="53.6" width="0.095" layer="1"/>
 <via x="72.9" y="53.6" extent="1-16" drill="0.2"/>
-<wire x1="72.9" y1="53.6" x2="73.8" y2="53.6" width="0.095" layer="16"/>
+<wire x1="72.9" y1="53.6" x2="74.1" y2="53.6" width="0.095" layer="16"/>
 <wire x1="86.921325" y1="54.2814" x2="87.4" y2="54.2814" width="0.095" layer="16"/>
 <via x="87.4" y="54.2814" extent="1-16" drill="0.2"/>
 <wire x1="87.4" y1="54.2814" x2="88.2186" y2="54.2814" width="0.095" layer="1"/>
 <wire x1="88.2186" y1="54.2814" x2="88.5" y2="54" width="0.095" layer="1"/>
-<wire x1="73.8" y1="53.6" x2="74.2322" y2="53.1678" width="0.095" layer="16"/>
-<wire x1="74.2322" y1="53.1678" x2="85.807725" y2="53.1678" width="0.095" layer="16"/>
+<wire x1="74.1" y1="53.6" x2="74.5322" y2="53.1678" width="0.095" layer="16"/>
+<wire x1="74.5322" y1="53.1678" x2="85.807725" y2="53.1678" width="0.095" layer="16"/>
 <wire x1="85.807725" y1="53.1678" x2="86.921325" y2="54.2814" width="0.095" layer="16"/>
 </signal>
 <signal name="DSP_BB_I2S_SDOUT">
 <contactref element="U201" pad="A1"/>
 <contactref element="U301" pad="C16"/>
-<wire x1="72.099996875" y1="54.4" x2="72.9" y2="54.4" width="0.095" layer="1"/>
-<via x="72.9" y="54.4" extent="1-16" drill="0.2"/>
-<wire x1="72.9" y1="54.4" x2="73.260075" y2="54.4" width="0.095" layer="16"/>
+<wire x1="72.099996875" y1="54.4" x2="72.499996875" y2="54" width="0.095" layer="1"/>
+<wire x1="73.5" y1="54" x2="72.499996875" y2="54" width="0.095" layer="1"/>
+<via x="73.5" y="54" extent="1-16" drill="0.2"/>
+<wire x1="73.5" y1="54" x2="73.960075" y2="54" width="0.095" layer="16"/>
 <wire x1="87.17545" y1="54.7956" x2="87.70180625" y2="54.7956" width="0.095" layer="16"/>
 <via x="87.70180625" y="54.7956" extent="1-16" drill="0.2"/>
 <wire x1="87.70180625" y1="54.7956" x2="87.70620625" y2="54.8" width="0.095" layer="1"/>
 <wire x1="87.70620625" y1="54.8" x2="88.5" y2="54.8" width="0.095" layer="1"/>
-<wire x1="73.260075" y1="54.4" x2="74.308375" y2="53.3517" width="0.095" layer="16"/>
-<wire x1="74.308375" y1="53.3517" x2="85.73155" y2="53.3517" width="0.095" layer="16"/>
+<wire x1="73.960075" y1="54" x2="74.608375" y2="53.3517" width="0.095" layer="16"/>
+<wire x1="74.608375" y1="53.3517" x2="85.73155" y2="53.3517" width="0.095" layer="16"/>
 <wire x1="85.73155" y1="53.3517" x2="87.17545" y2="54.7956" width="0.095" layer="16"/>
 </signal>
 <signal name="!FPGA_SRESET">
@@ -18865,6 +18919,124 @@ design rules under a new name.</description>
 <contactref element="D1002" pad="2"/>
 <contactref element="R1012" pad="1"/>
 <wire x1="129.81915" y1="94.6" x2="131.58085" y2="94.6" width="0.8128" layer="1"/>
+</signal>
+<signal name="FPGA_MEM_IO0">
+<contactref element="U302" pad="5"/>
+<contactref element="U301" pad="C13"/>
+<wire x1="69.7" y1="54.4" x2="70.1" y2="54.8" width="0.095" layer="1"/>
+<via x="70.1" y="54.8" extent="1-16" drill="0.2"/>
+<wire x1="70.1" y1="54.8" x2="70.9" y2="55.6" width="0.095" layer="16"/>
+<wire x1="79.5" y1="59.5" x2="79.5" y2="65.05" width="0.095" layer="16"/>
+<via x="79.5" y="65.05" extent="1-16" drill="0.2"/>
+<wire x1="79.5" y1="65.05" x2="77.775" y2="65.05" width="0.095" layer="1"/>
+<wire x1="77.775" y1="65.05" x2="77.77" y2="65.055" width="0.095" layer="1"/>
+<wire x1="70.9" y1="55.6" x2="75.6" y2="55.6" width="0.095" layer="16"/>
+<wire x1="75.6" y1="55.6" x2="79.5" y2="59.5" width="0.095" layer="16"/>
+</signal>
+<signal name="FPGA_MEM_IO1">
+<contactref element="U302" pad="2"/>
+<contactref element="U301" pad="E13"/>
+<wire x1="69.7" y1="52.8" x2="70.1" y2="53.2" width="0.095" layer="1"/>
+<via x="70.1" y="53.2" extent="1-16" drill="0.2"/>
+<wire x1="70.1" y1="53.2" x2="70.5" y2="53.6" width="0.095" layer="16"/>
+<wire x1="71.5322" y1="54.0322" x2="72.05235" y2="54.0322" width="0.095" layer="16"/>
+<wire x1="70.5" y1="53.6" x2="71.1" y2="53.6" width="0.095" layer="16"/>
+<wire x1="71.1" y1="53.6" x2="71.5322" y2="54.0322" width="0.095" layer="16"/>
+<wire x1="72.05235" y1="54.0322" x2="72.88455" y2="54.8644" width="0.095" layer="16"/>
+<wire x1="75.9047" y1="54.8644" x2="77.67015" y2="56.62985" width="0.095" layer="16"/>
+<wire x1="77.67015" y1="56.62985" x2="77.77015" y2="56.72985" width="0.095" layer="16"/>
+<wire x1="72.88455" y1="54.8644" x2="75.9047" y2="54.8644" width="0.095" layer="16"/>
+<wire x1="77.77015" y1="56.72985" x2="80.2356" y2="59.1953" width="0.095" layer="16"/>
+<wire x1="81.560075" y1="62.5" x2="82.6" y2="62.5" width="0.095" layer="16"/>
+<via x="82.6" y="62.5" extent="1-16" drill="0.2"/>
+<wire x1="82.6" y1="62.5" x2="84.415" y2="62.5" width="0.095" layer="1"/>
+<wire x1="84.415" y1="62.5" x2="84.43" y2="62.515" width="0.095" layer="1"/>
+<wire x1="80.2356" y1="59.1953" x2="80.2356" y2="61.175525" width="0.095" layer="16"/>
+<wire x1="80.2356" y1="61.175525" x2="81.560075" y2="62.5" width="0.095" layer="16"/>
+</signal>
+<signal name="FPGA_MEM_IO2">
+<contactref element="U302" pad="3"/>
+<contactref element="U301" pad="D14"/>
+<wire x1="70.5" y1="53.6" x2="70.9" y2="54" width="0.095" layer="1"/>
+<via x="70.9" y="54" extent="1-16" drill="0.2"/>
+<wire x1="70.9" y1="54" x2="71.1161" y2="54.2161" width="0.095" layer="16"/>
+<wire x1="80.2" y1="61.4" x2="80.3" y2="61.5" width="0.095" layer="16"/>
+<via x="82.6" y="63.8" extent="1-16" drill="0.2"/>
+<wire x1="80.3" y1="61.5" x2="82.6" y2="63.8" width="0.095" layer="16"/>
+<wire x1="82.6" y1="63.8" x2="84.415" y2="63.8" width="0.095" layer="1"/>
+<wire x1="84.415" y1="63.8" x2="84.43" y2="63.785" width="0.095" layer="1"/>
+<wire x1="71.1161" y1="54.2161" x2="71.976175" y2="54.2161" width="0.095" layer="16"/>
+<wire x1="71.976175" y1="54.2161" x2="72.808375" y2="55.0483" width="0.095" layer="16"/>
+<wire x1="72.808375" y1="55.0483" x2="75.828525" y2="55.0483" width="0.095" layer="16"/>
+<wire x1="75.828525" y1="55.0483" x2="79.7401125" y2="58.9598875" width="0.095" layer="16"/>
+<wire x1="79.7401125" y1="58.9598875" x2="80.0517" y2="59.271475" width="0.095" layer="16"/>
+<wire x1="80.0517" y1="61.2517" x2="80.2" y2="61.4" width="0.095" layer="16"/>
+<wire x1="80.0517" y1="59.271475" x2="80.0517" y2="61.2517" width="0.095" layer="16"/>
+</signal>
+<signal name="FPGA_MEM_IO3">
+<contactref element="U302" pad="7"/>
+<contactref element="U301" pad="D13"/>
+<wire x1="69.7" y1="53.6" x2="70.1" y2="54" width="0.095" layer="1"/>
+<via x="70.1" y="54" extent="1-16" drill="0.2"/>
+<wire x1="70.1" y1="54" x2="70.5" y2="54.4" width="0.095" layer="16"/>
+<wire x1="79.8678" y1="62.1678" x2="80.2" y2="62.5" width="0.095" layer="16"/>
+<via x="80.2" y="62.5" extent="1-16" drill="0.2"/>
+<wire x1="80.2" y1="62.5" x2="77.785" y2="62.5" width="0.095" layer="1"/>
+<wire x1="77.785" y1="62.5" x2="77.77" y2="62.515" width="0.095" layer="1"/>
+<wire x1="70.5" y1="54.4" x2="71.9" y2="54.4" width="0.095" layer="16"/>
+<wire x1="71.9" y1="54.4" x2="72.7322" y2="55.2322" width="0.095" layer="16"/>
+<wire x1="72.7322" y1="55.2322" x2="75.75235" y2="55.2322" width="0.095" layer="16"/>
+<wire x1="75.75235" y1="55.2322" x2="79.8678" y2="59.34765" width="0.095" layer="16"/>
+<wire x1="79.8678" y1="59.34765" x2="79.8678" y2="62.1678" width="0.095" layer="16"/>
+</signal>
+<signal name="!FPGA_MEM_CS">
+<contactref element="U302" pad="1"/>
+<contactref element="U301" pad="E14"/>
+<wire x1="70.5" y1="52.8" x2="70.9" y2="53.2" width="0.095" layer="1"/>
+<via x="70.9" y="53.2" extent="1-16" drill="0.2"/>
+<wire x1="70.9" y1="53.2" x2="71" y2="53.2" width="0.095" layer="16"/>
+<wire x1="71.6483" y1="53.8483" x2="72.128525" y2="53.8483" width="0.095" layer="16"/>
+<wire x1="80.57015" y1="61.25" x2="82.6" y2="61.25" width="0.095" layer="16"/>
+<via x="82.6" y="61.25" extent="1-16" drill="0.2"/>
+<wire x1="82.6" y1="61.25" x2="84.425" y2="61.25" width="0.095" layer="1"/>
+<wire x1="84.425" y1="61.25" x2="84.43" y2="61.245" width="0.095" layer="1"/>
+<wire x1="71" y1="53.2" x2="71.6483" y2="53.8483" width="0.095" layer="16"/>
+<wire x1="72.128525" y1="53.8483" x2="72.960725" y2="54.6805" width="0.095" layer="16"/>
+<wire x1="72.960725" y1="54.6805" x2="75.980875" y2="54.6805" width="0.095" layer="16"/>
+<wire x1="75.980875" y1="54.6805" x2="78.4001875" y2="57.0998125" width="0.095" layer="16"/>
+<wire x1="78.4001875" y1="57.0998125" x2="80.4195" y2="59.119125" width="0.095" layer="16"/>
+<wire x1="80.4195" y1="59.119125" x2="80.4195" y2="61.09935" width="0.095" layer="16"/>
+<wire x1="80.4195" y1="61.09935" x2="80.57015" y2="61.25" width="0.095" layer="16"/>
+<contactref element="R305" pad="1"/>
+<wire x1="78.4001875" y1="57.0998125" x2="79.0998125" y2="57.0998125" width="0.095" layer="16"/>
+<wire x1="79.0998125" y1="57.0998125" x2="79.1" y2="57.1" width="0.095" layer="16"/>
+<via x="79.1" y="57.1" extent="1-16" drill="0.2"/>
+<wire x1="79.1" y1="57.1" x2="77.91915" y2="57.1" width="0.095" layer="1"/>
+</signal>
+<signal name="FPGA_MEM_SCK">
+<contactref element="U302" pad="6"/>
+<contactref element="U301" pad="C14"/>
+<wire x1="70.5" y1="54.4" x2="70.9" y2="54.8" width="0.095" layer="1"/>
+<via x="70.9" y="54.8" extent="1-16" drill="0.2"/>
+<wire x1="70.9" y1="54.8" x2="71.5161" y2="55.4161" width="0.095" layer="16"/>
+<wire x1="79.6839" y1="63.4839" x2="80" y2="63.8" width="0.095" layer="16"/>
+<via x="80" y="63.8" extent="1-16" drill="0.2"/>
+<wire x1="80" y1="63.8" x2="79.985" y2="63.785" width="0.095" layer="1"/>
+<wire x1="79.985" y1="63.785" x2="77.77" y2="63.785" width="0.095" layer="1"/>
+<wire x1="71.5161" y1="55.4161" x2="75.676175" y2="55.4161" width="0.095" layer="16"/>
+<wire x1="75.676175" y1="55.4161" x2="79.6839" y2="59.423825" width="0.095" layer="16"/>
+<wire x1="79.6839" y1="59.423825" x2="79.6839" y2="63.4839" width="0.095" layer="16"/>
+</signal>
+<signal name="!FPGA_DSP_IRQ">
+<contactref element="U201" pad="F1"/>
+<contactref element="U301" pad="F16"/>
+<wire x1="72.099996875" y1="52" x2="72.9" y2="52" width="0.095" layer="1"/>
+<via x="72.9" y="52" extent="1-16" drill="0.2"/>
+<wire x1="72.9" y1="52" x2="73.4" y2="52.5" width="0.095" layer="16"/>
+<wire x1="86" y1="52.5" x2="87.7" y2="50.8" width="0.095" layer="16"/>
+<via x="87.7" y="50.8" extent="1-16" drill="0.2"/>
+<wire x1="87.7" y1="50.8" x2="88.5" y2="50.8" width="0.095" layer="1"/>
+<wire x1="73.4" y1="52.5" x2="86" y2="52.5" width="0.095" layer="16"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
