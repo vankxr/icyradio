@@ -719,12 +719,12 @@
 <pin name="VCC@0" x="-35.56" y="-2.54" length="middle" direction="pwr"/>
 <pin name="VCCIO0@0" x="-35.56" y="-40.64" length="middle" direction="pwr"/>
 <pin name="VCC_SPI" x="-35.56" y="-35.56" length="middle" direction="pwr"/>
-<pin name="VPP_2V5" x="-35.56" y="-20.32" length="middle" direction="pwr"/>
+<pin name="VPP_2V5" x="-35.56" y="-27.94" length="middle" direction="pwr"/>
 <pin name="GNDPLL0" x="5.08" y="-27.94" length="middle" direction="pwr" rot="R180"/>
-<pin name="VCCPLL0" x="-35.56" y="-27.94" length="middle" direction="pwr"/>
-<pin name="VPP_FAST" x="-35.56" y="-22.86" length="middle" direction="pwr"/>
+<pin name="VCCPLL0" x="-35.56" y="-20.32" length="middle" direction="pwr"/>
+<pin name="VPP_FAST" x="-35.56" y="-30.48" length="middle" direction="pwr"/>
 <pin name="GNDPLL1" x="5.08" y="-30.48" length="middle" direction="pwr" rot="R180"/>
-<pin name="VCCPLL1" x="-35.56" y="-30.48" length="middle" direction="pwr"/>
+<pin name="VCCPLL1" x="-35.56" y="-22.86" length="middle" direction="pwr"/>
 <pin name="VCC@1" x="-35.56" y="-5.08" length="middle" direction="pwr"/>
 <pin name="VCC@2" x="-35.56" y="-7.62" length="middle" direction="pwr"/>
 <pin name="VCC@3" x="-35.56" y="-10.16" length="middle" direction="pwr"/>
@@ -10994,8 +10994,8 @@ Viewing Area</text>
 <instance part="3V3315" gate="G$1" x="510.54" y="365.76" smashed="yes">
 <attribute name="VALUE" x="508" y="363.22" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="TP3" gate="G$1" x="116.84" y="332.74" smashed="yes" rot="R90">
-<attribute name="NAME" x="115.57" y="331.47" size="1.778" layer="95" rot="R90"/>
+<instance part="TP3" gate="G$1" x="116.84" y="325.12" smashed="yes" rot="R90">
+<attribute name="NAME" x="115.57" y="323.85" size="1.778" layer="95" rot="R90"/>
 </instance>
 <instance part="D301" gate="R" x="375.92" y="332.74" smashed="yes">
 <attribute name="NAME" x="379.476" y="328.168" size="1.778" layer="95" rot="R90"/>
@@ -11066,10 +11066,7 @@ Viewing Area</text>
 <nets>
 <net name="1V2" class="0">
 <segment>
-<pinref part="U301" gate=".PWRCTRL" pin="VPP_2V5"/>
 <pinref part="1V8309" gate="G$1" pin="1V2"/>
-<wire x1="142.24" y1="335.28" x2="137.16" y2="335.28" width="0.1524" layer="91"/>
-<wire x1="137.16" y1="335.28" x2="137.16" y2="340.36" width="0.1524" layer="91"/>
 <pinref part="U301" gate=".PWRCTRL" pin="VCC@0"/>
 <wire x1="137.16" y1="340.36" x2="137.16" y2="342.9" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="342.9" x2="137.16" y2="345.44" width="0.1524" layer="91"/>
@@ -11095,13 +11092,12 @@ Viewing Area</text>
 <wire x1="142.24" y1="340.36" x2="137.16" y2="340.36" width="0.1524" layer="91"/>
 <junction x="137.16" y="340.36"/>
 <pinref part="U301" gate=".PWRCTRL" pin="VCCPLL1"/>
-<wire x1="142.24" y1="325.12" x2="137.16" y2="325.12" width="0.1524" layer="91"/>
-<wire x1="137.16" y1="325.12" x2="137.16" y2="327.66" width="0.1524" layer="91"/>
-<junction x="137.16" y="335.28"/>
+<wire x1="142.24" y1="332.74" x2="137.16" y2="332.74" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="332.74" x2="137.16" y2="335.28" width="0.1524" layer="91"/>
 <pinref part="U301" gate=".PWRCTRL" pin="VCCPLL0"/>
-<wire x1="137.16" y1="327.66" x2="137.16" y2="335.28" width="0.1524" layer="91"/>
-<wire x1="142.24" y1="327.66" x2="137.16" y2="327.66" width="0.1524" layer="91"/>
-<junction x="137.16" y="327.66"/>
+<wire x1="137.16" y1="335.28" x2="137.16" y2="340.36" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="335.28" x2="137.16" y2="335.28" width="0.1524" layer="91"/>
+<junction x="137.16" y="335.28"/>
 </segment>
 <segment>
 <pinref part="C318" gate="G$1" pin="C1"/>
@@ -11149,8 +11145,9 @@ Viewing Area</text>
 <pinref part="U301" gate=".PWRCTRL" pin="VCC_SPI"/>
 <pinref part="3V3311" gate="G$1" pin="3V3"/>
 <wire x1="142.24" y1="320.04" x2="127" y2="320.04" width="0.1524" layer="91"/>
-<wire x1="127" y1="320.04" x2="127" y2="358.14" width="0.1524" layer="91"/>
+<wire x1="127" y1="320.04" x2="127" y2="327.66" width="0.1524" layer="91"/>
 <pinref part="U301" gate=".PWRCTRL" pin="VCCIO0@0"/>
+<wire x1="127" y1="327.66" x2="127" y2="358.14" width="0.1524" layer="91"/>
 <wire x1="142.24" y1="314.96" x2="127" y2="314.96" width="0.1524" layer="91"/>
 <wire x1="127" y1="314.96" x2="127" y2="320.04" width="0.1524" layer="91"/>
 <junction x="127" y="320.04"/>
@@ -11214,6 +11211,9 @@ Viewing Area</text>
 <wire x1="142.24" y1="269.24" x2="127" y2="269.24" width="0.1524" layer="91"/>
 <wire x1="127" y1="269.24" x2="127" y2="271.78" width="0.1524" layer="91"/>
 <junction x="127" y="271.78"/>
+<pinref part="U301" gate=".PWRCTRL" pin="VPP_2V5"/>
+<wire x1="142.24" y1="327.66" x2="127" y2="327.66" width="0.1524" layer="91"/>
+<junction x="127" y="327.66"/>
 </segment>
 <segment>
 <pinref part="C302" gate="G$1" pin="C1"/>
@@ -12224,7 +12224,7 @@ Viewing Area</text>
 <segment>
 <pinref part="U301" gate=".PWRCTRL" pin="VPP_FAST"/>
 <pinref part="TP3" gate="G$1" pin="TP"/>
-<wire x1="142.24" y1="332.74" x2="119.38" y2="332.74" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="325.12" x2="119.38" y2="325.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$141" class="0">
