@@ -720,10 +720,10 @@
 <pin name="VCCIO0@0" x="-35.56" y="-40.64" length="middle" direction="pwr"/>
 <pin name="VCC_SPI" x="-35.56" y="-35.56" length="middle" direction="pwr"/>
 <pin name="VPP_2V5" x="-35.56" y="-27.94" length="middle" direction="pwr"/>
-<pin name="GNDPLL0" x="5.08" y="-27.94" length="middle" direction="pwr" rot="R180"/>
+<pin name="GNDPLL0" x="5.08" y="-20.32" length="middle" direction="pwr" rot="R180"/>
 <pin name="VCCPLL0" x="-35.56" y="-20.32" length="middle" direction="pwr"/>
 <pin name="VPP_FAST" x="-35.56" y="-30.48" length="middle" direction="pwr"/>
-<pin name="GNDPLL1" x="5.08" y="-30.48" length="middle" direction="pwr" rot="R180"/>
+<pin name="GNDPLL1" x="5.08" y="-22.86" length="middle" direction="pwr" rot="R180"/>
 <pin name="VCCPLL1" x="-35.56" y="-22.86" length="middle" direction="pwr"/>
 <pin name="VCC@1" x="-35.56" y="-5.08" length="middle" direction="pwr"/>
 <pin name="VCC@2" x="-35.56" y="-7.62" length="middle" direction="pwr"/>
@@ -5710,7 +5710,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="RT820T" prefix="U">
+<deviceset name="R820T" prefix="U">
 <gates>
 <gate name="G$1" symbol="R820T/2" x="0" y="0"/>
 </gates>
@@ -8111,9 +8111,9 @@ Viewing Area</text>
 <part name="GND719" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C712" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="C721" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
-<part name="R717" library="Resistor" deviceset="RESISTOR" device="-0603" value="600 Ohms"/>
+<part name="L701" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="GND727" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R720" library="Resistor" deviceset="RESISTOR" device="-0603" value="600 Ohms"/>
+<part name="L705" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="C724" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
 <part name="GND731" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R714" library="Resistor" deviceset="RESISTOR" device="-0603" value="4.7K Ohms"/>
@@ -8128,9 +8128,9 @@ Viewing Area</text>
 <part name="GND720" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C713" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="C722" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
-<part name="R718" library="Resistor" deviceset="RESISTOR" device="-0603" value="600 Ohms"/>
+<part name="L702" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="GND728" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R721" library="Resistor" deviceset="RESISTOR" device="-0603" value="600 Ohms"/>
+<part name="L706" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="C725" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
 <part name="GND732" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R715" library="Resistor" deviceset="RESISTOR" device="-0603" value="4.7K Ohms"/>
@@ -8138,9 +8138,9 @@ Viewing Area</text>
 <part name="C715" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="GND736" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C723" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
-<part name="R719" library="Resistor" deviceset="RESISTOR" device="-0603" value="3.57 Ohms"/>
+<part name="L703" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="GND729" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R722" library="Resistor" deviceset="RESISTOR" device="-0603" value="3.57 Ohms"/>
+<part name="L704" library="Inductor" deviceset="INDUCTOR" device="-0603" value="600 Ohms"/>
 <part name="C726" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="220pF"/>
 <part name="GND733" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C717" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="22nF"/>
@@ -8218,7 +8218,7 @@ Viewing Area</text>
 <part name="U402" library="Analog Devices" deviceset="LTC220*" device="" technology="6"/>
 <part name="C402" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND402" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U403" library="Rafael Micro" deviceset="RT820T" device="" technology="2"/>
+<part name="U403" library="Rafael Micro" deviceset="R820T" device="" technology="2"/>
 <part name="U201" library="Microchip" deviceset="ATSAM*" device="C" technology="S70Q21B-"/>
 <part name="FRAME901" library="Frame" deviceset="A2-LANDSCAPE" device="">
 <attribute name="CNAME" value=""/>
@@ -8396,7 +8396,7 @@ Viewing Area</text>
 <part name="GND612" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND611" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C606" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
-<part name="R603" library="Resistor" deviceset="RESISTOR" device="-0603" value="5.1K Ohm"/>
+<part name="R603" library="Resistor" deviceset="RESISTOR" device="-0603" value="5.1K Ohms"/>
 <part name="GND609" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U101" library="EFM32" deviceset="EFM32GG11B4*L112" device="" technology="20F2048G"/>
 <part name="U1007" library="Microchip" deviceset="MIC94305" device=""/>
@@ -10028,9 +10028,9 @@ Viewing Area</text>
 <instance part="TC201" gate="-7(RTCK)" x="515.62" y="58.42" smashed="yes">
 <attribute name="NAME" x="518.16" y="57.658" size="1.524" layer="95"/>
 </instance>
-<instance part="SJ201" gate="1" x="500.38" y="58.42" smashed="yes">
-<attribute name="NAME" x="497.84" y="60.96" size="1.778" layer="95"/>
-<attribute name="VALUE" x="497.84" y="54.61" size="1.778" layer="96"/>
+<instance part="SJ201" gate="1" x="497.84" y="58.42" smashed="yes">
+<attribute name="NAME" x="495.3" y="60.96" size="1.778" layer="95"/>
+<attribute name="VALUE" x="495.3" y="54.61" size="1.778" layer="96"/>
 </instance>
 <instance part="TP1" gate="G$1" x="243.84" y="317.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="245.11" y="318.77" size="1.778" layer="95" rot="R270"/>
@@ -10295,8 +10295,8 @@ Viewing Area</text>
 </net>
 <net name="DSP_SWCLK" class="0">
 <segment>
-<wire x1="513.08" y1="73.66" x2="487.68" y2="73.66" width="0.1524" layer="91"/>
-<label x="487.68" y="73.66" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="513.08" y1="73.66" x2="482.6" y2="73.66" width="0.1524" layer="91"/>
+<label x="482.6" y="73.66" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="TC201" gate="-4(TCK/SWCLK)" pin="S"/>
 </segment>
 <segment>
@@ -10319,8 +10319,8 @@ Viewing Area</text>
 </net>
 <net name="DSP_SWO" class="0">
 <segment>
-<wire x1="513.08" y1="68.58" x2="487.68" y2="68.58" width="0.1524" layer="91"/>
-<label x="487.68" y="68.58" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="513.08" y1="68.58" x2="482.6" y2="68.58" width="0.1524" layer="91"/>
+<label x="482.6" y="68.58" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="TC201" gate="-6(TDO/SWO)" pin="S"/>
 </segment>
 <segment>
@@ -10478,8 +10478,8 @@ Viewing Area</text>
 <pinref part="U201" gate=".PIOB" pin="PB12"/>
 </segment>
 <segment>
-<wire x1="495.3" y1="58.42" x2="487.68" y2="58.42" width="0.1524" layer="91"/>
-<label x="487.68" y="58.42" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="492.76" y1="58.42" x2="482.6" y2="58.42" width="0.1524" layer="91"/>
+<label x="482.6" y="58.42" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="SJ201" gate="1" pin="1"/>
 </segment>
 </net>
@@ -10590,7 +10590,7 @@ Viewing Area</text>
 </net>
 <net name="N$104" class="0">
 <segment>
-<wire x1="513.08" y1="58.42" x2="505.46" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="513.08" y1="58.42" x2="502.92" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="SJ201" gate="1" pin="2"/>
 <pinref part="TC201" gate="-7(RTCK)" pin="S"/>
 </segment>
@@ -11375,13 +11375,13 @@ Viewing Area</text>
 <wire x1="182.88" y1="281.94" x2="187.96" y2="281.94" width="0.1524" layer="91"/>
 <junction x="187.96" y="281.94"/>
 <pinref part="U301" gate=".PWRCTRL" pin="GNDPLL1"/>
-<wire x1="182.88" y1="325.12" x2="187.96" y2="325.12" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="325.12" x2="187.96" y2="312.42" width="0.1524" layer="91"/>
+<wire x1="182.88" y1="332.74" x2="187.96" y2="332.74" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="332.74" x2="187.96" y2="312.42" width="0.1524" layer="91"/>
 <junction x="187.96" y="312.42"/>
 <pinref part="U301" gate=".PWRCTRL" pin="GNDPLL0"/>
-<wire x1="182.88" y1="327.66" x2="187.96" y2="327.66" width="0.1524" layer="91"/>
-<wire x1="187.96" y1="327.66" x2="187.96" y2="325.12" width="0.1524" layer="91"/>
-<junction x="187.96" y="325.12"/>
+<wire x1="182.88" y1="335.28" x2="187.96" y2="335.28" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="335.28" x2="187.96" y2="332.74" width="0.1524" layer="91"/>
+<junction x="187.96" y="332.74"/>
 </segment>
 <segment>
 <pinref part="GND302" gate="G$1" pin="GND"/>
@@ -12375,8 +12375,8 @@ Viewing Area</text>
 <sheet>
 <description>RX Tumer + RX IF ADC</description>
 <plain>
-<text x="167.64" y="307.34" size="1.778" layer="97">TUNER_REFCLK_SEL = 1 &gt; 16 MHz (default)
-TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
+<text x="167.64" y="307.34" size="1.778" layer="97">RXTUNER_REFCLK_SEL = 1 &gt; 16 MHz (default)
+RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </plain>
 <instances>
 <instance part="FRAME401" gate="G$1" x="0" y="0" smashed="yes">
@@ -13684,6 +13684,10 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <sheet>
 <description>TX BB DAC + Upconverting Mixer</description>
 <plain>
+<text x="337.82" y="320.04" size="1.778" layer="97">5th order Butterworth LPF
+fc = 10 MHz</text>
+<text x="337.82" y="241.3" size="1.778" layer="97">5th order Butterworth LPF
+fc = 10 MHz</text>
 </plain>
 <instances>
 <instance part="U502" gate="G$1" x="256.54" y="294.64" smashed="yes">
@@ -15843,16 +15847,18 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="375.6914" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
 </instance>
-<instance part="R717" gate="G$1" x="355.6" y="187.96" smashed="yes">
-<attribute name="VALUE" x="355.6" y="185.1914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="355.6" y="190.7286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L701" gate="G$1" x="363.22" y="187.96" smashed="yes" rot="R180">
+<attribute name="NAME" x="367.03" y="186.0804" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="367.03" y="189.8396" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="367.03" y="192.3796" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="GND727" gate="G$1" x="378.46" y="165.1" smashed="yes">
 <attribute name="VALUE" x="375.666" y="160.02" size="1.778" layer="96"/>
 </instance>
-<instance part="R720" gate="G$1" x="368.3" y="198.12" smashed="yes">
-<attribute name="VALUE" x="368.3" y="195.3514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="368.3" y="200.8886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L705" gate="G$1" x="375.92" y="198.12" smashed="yes" rot="R180">
+<attribute name="NAME" x="379.73" y="196.2404" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="379.73" y="199.9996" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="379.73" y="202.5396" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="C724" gate="G$1" x="391.16" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -15905,16 +15911,18 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="375.6914" y="129.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="129.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
 </instance>
-<instance part="R718" gate="G$1" x="355.6" y="137.16" smashed="yes">
-<attribute name="VALUE" x="355.6" y="134.3914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="355.6" y="139.9286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L702" gate="G$1" x="363.22" y="137.16" smashed="yes" rot="R180">
+<attribute name="NAME" x="367.03" y="135.2804" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="367.03" y="139.0396" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="367.03" y="141.5796" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="GND728" gate="G$1" x="378.46" y="114.3" smashed="yes">
 <attribute name="VALUE" x="375.666" y="109.22" size="1.778" layer="96"/>
 </instance>
-<instance part="R721" gate="G$1" x="368.3" y="147.32" smashed="yes">
-<attribute name="VALUE" x="368.3" y="144.5514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="368.3" y="150.0886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L706" gate="G$1" x="375.92" y="147.32" smashed="yes" rot="R180">
+<attribute name="NAME" x="379.73" y="145.4404" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="379.73" y="149.1996" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="379.73" y="151.7396" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="C725" gate="G$1" x="391.16" y="129.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="129.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -15941,16 +15949,18 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="375.6914" y="66.04" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="66.04" size="1.778" layer="95" ratio="10" rot="SR270"/>
 </instance>
-<instance part="R719" gate="G$1" x="355.6" y="81.28" smashed="yes">
-<attribute name="VALUE" x="355.6" y="78.5114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="355.6" y="84.0486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L703" gate="G$1" x="363.22" y="81.28" smashed="yes" rot="R180">
+<attribute name="NAME" x="367.03" y="79.4004" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="367.03" y="83.1596" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="367.03" y="85.6996" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="GND729" gate="G$1" x="378.46" y="43.18" smashed="yes">
 <attribute name="VALUE" x="375.666" y="38.1" size="1.778" layer="96"/>
 </instance>
-<instance part="R722" gate="G$1" x="368.3" y="91.44" smashed="yes">
-<attribute name="VALUE" x="368.3" y="88.6714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="368.3" y="94.2086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<instance part="L704" gate="G$1" x="370.84" y="91.44" smashed="yes" rot="R180">
+<attribute name="NAME" x="374.65" y="89.5604" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="374.65" y="93.3196" size="1.778" layer="96" rot="R180" align="top-left"/>
+<attribute name="CURRENT" x="374.65" y="95.8596" size="1.778" layer="97" rot="R180" align="top-left"/>
 </instance>
 <instance part="C726" gate="G$1" x="391.16" y="66.04" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="66.04" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -16506,8 +16516,8 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <pinref part="C721" gate="G$1" pin="C1"/>
 <wire x1="378.46" y1="180.34" x2="378.46" y2="187.96" width="0.1524" layer="91"/>
-<pinref part="R717" gate="G$1" pin="1"/>
-<wire x1="368.3" y1="187.96" x2="378.46" y2="187.96" width="0.1524" layer="91"/>
+<pinref part="L701" gate="G$1" pin="1"/>
+<wire x1="370.84" y1="187.96" x2="378.46" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="J701" gate="G$1" pin="R"/>
 <wire x1="414.02" y1="190.5" x2="398.78" y2="190.5" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="190.5" x2="398.78" y2="187.96" width="0.1524" layer="91"/>
@@ -16518,7 +16528,7 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <net name="N$38" class="0">
 <segment>
 <pinref part="R710" gate="G$1" pin="2"/>
-<pinref part="R717" gate="G$1" pin="2"/>
+<pinref part="L701" gate="G$1" pin="2"/>
 <wire x1="332.74" y1="182.88" x2="332.74" y2="187.96" width="0.1524" layer="91"/>
 <wire x1="332.74" y1="187.96" x2="355.6" y2="187.96" width="0.1524" layer="91"/>
 <pinref part="C712" gate="G$1" pin="C2"/>
@@ -16533,9 +16543,9 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <pinref part="J701" gate="G$1" pin="T"/>
 <wire x1="414.02" y1="195.58" x2="398.78" y2="195.58" width="0.1524" layer="91"/>
 <pinref part="C724" gate="G$1" pin="C1"/>
-<pinref part="R720" gate="G$1" pin="1"/>
+<pinref part="L705" gate="G$1" pin="1"/>
 <wire x1="391.16" y1="180.34" x2="391.16" y2="198.12" width="0.1524" layer="91"/>
-<wire x1="391.16" y1="198.12" x2="381" y2="198.12" width="0.1524" layer="91"/>
+<wire x1="391.16" y1="198.12" x2="383.54" y2="198.12" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="198.12" x2="391.16" y2="198.12" width="0.1524" layer="91"/>
 <junction x="391.16" y="198.12"/>
 <wire x1="398.78" y1="195.58" x2="398.78" y2="198.12" width="0.1524" layer="91"/>
@@ -16547,7 +16557,7 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <pinref part="C714" gate="G$1" pin="C2"/>
 <wire x1="345.44" y1="182.88" x2="345.44" y2="198.12" width="0.1524" layer="91"/>
 <wire x1="345.44" y1="198.12" x2="322.58" y2="198.12" width="0.1524" layer="91"/>
-<pinref part="R720" gate="G$1" pin="2"/>
+<pinref part="L705" gate="G$1" pin="2"/>
 <wire x1="368.3" y1="198.12" x2="345.44" y2="198.12" width="0.1524" layer="91"/>
 <junction x="345.44" y="198.12"/>
 <pinref part="R713" gate="G$1" pin="1"/>
@@ -16558,8 +16568,8 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <pinref part="C722" gate="G$1" pin="C1"/>
 <wire x1="378.46" y1="129.54" x2="378.46" y2="137.16" width="0.1524" layer="91"/>
-<pinref part="R718" gate="G$1" pin="1"/>
-<wire x1="368.3" y1="137.16" x2="378.46" y2="137.16" width="0.1524" layer="91"/>
+<pinref part="L702" gate="G$1" pin="1"/>
+<wire x1="370.84" y1="137.16" x2="378.46" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="414.02" y1="139.7" x2="398.78" y2="139.7" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="139.7" x2="398.78" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="137.16" x2="378.46" y2="137.16" width="0.1524" layer="91"/>
@@ -16570,7 +16580,7 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <net name="N$42" class="0">
 <segment>
 <pinref part="R711" gate="G$1" pin="2"/>
-<pinref part="R718" gate="G$1" pin="2"/>
+<pinref part="L702" gate="G$1" pin="2"/>
 <wire x1="332.74" y1="132.08" x2="332.74" y2="137.16" width="0.1524" layer="91"/>
 <wire x1="332.74" y1="137.16" x2="355.6" y2="137.16" width="0.1524" layer="91"/>
 <pinref part="C713" gate="G$1" pin="C2"/>
@@ -16582,9 +16592,9 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <wire x1="414.02" y1="144.78" x2="398.78" y2="144.78" width="0.1524" layer="91"/>
 <pinref part="C725" gate="G$1" pin="C1"/>
-<pinref part="R721" gate="G$1" pin="1"/>
+<pinref part="L706" gate="G$1" pin="1"/>
 <wire x1="391.16" y1="129.54" x2="391.16" y2="147.32" width="0.1524" layer="91"/>
-<wire x1="391.16" y1="147.32" x2="381" y2="147.32" width="0.1524" layer="91"/>
+<wire x1="391.16" y1="147.32" x2="383.54" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="147.32" x2="391.16" y2="147.32" width="0.1524" layer="91"/>
 <junction x="391.16" y="147.32"/>
 <wire x1="398.78" y1="144.78" x2="398.78" y2="147.32" width="0.1524" layer="91"/>
@@ -16597,7 +16607,7 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <pinref part="C715" gate="G$1" pin="C2"/>
 <wire x1="345.44" y1="132.08" x2="345.44" y2="147.32" width="0.1524" layer="91"/>
 <wire x1="345.44" y1="147.32" x2="322.58" y2="147.32" width="0.1524" layer="91"/>
-<pinref part="R721" gate="G$1" pin="2"/>
+<pinref part="L706" gate="G$1" pin="2"/>
 <wire x1="368.3" y1="147.32" x2="345.44" y2="147.32" width="0.1524" layer="91"/>
 <junction x="345.44" y="147.32"/>
 </segment>
@@ -16613,8 +16623,8 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <pinref part="C723" gate="G$1" pin="C1"/>
 <wire x1="378.46" y1="66.04" x2="378.46" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="R719" gate="G$1" pin="1"/>
-<wire x1="368.3" y1="81.28" x2="378.46" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="L703" gate="G$1" pin="1"/>
+<wire x1="370.84" y1="81.28" x2="378.46" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="414.02" y1="83.82" x2="398.78" y2="83.82" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="83.82" x2="398.78" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="81.28" x2="378.46" y2="81.28" width="0.1524" layer="91"/>
@@ -16626,9 +16636,9 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <wire x1="414.02" y1="88.9" x2="398.78" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="C726" gate="G$1" pin="C1"/>
-<pinref part="R722" gate="G$1" pin="1"/>
+<pinref part="L704" gate="G$1" pin="1"/>
 <wire x1="391.16" y1="66.04" x2="391.16" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="391.16" y1="91.44" x2="381" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="391.16" y1="91.44" x2="378.46" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="398.78" y1="91.44" x2="391.16" y2="91.44" width="0.1524" layer="91"/>
 <junction x="391.16" y="91.44"/>
 <wire x1="398.78" y1="88.9" x2="398.78" y2="91.44" width="0.1524" layer="91"/>
@@ -16637,8 +16647,8 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </net>
 <net name="N$50" class="0">
 <segment>
-<pinref part="R722" gate="G$1" pin="2"/>
-<wire x1="368.3" y1="91.44" x2="345.44" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="L704" gate="G$1" pin="2"/>
+<wire x1="363.22" y1="91.44" x2="345.44" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="C717" gate="G$1" pin="C1"/>
 <wire x1="345.44" y1="73.66" x2="345.44" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="345.44" y1="91.44" x2="287.02" y2="91.44" width="0.1524" layer="91"/>
@@ -16675,7 +16685,7 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </net>
 <net name="N$54" class="0">
 <segment>
-<pinref part="R719" gate="G$1" pin="2"/>
+<pinref part="L703" gate="G$1" pin="2"/>
 <pinref part="C716" gate="G$1" pin="C1"/>
 <wire x1="330.2" y1="73.66" x2="330.2" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="330.2" y1="81.28" x2="355.6" y2="81.28" width="0.1524" layer="91"/>
@@ -17203,11 +17213,13 @@ TUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <sheet>
 <description>Clock generator</description>
 <plain>
-<text x="355.6" y="233.68" size="1.778" layer="97">FPGA_DDC_CLK = 49.152 MHz (for 48 kHz audio sample rate)
-FPGA_DDC_CLK = 45.1584 MHz (for 44.1 kHz audio sample rate)
-FPGA_GP_CLK1 = TBD MHz (general purpose clock)
-FPGA_GP_CLK2 = TBD MHz (general purpose clock)
-MCU_MAIN_CLK = TBD MHz (MCU main clock)</text>
+<text x="355.6" y="233.68" size="1.778" layer="97">FPGA_CLK1 = 49.152 MHz (for 48 kHz audio sample rate)
+FPGA_CLK1 = 45.1584 MHz (for 44.1 kHz audio sample rate)
+FPGA_CLK2 = TBD MHz (general purpose clock)
+FPGA_CLK3 = TBD MHz (general purpose clock)
+FPGA_CLK4 = TBD MHz (general purpose clock)
+SMC_MAIN_CLK = 50 MHz (SMC main clock)
+DSP_MAIN_CLK = 20 MHz (DSP main clock)</text>
 </plain>
 <instances>
 <instance part="FRAME901" gate="G$1" x="0" y="0" smashed="yes">

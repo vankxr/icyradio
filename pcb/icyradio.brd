@@ -8952,14 +8952,14 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="121.632" y="13.6536" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="119.6" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R717" library="Resistor" package="RES0603" value="600 Ohms" x="121.4" y="16.6" smashed="yes" rot="R90">
+<element name="L701" library="Inductor" package="IND0603" value="600 Ohms" x="121.4" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="121.4" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="120.6456" y="14.416" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="121.4" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="123.432" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
-<element name="R720" library="Resistor" package="RES0603" value="600 Ohms" x="128.6" y="16.6" smashed="yes" rot="R90">
+<element name="L705" library="Inductor" package="IND0603" value="600 Ohms" x="128.6" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="128.6" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="126.7456" y="14.416" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="128.6" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="130.632" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
 <element name="C724" library="Capacitor" package="CAP0603" value="220pF" x="130.4" y="16.6" smashed="yes" rot="R90">
@@ -9007,14 +9007,14 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="136.732" y="13.6536" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="134.7" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R718" library="Resistor" package="RES0603" value="600 Ohms" x="136.5" y="16.6" smashed="yes" rot="R90">
+<element name="L702" library="Inductor" package="IND0603" value="600 Ohms" x="136.5" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="136.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="137.984" y="15.0456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="136.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="138.532" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
-<element name="R721" library="Resistor" package="RES0603" value="600 Ohms" x="143.5" y="16.6" smashed="yes" rot="R90">
+<element name="L706" library="Inductor" package="IND0603" value="600 Ohms" x="143.5" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="143.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="141.984" y="15.0456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="143.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="145.532" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
 <element name="C725" library="Capacitor" package="CAP0603" value="220pF" x="145.3" y="16.6" smashed="yes" rot="R90">
@@ -9037,14 +9037,14 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="106.732" y="13.6536" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="104.7" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R719" library="Resistor" package="RES0603" value="3.57 Ohms" x="106.5" y="16.6" smashed="yes" rot="R90">
+<element name="L703" library="Inductor" package="IND0603" value="600 Ohms" x="106.5" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="106.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="108.084" y="15.0456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="106.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="108.532" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
-<element name="R722" library="Resistor" package="RES0603" value="3.57 Ohms" x="113.5" y="16.6" smashed="yes" rot="R90">
+<element name="L704" library="Inductor" package="IND0603" value="600 Ohms" x="113.5" y="16.6" smashed="yes" rot="R90">
+<attribute name="CURRENT" value="" x="113.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="NAME" x="111.984" y="15.0456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
-<attribute name="TOLERANCE" value="" x="113.5" y="16.6" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="115.532" y="13.1456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
 <element name="C726" library="Capacitor" package="CAP0603" value="220pF" x="115.3" y="16.6" smashed="yes" rot="R90">
@@ -9199,7 +9199,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="60.0464" y="22.532" size="0.8" layer="27" font="vector" ratio="10" rot="SR180" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="57.1" y="20.5" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="U403" library="Rafael Micro" package="QFN24" value="RT820T2" x="23.3" y="13.3" smashed="yes">
+<element name="U403" library="Rafael Micro" package="QFN24" value="R820T2" x="23.3" y="13.3" smashed="yes">
 <attribute name="NAME" x="25.5" y="16.481" size="0.8" layer="25" font="vector" ratio="10" rot="R180" align="center-left"/>
 </element>
 <element name="U201" library="Microchip" package="LFBGA144" value="ATSAMS70Q21B-C" x="92.9" y="50.4" smashed="yes">
@@ -9652,7 +9652,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="69.2464" y="89.032" size="0.8" layer="27" font="vector" ratio="10" rot="SR180" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="66.3" y="87" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="R603" library="Resistor" package="RES0603" value="5.1K Ohm" x="57.7" y="79.9" smashed="yes" rot="R90">
+<element name="R603" library="Resistor" package="RES0603" value="5.1K Ohms" x="57.7" y="79.9" smashed="yes" rot="R90">
 <attribute name="NAME" x="57.684" y="75.4456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="TOLERANCE" value="" x="57.7" y="79.9" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="59.732" y="76.4456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
@@ -10335,7 +10335,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="19.5" y="61.6" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="D301" library="LED" package="5050" value="RGBLED" x="61" y="70" smashed="yes" rot="R180">
-<attribute name="NAME" x="63.3" y="66.9" size="0.8" layer="25" font="vector" rot="R180" align="center-left"/>
+<attribute name="NAME" x="63.3" y="66.8" size="0.8" layer="25" font="vector" rot="R180" align="center-left"/>
 <attribute name="VALUE" x="63" y="74.1" size="1.27" layer="27" font="vector" rot="R180"/>
 </element>
 <element name="R302" library="Resistor" package="RES0603" value="330 Ohms" x="67.8" y="70" smashed="yes" rot="R180">
@@ -13605,13 +13605,14 @@ design rules under a new name.</description>
 <signal name="RXTUNER_TF2P">
 <contactref element="L402" pad="1"/>
 <contactref element="U403" pad="20"/>
-<wire x1="15.9" y1="15.95" x2="16.15" y2="15.7" width="0.321" layer="1" curve="90"/>
-<wire x1="15.9" y1="15.95" x2="15.9" y2="16.51915" width="0.321" layer="1"/>
-<wire x1="16.15" y1="15.7" x2="18.14034375" y2="15.7" width="0.321" layer="1"/>
+<wire x1="15.9" y1="16.45" x2="15.9" y2="16.51915" width="0.321" layer="1"/>
 <wire x1="18.84745" y1="15.40710625" x2="18.14034375" y2="15.7" width="0.321" layer="1" curve="45"/>
 <wire x1="21.3" y1="14.05" x2="20.61876875" y2="14.05" width="0.321" layer="1"/>
 <wire x1="20.61876875" y1="14.05" x2="19.9116625" y2="14.34289375" width="0.321" layer="1" curve="-45"/>
 <wire x1="19.9116625" y1="14.34289375" x2="18.84745" y2="15.40710625" width="0.321" layer="1"/>
+<wire x1="18.14034375" y1="15.7" x2="17.1333625" y2="15.7" width="0.321" layer="1"/>
+<wire x1="17.1333625" y1="15.7" x2="16.42625625" y2="15.99289375" width="0.321" layer="1" curve="-45"/>
+<wire x1="16.42625625" y1="15.99289375" x2="15.9" y2="16.51915" width="0.321" layer="1"/>
 </signal>
 <signal name="RXTUNER_TF1P">
 <contactref element="L402" pad="2"/>
@@ -14178,7 +14179,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="CODEC_MIC_R">
 <contactref element="C721" pad="1"/>
-<contactref element="R717" pad="1"/>
+<contactref element="L701" pad="1"/>
 <contactref element="J701" pad="3"/>
 <wire x1="119.6" y1="15.78085" x2="121.4" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="121.5" y1="4.8" x2="119.6" y2="6.7" width="0.6096" layer="1"/>
@@ -14186,7 +14187,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$38">
 <contactref element="R710" pad="2"/>
-<contactref element="R717" pad="2"/>
+<contactref element="L701" pad="2"/>
 <contactref element="C712" pad="2"/>
 <contactref element="R709" pad="1"/>
 <wire x1="119.6" y1="19.08085" x2="121.4" y2="19.08085" width="0.8128" layer="1"/>
@@ -14196,7 +14197,7 @@ design rules under a new name.</description>
 <signal name="CODEC_MIC_L">
 <contactref element="J701" pad="2"/>
 <contactref element="C724" pad="1"/>
-<contactref element="R720" pad="1"/>
+<contactref element="L705" pad="1"/>
 <wire x1="130.4" y1="15.78085" x2="128.6" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="128.5" y1="8.8" x2="128.6" y2="8.9" width="0.6096" layer="1"/>
 <wire x1="128.6" y1="8.9" x2="128.6" y2="15.78085" width="0.6096" layer="1"/>
@@ -14204,7 +14205,7 @@ design rules under a new name.</description>
 <signal name="N$39">
 <contactref element="R714" pad="2"/>
 <contactref element="C714" pad="2"/>
-<contactref element="R720" pad="2"/>
+<contactref element="L705" pad="2"/>
 <contactref element="R713" pad="1"/>
 <wire x1="126.8" y1="19.08085" x2="128.6" y2="19.08085" width="0.8128" layer="1"/>
 <wire x1="130.4" y1="19.08085" x2="128.6" y2="19.08085" width="0.8128" layer="1"/>
@@ -14212,7 +14213,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="CODEC_LINE_R">
 <contactref element="C722" pad="1"/>
-<contactref element="R718" pad="1"/>
+<contactref element="L702" pad="1"/>
 <contactref element="J702" pad="3"/>
 <wire x1="134.7" y1="15.78085" x2="136.5" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="136.5" y1="4.8" x2="134.7" y2="6.6" width="0.6096" layer="1"/>
@@ -14220,14 +14221,14 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$42">
 <contactref element="R711" pad="2"/>
-<contactref element="R718" pad="2"/>
+<contactref element="L702" pad="2"/>
 <contactref element="C713" pad="2"/>
 <wire x1="136.5" y1="17.41915" x2="136.5" y2="19.08085" width="0.8128" layer="1"/>
 <wire x1="134.7" y1="19.08085" x2="136.5" y2="19.08085" width="0.8128" layer="1"/>
 </signal>
 <signal name="CODEC_LINE_L">
 <contactref element="C725" pad="1"/>
-<contactref element="R721" pad="1"/>
+<contactref element="L706" pad="1"/>
 <contactref element="J702" pad="2"/>
 <wire x1="145.3" y1="15.78085" x2="143.5" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="143.5" y1="8.8" x2="143.5" y2="15.78085" width="0.6096" layer="1"/>
@@ -14235,7 +14236,7 @@ design rules under a new name.</description>
 <signal name="N$44">
 <contactref element="R715" pad="2"/>
 <contactref element="C715" pad="2"/>
-<contactref element="R721" pad="2"/>
+<contactref element="L706" pad="2"/>
 <wire x1="145.3" y1="19.08085" x2="143.5" y2="19.08085" width="0.8128" layer="1"/>
 <wire x1="143.5" y1="17.41915" x2="143.5" y2="19.08085" width="0.8128" layer="1"/>
 </signal>
@@ -14250,7 +14251,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="CODEC_HP_R">
 <contactref element="C723" pad="1"/>
-<contactref element="R719" pad="1"/>
+<contactref element="L703" pad="1"/>
 <contactref element="J703" pad="3"/>
 <wire x1="106.5" y1="15.78085" x2="104.7" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="106.5" y1="4.8" x2="104.7" y2="6.6" width="0.6096" layer="1"/>
@@ -14258,13 +14259,13 @@ design rules under a new name.</description>
 </signal>
 <signal name="CODEC_HP_L">
 <contactref element="C726" pad="1"/>
-<contactref element="R722" pad="1"/>
+<contactref element="L704" pad="1"/>
 <contactref element="J703" pad="2"/>
 <wire x1="115.3" y1="15.78085" x2="113.5" y2="15.78085" width="0.8128" layer="1"/>
 <wire x1="113.5" y1="8.8" x2="113.5" y2="15.78085" width="0.6096" layer="1"/>
 </signal>
 <signal name="N$50">
-<contactref element="R722" pad="2"/>
+<contactref element="L704" pad="2"/>
 <contactref element="C717" pad="1"/>
 <contactref element="U701" pad="32"/>
 <wire x1="123.6" y1="29.5" x2="123.6" y2="28.9" width="0.2" layer="1"/>
@@ -14298,7 +14299,7 @@ design rules under a new name.</description>
 <wire x1="106.7" y1="12.2" x2="106.7" y2="10.6" width="0.2" layer="1"/>
 </signal>
 <signal name="N$54">
-<contactref element="R719" pad="2"/>
+<contactref element="L703" pad="2"/>
 <contactref element="C716" pad="1"/>
 <contactref element="U701" pad="31"/>
 <wire x1="123.2" y1="29.5" x2="123.2" y2="29" width="0.2" layer="1"/>
