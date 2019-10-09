@@ -16,27 +16,27 @@ localparam OSZ = 16;   // Output word size
 localparam CICSZ = 36; // CIC output word size -> (see cic localparam OSZ)
 
 // Clock divider
-reg [4:0]   clkdiv;
-reg         cic_en;
+reg [4:0]   clk_div;
+reg         cic_out_clk;
 
 always @(posedge clk)
     begin
         if(reset)
             begin
-                clkdiv <= 5'b0;
-                cic_en <= 1'b0;
+                clk_div <= 5'b0;
+                cic_out_clk <= 1'b0;
             end
         else
             begin
-                if(clkdiv == 5'b11111) // Decimation ratio (32) - 1
+                if(clk_div == 5'b11111) // Decimation ratio (32) - 1
                     begin
-                        cic_en <= 1'b1;
-                        clkdiv <= 5'b0;
+                        cic_out_clk <= 1'b1;
+                        clk_div <= 5'b0;
                     end
                 else
                     begin
-                        cic_en <= 1'b0;
-                        clkdiv <= clkdiv + 1;
+                        cic_out_clk <= 1'b0;
+                        clk_div <= clk_div + 1;
                     end
             end
     end
@@ -76,7 +76,7 @@ cic_decimator cic_dec_i
 (
     .clk(clk),
     .reset(reset),
-    .out_clk(cic_en),
+    .out_clk(cic_out_clk),
     .in(tuner_i),
     .out(cic_i),
     .out_valid(cic_valid)
@@ -86,7 +86,7 @@ cic_decimator cic_dec_q
 (
     .clk(clk),
     .reset(reset),
-    .out_clk(cic_en),
+    .out_clk(cic_out_clk),
     .in(tuner_q),
     .out(cic_q),
     .out_valid()
