@@ -8325,8 +8325,8 @@ Viewing Area</text>
 <part name="C526" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="200pF"/>
 <part name="GND527" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="L506" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
-<part name="R509" library="Resistor" deviceset="RESISTOR" device="-0603" value="50 Ohms"/>
-<part name="R510" library="Resistor" deviceset="RESISTOR" device="-0603" value="50 Ohms"/>
+<part name="R509" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
+<part name="R510" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="GND521" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R515" library="Resistor" deviceset="RESISTOR" device="-0603" value="100 Ohms"/>
 <part name="L502" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
@@ -8342,8 +8342,8 @@ Viewing Area</text>
 <part name="C528" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="200pF"/>
 <part name="GND528" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="L508" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
-<part name="R511" library="Resistor" deviceset="RESISTOR" device="-0603" value="50 Ohms"/>
-<part name="R512" library="Resistor" deviceset="RESISTOR" device="-0603" value="50 Ohms"/>
+<part name="R511" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
+<part name="R512" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="GND522" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R516" library="Resistor" deviceset="RESISTOR" device="-0603" value="100 Ohms"/>
 <part name="L504" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
@@ -14123,6 +14123,11 @@ fc = 10 MHz</text>
 <junction x="360.68" y="294.64"/>
 <pinref part="R509" gate="G$1" pin="1"/>
 <pinref part="R510" gate="G$1" pin="2"/>
+<pinref part="U502" gate="G$1" pin="CMLI"/>
+<wire x1="261.62" y1="276.86" x2="342.9" y2="276.86" width="0.1524" layer="91"/>
+<wire x1="342.9" y1="276.86" x2="342.9" y2="294.64" width="0.1524" layer="91"/>
+<wire x1="342.9" y1="294.64" x2="350.52" y2="294.64" width="0.1524" layer="91"/>
+<junction x="350.52" y="294.64"/>
 </segment>
 <segment>
 <wire x1="383.54" y1="208.28" x2="383.54" y2="215.9" width="0.1524" layer="91"/>
@@ -14163,6 +14168,10 @@ fc = 10 MHz</text>
 <junction x="360.68" y="215.9"/>
 <pinref part="R511" gate="G$1" pin="1"/>
 <pinref part="R512" gate="G$1" pin="2"/>
+<pinref part="U502" gate="G$1" pin="CMLQ"/>
+<wire x1="261.62" y1="233.68" x2="350.52" y2="233.68" width="0.1524" layer="91"/>
+<wire x1="350.52" y1="233.68" x2="350.52" y2="215.9" width="0.1524" layer="91"/>
+<junction x="350.52" y="215.9"/>
 </segment>
 <segment>
 <pinref part="GND507" gate="G$1" pin="GND"/>
