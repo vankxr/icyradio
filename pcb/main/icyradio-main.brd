@@ -3,7 +3,7 @@
 <eagle version="9.5.1">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
@@ -8807,7 +8807,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="23.168" y="23.2544" size="0.8" layer="27" font="vector" ratio="10" rot="SR270" align="center-left"/>
 </element>
 <element name="C407" library="Capacitor" package="CAP0603" value="100nF" x="67.4" y="16.3" smashed="yes" rot="R270">
-<attribute name="NAME" x="68.416" y="19.2464" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
+<attribute name="NAME" x="67.416" y="14.3464" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VALUE" x="65.368" y="19.2464" size="0.8" layer="27" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="67.4" y="16.3" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
@@ -9841,7 +9841,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="20.7" y="85.2" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="R401" library="Resistor" package="RES0603" value="100K Ohms" x="65.6" y="16.3" smashed="yes" rot="R90">
-<attribute name="NAME" x="64.584" y="12.8456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
+<attribute name="NAME" x="65.616" y="14.3544" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="TOLERANCE" value="" x="65.6" y="16.3" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="67.632" y="12.8456" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
@@ -10141,7 +10141,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="71.6" y="90.7" size="1.778" layer="27" display="off"/>
 </element>
 <element name="C408" library="Capacitor" package="CAP0603" value="100nF" x="62.2" y="16.3" smashed="yes" rot="R270">
-<attribute name="NAME" x="63.216" y="19.2464" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
+<attribute name="NAME" x="62.216" y="14.3464" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VALUE" x="60.168" y="19.2464" size="0.8" layer="27" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="62.2" y="16.3" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
