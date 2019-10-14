@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!c_cpp_properties.json
+!launch.json
+!README.txt
+!tasks.json

@@ -80,7 +80,6 @@ void _reset_isr()
     __libc_init_array();
 
     SCB->VTOR = (uint32_t)&_svect; // ISR Vectors offset
-    SCB->
     SCB->AIRCR = 0x05FA0000 | (5 << 8); // Interrupt priority - 2 bits Group, 1 bit Sub-group
     SCB->SHCSR = SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk | SCB_SHCSR_MEMFAULTENA_Msk; // Enable separate fault handlers
     SCB->SCR |= SCB_SCR_SEVONPEND_Msk; // Pending disabled interrupt generates event
