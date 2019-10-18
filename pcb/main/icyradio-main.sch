@@ -8219,7 +8219,7 @@ Viewing Area</text>
 <part name="C402" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND402" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U403" library="Rafael Micro" deviceset="R820T" device="" technology="2"/>
-<part name="U201" library="Microchip" deviceset="ATSAM*" device="C" technology="S70Q21B-"/>
+<part name="U201" library="Microchip" deviceset="ATSAM*" device="C" technology="V71Q21B-" value="ATSAMV71Q21B-C"/>
 <part name="FRAME901" library="Frame" deviceset="A2-LANDSCAPE" device="">
 <attribute name="CNAME" value=""/>
 <attribute name="CREVISION" value=""/>
@@ -13685,9 +13685,15 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <description>TX BB DAC + Upconverting Mixer</description>
 <plain>
 <text x="337.82" y="320.04" size="1.778" layer="97">5th order Butterworth LPF
-fc = 10 MHz</text>
+-1dB at 8.87 MHz
+-3dB at 10 MHz
+-20dB at 15.83 MHz
+-40dB at 25.32 MHz</text>
 <text x="337.82" y="241.3" size="1.778" layer="97">5th order Butterworth LPF
-fc = 10 MHz</text>
+-1dB at 8.87 MHz
+-3dB at 10 MHz
+-20dB at 15.83 MHz
+-40dB at 25.32 MHz</text>
 </plain>
 <instances>
 <instance part="U502" gate="G$1" x="256.54" y="294.64" smashed="yes">

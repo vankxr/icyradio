@@ -1,0 +1,228 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:ev="http://www.w3.org/2001/xml-events"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    baseProfile="full"
+    version="1.1"
+    height="187"
+    width="420">
+
+<defs>
+    <symbol id="s_branch_voltage" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="22.5" />
+            <circle cx="0" cy="37.5" r="15" style="fill:none;" />
+            <line x1="0" y1="52.5" x2="0" y2="75" />
+            <line x1="0" y1="25.5" x2="0" y2="33.0" />
+            <line x1="-3.75" y1="29.25" x2="3.75" y2="29.25" />
+            <line x1="-3.75" y1="45.75" x2="3.75" y2="45.75" />
+        </g>
+    </symbol>
+    <symbol id="s_branch_current" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="22.5" />
+            <circle cx="0" cy="37.5" r="15" style="fill:none;" />
+            <line x1="0" y1="52.5" x2="0" y2="75" />
+
+            <line x1="0" y1="27.75" x2="0" y2="47.25" />
+            <line x1="0" y1="27.75" x2="-4.5" y2="33.0" />
+            <line x1="0" y1="27.75" x2="4.5" y2="33.0" />
+        </g>
+    </symbol>
+    <symbol id="r_branch_shunt" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="19.5" />
+            <line x1="0" y1="19.5" x2="8" y2="22.5" />
+            <line x1="8" y1="22.5" x2="-8" y2="28.5" />
+            <line x1="-8" y1="28.5" x2="8" y2="34.5" />
+            <line x1="8" y1="34.5" x2="-8" y2="40.5" />
+            <line x1="-8" y1="40.5" x2="8" y2="46.5" />
+            <line x1="8" y1="46.5" x2="-8" y2="52.5" />
+            <line x1="-8" y1="52.5" x2="0" y2="55.5" />
+            <line x1="0" y1="55.5" x2="0" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="r_branch_series_only" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="19.5" y2="0" />
+            <line x1="19.5" y1="0" x2="22.5" y2="-8" />
+            <line x1="22.5" y1="-8" x2="28.5" y2="8" />
+            <line x1="28.5" y1="8" x2="34.5" y2="-8" />
+            <line x1="34.5" y1="-8" x2="40.5" y2="8" />
+            <line x1="40.5" y1="8" x2="46.5" y2="-8" />
+            <line x1="46.5" y1="-8" x2="52.5" y2="8" />
+            <line x1="52.5" y1="8" x2="55.5" y2="0" />
+            <line x1="55.5" y1="0" x2="75" y2="0" />
+        </g>
+    </symbol>
+    <symbol id="r_branch_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#r_branch_series_only" x="0" y="0" />
+            <line x1="0" y1="75" x2="75" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="bare_branch_shunt" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="bare_branch_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="75" y2="0" />
+            <line x1="0" y1="75" x2="75" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="open_branch_shunt" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <circle cx="0" cy="0" r="2" style="fill:#000000;" />
+            <circle cx="0" cy="75" r="2" style="fill:#000000;" />
+        </g>
+    </symbol>
+    <symbol id="c_branch_shunt" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="34.5" />
+            <line x1="-10.0" y1="34.5" x2="10.0" y2="34.5" />
+            <line x1="-10.0" y1="40.5" x2="10.0" y2="40.5" />
+            <line x1="0" y1="40.5" x2="0" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="c_branch_shunt_half" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="15.75" />
+            <line x1="-10.0" y1="15.75" x2="10.0" y2="15.75" />
+            <line x1="-10.0" y1="21.75" x2="10.0" y2="21.75" />
+            <line x1="0" y1="21.75" x2="0" y2="37.5" />
+        </g>
+    </symbol>
+    <symbol id="c_branch_series_only" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="34.5" y2="0" />
+            <line x1="34.5" y1="-10.0" x2="34.5" y2="10.0" />
+            <line x1="40.5" y1="-10.0" x2="40.5" y2="10.0" />
+            <line x1="40.5" y1="0" x2="75" y2="0" />
+        </g>
+    </symbol>
+    <symbol id="c_branch_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#c_branch_series_only" x="0" y="0" />
+            <line x1="0" y1="75" x2="75" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="l_branch_shunt" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="19.5" />
+            <path d="M0,19.5 c10,0 10,12 0,12 c10,0 10,12 0,12 c10,0 10,12 0,12" style="fill:none;" />
+            <line x1="0" y1="55.5" x2="0" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="l_branch_shunt_half" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="0" y2="0.75" />
+            <path d="M0,0.75 c10,0 10,12 0,12 c10,0 10,12 0,12 c10,0 10,12 0,12" style="fill:none;" />
+            <line x1="0" y1="36.75" x2="0" y2="37.5" />
+        </g>
+    </symbol>
+    <symbol id="l_branch_series_only" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="19.5" y2="0" />
+            <path d="M19.5,0 c0,-10 12,-10 12,0 c0,-10 12,-10 12,0 c0,-10 12,-10 12,0" style="fill:none;" />
+            <line x1="55.5" y1="0" x2="75" y2="0" />
+        </g>
+    </symbol>
+    <symbol id="l_branch_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#l_branch_series_only" x="0" y="0" />
+            <line x1="0" y1="75" x2="75" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="lc_branch_shunt_parallel" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#c_branch_shunt" x="0" y="0" />
+            <use xlink:href="#bare_branch_series" x="0" y="0" />
+            <use xlink:href="#l_branch_shunt" x="75" y="0" />
+        </g>
+    </symbol>
+    <symbol id="lc_branch_shunt_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#c_branch_shunt_half" x="0" y="0" />
+            <use xlink:href="#l_branch_shunt_half" x="0" y="37.5" />
+        </g>
+    </symbol>
+    <symbol id="lc_branch_series_parallel" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <line x1="0" y1="0" x2="37.5" y2="0" />
+            <line x1="37.5" y1="-27.5" x2="37.5" y2="27.5" />
+            <use xlink:href="#c_branch_series_only" x="37.5" y="27.5" />
+            <use xlink:href="#l_branch_series_only" x="37.5" y="-27.5" />
+            <line x1="112.5" y1="0" x2="150" y2="0" />
+            <line x1="112.5" y1="-27.5" x2="112.5" y2="27.5" />
+            <line x1="0" y1="75" x2="150" y2="75" />
+        </g>
+    </symbol>
+    <symbol id="lc_branch_series_series" style="overflow:visible">
+        <g style="stroke:rgb(0,0,0); stroke-width:1; shape-rendering:crispEdges">
+            <use xlink:href="#c_branch_series" x="0" y="0" />
+            <use xlink:href="#l_branch_series" x="75" y="0" />
+        </g>
+    </symbol>
+</defs>
+
+<rect width="100%" height="100%" fill="white"/>
+
+
+    
+        <use xlink:href="#s_branch_voltage" x="20" y="92" />
+    
+        <use xlink:href="#r_branch_series" x="20" y="92" />
+    
+        <use xlink:href="#c_branch_shunt" x="95" y="92" />
+    
+        <use xlink:href="#l_branch_series" x="95" y="92" />
+    
+        <use xlink:href="#c_branch_shunt" x="170" y="92" />
+    
+        <use xlink:href="#l_branch_series" x="170" y="92" />
+    
+        <use xlink:href="#c_branch_shunt" x="245" y="92" />
+    
+        <use xlink:href="#bare_branch_series" x="245" y="92" />
+    
+        <use xlink:href="#r_branch_shunt" x="320" y="92" />
+    
+    
+        <text x="57.5" y="64" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">RS</text>
+    
+        <text x="57.5" y="78" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">50.00 Ω</text>
+    
+        <text x="108.0" y="126.5" style = "font-size:12px; font-family:Helvetica">C1</text>
+    
+        <text x="108.0" y="140.5" style = "font-size:12px; font-family:Helvetica">200.0 pF</text>
+    
+        <text x="132.5" y="62" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">L2</text>
+    
+        <text x="132.5" y="76" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">1.300 uH</text>
+    
+        <text x="183.0" y="126.5" style = "font-size:12px; font-family:Helvetica">C3</text>
+    
+        <text x="183.0" y="140.5" style = "font-size:12px; font-family:Helvetica">620.0 pF</text>
+    
+        <text x="207.5" y="62" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">L4</text>
+    
+        <text x="207.5" y="76" style = "font-size:12px; font-family:Helvetica; text-anchor:middle">1.300 uH</text>
+    
+        <text x="258.0" y="126.5" style = "font-size:12px; font-family:Helvetica">C5</text>
+    
+        <text x="258.0" y="140.5" style = "font-size:12px; font-family:Helvetica">200.0 pF</text>
+    
+        <text x="331" y="126.5" style = "font-size:12px; font-family:Helvetica">RL</text>
+    
+        <text x="331" y="140.5" style = "font-size:12px; font-family:Helvetica">50.00 Ω</text>
+    
+        <text x="7" y="184" style = "font-size:12px; font-family:Helvetica">rf-tools.com  |  Oct 16, 2019</text>
+    
+    <text x="7" y="16" style = "font-size:16px; font-family:Helvetica">5th Order Butterworth Lowpass</text>
+    <text x="7" y="32" style = "font-size:12px; font-family:Helvetica">Cutoff Frequency = 10.000 MHz</text>
+    <text x="7" y="47" style = "font-size:12px; font-family:Helvetica"></text>
+
+
+</svg>

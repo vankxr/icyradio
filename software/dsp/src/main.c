@@ -61,7 +61,7 @@ int init()
 
     systick_init(); // Init system tick
 
-    DBGPRINTLN_CTX("Icy Radio DSP v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
+    DBGPRINTLN_CTX("IcyRadio DSP v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
     /*
     DBGPRINTLN_CTX("Device: %s", szDeviceName);
     DBGPRINTLN_CTX("Device Revision: 0x%04X", get_device_revision());
