@@ -271,6 +271,10 @@ int main()
             fprintf(out, "// Padding\n");
             fprintf(out, "0000\n");
         }
+        else
+        {
+            fprintf(out, "0000\n");
+        }
     }
 
     fclose(out);
