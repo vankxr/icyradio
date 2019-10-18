@@ -262,14 +262,15 @@ int main()
 
     for(int i = 0; i < 256; i++)
     {
-        int16_t x = 0;
-
         if(i < SAMPLEFILTER_TAP_NUM)
+        {
             fprintf(out, "%04hX\n", filter_taps[i]);
+        }
         else if(i == SAMPLEFILTER_TAP_NUM)
+        {
             fprintf(out, "// Padding\n");
-
-        fprintf(out, "0000\n");
+            fprintf(out, "0000\n");
+        }
     }
 
     fclose(out);
