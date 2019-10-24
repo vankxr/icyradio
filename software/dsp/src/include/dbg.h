@@ -2,6 +2,7 @@
 #define __DBG_H__
 
 #include <sam.h>
+#include "pmc.h"
 #include "utils.h"
 
 #define DEBUG_ENABLED() !!(CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk)

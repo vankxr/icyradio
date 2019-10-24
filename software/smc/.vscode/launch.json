@@ -7,7 +7,7 @@
         {
             "name": "Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "./bin/v1.gateway.elf",
+            "executable": "./bin/v1.icyradio-smc.elf",
             "request": "launch",
             "type": "cortex-debug",
             "preLaunchTask": "Build",

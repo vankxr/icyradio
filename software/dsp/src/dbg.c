@@ -7,7 +7,12 @@ void _putchar(char ch)
 
 void dbg_init()
 {
-    
+    PMC->PMC_PCK[3] = (0 << PMC_PCK_PRES_Pos) | PMC_PCK_CSS_MCK; // Select debug clock = MCK / (0 + 1)
+    PMC->PMC_SCER = PMC_SCER_PCK3; // Enable debug clock
+
+    while(!(PMC->PMC_SR & PMC_SR_PCKRDY3)); // Wait for it to be enabled
+
+    pmc_update_clocks();
 }
 void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 {
@@ -17,7 +22,7 @@ void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
     TPI->FFCR = 0x00000100;
     DWT->CTRL = 0x400003FE;
     ITM->LAR = 0xC5ACCE55;
-    ITM->TCR = (1 << ITM_TCR_TraceBusID_Pos) | ITM_TCR_ITMENA_Msk;
+    ITM->TCR = (1 << ITM_TCR_TraceBusID_Pos) | ITM_TCR_SWOENA_Msk | ITM_TCR_ITMENA_Msk;
     ITM->TPR = ulChannelMask;
     ITM->TER = ulChannelMask;
 }

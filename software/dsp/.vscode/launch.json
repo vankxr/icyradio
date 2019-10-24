@@ -7,24 +7,34 @@
         {
             "name": "Debug",
             "cwd": "${workspaceRoot}",
-            "executable": "./bin/v1.icyradio.elf",
+            "executable": "./bin/v1.icyradio-dsp.elf",
             "request": "launch",
             "type": "cortex-debug",
             "preLaunchTask": "Build",
-            "servertype": "jlink",
-            "device": "ATSAME70N21B",
-            "svdFile": "${env:ARM_LIBROOT}/Atmel.SAME70_DFP.2.4.166/same70b/svd/ATSAME70N21B.svd",
+            "servertype": "openocd",
+            "configFiles": [
+                "${workspaceRoot}/.vscode/openocd-scripts/target.cfg"
+            ],
+            "device": "ATSAMV71N21B",
+            "svdFile": "${env:ARM_LIBROOT}/Atmel.SAMV71_DFP.2.4.182/samv71b/svd/ATSAMV71N21B.svd",
             "interface": "swd",
             "swoConfig": {
                 "enabled": true,
-                "swoFrequency": 2000000,
-                "cpuFrequency": 32000000,
-                "source": "probe",
+                "swoFrequency": 3000000,
+                "cpuFrequency": 12000000,
+                "source": "/dev/ttyUSB0",
                 "decoders": [
                     {
                         "port": 0,
                         "label": "Console",
-                        "type": "console",
+                        "type": "console"
+                    },
+                    {
+                        "port": 1,
+                        "graphId": "Test graph",
+                        "scale": 1,
+                        "encoding": "signed",
+                        "type": "graph"
                     }
                 ]
             }

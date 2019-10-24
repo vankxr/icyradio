@@ -10,7 +10,7 @@
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/8.3.1",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/8.3.1/backward",
                 "${env:ARM_LIBROOT}/ARM.CMSIS.5.5.1/CMSIS/Include",
-                "${env:ARM_LIBROOT}/Atmel.SAME70_DFP.2.4.166/same70b/include"
+                "${env:ARM_LIBROOT}/Atmel.SAMV71_DFP.2.4.182/samv71b/include"
             ],
             "defines": [
                 "__ACCUM_EPSILON__=0x1P-15K",
@@ -447,7 +447,7 @@
                 "MAINXO_VALUE=8000000UL",
                 "SLOWXO_VALUE=32768UL",
                 "BUILD_VERSION",
-                "__SAME70N21B__"
+                "__SAMV71N21B__"
             ],
             "compilerPath": "/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16",
             "cStandard": "c99",
