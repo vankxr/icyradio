@@ -57,7 +57,7 @@ uint32_t get_free_ram()
 int init()
 {
     dbg_init(); // Init Debug module
-    dbg_swo_config(BIT(0) | BIT(1), 3000000); // Init SWO channels 0 and 1 at 2 MHz
+    dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 2 MHz
 
     systick_init(); // Init system tick
 

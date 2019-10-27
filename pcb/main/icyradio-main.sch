@@ -17234,7 +17234,7 @@ FPGA_CLK2 = TBD MHz (general purpose clock)
 FPGA_CLK3 = TBD MHz (general purpose clock)
 FPGA_CLK4 = TBD MHz (general purpose clock)
 SMC_MAIN_CLK = 50 MHz (SMC main clock)
-DSP_MAIN_CLK = 20 MHz (DSP main clock)</text>
+DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </plain>
 <instances>
 <instance part="FRAME901" gate="G$1" x="0" y="0" smashed="yes">

@@ -2,6 +2,7 @@
 #define __PMC_H__
 
 #include <sam.h>
+#include "utils.h"
 
 extern uint32_t MAINRCO_VALUE;
 extern uint32_t SLOWRCO_VALUE;

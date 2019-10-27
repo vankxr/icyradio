@@ -20,7 +20,7 @@
             "interface": "swd",
             "swoConfig": {
                 "enabled": true,
-                "swoFrequency": 3000000,
+                "swoFrequency": 12000000,
                 "cpuFrequency": 12000000,
                 "source": "/dev/ttyUSB0",
                 "decoders": [
