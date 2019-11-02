@@ -13,10 +13,11 @@ extern uint32_t PLLACK_CLOCK_FREQ;
 extern uint32_t UPLLCK_CLOCK_FREQ;
 extern uint32_t MCK_CLOCK_FREQ;
 extern uint32_t HCLK_CLOCK_FREQ;
-extern uint32_t PCK_CLOCK_FREQ[8];
-extern uint32_t I2SC_GCLK_CLOCK_FREQ[2];
 
 void pmc_init();
 void pmc_update_clocks();
+
+uint32_t pmc_get_pck_clock_freq(uint8_t ubID);
+uint32_t pmc_get_generic_clock_freq(uint8_t ubPeripheralID);
 
 #endif  // __PMC_H__

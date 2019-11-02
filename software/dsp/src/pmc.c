@@ -9,8 +9,6 @@ uint32_t PLLACK_CLOCK_FREQ;
 uint32_t UPLLCK_CLOCK_FREQ;
 uint32_t MCK_CLOCK_FREQ;
 uint32_t HCLK_CLOCK_FREQ;
-uint32_t PCK_CLOCK_FREQ[8];
-uint32_t I2SC_GCLK_CLOCK_FREQ[2];
 
 void pmc_init()
 {
@@ -75,12 +73,12 @@ void pmc_update_clocks()
     float fPLLAMul = (PMC->CKGR_PLLAR & CKGR_PLLAR_MULA_Msk) >> CKGR_PLLAR_MULA_Pos;
 
     if(fPLLADiv == 0 || fPLLAMul == 0)
-        PLLACK_CLOCK_FREQ = 0UL;
+        PLLACK_CLOCK_FREQ = 0;
     else
         PLLACK_CLOCK_FREQ = ((float)MAINCK_CLOCK_FREQ / fPLLADiv) * (fPLLAMul - 1);
 
     if(!(PMC->CKGR_UCKR & CKGR_UCKR_UPLLEN))
-        UPLLCK_CLOCK_FREQ = 0UL;
+        UPLLCK_CLOCK_FREQ = 0;
     else
         UPLLCK_CLOCK_FREQ = 480000000UL;
 
@@ -142,68 +140,69 @@ void pmc_update_clocks()
             MCK_CLOCK_FREQ /= 3;
         break;
     }
+}
 
-    for(uint8_t i = 0; i < 8; i++)
+uint32_t pmc_get_pck_clock_freq(uint8_t ubID)
+{
+    if(ubID > 7)
+        return 0;
+
+    if(!(PMC->PMC_SR & BIT(ubID + 8)))
+        return 0;
+
+    uint32_t ulFreq = 0;
+
+    switch(PMC->PMC_PCK[ubID] & PMC_PCK_CSS_Msk)
     {
-        if(!(PMC->PMC_SR & BIT(i + 8)))
-        {
-            PCK_CLOCK_FREQ[i] = 0UL;
-
-            continue;
-        }
-
-        switch(PMC->PMC_PCK[i] & PMC_PCK_CSS_Msk)
-        {
-            case PMC_PCK_CSS_SLOW_CLK:
-                PCK_CLOCK_FREQ[i] = SLCK_CLOCK_FREQ;
-            break;
-            case PMC_PCK_CSS_MAIN_CLK:
-                PCK_CLOCK_FREQ[i] = MAINCK_CLOCK_FREQ;
-            break;
-            case PMC_PCK_CSS_UPLL_CLK:
-                PCK_CLOCK_FREQ[i] = UPLLCK_CLOCK_FREQ >> !!(PMC->PMC_MCKR & PMC_MCKR_UPLLDIV2);
-            break;
-            case PMC_PCK_CSS_PLLA_CLK:
-                PCK_CLOCK_FREQ[i] = PLLACK_CLOCK_FREQ;
-            break;
-            case PMC_PCK_CSS_MCK:
-                PCK_CLOCK_FREQ[i] = MCK_CLOCK_FREQ;
-            break;
-        }
-
-        PCK_CLOCK_FREQ[i] /= ((PMC->PMC_PCK[i] & PMC_PCK_PRES_Msk) >> PMC_PCK_PRES_Pos) + 1;
+        case PMC_PCK_CSS_SLOW_CLK:
+            ulFreq = SLCK_CLOCK_FREQ;
+        break;
+        case PMC_PCK_CSS_MAIN_CLK:
+            ulFreq = MAINCK_CLOCK_FREQ;
+        break;
+        case PMC_PCK_CSS_UPLL_CLK:
+            ulFreq = UPLLCK_CLOCK_FREQ >> !!(PMC->PMC_MCKR & PMC_MCKR_UPLLDIV2);
+        break;
+        case PMC_PCK_CSS_PLLA_CLK:
+            ulFreq = PLLACK_CLOCK_FREQ;
+        break;
+        case PMC_PCK_CSS_MCK:
+            ulFreq = MCK_CLOCK_FREQ;
+        break;
     }
 
-    for(uint8_t i = 0; i < 2; i++)
+    return ulFreq / (((PMC->PMC_PCK[ubID] & PMC_PCK_PRES_Msk) >> PMC_PCK_PRES_Pos) + 1);
+}
+uint32_t pmc_get_generic_clock_freq(uint8_t ubPeripheralID)
+{
+    if(ubPeripheralID > 127)
+        return 0;
+
+    PMC->PMC_PCR = (ubPeripheralID << PMC_PCR_PID_Pos);
+
+    if(!(PMC->PMC_PCR & PMC_PCR_GCLKEN))
+        return 0;
+
+    uint32_t ulFreq = 0;
+
+    switch(PMC->PMC_PCR & PMC_PCR_GCLKCSS_Msk)
     {
-        PMC->PMC_PCR = ((69 + i) << PMC_PCR_PID_Pos);
-
-        if(!(PMC->PMC_PCR & PMC_PCR_GCLKEN))
-        {
-            I2SC_GCLK_CLOCK_FREQ[i] = 0UL;
-
-            continue;
-        }
-
-        switch(PMC->PMC_PCR & PMC_PCR_GCLKCSS_Msk)
-        {
-            case PMC_PCR_GCLKCSS_SLOW_CLK:
-                I2SC_GCLK_CLOCK_FREQ[i] = SLCK_CLOCK_FREQ;
-            break;
-            case PMC_PCR_GCLKCSS_MAIN_CLK:
-                I2SC_GCLK_CLOCK_FREQ[i] = MAINCK_CLOCK_FREQ;
-            break;
-            case PMC_PCR_GCLKCSS_PLLA_CLK:
-                I2SC_GCLK_CLOCK_FREQ[i] = UPLLCK_CLOCK_FREQ >> !!(PMC->PMC_MCKR & PMC_MCKR_UPLLDIV2);
-            break;
-            case PMC_PCR_GCLKCSS_UPLL_CLK:
-                I2SC_GCLK_CLOCK_FREQ[i] = PLLACK_CLOCK_FREQ;
-            break;
-            case PMC_PCR_GCLKCSS_MCK_CLK:
-                I2SC_GCLK_CLOCK_FREQ[i] = MCK_CLOCK_FREQ;
-            break;
-        }
-
-        I2SC_GCLK_CLOCK_FREQ[i] /= ((PMC->PMC_PCR & PMC_PCR_GCLKDIV_Msk) >> PMC_PCR_GCLKDIV_Pos) + 1;
+        case PMC_PCR_GCLKCSS_SLOW_CLK:
+            ulFreq = SLCK_CLOCK_FREQ;
+        break;
+        case PMC_PCR_GCLKCSS_MAIN_CLK:
+            ulFreq = MAINCK_CLOCK_FREQ;
+        break;
+        case PMC_PCR_GCLKCSS_PLLA_CLK:
+            ulFreq = UPLLCK_CLOCK_FREQ >> !!(PMC->PMC_MCKR & PMC_MCKR_UPLLDIV2);
+        break;
+        case PMC_PCR_GCLKCSS_UPLL_CLK:
+            ulFreq = PLLACK_CLOCK_FREQ;
+        break;
+        case PMC_PCR_GCLKCSS_MCK_CLK:
+            ulFreq = MCK_CLOCK_FREQ;
+        break;
     }
+
+    return ulFreq / (((PMC->PMC_PCR & PMC_PCR_GCLKDIV_Msk) >> PMC_PCR_GCLKDIV_Pos) + 1);
 }

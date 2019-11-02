@@ -11,7 +11,7 @@
 #define DROM0_DATA __attribute__ ((section(".drom0.data")))
 
 #define ITCM_CODE   IRAM0_TEXT
-#define QSPI_CODE   IROM1_TEXT
+#define QSPI_CODE   IROM2_TEXT
 #define DTCM_DATA   DRAM0_DATA
 #define SDRAM_DATA  DRAM2_DATA
 #define QSPI_DATA   DROM0_DATA

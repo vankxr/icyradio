@@ -11,14 +11,12 @@ void dbg_init()
     PMC->PMC_SCER = PMC_SCER_PCK3; // Enable debug clock
 
     while(!(PMC->PMC_SR & PMC_SR_PCKRDY3)); // Wait for it to be enabled
-
-    pmc_update_clocks();
 }
 void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 {
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
     TPI->SPPR = 2 << TPI_SPPR_TXMODE_Pos;
-    TPI->ACPR = (12000000 / ulFrequency) - 1;
+    TPI->ACPR = (pmc_get_pck_clock_freq(3) / ulFrequency) - 1;
     TPI->FFCR = 0x00000100;
     DWT->CTRL = 0x400003FE;
     ITM->LAR = 0xC5ACCE55;

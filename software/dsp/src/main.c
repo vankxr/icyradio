@@ -3,8 +3,11 @@
 #include <math.h>
 #include "debug_macros.h"
 #include "utils.h"
+#include "cache.h"
 #include "nvic.h"
 #include "atomic.h"
+#include "pmc.h"
+#include "eefc.h"
 #include "systick.h"
 #include "dbg.h"
 
@@ -17,6 +20,7 @@ static void sleep();
 static uint32_t get_free_ram();
 
 // Variables
+static uint32_t ulUniqueID[4];
 
 // ISRs
 
@@ -56,20 +60,27 @@ uint32_t get_free_ram()
 
 int init()
 {
+    icache_enable();
+    //dcache_enable(); TODO: data cache management
+
+    eefc_init(); // Init flash controller
+
     dbg_init(); // Init Debug module
     dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 2 MHz
 
     systick_init(); // Init system tick
 
+    eefc_get_unique_id(ulUniqueID);
+
     DBGPRINTLN_CTX("IcyRadio DSP v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
     /*
     DBGPRINTLN_CTX("Device: %s", szDeviceName);
     DBGPRINTLN_CTX("Device Revision: 0x%04X", get_device_revision());
-    DBGPRINTLN_CTX("Flash Size: %hu kB", FLASH_SIZE >> 10);
-    DBGPRINTLN_CTX("RAM Size: %hu kB", SRAM_SIZE >> 10);
-    DBGPRINTLN_CTX("Free RAM: %lu B", get_free_ram());
-    DBGPRINTLN_CTX("Unique ID: %08X-%08X", DEVINFO->UNIQUEH, DEVINFO->UNIQUEL);
     */
+    DBGPRINTLN_CTX("Flash Size: %hu kB", eefc_get_flash_size() >> 10);
+    DBGPRINTLN_CTX("RAM Size: %hu kB", 0 >> 10);
+    DBGPRINTLN_CTX("Free RAM: %lu B", get_free_ram());
+    DBGPRINTLN_CTX("Unique ID: %08X-%08X-%08X-%08X", ulUniqueID[0], ulUniqueID[1], ulUniqueID[2], ulUniqueID[3]);
 
     delay_ms(100);
 
