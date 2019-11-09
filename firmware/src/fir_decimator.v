@@ -12,7 +12,7 @@ localparam ISZ = 16;   // Input word size
 localparam OSZ = 16;   // Output word size
 localparam PSZ = 8;    // Pointer size
 localparam CSZ = 16;   // Coefficient data word size
-localparam CLEN = 249; // Coefficient data size
+localparam CLEN = 32;  // Coefficient data size
 localparam AGRW = 3;   // Accumulator growth
 
 // Write address generator
@@ -111,7 +111,7 @@ always @(posedge clk)
     end
 
 // Input buffer memory
-reg signed [ISZ - 1:0] buf_mem [0:511];
+reg signed [ISZ - 1:0] buf_mem [0:63];
 reg signed [ISZ - 1:0] r_data;
 
 always @(posedge clk)
@@ -123,7 +123,7 @@ always @(posedge clk)
     end
 
 // Coefficient ROM
-reg signed [CSZ - 1:0] coeff_rom [0:255];
+reg signed [CSZ - 1:0] coeff_rom [0:31];
 reg signed [CSZ - 1:0] c_data;
 
 initial
