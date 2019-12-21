@@ -22,7 +22,7 @@
                 "enabled": true,
                 "swoFrequency": 12000000,
                 "cpuFrequency": 12000000,
-                "source": "/dev/ttyUSB0",
+                "source": "/dev/ttyUSB1",
                 "decoders": [
                     {
                         "port": 0,

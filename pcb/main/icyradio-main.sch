@@ -8018,9 +8018,7 @@ Viewing Area</text>
 <part name="C415" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND420" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U401" library="Microchip" deviceset="DSC121*" device="" technology="1DE3-C0017"/>
-<part name="X401" library="Crystal" deviceset="CRYSTAL_4P" device="" value="DNP">
-<attribute name="OCLCSC" value="C70562"/>
-</part>
+<part name="X401" library="Crystal" deviceset="CRYSTAL_4P" device="" value="DNP"/>
 <part name="C412" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="DNP"/>
 <part name="C410" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="DNP"/>
 <part name="GND416" library="Supply Symbol" deviceset="GND" device=""/>
@@ -8235,9 +8233,7 @@ Viewing Area</text>
 <part name="R901" library="Resistor" deviceset="RESISTOR" device="-0603" value="100K Ohms"/>
 <part name="GND902" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND911" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="X901" library="Crystal" deviceset="CRYSTAL_4P" device="" value="DNP">
-<attribute name="OCLCSC" value="C70562"/>
-</part>
+<part name="X901" library="Crystal" deviceset="CRYSTAL_4P" device="" value="DNP"/>
 <part name="C906" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="DNP"/>
 <part name="C903" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="DNP"/>
 <part name="GND909" library="Supply Symbol" deviceset="GND" device=""/>
@@ -12549,7 +12545,6 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="X401" gate="G$1" x="228.6" y="279.4" smashed="yes">
 <attribute name="NAME" x="233.68" y="280.416" size="1.778" layer="95"/>
 <attribute name="VALUE" x="233.68" y="276.86" size="1.778" layer="96"/>
-<attribute name="OCLCSC" x="228.6" y="279.4" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C412" gate="G$1" x="241.3" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="238.5314" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -17282,7 +17277,6 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="X901" gate="G$1" x="279.4" y="165.1" smashed="yes">
 <attribute name="NAME" x="284.48" y="166.116" size="1.778" layer="95"/>
 <attribute name="VALUE" x="284.48" y="162.56" size="1.778" layer="96"/>
-<attribute name="OCLCSC" x="279.4" y="165.1" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C906" gate="G$1" x="292.1" y="154.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="289.3314" y="154.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>

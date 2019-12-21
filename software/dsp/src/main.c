@@ -66,11 +66,11 @@ int init()
     eefc_init(); // Init flash controller
 
     dbg_init(); // Init Debug module
-    dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 2 MHz
+    dbg_swo_config(BIT(0) | BIT(1), 1200000); // Init SWO channels 0 and 1 at 2 MHz
 
     systick_init(); // Init system tick
 
-    eefc_get_unique_id(ulUniqueID);
+    //eefc_get_unique_id(ulUniqueID);
 
     DBGPRINTLN_CTX("IcyRadio DSP v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
     /*
