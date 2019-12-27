@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.1">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1528,10 +1528,10 @@
 <symbol name="CAP">
 <pin name="C2" x="7.62" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
 <pin name="C1" x="0" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
-<wire x1="3.4798" y1="-1.905" x2="3.4798" y2="0" width="0.2032" layer="94"/>
-<wire x1="3.4798" y1="0" x2="3.4798" y2="1.905" width="0.2032" layer="94"/>
-<wire x1="4.1148" y1="-1.905" x2="4.1148" y2="0" width="0.2032" layer="94"/>
-<wire x1="4.1148" y1="0" x2="4.1148" y2="1.905" width="0.2032" layer="94"/>
+<wire x1="3.4798" y1="-1.905" x2="3.4798" y2="0" width="0.1524" layer="94"/>
+<wire x1="3.4798" y1="0" x2="3.4798" y2="1.905" width="0.1524" layer="94"/>
+<wire x1="4.1148" y1="-1.905" x2="4.1148" y2="0" width="0.1524" layer="94"/>
+<wire x1="4.1148" y1="0" x2="4.1148" y2="1.905" width="0.1524" layer="94"/>
 <wire x1="4.1148" y1="0" x2="5.08" y2="0" width="0.1524" layer="94"/>
 <wire x1="2.54" y1="0" x2="3.4798" y2="0" width="0.1524" layer="94"/>
 <text x="0" y="-2.7686" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left">&gt;VALUE</text>
@@ -1767,6 +1767,25 @@
 <wire x1="1.59" y1="-0.8" x2="1.59" y2="0.9" width="0.127" layer="21"/>
 <text x="-2" y="-1.4" size="0.6096" layer="25" rot="R90">&gt;NAME</text>
 </package>
+<package name="IND1365">
+<smd name="1" x="-6.375" y="0" dx="4" dy="5.5" layer="1"/>
+<smd name="2" x="6.375" y="0" dx="4" dy="5.5" layer="1"/>
+<text x="-5.08" y="7.35" size="1.27" layer="25">&gt;NAME</text>
+<wire x1="-3.9" y1="6.35" x2="3.9" y2="6.35" width="0.127" layer="51"/>
+<wire x1="3.9" y1="6.35" x2="6.9" y2="3.35" width="0.127" layer="51" curve="-90"/>
+<wire x1="6.9" y1="3.35" x2="6.9" y2="-3.35" width="0.127" layer="51"/>
+<wire x1="6.9" y1="-3.35" x2="3.9" y2="-6.35" width="0.127" layer="51" curve="-90"/>
+<wire x1="3.9" y1="-6.35" x2="-3.9" y2="-6.35" width="0.127" layer="51"/>
+<wire x1="-3.9" y1="-6.35" x2="-6.9" y2="-3.35" width="0.127" layer="51" curve="-90"/>
+<wire x1="-6.9" y1="-3.35" x2="-6.9" y2="3.35" width="0.127" layer="51"/>
+<wire x1="-6.9" y1="3.35" x2="-3.9" y2="6.35" width="0.127" layer="51" curve="-90"/>
+<wire x1="-6.9" y1="3.4" x2="-3.95" y2="6.35" width="0.127" layer="21" curve="-90"/>
+<wire x1="-3.95" y1="6.35" x2="3.95" y2="6.35" width="0.127" layer="21"/>
+<wire x1="3.95" y1="6.35" x2="6.9" y2="3.4" width="0.127" layer="21" curve="-90"/>
+<wire x1="-6.9" y1="-3.4" x2="-3.95" y2="-6.35" width="0.127" layer="21" curve="90"/>
+<wire x1="-3.95" y1="-6.35" x2="3.95" y2="-6.35" width="0.127" layer="21"/>
+<wire x1="3.95" y1="-6.35" x2="6.9" y2="-3.4" width="0.127" layer="21" curve="90"/>
+</package>
 </packages>
 <symbols>
 <symbol name="IND">
@@ -1894,6 +1913,17 @@
 </technologies>
 </device>
 <device name="-3.2XX2.5MM" package="IND3225">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="CURRENT" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-13X13X6.5MM" package="IND1365">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
@@ -3009,13 +3039,13 @@ Package for LCSC connector C319148</description>
 <symbol name="RES">
 <pin name="2" x="0" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
 <pin name="1" x="12.7" y="0" visible="off" length="short" direction="pas" rot="R180"/>
-<wire x1="3.175" y1="1.27" x2="4.445" y2="-1.27" width="0.2032" layer="94"/>
-<wire x1="4.445" y1="-1.27" x2="5.715" y2="1.27" width="0.2032" layer="94"/>
-<wire x1="5.715" y1="1.27" x2="6.985" y2="-1.27" width="0.2032" layer="94"/>
-<wire x1="6.985" y1="-1.27" x2="8.255" y2="1.27" width="0.2032" layer="94"/>
-<wire x1="8.255" y1="1.27" x2="9.525" y2="-1.27" width="0.2032" layer="94"/>
-<wire x1="2.54" y1="0" x2="3.175" y2="1.27" width="0.2032" layer="94"/>
-<wire x1="9.525" y1="-1.27" x2="10.16" y2="0" width="0.2032" layer="94"/>
+<wire x1="3.175" y1="1.27" x2="4.445" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="4.445" y1="-1.27" x2="5.715" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="5.715" y1="1.27" x2="6.985" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="6.985" y1="-1.27" x2="8.255" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="8.255" y1="1.27" x2="9.525" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="0" x2="3.175" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="9.525" y1="-1.27" x2="10.16" y2="0" width="0.1524" layer="94"/>
 <text x="0" y="-2.7686" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left">&gt;VALUE</text>
 <text x="0" y="2.7686" size="1.778" layer="95" ratio="10" rot="SR0">&gt;NAME</text>
 <text x="0" y="-5.3086" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left">&gt;TOLERANCE</text>
@@ -3116,20 +3146,20 @@ Package for LCSC connector C319148</description>
 </packages>
 <symbols>
 <symbol name="DUAL-DIODE">
-<wire x1="-3.81" y1="-1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="0" x2="-3.81" y2="1.27" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="-3.81" y1="1.27" x2="-3.81" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-3.81" y1="-1.27" x2="-1.27" y2="0" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-3.81" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="0" width="0.1524" layer="94"/>
+<wire x1="-3.81" y1="1.27" x2="-3.81" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="0" x2="-1.27" y2="-1.27" width="0.1524" layer="94"/>
 <text x="-5.08" y="-2.54" size="1.778" layer="95" align="top-left">&gt;NAME</text>
 <text x="-5.08" y="-5.08" size="1.778" layer="96" align="top-left">&gt;VALUE</text>
 <pin name="A" x="-5.08" y="0" visible="off" length="short" direction="pas"/>
 <pin name="MID" x="0" y="2.54" visible="off" length="short" direction="pas" rot="R270"/>
-<wire x1="1.27" y1="-1.27" x2="3.81" y2="0" width="0.254" layer="94"/>
-<wire x1="3.81" y1="0" x2="1.27" y2="1.27" width="0.254" layer="94"/>
-<wire x1="3.81" y1="1.27" x2="3.81" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="1.27" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
-<wire x1="3.81" y1="0" x2="3.81" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-1.27" x2="3.81" y2="0" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="0" x2="1.27" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="1.27" x2="3.81" y2="0" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="0" x2="3.81" y2="-1.27" width="0.1524" layer="94"/>
 <pin name="C" x="5.08" y="0" visible="off" length="short" direction="pas" rot="R180"/>
 <wire x1="-2.54" y1="0" x2="2.54" y2="0" width="0.1524" layer="94"/>
 <circle x="0" y="0" radius="0.381" width="0" layer="94"/>
@@ -4546,6 +4576,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-5.08" y1="0" x2="-5.08" y2="2.54" width="0.1524" layer="94"/>
 <text x="8.636" y="4.445" size="1.778" layer="95">&gt;NAME</text>
 <text x="8.636" y="1.651" size="1.778" layer="96">&gt;VALUE</text>
+<circle x="0" y="0" radius="0.381" width="0" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -4826,35 +4857,38 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </packages>
 <symbols>
 <symbol name="PTC">
-<wire x1="2.54" y1="0.889" x2="-2.54" y2="0.889" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-0.889" x2="2.54" y2="-0.889" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="0.889" x2="-2.54" y2="-0.889" width="0.254" layer="94"/>
-<wire x1="2.54" y1="0.889" x2="2.54" y2="-0.889" width="0.254" layer="94"/>
-<wire x1="1.27" y1="1.778" x2="-1.27" y2="-1.778" width="0.1524" layer="94"/>
-<wire x1="-1.27" y1="-1.778" x2="-2.286" y2="-1.778" width="0.1524" layer="94"/>
-<wire x1="2.54" y1="2.54" x2="2.54" y2="1.27" width="0.1524" layer="94"/>
-<wire x1="3.302" y1="2.54" x2="3.302" y2="1.27" width="0.1524" layer="94"/>
-<wire x1="-1.0668" y1="2.1336" x2="-0.762" y2="2.159" width="0.1524" layer="94" curve="-143.401004"/>
-<wire x1="-0.762" y1="2.159" x2="-0.635" y2="1.651" width="0.1524" layer="94" curve="16.281888"/>
-<wire x1="-0.635" y1="1.651" x2="-0.0508" y2="1.5494" width="0.1524" layer="94" curve="135.668554"/>
-<wire x1="-0.0508" y1="1.5494" x2="-0.127" y2="2.921" width="0.1524" layer="94" curve="65.705733"/>
-<wire x1="-0.127" y1="2.921" x2="-0.381" y2="2.794" width="0.1524" layer="94" curve="139.383116"/>
-<wire x1="-0.381" y1="2.794" x2="0.381" y2="2.286" width="0.1524" layer="94" curve="100.176187"/>
-<text x="-3.81" y="3.81" size="1.778" layer="95">&gt;NAME</text>
-<text x="-3.81" y="-3.81" size="1.778" layer="97" align="top-left">&gt;HOLD</text>
-<pin name="2" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
-<pin name="1" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<wire x1="6.096" y1="3.556" x2="6.096" y2="2.286" width="0.1524" layer="94"/>
+<wire x1="6.858" y1="3.556" x2="6.858" y2="2.286" width="0.1524" layer="94"/>
+<wire x1="3.5052" y1="2.8956" x2="3.81" y2="2.921" width="0.1524" layer="94" curve="-143.401004"/>
+<wire x1="3.81" y1="2.921" x2="3.937" y2="2.413" width="0.1524" layer="94" curve="16.281888"/>
+<wire x1="3.937" y1="2.413" x2="4.5212" y2="2.3114" width="0.1524" layer="94" curve="135.668554"/>
+<wire x1="4.5212" y1="2.3114" x2="4.445" y2="3.683" width="0.1524" layer="94" curve="65.705733"/>
+<wire x1="4.445" y1="3.683" x2="4.191" y2="3.556" width="0.1524" layer="94" curve="139.383116"/>
+<wire x1="4.191" y1="3.556" x2="4.953" y2="3.048" width="0.1524" layer="94" curve="100.176187"/>
+<text x="0" y="-4.064" size="1.778" layer="97" align="top-left">&gt;HOLD</text>
+<pin name="2" x="0" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
+<pin name="1" x="12.7" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
 <polygon width="0.1524" layer="94">
-<vertex x="2.54" y="2.54"/>
-<vertex x="2.794" y="1.778"/>
-<vertex x="2.286" y="1.778"/>
+<vertex x="6.096" y="3.556"/>
+<vertex x="6.35" y="2.794"/>
+<vertex x="5.842" y="2.794"/>
 </polygon>
 <polygon width="0.1524" layer="94">
-<vertex x="3.302" y="2.54"/>
-<vertex x="3.556" y="1.778"/>
-<vertex x="3.048" y="1.778"/>
+<vertex x="6.858" y="3.556"/>
+<vertex x="7.112" y="2.794"/>
+<vertex x="6.604" y="2.794"/>
 </polygon>
-<text x="-3.81" y="-6.35" size="1.778" layer="97" align="top-left">&gt;TRIP</text>
+<text x="0" y="-6.604" size="1.778" layer="97" align="top-left">&gt;TRIP</text>
+<wire x1="3.175" y1="1.27" x2="4.445" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="4.445" y1="-1.27" x2="5.715" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="5.715" y1="1.27" x2="6.985" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="6.985" y1="-1.27" x2="8.255" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="8.255" y1="1.27" x2="9.525" y2="-1.27" width="0.1524" layer="94"/>
+<wire x1="2.54" y1="0" x2="3.175" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="9.525" y1="-1.27" x2="10.16" y2="0" width="0.1524" layer="94"/>
+<text x="0" y="4.8006" size="1.778" layer="95" ratio="10" rot="SR0">&gt;NAME</text>
+<wire x1="2.54" y1="-2.54" x2="3.81" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="-2.54" x2="8.89" y2="2.54" width="0.1524" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -5996,8 +6030,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-33.02" y1="0" x2="-33.02" y2="-180.34" width="0.254" layer="94"/>
 <wire x1="-33.02" y1="-180.34" x2="0" y2="-180.34" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-180.34" width="0.254" layer="94"/>
-<text x="-33.02" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-33.02" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PA3" x="-38.1" y="-10.16" length="middle"/>
 <pin name="PA4" x="-38.1" y="-12.7" length="middle"/>
 <pin name="PA5" x="-38.1" y="-15.24" length="middle"/>
@@ -6116,6 +6148,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="VSS@8" x="5.08" y="-175.26" length="middle" rot="R180"/>
 <pin name="VSS@9" x="5.08" y="-177.8" length="middle" rot="R180"/>
 <pin name="AVDD@2" x="-38.1" y="-154.94" length="middle"/>
+<text x="-33.02" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-33.02" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -6417,423 +6451,410 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <package name="FPC-50P-TFT-BOT">
 <description>&lt;b&gt;Flexible Printed Circuit &amp; Flexible Flat Cable ZIF Connectors&lt;/b&gt; 0.5 mm Pitch, 2.55 mm above the board&lt;p&gt;
 Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
-<wire x1="57.969" y1="13.615" x2="62.419" y2="13.615" width="0.1016" layer="52"/>
-<wire x1="62.419" y1="42.965" x2="57.969" y2="42.965" width="0.1016" layer="52"/>
-<wire x1="57.969" y1="42.965" x2="57.969" y2="13.615" width="0.1016" layer="52"/>
-<wire x1="62.419" y1="42.965" x2="62.419" y2="13.615" width="0.1016" layer="52"/>
-<wire x1="62.419" y1="42.965" x2="61.344" y2="42.965" width="0.1016" layer="22"/>
-<wire x1="62.419" y1="42.965" x2="62.419" y2="13.615" width="0.1016" layer="22"/>
-<wire x1="62.419" y1="13.615" x2="61.319" y2="13.615" width="0.1016" layer="22"/>
-<wire x1="57.969" y1="41.14" x2="57.969" y2="40.79" width="0.1016" layer="22"/>
-<wire x1="57.969" y1="15.79" x2="57.969" y2="15.44" width="0.1016" layer="22"/>
-<wire x1="0" y1="0" x2="84.96" y2="0" width="0.127" layer="21"/>
-<wire x1="1.69" y1="1.81" x2="79.83" y2="1.81" width="0.127" layer="51"/>
-<wire x1="2.96" y1="2.99" x2="72.08" y2="2.99" width="0.127" layer="51"/>
-<wire x1="3.76" y1="3.79" x2="69.68" y2="3.79" width="0.127" layer="51"/>
-<wire x1="0" y1="56.54" x2="84.96" y2="56.54" width="0.127" layer="21"/>
-<wire x1="0" y1="0" x2="0" y2="56.515" width="0.127" layer="21"/>
-<wire x1="1.69" y1="55.57" x2="79.83" y2="55.57" width="0.127" layer="51"/>
-<wire x1="2.96" y1="54.37" x2="72.08" y2="54.37" width="0.127" layer="51"/>
-<wire x1="3.76" y1="53.58" x2="69.68" y2="53.58" width="0.127" layer="51"/>
-<wire x1="1.69" y1="1.81" x2="1.69" y2="55.57" width="0.127" layer="51"/>
-<wire x1="2.96" y1="54.37" x2="2.96" y2="2.99" width="0.127" layer="51"/>
-<wire x1="2.96" y1="2.99" x2="3" y2="3" width="0.127" layer="51"/>
-<wire x1="3.76" y1="3.79" x2="3.76" y2="53.58" width="0.127" layer="51"/>
-<wire x1="69.68" y1="53.58" x2="69.68" y2="3.79" width="0.127" layer="51"/>
-<wire x1="72.08" y1="2.99" x2="72.08" y2="54.37" width="0.127" layer="51"/>
-<wire x1="79.83" y1="55.57" x2="79.83" y2="1.81" width="0.127" layer="51"/>
-<wire x1="84.96" y1="0" x2="84.96" y2="56.54" width="0.127" layer="21"/>
-<wire x1="59" y1="41.03" x2="59" y2="15.53" width="0.127" layer="52"/>
-<wire x1="70.7" y1="55.73" x2="81.11" y2="55.73" width="0.127" layer="52"/>
-<wire x1="59" y1="41.03" x2="70.7" y2="41.03" width="0.127" layer="52"/>
-<wire x1="81.11" y1="42.03" x2="84.96" y2="42.03" width="0.127" layer="52"/>
-<wire x1="59" y1="15.53" x2="62.5" y2="15.53" width="0.127" layer="52"/>
-<wire x1="62.5" y1="15.53" x2="70.7" y2="15.53" width="0.127" layer="52"/>
-<wire x1="81.11" y1="16.53" x2="84.96" y2="16.53" width="0.127" layer="52"/>
-<wire x1="70.7" y1="7.83" x2="81.11" y2="7.83" width="0.127" layer="52"/>
-<wire x1="70.7" y1="7.83" x2="70.7" y2="15.53" width="0.127" layer="52"/>
-<wire x1="70.7" y1="55.73" x2="70.7" y2="41.03" width="0.127" layer="52"/>
-<wire x1="81.11" y1="7.83" x2="81.11" y2="16.53" width="0.127" layer="52"/>
-<wire x1="81.11" y1="55.73" x2="81.11" y2="42.03" width="0.127" layer="52"/>
-<wire x1="62.5" y1="41" x2="62.5" y2="15.53" width="0.127" layer="52"/>
-<wire x1="3.812" y1="28.6055" x2="69.712" y2="28.6055" width="0.127" layer="51"/>
-<wire x1="36.782" y1="53.528" x2="36.782" y2="3.838" width="0.127" layer="51"/>
-<wire x1="3.832" y1="3.748" x2="69.682" y2="53.498" width="0.127" layer="51"/>
-<wire x1="3.782" y1="53.548" x2="69.682" y2="3.748" width="0.127" layer="51"/>
-<wire x1="85.09" y1="53.84" x2="85.09" y2="7.08" width="2" layer="49"/>
-<rectangle x1="57.194" y1="39.865" x2="57.544" y2="41.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="39.365" x2="57.544" y2="40.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="38.865" x2="57.544" y2="40.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="38.365" x2="57.544" y2="39.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="37.865" x2="57.544" y2="39.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="37.365" x2="57.544" y2="38.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="36.865" x2="57.544" y2="38.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="36.365" x2="57.544" y2="37.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="35.865" x2="57.544" y2="37.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="35.365" x2="57.544" y2="36.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="34.865" x2="57.544" y2="36.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="34.365" x2="57.544" y2="35.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="33.865" x2="57.544" y2="35.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="33.365" x2="57.544" y2="34.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="32.865" x2="57.544" y2="34.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="32.365" x2="57.544" y2="33.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="31.865" x2="57.544" y2="33.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="31.365" x2="57.544" y2="32.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="30.865" x2="57.544" y2="32.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="30.365" x2="57.544" y2="31.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="29.865" x2="57.544" y2="31.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="29.365" x2="57.544" y2="30.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="28.865" x2="57.544" y2="30.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="28.365" x2="57.544" y2="29.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="27.865" x2="57.544" y2="29.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="27.365" x2="57.544" y2="28.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="26.865" x2="57.544" y2="28.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="26.365" x2="57.544" y2="27.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="25.865" x2="57.544" y2="27.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="25.365" x2="57.544" y2="26.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="24.865" x2="57.544" y2="26.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="24.365" x2="57.544" y2="25.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="23.865" x2="57.544" y2="25.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="23.365" x2="57.544" y2="24.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="22.865" x2="57.544" y2="24.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="22.365" x2="57.544" y2="23.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="21.865" x2="57.544" y2="23.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="21.365" x2="57.544" y2="22.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="20.865" x2="57.544" y2="22.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="20.365" x2="57.544" y2="21.715" layer="30" rot="R270"/>
-<rectangle x1="57.219" y1="15.94" x2="57.919" y2="16.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="16.44" x2="57.919" y2="16.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="16.94" x2="57.919" y2="17.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="17.44" x2="57.919" y2="17.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="17.94" x2="57.919" y2="18.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="18.44" x2="57.919" y2="18.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="18.94" x2="57.919" y2="19.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="19.44" x2="57.919" y2="19.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="19.94" x2="57.919" y2="20.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="20.44" x2="57.919" y2="20.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="20.94" x2="57.919" y2="21.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="21.44" x2="57.919" y2="21.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="21.94" x2="57.919" y2="22.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="22.44" x2="57.919" y2="22.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="22.94" x2="57.919" y2="23.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="23.44" x2="57.919" y2="23.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="23.94" x2="57.919" y2="24.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="24.44" x2="57.919" y2="24.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="24.94" x2="57.919" y2="25.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="25.44" x2="57.919" y2="25.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="25.94" x2="57.919" y2="26.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="26.44" x2="57.919" y2="26.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="26.94" x2="57.919" y2="27.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="27.44" x2="57.919" y2="27.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="27.94" x2="57.919" y2="28.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="28.44" x2="57.919" y2="28.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="28.94" x2="57.919" y2="29.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="29.44" x2="57.919" y2="29.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="29.94" x2="57.919" y2="30.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="30.44" x2="57.919" y2="30.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="30.94" x2="57.919" y2="31.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="31.44" x2="57.919" y2="31.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="31.94" x2="57.919" y2="32.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="32.44" x2="57.919" y2="32.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="32.94" x2="57.919" y2="33.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="33.44" x2="57.919" y2="33.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="33.94" x2="57.919" y2="34.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="34.44" x2="57.919" y2="34.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="34.94" x2="57.919" y2="35.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="35.44" x2="57.919" y2="35.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="35.94" x2="57.919" y2="36.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="36.44" x2="57.919" y2="36.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="36.94" x2="57.919" y2="37.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="37.44" x2="57.919" y2="37.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="37.94" x2="57.919" y2="38.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="38.44" x2="57.919" y2="38.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="38.94" x2="57.919" y2="39.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="39.44" x2="57.919" y2="39.64" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="39.94" x2="57.919" y2="40.14" layer="52" rot="R180"/>
-<rectangle x1="57.219" y1="40.44" x2="57.919" y2="40.64" layer="52" rot="R180"/>
-<rectangle x1="57.194" y1="19.865" x2="57.544" y2="21.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="19.365" x2="57.544" y2="20.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="18.865" x2="57.544" y2="20.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="18.365" x2="57.544" y2="19.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="17.865" x2="57.544" y2="19.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="17.365" x2="57.544" y2="18.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="16.865" x2="57.544" y2="18.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="16.365" x2="57.544" y2="17.715" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="15.865" x2="57.544" y2="17.215" layer="30" rot="R270"/>
-<rectangle x1="57.194" y1="15.365" x2="57.544" y2="16.715" layer="30" rot="R270"/>
-<smd name="1" x="57.369" y="40.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="2" x="57.369" y="40.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="3" x="57.369" y="39.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="4" x="57.369" y="39.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="5" x="57.369" y="38.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="6" x="57.369" y="38.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="7" x="57.369" y="37.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="8" x="57.369" y="37.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="9" x="57.369" y="36.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="10" x="57.369" y="36.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="11" x="57.369" y="35.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="12" x="57.369" y="35.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="13" x="57.369" y="34.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="14" x="57.369" y="34.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="15" x="57.369" y="33.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="16" x="57.369" y="33.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="17" x="57.369" y="32.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="18" x="57.369" y="32.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="19" x="57.369" y="31.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="20" x="57.369" y="31.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="21" x="57.369" y="30.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="22" x="57.369" y="30.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="23" x="57.369" y="29.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="24" x="57.369" y="29.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="25" x="57.369" y="28.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="26" x="57.369" y="28.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="27" x="57.369" y="27.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="28" x="57.369" y="27.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="29" x="57.369" y="26.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="30" x="57.369" y="26.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="31" x="57.369" y="25.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="32" x="57.369" y="25.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="33" x="57.369" y="24.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="34" x="57.369" y="24.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="35" x="57.369" y="23.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="36" x="57.369" y="23.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="37" x="57.369" y="22.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="38" x="57.369" y="22.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="39" x="57.369" y="21.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="40" x="57.369" y="21.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="41" x="57.369" y="20.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="42" x="57.369" y="20.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="43" x="57.369" y="19.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="44" x="57.369" y="19.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="45" x="57.369" y="18.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="46" x="57.369" y="18.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="47" x="57.369" y="17.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="48" x="57.369" y="17.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="49" x="57.369" y="16.54" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="50" x="57.369" y="16.04" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
-<smd name="M1" x="59.394" y="14.25" dx="2.5" dy="3.6" layer="16" rot="R90"/>
-<smd name="M2" x="59.394" y="42.33" dx="2.5" dy="3.6" layer="16" rot="R90"/>
-<text x="63.869" y="42.79" size="0.8" layer="26" font="vector" ratio="15" rot="MR270">&gt;NAME</text>
-<text x="20" y="28" size="3" layer="51" font="fixed" ratio="10" rot="R90" align="center">3.5"
-
-320x480 dots
-
-Viewing Area</text>
-<hole x="0.475" y="56.065" drill="1"/>
-<hole x="0.475" y="0.475" drill="1"/>
-<hole x="84.485" y="56.065" drill="1"/>
-<rectangle x1="62.419" y1="15.53" x2="70.7" y2="41.03" layer="40"/>
+<wire x1="17.489" y1="-14.655" x2="21.939" y2="-14.655" width="0.1016" layer="52"/>
+<wire x1="21.939" y1="14.695" x2="17.489" y2="14.695" width="0.1016" layer="52"/>
+<wire x1="17.489" y1="14.695" x2="17.489" y2="-14.655" width="0.1016" layer="52"/>
+<wire x1="21.939" y1="14.695" x2="21.939" y2="-14.655" width="0.1016" layer="52"/>
+<wire x1="21.939" y1="14.695" x2="20.864" y2="14.695" width="0.1016" layer="22"/>
+<wire x1="21.939" y1="14.695" x2="21.939" y2="-14.655" width="0.1016" layer="22"/>
+<wire x1="21.939" y1="-14.655" x2="20.839" y2="-14.655" width="0.1016" layer="22"/>
+<wire x1="17.489" y1="12.87" x2="17.489" y2="12.52" width="0.1016" layer="22"/>
+<wire x1="17.489" y1="-12.48" x2="17.489" y2="-12.83" width="0.1016" layer="22"/>
+<wire x1="-40.48" y1="-28.27" x2="44.48" y2="-28.27" width="0.127" layer="21"/>
+<wire x1="-40.48" y1="28.27" x2="44.48" y2="28.27" width="0.127" layer="21"/>
+<wire x1="-40.48" y1="-28.27" x2="-40.48" y2="28.27" width="0.127" layer="21"/>
+<wire x1="44.48" y1="-28.27" x2="44.48" y2="28.27" width="0.127" layer="21"/>
+<wire x1="18.52" y1="12.76" x2="18.52" y2="-12.74" width="0.127" layer="52"/>
+<wire x1="30.22" y1="27.46" x2="40.63" y2="27.46" width="0.127" layer="52"/>
+<wire x1="18.52" y1="12.76" x2="30.22" y2="12.76" width="0.127" layer="52"/>
+<wire x1="40.63" y1="13.76" x2="44.48" y2="13.76" width="0.127" layer="52"/>
+<wire x1="18.52" y1="-12.74" x2="22.02" y2="-12.74" width="0.127" layer="52"/>
+<wire x1="22.02" y1="-12.74" x2="30.22" y2="-12.74" width="0.127" layer="52"/>
+<wire x1="40.63" y1="-11.74" x2="44.48" y2="-11.74" width="0.127" layer="52"/>
+<wire x1="30.22" y1="-20.44" x2="40.63" y2="-20.44" width="0.127" layer="52"/>
+<wire x1="30.22" y1="-20.44" x2="30.22" y2="-12.74" width="0.127" layer="52"/>
+<wire x1="30.22" y1="27.46" x2="30.22" y2="12.76" width="0.127" layer="52"/>
+<wire x1="40.63" y1="-20.44" x2="40.63" y2="-11.74" width="0.127" layer="52"/>
+<wire x1="40.63" y1="27.46" x2="40.63" y2="13.76" width="0.127" layer="52"/>
+<wire x1="22.02" y1="12.73" x2="22.02" y2="-12.74" width="0.127" layer="52"/>
+<wire x1="44.75" y1="25.5" x2="44.75" y2="-22.5" width="2" layer="46"/>
+<rectangle x1="16.714" y1="11.595" x2="17.064" y2="12.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="11.095" x2="17.064" y2="12.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="10.595" x2="17.064" y2="11.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="10.095" x2="17.064" y2="11.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="9.595" x2="17.064" y2="10.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="9.095" x2="17.064" y2="10.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="8.595" x2="17.064" y2="9.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="8.095" x2="17.064" y2="9.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="7.595" x2="17.064" y2="8.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="7.095" x2="17.064" y2="8.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="6.595" x2="17.064" y2="7.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="6.095" x2="17.064" y2="7.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="5.595" x2="17.064" y2="6.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="5.095" x2="17.064" y2="6.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="4.595" x2="17.064" y2="5.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="4.095" x2="17.064" y2="5.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="3.595" x2="17.064" y2="4.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="3.095" x2="17.064" y2="4.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="2.595" x2="17.064" y2="3.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="2.095" x2="17.064" y2="3.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="1.595" x2="17.064" y2="2.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="1.095" x2="17.064" y2="2.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="0.595" x2="17.064" y2="1.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="0.095" x2="17.064" y2="1.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-0.405" x2="17.064" y2="0.945" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-0.905" x2="17.064" y2="0.445" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-1.405" x2="17.064" y2="-0.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-1.905" x2="17.064" y2="-0.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-2.405" x2="17.064" y2="-1.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-2.905" x2="17.064" y2="-1.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-3.405" x2="17.064" y2="-2.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-3.905" x2="17.064" y2="-2.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-4.405" x2="17.064" y2="-3.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-4.905" x2="17.064" y2="-3.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-5.405" x2="17.064" y2="-4.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-5.905" x2="17.064" y2="-4.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-6.405" x2="17.064" y2="-5.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-6.905" x2="17.064" y2="-5.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-7.405" x2="17.064" y2="-6.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-7.905" x2="17.064" y2="-6.555" layer="30" rot="R270"/>
+<rectangle x1="16.739" y1="-12.33" x2="17.439" y2="-12.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-11.83" x2="17.439" y2="-11.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-11.33" x2="17.439" y2="-11.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-10.83" x2="17.439" y2="-10.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-10.33" x2="17.439" y2="-10.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-9.83" x2="17.439" y2="-9.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-9.33" x2="17.439" y2="-9.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-8.83" x2="17.439" y2="-8.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-8.33" x2="17.439" y2="-8.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-7.83" x2="17.439" y2="-7.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-7.33" x2="17.439" y2="-7.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-6.83" x2="17.439" y2="-6.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-6.33" x2="17.439" y2="-6.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-5.83" x2="17.439" y2="-5.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-5.33" x2="17.439" y2="-5.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-4.83" x2="17.439" y2="-4.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-4.33" x2="17.439" y2="-4.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-3.83" x2="17.439" y2="-3.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-3.33" x2="17.439" y2="-3.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-2.83" x2="17.439" y2="-2.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-2.33" x2="17.439" y2="-2.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-1.83" x2="17.439" y2="-1.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-1.33" x2="17.439" y2="-1.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-0.83" x2="17.439" y2="-0.63" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="-0.33" x2="17.439" y2="-0.13" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="0.17" x2="17.439" y2="0.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="0.67" x2="17.439" y2="0.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="1.17" x2="17.439" y2="1.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="1.67" x2="17.439" y2="1.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="2.17" x2="17.439" y2="2.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="2.67" x2="17.439" y2="2.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="3.17" x2="17.439" y2="3.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="3.67" x2="17.439" y2="3.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="4.17" x2="17.439" y2="4.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="4.67" x2="17.439" y2="4.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="5.17" x2="17.439" y2="5.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="5.67" x2="17.439" y2="5.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="6.17" x2="17.439" y2="6.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="6.67" x2="17.439" y2="6.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="7.17" x2="17.439" y2="7.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="7.67" x2="17.439" y2="7.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="8.17" x2="17.439" y2="8.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="8.67" x2="17.439" y2="8.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="9.17" x2="17.439" y2="9.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="9.67" x2="17.439" y2="9.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="10.17" x2="17.439" y2="10.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="10.67" x2="17.439" y2="10.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="11.17" x2="17.439" y2="11.37" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="11.67" x2="17.439" y2="11.87" layer="52" rot="R180"/>
+<rectangle x1="16.739" y1="12.17" x2="17.439" y2="12.37" layer="52" rot="R180"/>
+<rectangle x1="16.714" y1="-8.405" x2="17.064" y2="-7.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-8.905" x2="17.064" y2="-7.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-9.405" x2="17.064" y2="-8.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-9.905" x2="17.064" y2="-8.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-10.405" x2="17.064" y2="-9.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-10.905" x2="17.064" y2="-9.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-11.405" x2="17.064" y2="-10.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-11.905" x2="17.064" y2="-10.555" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-12.405" x2="17.064" y2="-11.055" layer="30" rot="R270"/>
+<rectangle x1="16.714" y1="-12.905" x2="17.064" y2="-11.555" layer="30" rot="R270"/>
+<smd name="1" x="16.889" y="12.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="2" x="16.889" y="11.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="3" x="16.889" y="11.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="4" x="16.889" y="10.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="5" x="16.889" y="10.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="6" x="16.889" y="9.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="7" x="16.889" y="9.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="8" x="16.889" y="8.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="9" x="16.889" y="8.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="10" x="16.889" y="7.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="11" x="16.889" y="7.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="12" x="16.889" y="6.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="13" x="16.889" y="6.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="14" x="16.889" y="5.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="15" x="16.889" y="5.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="16" x="16.889" y="4.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="17" x="16.889" y="4.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="18" x="16.889" y="3.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="19" x="16.889" y="3.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="20" x="16.889" y="2.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="21" x="16.889" y="2.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="22" x="16.889" y="1.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="23" x="16.889" y="1.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="24" x="16.889" y="0.77" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="25" x="16.889" y="0.27" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="26" x="16.889" y="-0.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="27" x="16.889" y="-0.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="28" x="16.889" y="-1.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="29" x="16.889" y="-1.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="30" x="16.889" y="-2.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="31" x="16.889" y="-2.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="32" x="16.889" y="-3.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="33" x="16.889" y="-3.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="34" x="16.889" y="-4.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="35" x="16.889" y="-4.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="36" x="16.889" y="-5.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="37" x="16.889" y="-5.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="38" x="16.889" y="-6.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="39" x="16.889" y="-6.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="40" x="16.889" y="-7.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="41" x="16.889" y="-7.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="42" x="16.889" y="-8.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="43" x="16.889" y="-8.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="44" x="16.889" y="-9.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="45" x="16.889" y="-9.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="46" x="16.889" y="-10.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="47" x="16.889" y="-10.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="48" x="16.889" y="-11.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="49" x="16.889" y="-11.73" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="50" x="16.889" y="-12.23" dx="0.3" dy="1.3" layer="16" rot="R270" stop="no"/>
+<smd name="M1" x="18.914" y="-14.02" dx="2.5" dy="3.6" layer="16" rot="R90"/>
+<smd name="M2" x="18.914" y="14.06" dx="2.5" dy="3.6" layer="16" rot="R90"/>
+<text x="23.389" y="14.52" size="0.8" layer="26" font="vector" ratio="15" rot="MR270">&gt;NAME</text>
+<hole x="-40.005" y="27.795" drill="1"/>
+<hole x="-40.005" y="-27.795" drill="1"/>
+<hole x="44.005" y="27.795" drill="1"/>
+<rectangle x1="21.939" y1="-12.74" x2="30.22" y2="12.76" layer="40"/>
+<dimension x1="-40.48" y1="-28.27" x2="44.48" y2="-28.27" x3="2" y3="-35.89" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-40.48" y1="-28.27" x2="-40.48" y2="28.27" x3="-45.56" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<wire x1="-37.22" y1="-24.98" x2="37.22" y2="-24.98" width="0.127" layer="51"/>
+<wire x1="37.22" y1="-24.98" x2="37.22" y2="24.98" width="0.127" layer="51"/>
+<wire x1="37.22" y1="24.98" x2="-37.22" y2="24.98" width="0.127" layer="51"/>
+<wire x1="-37.22" y1="24.98" x2="-37.22" y2="-24.98" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="-24.48" x2="-36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="24.48" x2="36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="36.72" y1="24.48" x2="36.72" y2="-24.48" width="0.127" layer="51"/>
+<wire x1="36.72" y1="-24.48" x2="-36.72" y2="-24.48" width="0.127" layer="51"/>
+<dimension x1="-37.22" y1="24.98" x2="-37.22" y2="-24.98" x3="-38.48" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-36.72" y1="-24.48" x2="-36.72" y2="24.48" x3="-37.98" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-37.22" y1="-24.98" x2="37.22" y2="-24.98" x3="0" y3="-26.27" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="36.72" y1="-24.48" x2="-36.72" y2="-24.48" x3="0" y3="-25.77" textsize="0.254" layer="47" width="0.02"/>
+<wire x1="-36.72" y1="-24.48" x2="36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="24.48" x2="36.72" y2="-24.48" width="0.127" layer="51"/>
+<wire x1="44.75" y1="25.5" x2="44.75" y2="-22.5" width="2" layer="20"/>
 </package>
 <package name="FPC-50P-TFT-TOP">
 <description>&lt;b&gt;Flexible Printed Circuit &amp; Flexible Flat Cable ZIF Connectors&lt;/b&gt; 0.5 mm Pitch, 2.55 mm above the board&lt;p&gt;
 Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
-<wire x1="113.997" y1="13.597" x2="109.547" y2="13.597" width="0.1016" layer="51"/>
-<wire x1="109.547" y1="42.947" x2="113.997" y2="42.947" width="0.1016" layer="51"/>
-<wire x1="113.997" y1="42.947" x2="113.997" y2="13.597" width="0.1016" layer="51"/>
-<wire x1="109.547" y1="42.947" x2="109.547" y2="13.597" width="0.1016" layer="51"/>
-<wire x1="109.547" y1="42.947" x2="110.622" y2="42.947" width="0.1016" layer="21"/>
-<wire x1="109.547" y1="42.947" x2="109.547" y2="13.597" width="0.1016" layer="21"/>
-<wire x1="109.547" y1="13.597" x2="110.647" y2="13.597" width="0.1016" layer="21"/>
-<wire x1="113.997" y1="41.122" x2="113.997" y2="40.772" width="0.1016" layer="21"/>
-<wire x1="113.997" y1="15.772" x2="113.997" y2="15.422" width="0.1016" layer="21"/>
-<wire x1="113" y1="41.03" x2="113" y2="15.53" width="0.127" layer="51"/>
-<wire x1="101.3" y1="55.73" x2="90.89" y2="55.73" width="0.127" layer="51"/>
-<wire x1="113" y1="41.03" x2="101.3" y2="41.03" width="0.127" layer="51"/>
-<wire x1="90.89" y1="42.03" x2="85" y2="42.03" width="0.127" layer="51"/>
-<wire x1="113" y1="15.53" x2="109.5" y2="15.53" width="0.127" layer="51"/>
-<wire x1="109.5" y1="15.53" x2="101.3" y2="15.53" width="0.127" layer="51"/>
-<wire x1="90.89" y1="16.53" x2="85" y2="16.53" width="0.127" layer="51"/>
-<wire x1="101.3" y1="7.83" x2="90.89" y2="7.83" width="0.127" layer="51"/>
-<wire x1="101.3" y1="7.83" x2="101.3" y2="15.53" width="0.127" layer="51"/>
-<wire x1="101.3" y1="55.73" x2="101.3" y2="41.03" width="0.127" layer="51"/>
-<wire x1="90.89" y1="7.83" x2="90.89" y2="16.53" width="0.127" layer="51"/>
-<wire x1="90.89" y1="55.73" x2="90.89" y2="42.03" width="0.127" layer="51"/>
-<wire x1="109.5" y1="41" x2="109.5" y2="15.53" width="0.127" layer="51"/>
-<wire x1="0" y1="0" x2="84.96" y2="0" width="0.127" layer="21"/>
-<wire x1="1.69" y1="1.81" x2="79.83" y2="1.81" width="0.127" layer="51"/>
-<wire x1="2.96" y1="2.99" x2="72.08" y2="2.99" width="0.127" layer="51"/>
-<wire x1="3.76" y1="3.79" x2="69.68" y2="3.79" width="0.127" layer="51"/>
-<wire x1="0" y1="56.54" x2="84.96" y2="56.54" width="0.127" layer="21"/>
-<wire x1="0" y1="0" x2="0" y2="56.515" width="0.127" layer="21"/>
-<wire x1="1.69" y1="55.57" x2="79.83" y2="55.57" width="0.127" layer="51"/>
-<wire x1="2.96" y1="54.37" x2="72.08" y2="54.37" width="0.127" layer="51"/>
-<wire x1="3.76" y1="53.58" x2="36.75" y2="53.58" width="0.127" layer="51"/>
-<wire x1="36.75" y1="53.58" x2="69.68" y2="53.58" width="0.127" layer="51"/>
-<wire x1="1.69" y1="1.81" x2="1.69" y2="55.57" width="0.127" layer="51"/>
-<wire x1="2.96" y1="54.37" x2="2.96" y2="2.99" width="0.127" layer="51"/>
-<wire x1="2.96" y1="2.99" x2="3" y2="3" width="0.127" layer="51"/>
-<wire x1="3.76" y1="3.79" x2="3.76" y2="53.58" width="0.127" layer="51"/>
-<wire x1="69.68" y1="53.58" x2="69.68" y2="28.6575" width="0.127" layer="51"/>
-<wire x1="69.68" y1="28.6575" x2="69.68" y2="3.79" width="0.127" layer="51"/>
-<wire x1="72.08" y1="2.99" x2="72.08" y2="54.37" width="0.127" layer="51"/>
-<wire x1="79.83" y1="55.57" x2="79.83" y2="1.81" width="0.127" layer="51"/>
-<wire x1="84.96" y1="0" x2="84.96" y2="56.54" width="0.127" layer="21"/>
-<wire x1="3.78" y1="28.6575" x2="69.68" y2="28.6575" width="0.127" layer="51"/>
-<wire x1="36.75" y1="53.58" x2="36.75" y2="3.89" width="0.127" layer="51"/>
-<wire x1="3.8" y1="3.8" x2="69.65" y2="53.55" width="0.127" layer="51"/>
-<wire x1="3.75" y1="53.6" x2="69.65" y2="3.8" width="0.127" layer="51"/>
-<rectangle x1="114.422" y1="39.847" x2="114.772" y2="41.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="39.347" x2="114.772" y2="40.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="38.847" x2="114.772" y2="40.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="38.347" x2="114.772" y2="39.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="37.847" x2="114.772" y2="39.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="37.347" x2="114.772" y2="38.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="36.847" x2="114.772" y2="38.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="36.347" x2="114.772" y2="37.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="35.847" x2="114.772" y2="37.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="35.347" x2="114.772" y2="36.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="34.847" x2="114.772" y2="36.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="34.347" x2="114.772" y2="35.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="33.847" x2="114.772" y2="35.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="33.347" x2="114.772" y2="34.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="32.847" x2="114.772" y2="34.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="32.347" x2="114.772" y2="33.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="31.847" x2="114.772" y2="33.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="31.347" x2="114.772" y2="32.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="30.847" x2="114.772" y2="32.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="30.347" x2="114.772" y2="31.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="29.847" x2="114.772" y2="31.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="29.347" x2="114.772" y2="30.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="28.847" x2="114.772" y2="30.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="28.347" x2="114.772" y2="29.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="27.847" x2="114.772" y2="29.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="27.347" x2="114.772" y2="28.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="26.847" x2="114.772" y2="28.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="26.347" x2="114.772" y2="27.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="25.847" x2="114.772" y2="27.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="25.347" x2="114.772" y2="26.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="24.847" x2="114.772" y2="26.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="24.347" x2="114.772" y2="25.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="23.847" x2="114.772" y2="25.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="23.347" x2="114.772" y2="24.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="22.847" x2="114.772" y2="24.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="22.347" x2="114.772" y2="23.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="21.847" x2="114.772" y2="23.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="21.347" x2="114.772" y2="22.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="20.847" x2="114.772" y2="22.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="20.347" x2="114.772" y2="21.697" layer="29" rot="R270"/>
-<rectangle x1="114.047" y1="15.922" x2="114.747" y2="16.122" layer="51"/>
-<rectangle x1="114.047" y1="16.422" x2="114.747" y2="16.622" layer="51"/>
-<rectangle x1="114.047" y1="16.922" x2="114.747" y2="17.122" layer="51"/>
-<rectangle x1="114.047" y1="17.422" x2="114.747" y2="17.622" layer="51"/>
-<rectangle x1="114.047" y1="17.922" x2="114.747" y2="18.122" layer="51"/>
-<rectangle x1="114.047" y1="18.422" x2="114.747" y2="18.622" layer="51"/>
-<rectangle x1="114.047" y1="18.922" x2="114.747" y2="19.122" layer="51"/>
-<rectangle x1="114.047" y1="19.422" x2="114.747" y2="19.622" layer="51"/>
-<rectangle x1="114.047" y1="19.922" x2="114.747" y2="20.122" layer="51"/>
-<rectangle x1="114.047" y1="20.422" x2="114.747" y2="20.622" layer="51"/>
-<rectangle x1="114.047" y1="20.922" x2="114.747" y2="21.122" layer="51"/>
-<rectangle x1="114.047" y1="21.422" x2="114.747" y2="21.622" layer="51"/>
-<rectangle x1="114.047" y1="21.922" x2="114.747" y2="22.122" layer="51"/>
-<rectangle x1="114.047" y1="22.422" x2="114.747" y2="22.622" layer="51"/>
-<rectangle x1="114.047" y1="22.922" x2="114.747" y2="23.122" layer="51"/>
-<rectangle x1="114.047" y1="23.422" x2="114.747" y2="23.622" layer="51"/>
-<rectangle x1="114.047" y1="23.922" x2="114.747" y2="24.122" layer="51"/>
-<rectangle x1="114.047" y1="24.422" x2="114.747" y2="24.622" layer="51"/>
-<rectangle x1="114.047" y1="24.922" x2="114.747" y2="25.122" layer="51"/>
-<rectangle x1="114.047" y1="25.422" x2="114.747" y2="25.622" layer="51"/>
-<rectangle x1="114.047" y1="25.922" x2="114.747" y2="26.122" layer="51"/>
-<rectangle x1="114.047" y1="26.422" x2="114.747" y2="26.622" layer="51"/>
-<rectangle x1="114.047" y1="26.922" x2="114.747" y2="27.122" layer="51"/>
-<rectangle x1="114.047" y1="27.422" x2="114.747" y2="27.622" layer="51"/>
-<rectangle x1="114.047" y1="27.922" x2="114.747" y2="28.122" layer="51"/>
-<rectangle x1="114.047" y1="28.422" x2="114.747" y2="28.622" layer="51"/>
-<rectangle x1="114.047" y1="28.922" x2="114.747" y2="29.122" layer="51"/>
-<rectangle x1="114.047" y1="29.422" x2="114.747" y2="29.622" layer="51"/>
-<rectangle x1="114.047" y1="29.922" x2="114.747" y2="30.122" layer="51"/>
-<rectangle x1="114.047" y1="30.422" x2="114.747" y2="30.622" layer="51"/>
-<rectangle x1="114.047" y1="30.922" x2="114.747" y2="31.122" layer="51"/>
-<rectangle x1="114.047" y1="31.422" x2="114.747" y2="31.622" layer="51"/>
-<rectangle x1="114.047" y1="31.922" x2="114.747" y2="32.122" layer="51"/>
-<rectangle x1="114.047" y1="32.422" x2="114.747" y2="32.622" layer="51"/>
-<rectangle x1="114.047" y1="32.922" x2="114.747" y2="33.122" layer="51"/>
-<rectangle x1="114.047" y1="33.422" x2="114.747" y2="33.622" layer="51"/>
-<rectangle x1="114.047" y1="33.922" x2="114.747" y2="34.122" layer="51"/>
-<rectangle x1="114.047" y1="34.422" x2="114.747" y2="34.622" layer="51"/>
-<rectangle x1="114.047" y1="34.922" x2="114.747" y2="35.122" layer="51"/>
-<rectangle x1="114.047" y1="35.422" x2="114.747" y2="35.622" layer="51"/>
-<rectangle x1="114.047" y1="35.922" x2="114.747" y2="36.122" layer="51"/>
-<rectangle x1="114.047" y1="36.422" x2="114.747" y2="36.622" layer="51"/>
-<rectangle x1="114.047" y1="36.922" x2="114.747" y2="37.122" layer="51"/>
-<rectangle x1="114.047" y1="37.422" x2="114.747" y2="37.622" layer="51"/>
-<rectangle x1="114.047" y1="37.922" x2="114.747" y2="38.122" layer="51"/>
-<rectangle x1="114.047" y1="38.422" x2="114.747" y2="38.622" layer="51"/>
-<rectangle x1="114.047" y1="38.922" x2="114.747" y2="39.122" layer="51"/>
-<rectangle x1="114.047" y1="39.422" x2="114.747" y2="39.622" layer="51"/>
-<rectangle x1="114.047" y1="39.922" x2="114.747" y2="40.122" layer="51"/>
-<rectangle x1="114.047" y1="40.422" x2="114.747" y2="40.622" layer="51"/>
-<rectangle x1="114.422" y1="19.847" x2="114.772" y2="21.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="19.347" x2="114.772" y2="20.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="18.847" x2="114.772" y2="20.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="18.347" x2="114.772" y2="19.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="17.847" x2="114.772" y2="19.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="17.347" x2="114.772" y2="18.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="16.847" x2="114.772" y2="18.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="16.347" x2="114.772" y2="17.697" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="15.847" x2="114.772" y2="17.197" layer="29" rot="R270"/>
-<rectangle x1="114.422" y1="15.347" x2="114.772" y2="16.697" layer="29" rot="R270"/>
-<smd name="1" x="114.597" y="40.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="2" x="114.597" y="40.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="3" x="114.597" y="39.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="4" x="114.597" y="39.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="5" x="114.597" y="38.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="6" x="114.597" y="38.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="7" x="114.597" y="37.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="8" x="114.597" y="37.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="9" x="114.597" y="36.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="10" x="114.597" y="36.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="11" x="114.597" y="35.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="12" x="114.597" y="35.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="13" x="114.597" y="34.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="14" x="114.597" y="34.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="15" x="114.597" y="33.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="16" x="114.597" y="33.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="17" x="114.597" y="32.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="18" x="114.597" y="32.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="19" x="114.597" y="31.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="20" x="114.597" y="31.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="21" x="114.597" y="30.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="22" x="114.597" y="30.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="23" x="114.597" y="29.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="24" x="114.597" y="29.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="25" x="114.597" y="28.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="26" x="114.597" y="28.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="27" x="114.597" y="27.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="28" x="114.597" y="27.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="29" x="114.597" y="26.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="30" x="114.597" y="26.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="31" x="114.597" y="25.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="32" x="114.597" y="25.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="33" x="114.597" y="24.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="34" x="114.597" y="24.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="35" x="114.597" y="23.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="36" x="114.597" y="23.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="37" x="114.597" y="22.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="38" x="114.597" y="22.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="39" x="114.597" y="21.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="40" x="114.597" y="21.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="41" x="114.597" y="20.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="42" x="114.597" y="20.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="43" x="114.597" y="19.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="44" x="114.597" y="19.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="45" x="114.597" y="18.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="46" x="114.597" y="18.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="47" x="114.597" y="17.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="48" x="114.597" y="17.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="49" x="114.597" y="16.522" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="50" x="114.597" y="16.022" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
-<smd name="M1" x="112.522" y="14.182" dx="2.5" dy="3.6" layer="1" rot="R90"/>
-<smd name="M2" x="112.522" y="42.362" dx="2.5" dy="3.6" layer="1" rot="R90"/>
-<text x="108.097" y="42.772" size="0.8" layer="25" font="vector" ratio="15" rot="R270">&gt;NAME</text>
-<text x="20" y="28" size="3" layer="51" ratio="10" rot="R90" align="center">3.5"
-
-320x480 dots
-
-Viewing Area</text>
-<hole x="0.475" y="56.065" drill="1"/>
-<hole x="0.475" y="0.475" drill="1"/>
-<hole x="84.485" y="56.065" drill="1"/>
-<rectangle x1="101.299" y1="15.53" x2="109.58" y2="41.03" layer="39"/>
+<wire x1="73.517" y1="-14.673" x2="69.067" y2="-14.673" width="0.1016" layer="51"/>
+<wire x1="69.067" y1="14.677" x2="73.517" y2="14.677" width="0.1016" layer="51"/>
+<wire x1="73.517" y1="14.677" x2="73.517" y2="-14.673" width="0.1016" layer="51"/>
+<wire x1="69.067" y1="14.677" x2="69.067" y2="-14.673" width="0.1016" layer="51"/>
+<wire x1="69.067" y1="14.677" x2="70.142" y2="14.677" width="0.1016" layer="21"/>
+<wire x1="69.067" y1="14.677" x2="69.067" y2="-14.673" width="0.1016" layer="21"/>
+<wire x1="69.067" y1="-14.673" x2="70.167" y2="-14.673" width="0.1016" layer="21"/>
+<wire x1="73.517" y1="12.852" x2="73.517" y2="12.502" width="0.1016" layer="21"/>
+<wire x1="73.517" y1="-12.498" x2="73.517" y2="-12.848" width="0.1016" layer="21"/>
+<wire x1="72.52" y1="12.76" x2="72.52" y2="-12.74" width="0.127" layer="51"/>
+<wire x1="60.82" y1="27.46" x2="50.41" y2="27.46" width="0.127" layer="51"/>
+<wire x1="72.52" y1="12.76" x2="60.82" y2="12.76" width="0.127" layer="51"/>
+<wire x1="50.41" y1="13.76" x2="44.52" y2="13.76" width="0.127" layer="51"/>
+<wire x1="72.52" y1="-12.74" x2="69.02" y2="-12.74" width="0.127" layer="51"/>
+<wire x1="69.02" y1="-12.74" x2="60.82" y2="-12.74" width="0.127" layer="51"/>
+<wire x1="50.41" y1="-11.74" x2="44.52" y2="-11.74" width="0.127" layer="51"/>
+<wire x1="60.82" y1="-20.44" x2="50.41" y2="-20.44" width="0.127" layer="51"/>
+<wire x1="60.82" y1="-20.44" x2="60.82" y2="-12.74" width="0.127" layer="51"/>
+<wire x1="60.82" y1="27.46" x2="60.82" y2="12.76" width="0.127" layer="51"/>
+<wire x1="50.41" y1="-20.44" x2="50.41" y2="-11.74" width="0.127" layer="51"/>
+<wire x1="50.41" y1="27.46" x2="50.41" y2="13.76" width="0.127" layer="51"/>
+<wire x1="69.02" y1="12.73" x2="69.02" y2="-12.74" width="0.127" layer="51"/>
+<wire x1="-40.48" y1="-28.27" x2="44.48" y2="-28.27" width="0.127" layer="21"/>
+<wire x1="-40.48" y1="28.27" x2="44.48" y2="28.27" width="0.127" layer="21"/>
+<wire x1="-40.48" y1="-28.27" x2="-40.48" y2="28.27" width="0.127" layer="21"/>
+<wire x1="44.48" y1="-28.27" x2="44.48" y2="28.27" width="0.127" layer="21"/>
+<rectangle x1="73.942" y1="11.577" x2="74.292" y2="12.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="11.077" x2="74.292" y2="12.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="10.577" x2="74.292" y2="11.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="10.077" x2="74.292" y2="11.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="9.577" x2="74.292" y2="10.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="9.077" x2="74.292" y2="10.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="8.577" x2="74.292" y2="9.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="8.077" x2="74.292" y2="9.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="7.577" x2="74.292" y2="8.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="7.077" x2="74.292" y2="8.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="6.577" x2="74.292" y2="7.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="6.077" x2="74.292" y2="7.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="5.577" x2="74.292" y2="6.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="5.077" x2="74.292" y2="6.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="4.577" x2="74.292" y2="5.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="4.077" x2="74.292" y2="5.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="3.577" x2="74.292" y2="4.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="3.077" x2="74.292" y2="4.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="2.577" x2="74.292" y2="3.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="2.077" x2="74.292" y2="3.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="1.577" x2="74.292" y2="2.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="1.077" x2="74.292" y2="2.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="0.577" x2="74.292" y2="1.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="0.077" x2="74.292" y2="1.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-0.423" x2="74.292" y2="0.927" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-0.923" x2="74.292" y2="0.427" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-1.423" x2="74.292" y2="-0.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-1.923" x2="74.292" y2="-0.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-2.423" x2="74.292" y2="-1.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-2.923" x2="74.292" y2="-1.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-3.423" x2="74.292" y2="-2.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-3.923" x2="74.292" y2="-2.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-4.423" x2="74.292" y2="-3.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-4.923" x2="74.292" y2="-3.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-5.423" x2="74.292" y2="-4.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-5.923" x2="74.292" y2="-4.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-6.423" x2="74.292" y2="-5.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-6.923" x2="74.292" y2="-5.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-7.423" x2="74.292" y2="-6.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-7.923" x2="74.292" y2="-6.573" layer="29" rot="R270"/>
+<rectangle x1="73.567" y1="-12.348" x2="74.267" y2="-12.148" layer="51"/>
+<rectangle x1="73.567" y1="-11.848" x2="74.267" y2="-11.648" layer="51"/>
+<rectangle x1="73.567" y1="-11.348" x2="74.267" y2="-11.148" layer="51"/>
+<rectangle x1="73.567" y1="-10.848" x2="74.267" y2="-10.648" layer="51"/>
+<rectangle x1="73.567" y1="-10.348" x2="74.267" y2="-10.148" layer="51"/>
+<rectangle x1="73.567" y1="-9.848" x2="74.267" y2="-9.648" layer="51"/>
+<rectangle x1="73.567" y1="-9.348" x2="74.267" y2="-9.148" layer="51"/>
+<rectangle x1="73.567" y1="-8.848" x2="74.267" y2="-8.648" layer="51"/>
+<rectangle x1="73.567" y1="-8.348" x2="74.267" y2="-8.148" layer="51"/>
+<rectangle x1="73.567" y1="-7.848" x2="74.267" y2="-7.648" layer="51"/>
+<rectangle x1="73.567" y1="-7.348" x2="74.267" y2="-7.148" layer="51"/>
+<rectangle x1="73.567" y1="-6.848" x2="74.267" y2="-6.648" layer="51"/>
+<rectangle x1="73.567" y1="-6.348" x2="74.267" y2="-6.148" layer="51"/>
+<rectangle x1="73.567" y1="-5.848" x2="74.267" y2="-5.648" layer="51"/>
+<rectangle x1="73.567" y1="-5.348" x2="74.267" y2="-5.148" layer="51"/>
+<rectangle x1="73.567" y1="-4.848" x2="74.267" y2="-4.648" layer="51"/>
+<rectangle x1="73.567" y1="-4.348" x2="74.267" y2="-4.148" layer="51"/>
+<rectangle x1="73.567" y1="-3.848" x2="74.267" y2="-3.648" layer="51"/>
+<rectangle x1="73.567" y1="-3.348" x2="74.267" y2="-3.148" layer="51"/>
+<rectangle x1="73.567" y1="-2.848" x2="74.267" y2="-2.648" layer="51"/>
+<rectangle x1="73.567" y1="-2.348" x2="74.267" y2="-2.148" layer="51"/>
+<rectangle x1="73.567" y1="-1.848" x2="74.267" y2="-1.648" layer="51"/>
+<rectangle x1="73.567" y1="-1.348" x2="74.267" y2="-1.148" layer="51"/>
+<rectangle x1="73.567" y1="-0.848" x2="74.267" y2="-0.648" layer="51"/>
+<rectangle x1="73.567" y1="-0.348" x2="74.267" y2="-0.148" layer="51"/>
+<rectangle x1="73.567" y1="0.152" x2="74.267" y2="0.352" layer="51"/>
+<rectangle x1="73.567" y1="0.652" x2="74.267" y2="0.852" layer="51"/>
+<rectangle x1="73.567" y1="1.152" x2="74.267" y2="1.352" layer="51"/>
+<rectangle x1="73.567" y1="1.652" x2="74.267" y2="1.852" layer="51"/>
+<rectangle x1="73.567" y1="2.152" x2="74.267" y2="2.352" layer="51"/>
+<rectangle x1="73.567" y1="2.652" x2="74.267" y2="2.852" layer="51"/>
+<rectangle x1="73.567" y1="3.152" x2="74.267" y2="3.352" layer="51"/>
+<rectangle x1="73.567" y1="3.652" x2="74.267" y2="3.852" layer="51"/>
+<rectangle x1="73.567" y1="4.152" x2="74.267" y2="4.352" layer="51"/>
+<rectangle x1="73.567" y1="4.652" x2="74.267" y2="4.852" layer="51"/>
+<rectangle x1="73.567" y1="5.152" x2="74.267" y2="5.352" layer="51"/>
+<rectangle x1="73.567" y1="5.652" x2="74.267" y2="5.852" layer="51"/>
+<rectangle x1="73.567" y1="6.152" x2="74.267" y2="6.352" layer="51"/>
+<rectangle x1="73.567" y1="6.652" x2="74.267" y2="6.852" layer="51"/>
+<rectangle x1="73.567" y1="7.152" x2="74.267" y2="7.352" layer="51"/>
+<rectangle x1="73.567" y1="7.652" x2="74.267" y2="7.852" layer="51"/>
+<rectangle x1="73.567" y1="8.152" x2="74.267" y2="8.352" layer="51"/>
+<rectangle x1="73.567" y1="8.652" x2="74.267" y2="8.852" layer="51"/>
+<rectangle x1="73.567" y1="9.152" x2="74.267" y2="9.352" layer="51"/>
+<rectangle x1="73.567" y1="9.652" x2="74.267" y2="9.852" layer="51"/>
+<rectangle x1="73.567" y1="10.152" x2="74.267" y2="10.352" layer="51"/>
+<rectangle x1="73.567" y1="10.652" x2="74.267" y2="10.852" layer="51"/>
+<rectangle x1="73.567" y1="11.152" x2="74.267" y2="11.352" layer="51"/>
+<rectangle x1="73.567" y1="11.652" x2="74.267" y2="11.852" layer="51"/>
+<rectangle x1="73.567" y1="12.152" x2="74.267" y2="12.352" layer="51"/>
+<rectangle x1="73.942" y1="-8.423" x2="74.292" y2="-7.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-8.923" x2="74.292" y2="-7.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-9.423" x2="74.292" y2="-8.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-9.923" x2="74.292" y2="-8.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-10.423" x2="74.292" y2="-9.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-10.923" x2="74.292" y2="-9.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-11.423" x2="74.292" y2="-10.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-11.923" x2="74.292" y2="-10.573" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-12.423" x2="74.292" y2="-11.073" layer="29" rot="R270"/>
+<rectangle x1="73.942" y1="-12.923" x2="74.292" y2="-11.573" layer="29" rot="R270"/>
+<smd name="1" x="74.117" y="12.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="2" x="74.117" y="11.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="3" x="74.117" y="11.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="4" x="74.117" y="10.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="5" x="74.117" y="10.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="6" x="74.117" y="9.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="7" x="74.117" y="9.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="8" x="74.117" y="8.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="9" x="74.117" y="8.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="10" x="74.117" y="7.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="11" x="74.117" y="7.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="12" x="74.117" y="6.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="13" x="74.117" y="6.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="14" x="74.117" y="5.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="15" x="74.117" y="5.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="16" x="74.117" y="4.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="17" x="74.117" y="4.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="18" x="74.117" y="3.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="19" x="74.117" y="3.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="20" x="74.117" y="2.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="21" x="74.117" y="2.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="22" x="74.117" y="1.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="23" x="74.117" y="1.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="24" x="74.117" y="0.752" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="25" x="74.117" y="0.252" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="26" x="74.117" y="-0.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="27" x="74.117" y="-0.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="28" x="74.117" y="-1.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="29" x="74.117" y="-1.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="30" x="74.117" y="-2.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="31" x="74.117" y="-2.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="32" x="74.117" y="-3.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="33" x="74.117" y="-3.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="34" x="74.117" y="-4.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="35" x="74.117" y="-4.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="36" x="74.117" y="-5.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="37" x="74.117" y="-5.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="38" x="74.117" y="-6.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="39" x="74.117" y="-6.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="40" x="74.117" y="-7.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="41" x="74.117" y="-7.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="42" x="74.117" y="-8.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="43" x="74.117" y="-8.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="44" x="74.117" y="-9.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="45" x="74.117" y="-9.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="46" x="74.117" y="-10.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="47" x="74.117" y="-10.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="48" x="74.117" y="-11.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="49" x="74.117" y="-11.748" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="50" x="74.117" y="-12.248" dx="0.3" dy="1.3" layer="1" rot="R270" stop="no"/>
+<smd name="M1" x="72.042" y="-14.088" dx="2.5" dy="3.6" layer="1" rot="R90"/>
+<smd name="M2" x="72.042" y="14.092" dx="2.5" dy="3.6" layer="1" rot="R90"/>
+<text x="67.617" y="14.502" size="0.8" layer="25" font="vector" ratio="15" rot="R270">&gt;NAME</text>
+<hole x="-40.005" y="27.795" drill="1"/>
+<hole x="-40.005" y="-27.795" drill="1"/>
+<hole x="44.005" y="27.795" drill="1"/>
+<rectangle x1="60.819" y1="-12.74" x2="69.1" y2="12.76" layer="39"/>
+<wire x1="-37.22" y1="-24.98" x2="37.22" y2="-24.98" width="0.127" layer="51"/>
+<wire x1="37.22" y1="-24.98" x2="37.22" y2="24.98" width="0.127" layer="51"/>
+<wire x1="37.22" y1="24.98" x2="-37.22" y2="24.98" width="0.127" layer="51"/>
+<wire x1="-37.22" y1="24.98" x2="-37.22" y2="-24.98" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="-24.48" x2="-36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="24.48" x2="36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="36.72" y1="24.48" x2="36.72" y2="-24.48" width="0.127" layer="51"/>
+<wire x1="36.72" y1="-24.48" x2="-36.72" y2="-24.48" width="0.127" layer="51"/>
+<dimension x1="-37.22" y1="24.98" x2="-37.22" y2="-24.98" x3="-38.48" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-36.72" y1="-24.48" x2="-36.72" y2="24.48" x3="-37.98" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-37.22" y1="-24.98" x2="37.22" y2="-24.98" x3="0" y3="-26.27" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="36.72" y1="-24.48" x2="-36.72" y2="-24.48" x3="0" y3="-25.77" textsize="0.254" layer="47" width="0.02"/>
+<wire x1="-36.72" y1="-24.48" x2="36.72" y2="24.48" width="0.127" layer="51"/>
+<wire x1="-36.72" y1="24.48" x2="36.72" y2="-24.48" width="0.127" layer="51"/>
+<dimension x1="-40.48" y1="-28.27" x2="-40.48" y2="28.27" x3="-44.48" y3="0" textsize="0.254" layer="47" width="0.02"/>
+<dimension x1="-40.48" y1="-28.27" x2="44.48" y2="-28.27" x3="2" y3="-31.27" textsize="0.254" layer="47" width="0.02"/>
 </package>
 </packages>
 <symbols>
@@ -7312,8 +7333,8 @@ Viewing Area</text>
 <wire x1="-2.54" y1="0" x2="-1.651" y2="0" width="0.1524" layer="94"/>
 <text x="-2.54" y="2.54" size="1.778" layer="95">&gt;NAME</text>
 <text x="-2.54" y="-3.81" size="1.778" layer="96">&gt;VALUE</text>
-<pin name="2" x="5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1" rot="R180"/>
-<pin name="1" x="-5.08" y="0" visible="pad" length="short" direction="pas" swaplevel="1"/>
+<pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -7676,8 +7697,8 @@ Viewing Area</text>
 <text x="-2" y="-4.1" size="1.27" layer="27" font="vector">&gt;VALUE</text>
 </package>
 <package name="0603">
-<smd name="1" x="-0.81915" y="0" dx="0.889" dy="1.016" layer="1"/>
-<smd name="2" x="0.81915" y="0" dx="0.889" dy="1.016" layer="1"/>
+<smd name="C" x="-0.81915" y="0" dx="0.889" dy="1.016" layer="1"/>
+<smd name="A" x="0.81915" y="0" dx="0.889" dy="1.016" layer="1"/>
 <text x="-2.9464" y="1.016" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
 <text x="-2.9464" y="-2.032" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
 <wire x1="0.254" y1="0.7366" x2="1.5113" y2="0.7366" width="0.1905" layer="21"/>
@@ -7704,64 +7725,6 @@ Viewing Area</text>
 <wire x1="-0.175" y1="0" x2="0.125" y2="0.2" width="0.127" layer="21"/>
 <wire x1="0.125" y1="0.2" x2="0.125" y2="-0.2" width="0.127" layer="21"/>
 <wire x1="0.125" y1="-0.2" x2="-0.175" y2="0" width="0.127" layer="21"/>
-</package>
-<package name="0805">
-<smd name="1" x="-1.016" y="0" dx="1.016" dy="1.397" layer="1"/>
-<smd name="2" x="1.016" y="0" dx="1.016" dy="1.397" layer="1"/>
-<text x="-2.921" y="1.3208" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
-<text x="-2.9464" y="-2.3622" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
-<wire x1="0.381" y1="0.9398" x2="1.7907" y2="0.9398" width="0.1905" layer="21"/>
-<wire x1="1.7907" y1="0.9398" x2="1.7907" y2="-0.9398" width="0.1905" layer="21"/>
-<wire x1="1.7907" y1="-0.9398" x2="0.381" y2="-0.9398" width="0.1905" layer="21"/>
-<wire x1="-1.0073" y1="-0.35015" x2="-1.0073" y2="0.34985" width="0.1016" layer="51" curve="180" cap="flat"/>
-<wire x1="0.9927" y1="-0.35015" x2="0.9927" y2="0.34985" width="0.1016" layer="51" curve="-180" cap="flat"/>
-<wire x1="-0.5323" y1="0.57485" x2="0.5177" y2="0.57485" width="0.1016" layer="51"/>
-<wire x1="0.4927" y1="-0.57515" x2="-0.9323" y2="-0.57515" width="0.1016" layer="51"/>
-<circle x="-0.8573" y="-0.45015" radius="0.103" width="0.1016" layer="51"/>
-<rectangle x1="-0.9198" y1="0.21235" x2="-0.5948" y2="0.71235" layer="51" rot="R90"/>
-<rectangle x1="-0.7073" y1="-0.37515" x2="-0.5573" y2="-0.12515" layer="51" rot="R90"/>
-<rectangle x1="-0.7073" y1="0.12485" x2="-0.5573" y2="0.37485" layer="51" rot="R90"/>
-<rectangle x1="-0.7948" y1="-0.08765" x2="-0.3948" y2="0.08735" layer="51" rot="R90"/>
-<rectangle x1="0.5802" y1="0.21235" x2="0.9052" y2="0.71235" layer="51" rot="R90"/>
-<rectangle x1="0.5802" y1="-0.71265" x2="0.9052" y2="-0.21265" layer="51" rot="R90"/>
-<rectangle x1="0.5427" y1="0.12485" x2="0.6927" y2="0.37485" layer="51" rot="R90"/>
-<rectangle x1="0.5427" y1="-0.37515" x2="0.6927" y2="-0.12515" layer="51" rot="R90"/>
-<rectangle x1="0.3802" y1="-0.08765" x2="0.7802" y2="0.08735" layer="51" rot="R90"/>
-<rectangle x1="-0.8073" y1="-0.60015" x2="-0.5073" y2="-0.30015" layer="51" rot="R90"/>
-<rectangle x1="-1.0823" y1="-0.55015" x2="-0.8573" y2="-0.47515" layer="51" rot="R90"/>
-<wire x1="-0.381" y1="-0.9398" x2="-1.7907" y2="-0.9398" width="0.1905" layer="21"/>
-<wire x1="-1.7907" y1="-0.9398" x2="-1.7907" y2="0.9398" width="0.1905" layer="21"/>
-<wire x1="-1.7907" y1="0.9398" x2="-0.381" y2="0.9398" width="0.1905" layer="21"/>
-<wire x1="-0.3095" y1="0" x2="0.2905" y2="0.4" width="0.127" layer="21"/>
-<wire x1="0.2905" y1="0.4" x2="0.2905" y2="-0.4" width="0.127" layer="21"/>
-<wire x1="0.2905" y1="-0.4" x2="-0.3095" y2="0" width="0.127" layer="21"/>
-</package>
-<package name="1206">
-<smd name="1" x="-1.5494" y="0" dx="1.27" dy="1.778" layer="1"/>
-<smd name="2" x="1.5494" y="0" dx="1.27" dy="1.778" layer="1"/>
-<text x="-2.921" y="1.5748" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
-<text x="-2.9464" y="-2.6162" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
-<wire x1="0.889" y1="1.1938" x2="2.5019" y2="1.1938" width="0.1905" layer="21"/>
-<wire x1="2.5019" y1="1.1938" x2="2.5019" y2="-1.1938" width="0.1905" layer="21"/>
-<wire x1="2.5019" y1="-1.1938" x2="0.889" y2="-1.1938" width="0.1905" layer="21"/>
-<wire x1="-0.889" y1="-1.1938" x2="-2.5019" y2="-1.1938" width="0.1905" layer="21"/>
-<wire x1="-2.5019" y1="-1.1938" x2="-2.5019" y2="1.1938" width="0.1905" layer="21"/>
-<wire x1="-2.5019" y1="1.1938" x2="-0.889" y2="1.1938" width="0.1905" layer="21"/>
-<wire x1="-1.625" y1="-0.4" x2="-1.625" y2="0.4" width="0.1016" layer="51" curve="180" cap="flat"/>
-<wire x1="0.95" y1="-0.8" x2="-0.95" y2="-0.8" width="0.1016" layer="51"/>
-<wire x1="-0.95" y1="0.8" x2="0.95" y2="0.8" width="0.1016" layer="51"/>
-<circle x="-1.425" y="-0.55" radius="0.1" width="0.1016" layer="51"/>
-<rectangle x1="-1.8375" y1="-0.6625" x2="-1.3375" y2="-0.5375" layer="51" rot="R90"/>
-<rectangle x1="-1.5" y1="-0.9" x2="-1.275" y2="-0.575" layer="51" rot="R90"/>
-<rectangle x1="-1.4" y1="-0.5" x2="-1.275" y2="-0.275" layer="51" rot="R90"/>
-<rectangle x1="-1.5" y1="-0.5" x2="-1.075" y2="-0.375" layer="51" rot="R90"/>
-<rectangle x1="-1.725" y1="0.425" x2="-1.225" y2="0.775" layer="51" rot="R90"/>
-<rectangle x1="-1.5875" y1="0.4875" x2="-0.9875" y2="0.6125" layer="51" rot="R90"/>
-<rectangle x1="-1.95" y1="-0.15" x2="-0.25" y2="0.15" layer="51" rot="R90"/>
-<rectangle x1="0.45" y1="-0.35" x2="2.15" y2="0.35" layer="51" rot="R90"/>
-<wire x1="-0.5" y1="0" x2="0.354" y2="0.554" width="0.127" layer="21"/>
-<wire x1="0.354" y1="0.554" x2="0.354" y2="-0.554" width="0.127" layer="21"/>
-<wire x1="0.354" y1="-0.554" x2="-0.5" y2="0" width="0.127" layer="21"/>
 </package>
 <package name="LED_3MM" urn="urn:adsk.eagle:footprint:39306/1" locally_modified="yes">
 <wire x1="1.5748" y1="-1.27" x2="1.5748" y2="1.27" width="0.254" layer="51"/>
@@ -7803,20 +7766,118 @@ Viewing Area</text>
 <circle x="0" y="0" radius="2.54" width="0.1524" layer="21"/>
 <text x="-5.334" y="0.381" size="1.778" layer="21" font="vector">+</text>
 </package>
+<package name="0805">
+<smd name="C" x="-1.016" y="0" dx="1.016" dy="1.397" layer="1"/>
+<smd name="A" x="1.016" y="0" dx="1.016" dy="1.397" layer="1"/>
+<text x="-2.921" y="1.3208" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
+<text x="-2.9464" y="-2.3622" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
+<wire x1="0.381" y1="0.9398" x2="1.7907" y2="0.9398" width="0.1905" layer="21"/>
+<wire x1="1.7907" y1="0.9398" x2="1.7907" y2="-0.9398" width="0.1905" layer="21"/>
+<wire x1="1.7907" y1="-0.9398" x2="0.381" y2="-0.9398" width="0.1905" layer="21"/>
+<wire x1="-1.0073" y1="-0.35015" x2="-1.0073" y2="0.34985" width="0.1016" layer="51" curve="180" cap="flat"/>
+<wire x1="0.9927" y1="-0.35015" x2="0.9927" y2="0.34985" width="0.1016" layer="51" curve="-180" cap="flat"/>
+<wire x1="-0.5323" y1="0.57485" x2="0.5177" y2="0.57485" width="0.1016" layer="51"/>
+<wire x1="0.4927" y1="-0.57515" x2="-0.9323" y2="-0.57515" width="0.1016" layer="51"/>
+<circle x="-0.8573" y="-0.45015" radius="0.103" width="0.1016" layer="51"/>
+<rectangle x1="-0.9198" y1="0.21235" x2="-0.5948" y2="0.71235" layer="51" rot="R90"/>
+<rectangle x1="-0.7073" y1="-0.37515" x2="-0.5573" y2="-0.12515" layer="51" rot="R90"/>
+<rectangle x1="-0.7073" y1="0.12485" x2="-0.5573" y2="0.37485" layer="51" rot="R90"/>
+<rectangle x1="-0.7948" y1="-0.08765" x2="-0.3948" y2="0.08735" layer="51" rot="R90"/>
+<rectangle x1="0.5802" y1="0.21235" x2="0.9052" y2="0.71235" layer="51" rot="R90"/>
+<rectangle x1="0.5802" y1="-0.71265" x2="0.9052" y2="-0.21265" layer="51" rot="R90"/>
+<rectangle x1="0.5427" y1="0.12485" x2="0.6927" y2="0.37485" layer="51" rot="R90"/>
+<rectangle x1="0.5427" y1="-0.37515" x2="0.6927" y2="-0.12515" layer="51" rot="R90"/>
+<rectangle x1="0.3802" y1="-0.08765" x2="0.7802" y2="0.08735" layer="51" rot="R90"/>
+<rectangle x1="-0.8073" y1="-0.60015" x2="-0.5073" y2="-0.30015" layer="51" rot="R90"/>
+<rectangle x1="-1.0823" y1="-0.55015" x2="-0.8573" y2="-0.47515" layer="51" rot="R90"/>
+<wire x1="-0.381" y1="-0.9398" x2="-1.7907" y2="-0.9398" width="0.1905" layer="21"/>
+<wire x1="-1.7907" y1="-0.9398" x2="-1.7907" y2="0.9398" width="0.1905" layer="21"/>
+<wire x1="-1.7907" y1="0.9398" x2="-0.381" y2="0.9398" width="0.1905" layer="21"/>
+<wire x1="-0.3095" y1="0" x2="0.2905" y2="0.4" width="0.127" layer="21"/>
+<wire x1="0.2905" y1="0.4" x2="0.2905" y2="-0.4" width="0.127" layer="21"/>
+<wire x1="0.2905" y1="-0.4" x2="-0.3095" y2="0" width="0.127" layer="21"/>
+</package>
+<package name="1206">
+<smd name="C" x="-1.5494" y="0" dx="1.27" dy="1.778" layer="1"/>
+<smd name="A" x="1.5494" y="0" dx="1.27" dy="1.778" layer="1"/>
+<text x="-2.921" y="1.5748" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
+<text x="-2.9464" y="-2.6162" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
+<wire x1="0.889" y1="1.1938" x2="2.5019" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="2.5019" y1="1.1938" x2="2.5019" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="2.5019" y1="-1.1938" x2="0.889" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="-0.889" y1="-1.1938" x2="-2.5019" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="-2.5019" y1="-1.1938" x2="-2.5019" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="-2.5019" y1="1.1938" x2="-0.889" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="-1.625" y1="-0.4" x2="-1.625" y2="0.4" width="0.1016" layer="51" curve="180" cap="flat"/>
+<wire x1="0.95" y1="-0.8" x2="-0.95" y2="-0.8" width="0.1016" layer="51"/>
+<wire x1="-0.95" y1="0.8" x2="0.95" y2="0.8" width="0.1016" layer="51"/>
+<circle x="-1.425" y="-0.55" radius="0.1" width="0.1016" layer="51"/>
+<rectangle x1="-1.8375" y1="-0.6625" x2="-1.3375" y2="-0.5375" layer="51" rot="R90"/>
+<rectangle x1="-1.5" y1="-0.9" x2="-1.275" y2="-0.575" layer="51" rot="R90"/>
+<rectangle x1="-1.4" y1="-0.5" x2="-1.275" y2="-0.275" layer="51" rot="R90"/>
+<rectangle x1="-1.5" y1="-0.5" x2="-1.075" y2="-0.375" layer="51" rot="R90"/>
+<rectangle x1="-1.725" y1="0.425" x2="-1.225" y2="0.775" layer="51" rot="R90"/>
+<rectangle x1="-1.5875" y1="0.4875" x2="-0.9875" y2="0.6125" layer="51" rot="R90"/>
+<rectangle x1="-1.95" y1="-0.15" x2="-0.25" y2="0.15" layer="51" rot="R90"/>
+<rectangle x1="0.45" y1="-0.35" x2="2.15" y2="0.35" layer="51" rot="R90"/>
+<wire x1="-0.5" y1="0" x2="0.354" y2="0.554" width="0.127" layer="21"/>
+<wire x1="0.354" y1="0.554" x2="0.354" y2="-0.554" width="0.127" layer="21"/>
+<wire x1="0.354" y1="-0.554" x2="-0.5" y2="0" width="0.127" layer="21"/>
+</package>
+<package name="1206_REV">
+<smd name="C" x="-1.6494" y="0" dx="1.07" dy="1.778" layer="1"/>
+<smd name="A" x="1.6494" y="0" dx="1.07" dy="1.778" layer="1"/>
+<text x="-2.921" y="1.5748" size="1.016" layer="25" ratio="10" rot="SR0">&gt;NAME</text>
+<text x="-2.9464" y="-2.6162" size="1.016" layer="27" ratio="10" rot="SR0">&gt;VALUE</text>
+<wire x1="0.889" y1="1.1938" x2="2.5019" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="2.5019" y1="1.1938" x2="2.5019" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="2.5019" y1="-1.1938" x2="0.889" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="-0.889" y1="-1.1938" x2="-2.5019" y2="-1.1938" width="0.1905" layer="21"/>
+<wire x1="-2.5019" y1="-1.1938" x2="-2.5019" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="-2.5019" y1="1.1938" x2="-0.889" y2="1.1938" width="0.1905" layer="21"/>
+<wire x1="-1.625" y1="-0.4" x2="-1.625" y2="0.4" width="0.1016" layer="51" curve="180" cap="flat"/>
+<wire x1="0.95" y1="-0.8" x2="-0.95" y2="-0.8" width="0.1016" layer="51"/>
+<wire x1="-0.95" y1="0.8" x2="0.95" y2="0.8" width="0.1016" layer="51"/>
+<circle x="-1.425" y="-0.55" radius="0.1" width="0.1016" layer="51"/>
+<rectangle x1="-1.8375" y1="-0.6625" x2="-1.3375" y2="-0.5375" layer="51" rot="R90"/>
+<rectangle x1="-1.5" y1="-0.9" x2="-1.275" y2="-0.575" layer="51" rot="R90"/>
+<rectangle x1="-1.4" y1="-0.5" x2="-1.275" y2="-0.275" layer="51" rot="R90"/>
+<rectangle x1="-1.5" y1="-0.5" x2="-1.075" y2="-0.375" layer="51" rot="R90"/>
+<rectangle x1="-1.725" y1="0.425" x2="-1.225" y2="0.775" layer="51" rot="R90"/>
+<rectangle x1="-1.5875" y1="0.4875" x2="-0.9875" y2="0.6125" layer="51" rot="R90"/>
+<rectangle x1="-1.95" y1="-0.15" x2="-0.25" y2="0.15" layer="51" rot="R90"/>
+<rectangle x1="0.45" y1="-0.35" x2="2.15" y2="0.35" layer="51" rot="R90"/>
+<wire x1="-0.5" y1="0" x2="0.354" y2="0.554" width="0.127" layer="51"/>
+<wire x1="0.354" y1="0.554" x2="0.354" y2="-0.554" width="0.127" layer="51"/>
+<wire x1="0.354" y1="-0.554" x2="-0.5" y2="0" width="0.127" layer="51"/>
+<circle x="-3.1" y="-0.9" radius="0.2" width="0" layer="21"/>
+<polygon width="0" layer="20">
+<vertex x="0.9" y="-0.9"/>
+<vertex x="-0.9" y="-0.9"/>
+<vertex x="-0.9" y="0.9"/>
+<vertex x="0.9" y="0.9"/>
+</polygon>
+<polygon width="0" layer="46">
+<vertex x="0.9" y="-0.9"/>
+<vertex x="-0.9" y="-0.9"/>
+<vertex x="-0.9" y="0.9"/>
+<vertex x="0.9" y="0.9"/>
+</polygon>
+</package>
 </packages>
 <symbols>
 <symbol name="LED">
-<wire x1="1.27" y1="0" x2="0" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="0" y1="-2.54" x2="-1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="-2.54" x2="0" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="0" y1="-2.54" x2="-1.27" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
-<wire x1="0" y1="0" x2="-1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="0" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="0" y1="-2.54" x2="-1.27" y2="0" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="-2.54" x2="0" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="0" y1="-2.54" x2="-1.27" y2="-2.54" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="0" x2="0" y2="0" width="0.1524" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="0" width="0.1524" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-2.54" width="0.1524" layer="94"/>
 <wire x1="-2.032" y1="-0.762" x2="-3.429" y2="-2.159" width="0.1524" layer="94"/>
 <wire x1="-1.905" y1="-1.905" x2="-3.302" y2="-3.302" width="0.1524" layer="94"/>
 <text x="3.556" y="-4.572" size="1.778" layer="95" rot="R90">&gt;NAME</text>
-<text x="5.715" y="-4.572" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<text x="5.715" y="-4.572" size="1.778" layer="96" rot="R90">&gt;COLOR</text>
 <pin name="C" x="0" y="-5.08" visible="off" length="short" direction="pas" rot="R90"/>
 <pin name="A" x="0" y="2.54" visible="off" length="short" direction="pas" rot="R270"/>
 <polygon width="0.1524" layer="94">
@@ -7849,7 +7910,9 @@ Viewing Area</text>
 <connect gate="R" pin="C" pad="5"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value=""/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -7861,29 +7924,35 @@ Viewing Area</text>
 <devices>
 <device name="0603" package="0603">
 <connects>
-<connect gate="G$1" pin="A" pad="2"/>
-<connect gate="G$1" pin="C" pad="1"/>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
 </technologies>
 </device>
 <device name="0805" package="0805">
 <connects>
-<connect gate="G$1" pin="A" pad="2"/>
-<connect gate="G$1" pin="C" pad="1"/>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
 </technologies>
 </device>
 <device name="1206" package="1206">
 <connects>
-<connect gate="G$1" pin="A" pad="2"/>
-<connect gate="G$1" pin="C" pad="1"/>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
 </technologies>
 </device>
 <device name="TH3MM" package="LED_3MM">
@@ -7892,7 +7961,9 @@ Viewing Area</text>
 <connect gate="G$1" pin="C" pad="K"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
 </technologies>
 </device>
 <device name="TH5MM" package="LED_5MM">
@@ -7901,7 +7972,20 @@ Viewing Area</text>
 <connect gate="G$1" pin="C" pad="K"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="1206-REV" package="1206_REV">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="COLOR" value="" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -7924,21 +8008,6 @@ Viewing Area</text>
 </classes>
 <parts>
 <part name="U301" library="Lattice" deviceset="ICE40HX8K-CT256" device=""/>
-<part name="FRAME101" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
-<part name="FRAME301" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
-<part name="FRAME401" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="3V3111" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="GND111" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND112" library="Supply Symbol" deviceset="GND" device=""/>
@@ -7951,11 +8020,6 @@ Viewing Area</text>
 <part name="3V3114" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="X101" library="Crystal" deviceset="CRYSTAL" device="2-SMD-3215" value="32.768 kHz">
 <attribute name="OCLCSC" value="C164062"/>
-</part>
-<part name="FRAME701" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
 </part>
 <part name="U702" library="Silicon Labs" deviceset="CP2615" device=""/>
 <part name="J701" library="DC Jack" deviceset="TRSJACK" device="">
@@ -8147,11 +8211,6 @@ Viewing Area</text>
 <part name="C716" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="22nF"/>
 <part name="R708" library="Resistor" deviceset="RESISTOR" device="-0603" value="100 Ohms"/>
 <part name="GND718" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="FRAME1001" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="C1018" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="4.7uF"/>
 <part name="C1017" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND1029" library="Supply Symbol" deviceset="GND" device=""/>
@@ -8218,11 +8277,6 @@ Viewing Area</text>
 <part name="GND402" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U403" library="Rafael Micro" deviceset="R820T" device="" technology="2"/>
 <part name="U201" library="Microchip" deviceset="ATSAM*" device="C" technology="V71Q21B-" value="ATSAMV71Q21B-C"/>
-<part name="FRAME901" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="U902" library="Silicon Labs" deviceset="SI5351C" device=""/>
 <part name="U901" library="Microchip" deviceset="DSC120*" device="" technology="1DE3-50M00000"/>
 <part name="GND903" library="Supply Symbol" deviceset="GND" device=""/>
@@ -8261,16 +8315,6 @@ Viewing Area</text>
 <part name="R904" library="Resistor" deviceset="RESISTOR" device="-0603" value="0 Ohms"/>
 <part name="U502" library="Analog Devices" deviceset="AD9117" device=""/>
 <part name="U602" library="Analog Devices" deviceset="ADF4351" device=""/>
-<part name="FRAME501" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
-<part name="FRAME601" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="C508" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND509" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND505" library="Supply Symbol" deviceset="GND" device=""/>
@@ -8476,11 +8520,6 @@ Viewing Area</text>
 <part name="GND501" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R601" library="Resistor" deviceset="RESISTOR" device="-0603" value="100K Ohms"/>
 <part name="GND601" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="FRAME201" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="TC201" library="TagConnect" deviceset="TC2050-IDC" device="" value="TC2050-IDC"/>
 <part name="GND223" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="3V3212" library="Supply Symbol" deviceset="3V3" device=""/>
@@ -8680,11 +8719,6 @@ Viewing Area</text>
 <part name="C510" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND512" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U801" library="BuyDisplay" deviceset="ER-TFT035-6" device=""/>
-<part name="FRAME801" library="Frame" deviceset="A2-LANDSCAPE" device="">
-<attribute name="CNAME" value=""/>
-<attribute name="CREVISION" value=""/>
-<attribute name="DESIGNER" value=""/>
-</part>
 <part name="3V3801" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="3V3802" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="GND807" library="Supply Symbol" deviceset="GND" device=""/>
@@ -8757,6 +8791,16 @@ Viewing Area</text>
 <part name="3V3312" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="R305" library="Resistor" deviceset="RESISTOR" device="-0603" value="100K Ohms"/>
 <part name="3V3313" library="Supply Symbol" deviceset="3V3" device=""/>
+<part name="FRAME1" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME2" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME3" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME4" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME5" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME6" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME7" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME8" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME9" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
+<part name="FRAME10" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -8764,14 +8808,6 @@ Viewing Area</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME101" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="3V3111" gate="G$1" x="233.68" y="147.32" smashed="yes">
 <attribute name="VALUE" x="231.14" y="144.78" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -8784,6 +8820,7 @@ Viewing Area</text>
 <instance part="C111" gate="G$1" x="312.42" y="137.16" smashed="yes" rot="R270">
 <attribute name="VALUE" x="309.6514" y="137.16" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="315.1886" y="137.16" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="307.1114" y="137.16" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="TC101" gate="-1(VTARGET)" x="513.08" y="73.66" smashed="yes">
 <attribute name="NAME" x="515.62" y="72.898" size="1.524" layer="95"/>
@@ -8814,17 +8851,18 @@ Viewing Area</text>
 <attribute name="VALUE" x="502.92" y="78.74" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="X101" gate="G$1" x="269.24" y="81.28" smashed="yes">
+<attribute name="OCLCSC" x="269.24" y="81.28" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="271.78" y="82.296" size="1.778" layer="95"/>
 <attribute name="VALUE" x="271.78" y="78.74" size="1.778" layer="96"/>
-<attribute name="OCLCSC" x="269.24" y="81.28" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="U101" gate="G$1" x="287.02" y="304.8" smashed="yes">
-<attribute name="NAME" x="254" y="309.626" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="254" y="308.356" size="1.27" layer="95"/>
 <attribute name="VALUE" x="254" y="306.07" size="1.27" layer="96"/>
 </instance>
 <instance part="C101" gate="G$1" x="17.78" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="15.0114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="20.5486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="12.4714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND101" gate="G$1" x="17.78" y="350.52" smashed="yes">
 <attribute name="VALUE" x="14.986" y="345.44" size="1.778" layer="96"/>
@@ -8835,6 +8873,7 @@ Viewing Area</text>
 <instance part="C102" gate="G$1" x="30.48" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="27.7114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="33.2486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="25.1714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND102" gate="G$1" x="30.48" y="350.52" smashed="yes">
 <attribute name="VALUE" x="27.686" y="345.44" size="1.778" layer="96"/>
@@ -8845,6 +8884,7 @@ Viewing Area</text>
 <instance part="C103" gate="G$1" x="43.18" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="40.4114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="45.9486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="37.8714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND103" gate="G$1" x="43.18" y="350.52" smashed="yes">
 <attribute name="VALUE" x="40.386" y="345.44" size="1.778" layer="96"/>
@@ -8855,6 +8895,7 @@ Viewing Area</text>
 <instance part="C104" gate="G$1" x="55.88" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND104" gate="G$1" x="55.88" y="350.52" smashed="yes">
 <attribute name="VALUE" x="53.086" y="345.44" size="1.778" layer="96"/>
@@ -8865,6 +8906,7 @@ Viewing Area</text>
 <instance part="C105" gate="G$1" x="68.58" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND105" gate="G$1" x="68.58" y="350.52" smashed="yes">
 <attribute name="VALUE" x="65.786" y="345.44" size="1.778" layer="96"/>
@@ -8875,6 +8917,7 @@ Viewing Area</text>
 <instance part="C106" gate="G$1" x="81.28" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="75.9714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND106" gate="G$1" x="81.28" y="350.52" smashed="yes">
 <attribute name="VALUE" x="78.486" y="345.44" size="1.778" layer="96"/>
@@ -8885,6 +8928,7 @@ Viewing Area</text>
 <instance part="C107" gate="G$1" x="93.98" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="91.2114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="96.7486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="88.6714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND107" gate="G$1" x="93.98" y="350.52" smashed="yes">
 <attribute name="VALUE" x="91.186" y="345.44" size="1.778" layer="96"/>
@@ -8895,6 +8939,7 @@ Viewing Area</text>
 <instance part="C108" gate="G$1" x="106.68" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="103.9114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="109.4486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="101.3714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND108" gate="G$1" x="106.68" y="350.52" smashed="yes">
 <attribute name="VALUE" x="103.886" y="345.44" size="1.778" layer="96"/>
@@ -8905,6 +8950,7 @@ Viewing Area</text>
 <instance part="C109" gate="G$1" x="119.38" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="116.6114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="122.1486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="114.0714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND109" gate="G$1" x="119.38" y="350.52" smashed="yes">
 <attribute name="VALUE" x="116.586" y="345.44" size="1.778" layer="96"/>
@@ -8915,6 +8961,7 @@ Viewing Area</text>
 <instance part="C110" gate="G$1" x="132.08" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="129.3114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="134.8486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="126.7714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND110" gate="G$1" x="132.08" y="350.52" smashed="yes">
 <attribute name="VALUE" x="129.286" y="345.44" size="1.778" layer="96"/>
@@ -8925,6 +8972,7 @@ Viewing Area</text>
 <instance part="R105" gate="G$1" x="533.4" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="530.6314" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="536.1686" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="528.0914" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3116" gate="G$1" x="533.4" y="368.3" smashed="yes">
 <attribute name="VALUE" x="530.86" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -8932,6 +8980,7 @@ Viewing Area</text>
 <instance part="R104" gate="G$1" x="520.7" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="517.9314" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="523.4686" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="515.3914" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3115" gate="G$1" x="520.7" y="368.3" smashed="yes">
 <attribute name="VALUE" x="518.16" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -8939,6 +8988,7 @@ Viewing Area</text>
 <instance part="R106" gate="G$1" x="535.94" y="142.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="533.1714" y="142.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="538.7086" y="142.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="530.6314" y="142.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3117" gate="G$1" x="535.94" y="147.32" smashed="yes">
 <attribute name="VALUE" x="533.4" y="144.78" size="1.778" layer="96" rot="R90"/>
@@ -8946,6 +8996,7 @@ Viewing Area</text>
 <instance part="R102" gate="G$1" x="495.3" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="492.5314" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="498.0686" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="489.9914" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3113" gate="G$1" x="495.3" y="368.3" smashed="yes">
 <attribute name="VALUE" x="492.76" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -8953,6 +9004,7 @@ Viewing Area</text>
 <instance part="R101" gate="G$1" x="482.6" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="479.8314" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="485.3686" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="477.2914" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3112" gate="G$1" x="482.6" y="368.3" smashed="yes">
 <attribute name="VALUE" x="480.06" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -8964,10 +9016,18 @@ Viewing Area</text>
 </instance>
 <instance part="D101" gate="G$1" x="510.54" y="121.92" smashed="yes">
 <attribute name="NAME" x="514.096" y="117.348" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="516.255" y="117.348" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="516.255" y="117.348" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND114" gate="G$1" x="510.54" y="111.76" smashed="yes">
 <attribute name="VALUE" x="507.746" y="106.68" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME10" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -9760,14 +9820,6 @@ Viewing Area</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME201" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="U201" gate=".PWRCTRL" x="231.14" y="325.12" smashed="yes">
 <attribute name="NAME" x="198.12" y="329.946" size="1.27" layer="95" align="top-left"/>
 <attribute name="VALUE" x="198.12" y="326.39" size="1.27" layer="96"/>
@@ -9821,10 +9873,10 @@ Viewing Area</text>
 <attribute name="VALUE" x="505.46" y="83.82" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="L203" gate="G$1" x="172.72" y="337.82" smashed="yes" rot="R270">
+<attribute name="OCLCSC" x="172.72" y="337.82" size="1.778" layer="96" rot="R270" display="off"/>
 <attribute name="NAME" x="174.5996" y="341.63" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="170.8404" y="341.63" size="1.778" layer="96" rot="R270" align="top-left"/>
 <attribute name="CURRENT" x="168.3004" y="341.63" size="1.778" layer="97" rot="R270" align="top-left"/>
-<attribute name="OCLCSC" x="172.72" y="337.82" size="1.778" layer="96" rot="R270" display="off"/>
 </instance>
 <instance part="3V3209" gate="G$1" x="172.72" y="368.3" smashed="yes">
 <attribute name="VALUE" x="170.18" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9838,6 +9890,7 @@ Viewing Area</text>
 <instance part="C203" gate="G$1" x="55.88" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND203" gate="G$1" x="55.88" y="350.52" smashed="yes">
 <attribute name="VALUE" x="53.086" y="345.44" size="1.778" layer="96"/>
@@ -9848,6 +9901,7 @@ Viewing Area</text>
 <instance part="C205" gate="G$1" x="68.58" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND205" gate="G$1" x="68.58" y="350.52" smashed="yes">
 <attribute name="VALUE" x="65.786" y="345.44" size="1.778" layer="96"/>
@@ -9858,6 +9912,7 @@ Viewing Area</text>
 <instance part="C207" gate="G$1" x="81.28" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="75.9714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND207" gate="G$1" x="81.28" y="350.52" smashed="yes">
 <attribute name="VALUE" x="78.486" y="345.44" size="1.778" layer="96"/>
@@ -9868,6 +9923,7 @@ Viewing Area</text>
 <instance part="C209" gate="G$1" x="93.98" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="91.2114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="96.7486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="88.6714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND209" gate="G$1" x="93.98" y="350.52" smashed="yes">
 <attribute name="VALUE" x="91.186" y="345.44" size="1.778" layer="96"/>
@@ -9878,6 +9934,7 @@ Viewing Area</text>
 <instance part="C211" gate="G$1" x="106.68" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="103.9114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="109.4486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="101.3714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND211" gate="G$1" x="106.68" y="350.52" smashed="yes">
 <attribute name="VALUE" x="103.886" y="345.44" size="1.778" layer="96"/>
@@ -9888,6 +9945,7 @@ Viewing Area</text>
 <instance part="C213" gate="G$1" x="119.38" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="116.6114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="122.1486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="114.0714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND213" gate="G$1" x="119.38" y="350.52" smashed="yes">
 <attribute name="VALUE" x="116.586" y="345.44" size="1.778" layer="96"/>
@@ -9898,6 +9956,7 @@ Viewing Area</text>
 <instance part="C217" gate="G$1" x="172.72" y="325.12" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="325.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="175.4886" y="325.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="167.4114" y="325.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND218" gate="G$1" x="172.72" y="312.42" smashed="yes">
 <attribute name="VALUE" x="169.926" y="307.34" size="1.778" layer="96"/>
@@ -9905,6 +9964,7 @@ Viewing Area</text>
 <instance part="C214" gate="G$1" x="132.08" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="129.3114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="134.8486" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="126.7714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND214" gate="G$1" x="132.08" y="350.52" smashed="yes">
 <attribute name="VALUE" x="129.286" y="345.44" size="1.778" layer="96"/>
@@ -9915,26 +9975,29 @@ Viewing Area</text>
 <instance part="C201" gate="G$1" x="35.56" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="32.7914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="38.3286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="30.2514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L202" gate="G$1" x="142.24" y="284.48" smashed="yes">
+<attribute name="OCMOUSER" x="142.24" y="284.48" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="138.43" y="286.3596" size="1.778" layer="95"/>
 <attribute name="VALUE" x="138.43" y="282.6004" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="138.43" y="280.0604" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCMOUSER" x="142.24" y="284.48" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="L201" gate="G$1" x="129.54" y="281.94" smashed="yes">
+<attribute name="OCMOUSER" x="129.54" y="281.94" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="125.73" y="283.8196" size="1.778" layer="95"/>
 <attribute name="VALUE" x="125.73" y="280.0604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="125.73" y="277.5204" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCMOUSER" x="129.54" y="281.94" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C216" gate="G$1" x="154.94" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="152.1714" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="157.7086" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="149.6314" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C215" gate="G$1" x="142.24" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="139.4714" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="145.0086" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="136.9314" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND220" gate="G$1" x="187.96" y="238.76" smashed="yes">
 <attribute name="VALUE" x="185.166" y="233.68" size="1.778" layer="96"/>
@@ -9948,26 +10011,32 @@ Viewing Area</text>
 <instance part="C202" gate="G$1" x="48.26" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="45.4914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="51.0286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="42.9514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C204" gate="G$1" x="60.96" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="58.1914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="63.7286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="55.6514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C206" gate="G$1" x="73.66" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="70.8914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="76.4286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="68.3514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C208" gate="G$1" x="86.36" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="83.5914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="89.1286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="81.0514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C210" gate="G$1" x="99.06" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="96.2914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="101.8286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="93.7514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C212" gate="G$1" x="111.76" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="108.9914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="114.5286" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="106.4514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND212" gate="G$1" x="111.76" y="238.76" smashed="yes">
 <attribute name="VALUE" x="108.966" y="233.68" size="1.778" layer="96"/>
@@ -9993,10 +10062,12 @@ Viewing Area</text>
 <instance part="C218" gate="G$1" x="177.8" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="175.0314" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="180.5686" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="172.4914" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R201" gate="G$1" x="167.64" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="164.8714" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="170.4086" y="266.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="162.3314" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND219" gate="G$1" x="177.8" y="238.76" smashed="yes">
 <attribute name="VALUE" x="175.006" y="233.68" size="1.778" layer="96"/>
@@ -10007,6 +10078,7 @@ Viewing Area</text>
 <instance part="R202" gate="G$1" x="172.72" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="175.4886" y="363.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="167.4114" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND221" gate="G$1" x="241.3" y="238.76" smashed="yes">
 <attribute name="VALUE" x="238.506" y="233.68" size="1.778" layer="96"/>
@@ -10017,6 +10089,7 @@ Viewing Area</text>
 <instance part="R204" gate="G$1" x="528.32" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="525.5514" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="531.0886" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="523.0114" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3213" gate="G$1" x="528.32" y="139.7" smashed="yes">
 <attribute name="VALUE" x="525.78" y="137.16" size="1.778" layer="96" rot="R90"/>
@@ -10041,10 +10114,18 @@ Viewing Area</text>
 </instance>
 <instance part="D201" gate="G$1" x="508" y="114.3" smashed="yes">
 <attribute name="NAME" x="511.556" y="109.728" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="513.715" y="109.728" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="513.715" y="109.728" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND222" gate="G$1" x="508" y="104.14" smashed="yes">
 <attribute name="VALUE" x="505.206" y="99.06" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME9" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -10659,14 +10740,6 @@ Viewing Area</text>
 <attribute name="NAME" x="335.28" y="110.236" size="1.27" layer="95"/>
 <attribute name="VALUE" x="335.28" y="107.95" size="1.27" layer="96"/>
 </instance>
-<instance part="FRAME301" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="1V8309" gate="G$1" x="137.16" y="358.14" smashed="yes">
 <attribute name="VALUE" x="134.62" y="355.6" size="1.778" layer="96" rot="R90"/>
 </instance>
@@ -10679,6 +10752,7 @@ Viewing Area</text>
 <instance part="C302" gate="G$1" x="43.18" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="40.4114" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="45.9486" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="37.8714" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND302" gate="G$1" x="43.18" y="309.88" smashed="yes">
 <attribute name="VALUE" x="40.386" y="304.8" size="1.778" layer="96"/>
@@ -10689,6 +10763,7 @@ Viewing Area</text>
 <instance part="C306" gate="G$1" x="55.88" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND306" gate="G$1" x="55.88" y="309.88" smashed="yes">
 <attribute name="VALUE" x="53.086" y="304.8" size="1.778" layer="96"/>
@@ -10699,6 +10774,7 @@ Viewing Area</text>
 <instance part="C301" gate="G$1" x="43.18" y="353.06" smashed="yes" rot="R270">
 <attribute name="VALUE" x="40.4114" y="353.06" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="45.9486" y="353.06" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="37.8714" y="353.06" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND301" gate="G$1" x="43.18" y="340.36" smashed="yes">
 <attribute name="VALUE" x="40.386" y="335.28" size="1.778" layer="96"/>
@@ -10709,6 +10785,7 @@ Viewing Area</text>
 <instance part="C305" gate="G$1" x="55.88" y="353.06" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="353.06" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="353.06" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="353.06" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND305" gate="G$1" x="55.88" y="340.36" smashed="yes">
 <attribute name="VALUE" x="53.086" y="335.28" size="1.778" layer="96"/>
@@ -10719,6 +10796,7 @@ Viewing Area</text>
 <instance part="C309" gate="G$1" x="68.58" y="353.06" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="353.06" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="353.06" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="353.06" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND309" gate="G$1" x="68.58" y="340.36" smashed="yes">
 <attribute name="VALUE" x="65.786" y="335.28" size="1.778" layer="96"/>
@@ -10729,6 +10807,7 @@ Viewing Area</text>
 <instance part="C313" gate="G$1" x="81.28" y="353.06" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="353.06" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="353.06" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="75.9714" y="353.06" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND313" gate="G$1" x="81.28" y="340.36" smashed="yes">
 <attribute name="VALUE" x="78.486" y="335.28" size="1.778" layer="96"/>
@@ -10739,6 +10818,7 @@ Viewing Area</text>
 <instance part="C316" gate="G$1" x="93.98" y="353.06" smashed="yes" rot="R270">
 <attribute name="VALUE" x="91.2114" y="353.06" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="96.7486" y="353.06" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="88.6714" y="353.06" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND316" gate="G$1" x="93.98" y="340.36" smashed="yes">
 <attribute name="VALUE" x="91.186" y="335.28" size="1.778" layer="96"/>
@@ -10749,6 +10829,7 @@ Viewing Area</text>
 <instance part="C307" gate="G$1" x="55.88" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND307" gate="G$1" x="55.88" y="279.4" smashed="yes">
 <attribute name="VALUE" x="53.086" y="274.32" size="1.778" layer="96"/>
@@ -10756,6 +10837,7 @@ Viewing Area</text>
 <instance part="C311" gate="G$1" x="68.58" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND311" gate="G$1" x="68.58" y="279.4" smashed="yes">
 <attribute name="VALUE" x="65.786" y="274.32" size="1.778" layer="96"/>
@@ -10763,6 +10845,7 @@ Viewing Area</text>
 <instance part="C315" gate="G$1" x="81.28" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="75.9714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND315" gate="G$1" x="81.28" y="279.4" smashed="yes">
 <attribute name="VALUE" x="78.486" y="274.32" size="1.778" layer="96"/>
@@ -10770,6 +10853,7 @@ Viewing Area</text>
 <instance part="C318" gate="G$1" x="93.98" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="91.2114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="96.7486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="88.6714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND318" gate="G$1" x="93.98" y="279.4" smashed="yes">
 <attribute name="VALUE" x="91.186" y="274.32" size="1.778" layer="96"/>
@@ -10777,6 +10861,7 @@ Viewing Area</text>
 <instance part="C310" gate="G$1" x="68.58" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND310" gate="G$1" x="68.58" y="309.88" smashed="yes">
 <attribute name="VALUE" x="65.786" y="304.8" size="1.778" layer="96"/>
@@ -10787,6 +10872,7 @@ Viewing Area</text>
 <instance part="C314" gate="G$1" x="81.28" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="75.9714" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND314" gate="G$1" x="81.28" y="309.88" smashed="yes">
 <attribute name="VALUE" x="78.486" y="304.8" size="1.778" layer="96"/>
@@ -10797,6 +10883,7 @@ Viewing Area</text>
 <instance part="C317" gate="G$1" x="93.98" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="91.2114" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="96.7486" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="88.6714" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND317" gate="G$1" x="93.98" y="309.88" smashed="yes">
 <attribute name="VALUE" x="91.186" y="304.8" size="1.778" layer="96"/>
@@ -10819,6 +10906,7 @@ Viewing Area</text>
 <instance part="C304" gate="G$1" x="43.18" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="40.4114" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="45.9486" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="37.8714" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND304" gate="G$1" x="43.18" y="248.92" smashed="yes">
 <attribute name="VALUE" x="40.386" y="243.84" size="1.778" layer="96"/>
@@ -10826,6 +10914,7 @@ Viewing Area</text>
 <instance part="C308" gate="G$1" x="55.88" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="53.1114" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="58.6486" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="50.5714" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND308" gate="G$1" x="55.88" y="248.92" smashed="yes">
 <attribute name="VALUE" x="53.086" y="243.84" size="1.778" layer="96"/>
@@ -10833,6 +10922,7 @@ Viewing Area</text>
 <instance part="C312" gate="G$1" x="68.58" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="63.2714" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND312" gate="G$1" x="68.58" y="248.92" smashed="yes">
 <attribute name="VALUE" x="65.786" y="243.84" size="1.778" layer="96"/>
@@ -10840,6 +10930,7 @@ Viewing Area</text>
 <instance part="C303" gate="G$1" x="43.18" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="40.4114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="45.9486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="37.8714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND303" gate="G$1" x="43.18" y="279.4" smashed="yes">
 <attribute name="VALUE" x="40.386" y="274.32" size="1.778" layer="96"/>
@@ -10859,6 +10950,7 @@ Viewing Area</text>
 <instance part="R301" gate="G$1" x="218.44" y="332.74" smashed="yes" rot="R270">
 <attribute name="VALUE" x="215.6714" y="332.74" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="221.2086" y="332.74" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="213.1314" y="332.74" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND320" gate="G$1" x="218.44" y="264.16" smashed="yes">
 <attribute name="VALUE" x="215.646" y="259.08" size="1.778" layer="96"/>
@@ -10995,15 +11087,15 @@ Viewing Area</text>
 </instance>
 <instance part="D301" gate="R" x="375.92" y="332.74" smashed="yes">
 <attribute name="NAME" x="379.476" y="328.168" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="381.635" y="328.168" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="381.635" y="328.168" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="D301" gate="G" x="386.08" y="332.74" smashed="yes">
 <attribute name="NAME" x="389.636" y="328.168" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="391.795" y="328.168" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="391.795" y="328.168" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="D301" gate="B" x="396.24" y="332.74" smashed="yes">
 <attribute name="NAME" x="399.796" y="328.168" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="401.955" y="328.168" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="401.955" y="328.168" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="R302" gate="G$1" x="375.92" y="342.9" smashed="yes" rot="R90">
 <attribute name="VALUE" x="378.6886" y="342.9" size="1.778" layer="96" ratio="10" rot="SR90" align="top-left"/>
@@ -11042,6 +11134,7 @@ Viewing Area</text>
 <instance part="C319" gate="G$1" x="386.08" y="279.4" smashed="yes" rot="R270">
 <attribute name="VALUE" x="383.3114" y="279.4" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="388.8486" y="279.4" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="380.7714" y="279.4" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND323" gate="G$1" x="386.08" y="266.7" smashed="yes">
 <attribute name="VALUE" x="383.286" y="261.62" size="1.778" layer="96"/>
@@ -11052,9 +11145,18 @@ Viewing Area</text>
 <instance part="R305" gate="G$1" x="426.72" y="294.64" smashed="yes" rot="R270">
 <attribute name="VALUE" x="423.9514" y="294.64" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="429.4886" y="294.64" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="421.4114" y="294.64" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3313" gate="G$1" x="426.72" y="299.72" smashed="yes">
 <attribute name="VALUE" x="424.18" y="297.18" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="FRAME8" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -12375,14 +12477,6 @@ Viewing Area</text>
 RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </plain>
 <instances>
-<instance part="FRAME401" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="TRF401" gate="G$1" x="345.44" y="147.32" smashed="yes" rot="R180">
 <attribute name="NAME" x="351.79" y="135.2804" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="351.79" y="136.4996" size="1.778" layer="96" rot="R180" align="top-left"/>
@@ -12390,30 +12484,37 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R406" gate="G$1" x="287.02" y="170.18" smashed="yes">
 <attribute name="VALUE" x="287.02" y="167.4114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="287.02" y="172.9486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="287.02" y="164.8714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C419" gate="G$1" x="266.7" y="149.86" smashed="yes" rot="R270">
 <attribute name="VALUE" x="263.9314" y="149.86" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="269.4686" y="149.86" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="261.3914" y="149.86" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R412" gate="G$1" x="322.58" y="142.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="319.8114" y="142.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="325.3486" y="142.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="317.2714" y="142.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R411" gate="G$1" x="322.58" y="165.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="319.8114" y="165.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="325.3486" y="165.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="317.2714" y="165.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R407" gate="G$1" x="287.02" y="124.46" smashed="yes">
 <attribute name="VALUE" x="287.02" y="121.6914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="287.02" y="127.2286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="287.02" y="119.1514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C417" gate="G$1" x="256.54" y="142.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="253.7714" y="142.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="259.3086" y="142.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="251.2314" y="142.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C416" gate="G$1" x="256.54" y="160.02" smashed="yes" rot="R270">
 <attribute name="VALUE" x="253.7714" y="160.02" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="259.3086" y="160.02" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="251.2314" y="160.02" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND417" gate="G$1" x="246.38" y="142.24" smashed="yes">
 <attribute name="VALUE" x="243.586" y="137.16" size="1.778" layer="96"/>
@@ -12421,10 +12522,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C426" gate="G$1" x="309.88" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="307.1114" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="312.6486" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="304.5714" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C425" gate="G$1" x="299.72" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="296.9514" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="302.4886" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="294.4114" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND427" gate="G$1" x="299.72" y="134.62" smashed="yes">
 <attribute name="VALUE" x="296.926" y="129.54" size="1.778" layer="96"/>
@@ -12435,53 +12538,60 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R416" gate="G$1" x="391.16" y="124.46" smashed="yes">
 <attribute name="VALUE" x="391.16" y="121.6914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="391.16" y="127.2286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="391.16" y="119.1514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R415" gate="G$1" x="391.16" y="170.18" smashed="yes">
 <attribute name="VALUE" x="391.16" y="167.4114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="391.16" y="172.9486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="391.16" y="164.8714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C430" gate="G$1" x="368.3" y="124.46" smashed="yes">
 <attribute name="VALUE" x="368.3" y="121.6914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="368.3" y="127.2286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="368.3" y="119.1514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C429" gate="G$1" x="368.3" y="170.18" smashed="yes">
 <attribute name="VALUE" x="368.3" y="167.4114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="368.3" y="172.9486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="368.3" y="164.8714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R413" gate="G$1" x="383.54" y="152.4" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="152.4" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="152.4" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="378.2314" y="152.4" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L401" gate="G$1" x="373.38" y="292.1" smashed="yes" rot="R90">
+<attribute name="OCMOUSER" x="373.38" y="292.1" size="1.778" layer="96" rot="R90" display="off"/>
 <attribute name="NAME" x="371.5004" y="288.29" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="375.2596" y="288.29" size="1.778" layer="96" rot="R90" align="top-left"/>
 <attribute name="CURRENT" x="377.7996" y="288.29" size="1.778" layer="97" rot="R90" align="top-left"/>
-<attribute name="OCMOUSER" x="373.38" y="292.1" size="1.778" layer="96" rot="R90" display="off"/>
 </instance>
 <instance part="L402" gate="G$1" x="383.54" y="292.1" smashed="yes" rot="R90">
+<attribute name="OCMOUSER" x="383.54" y="292.1" size="1.778" layer="96" rot="R90" display="off"/>
 <attribute name="NAME" x="381.6604" y="288.29" size="1.778" layer="95" rot="R90"/>
 <attribute name="VALUE" x="385.4196" y="288.29" size="1.778" layer="96" rot="R90" align="top-left"/>
 <attribute name="CURRENT" x="387.9596" y="288.29" size="1.778" layer="97" rot="R90" align="top-left"/>
-<attribute name="OCMOUSER" x="383.54" y="292.1" size="1.778" layer="96" rot="R90" display="off"/>
 </instance>
 <instance part="L403" gate="G$1" x="386.08" y="320.04" smashed="yes">
+<attribute name="OCMOUSER" x="386.08" y="320.04" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="382.27" y="321.9196" size="1.778" layer="95"/>
 <attribute name="VALUE" x="382.27" y="318.1604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="382.27" y="315.6204" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCMOUSER" x="386.08" y="320.04" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C432" gate="G$1" x="403.86" y="320.04" smashed="yes">
 <attribute name="VALUE" x="403.86" y="317.2714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="403.86" y="322.8086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="403.86" y="314.7314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C433" gate="G$1" x="426.72" y="320.04" smashed="yes">
 <attribute name="VALUE" x="426.72" y="317.2714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="426.72" y="322.8086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="426.72" y="314.7314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="D401" gate="G$1" x="419.1" y="307.34" smashed="yes">
+<attribute name="OCLCSC" x="419.1" y="307.34" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="414.02" y="304.8" size="1.778" layer="95" align="top-left"/>
 <attribute name="VALUE" x="414.02" y="302.26" size="1.778" layer="96" align="top-left"/>
-<attribute name="OCLCSC" x="419.1" y="307.34" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="GND434" gate="G$1" x="429.26" y="297.18" smashed="yes">
 <attribute name="VALUE" x="426.466" y="292.1" size="1.778" layer="96"/>
@@ -12499,10 +12609,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C420" gate="G$1" x="269.24" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="266.4714" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="272.0086" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="263.9314" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C422" gate="G$1" x="281.94" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="279.1714" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="284.7086" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="276.6314" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND431" gate="G$1" x="327.66" y="238.76" smashed="yes">
 <attribute name="VALUE" x="324.866" y="233.68" size="1.778" layer="96"/>
@@ -12516,14 +12628,17 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C428" gate="G$1" x="317.5" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="314.7314" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="320.2686" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="312.1914" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C423" gate="G$1" x="294.64" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="291.8714" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="297.4086" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="289.3314" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R409" gate="G$1" x="299.72" y="264.16" smashed="yes">
 <attribute name="VALUE" x="299.72" y="261.3914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="299.72" y="266.9286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="299.72" y="258.8514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND425" gate="G$1" x="294.64" y="238.76" smashed="yes">
 <attribute name="VALUE" x="291.846" y="233.68" size="1.778" layer="96"/>
@@ -12534,6 +12649,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C415" gate="G$1" x="256.54" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="253.7714" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="259.3086" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="251.2314" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND420" gate="G$1" x="256.54" y="238.76" smashed="yes">
 <attribute name="VALUE" x="253.746" y="233.68" size="1.778" layer="96"/>
@@ -12549,10 +12665,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C412" gate="G$1" x="241.3" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="238.5314" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="244.0686" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="235.9914" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C410" gate="G$1" x="215.9" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="213.1314" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="218.6686" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="210.5914" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND416" gate="G$1" x="241.3" y="238.76" smashed="yes">
 <attribute name="VALUE" x="238.506" y="233.68" size="1.778" layer="96"/>
@@ -12566,6 +12684,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R402" gate="G$1" x="195.58" y="294.64" smashed="yes">
 <attribute name="VALUE" x="195.58" y="291.8714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="195.58" y="297.4086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="195.58" y="289.3314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND408" gate="G$1" x="157.48" y="238.76" smashed="yes">
 <attribute name="VALUE" x="154.686" y="233.68" size="1.778" layer="96"/>
@@ -12573,6 +12692,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C411" gate="G$1" x="241.3" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="238.5314" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="244.0686" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="235.9914" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND415" gate="G$1" x="241.3" y="337.82" smashed="yes">
 <attribute name="VALUE" x="238.506" y="332.74" size="1.778" layer="96"/>
@@ -12580,6 +12700,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C413" gate="G$1" x="254" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="251.2314" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="256.7686" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="248.6914" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND418" gate="G$1" x="254" y="337.82" smashed="yes">
 <attribute name="VALUE" x="251.206" y="332.74" size="1.778" layer="96"/>
@@ -12587,6 +12708,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C418" gate="G$1" x="266.7" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="263.9314" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="269.4686" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="261.3914" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND421" gate="G$1" x="266.7" y="337.82" smashed="yes">
 <attribute name="VALUE" x="263.906" y="332.74" size="1.778" layer="96"/>
@@ -12594,6 +12716,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C421" gate="G$1" x="279.4" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="276.6314" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="282.1686" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="274.0914" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND423" gate="G$1" x="279.4" y="337.82" smashed="yes">
 <attribute name="VALUE" x="276.606" y="332.74" size="1.778" layer="96"/>
@@ -12601,6 +12724,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C401" gate="G$1" x="106.68" y="271.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="103.9114" y="271.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="109.4486" y="271.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="101.3714" y="271.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND401" gate="G$1" x="106.68" y="238.76" smashed="yes">
 <attribute name="VALUE" x="103.886" y="233.68" size="1.778" layer="96"/>
@@ -12608,6 +12732,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C431" gate="G$1" x="378.46" y="251.46" smashed="yes" rot="R270">
 <attribute name="VALUE" x="375.6914" y="251.46" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="251.46" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="373.1514" y="251.46" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND432" gate="G$1" x="378.46" y="238.76" smashed="yes">
 <attribute name="VALUE" x="375.666" y="233.68" size="1.778" layer="96"/>
@@ -12615,6 +12740,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R414" gate="G$1" x="388.62" y="256.54" smashed="yes">
 <attribute name="VALUE" x="388.62" y="253.7714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="388.62" y="259.3086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="388.62" y="251.2314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND412" gate="G$1" x="185.42" y="35.56" smashed="yes">
 <attribute name="VALUE" x="182.626" y="30.48" size="1.778" layer="96"/>
@@ -12622,6 +12748,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C407" gate="G$1" x="147.32" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="144.5514" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="150.0886" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="142.0114" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND407" gate="G$1" x="147.32" y="132.08" smashed="yes">
 <attribute name="VALUE" x="144.526" y="127" size="1.778" layer="96"/>
@@ -12632,6 +12759,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C409" gate="G$1" x="160.02" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="157.2514" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="162.7886" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="154.7114" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND410" gate="G$1" x="160.02" y="132.08" smashed="yes">
 <attribute name="VALUE" x="157.226" y="127" size="1.778" layer="96"/>
@@ -12642,6 +12770,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C404" gate="G$1" x="134.62" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="131.8514" y="182.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="137.3886" y="182.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="129.3114" y="182.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND404" gate="G$1" x="134.62" y="170.18" smashed="yes">
 <attribute name="VALUE" x="131.826" y="165.1" size="1.778" layer="96"/>
@@ -12649,6 +12778,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C406" gate="G$1" x="147.32" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="144.5514" y="182.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="150.0886" y="182.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="142.0114" y="182.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND406" gate="G$1" x="147.32" y="170.18" smashed="yes">
 <attribute name="VALUE" x="144.526" y="165.1" size="1.778" layer="96"/>
@@ -12659,10 +12789,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R403" gate="G$1" x="233.68" y="53.34" smashed="yes">
 <attribute name="VALUE" x="233.68" y="50.5714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="233.68" y="56.1086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="233.68" y="48.0314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C414" gate="G$1" x="254" y="48.26" smashed="yes" rot="R270">
 <attribute name="VALUE" x="251.2314" y="48.26" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="256.7686" y="48.26" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="248.6914" y="48.26" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND419" gate="G$1" x="254" y="35.56" smashed="yes">
 <attribute name="VALUE" x="251.206" y="30.48" size="1.778" layer="96"/>
@@ -12680,6 +12812,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C402" gate="G$1" x="111.76" y="71.12" smashed="yes" rot="R270">
 <attribute name="VALUE" x="108.9914" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="114.5286" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="106.4514" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND402" gate="G$1" x="111.76" y="35.56" smashed="yes">
 <attribute name="VALUE" x="108.966" y="30.48" size="1.778" layer="96"/>
@@ -12694,10 +12827,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R401" gate="G$1" x="99.06" y="139.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="96.2914" y="139.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="101.8286" y="139.7" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="93.7514" y="139.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C408" gate="G$1" x="160.02" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="157.2514" y="182.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="162.7886" y="182.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="154.7114" y="182.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND409" gate="G$1" x="160.02" y="170.18" smashed="yes">
 <attribute name="VALUE" x="157.226" y="165.1" size="1.778" layer="96"/>
@@ -12705,6 +12840,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C403" gate="G$1" x="121.92" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="119.1514" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="124.6886" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="116.6114" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND403" gate="G$1" x="121.92" y="132.08" smashed="yes">
 <attribute name="VALUE" x="119.126" y="127" size="1.778" layer="96"/>
@@ -12715,6 +12851,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C405" gate="G$1" x="134.62" y="144.78" smashed="yes" rot="R270">
 <attribute name="VALUE" x="131.8514" y="144.78" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="137.3886" y="144.78" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="129.3114" y="144.78" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND405" gate="G$1" x="134.62" y="132.08" smashed="yes">
 <attribute name="VALUE" x="131.826" y="127" size="1.778" layer="96"/>
@@ -12725,6 +12862,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R410" gate="G$1" x="312.42" y="342.9" smashed="yes" rot="R270">
 <attribute name="VALUE" x="309.6514" y="342.9" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="315.1886" y="342.9" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="307.1114" y="342.9" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3409" gate="G$1" x="312.42" y="347.98" smashed="yes">
 <attribute name="VALUE" x="309.88" y="345.44" size="1.778" layer="96" rot="R90"/>
@@ -12732,6 +12870,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R408" gate="G$1" x="299.72" y="342.9" smashed="yes" rot="R270">
 <attribute name="VALUE" x="296.9514" y="342.9" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="302.4886" y="342.9" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="294.4114" y="342.9" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3408" gate="G$1" x="299.72" y="347.98" smashed="yes">
 <attribute name="VALUE" x="297.18" y="345.44" size="1.778" layer="96" rot="R90"/>
@@ -12739,24 +12878,36 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R405" gate="G$1" x="281.94" y="325.12" smashed="yes">
 <attribute name="VALUE" x="281.94" y="322.3514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="281.94" y="327.8886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="281.94" y="319.8114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R404" gate="G$1" x="264.16" y="322.58" smashed="yes">
 <attribute name="VALUE" x="264.16" y="319.8114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="264.16" y="325.3486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="264.16" y="317.2714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C424" gate="G$1" x="299.72" y="317.5" smashed="yes" rot="R270">
 <attribute name="VALUE" x="296.9514" y="317.5" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="302.4886" y="317.5" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="294.4114" y="317.5" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C427" gate="G$1" x="312.42" y="317.5" smashed="yes" rot="R270">
 <attribute name="VALUE" x="309.6514" y="317.5" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="315.1886" y="317.5" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="307.1114" y="317.5" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND429" gate="G$1" x="312.42" y="304.8" smashed="yes">
 <attribute name="VALUE" x="309.626" y="299.72" size="1.778" layer="96"/>
 </instance>
 <instance part="GND426" gate="G$1" x="299.72" y="304.8" smashed="yes">
 <attribute name="VALUE" x="296.926" y="299.72" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME7" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -13695,17 +13846,10 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="NAME" x="226.06" y="298.196" size="1.27" layer="95"/>
 <attribute name="VALUE" x="226.06" y="295.91" size="1.27" layer="96"/>
 </instance>
-<instance part="FRAME501" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="C508" gate="G$1" x="185.42" y="101.6" smashed="yes">
 <attribute name="VALUE" x="185.42" y="98.8314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="185.42" y="104.3686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="185.42" y="96.2914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND509" gate="G$1" x="160.02" y="33.02" smashed="yes">
 <attribute name="VALUE" x="157.226" y="27.94" size="1.778" layer="96"/>
@@ -13723,6 +13867,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C522" gate="G$1" x="414.02" y="287.02" smashed="yes" rot="R270">
 <attribute name="VALUE" x="411.2514" y="287.02" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="416.7886" y="287.02" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="408.7114" y="287.02" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND525" gate="G$1" x="403.86" y="289.56" smashed="yes">
 <attribute name="VALUE" x="401.066" y="284.48" size="1.778" layer="96"/>
@@ -13730,6 +13875,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C526" gate="G$1" x="444.5" y="287.02" smashed="yes" rot="R270">
 <attribute name="VALUE" x="441.7314" y="287.02" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="447.2686" y="287.02" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="439.1914" y="287.02" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND527" gate="G$1" x="434.34" y="289.56" smashed="yes">
 <attribute name="VALUE" x="431.546" y="284.48" size="1.778" layer="96"/>
@@ -13742,10 +13888,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R509" gate="G$1" x="360.68" y="312.42" smashed="yes" rot="R270">
 <attribute name="VALUE" x="357.9114" y="312.42" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="363.4486" y="312.42" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="355.3714" y="312.42" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R510" gate="G$1" x="360.68" y="289.56" smashed="yes" rot="R270">
 <attribute name="VALUE" x="357.9114" y="289.56" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="363.4486" y="289.56" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="355.3714" y="289.56" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND521" gate="G$1" x="350.52" y="289.56" smashed="yes">
 <attribute name="VALUE" x="347.726" y="284.48" size="1.778" layer="96"/>
@@ -13753,6 +13901,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R515" gate="G$1" x="462.28" y="299.72" smashed="yes" rot="R270">
 <attribute name="VALUE" x="459.5114" y="299.72" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="465.0486" y="299.72" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="456.9714" y="299.72" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L502" gate="G$1" x="398.78" y="317.5" smashed="yes">
 <attribute name="NAME" x="394.97" y="319.3796" size="1.778" layer="95"/>
@@ -13772,18 +13921,22 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C521" gate="G$1" x="414.02" y="309.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="411.2514" y="309.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="416.7886" y="309.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="408.7114" y="309.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C525" gate="G$1" x="444.5" y="309.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="441.7314" y="309.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="447.2686" y="309.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="439.1914" y="309.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C517" gate="G$1" x="383.54" y="309.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="309.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="309.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="378.2314" y="309.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C518" gate="G$1" x="383.54" y="287.02" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="287.02" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="287.02" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="378.2314" y="287.02" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND524" gate="G$1" x="373.38" y="210.82" smashed="yes">
 <attribute name="VALUE" x="370.586" y="205.74" size="1.778" layer="96"/>
@@ -13791,6 +13944,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C524" gate="G$1" x="414.02" y="208.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="411.2514" y="208.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="416.7886" y="208.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="408.7114" y="208.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND526" gate="G$1" x="403.86" y="210.82" smashed="yes">
 <attribute name="VALUE" x="401.066" y="205.74" size="1.778" layer="96"/>
@@ -13798,6 +13952,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C528" gate="G$1" x="444.5" y="208.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="441.7314" y="208.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="447.2686" y="208.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="439.1914" y="208.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND528" gate="G$1" x="434.34" y="210.82" smashed="yes">
 <attribute name="VALUE" x="431.546" y="205.74" size="1.778" layer="96"/>
@@ -13810,10 +13965,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R511" gate="G$1" x="360.68" y="233.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="357.9114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="363.4486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="355.3714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R512" gate="G$1" x="360.68" y="210.82" smashed="yes" rot="R270">
 <attribute name="VALUE" x="357.9114" y="210.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="363.4486" y="210.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="355.3714" y="210.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND522" gate="G$1" x="350.52" y="210.82" smashed="yes">
 <attribute name="VALUE" x="347.726" y="205.74" size="1.778" layer="96"/>
@@ -13821,6 +13978,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R516" gate="G$1" x="462.28" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="459.5114" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="465.0486" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="456.9714" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L504" gate="G$1" x="398.78" y="238.76" smashed="yes">
 <attribute name="NAME" x="394.97" y="240.6396" size="1.778" layer="95"/>
@@ -13840,26 +13998,32 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C523" gate="G$1" x="414.02" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="411.2514" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="416.7886" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="408.7114" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C527" gate="G$1" x="444.5" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="441.7314" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="447.2686" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="439.1914" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C519" gate="G$1" x="383.54" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="378.2314" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C520" gate="G$1" x="383.54" y="208.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="208.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="208.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="378.2314" y="208.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R514" gate="G$1" x="441.96" y="182.88" smashed="yes">
 <attribute name="VALUE" x="441.96" y="180.1114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="441.96" y="185.6486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="441.96" y="177.5714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R513" gate="G$1" x="441.96" y="261.62" smashed="yes">
 <attribute name="VALUE" x="441.96" y="258.8514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="441.96" y="264.3886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="441.96" y="256.3114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND507" gate="G$1" x="139.7" y="190.5" smashed="yes">
 <attribute name="VALUE" x="136.906" y="185.42" size="1.778" layer="96"/>
@@ -13867,6 +14031,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C505" gate="G$1" x="139.7" y="236.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="136.9314" y="236.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="142.4686" y="236.22" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="134.3914" y="236.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND513" gate="G$1" x="215.9" y="190.5" smashed="yes">
 <attribute name="VALUE" x="213.106" y="185.42" size="1.778" layer="96"/>
@@ -13877,6 +14042,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C506" gate="G$1" x="149.86" y="307.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="147.0914" y="307.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="152.6286" y="307.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="144.5514" y="307.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND508" gate="G$1" x="149.86" y="294.64" smashed="yes">
 <attribute name="VALUE" x="147.066" y="289.56" size="1.778" layer="96"/>
@@ -13887,6 +14053,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C509" gate="G$1" x="193.04" y="340.36" smashed="yes" rot="R270">
 <attribute name="VALUE" x="190.2714" y="340.36" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="195.8086" y="340.36" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="187.7314" y="340.36" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND511" gate="G$1" x="193.04" y="327.66" smashed="yes">
 <attribute name="VALUE" x="190.246" y="322.58" size="1.778" layer="96"/>
@@ -13905,6 +14072,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C515" gate="G$1" x="284.48" y="101.6" smashed="yes">
 <attribute name="VALUE" x="284.48" y="98.8314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="284.48" y="104.3686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="284.48" y="96.2914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="RFCON502" gate="G$1" x="322.58" y="66.04" smashed="yes" rot="MR0">
 <attribute name="NAME" x="322.834" y="71.882" size="1.778" layer="95" rot="MR0"/>
@@ -13916,6 +14084,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C511" gate="G$1" x="208.28" y="101.6" smashed="yes">
 <attribute name="VALUE" x="208.28" y="98.8314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="208.28" y="104.3686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="208.28" y="96.2914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND514" gate="G$1" x="226.06" y="83.82" smashed="yes">
 <attribute name="VALUE" x="223.266" y="78.74" size="1.778" layer="96"/>
@@ -13928,10 +14097,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C514" gate="G$1" x="261.62" y="147.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="258.8514" y="147.32" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="264.3886" y="147.32" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="256.3114" y="147.32" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C512" gate="G$1" x="246.38" y="147.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="243.6114" y="147.32" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="249.1486" y="147.32" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="241.0714" y="147.32" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND516" gate="G$1" x="261.62" y="134.62" smashed="yes">
 <attribute name="VALUE" x="258.826" y="129.54" size="1.778" layer="96"/>
@@ -13942,14 +14113,17 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C513" gate="G$1" x="251.46" y="116.84" smashed="yes">
 <attribute name="VALUE" x="251.46" y="114.0714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="251.46" y="119.6086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="251.46" y="111.5314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R507" gate="G$1" x="231.14" y="116.84" smashed="yes">
 <attribute name="VALUE" x="231.14" y="114.0714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="231.14" y="119.6086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="231.14" y="111.5314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C503" gate="G$1" x="101.6" y="124.46" smashed="yes" rot="R270">
 <attribute name="VALUE" x="98.8314" y="124.46" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="104.3686" y="124.46" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="96.2914" y="124.46" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND504" gate="G$1" x="101.6" y="111.76" smashed="yes">
 <attribute name="VALUE" x="98.806" y="106.68" size="1.778" layer="96"/>
@@ -13957,6 +14131,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C502" gate="G$1" x="88.9" y="124.46" smashed="yes" rot="R270">
 <attribute name="VALUE" x="86.1314" y="124.46" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="91.6686" y="124.46" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="83.5914" y="124.46" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND503" gate="G$1" x="88.9" y="111.76" smashed="yes">
 <attribute name="VALUE" x="86.106" y="106.68" size="1.778" layer="96"/>
@@ -13964,6 +14139,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C501" gate="G$1" x="76.2" y="124.46" smashed="yes" rot="R270">
 <attribute name="VALUE" x="73.4314" y="124.46" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="78.9686" y="124.46" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="70.8914" y="124.46" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND502" gate="G$1" x="76.2" y="111.76" smashed="yes">
 <attribute name="VALUE" x="73.406" y="106.68" size="1.778" layer="96"/>
@@ -13971,6 +14147,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R501" gate="G$1" x="73.66" y="71.12" smashed="yes" rot="R270">
 <attribute name="VALUE" x="70.8914" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="76.4286" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="68.3514" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND501" gate="G$1" x="73.66" y="33.02" smashed="yes">
 <attribute name="VALUE" x="70.866" y="27.94" size="1.778" layer="96"/>
@@ -13978,10 +14155,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R506" gate="G$1" x="200.66" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="197.8914" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="203.4286" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="195.3514" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C504" gate="G$1" x="137.16" y="307.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="134.3914" y="307.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="139.9286" y="307.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="131.8514" y="307.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND506" gate="G$1" x="137.16" y="294.64" smashed="yes">
 <attribute name="VALUE" x="134.366" y="289.56" size="1.778" layer="96"/>
@@ -13992,10 +14171,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R505" gate="G$1" x="198.12" y="304.8" smashed="yes" rot="R270">
 <attribute name="VALUE" x="195.3514" y="304.8" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="200.8886" y="304.8" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="192.8114" y="304.8" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R503" gate="G$1" x="182.88" y="304.8" smashed="yes" rot="R270">
 <attribute name="VALUE" x="180.1114" y="304.8" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="185.6486" y="304.8" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="177.5714" y="304.8" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3504" gate="G$1" x="198.12" y="312.42" smashed="yes">
 <attribute name="VALUE" x="195.58" y="309.88" size="1.778" layer="96" rot="R90"/>
@@ -14006,10 +14187,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R502" gate="G$1" x="83.82" y="264.16" smashed="yes" rot="R180">
 <attribute name="VALUE" x="83.82" y="266.9286" size="1.778" layer="96" ratio="10" rot="SR180" align="top-left"/>
 <attribute name="NAME" x="83.82" y="261.3914" size="1.778" layer="95" ratio="10" rot="SR180"/>
+<attribute name="TOLERANCE" x="83.82" y="269.4686" size="1.778" layer="97" ratio="10" rot="SR180" align="top-left"/>
 </instance>
 <instance part="C507" gate="G$1" x="172.72" y="45.72" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="45.72" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="175.4886" y="45.72" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="167.4114" y="45.72" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND510" gate="G$1" x="172.72" y="33.02" smashed="yes">
 <attribute name="VALUE" x="169.926" y="27.94" size="1.778" layer="96"/>
@@ -14017,10 +14200,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R504" gate="G$1" x="182.88" y="53.34" smashed="yes">
 <attribute name="VALUE" x="182.88" y="50.5714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="182.88" y="56.1086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="182.88" y="48.0314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C510" gate="G$1" x="203.2" y="45.72" smashed="yes" rot="R270">
 <attribute name="VALUE" x="200.4314" y="45.72" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="205.9686" y="45.72" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="197.8914" y="45.72" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND512" gate="G$1" x="203.2" y="33.02" smashed="yes">
 <attribute name="VALUE" x="200.406" y="27.94" size="1.778" layer="96"/>
@@ -14028,6 +14213,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C516" gate="G$1" x="317.5" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="314.7314" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="320.2686" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="312.1914" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND518" gate="G$1" x="317.5" y="190.5" smashed="yes">
 <attribute name="VALUE" x="314.706" y="185.42" size="1.778" layer="96"/>
@@ -14039,10 +14225,18 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </instance>
 <instance part="D501" gate="G$1" x="307.34" y="144.78" smashed="yes">
 <attribute name="NAME" x="310.896" y="140.208" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="313.055" y="140.208" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="313.055" y="140.208" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND517" gate="G$1" x="307.34" y="134.62" smashed="yes">
 <attribute name="VALUE" x="304.546" y="129.54" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME6" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -14906,14 +15100,6 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME601" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="U602" gate="G$1" x="287.02" y="231.14" smashed="yes">
 <attribute name="NAME" x="256.54" y="234.696" size="1.27" layer="95"/>
 <attribute name="VALUE" x="256.54" y="232.41" size="1.27" layer="96"/>
@@ -14936,10 +15122,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C613" gate="G$1" x="388.62" y="259.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="385.8514" y="259.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="391.3886" y="259.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="383.3114" y="259.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C614" gate="G$1" x="388.62" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="385.8514" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="391.3886" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="383.3114" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND617" gate="G$1" x="378.46" y="236.22" smashed="yes">
 <attribute name="VALUE" x="375.666" y="231.14" size="1.778" layer="96"/>
@@ -14947,14 +15135,17 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R604" gate="G$1" x="368.3" y="248.92" smashed="yes" rot="R270">
 <attribute name="VALUE" x="365.5314" y="248.92" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="371.0686" y="248.92" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="362.9914" y="248.92" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C617" gate="G$1" x="419.1" y="259.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="416.3314" y="259.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="421.8686" y="259.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="413.7914" y="259.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C618" gate="G$1" x="419.1" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="416.3314" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="421.8686" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="413.7914" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND619" gate="G$1" x="408.94" y="236.22" smashed="yes">
 <attribute name="VALUE" x="406.146" y="231.14" size="1.778" layer="96"/>
@@ -14962,10 +15153,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C620" gate="G$1" x="449.58" y="259.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="446.8114" y="259.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="452.3486" y="259.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="444.2714" y="259.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C621" gate="G$1" x="449.58" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="446.8114" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="452.3486" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="444.2714" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND622" gate="G$1" x="439.42" y="236.22" smashed="yes">
 <attribute name="VALUE" x="436.626" y="231.14" size="1.778" layer="96"/>
@@ -14973,10 +15166,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C623" gate="G$1" x="457.2" y="215.9" smashed="yes">
 <attribute name="VALUE" x="457.2" y="213.1314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="457.2" y="218.6686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="457.2" y="210.5914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C622" gate="G$1" x="457.2" y="266.7" smashed="yes">
 <attribute name="VALUE" x="457.2" y="263.9314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="457.2" y="269.4686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="457.2" y="261.3914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="L604" gate="G$1" x="403.86" y="215.9" smashed="yes">
 <attribute name="NAME" x="400.05" y="217.7796" size="1.778" layer="95"/>
@@ -14999,6 +15194,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C605" gate="G$1" x="223.52" y="231.14" smashed="yes" rot="R270">
 <attribute name="VALUE" x="220.7514" y="231.14" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="226.2886" y="231.14" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="218.2114" y="231.14" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND608" gate="G$1" x="223.52" y="218.44" smashed="yes">
 <attribute name="VALUE" x="220.726" y="213.36" size="1.778" layer="96"/>
@@ -15009,6 +15205,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C603" gate="G$1" x="210.82" y="269.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="208.0514" y="269.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="213.5886" y="269.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="205.5114" y="269.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND606" gate="G$1" x="210.82" y="256.54" smashed="yes">
 <attribute name="VALUE" x="208.026" y="251.46" size="1.778" layer="96"/>
@@ -15016,6 +15213,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C602" gate="G$1" x="198.12" y="269.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="195.3514" y="269.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="200.8886" y="269.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="192.8114" y="269.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND605" gate="G$1" x="198.12" y="256.54" smashed="yes">
 <attribute name="VALUE" x="195.326" y="251.46" size="1.778" layer="96"/>
@@ -15023,6 +15221,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C604" gate="G$1" x="223.52" y="269.24" smashed="yes" rot="R270">
 <attribute name="VALUE" x="220.7514" y="269.24" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="226.2886" y="269.24" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="218.2114" y="269.24" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND607" gate="G$1" x="223.52" y="256.54" smashed="yes">
 <attribute name="VALUE" x="220.726" y="251.46" size="1.778" layer="96"/>
@@ -15030,22 +15229,27 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C616" gate="G$1" x="411.48" y="147.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="408.7114" y="147.32" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="414.2486" y="147.32" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="406.1714" y="147.32" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C615" gate="G$1" x="398.78" y="147.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="396.0114" y="147.32" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="401.5486" y="147.32" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="393.4714" y="147.32" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R606" gate="G$1" x="398.78" y="129.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="396.0114" y="129.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="401.5486" y="129.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="393.4714" y="129.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C619" gate="G$1" x="434.34" y="147.32" smashed="yes" rot="R270">
 <attribute name="VALUE" x="431.5714" y="147.32" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="437.1086" y="147.32" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="429.0314" y="147.32" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R607" gate="G$1" x="416.56" y="157.48" smashed="yes">
 <attribute name="VALUE" x="416.56" y="154.7114" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="416.56" y="160.2486" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="416.56" y="152.1714" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND618" gate="G$1" x="398.78" y="111.76" smashed="yes">
 <attribute name="VALUE" x="395.986" y="106.68" size="1.778" layer="96"/>
@@ -15062,26 +15266,32 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C607" gate="G$1" x="302.26" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="299.4914" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="305.0286" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="296.9514" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C608" gate="G$1" x="314.96" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="312.1914" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="317.7286" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="309.6514" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C609" gate="G$1" x="330.2" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="327.4314" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="332.9686" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="324.8914" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C610" gate="G$1" x="342.9" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="340.1314" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="345.6686" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="337.5914" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C611" gate="G$1" x="358.14" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="355.3714" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="360.9086" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="352.8314" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C612" gate="G$1" x="370.84" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="368.0714" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="373.6086" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="365.5314" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND616" gate="G$1" x="370.84" y="111.76" smashed="yes">
 <attribute name="VALUE" x="368.046" y="106.68" size="1.778" layer="96"/>
@@ -15104,10 +15314,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C606" gate="G$1" x="228.6" y="177.8" smashed="yes">
 <attribute name="VALUE" x="228.6" y="175.0314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="228.6" y="180.5686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="228.6" y="172.4914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R603" gate="G$1" x="233.68" y="160.02" smashed="yes" rot="R270">
 <attribute name="VALUE" x="230.9114" y="160.02" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="236.4486" y="160.02" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="228.3714" y="160.02" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND609" gate="G$1" x="233.68" y="111.76" smashed="yes">
 <attribute name="VALUE" x="230.886" y="106.68" size="1.778" layer="96"/>
@@ -15115,6 +15327,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R601" gate="G$1" x="83.82" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="81.0514" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="86.5886" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="78.5114" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND601" gate="G$1" x="83.82" y="111.76" smashed="yes">
 <attribute name="VALUE" x="81.026" y="106.68" size="1.778" layer="96"/>
@@ -15122,6 +15335,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R605" gate="G$1" x="386.08" y="152.4" smashed="yes" rot="R270">
 <attribute name="VALUE" x="383.3114" y="152.4" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="388.8486" y="152.4" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="380.7714" y="152.4" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="U601" gate="G$1" x="210.82" y="180.34" smashed="yes">
 <attribute name="NAME" x="195.58" y="183.896" size="1.27" layer="95"/>
@@ -15133,6 +15347,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C601" gate="G$1" x="152.4" y="154.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="149.6314" y="154.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="155.1686" y="154.94" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="147.0914" y="154.94" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND603" gate="G$1" x="152.4" y="111.76" smashed="yes">
 <attribute name="VALUE" x="149.606" y="106.68" size="1.778" layer="96"/>
@@ -15140,9 +15355,18 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R602" gate="G$1" x="96.52" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="93.7514" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="99.2886" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="91.2114" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND602" gate="G$1" x="96.52" y="111.76" smashed="yes">
 <attribute name="VALUE" x="93.726" y="106.68" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME5" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -15647,29 +15871,21 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME701" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="U702" gate="G$1" x="436.88" y="332.74" smashed="yes">
 <attribute name="NAME" x="391.16" y="336.296" size="1.27" layer="95"/>
 <attribute name="VALUE" x="391.16" y="334.01" size="1.27" layer="96"/>
 </instance>
 <instance part="J701" gate="G$1" x="419.1" y="193.04" smashed="yes" rot="R180">
-<attribute name="NAME" x="423.926" y="197.612" size="1.27" layer="95" ratio="15" rot="R180"/>
 <attribute name="OCLCSC" x="419.1" y="193.04" size="1.778" layer="96" rot="R180" display="off"/>
+<attribute name="NAME" x="423.926" y="197.612" size="1.27" layer="95" ratio="15" rot="R180"/>
 </instance>
 <instance part="J702" gate="G$1" x="419.1" y="142.24" smashed="yes" rot="R180">
-<attribute name="NAME" x="423.926" y="146.812" size="1.27" layer="95" ratio="15" rot="R180"/>
 <attribute name="OCLCSC" x="419.1" y="142.24" size="1.778" layer="96" rot="R180" display="off"/>
+<attribute name="NAME" x="423.926" y="146.812" size="1.27" layer="95" ratio="15" rot="R180"/>
 </instance>
 <instance part="J703" gate="G$1" x="419.1" y="86.36" smashed="yes" rot="R180">
-<attribute name="NAME" x="423.926" y="90.932" size="1.27" layer="95" ratio="15" rot="R180"/>
 <attribute name="OCLCSC" x="419.1" y="86.36" size="1.778" layer="96" rot="R180" display="off"/>
+<attribute name="NAME" x="423.926" y="90.932" size="1.27" layer="95" ratio="15" rot="R180"/>
 </instance>
 <instance part="USB701" gate="G$1" x="48.26" y="353.06" smashed="yes">
 <attribute name="NAME" x="34.036" y="330.2" size="1.27" layer="95" rot="R90"/>
@@ -15677,10 +15893,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R701" gate="G$1" x="68.58" y="330.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="65.8114" y="330.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="71.3486" y="330.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="63.2714" y="330.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R702" gate="G$1" x="81.28" y="330.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="78.5114" y="330.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="84.0486" y="330.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="75.9714" y="330.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND702" gate="G$1" x="68.58" y="304.8" smashed="yes">
 <attribute name="VALUE" x="65.786" y="299.72" size="1.778" layer="96"/>
@@ -15701,10 +15919,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R706" gate="G$1" x="187.96" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="185.1914" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="190.7286" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="182.6514" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R705" gate="G$1" x="187.96" y="345.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="185.1914" y="345.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="190.7286" y="345.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="182.6514" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND730" gate="G$1" x="381" y="269.24" smashed="yes">
 <attribute name="VALUE" x="378.206" y="264.16" size="1.778" layer="96"/>
@@ -15715,6 +15935,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C718" gate="G$1" x="350.52" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="347.7514" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="353.2886" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="345.2114" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND724" gate="G$1" x="350.52" y="337.82" smashed="yes">
 <attribute name="VALUE" x="347.726" y="332.74" size="1.778" layer="96"/>
@@ -15725,6 +15946,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C720" gate="G$1" x="363.22" y="350.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="360.4514" y="350.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="365.9886" y="350.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="357.9114" y="350.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND726" gate="G$1" x="363.22" y="337.82" smashed="yes">
 <attribute name="VALUE" x="360.426" y="332.74" size="1.778" layer="96"/>
@@ -15741,6 +15963,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R712" gate="G$1" x="335.28" y="335.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="332.5114" y="335.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="338.0486" y="335.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="329.9714" y="335.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3705" gate="G$1" x="322.58" y="355.6" smashed="yes">
 <attribute name="VALUE" x="320.04" y="353.06" size="1.778" layer="96" rot="R90"/>
@@ -15748,6 +15971,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R707" gate="G$1" x="322.58" y="335.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="319.8114" y="335.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="325.3486" y="335.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="317.2714" y="335.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="U701" gate="G$1" x="198.12" y="154.94" smashed="yes">
 <attribute name="NAME" x="167.64" y="158.496" size="1.27" layer="95"/>
@@ -15762,6 +15986,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R703" gate="G$1" x="137.16" y="157.48" smashed="yes" rot="R270">
 <attribute name="VALUE" x="134.3914" y="157.48" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="139.9286" y="157.48" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="131.8514" y="157.48" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND710" gate="G$1" x="157.48" y="58.42" smashed="yes">
 <attribute name="VALUE" x="154.686" y="53.34" size="1.778" layer="96"/>
@@ -15769,6 +15994,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C703" gate="G$1" x="119.38" y="157.48" smashed="yes" rot="R270">
 <attribute name="VALUE" x="116.6114" y="157.48" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="122.1486" y="157.48" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="114.0714" y="157.48" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND707" gate="G$1" x="119.38" y="144.78" smashed="yes">
 <attribute name="VALUE" x="116.586" y="139.7" size="1.778" layer="96"/>
@@ -15779,6 +16005,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C701" gate="G$1" x="106.68" y="157.48" smashed="yes" rot="R270">
 <attribute name="VALUE" x="103.9114" y="157.48" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="109.4486" y="157.48" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="101.3714" y="157.48" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND705" gate="G$1" x="106.68" y="144.78" smashed="yes">
 <attribute name="VALUE" x="103.886" y="139.7" size="1.778" layer="96"/>
@@ -15789,6 +16016,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C705" gate="G$1" x="134.62" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="131.8514" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="137.3886" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="129.3114" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND709" gate="G$1" x="134.62" y="185.42" smashed="yes">
 <attribute name="VALUE" x="131.826" y="180.34" size="1.778" layer="96"/>
@@ -15796,6 +16024,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C704" gate="G$1" x="121.92" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="119.1514" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="124.6886" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="116.6114" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND708" gate="G$1" x="121.92" y="185.42" smashed="yes">
 <attribute name="VALUE" x="119.126" y="180.34" size="1.778" layer="96"/>
@@ -15803,35 +16032,41 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C702" gate="G$1" x="109.22" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="106.4514" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="111.9886" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="103.9114" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND706" gate="G$1" x="109.22" y="185.42" smashed="yes">
 <attribute name="VALUE" x="106.426" y="180.34" size="1.778" layer="96"/>
 </instance>
 <instance part="C707" gate="G$1" x="208.28" y="106.68" smashed="yes" rot="R270">
-<attribute name="VALUE" x="204.0128" y="107.2642" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="211.0486" y="107.5944" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="205.5114" y="106.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="211.0486" y="106.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="202.9714" y="106.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C710" gate="G$1" x="241.3" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="237.0328" y="71.7042" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="244.0686" y="72.0344" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="238.5314" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="244.0686" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="235.9914" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND716" gate="G$1" x="241.3" y="58.42" smashed="yes">
 <attribute name="VALUE" x="238.506" y="53.34" size="1.778" layer="96"/>
 </instance>
 <instance part="C711" gate="G$1" x="254" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="249.7328" y="71.7042" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="256.7686" y="72.0344" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="251.2314" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="256.7686" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="248.6914" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND717" gate="G$1" x="254" y="58.42" smashed="yes">
 <attribute name="VALUE" x="251.206" y="53.34" size="1.778" layer="96"/>
 </instance>
 <instance part="C708" gate="G$1" x="208.28" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="204.0128" y="71.7042" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="211.0486" y="72.0344" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="205.5114" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="211.0486" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="202.9714" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C709" gate="G$1" x="220.98" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="216.7128" y="71.7042" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="223.7486" y="72.0344" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="218.2114" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="223.7486" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="215.6714" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND715" gate="G$1" x="220.98" y="58.42" smashed="yes">
 <attribute name="VALUE" x="218.186" y="53.34" size="1.778" layer="96"/>
@@ -15845,6 +16080,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R710" gate="G$1" x="332.74" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="329.9714" y="182.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="335.5086" y="182.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="327.4314" y="182.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND719" gate="G$1" x="332.74" y="165.1" smashed="yes">
 <attribute name="VALUE" x="329.946" y="160.02" size="1.778" layer="96"/>
@@ -15852,10 +16088,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C712" gate="G$1" x="302.26" y="187.96" smashed="yes">
 <attribute name="VALUE" x="302.26" y="185.1914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="302.26" y="190.7286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="302.26" y="182.6514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C721" gate="G$1" x="378.46" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="375.6914" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="373.1514" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L701" gate="G$1" x="363.22" y="187.96" smashed="yes" rot="R180">
 <attribute name="NAME" x="367.03" y="186.0804" size="1.778" layer="95" rot="R180"/>
@@ -15873,6 +16111,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C724" gate="G$1" x="391.16" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="393.9286" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="385.8514" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND731" gate="G$1" x="391.16" y="165.1" smashed="yes">
 <attribute name="VALUE" x="388.366" y="160.02" size="1.778" layer="96"/>
@@ -15880,6 +16119,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R714" gate="G$1" x="345.44" y="182.88" smashed="yes" rot="R270">
 <attribute name="VALUE" x="342.6714" y="182.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="348.2086" y="182.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="340.1314" y="182.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND721" gate="G$1" x="345.44" y="165.1" smashed="yes">
 <attribute name="VALUE" x="342.646" y="160.02" size="1.778" layer="96"/>
@@ -15887,18 +16127,22 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C714" gate="G$1" x="314.96" y="198.12" smashed="yes">
 <attribute name="VALUE" x="314.96" y="195.3514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="314.96" y="200.8886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="314.96" y="192.8114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R709" gate="G$1" x="332.74" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="329.9714" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="335.5086" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="327.4314" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R713" gate="G$1" x="345.44" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="342.6714" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="348.2086" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="340.1314" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C719" gate="G$1" x="360.68" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="357.9114" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="363.4486" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="355.3714" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND725" gate="G$1" x="360.68" y="208.28" smashed="yes">
 <attribute name="VALUE" x="357.886" y="203.2" size="1.778" layer="96"/>
@@ -15909,6 +16153,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R711" gate="G$1" x="332.74" y="132.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="329.9714" y="132.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="335.5086" y="132.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="327.4314" y="132.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND720" gate="G$1" x="332.74" y="114.3" smashed="yes">
 <attribute name="VALUE" x="329.946" y="109.22" size="1.778" layer="96"/>
@@ -15916,10 +16161,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C713" gate="G$1" x="302.26" y="137.16" smashed="yes">
 <attribute name="VALUE" x="302.26" y="134.3914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="302.26" y="139.9286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="302.26" y="131.8514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="C722" gate="G$1" x="378.46" y="129.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="375.6914" y="129.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="129.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="373.1514" y="129.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L702" gate="G$1" x="363.22" y="137.16" smashed="yes" rot="R180">
 <attribute name="NAME" x="367.03" y="135.2804" size="1.778" layer="95" rot="R180"/>
@@ -15937,6 +16184,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C725" gate="G$1" x="391.16" y="129.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="129.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="393.9286" y="129.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="385.8514" y="129.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND732" gate="G$1" x="391.16" y="114.3" smashed="yes">
 <attribute name="VALUE" x="388.366" y="109.22" size="1.778" layer="96"/>
@@ -15944,6 +16192,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="R715" gate="G$1" x="345.44" y="132.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="342.6714" y="132.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="348.2086" y="132.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="340.1314" y="132.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND722" gate="G$1" x="345.44" y="114.3" smashed="yes">
 <attribute name="VALUE" x="342.646" y="109.22" size="1.778" layer="96"/>
@@ -15951,6 +16200,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C715" gate="G$1" x="314.96" y="147.32" smashed="yes">
 <attribute name="VALUE" x="314.96" y="144.5514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="314.96" y="150.0886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VOLTAGE" x="314.96" y="142.0114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND736" gate="G$1" x="408.94" y="43.18" smashed="yes">
 <attribute name="VALUE" x="406.146" y="38.1" size="1.778" layer="96"/>
@@ -15958,6 +16208,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C723" gate="G$1" x="378.46" y="66.04" smashed="yes" rot="R270">
 <attribute name="VALUE" x="375.6914" y="66.04" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="381.2286" y="66.04" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="373.1514" y="66.04" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="L703" gate="G$1" x="363.22" y="81.28" smashed="yes" rot="R180">
 <attribute name="NAME" x="367.03" y="79.4004" size="1.778" layer="95" rot="R180"/>
@@ -15975,6 +16226,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C726" gate="G$1" x="391.16" y="66.04" smashed="yes" rot="R270">
 <attribute name="VALUE" x="388.3914" y="66.04" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="393.9286" y="66.04" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="385.8514" y="66.04" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND733" gate="G$1" x="391.16" y="43.18" smashed="yes">
 <attribute name="VALUE" x="388.366" y="38.1" size="1.778" layer="96"/>
@@ -15982,10 +16234,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C717" gate="G$1" x="345.44" y="73.66" smashed="yes" rot="R270">
 <attribute name="VALUE" x="342.6714" y="73.66" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="348.2086" y="73.66" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="340.1314" y="73.66" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R716" gate="G$1" x="345.44" y="60.96" smashed="yes" rot="R270">
 <attribute name="VALUE" x="342.6714" y="60.96" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="348.2086" y="60.96" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="340.1314" y="60.96" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND723" gate="G$1" x="345.44" y="43.18" smashed="yes">
 <attribute name="VALUE" x="342.646" y="38.1" size="1.778" layer="96"/>
@@ -15993,10 +16247,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C716" gate="G$1" x="330.2" y="73.66" smashed="yes" rot="R270">
 <attribute name="VALUE" x="327.4314" y="73.66" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="332.9686" y="73.66" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="324.8914" y="73.66" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R708" gate="G$1" x="330.2" y="60.96" smashed="yes" rot="R270">
 <attribute name="VALUE" x="327.4314" y="60.96" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="332.9686" y="60.96" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="324.8914" y="60.96" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND718" gate="G$1" x="330.2" y="43.18" smashed="yes">
 <attribute name="VALUE" x="327.406" y="38.1" size="1.778" layer="96"/>
@@ -16004,6 +16260,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="C706" gate="G$1" x="175.26" y="332.74" smashed="yes" rot="R270">
 <attribute name="VALUE" x="172.4914" y="332.74" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="178.0286" y="332.74" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="169.9514" y="332.74" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND712" gate="G$1" x="175.26" y="304.8" smashed="yes">
 <attribute name="VALUE" x="172.466" y="299.72" size="1.778" layer="96"/>
@@ -16015,10 +16272,18 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </instance>
 <instance part="D702" gate="G$1" x="162.56" y="317.5" smashed="yes">
 <attribute name="NAME" x="166.116" y="312.928" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="168.275" y="312.928" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="168.275" y="312.928" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND711" gate="G$1" x="162.56" y="304.8" smashed="yes">
 <attribute name="VALUE" x="159.766" y="299.72" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME4" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -16822,14 +17087,6 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME801" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="U801" gate="G$1" x="281.94" y="256.54" smashed="yes">
 <attribute name="NAME" x="256.54" y="260.096" size="1.27" layer="95"/>
 <attribute name="VALUE" x="256.54" y="257.81" size="1.27" layer="96"/>
@@ -16856,8 +17113,9 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="243.84" y="259.08" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="R805" gate="G$1" x="320.04" y="218.44" smashed="yes" rot="R270">
-<attribute name="VALUE" x="316.3824" y="217.7542" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="322.8086" y="217.4494" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="317.2714" y="218.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="322.8086" y="218.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="314.7314" y="218.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3806" gate="G$1" x="320.04" y="223.52" smashed="yes">
 <attribute name="VALUE" x="317.5" y="220.98" size="1.778" layer="96" rot="R90"/>
@@ -16877,33 +17135,46 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="180.086" y="208.28" size="1.778" layer="96"/>
 </instance>
 <instance part="R804" gate="G$1" x="198.12" y="228.6" smashed="yes" rot="R270">
-<attribute name="VALUE" x="194.4624" y="227.9142" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="200.8886" y="227.6094" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="195.3514" y="228.6" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="200.8886" y="228.6" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="192.8114" y="228.6" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R803" gate="G$1" x="182.88" y="243.84" smashed="yes" rot="R270">
-<attribute name="VALUE" x="179.2224" y="243.1542" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="185.6486" y="242.8494" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="180.1114" y="243.84" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="185.6486" y="243.84" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="177.5714" y="243.84" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R802" gate="G$1" x="162.56" y="198.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="158.9024" y="197.4342" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="165.3286" y="197.1294" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="159.7914" y="198.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="165.3286" y="198.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="157.2514" y="198.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R801" gate="G$1" x="142.24" y="205.74" smashed="yes">
-<attribute name="VALUE" x="142.9258" y="202.0824" size="1.778" layer="96" ratio="10" rot="SR0"/>
-<attribute name="NAME" x="143.2306" y="208.5086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VALUE" x="142.24" y="202.9714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
+<attribute name="NAME" x="142.24" y="208.5086" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="142.24" y="200.4314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="GND801" gate="G$1" x="162.56" y="180.34" smashed="yes">
 <attribute name="VALUE" x="159.766" y="175.26" size="1.778" layer="96"/>
 </instance>
 <instance part="C801" gate="G$1" x="269.24" y="281.94" smashed="yes" rot="R270">
-<attribute name="VALUE" x="264.9728" y="282.5242" size="1.778" layer="96" ratio="10" rot="SR270"/>
-<attribute name="NAME" x="272.0086" y="282.8544" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VALUE" x="266.4714" y="281.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="272.0086" y="281.94" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="263.9314" y="281.94" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND806" gate="G$1" x="269.24" y="269.24" smashed="yes">
 <attribute name="VALUE" x="266.446" y="264.16" size="1.778" layer="96"/>
 </instance>
 <instance part="3V3804" gate="G$1" x="269.24" y="287.02" smashed="yes">
 <attribute name="VALUE" x="266.7" y="284.48" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="FRAME3" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -17232,14 +17503,6 @@ SMC_MAIN_CLK = 50 MHz (SMC main clock)
 DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </plain>
 <instances>
-<instance part="FRAME901" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="U902" gate="G$1" x="340.36" y="218.44" smashed="yes">
 <attribute name="NAME" x="317.5" y="221.996" size="1.27" layer="95"/>
 <attribute name="VALUE" x="317.5" y="219.71" size="1.27" layer="96"/>
@@ -17257,6 +17520,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C901" gate="G$1" x="114.3" y="167.64" smashed="yes" rot="R270">
 <attribute name="VALUE" x="111.5314" y="167.64" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="117.0686" y="167.64" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="108.9914" y="167.64" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND901" gate="G$1" x="114.3" y="154.94" smashed="yes">
 <attribute name="VALUE" x="111.506" y="149.86" size="1.778" layer="96"/>
@@ -17267,6 +17531,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R901" gate="G$1" x="180.34" y="154.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="177.5714" y="154.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="183.1086" y="154.94" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="175.0314" y="154.94" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND902" gate="G$1" x="180.34" y="137.16" smashed="yes">
 <attribute name="VALUE" x="177.546" y="132.08" size="1.778" layer="96"/>
@@ -17281,10 +17546,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C906" gate="G$1" x="292.1" y="154.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="289.3314" y="154.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="294.8686" y="154.94" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="286.7914" y="154.94" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C903" gate="G$1" x="266.7" y="154.94" smashed="yes" rot="R270">
 <attribute name="VALUE" x="263.9314" y="154.94" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="269.4686" y="154.94" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="261.3914" y="154.94" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND909" gate="G$1" x="292.1" y="137.16" smashed="yes">
 <attribute name="VALUE" x="289.306" y="132.08" size="1.778" layer="96"/>
@@ -17301,6 +17568,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R902" gate="G$1" x="251.46" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="248.6914" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="254.2286" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="246.1514" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3903" gate="G$1" x="251.46" y="226.06" smashed="yes">
 <attribute name="VALUE" x="248.92" y="223.52" size="1.778" layer="96" rot="R90"/>
@@ -17308,6 +17576,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R903" gate="G$1" x="264.16" y="220.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="261.3914" y="220.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="266.9286" y="220.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="258.8514" y="220.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V3905" gate="G$1" x="264.16" y="226.06" smashed="yes">
 <attribute name="VALUE" x="261.62" y="223.52" size="1.778" layer="96" rot="R90"/>
@@ -17315,6 +17584,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C907" gate="G$1" x="299.72" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="296.9514" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="302.4886" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="294.4114" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND910" gate="G$1" x="299.72" y="248.92" smashed="yes">
 <attribute name="VALUE" x="296.926" y="243.84" size="1.778" layer="96"/>
@@ -17325,6 +17595,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C905" gate="G$1" x="287.02" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="284.2514" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="289.7886" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="281.7114" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND908" gate="G$1" x="287.02" y="248.92" smashed="yes">
 <attribute name="VALUE" x="284.226" y="243.84" size="1.778" layer="96"/>
@@ -17335,6 +17606,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C904" gate="G$1" x="274.32" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="271.5514" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="277.0886" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="269.0114" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND906" gate="G$1" x="274.32" y="248.92" smashed="yes">
 <attribute name="VALUE" x="271.526" y="243.84" size="1.778" layer="96"/>
@@ -17345,6 +17617,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C902" gate="G$1" x="261.62" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="258.8514" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="264.3886" y="261.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="256.3114" y="261.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND904" gate="G$1" x="261.62" y="248.92" smashed="yes">
 <attribute name="VALUE" x="258.826" y="243.84" size="1.778" layer="96"/>
@@ -17355,26 +17628,40 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R908" gate="G$1" x="370.84" y="198.12" smashed="yes">
 <attribute name="VALUE" x="370.84" y="195.3514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="370.84" y="200.8886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="370.84" y="192.8114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R905" gate="G$1" x="355.6" y="203.2" smashed="yes">
 <attribute name="VALUE" x="355.6" y="200.4314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="355.6" y="205.9686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="355.6" y="197.8914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R904" gate="G$1" x="355.6" y="215.9" smashed="yes">
 <attribute name="VALUE" x="355.6" y="213.1314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="355.6" y="218.6686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="355.6" y="210.5914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R907" gate="G$1" x="370.84" y="210.82" smashed="yes">
 <attribute name="VALUE" x="370.84" y="208.0514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="370.84" y="213.5886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="370.84" y="205.5114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R906" gate="G$1" x="355.6" y="177.8" smashed="yes">
 <attribute name="VALUE" x="355.6" y="175.0314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="355.6" y="180.5686" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="355.6" y="172.4914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="R909" gate="G$1" x="370.84" y="185.42" smashed="yes">
 <attribute name="VALUE" x="370.84" y="182.6514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="370.84" y="188.1886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="TOLERANCE" x="370.84" y="180.1114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
+</instance>
+<instance part="FRAME2" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -17681,21 +17968,15 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <plain>
 </plain>
 <instances>
-<instance part="FRAME1001" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-</instance>
 <instance part="C1018" gate="G$1" x="264.16" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="261.3914" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="266.9286" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="258.8514" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1017" gate="G$1" x="251.46" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="248.6914" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="254.2286" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="246.1514" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1029" gate="G$1" x="251.46" y="165.1" smashed="yes">
 <attribute name="VALUE" x="248.666" y="160.02" size="1.778" layer="96"/>
@@ -17712,6 +17993,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1012" gate="G$1" x="193.04" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="190.2714" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="195.8086" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="187.7314" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1022" gate="G$1" x="193.04" y="165.1" smashed="yes">
 <attribute name="VALUE" x="190.246" y="160.02" size="1.778" layer="96"/>
@@ -17719,10 +18001,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1010" gate="G$1" x="208.28" y="208.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="205.5114" y="208.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="211.0486" y="208.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="202.9714" y="208.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R1011" gate="G$1" x="208.28" y="185.42" smashed="yes" rot="R270">
 <attribute name="VALUE" x="205.5114" y="185.42" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="211.0486" y="185.42" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="202.9714" y="185.42" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1025" gate="G$1" x="208.28" y="165.1" smashed="yes">
 <attribute name="VALUE" x="205.486" y="160.02" size="1.778" layer="96"/>
@@ -17730,6 +18014,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1009" gate="G$1" x="185.42" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="182.6514" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="188.1886" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="180.1114" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V31003" gate="G$1" x="185.42" y="261.62" smashed="yes">
 <attribute name="VALUE" x="182.88" y="259.08" size="1.778" layer="96" rot="R90"/>
@@ -17750,6 +18035,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1008" gate="G$1" x="116.84" y="180.34" smashed="yes" rot="R270">
 <attribute name="VALUE" x="114.0714" y="180.34" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="119.6086" y="180.34" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="111.5314" y="180.34" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1014" gate="G$1" x="116.84" y="165.1" smashed="yes">
 <attribute name="VALUE" x="114.046" y="160.02" size="1.778" layer="96"/>
@@ -17757,10 +18043,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1003" gate="G$1" x="101.6" y="208.28" smashed="yes" rot="R270">
 <attribute name="VALUE" x="98.8314" y="208.28" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="104.3686" y="208.28" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="96.2914" y="208.28" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R1004" gate="G$1" x="101.6" y="185.42" smashed="yes" rot="R270">
 <attribute name="VALUE" x="98.8314" y="185.42" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="104.3686" y="185.42" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="96.2914" y="185.42" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1012" gate="G$1" x="101.6" y="165.1" smashed="yes">
 <attribute name="VALUE" x="98.806" y="160.02" size="1.778" layer="96"/>
@@ -17768,10 +18056,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1003" gate="G$1" x="58.42" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="55.6514" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="61.1886" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="53.1114" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1001" gate="G$1" x="45.72" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="42.9514" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="48.4886" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="40.4114" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1001" gate="G$1" x="45.72" y="165.1" smashed="yes">
 <attribute name="VALUE" x="42.926" y="160.02" size="1.778" layer="96"/>
@@ -17785,6 +18075,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1005" gate="G$1" x="124.46" y="256.54" smashed="yes" rot="R270">
 <attribute name="VALUE" x="121.6914" y="256.54" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="127.2286" y="256.54" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="119.1514" y="256.54" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V31001" gate="G$1" x="124.46" y="261.62" smashed="yes">
 <attribute name="VALUE" x="121.92" y="259.08" size="1.778" layer="96" rot="R90"/>
@@ -17792,10 +18083,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1006" gate="G$1" x="76.2" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="73.4314" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="78.9686" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="70.8914" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1007" gate="G$1" x="88.9" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="86.1314" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="91.6686" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="83.5914" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1008" gate="G$1" x="76.2" y="165.1" smashed="yes">
 <attribute name="VALUE" x="73.406" y="160.02" size="1.778" layer="96"/>
@@ -17813,18 +18106,20 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="CURRENT" x="118.11" y="208.9404" size="1.778" layer="97" align="top-left"/>
 </instance>
 <instance part="L1004" gate="G$1" x="187.96" y="213.36" smashed="yes">
+<attribute name="OCLCSC" x="187.96" y="213.36" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="184.15" y="215.2396" size="1.778" layer="95"/>
 <attribute name="VALUE" x="184.15" y="211.4804" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="184.15" y="208.9404" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCLCSC" x="187.96" y="213.36" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C1015" gate="G$1" x="220.98" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="218.2114" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="223.7486" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="215.6714" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1016" gate="G$1" x="233.68" y="203.2" smashed="yes" rot="R270">
 <attribute name="VALUE" x="230.9114" y="203.2" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="236.4486" y="203.2" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="228.3714" y="203.2" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1026" gate="G$1" x="220.98" y="165.1" smashed="yes">
 <attribute name="VALUE" x="218.186" y="160.02" size="1.778" layer="96"/>
@@ -17838,10 +18133,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1001" gate="G$1" x="71.12" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="68.3514" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="73.8886" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="65.8114" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R1002" gate="G$1" x="83.82" y="322.58" smashed="yes" rot="R270">
 <attribute name="VALUE" x="81.0514" y="322.58" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="86.5886" y="322.58" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="78.5114" y="322.58" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1006" gate="G$1" x="71.12" y="297.18" smashed="yes">
 <attribute name="VALUE" x="68.326" y="292.1" size="1.778" layer="96"/>
@@ -17860,14 +18157,15 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="VALUE" x="101.346" y="292.1" size="1.778" layer="96"/>
 </instance>
 <instance part="F1001" gate="G$1" x="68.58" y="350.52" smashed="yes">
-<attribute name="NAME" x="64.77" y="354.33" size="1.778" layer="95"/>
-<attribute name="HOLD" x="64.77" y="346.71" size="1.778" layer="97" align="top-left" display="both"/>
-<attribute name="TRIP" x="64.77" y="344.17" size="1.778" layer="97" align="top-left" display="both"/>
 <attribute name="OCLCSC" x="68.58" y="350.52" size="1.778" layer="96" display="off"/>
+<attribute name="HOLD" x="68.58" y="346.456" size="1.778" layer="97" align="top-left" display="both"/>
+<attribute name="TRIP" x="68.58" y="343.916" size="1.778" layer="97" align="top-left" display="both"/>
+<attribute name="NAME" x="68.58" y="355.3206" size="1.778" layer="95" ratio="10" rot="SR0"/>
 </instance>
 <instance part="C1014" gate="G$1" x="205.74" y="327.66" smashed="yes" rot="R270">
 <attribute name="VALUE" x="202.9714" y="327.66" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="208.5086" y="327.66" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="200.4314" y="327.66" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1024" gate="G$1" x="205.74" y="297.18" smashed="yes">
 <attribute name="VALUE" x="202.946" y="292.1" size="1.778" layer="96"/>
@@ -17882,6 +18180,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1005" gate="G$1" x="73.66" y="86.36" smashed="yes" rot="R270">
 <attribute name="VALUE" x="70.8914" y="86.36" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="76.4286" y="86.36" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="68.3514" y="86.36" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1007" gate="G$1" x="73.66" y="71.12" smashed="yes">
 <attribute name="VALUE" x="70.866" y="66.04" size="1.778" layer="96"/>
@@ -17889,27 +18188,31 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1007" gate="G$1" x="172.72" y="106.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="106.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="175.4886" y="106.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="167.4114" y="106.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="R1008" gate="G$1" x="172.72" y="88.9" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="88.9" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="175.4886" y="88.9" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="167.4114" y="88.9" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1018" gate="G$1" x="172.72" y="71.12" smashed="yes">
 <attribute name="VALUE" x="169.926" y="66.04" size="1.778" layer="96"/>
 </instance>
 <instance part="L1002" gate="G$1" x="144.78" y="111.76" smashed="yes">
+<attribute name="OCLCSC" x="144.78" y="111.76" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="140.97" y="113.6396" size="1.778" layer="95"/>
 <attribute name="VALUE" x="140.97" y="109.8804" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="140.97" y="107.3404" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCLCSC" x="144.78" y="111.76" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C1010" gate="G$1" x="185.42" y="101.6" smashed="yes" rot="R270">
 <attribute name="VALUE" x="182.6514" y="101.6" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="188.1886" y="101.6" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="180.1114" y="101.6" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1013" gate="G$1" x="198.12" y="101.6" smashed="yes" rot="R270">
 <attribute name="VALUE" x="195.3514" y="101.6" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="200.8886" y="101.6" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="192.8114" y="101.6" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1020" gate="G$1" x="185.42" y="71.12" smashed="yes">
 <attribute name="VALUE" x="182.626" y="66.04" size="1.778" layer="96"/>
@@ -17923,6 +18226,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1006" gate="G$1" x="124.46" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="121.6914" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="127.2286" y="134.62" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="119.1514" y="134.62" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V31002" gate="G$1" x="124.46" y="139.7" smashed="yes">
 <attribute name="VALUE" x="121.92" y="137.16" size="1.778" layer="96" rot="R90"/>
@@ -17930,10 +18234,12 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1004" gate="G$1" x="60.96" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="58.1914" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="63.7286" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="55.6514" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1002" gate="G$1" x="48.26" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="45.4914" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="51.0286" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="42.9514" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1002" gate="G$1" x="48.26" y="71.12" smashed="yes">
 <attribute name="VALUE" x="45.466" y="66.04" size="1.778" layer="96"/>
@@ -17954,6 +18260,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1030" gate="G$1" x="492.76" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="489.9914" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="495.5286" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="487.4514" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1050" gate="G$1" x="492.76" y="274.32" smashed="yes">
 <attribute name="VALUE" x="489.966" y="269.24" size="1.778" layer="96"/>
@@ -17961,6 +18268,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1023" gate="G$1" x="431.8" y="292.1" smashed="yes" rot="R270">
 <attribute name="VALUE" x="429.0314" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="434.5686" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="426.4914" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1039" gate="G$1" x="431.8" y="274.32" smashed="yes">
 <attribute name="VALUE" x="429.006" y="269.24" size="1.778" layer="96"/>
@@ -17975,6 +18283,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1029" gate="G$1" x="492.76" y="345.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="489.9914" y="345.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="495.5286" y="345.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="487.4514" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1049" gate="G$1" x="492.76" y="327.66" smashed="yes">
 <attribute name="VALUE" x="489.966" y="322.58" size="1.778" layer="96"/>
@@ -17982,6 +18291,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1022" gate="G$1" x="431.8" y="345.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="429.0314" y="345.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="434.5686" y="345.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="426.4914" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1038" gate="G$1" x="431.8" y="327.66" smashed="yes">
 <attribute name="VALUE" x="429.006" y="322.58" size="1.778" layer="96"/>
@@ -17993,6 +18303,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1027" gate="G$1" x="485.14" y="223.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="482.3714" y="223.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="487.9086" y="223.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="479.8314" y="223.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1047" gate="G$1" x="485.14" y="205.74" smashed="yes">
 <attribute name="VALUE" x="482.346" y="200.66" size="1.778" layer="96"/>
@@ -18000,6 +18311,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1024" gate="G$1" x="434.34" y="223.52" smashed="yes" rot="R270">
 <attribute name="VALUE" x="431.5714" y="223.52" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="437.1086" y="223.52" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="429.0314" y="223.52" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1040" gate="G$1" x="434.34" y="205.74" smashed="yes">
 <attribute name="VALUE" x="431.546" y="200.66" size="1.778" layer="96"/>
@@ -18014,6 +18326,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1028" gate="G$1" x="485.14" y="172.72" smashed="yes" rot="R270">
 <attribute name="VALUE" x="482.3714" y="172.72" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="487.9086" y="172.72" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="479.8314" y="172.72" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1048" gate="G$1" x="485.14" y="154.94" smashed="yes">
 <attribute name="VALUE" x="482.346" y="149.86" size="1.778" layer="96"/>
@@ -18021,6 +18334,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1025" gate="G$1" x="434.34" y="172.72" smashed="yes" rot="R270">
 <attribute name="VALUE" x="431.5714" y="172.72" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="437.1086" y="172.72" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="429.0314" y="172.72" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1041" gate="G$1" x="434.34" y="154.94" smashed="yes">
 <attribute name="VALUE" x="431.546" y="149.86" size="1.778" layer="96"/>
@@ -18029,18 +18343,20 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="VALUE" x="441.706" y="149.86" size="1.778" layer="96"/>
 </instance>
 <instance part="L1003" gate="G$1" x="175.26" y="350.52" smashed="yes">
+<attribute name="OCMOUSER" x="175.26" y="350.52" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="171.45" y="352.3996" size="1.778" layer="95"/>
 <attribute name="VALUE" x="171.45" y="348.6404" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="171.45" y="346.1004" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCMOUSER" x="175.26" y="350.52" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C1009" gate="G$1" x="160.02" y="327.66" smashed="yes" rot="R270">
 <attribute name="VALUE" x="157.2514" y="327.66" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="162.7886" y="327.66" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="154.7114" y="327.66" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1011" gate="G$1" x="190.5" y="327.66" smashed="yes" rot="R270">
 <attribute name="VALUE" x="187.7314" y="327.66" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="193.2686" y="327.66" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="185.1914" y="327.66" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1021" gate="G$1" x="190.5" y="297.18" smashed="yes">
 <attribute name="VALUE" x="187.706" y="292.1" size="1.778" layer="96"/>
@@ -18049,18 +18365,20 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="VALUE" x="157.226" y="292.1" size="1.778" layer="96"/>
 </instance>
 <instance part="L1005" gate="G$1" x="297.18" y="101.6" smashed="yes">
+<attribute name="OCMOUSER" x="297.18" y="101.6" size="1.778" layer="96" display="off"/>
 <attribute name="NAME" x="293.37" y="103.4796" size="1.778" layer="95"/>
 <attribute name="VALUE" x="293.37" y="99.7204" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="293.37" y="97.1804" size="1.778" layer="97" align="top-left"/>
-<attribute name="OCMOUSER" x="297.18" y="101.6" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="C1019" gate="G$1" x="281.94" y="91.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="279.1714" y="91.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="284.7086" y="91.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="276.6314" y="91.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="C1020" gate="G$1" x="312.42" y="91.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="309.6514" y="91.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="315.1886" y="91.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="307.1114" y="91.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1033" gate="G$1" x="312.42" y="71.12" smashed="yes">
 <attribute name="VALUE" x="309.626" y="66.04" size="1.778" layer="96"/>
@@ -18078,6 +18396,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1014" gate="G$1" x="370.84" y="88.9" smashed="yes" rot="R270">
 <attribute name="VALUE" x="368.0714" y="88.9" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="373.6086" y="88.9" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="365.5314" y="88.9" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1035" gate="G$1" x="370.84" y="71.12" smashed="yes">
 <attribute name="VALUE" x="368.046" y="66.04" size="1.778" layer="96"/>
@@ -18085,6 +18404,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1021" gate="G$1" x="327.66" y="91.44" smashed="yes" rot="R270">
 <attribute name="VALUE" x="324.8914" y="91.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="330.4286" y="91.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="322.3514" y="91.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1034" gate="G$1" x="327.66" y="71.12" smashed="yes">
 <attribute name="VALUE" x="324.866" y="66.04" size="1.778" layer="96"/>
@@ -18092,6 +18412,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1015" gate="G$1" x="383.54" y="88.9" smashed="yes" rot="R270">
 <attribute name="VALUE" x="380.7714" y="88.9" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="386.3086" y="88.9" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="378.2314" y="88.9" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1036" gate="G$1" x="383.54" y="71.12" smashed="yes">
 <attribute name="VALUE" x="380.746" y="66.04" size="1.778" layer="96"/>
@@ -18102,6 +18423,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="C1026" gate="G$1" x="469.9" y="83.82" smashed="yes" rot="R270">
 <attribute name="VALUE" x="467.1314" y="83.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="472.6686" y="83.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="464.5914" y="83.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND1046" gate="G$1" x="469.9" y="71.12" smashed="yes">
 <attribute name="VALUE" x="467.106" y="66.04" size="1.778" layer="96"/>
@@ -18109,6 +18431,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <instance part="R1016" gate="G$1" x="436.88" y="121.92" smashed="yes" rot="R270">
 <attribute name="VALUE" x="434.1114" y="121.92" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="439.6486" y="121.92" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="431.5714" y="121.92" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="3V31007" gate="G$1" x="436.88" y="127" smashed="yes">
 <attribute name="VALUE" x="434.34" y="124.46" size="1.778" layer="96" rot="R90"/>
@@ -18123,7 +18446,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </instance>
 <instance part="D1003" gate="G$1" x="292.1" y="177.8" smashed="yes">
 <attribute name="NAME" x="295.656" y="173.228" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="297.815" y="173.228" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="297.815" y="173.228" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND1032" gate="G$1" x="292.1" y="165.1" smashed="yes">
 <attribute name="VALUE" x="289.306" y="160.02" size="1.778" layer="96"/>
@@ -18138,10 +18461,18 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </instance>
 <instance part="D1002" gate="G$1" x="223.52" y="309.88" smashed="yes">
 <attribute name="NAME" x="227.076" y="305.308" size="1.778" layer="95" rot="R90"/>
-<attribute name="VALUE" x="229.235" y="305.308" size="1.778" layer="96" rot="R90"/>
+<attribute name="COLOR" x="229.235" y="305.308" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="GND1027" gate="G$1" x="223.52" y="297.18" smashed="yes">
 <attribute name="VALUE" x="220.726" y="292.1" size="1.778" layer="96"/>
+</instance>
+<instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes">
+<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -18731,7 +19062,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <wire x1="53.34" y1="342.9" x2="58.42" y2="342.9" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="342.9" x2="58.42" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="F1001" gate="G$1" pin="2"/>
-<wire x1="58.42" y1="350.52" x2="63.5" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="350.52" x2="68.58" y2="350.52" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$65" class="0">
@@ -18904,7 +19235,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <pinref part="D1001" gate="G$1" pin="2"/>
 <wire x1="99.06" y1="325.12" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="F1001" gate="G$1" pin="1"/>
-<wire x1="73.66" y1="350.52" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="350.52" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="C1009" gate="G$1" pin="C1"/>
 <wire x1="160.02" y1="327.66" x2="160.02" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="350.52" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
