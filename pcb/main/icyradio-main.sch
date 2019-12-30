@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.5.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -3866,8 +3866,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-33.02" y1="0" x2="-33.02" y2="-76.2" width="0.254" layer="94"/>
 <wire x1="-33.02" y1="-76.2" x2="0" y2="-76.2" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-76.2" width="0.254" layer="94"/>
-<text x="-33.02" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-33.02" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="!RST" x="5.08" y="-2.54" length="middle" rot="R180"/>
 <pin name="VDDIO@0" x="-38.1" y="-2.54" length="middle"/>
 <pin name="TST" x="5.08" y="-10.16" length="middle" rot="R180"/>
@@ -3898,6 +3896,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="VDDPLL" x="-38.1" y="-43.18" length="middle"/>
 <pin name="GNDANA" x="5.08" y="-73.66" length="middle" rot="R180"/>
 <pin name="VBG" x="-38.1" y="-48.26" length="middle"/>
+<text x="-33.02" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-33.02" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="ATSAMX7XQXXXXXX_PIOA">
 <pin name="PA0" x="-25.4" y="-2.54" length="middle"/>
@@ -3907,8 +3907,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-20.32" y1="0" x2="-20.32" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="-20.32" y1="-43.18" x2="0" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-43.18" width="0.254" layer="94"/>
-<text x="-20.32" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PA3" x="-25.4" y="-10.16" length="middle"/>
 <pin name="PA4" x="-25.4" y="-12.7" length="middle"/>
 <pin name="PA5" x="-25.4" y="-15.24" length="middle"/>
@@ -3938,6 +3936,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="PA29" x="5.08" y="-35.56" length="middle" rot="R180"/>
 <pin name="PA30" x="5.08" y="-38.1" length="middle" rot="R180"/>
 <pin name="PA31" x="5.08" y="-40.64" length="middle" rot="R180"/>
+<text x="-20.32" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="ATSAMX7XQXXXXXX_PIOB">
 <pin name="PB0" x="-25.4" y="-2.54" length="middle"/>
@@ -3947,8 +3947,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-20.32" y1="0" x2="-20.32" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="-20.32" y1="-43.18" x2="0" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-43.18" width="0.254" layer="94"/>
-<text x="-20.32" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PB3" x="-25.4" y="-10.16" length="middle"/>
 <pin name="PB4" x="-25.4" y="-12.7" length="middle"/>
 <pin name="PB5" x="-25.4" y="-15.24" length="middle"/>
@@ -3978,6 +3976,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <text x="-2.3495" y="-40.64" size="1.524" layer="100" rot="R180" align="center-left">PB31</text>
 <text x="-17.9705" y="-27.94" size="1.524" layer="100" align="center-left">PB10</text>
 <text x="-17.9705" y="-30.48" size="1.524" layer="100" align="center-left">PB11</text>
+<text x="-20.32" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="ATSAMX7XQXXXXXX_PIOC">
 <pin name="PC0" x="-25.4" y="-2.54" length="middle"/>
@@ -3987,8 +3987,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-20.32" y1="0" x2="-20.32" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="-20.32" y1="-43.18" x2="0" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-43.18" width="0.254" layer="94"/>
-<text x="-20.32" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PC3" x="-25.4" y="-10.16" length="middle"/>
 <pin name="PC4" x="-25.4" y="-12.7" length="middle"/>
 <pin name="PC5" x="-25.4" y="-15.24" length="middle"/>
@@ -4018,6 +4016,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="PC29" x="5.08" y="-35.56" length="middle" rot="R180"/>
 <pin name="PC30" x="5.08" y="-38.1" length="middle" rot="R180"/>
 <pin name="PC31" x="5.08" y="-40.64" length="middle" rot="R180"/>
+<text x="-20.32" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="ATSAMX7XQXXXXXX_PIOD">
 <pin name="PD0" x="-25.4" y="-2.54" length="middle"/>
@@ -4027,8 +4027,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-20.32" y1="0" x2="-20.32" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="-20.32" y1="-43.18" x2="0" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-43.18" width="0.254" layer="94"/>
-<text x="-20.32" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PD3" x="-25.4" y="-10.16" length="middle"/>
 <pin name="PD4" x="-25.4" y="-12.7" length="middle"/>
 <pin name="PD5" x="-25.4" y="-15.24" length="middle"/>
@@ -4058,6 +4056,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="PD29" x="5.08" y="-35.56" length="middle" rot="R180"/>
 <pin name="PD30" x="5.08" y="-38.1" length="middle" rot="R180"/>
 <pin name="PD31" x="5.08" y="-40.64" length="middle" rot="R180"/>
+<text x="-20.32" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="ATSAMX7XQXXXXXX_PIOE">
 <pin name="PE0" x="-25.4" y="-2.54" length="middle"/>
@@ -4067,8 +4067,6 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <wire x1="-20.32" y1="0" x2="-20.32" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="-20.32" y1="-43.18" x2="0" y2="-43.18" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-43.18" width="0.254" layer="94"/>
-<text x="-20.32" y="4.826" size="1.27" layer="95" align="top-left">&gt;NAME</text>
-<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="PE3" x="-25.4" y="-10.16" length="middle"/>
 <pin name="PE4" x="-25.4" y="-12.7" length="middle"/>
 <pin name="PE5" x="-25.4" y="-15.24" length="middle"/>
@@ -4098,6 +4096,8 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <text x="-2.3495" y="-35.56" size="1.524" layer="100" rot="R180" align="center-left">PE29</text>
 <text x="-2.3495" y="-38.1" size="1.524" layer="100" rot="R180" align="center-left">PE30</text>
 <text x="-2.3495" y="-40.64" size="1.524" layer="100" rot="R180" align="center-left">PE31</text>
+<text x="-20.32" y="3.556" size="1.27" layer="95">&gt;NAME</text>
+<text x="-20.32" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 </symbol>
 <symbol name="DSC12X1-STDBY">
 <wire x1="-15.24" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
@@ -4540,57 +4540,51 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </package>
 </packages>
 <symbols>
-<symbol name="SP0503BAHT">
-<pin name="2" x="-5.08" y="7.62" visible="off" length="short" rot="R270"/>
-<pin name="3" x="0" y="7.62" visible="off" length="short" rot="R270"/>
-<pin name="4" x="5.08" y="7.62" visible="off" length="short" rot="R270"/>
-<pin name="1" x="0" y="-2.54" visible="off" length="short" rot="R90"/>
-<wire x1="-4.318" y1="5.08" x2="-5.08" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="-5.08" y1="5.08" x2="-5.842" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="-5.08" y1="5.08" x2="-3.81" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="-3.81" y1="2.54" x2="-5.08" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="-5.08" y1="2.54" x2="-6.35" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="-6.35" y1="2.54" x2="-5.08" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="-5.842" y1="5.08" x2="-6.35" y2="4.572" width="0.1524" layer="94"/>
-<wire x1="-4.318" y1="5.08" x2="-3.81" y2="5.588" width="0.1524" layer="94"/>
-<wire x1="0.762" y1="5.08" x2="0" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="0" y1="5.08" x2="-0.762" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="0" y1="5.08" x2="1.27" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="1.27" y1="2.54" x2="0" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="0" y1="2.54" x2="-1.27" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="-1.27" y1="2.54" x2="0" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="-0.762" y1="5.08" x2="-1.27" y2="4.572" width="0.1524" layer="94"/>
-<wire x1="0.762" y1="5.08" x2="1.27" y2="5.588" width="0.1524" layer="94"/>
-<wire x1="5.842" y1="5.08" x2="5.08" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="5.08" x2="4.318" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="5.08" x2="6.35" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="6.35" y1="2.54" x2="5.08" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="3.81" y2="2.54" width="0.1524" layer="94"/>
-<wire x1="3.81" y1="2.54" x2="5.08" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="4.318" y1="5.08" x2="3.81" y2="4.572" width="0.1524" layer="94"/>
-<wire x1="5.842" y1="5.08" x2="6.35" y2="5.588" width="0.1524" layer="94"/>
+<symbol name="TRIPLE-TVS">
+<pin name="C1" x="-5.08" y="5.08" visible="off" length="short" rot="R270"/>
+<pin name="C2" x="0" y="5.08" visible="off" length="short" rot="R270"/>
+<pin name="C3" x="5.08" y="5.08" visible="off" length="short" rot="R270"/>
+<pin name="A" x="0" y="-2.54" visible="off" length="short" rot="R90"/>
 <wire x1="5.08" y1="2.54" x2="5.08" y2="0" width="0.1524" layer="94"/>
 <wire x1="5.08" y1="0" x2="0" y2="0" width="0.1524" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="2.54" width="0.1524" layer="94"/>
 <wire x1="0" y1="0" x2="-5.08" y2="0" width="0.1524" layer="94"/>
 <wire x1="-5.08" y1="0" x2="-5.08" y2="2.54" width="0.1524" layer="94"/>
-<text x="8.636" y="4.445" size="1.778" layer="95">&gt;NAME</text>
-<text x="8.636" y="1.651" size="1.778" layer="96">&gt;VALUE</text>
+<text x="8.636" y="1.905" size="1.778" layer="95">&gt;NAME</text>
+<text x="8.636" y="-0.889" size="1.778" layer="96">&gt;VALUE</text>
 <circle x="0" y="0" radius="0.381" width="0" layer="94"/>
+<wire x1="6.35" y1="1.27" x2="5.08" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="5.08" y1="3.81" x2="3.81" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="3.81" x2="5.08" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="3.81" y1="1.27" x2="6.35" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="5.08" y1="3.81" x2="6.35" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="6.35" y1="3.81" x2="6.35" y2="3.175" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="0" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="0" y1="3.81" x2="-1.27" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="3.81" x2="0" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="-1.27" y1="1.27" x2="1.27" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="0" y1="3.81" x2="1.27" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="1.27" y1="3.81" x2="1.27" y2="3.175" width="0.1524" layer="94"/>
+<wire x1="-3.81" y1="1.27" x2="-5.08" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="-5.08" y1="3.81" x2="-6.35" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-6.35" y1="3.81" x2="-5.08" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="-6.35" y1="1.27" x2="-3.81" y2="1.27" width="0.1524" layer="94"/>
+<wire x1="-5.08" y1="3.81" x2="-3.81" y2="3.81" width="0.1524" layer="94"/>
+<wire x1="-3.81" y1="3.81" x2="-3.81" y2="3.175" width="0.1524" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
 <deviceset name="SP0503BAHT" prefix="D">
 <gates>
-<gate name="G$1" symbol="SP0503BAHT" x="0" y="-2.54"/>
+<gate name="G$1" symbol="TRIPLE-TVS" x="0" y="-2.54"/>
 </gates>
 <devices>
 <device name="" package="SOT143">
 <connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="A" pad="1"/>
+<connect gate="G$1" pin="C1" pad="2"/>
+<connect gate="G$1" pin="C2" pad="3"/>
+<connect gate="G$1" pin="C3" pad="4"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -15910,8 +15904,8 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="53.086" y="299.72" size="1.778" layer="96"/>
 </instance>
 <instance part="D701" gate="G$1" x="101.6" y="325.12" smashed="yes">
-<attribute name="NAME" x="110.236" y="329.565" size="1.778" layer="95"/>
-<attribute name="VALUE" x="110.236" y="326.771" size="1.778" layer="96"/>
+<attribute name="NAME" x="110.236" y="327.025" size="1.778" layer="95"/>
+<attribute name="VALUE" x="110.236" y="324.231" size="1.778" layer="96"/>
 </instance>
 <instance part="GND704" gate="G$1" x="101.6" y="304.8" smashed="yes">
 <attribute name="VALUE" x="98.806" y="299.72" size="1.778" layer="96"/>
@@ -16308,7 +16302,7 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </segment>
 <segment>
 <pinref part="GND704" gate="G$1" pin="GND"/>
-<pinref part="D701" gate="G$1" pin="1"/>
+<pinref part="D701" gate="G$1" pin="A"/>
 <wire x1="101.6" y1="304.8" x2="101.6" y2="322.58" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -16503,13 +16497,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </net>
 <net name="I2S_BRG_D-" class="0">
 <segment>
-<pinref part="D701" gate="G$1" pin="3"/>
+<pinref part="D701" gate="G$1" pin="C2"/>
 <pinref part="USB701" gate="G$1" pin="D-"/>
-<wire x1="101.6" y1="332.74" x2="101.6" y2="347.98" width="0.1524" layer="91"/>
 <wire x1="101.6" y1="347.98" x2="50.8" y2="347.98" width="0.1524" layer="91"/>
-<wire x1="101.6" y1="347.98" x2="134.62" y2="347.98" width="0.1524" layer="91"/>
-<junction x="101.6" y="347.98"/>
 <label x="134.62" y="347.98" size="1.778" layer="95" xref="yes"/>
+<wire x1="101.6" y1="347.98" x2="134.62" y2="347.98" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="330.2" x2="101.6" y2="347.98" width="0.1524" layer="91"/>
+<junction x="101.6" y="347.98"/>
 </segment>
 <segment>
 <label x="358.14" y="314.96" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -16519,15 +16513,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 </net>
 <net name="I2S_BRG_VBUS" class="0">
 <segment>
-<pinref part="D701" gate="G$1" pin="2"/>
+<pinref part="D701" gate="G$1" pin="C1"/>
 <pinref part="USB701" gate="G$1" pin="VBUS"/>
-<wire x1="96.52" y1="332.74" x2="96.52" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="96.52" y1="350.52" x2="50.8" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="R705" gate="G$1" pin="2"/>
 <wire x1="187.96" y1="345.44" x2="187.96" y2="350.52" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="350.52" x2="162.56" y2="350.52" width="0.1524" layer="91"/>
-<junction x="96.52" y="350.52"/>
 <pinref part="C706" gate="G$1" pin="C1"/>
+<wire x1="96.52" y1="350.52" x2="162.56" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="162.56" y1="350.52" x2="175.26" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="175.26" y1="350.52" x2="187.96" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="175.26" y1="332.74" x2="175.26" y2="350.52" width="0.1524" layer="91"/>
@@ -16535,6 +16527,8 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <pinref part="R704" gate="G$1" pin="2"/>
 <wire x1="162.56" y1="345.44" x2="162.56" y2="350.52" width="0.1524" layer="91"/>
 <junction x="162.56" y="350.52"/>
+<wire x1="96.52" y1="330.2" x2="96.52" y2="350.52" width="0.1524" layer="91"/>
+<junction x="96.52" y="350.52"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -16623,13 +16617,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <pinref part="U702" gate="G$1" pin="D+"/>
 </segment>
 <segment>
-<pinref part="D701" gate="G$1" pin="4"/>
+<pinref part="D701" gate="G$1" pin="C3"/>
 <pinref part="USB701" gate="G$1" pin="D+"/>
-<wire x1="106.68" y1="332.74" x2="106.68" y2="345.44" width="0.1524" layer="91"/>
 <wire x1="106.68" y1="345.44" x2="50.8" y2="345.44" width="0.1524" layer="91"/>
-<wire x1="106.68" y1="345.44" x2="114.3" y2="345.44" width="0.1524" layer="91"/>
-<junction x="106.68" y="345.44"/>
 <label x="114.3" y="345.44" size="1.778" layer="95" xref="yes"/>
+<wire x1="106.68" y1="345.44" x2="114.3" y2="345.44" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="330.2" x2="106.68" y2="345.44" width="0.1524" layer="91"/>
+<junction x="106.68" y="345.44"/>
 </segment>
 </net>
 <net name="I2S_BRG_VBUS_DET" class="0">
@@ -18150,8 +18144,8 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="VALUE" x="55.626" y="292.1" size="1.778" layer="96"/>
 </instance>
 <instance part="D1001" gate="G$1" x="104.14" y="317.5" smashed="yes">
-<attribute name="NAME" x="112.776" y="321.945" size="1.778" layer="95"/>
-<attribute name="VALUE" x="112.776" y="319.151" size="1.778" layer="96"/>
+<attribute name="NAME" x="112.776" y="319.405" size="1.778" layer="95"/>
+<attribute name="VALUE" x="112.776" y="316.611" size="1.778" layer="96"/>
 </instance>
 <instance part="GND1013" gate="G$1" x="104.14" y="297.18" smashed="yes">
 <attribute name="VALUE" x="101.346" y="292.1" size="1.778" layer="96"/>
@@ -18582,7 +18576,7 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </segment>
 <segment>
 <pinref part="GND1013" gate="G$1" pin="GND"/>
-<pinref part="D1001" gate="G$1" pin="1"/>
+<pinref part="D1001" gate="G$1" pin="A"/>
 <wire x1="104.14" y1="297.18" x2="104.14" y2="314.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -19036,24 +19030,24 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </net>
 <net name="DSP_D-" class="0">
 <segment>
-<pinref part="D1001" gate="G$1" pin="3"/>
-<wire x1="104.14" y1="325.12" x2="104.14" y2="340.36" width="0.1524" layer="91"/>
+<pinref part="D1001" gate="G$1" pin="C2"/>
 <wire x1="104.14" y1="340.36" x2="53.34" y2="340.36" width="0.1524" layer="91"/>
-<wire x1="104.14" y1="340.36" x2="137.16" y2="340.36" width="0.1524" layer="91"/>
-<junction x="104.14" y="340.36"/>
 <label x="137.16" y="340.36" size="1.778" layer="95" xref="yes"/>
 <pinref part="USB1001" gate="G$1" pin="D-"/>
+<wire x1="104.14" y1="340.36" x2="137.16" y2="340.36" width="0.1524" layer="91"/>
+<wire x1="104.14" y1="322.58" x2="104.14" y2="340.36" width="0.1524" layer="91"/>
+<junction x="104.14" y="340.36"/>
 </segment>
 </net>
 <net name="DSP_D+" class="0">
 <segment>
-<pinref part="D1001" gate="G$1" pin="4"/>
-<wire x1="109.22" y1="325.12" x2="109.22" y2="337.82" width="0.1524" layer="91"/>
+<pinref part="D1001" gate="G$1" pin="C3"/>
 <wire x1="109.22" y1="337.82" x2="53.34" y2="337.82" width="0.1524" layer="91"/>
-<wire x1="109.22" y1="337.82" x2="116.84" y2="337.82" width="0.1524" layer="91"/>
-<junction x="109.22" y="337.82"/>
 <label x="116.84" y="337.82" size="1.778" layer="95" xref="yes"/>
 <pinref part="USB1001" gate="G$1" pin="D+"/>
+<wire x1="109.22" y1="337.82" x2="116.84" y2="337.82" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="322.58" x2="109.22" y2="337.82" width="0.1524" layer="91"/>
+<junction x="109.22" y="337.82"/>
 </segment>
 </net>
 <net name="N$58" class="0">
@@ -19232,17 +19226,17 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 </net>
 <net name="N$93" class="0">
 <segment>
-<pinref part="D1001" gate="G$1" pin="2"/>
-<wire x1="99.06" y1="325.12" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
+<pinref part="D1001" gate="G$1" pin="C1"/>
 <pinref part="F1001" gate="G$1" pin="1"/>
 <wire x1="81.28" y1="350.52" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="C1009" gate="G$1" pin="C1"/>
 <wire x1="160.02" y1="327.66" x2="160.02" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="160.02" y1="350.52" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
-<junction x="99.06" y="350.52"/>
 <pinref part="L1003" gate="G$1" pin="1"/>
 <wire x1="167.64" y1="350.52" x2="160.02" y2="350.52" width="0.1524" layer="91"/>
 <junction x="160.02" y="350.52"/>
+<wire x1="99.06" y1="322.58" x2="99.06" y2="350.52" width="0.1524" layer="91"/>
+<junction x="99.06" y="350.52"/>
 </segment>
 </net>
 <net name="5V0_ANA_TXMIXER_CLEAN" class="0">
