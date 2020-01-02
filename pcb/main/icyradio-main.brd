@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.5.1">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -8761,7 +8761,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="28.2" y="12.5" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="C410" library="Capacitor" package="CAP0603" value="DNP" x="33.4" y="12.5" smashed="yes" rot="R90">
-<attribute name="NAME" x="37.184" y="10.9536" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
+<attribute name="NAME" x="33.384" y="14.3536" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VALUE" x="35.432" y="9.5536" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="33.4" y="12.5" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
@@ -8791,7 +8791,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="14" y="15.7" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
 <element name="C401" library="Capacitor" package="CAP0603" value="100nF" x="35.7" y="12.5" smashed="yes" rot="R90">
-<attribute name="NAME" x="33.384" y="14.3536" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
+<attribute name="NAME" x="37.184" y="10.9536" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VALUE" x="37.732" y="9.5536" size="0.8" layer="27" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="35.7" y="12.5" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
