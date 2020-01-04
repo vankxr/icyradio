@@ -701,7 +701,7 @@ generate
                             if(led_cnt == led_duty[i])
                                 led_status[i] <= 1'b0;
 
-                            if(|led_cnt)
+                            if(!led_cnt)
                                 led_status[i] <= 1'b1;
                         end
                 end
@@ -917,7 +917,7 @@ always @(*)
     begin
         case(cntrl_spi_addr)
             CNTRL_SPI_REG_ID:
-                cntrl_spi_data_in = 32'h00000001;
+                cntrl_spi_data_in = 32'hA0000001;
             CNTRL_SPI_REG_RST_CNTRL:
                 cntrl_spi_data_in = {26'd0, qspi_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:

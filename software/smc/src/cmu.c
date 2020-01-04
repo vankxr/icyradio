@@ -39,24 +39,6 @@ uint32_t RTCC_CLOCK_FREQ;
 
 void cmu_init()
 {
-    uint8_t ubSDIOClockEnabled = !!(CMU->STATUS & CMU_STATUS_SDIOCLKENS);
-
-    // Change SDIO clock to HFXO if HFRCO selected and disable it
-    if((CMU->SDIOCTRL & _CMU_SDIOCTRL_SDIOCLKSEL_MASK) == CMU_SDIOCTRL_SDIOCLKSEL_HFXO || (CMU->SDIOCTRL & _CMU_SDIOCTRL_SDIOCLKSEL_MASK) == CMU_SDIOCTRL_SDIOCLKSEL_HFRCO)
-    {
-        CMU->SDIOCTRL = CMU_SDIOCTRL_SDIOCLKDIS | CMU_SDIOCTRL_SDIOCLKSEL_HFXO;
-        while(CMU->STATUS & CMU_STATUS_SDIOCLKENS);
-    }
-
-    uint8_t ubQSPIClockEnabled = !!(CMU->STATUS & CMU_STATUS_QSPI0CLKENS);
-
-    // Change QSPI clock to HFXO if HFRCO selected and disable it
-    if((CMU->QSPICTRL & _CMU_QSPICTRL_QSPI0CLKSEL_MASK) == CMU_QSPICTRL_QSPI0CLKSEL_HFXO || (CMU->QSPICTRL & _CMU_QSPICTRL_QSPI0CLKSEL_MASK) == CMU_QSPICTRL_QSPI0CLKSEL_HFRCO)
-    {
-        CMU->QSPICTRL = CMU_QSPICTRL_QSPI0CLKDIS | CMU_QSPICTRL_QSPI0CLKSEL_HFXO;
-        while(CMU->STATUS & CMU_STATUS_QSPI0CLKENS);
-    }
-
     // Disable DPLL if enabled
     if(CMU->STATUS & CMU_STATUS_DPLLENS)
     {
@@ -71,31 +53,6 @@ void cmu_init()
         while(CMU->STATUS & CMU_STATUS_HFXOENS);
     }
 
-    // Setup HFXO
-    CMU->HFXOCTRL = CMU_HFXOCTRL_PEAKDETMODE_AUTOCMD | CMU_HFXOCTRL_MODE_XTAL;
-    CMU->HFXOCTRL1 = CMU_HFXOCTRL1_PEAKDETTHR_DEFAULT;
-    CMU->HFXOSTEADYSTATECTRL |= CMU_HFXOSTEADYSTATECTRL_PEAKMONEN;
-    CMU->HFXOTIMEOUTCTRL = (7 << _CMU_HFXOTIMEOUTCTRL_PEAKDETTIMEOUT_SHIFT) | (8 << _CMU_HFXOTIMEOUTCTRL_STEADYTIMEOUT_SHIFT) | (12 << _CMU_HFXOTIMEOUTCTRL_STARTUPTIMEOUT_SHIFT);
-
-    // Enable HFXO and wait for it to be ready
-    CMU->OSCENCMD = CMU_OSCENCMD_HFXOEN;
-    while(!(CMU->STATUS & CMU_STATUS_HFXORDY));
-
-    // Switch main clock to HFXO and wait for it to be selected
-    CMU->HFCLKSEL = CMU_HFCLKSEL_HF_HFXO;
-    while((CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_HFXO);
-
-    // Calibrate HFRCO for 72MHz and enable tunning by PLL
-    cmu_hfrco_calib(HFRCO_CALIB_72M | CMU_HFRCOCTRL_FINETUNINGEN, 72000000);
-
-    // Setup the PLL
-    CMU->DPLLCTRL = CMU_DPLLCTRL_REFSEL_HFXO | CMU_DPLLCTRL_AUTORECOVER | CMU_DPLLCTRL_EDGESEL_RISE | CMU_DPLLCTRL_MODE_FREQLL;
-    CMU->DPLLCTRL1 = (899 << _CMU_DPLLCTRL1_N_SHIFT) | (99 << _CMU_DPLLCTRL1_M_SHIFT); // fHFRCO = fHFXO * (N + 1) / (M + 1)
-
-    // Enable the DPLL and wait for it to be ready
-    CMU->OSCENCMD = CMU_OSCENCMD_DPLLEN;
-    while(!(CMU->STATUS & CMU_STATUS_DPLLRDY));
-
     // Config peripherals for the new frequency
     cmu_config_waitstates(36000000);
     msc_config_waitstates(72000000);
@@ -109,26 +66,15 @@ void cmu_init()
     CMU->HFPERPRESCB = 0 << _CMU_HFPERPRESCB_PRESC_SHIFT;
     CMU->HFPERPRESCC = 1 << _CMU_HFPERPRESCC_PRESC_SHIFT;
 
-    // Enable clock to peripherals
-    CMU->CTRL |= CMU_CTRL_HFPERCLKEN;
+    // Calibrate HFRCO for 72MHz and enable tunning by PLL
+    cmu_hfrco_calib(HFRCO_CALIB_72M | CMU_HFRCOCTRL_FINETUNINGEN, 72000000);
 
     // Switch main clock to HFRCO and wait for it to be selected
     CMU->HFCLKSEL = CMU_HFCLKSEL_HF_HFRCO;
     while((CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_HFRCO);
 
-    // Re-enable SDIO clock if HFXO selected
-    if((CMU->SDIOCTRL & _CMU_SDIOCTRL_SDIOCLKSEL_MASK) == CMU_SDIOCTRL_SDIOCLKSEL_HFXO)
-    {
-        CMU->SDIOCTRL &= ~CMU_SDIOCTRL_SDIOCLKDIS;
-        while(!(CMU->STATUS & CMU_STATUS_SDIOCLKENS) && ubSDIOClockEnabled);
-    }
-
-    // Re-enable QSPI clock if HFXO selected
-    if((CMU->QSPICTRL & _CMU_QSPICTRL_QSPI0CLKSEL_MASK) == CMU_QSPICTRL_QSPI0CLKSEL_HFXO)
-    {
-        CMU->QSPICTRL &= ~CMU_QSPICTRL_QSPI0CLKDIS;
-        while(!(CMU->STATUS & CMU_STATUS_QSPI0CLKENS) && ubQSPIClockEnabled);
-    }
+    // Enable clock to peripherals
+    CMU->CTRL |= CMU_CTRL_HFPERCLKEN;
 
     // Disable LFXO if enabled
     if(CMU->STATUS & CMU_STATUS_LFXOENS)

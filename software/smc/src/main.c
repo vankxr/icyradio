@@ -19,11 +19,14 @@
 #include "adc.h"
 #include "usart.h"
 #include "i2c.h"
+#include "fpga.h"
+#include "si5351.h"
 #include "ft6x36.h"
 #include "ili9488.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
+#include "v1.icyradio.h"
 
 // Structs
 
@@ -293,10 +296,7 @@ int init()
 
     emu_init(1); // Init EMU, ignore DCDC and switch digital power immediatly to DVDD
 
-    //cmu_hfxo_startup_calib(0x200, 0x145); // Config HFXO Startup for 1280 uA, 36 pF (18 pF + 2 pF CLOAD)
-    //cmu_hfxo_steady_calib(0x009, 0x145); // Config HFXO Steady for 12 uA, 36 pF (18 pF + 2 pF CLOAD)
-
-    cmu_lfxo_calib(0x08); // Config LFXO for 10 pF (5 pF + 1 pF CLOAD)
+    cmu_lfxo_calib(0x12); // Config LFXO for 12.5 pF (5 pF + 1 pF CLOAD)
 
     cmu_init(); // Init Clocks
 
@@ -325,16 +325,21 @@ int init()
     float fIOVDDHighThresh, fIOVDDLowThresh;
 
     emu_vmon_avdd_config(1, 3.1f, &fAVDDLowThresh, 3.22f, &fAVDDHighThresh); // Enable AVDD monitor
-    emu_vmon_dvdd_config(1, 2.5f, &fDVDDLowThresh); // Enable DVDD monitor
+    emu_vmon_dvdd_config(1, 3.1f, &fDVDDLowThresh); // Enable DVDD monitor
     emu_vmon_iovdd_config(1, 3.15f, &fIOVDDLowThresh); // Enable IOVDD monitor
 
     fDVDDHighThresh = fDVDDLowThresh + 0.026f; // Hysteresis from datasheet
     fIOVDDHighThresh = fIOVDDLowThresh + 0.026f; // Hysteresis from datasheet
 
-    usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 1, 1, 1); // Init USART2 at 4.5 MHz (TFT)
+    usart1_init(18000000, 3, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 18 MHz (FPGA)
+    usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
+    usart3_init(18000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 18 MHz (DSP)
+    usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
+    usart5_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 0, 1); // Init USART5 at 18 MHz (TXDAC)
 
-    i2c0_init(I2C_FAST, 0, 0); // Init I2C0 at 400 kHz (System)
-    i2c2_init(I2C_FAST, 2, 2); // Init I2C2 at 400 kHz (Sensors)
+    i2c0_init(I2C_FAST, 7, 7); // Init I2C0 at 400 kHz (System)
+    i2c1_init(I2C_FAST, 0, 0); // Init I2C1 at 400 kHz (RX Tuner)
+    i2c2_init(I2C_NORMAL, 2, 2); // Init I2C2 at 100 kHz (Audio)
 
     char szDeviceName[32];
 
@@ -420,6 +425,12 @@ int init()
         if(i2c1_write(a, NULL, 0, I2C_STOP))
             DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
 
+    DBGPRINTLN_CTX("Scanning I2C bus 2...");
+
+    for(uint8_t a = 0x08; a < 0x78; a++)
+        if(0 && i2c2_write(a, NULL, 0, I2C_STOP))
+            DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
+
     if(ili9488_init())
         DBGPRINTLN_CTX("ILI9488 init OK!");
     else
@@ -430,6 +441,12 @@ int init()
     else
         DBGPRINTLN_CTX("FT6236 init NOK!");
 
+    if(si5351_init())
+        DBGPRINTLN_CTX("SI5351 init OK!");
+    else
+        DBGPRINTLN_CTX("SI5351 init NOK!");
+
+
     return 0;
 }
 int main()
@@ -438,6 +455,58 @@ int main()
     //CMU->ROUTELOC0 = CMU_ROUTELOC0_CLKOUT1LOC_LOC1;
     //CMU->ROUTEPEN |= CMU_ROUTEPEN_CLKOUT1PEN;
     //CMU->CTRL |= CMU_CTRL_CLKOUTSEL1_HFXO;
+
+    // Clock manager info & config
+    DBGPRINTLN_CTX("SI5351 Revision ID: %hhu", si5351_read_revision_id());
+
+    si5351_write_clock_enable(SI5351_SMC_MAIN_CLK, 1); // Enable SMC clock
+
+    // Bypass, enable HFXO and wait for it to be enabled
+    CMU->HFXOCTRL = CMU_HFXOCTRL_MODE_DIGEXTCLK;
+    CMU->OSCENCMD = CMU_OSCENCMD_HFXOEN;
+    while(!(CMU->STATUS & CMU_STATUS_HFXOENS));
+
+    // Setup the DPLL
+    CMU->DPLLCTRL = CMU_DPLLCTRL_REFSEL_HFXO | CMU_DPLLCTRL_AUTORECOVER | CMU_DPLLCTRL_EDGESEL_RISE | CMU_DPLLCTRL_MODE_FREQLL;
+    CMU->DPLLCTRL1 = (1439 << _CMU_DPLLCTRL1_N_SHIFT) | (999 << _CMU_DPLLCTRL1_M_SHIFT); // fHFRCO = fHFXO * (N + 1) / (M + 1)
+
+    // Enable the DPLL and wait for it to be ready
+    CMU->OSCENCMD = CMU_OSCENCMD_DPLLEN;
+    while(!(CMU->STATUS & CMU_STATUS_DPLLRDY));
+
+    // Init FPGA
+    DBGPRINTLN_CTX("FPGA LOAD %hhu", fpga_load_bitstream(v1_icyradio_bin, v1_icyradio_bin_len));
+
+    FPGA_SOFT_RESET();
+    si5351_write_clock_enable(SI5351_FPGA_CLK2, 1); // Enable FPGA clock #2
+    si5351_write_clock_enable(SI5351_FPGA_CLK3, 1); // Enable FPGA clock #3
+
+    FPGA_SOFT_UNRESET();
+    delay_ms(20);
+
+    FPGA_SELECT();
+    usart1_spi_transfer_byte(0x10);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0x01);
+    FPGA_UNSELECT();
+
+    FPGA_SELECT();
+    usart1_spi_transfer_byte(0x11);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0x00);
+    usart1_spi_transfer_byte(0xFF);
+    FPGA_UNSELECT();
+
+    FPGA_SELECT();
+    usart1_spi_transfer_byte(0x80);
+    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
+    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
+    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
+    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
+    FPGA_UNSELECT();
 
     // TFT Controller info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());
@@ -448,7 +517,7 @@ int main()
     DBGPRINTLN_CTX("FT6236 Firmware version: 0x%02X", ft6x36_get_firmware_version());
 
     // TFT High speed interface
-    usart2_init(36000000, 0, USART_SPI_MSB_FIRST, 1, 1, 1); // Re-init USART2 at 36 MHz (TFT)
+    usart2_init(36000000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Re-init USART2 at 36 MHz (TFT)
 
     // TFT Init
     tft_init();
@@ -527,6 +596,8 @@ int main()
 
         if(g_ullSystemTick > (ullLastTftRoutine + 1000))
         {
+            LED_TOGGLE();
+
             static uint8_t ubCount = 0;
 
             switch(ubScreenNum)

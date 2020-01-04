@@ -14,7 +14,7 @@
 #define SI5351_REG_STATUS                 0x00
 #define SI5351_REG_IRQ_FLAGS              0x01
 #define SI5351_REG_IRQ_MASK               0x02
-#define SI5351_REG_CLK_EN                 0x03
+#define SI5351_REG_CLK_OEB                0x03
 #define SI5351_REG_OEB_MASK               0x09
 #define SI5351_REG_PLL_SRC                0x0F
 #define SI5351_REG_CLKn_CFG(i)            (0x10 + (i))
@@ -29,20 +29,23 @@
 #define SI5351_REG_STATUS_SYS_INIT  0x80
 #define SI5351_REG_STATUS_LOL_B     0x40
 #define SI5351_REG_STATUS_LOL_A     0x20
-#define SI5351_REG_STATUS_LOS       0x10
+#define SI5351_REG_STATUS_CLKIN_LOS 0x10
+#define SI5351_REG_STATUS_XO_LOS    0x08
 #define SI5351_REG_STATUS_REVID     0x03
 
 // SI5351_REG_IRQ_FLAGS
 #define SI5351_REG_IRQ_FLAGS_SYS_INIT   0x80
 #define SI5351_REG_IRQ_FLAGS_LOL_B      0x40
 #define SI5351_REG_IRQ_FLAGS_LOL_A      0x20
-#define SI5351_REG_IRQ_FLAGS_LOS        0x10
+#define SI5351_REG_IRQ_FLAGS_CLKIN_LOS  0x10
+#define SI5351_REG_IRQ_FLAGS_XO_LOS     0x08
 
 // SI5351_REG_IRQ_FLAGS
 #define SI5351_REG_IRQ_MASK_SYS_INIT   0x80
 #define SI5351_REG_IRQ_MASK_LOL_B      0x40
 #define SI5351_REG_IRQ_MASK_LOL_A      0x20
-#define SI5351_REG_IRQ_MASK_LOS        0x10
+#define SI5351_REG_IRQ_MASK_CLKIN_LOS  0x10
+#define SI5351_REG_IRQ_MASK_XO_LOS     0x08
 
 // SI5351_REG_PLL_SRC
 #define SI5351_REG_PLL_SRC_CLKIN_DIV1   0x00
@@ -70,41 +73,11 @@
 #define SI5351_REG_CLKn_CFG_IDRV_6MA    0x02
 #define SI5351_REG_CLKn_CFG_IDRV_8MA    0x03
 
-// SI5351_REG_CLK_DIS_0
-#define SI5351_REG_CLK_DIS_0_DIS3_LOW   0x00
-#define SI5351_REG_CLK_DIS_0_DIS3_HIGH  0x40
-#define SI5351_REG_CLK_DIS_0_DIS3_HIZ   0x80
-#define SI5351_REG_CLK_DIS_0_DIS3_NODIS 0xC0
-#define SI5351_REG_CLK_DIS_0_DIS2_LOW   0x00
-#define SI5351_REG_CLK_DIS_0_DIS2_HIGH  0x10
-#define SI5351_REG_CLK_DIS_0_DIS2_HIZ   0x20
-#define SI5351_REG_CLK_DIS_0_DIS2_NODIS 0x30
-#define SI5351_REG_CLK_DIS_0_DIS1_LOW   0x00
-#define SI5351_REG_CLK_DIS_0_DIS1_HIGH  0x04
-#define SI5351_REG_CLK_DIS_0_DIS1_HIZ   0x08
-#define SI5351_REG_CLK_DIS_0_DIS1_NODIS 0x0C
-#define SI5351_REG_CLK_DIS_0_DIS0_LOW   0x00
-#define SI5351_REG_CLK_DIS_0_DIS0_HIGH  0x01
-#define SI5351_REG_CLK_DIS_0_DIS0_HIZ   0x02
-#define SI5351_REG_CLK_DIS_0_DIS0_NODIS 0x03
-
-// SI5351_REG_CLK_DIS_1
-#define SI5351_REG_CLK_DIS_1_DIS7_LOW   0x00
-#define SI5351_REG_CLK_DIS_1_DIS7_HIGH  0x40
-#define SI5351_REG_CLK_DIS_1_DIS7_HIZ   0x80
-#define SI5351_REG_CLK_DIS_1_DIS7_NODIS 0xC0
-#define SI5351_REG_CLK_DIS_1_DIS6_LOW   0x00
-#define SI5351_REG_CLK_DIS_1_DIS6_HIGH  0x10
-#define SI5351_REG_CLK_DIS_1_DIS6_HIZ   0x20
-#define SI5351_REG_CLK_DIS_1_DIS6_NODIS 0x30
-#define SI5351_REG_CLK_DIS_1_DIS5_LOW   0x00
-#define SI5351_REG_CLK_DIS_1_DIS5_HIGH  0x04
-#define SI5351_REG_CLK_DIS_1_DIS5_HIZ   0x08
-#define SI5351_REG_CLK_DIS_1_DIS5_NODIS 0x0C
-#define SI5351_REG_CLK_DIS_1_DIS4_LOW   0x00
-#define SI5351_REG_CLK_DIS_1_DIS4_HIGH  0x01
-#define SI5351_REG_CLK_DIS_1_DIS4_HIZ   0x02
-#define SI5351_REG_CLK_DIS_1_DIS4_NODIS 0x03
+// SI5351_REG_CLK_DIS_x
+#define SI5351_REG_CLK_DIS_x_DISn_LOW   0x00
+#define SI5351_REG_CLK_DIS_x_DISn_HIGH  0x01
+#define SI5351_REG_CLK_DIS_x_DISn_HIZ   0x02
+#define SI5351_REG_CLK_DIS_x_DISn_NODIS 0x03
 
 // SI5351_REG_PLL_RST
 #define SI5351_REG_PLL_RST_PLLA_RESET   0x20
@@ -121,16 +94,57 @@
 #define SI5351_REG_FANOUT_EN_MS_EN      0x10
 
 // Clock assignment
-#define SI5351_FPGA_CLK3    0
-#define SI5351_FPGA_CLK2    1
-#define SI5351_FPGA_CLK1    2
-#define SI5351_FPGA_CLK4    3
-#define SI5351_SMC_MAIN_CLK 5
-#define SI5351_DSP_MAIN_CLK 6
+#define SI5351_FPGA_CLK3    0 // 20 MHz
+#define SI5351_FPGA_CLK2    1 // 80 MHz
+#define SI5351_FPGA_CLK1    2 // 49.152 MHz
+#define SI5351_FPGA_CLK4    3 // 147.456 MHz
+#define SI5351_SMC_MAIN_CLK 5 // 50 MHz
+#define SI5351_DSP_MAIN_CLK 6 // 12 MHz
 
+typedef struct si5351_register_t si5351_register_t;
+
+struct si5351_register_t
+{
+    uint8_t ubRegister;
+    uint8_t ubValue;
+};
 
 uint8_t si5351_init();
 void si5351_isr();
 
+void si5351_load_registers(const si5351_register_t *pRegisterMap);
+
+void si5351_pll_reset(uint8_t ubA, uint8_t ubB);
+
+uint8_t si5351_read_revision_id();
+
+uint8_t si5351_read_status();
+
+uint8_t si5351_read_irq_mask();
+void si5351_write_irq_mask(uint8_t ubMask);
+
+uint8_t si5351_read_clock_enable(uint8_t ubID);
+void si5351_write_clock_enable(uint8_t ubID, uint8_t ubOEB);
+
+uint8_t si5351_read_clock_oeb_mask();
+void si5351_write_clock_oeb_mask(uint8_t ubMask);
+
+uint8_t si5351_read_pll_src();
+void si5351_write_pll_src(uint8_t ubPLLSource);
+
+uint8_t si5351_read_clock_config(uint8_t ubID);
+void si5351_write_clock_config(uint8_t ubID, uint8_t ubConfig);
+
+uint8_t si5351_read_clock_disable_state(uint8_t ubID);
+void si5351_write_clock_disable_state(uint8_t ubID, uint8_t ubDisableState);
+
+uint8_t si5351_read_clock_phase(uint8_t ubID);
+void si5351_write_clock_phase(uint8_t ubID, uint8_t ubPhase);
+
+uint8_t si5351_read_xtal_cload();
+void si5351_write_xtal_cload(uint8_t ubCLoad);
+
+uint8_t si5351_read_fanout_enable();
+void si5351_write_fanout_enable(uint8_t ubEnable);
 
 #endif // __SI5351_H__

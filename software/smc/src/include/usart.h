@@ -17,6 +17,7 @@
 
 
 #define USART0_MODE_SPI                   // Define for SPI, comment out for UART
+//#define USART0_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART0_DMA_CHANNEL          0     // Only relevant when in UART mode
 #define USART0_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART0_FIFO_SIZE            256   // Only relevant when in UART mode
@@ -71,6 +72,7 @@ static inline void usart0_read(uint8_t *pubDst, uint32_t ulSize)
 #endif  // USART0_MODE_SPI
 
 #define USART1_MODE_SPI                   // Define for SPI, comment out for UART
+//#define USART1_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART1_DMA_CHANNEL          1     // Only relevant when in UART mode
 #define USART1_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART1_FIFO_SIZE            256   // Only relevant when in UART mode
@@ -125,6 +127,7 @@ static inline void usart1_read(uint8_t *pubDst, uint32_t ulSize)
 #endif  // USART1_MODE_SPI
 
 #define USART2_MODE_SPI                   // Define for SPI, comment out for UART
+//#define USART2_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART2_DMA_CHANNEL          2     // Only relevant when in UART mode
 #define USART2_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART2_FIFO_SIZE            256   // Only relevant when in UART mode
@@ -179,6 +182,7 @@ static inline void usart2_read(uint8_t *pubDst, uint32_t ulSize)
 #endif  // USART2_MODE_SPI
 
 #define USART3_MODE_SPI                   // Define for SPI, comment out for UART
+//#define USART3_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART3_DMA_CHANNEL          3     // Only relevant when in UART mode
 #define USART3_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART3_FIFO_SIZE            256   // Only relevant when in UART mode
@@ -233,6 +237,7 @@ static inline void usart3_read(uint8_t *pubDst, uint32_t ulSize)
 #endif  // USART3_MODE_SPI
 
 #define USART4_MODE_SPI                   // Define for SPI, comment out for UART
+//#define USART4_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART4_DMA_CHANNEL          4     // Only relevant when in UART mode
 #define USART4_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART4_FIFO_SIZE            256   // Only relevant when in UART mode
@@ -287,6 +292,7 @@ static inline void usart4_read(uint8_t *pubDst, uint32_t ulSize)
 #endif  // USART4_MODE_SPI
 
 #define USART5_MODE_SPI                   // Define for SPI, comment out for UART
+#define USART5_MODE_SPI_3W                // Define for 3-wire SPI, comment out for 4-wire SPI
 #define USART5_DMA_CHANNEL          5     // Only relevant when in UART mode
 #define USART5_DMA_RX_BUFFER_SIZE   128   // Only relevant when in UART mode
 #define USART5_FIFO_SIZE            256   // Only relevant when in UART mode

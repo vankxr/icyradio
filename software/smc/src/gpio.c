@@ -127,8 +127,8 @@ void gpio_init()
                       | GPIO_P_MODEL_MODE1_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE2_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE3_DISABLED                 // NR
-                      | GPIO_P_MODEL_MODE4_WIREDANDPULLUPFILTER     // SYS_I2C_SDA - I2C0 - Location 0
-                      | GPIO_P_MODEL_MODE5_WIREDANDPULLUPFILTER     // SYS_I2C_SCL - I2C0 - Location 0
+                      | GPIO_P_MODEL_MODE4_WIREDANDPULLUPFILTER     // SYS_I2C_SDA - I2C0 - Location 7
+                      | GPIO_P_MODEL_MODE5_WIREDANDPULLUPFILTER     // SYS_I2C_SCL - I2C0 - Location 7
                       | GPIO_P_MODEL_MODE6_INPUTPULLFILTER          // CLK_MNGR_IRQ
                       | GPIO_P_MODEL_MODE7_DISABLED;                // NR
     GPIO->P[4].MODEH  = GPIO_P_MODEH_MODE8_PUSHPULL                 // TXDAC_SDIO - USART5 - Location 0

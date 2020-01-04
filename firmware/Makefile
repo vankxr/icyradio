@@ -46,7 +46,7 @@ SRCFILES := $(wildcard $(SRCFILES))
 
 VSOURCES := $(filter %.v, $(SRCFILES))
 
-all: make-dir version $(TARGET).bin timing
+all: make-dir version $(TARGET).bin $(TARGET).h timing
 
 $(TARGET).blif: $(VSOURCES)
 	@echo Synthesizing blif file...
@@ -63,6 +63,12 @@ $(TARGET).asc: $(TARGET).json
 $(TARGET).bin: $(TARGET).asc
 	@echo Packing bin file...
 	@icepack $< $@
+
+$(TARGET).h: $(TARGET).bin
+	@echo Generating C header file...
+	@xxd -i $< $@
+	@sed -i 's/unsigned char $(TARGETDIR)_/const uint8_t /g' $@
+	@sed -i 's/unsigned int $(TARGETDIR)_/const uint32_t /g' $@
 
 inc-version: clean
 	@echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version
