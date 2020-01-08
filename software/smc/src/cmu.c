@@ -1,10 +1,12 @@
 #include "cmu.h"
 
-uint32_t HFRCO_VALUE = 19000000UL;
-uint32_t USHFRCO_VALUE = 48000000UL;
-uint32_t AUXHFRCO_VALUE = 19000000UL;
-uint32_t LFRCO_VALUE = 32768UL;
-uint32_t ULFRCO_VALUE = 1000UL;
+uint32_t HFXO_OSC_FREQ;
+uint32_t HFRCO_OSC_FREQ = 19000000UL;
+uint32_t USHFRCO_OSC_FREQ = 48000000UL;
+uint32_t AUXHFRCO_OSC_FREQ = 19000000UL;
+uint32_t LFXO_OSC_FREQ;
+uint32_t LFRCO_OSC_FREQ = 32768UL;
+uint32_t ULFRCO_OSC_FREQ = 1000UL;
 
 uint32_t HFSRC_CLOCK_FREQ;
 uint32_t HF_CLOCK_FREQ;
@@ -66,8 +68,8 @@ void cmu_init()
     CMU->HFPERPRESCB = 0 << _CMU_HFPERPRESCB_PRESC_SHIFT;
     CMU->HFPERPRESCC = 1 << _CMU_HFPERPRESCC_PRESC_SHIFT;
 
-    // Calibrate HFRCO for 72MHz and enable tunning by PLL
-    cmu_hfrco_calib(HFRCO_CALIB_72M | CMU_HFRCOCTRL_FINETUNINGEN, 72000000);
+    // Calibrate HFRCO for 72MHz
+    cmu_hfrco_calib(HFRCO_CALIB_72M, 72000000);
 
     // Switch main clock to HFRCO and wait for it to be selected
     CMU->HFCLKSEL = CMU_HFCLKSEL_HF_HFRCO;
@@ -102,41 +104,41 @@ void cmu_update_clocks()
         switch(CMU->DPLLCTRL & _CMU_DPLLCTRL_REFSEL_MASK)
         {
             case CMU_DPLLCTRL_REFSEL_HFXO:
-                HFRCO_VALUE = HFXO_VALUE * fPLLMul;
+                HFRCO_OSC_FREQ = HFXO_OSC_FREQ * fPLLMul;
             break;
             case CMU_DPLLCTRL_REFSEL_LFXO:
-                HFRCO_VALUE = LFXO_VALUE * fPLLMul;
+                HFRCO_OSC_FREQ = LFXO_OSC_FREQ * fPLLMul;
             break;
             case CMU_DPLLCTRL_REFSEL_USHFRCO:
-                HFRCO_VALUE = USHFRCO_VALUE * fPLLMul;
+                HFRCO_OSC_FREQ = USHFRCO_OSC_FREQ * fPLLMul;
             break;
             case CMU_DPLLCTRL_REFSEL_CLKIN0:
-                HFRCO_VALUE = 0 * fPLLMul; // TODO: Support external clock
+                HFRCO_OSC_FREQ = 0 * fPLLMul; // TODO: Support external clock
             break;
         }
     }
 
-    AUX_CLOCK_FREQ = AUXHFRCO_VALUE;
+    AUX_CLOCK_FREQ = AUXHFRCO_OSC_FREQ;
 
     switch(CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK)
     {
         case CMU_HFCLKSTATUS_SELECTED_HFRCO:
-            HFSRC_CLOCK_FREQ = HFRCO_VALUE;
+            HFSRC_CLOCK_FREQ = HFRCO_OSC_FREQ;
         break;
         case CMU_HFCLKSTATUS_SELECTED_HFXO:
-            HFSRC_CLOCK_FREQ = HFXO_VALUE;
+            HFSRC_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_HFCLKSTATUS_SELECTED_LFRCO:
-            HFSRC_CLOCK_FREQ = LFRCO_VALUE;
+            HFSRC_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
         case CMU_HFCLKSTATUS_SELECTED_LFXO:
-            HFSRC_CLOCK_FREQ = LFXO_VALUE;
+            HFSRC_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_HFCLKSTATUS_SELECTED_HFRCODIV2:
-            HFSRC_CLOCK_FREQ = HFRCO_VALUE >> 1;
+            HFSRC_CLOCK_FREQ = HFRCO_OSC_FREQ >> 1;
         break;
         case CMU_HFCLKSTATUS_SELECTED_USHFRCO:
-            HFSRC_CLOCK_FREQ = USHFRCO_VALUE;
+            HFSRC_CLOCK_FREQ = USHFRCO_OSC_FREQ;
         break;
         case CMU_HFCLKSTATUS_SELECTED_CLKIN0:
             HFSRC_CLOCK_FREQ = 0; // TODO: Support external clock
@@ -168,59 +170,59 @@ void cmu_update_clocks()
     switch(CMU->SDIOCTRL & _CMU_SDIOCTRL_SDIOCLKSEL_MASK)
     {
         case CMU_SDIOCTRL_SDIOCLKSEL_HFRCO:
-            SDIO_CLOCK_FREQ = HFRCO_VALUE;
+            SDIO_CLOCK_FREQ = HFRCO_OSC_FREQ;
         break;
         case CMU_SDIOCTRL_SDIOCLKSEL_HFXO:
-            SDIO_CLOCK_FREQ = HFXO_VALUE;
+            SDIO_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_SDIOCTRL_SDIOCLKSEL_AUXHFRCO:
             SDIO_CLOCK_FREQ = AUX_CLOCK_FREQ;
         break;
         case CMU_SDIOCTRL_SDIOCLKSEL_USHFRCO:
-            SDIO_CLOCK_FREQ = USHFRCO_VALUE;
+            SDIO_CLOCK_FREQ = USHFRCO_OSC_FREQ;
         break;
     }
 
     switch(CMU->QSPICTRL & _CMU_QSPICTRL_QSPI0CLKSEL_MASK)
     {
         case CMU_QSPICTRL_QSPI0CLKSEL_HFRCO:
-            QSPI_CLOCK_FREQ = HFRCO_VALUE;
+            QSPI_CLOCK_FREQ = HFRCO_OSC_FREQ;
         break;
         case CMU_QSPICTRL_QSPI0CLKSEL_HFXO:
-            QSPI_CLOCK_FREQ = HFXO_VALUE;
+            QSPI_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_QSPICTRL_QSPI0CLKSEL_AUXHFRCO:
             QSPI_CLOCK_FREQ = AUX_CLOCK_FREQ;
         break;
         case CMU_QSPICTRL_QSPI0CLKSEL_USHFRCO:
-            QSPI_CLOCK_FREQ = USHFRCO_VALUE;
+            QSPI_CLOCK_FREQ = USHFRCO_OSC_FREQ;
         break;
     }
 
     switch(CMU->USBCTRL & _CMU_USBCTRL_USBCLKSEL_MASK)
     {
         case CMU_USBCTRL_USBCLKSEL_USHFRCO:
-            USB_CLOCK_FREQ = USHFRCO_VALUE;
+            USB_CLOCK_FREQ = USHFRCO_OSC_FREQ;
         break;
         case CMU_USBCTRL_USBCLKSEL_HFXO:
-            USB_CLOCK_FREQ = HFXO_VALUE;
+            USB_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_USBCTRL_USBCLKSEL_HFXOX2:
         {
             if(CMU->HFXOCTRL & CMU_HFXOCTRL_HFXOX2EN)
-                USB_CLOCK_FREQ = HFXO_VALUE << 1;
+                USB_CLOCK_FREQ = HFXO_OSC_FREQ << 1;
             else
-                USB_CLOCK_FREQ = HFXO_VALUE;
+                USB_CLOCK_FREQ = HFXO_OSC_FREQ;
         }
         break;
         case CMU_USBCTRL_USBCLKSEL_HFRCO:
-            USB_CLOCK_FREQ = HFRCO_VALUE;
+            USB_CLOCK_FREQ = HFRCO_OSC_FREQ;
         break;
         case CMU_USBCTRL_USBCLKSEL_LFXO:
-            USB_CLOCK_FREQ = LFXO_VALUE;
+            USB_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_USBCTRL_USBCLKSEL_LFRCO:
-            USB_CLOCK_FREQ = LFRCO_VALUE;
+            USB_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
     }
 
@@ -233,7 +235,7 @@ void cmu_update_clocks()
             DBG_CLOCK_FREQ = HF_CLOCK_FREQ;
         break;
         case CMU_DBGCLKSEL_DBG_HFRCODIV2:
-            DBG_CLOCK_FREQ = HFRCO_VALUE >> 1;
+            DBG_CLOCK_FREQ = HFRCO_OSC_FREQ >> 1;
         break;
     }
 
@@ -246,7 +248,7 @@ void cmu_update_clocks()
             ADC0_CLOCK_FREQ = AUX_CLOCK_FREQ;
         break;
         case CMU_ADCCTRL_ADC0CLKSEL_HFXO:
-            ADC0_CLOCK_FREQ = HFXO_VALUE;
+            ADC0_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_ADCCTRL_ADC0CLKSEL_HFSRCCLK:
             ADC0_CLOCK_FREQ = HFSRC_CLOCK_FREQ;
@@ -264,7 +266,7 @@ void cmu_update_clocks()
             ADC1_CLOCK_FREQ = AUX_CLOCK_FREQ;
         break;
         case CMU_ADCCTRL_ADC1CLKSEL_HFXO:
-            ADC1_CLOCK_FREQ = HFXO_VALUE;
+            ADC1_CLOCK_FREQ = HFXO_OSC_FREQ;
         break;
         case CMU_ADCCTRL_ADC1CLKSEL_HFSRCCLK:
             ADC1_CLOCK_FREQ = HFSRC_CLOCK_FREQ;
@@ -279,13 +281,13 @@ void cmu_update_clocks()
             LFA_CLOCK_FREQ = 0;
         break;
         case CMU_LFACLKSEL_LFA_LFRCO:
-            LFA_CLOCK_FREQ = LFRCO_VALUE;
+            LFA_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
         case CMU_LFACLKSEL_LFA_LFXO:
-            LFA_CLOCK_FREQ = LFXO_VALUE;
+            LFA_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_LFACLKSEL_LFA_ULFRCO:
-            LFA_CLOCK_FREQ = ULFRCO_VALUE;
+            LFA_CLOCK_FREQ = ULFRCO_OSC_FREQ;
         break;
     }
 
@@ -301,16 +303,16 @@ void cmu_update_clocks()
             LFB_CLOCK_FREQ = 0;
         break;
         case CMU_LFBCLKSEL_LFB_LFRCO:
-            LFB_CLOCK_FREQ = LFRCO_VALUE;
+            LFB_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
         case CMU_LFBCLKSEL_LFB_LFXO:
-            LFB_CLOCK_FREQ = LFXO_VALUE;
+            LFB_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_LFBCLKSEL_LFB_HFCLKLE:
             LFB_CLOCK_FREQ = HFLE_CLOCK_FREQ;
         break;
         case CMU_LFBCLKSEL_LFB_ULFRCO:
-            LFB_CLOCK_FREQ = ULFRCO_VALUE;
+            LFB_CLOCK_FREQ = ULFRCO_OSC_FREQ;
         break;
     }
 
@@ -325,13 +327,13 @@ void cmu_update_clocks()
             LFC_CLOCK_FREQ = 0;
         break;
         case CMU_LFCCLKSEL_LFC_LFRCO:
-            LFC_CLOCK_FREQ = LFRCO_VALUE;
+            LFC_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
         case CMU_LFCCLKSEL_LFC_LFXO:
-            LFC_CLOCK_FREQ = LFXO_VALUE;
+            LFC_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_LFCCLKSEL_LFC_ULFRCO:
-            LFC_CLOCK_FREQ = ULFRCO_VALUE;
+            LFC_CLOCK_FREQ = ULFRCO_OSC_FREQ;
         break;
     }
 
@@ -341,13 +343,13 @@ void cmu_update_clocks()
             LFE_CLOCK_FREQ = 0;
         break;
         case CMU_LFECLKSEL_LFE_LFRCO:
-            LFE_CLOCK_FREQ = LFRCO_VALUE;
+            LFE_CLOCK_FREQ = LFRCO_OSC_FREQ;
         break;
         case CMU_LFECLKSEL_LFE_LFXO:
-            LFE_CLOCK_FREQ = LFXO_VALUE;
+            LFE_CLOCK_FREQ = LFXO_OSC_FREQ;
         break;
         case CMU_LFECLKSEL_LFE_ULFRCO:
-            LFE_CLOCK_FREQ = ULFRCO_VALUE;
+            LFE_CLOCK_FREQ = ULFRCO_OSC_FREQ;
         break;
     }
 
@@ -361,10 +363,76 @@ void cmu_config_waitstates(uint32_t ulFrequency)
         CMU->CTRL |= CMU_CTRL_WSHFLE;
 }
 
-void cmu_hfrco_calib(uint32_t ulCalibration, uint32_t ulTargetFrequency)
+void cmu_clkout0_config(uint32_t ulSource, int8_t bLocation)
+{
+    if(bLocation > AFCHANLOC_MAX)
+        return;
+
+    if(bLocation < 0) // Disable
+    {
+        CMU->ROUTEPEN &= ~CMU_ROUTEPEN_CLKOUT0PEN;
+
+        CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL0_MASK) | CMU_CTRL_CLKOUTSEL0_DISABLED;
+
+        return;
+    }
+
+    CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL0_MASK) | (ulSource & _CMU_CTRL_CLKOUTSEL0_MASK);
+
+    CMU->ROUTELOC0 = (CMU->ROUTELOC0 & ~_CMU_ROUTELOC0_CLKOUT0LOC_MASK) | ((uint32_t)bLocation << _CMU_ROUTELOC0_CLKOUT0LOC_SHIFT);
+    CMU->ROUTEPEN |= CMU_ROUTEPEN_CLKOUT0PEN;
+}
+void cmu_clkout1_config(uint32_t ulSource, int8_t bLocation)
+{
+    if(bLocation > AFCHANLOC_MAX)
+        return;
+
+    if(bLocation < 0) // Disable
+    {
+        CMU->ROUTEPEN &= ~CMU_ROUTEPEN_CLKOUT1PEN;
+
+        CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL1_MASK) | CMU_CTRL_CLKOUTSEL1_DISABLED;
+
+        return;
+    }
+
+    CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL1_MASK) | (ulSource & _CMU_CTRL_CLKOUTSEL1_MASK);
+
+    CMU->ROUTELOC0 = (CMU->ROUTELOC0 & ~_CMU_ROUTELOC0_CLKOUT1LOC_MASK) | ((uint32_t)bLocation << _CMU_ROUTELOC0_CLKOUT1LOC_SHIFT);
+    CMU->ROUTEPEN |= CMU_ROUTEPEN_CLKOUT1PEN;
+}
+void cmu_clkout2_config(uint32_t ulSource, int8_t bLocation)
+{
+    if(bLocation > AFCHANLOC_MAX)
+        return;
+
+    if(bLocation < 0) // Disable
+    {
+        CMU->ROUTEPEN &= ~CMU_ROUTEPEN_CLKOUT2PEN;
+
+        CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL2_MASK) | CMU_CTRL_CLKOUTSEL2_DISABLED;
+
+        return;
+    }
+
+    CMU->CTRL = (CMU->CTRL & ~_CMU_CTRL_CLKOUTSEL2_MASK) | (ulSource & _CMU_CTRL_CLKOUTSEL2_MASK);
+
+    CMU->ROUTELOC0 = (CMU->ROUTELOC0 & ~_CMU_ROUTELOC0_CLKOUT2LOC_MASK) | ((uint32_t)bLocation << _CMU_ROUTELOC0_CLKOUT2LOC_SHIFT);
+    CMU->ROUTEPEN |= CMU_ROUTEPEN_CLKOUT2PEN;
+}
+
+void cmu_hfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFrequency)
 {
     if(CMU->STATUS & CMU_STATUS_DPLLENS)
         return;
+
+    if(!ubEnable && (CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_HFRCO)
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_HFRCODIS;
+        while(CMU->STATUS & CMU_STATUS_HFRCOENS);
+
+        return;
+    }
 
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFRCOBSY);
 
@@ -372,15 +440,22 @@ void cmu_hfrco_calib(uint32_t ulCalibration, uint32_t ulTargetFrequency)
 
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFRCOBSY);
 
-    HFRCO_VALUE = ulTargetFrequency;
+    if(ubEnable && !(CMU->STATUS & CMU_STATUS_HFRCOENS))
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_HFRCOEN;
+
+        while(!(CMU->STATUS & CMU_STATUS_HFRCORDY));
+    }
+
+    HFRCO_OSC_FREQ = ulFrequency;
 }
 
-void cmu_ushfrco_calib(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulTargetFrequency)
+void cmu_ushfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFrequency)
 {
     if(CMU->USBCRCTRL & CMU_USBCRCTRL_USBCREN)
         return;
 
-    if(!ubEnable)
+    if(!ubEnable && (CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_USHFRCO)
     {
         CMU->OSCENCMD = CMU_OSCENCMD_USHFRCODIS;
         while(CMU->STATUS & CMU_STATUS_USHFRCOENS);
@@ -401,10 +476,10 @@ void cmu_ushfrco_calib(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulTarg
         while(!(CMU->STATUS & CMU_STATUS_USHFRCORDY));
     }
 
-    USHFRCO_VALUE = ulTargetFrequency;
+    USHFRCO_OSC_FREQ = ulFrequency;
 }
 
-void cmu_auxhfrco_calib(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulTargetFrequency)
+void cmu_auxhfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFrequency)
 {
     if(!ubEnable)
     {
@@ -427,15 +502,53 @@ void cmu_auxhfrco_calib(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulTar
         while(!(CMU->STATUS & CMU_STATUS_AUXHFRCORDY));
     }
 
-    AUXHFRCO_VALUE = ulTargetFrequency;
+    AUXHFRCO_OSC_FREQ = ulFrequency;
 }
 
-void cmu_hfxo_startup_calib(uint16_t usIBTrim, uint16_t usCTune)
+void cmu_dpll_config(uint8_t ubEnable, uint32_t ulConfig, uint16_t usM, uint16_t usN)
 {
-    if(CMU->STATUS & CMU_STATUS_HFXOENS)
+    if(!ubEnable)
+    {
+        CMU->HFRCOCTRL &= ~CMU_HFRCOCTRL_FINETUNINGEN;
+
+        CMU->OSCENCMD = CMU_OSCENCMD_DPLLDIS;
+        while(CMU->STATUS & CMU_STATUS_DPLLENS);
+
+        return;
+    }
+
+    if(CMU->STATUS & CMU_STATUS_DPLLENS)
         return;
 
-    CMU->HFXOSTARTUPCTRL = (CMU->HFXOSTARTUPCTRL & ~(_CMU_HFXOSTARTUPCTRL_CTUNE_MASK | _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK)) | (((uint32_t)usCTune << _CMU_HFXOSTARTUPCTRL_CTUNE_SHIFT) & _CMU_HFXOSTARTUPCTRL_CTUNE_MASK) | (((uint32_t)usIBTrim << _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK);
+    if(!usM || !usN)
+        return;
+
+    if(usM > BIT(12) - 1 || usN > BIT(12) - 1)
+        return;
+
+    CMU->DPLLCTRL = ulConfig & _CMU_DPLLCTRL_MASK;
+    CMU->DPLLCTRL1 = ((usN - 1) << _CMU_DPLLCTRL1_N_SHIFT) | ((usM - 1) << _CMU_DPLLCTRL1_M_SHIFT);
+
+    CMU->HFRCOCTRL |= CMU_HFRCOCTRL_FINETUNINGEN;
+
+    CMU->OSCENCMD = CMU_OSCENCMD_DPLLEN;
+    while(!(CMU->STATUS & CMU_STATUS_DPLLRDY));
+}
+
+void cmu_hfxo_config(uint8_t ubEnable, uint32_t ulConfig, uint32_t ulFrequency);
+void cmu_hfxo_timeout_config(uint8_t ubPeakDetTimeout, uint8_t ubSteadyTimeout, uint8_t ubStartupTimeout);
+void cmu_hfxo_startup_config(float fCurrent, float fCapacitance)
+{
+    if(fCurrent < HFXO_MIN_UA || fCurrent > HFXO_MAX_UA)
+        return;
+
+    if(fCapacitance < HFXO_MIN_PF || fCapacitance > HFXO_MAX_PF)
+        return;
+
+    uint32_t ulCTune = HFXO_PF_TO_CTUNE(fCapacitance);
+    uint32_t ulIBTrim = HFXO_UA_TO_IBTRIM(fCurrent);
+
+    CMU->HFXOSTARTUPCTRL = (CMU->HFXOSTARTUPCTRL & ~(_CMU_HFXOSTARTUPCTRL_CTUNE_MASK | _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK)) | ((ulCTune << _CMU_HFXOSTARTUPCTRL_CTUNE_SHIFT) & _CMU_HFXOSTARTUPCTRL_CTUNE_MASK) | ((ulIBTrim << _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK);
 }
 float cmu_hfxo_get_startup_current()
 {
@@ -445,12 +558,18 @@ float cmu_hfxo_get_startup_cap()
 {
     return HFXO_CTUNE_TO_PF((CMU->HFXOSTARTUPCTRL & _CMU_HFXOSTARTUPCTRL_CTUNE_MASK) >> _CMU_HFXOSTARTUPCTRL_CTUNE_SHIFT);
 }
-void cmu_hfxo_steady_calib(uint16_t usIBTrim, uint16_t usCTune)
+void cmu_hfxo_steady_config(float fCurrent, float fCapacitance)
 {
-    if(CMU->STATUS & CMU_STATUS_HFXOENS)
+    if(fCurrent < HFXO_MIN_UA || fCurrent > HFXO_MAX_UA)
         return;
 
-    CMU->HFXOSTEADYSTATECTRL = (CMU->HFXOSTEADYSTATECTRL & ~(_CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK | _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK)) | (((uint32_t)usCTune << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) | (((uint32_t)usIBTrim << _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK);
+    if(fCapacitance < HFXO_MIN_PF || fCapacitance > HFXO_MAX_PF)
+        return;
+
+    uint32_t ulCTune = HFXO_PF_TO_CTUNE(fCapacitance);
+    uint32_t ulIBTrim = HFXO_UA_TO_IBTRIM(fCurrent);
+
+    CMU->HFXOSTEADYSTATECTRL = (CMU->HFXOSTEADYSTATECTRL & ~(_CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK | _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK)) | ((ulCTune << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) | ((ulIBTrim << _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK);
 }
 float cmu_hfxo_get_steady_current()
 {
@@ -460,10 +579,10 @@ float cmu_hfxo_get_steady_cap()
 {
     return HFXO_CTUNE_TO_PF((CMU->HFXOSTEADYSTATECTRL & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) >> _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT);
 }
-uint16_t cmu_hfxo_get_pda_ibtrim(uint8_t ubTrigger)
+float cmu_hfxo_get_pda_current(uint8_t ubTrigger)
 {
     if(!(CMU->STATUS & CMU_STATUS_HFXOENS))
-        return 0;
+        return 0.f;
 
     if(ubTrigger)
     {
@@ -471,36 +590,49 @@ uint16_t cmu_hfxo_get_pda_ibtrim(uint8_t ubTrigger)
         while(!(CMU->STATUS & CMU_STATUS_HFXOPEAKDETRDY));
     }
 
-    return (CMU->HFXOTRIMSTATUS & _CMU_HFXOTRIMSTATUS_IBTRIMXOCORE_MASK) >> _CMU_HFXOTRIMSTATUS_IBTRIMXOCORE_SHIFT;
-}
-float cmu_hfxo_get_pda_current(uint8_t ubTrigger)
-{
-    if(!(CMU->STATUS & CMU_STATUS_HFXOENS))
-        return 0;
-    
-    return HFXO_IBTRIM_TO_UA(cmu_hfxo_get_pda_ibtrim(ubTrigger));
-}
-uint16_t cmu_hfxo_get_pma_ibtrim()
-{
-    if(!(CMU->STATUS & CMU_STATUS_HFXOENS))
-        return 0;
+    uint32_t ulIBTrim = (CMU->HFXOTRIMSTATUS & _CMU_HFXOTRIMSTATUS_IBTRIMXOCORE_MASK) >> _CMU_HFXOTRIMSTATUS_IBTRIMXOCORE_SHIFT;
 
-    return (CMU->HFXOTRIMSTATUS & _CMU_HFXOTRIMSTATUS_IBTRIMXOCOREMON_MASK) >> _CMU_HFXOTRIMSTATUS_IBTRIMXOCOREMON_SHIFT;
+    return HFXO_IBTRIM_TO_UA(ulIBTrim);
 }
 float cmu_hfxo_get_pma_current()
 {
     if(!(CMU->STATUS & CMU_STATUS_HFXOENS))
-        return 0;
-    
-    return HFXO_IBTRIM_TO_UA(cmu_hfxo_get_pma_ibtrim());
+        return 0.f;
+
+    uint32_t ulIBTrim = (CMU->HFXOTRIMSTATUS & _CMU_HFXOTRIMSTATUS_IBTRIMXOCOREMON_MASK) >> _CMU_HFXOTRIMSTATUS_IBTRIMXOCOREMON_SHIFT;
+
+    return HFXO_IBTRIM_TO_UA(ulIBTrim);
 }
 
-void cmu_lfxo_calib(uint8_t ubCTune)
+void cmu_hf_clock_config(uint32_t ulSource, uint8_t ubPrescaler);
+void cmu_hfle_clock_config(uint32_t ulPrescaler);
+void cmu_hfbus_clock_config(uint8_t ubPrescaler);
+void cmu_hfcore_clock_config(uint8_t ubPrescaler);
+void cmu_hfper_clock_config(uint8_t ubEnable, uint8_t ubPERPrescaler, uint8_t ubPERBPrescaler, uint8_t ubPERCPrescaler);
+void cmu_hfexp_clock_config(uint8_t ubPrescaler);
+void cmu_dbg_clock_config(uint32_t ulSource);
+void cmu_qspi_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_sdio_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_usb_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_adc0_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert);
+void cmu_adc1_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert);
+
+void cmu_hfbus_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
+void cmu_hfper0_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
+void cmu_hfper1_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
+
+void cmu_lfrco_config(uint8_t ubEnable, uint32_t ulConfig);
+
+void cmu_lfxo_config(uint8_t ubEnable, uint32_t ulConfig, float fCapacitance, uint32_t ulFrequency)
 {
     if(CMU->STATUS & CMU_STATUS_LFXOENS)
         return;
 
-    float fCLoad = LFXO_CTUNE_TO_PF(ubCTune) / 2.f;
+    if(fCapacitance < LFXO_MIN_PF || fCapacitance > LFXO_MAX_PF)
+        return;
+
+    float fCLoad = fCapacitance / 2.f;
+    uint8_t ubCTune = LFXO_PF_TO_CTUNE(fCapacitance);
     uint8_t ubGain = 0;
 
     if(fCLoad <= 6.f)
@@ -509,14 +641,164 @@ void cmu_lfxo_calib(uint8_t ubCTune)
         ubGain = 1;
     else if(fCLoad <= 12.5f)
         ubGain = 2;
-    else if(fCLoad <= 18.f)
-        ubGain = 3;
     else
-        return;
+        ubGain = 3;
 
     CMU->LFXOCTRL = (CMU->LFXOCTRL & ~(_CMU_LFXOCTRL_GAIN_MASK | _CMU_LFXOCTRL_TUNING_MASK)) | ((uint32_t)ubGain << _CMU_LFXOCTRL_GAIN_SHIFT) | (((uint32_t)ubCTune << _CMU_LFXOCTRL_TUNING_SHIFT) & _CMU_LFXOCTRL_TUNING_MASK);
+
+    CMU->OSCENCMD = CMU_OSCENCMD_LFXOEN;
+    while(!(CMU->STATUS & CMU_STATUS_LFXORDY));
+
+    LFXO_OSC_FREQ = ulFrequency;
 }
 float cmu_lfxo_get_cap()
 {
     return LFXO_CTUNE_TO_PF((CMU->LFXOCTRL & _CMU_LFXOCTRL_TUNING_MASK) >> _CMU_LFXOCTRL_TUNING_SHIFT);
 }
+
+void cmu_lfa_clock_config(uint32_t ulSource)
+{
+    CMU->LFACLKSEL = ulSource & _CMU_LFACLKSEL_MASK;
+}
+void cmu_lfa_rtc_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFACLKEN0 &= ~CMU_LFACLKEN0_RTC;
+
+        return;
+    }
+
+    CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_RTC_MASK) | (ulPrescaler & _CMU_LFAPRESC0_RTC_MASK);
+    CMU->LFACLKEN0 |= CMU_LFACLKEN0_RTC;
+}
+void cmu_lfa_lcd_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFACLKEN0 &= ~CMU_LFACLKEN0_LCD;
+
+        return;
+    }
+
+    CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_LCD_MASK) | (ulPrescaler & _CMU_LFAPRESC0_LCD_MASK);
+    CMU->LFACLKEN0 |= CMU_LFACLKEN0_LCD;
+}
+void cmu_lfa_lesense_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFACLKEN0 &= ~CMU_LFACLKEN0_LESENSE;
+
+        return;
+    }
+
+    CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_LESENSE_MASK) | (ulPrescaler & _CMU_LFAPRESC0_LESENSE_MASK);
+    CMU->LFACLKEN0 |= CMU_LFACLKEN0_LESENSE;
+}
+void cmu_lfa_letimer1_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFACLKEN0 &= ~CMU_LFACLKEN0_LETIMER1;
+
+        return;
+    }
+
+    CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_LETIMER1_MASK) | (ulPrescaler & _CMU_LFAPRESC0_LETIMER1_MASK);
+    CMU->LFACLKEN0 |= CMU_LFACLKEN0_LETIMER1;
+}
+void cmu_lfa_letimer0_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFACLKEN0 &= ~CMU_LFACLKEN0_LETIMER0;
+
+        return;
+    }
+
+    CMU->LFAPRESC0 = (CMU->LFAPRESC0 & ~_CMU_LFAPRESC0_LETIMER0_MASK) | (ulPrescaler & _CMU_LFAPRESC0_LETIMER0_MASK);
+    CMU->LFACLKEN0 |= CMU_LFACLKEN0_LETIMER0;
+}
+void cmu_lfb_clock_config(uint32_t ulSource)
+{
+    CMU->LFBCLKSEL = ulSource & _CMU_LFBCLKSEL_MASK;
+}
+void cmu_lfb_csen_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFBCLKEN0 &= ~CMU_LFBCLKEN0_CSEN;
+
+        return;
+    }
+
+    CMU->LFBPRESC0 = (CMU->LFBPRESC0 & ~_CMU_LFBPRESC0_CSEN_MASK) | (ulPrescaler & _CMU_LFBPRESC0_CSEN_MASK);
+    CMU->LFBCLKEN0 |= CMU_LFBCLKEN0_CSEN;
+}
+void cmu_lfb_systick_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFBCLKEN0 &= ~CMU_LFBCLKEN0_SYSTICK;
+
+        return;
+    }
+
+    CMU->LFBPRESC0 = (CMU->LFBPRESC0 & ~_CMU_LFBPRESC0_SYSTICK_MASK) | (ulPrescaler & _CMU_LFBPRESC0_SYSTICK_MASK);
+    CMU->LFBCLKEN0 |= CMU_LFBCLKEN0_SYSTICK;
+}
+void cmu_lfb_leuart1_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFBCLKEN0 &= ~CMU_LFBCLKEN0_LEUART1;
+
+        return;
+    }
+
+    CMU->LFBPRESC0 = (CMU->LFBPRESC0 & ~_CMU_LFBPRESC0_LEUART1_MASK) | (ulPrescaler & _CMU_LFBPRESC0_LEUART1_MASK);
+    CMU->LFBCLKEN0 |= CMU_LFBCLKEN0_LEUART1;
+}
+void cmu_lfb_leuart0_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFBCLKEN0 &= ~CMU_LFBCLKEN0_LEUART0;
+
+        return;
+    }
+
+    CMU->LFBPRESC0 = (CMU->LFBPRESC0 & ~_CMU_LFBPRESC0_LEUART0_MASK) | (ulPrescaler & _CMU_LFBPRESC0_LEUART0_MASK);
+    CMU->LFBCLKEN0 |= CMU_LFBCLKEN0_LEUART0;
+}
+void cmu_lfc_clock_config(uint32_t ulSource)
+{
+    CMU->LFCCLKSEL = ulSource & _CMU_LFCCLKSEL_MASK;
+}
+void cmu_lfc_usb_clock_config(uint8_t ubEnable)
+{
+    if(ubEnable)
+        CMU->LFCCLKEN0 |= CMU_LFCCLKEN0_USB;
+    else
+        CMU->LFCCLKEN0 &= ~CMU_LFCCLKEN0_USB;
+}
+void cmu_lfe_clock_config(uint32_t ulSource)
+{
+    CMU->LFECLKSEL = ulSource & _CMU_LFECLKSEL_MASK;
+}
+void cmu_lfe_rtcc_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->LFECLKEN0 &= ~CMU_LFECLKEN0_RTCC;
+
+        return;
+    }
+
+    CMU->LFEPRESC0 = (CMU->LFEPRESC0 & ~_CMU_LFEPRESC0_RTCC_MASK) | (ulPrescaler & _CMU_LFEPRESC0_RTCC_MASK);
+    CMU->LFECLKEN0 |= CMU_LFECLKEN0_RTCC;
+}
+void cmu_pcnt0_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_pcnt1_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_pcnt2_clock_config(uint8_t ubEnable, uint32_t ulSource);

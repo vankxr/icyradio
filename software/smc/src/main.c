@@ -359,13 +359,27 @@ int init()
 
     rmu_clear_reset_reason();
 
-    DBGPRINTLN_CTX("CMU - HFXO Clock: %.1f MHz", (float)HFXO_VALUE / 1000000);
-    DBGPRINTLN_CTX("CMU - HFRCO Clock: %.1f MHz", (float)HFRCO_VALUE / 1000000);
-    DBGPRINTLN_CTX("CMU - USHFRCO Clock: %.1f MHz", (float)USHFRCO_VALUE / 1000000);
-    DBGPRINTLN_CTX("CMU - AUXHFRCO Clock: %.1f MHz", (float)AUXHFRCO_VALUE / 1000000);
-    DBGPRINTLN_CTX("CMU - LFXO Clock: %.3f kHz", (float)LFXO_VALUE / 1000);
-    DBGPRINTLN_CTX("CMU - LFRCO Clock: %.3f kHz", (float)LFRCO_VALUE / 1000);
-    DBGPRINTLN_CTX("CMU - ULFRCO Clock: %.3f kHz", (float)ULFRCO_VALUE / 1000);
+    DBGPRINTLN_CTX("EMU - AVDD Fall Threshold: %.2f mV!", fAVDDLowThresh * 1000);
+    DBGPRINTLN_CTX("EMU - AVDD Rise Threshold: %.2f mV!", fAVDDHighThresh * 1000);
+    DBGPRINTLN_CTX("EMU - AVDD Voltage: %.2f mV", adc_get_avdd());
+    DBGPRINTLN_CTX("EMU - AVDD Status: %s", g_ubAVDDLow ? "LOW" : "OK");
+    DBGPRINTLN_CTX("EMU - DVDD Fall Threshold: %.2f mV!", fDVDDLowThresh * 1000);
+    DBGPRINTLN_CTX("EMU - DVDD Rise Threshold: %.2f mV!", fDVDDHighThresh * 1000);
+    DBGPRINTLN_CTX("EMU - DVDD Voltage: %.2f mV", adc_get_dvdd());
+    DBGPRINTLN_CTX("EMU - DVDD Status: %s", g_ubDVDDLow ? "LOW" : "OK");
+    DBGPRINTLN_CTX("EMU - IOVDD Fall Threshold: %.2f mV!", fIOVDDLowThresh * 1000);
+    DBGPRINTLN_CTX("EMU - IOVDD Rise Threshold: %.2f mV!", fIOVDDHighThresh * 1000);
+    DBGPRINTLN_CTX("EMU - IOVDD Voltage: %.2f mV", adc_get_iovdd());
+    DBGPRINTLN_CTX("EMU - IOVDD Status: %s", g_ubIOVDDLow ? "LOW" : "OK");
+    DBGPRINTLN_CTX("EMU - Core Voltage: %.2f mV", adc_get_corevdd());
+
+    DBGPRINTLN_CTX("CMU - HFXO Oscillator: %.1f MHz", (float)HFXO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFRCO Oscillator: %.1f MHz", (float)HFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - USHFRCO Oscillator: %.1f MHz", (float)USHFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - AUXHFRCO Oscillator: %.1f MHz", (float)AUXHFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - LFXO Oscillator: %.3f kHz", (float)LFXO_OSC_FREQ / 1000);
+    DBGPRINTLN_CTX("CMU - LFRCO Oscillator: %.3f kHz", (float)LFRCO_OSC_FREQ / 1000);
+    DBGPRINTLN_CTX("CMU - ULFRCO Oscillator: %.3f kHz", (float)ULFRCO_OSC_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - HFSRC Clock: %.1f MHz", (float)HFSRC_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("CMU - HF Clock: %.1f MHz", (float)HF_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("CMU - HFBUS Clock: %.1f MHz", (float)HFBUS_CLOCK_FREQ / 1000000);
@@ -396,20 +410,6 @@ int init()
     DBGPRINTLN_CTX("CMU - LFC Clock: %.3f kHz", (float)LFC_CLOCK_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - LFE Clock: %.3f kHz", (float)LFE_CLOCK_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - RTCC Clock: %.3f kHz", (float)RTCC_CLOCK_FREQ / 1000);
-
-    DBGPRINTLN_CTX("EMU - AVDD Fall Threshold: %.2f mV!", fAVDDLowThresh * 1000);
-    DBGPRINTLN_CTX("EMU - AVDD Rise Threshold: %.2f mV!", fAVDDHighThresh * 1000);
-    DBGPRINTLN_CTX("EMU - AVDD Voltage: %.2f mV", adc_get_avdd());
-    DBGPRINTLN_CTX("EMU - AVDD Status: %s", g_ubAVDDLow ? "LOW" : "OK");
-    DBGPRINTLN_CTX("EMU - DVDD Fall Threshold: %.2f mV!", fDVDDLowThresh * 1000);
-    DBGPRINTLN_CTX("EMU - DVDD Rise Threshold: %.2f mV!", fDVDDHighThresh * 1000);
-    DBGPRINTLN_CTX("EMU - DVDD Voltage: %.2f mV", adc_get_dvdd());
-    DBGPRINTLN_CTX("EMU - DVDD Status: %s", g_ubDVDDLow ? "LOW" : "OK");
-    DBGPRINTLN_CTX("EMU - IOVDD Fall Threshold: %.2f mV!", fIOVDDLowThresh * 1000);
-    DBGPRINTLN_CTX("EMU - IOVDD Rise Threshold: %.2f mV!", fIOVDDHighThresh * 1000);
-    DBGPRINTLN_CTX("EMU - IOVDD Voltage: %.2f mV", adc_get_iovdd());
-    DBGPRINTLN_CTX("EMU - IOVDD Status: %s", g_ubIOVDDLow ? "LOW" : "OK");
-    DBGPRINTLN_CTX("EMU - Core Voltage: %.2f mV", adc_get_corevdd());
 
     delay_ms(100);
 
@@ -451,11 +451,6 @@ int init()
 }
 int main()
 {
-    // CLK OUT to check if the clock was properly calibrated
-    //CMU->ROUTELOC0 = CMU_ROUTELOC0_CLKOUT1LOC_LOC1;
-    //CMU->ROUTEPEN |= CMU_ROUTEPEN_CLKOUT1PEN;
-    //CMU->CTRL |= CMU_CTRL_CLKOUTSEL1_HFXO;
-
     // Clock manager info & config
     DBGPRINTLN_CTX("SI5351 Revision ID: %hhu", si5351_read_revision_id());
 
@@ -493,7 +488,7 @@ int main()
     FPGA_UNSELECT();
 
     FPGA_SELECT();
-    usart1_spi_transfer_byte(0x11);
+    usart1_spi_transfer_byte(0x12);
     usart1_spi_transfer_byte(0x00);
     usart1_spi_transfer_byte(0x00);
     usart1_spi_transfer_byte(0x00);
