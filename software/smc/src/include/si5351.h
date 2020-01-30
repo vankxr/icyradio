@@ -3,6 +3,7 @@
 
 #include <em_device.h>
 #include <stdlib.h>
+#include <string.h>
 #include "systick.h"
 #include "atomic.h"
 #include "gpio.h"
@@ -148,12 +149,18 @@
 #define SI5351_PLLB     1
 
 // PLL source assignment
-#define SI5351_PLL_SRC_CLKIN    0
-#define SI5351_PLL_SRC_XTAL     1
+#define SI5351_PLL_SRC_XTAL     0
+#define SI5351_PLL_SRC_CLKIN    1
+
+// MultiSynth source assignment
+#define SI5351_MS_SRC_PLLA      0
+#define SI5351_MS_SRC_PLLB      1
 
 // Clock source assignment
-#define SI5351_CLK_SRC_CLKIN    255
-#define SI5351_CLK_SRC_XTAL     254
+#define SI5351_CLK_SRC_XTAL     0
+#define SI5351_CLK_SRC_CLKIN    1
+#define SI5351_CLK_SRC_MS04     2
+#define SI5351_CLK_SRC_MSn      3
 
 // Clock assignment
 #define SI5351_FPGA_CLK3    0
@@ -177,6 +184,9 @@ extern uint32_t SI5351_CLKIN_FREQ;
 extern uint32_t SI5351_CLKIN_DIV_FREQ;
 extern uint32_t SI5351_PLL_SRC_FREQ[2];
 extern uint32_t SI5351_PLL_FREQ[2];
+extern uint32_t SI5351_MS_SRC_FREQ[8];
+extern uint32_t SI5351_MS_FREQ[8];
+extern uint32_t SI5351_CLK_SRC_FREQ[8];
 extern uint32_t SI5351_CLK_FREQ[8];
 
 uint8_t si5351_init();
@@ -191,7 +201,8 @@ uint8_t si5351_pll_reset(uint8_t ubPLL);
 uint8_t si5351_pll_set_source(uint8_t ubPLL, uint8_t ubSource);
 uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq);
 
-uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint8_t ulFreq);
+uint8_t si5351_multisynth_set_source(uint8_t ubMS, uint8_t ubSource);
+uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq);
 uint8_t si5351_multisynth_set_phase_offset(uint8_t ubMS, float fOffset);
 
 uint8_t si5351_clock_power_up(uint8_t ubClock);

@@ -33,7 +33,7 @@
 #define IS_VALID_APP(addr) ((*(volatile uint32_t *)(addr) & 0xFFF80000) == SRAM_BASE)
 
 // Macro to get the bit value
-#define BIT(x) (1 << (x))
+#define BIT(x) (1UL << (x))
 
 // Printf macros to print bits
 #define UINT8BITSTR         "%c%c%c%c%c%c%c%c"

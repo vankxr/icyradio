@@ -493,15 +493,15 @@ always @(*)
         case(audio_i2s_dsp_clk_sel[0])
             1'b0:
                 begin
-                    audio_i2s_dsp_mclk_out = audio_i2s_brg_mclk_in;
-                    audio_i2s_dsp_bclk_out = audio_i2s_brg_bclk_in;
-                    audio_i2s_dsp_lrclk_out = audio_i2s_brg_lrclk_in;
+                    audio_i2s_dsp_mclk_out <= audio_i2s_brg_mclk_in;
+                    audio_i2s_dsp_bclk_out <= audio_i2s_brg_bclk_in;
+                    audio_i2s_dsp_lrclk_out <= audio_i2s_brg_lrclk_in;
                 end
             1'b1:
                 begin
-                    audio_i2s_dsp_mclk_out = 1'b0; // TODO: Clock from FPGA
-                    audio_i2s_dsp_bclk_out = 1'b0;
-                    audio_i2s_dsp_lrclk_out = 1'b0;
+                    audio_i2s_dsp_mclk_out <= 1'b0; // TODO: Clock from FPGA
+                    audio_i2s_dsp_bclk_out <= 1'b0;
+                    audio_i2s_dsp_lrclk_out <= 1'b0;
                 end
         endcase
     end
@@ -511,27 +511,27 @@ always @(*)
         case(audio_i2s_codec_clk_sel)
             2'b00:
                 begin
-                    audio_i2s_codec_mclk_out = audio_i2s_brg_mclk_in;
-                    audio_i2s_codec_bclk_out = audio_i2s_brg_bclk_in;
-                    audio_i2s_codec_lrclk_out = audio_i2s_brg_lrclk_in;
+                    audio_i2s_codec_mclk_out <= audio_i2s_dsp_mclk_in;
+                    audio_i2s_codec_bclk_out <= audio_i2s_dsp_bclk_in;
+                    audio_i2s_codec_lrclk_out <= audio_i2s_dsp_lrclk_in;
                 end
             2'b01:
                 begin
-                    audio_i2s_codec_mclk_out = 1'b0; // TODO: Clock from FPGA
-                    audio_i2s_codec_bclk_out = 1'b0;
-                    audio_i2s_codec_lrclk_out = 1'b0;
+                    audio_i2s_codec_mclk_out <= 1'b0;
+                    audio_i2s_codec_bclk_out <= 1'b0;
+                    audio_i2s_codec_lrclk_out <= 1'b0;
                 end
             2'b10:
                 begin
-                    audio_i2s_codec_mclk_out = audio_i2s_dsp_mclk_in;
-                    audio_i2s_codec_bclk_out = audio_i2s_dsp_bclk_in;
-                    audio_i2s_codec_lrclk_out = audio_i2s_dsp_lrclk_in;
+                    audio_i2s_codec_mclk_out <= audio_i2s_brg_mclk_in;
+                    audio_i2s_codec_bclk_out <= audio_i2s_brg_bclk_in;
+                    audio_i2s_codec_lrclk_out <= audio_i2s_brg_lrclk_in;
                 end
             2'b11:
                 begin
-                    audio_i2s_codec_mclk_out = 1'b0;
-                    audio_i2s_codec_bclk_out = 1'b0;
-                    audio_i2s_codec_lrclk_out = 1'b0;
+                    audio_i2s_codec_mclk_out <= 1'b0; // TODO: Clock from FPGA
+                    audio_i2s_codec_bclk_out <= 1'b0;
+                    audio_i2s_codec_lrclk_out <= 1'b0;
                 end
         endcase
     end
@@ -545,9 +545,9 @@ always @(*)
     begin
         case(audio_i2s_dsp_sdin_sel)
             1'b0:
-                audio_i2s_dsp_sdin = audio_i2s_brg_sdout;
+                audio_i2s_dsp_sdin <= audio_i2s_brg_sdout;
             1'b1:
-                audio_i2s_dsp_sdin = audio_i2s_codec_sdout;
+                audio_i2s_dsp_sdin <= audio_i2s_codec_sdout;
         endcase
     end
 
@@ -555,9 +555,9 @@ always @(*)
     begin
         case(audio_i2s_codec_sdin_sel)
             1'b0:
-                audio_i2s_codec_sdin = audio_i2s_brg_sdout;
+                audio_i2s_codec_sdin <= audio_i2s_brg_sdout;
             1'b1:
-                audio_i2s_codec_sdin = audio_i2s_dsp_sdout;
+                audio_i2s_codec_sdin <= audio_i2s_dsp_sdout;
         endcase
     end
 
@@ -565,9 +565,9 @@ always @(*)
     begin
         case(audio_i2s_brg_sdin_sel)
             1'b0:
-                audio_i2s_brg_sdin = audio_i2s_codec_sdout;
+                audio_i2s_brg_sdin <= audio_i2s_codec_sdout;
             1'b1:
-                audio_i2s_brg_sdin = audio_i2s_dsp_sdout;
+                audio_i2s_brg_sdin <= audio_i2s_dsp_sdout;
         endcase
     end
 /// Audio I2S multiplexer ///
@@ -917,7 +917,7 @@ always @(*)
     begin
         case(cntrl_spi_addr)
             CNTRL_SPI_REG_ID:
-                cntrl_spi_data_in = 32'hA0000001;
+                cntrl_spi_data_in = 32'hDADC0001;
             CNTRL_SPI_REG_RST_CNTRL:
                 cntrl_spi_data_in = {26'd0, qspi_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:

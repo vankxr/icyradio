@@ -57,7 +57,7 @@ uint32_t calc_crc32(uint8_t *pData, uint32_t ulSize)
 
 void crc_init()
 {
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPCRC;
+    cmu_hfbus_clock_gate(CMU_HFBUSCLKEN0_GPCRC, 1);
 
     GPCRC->CTRL = GPCRC_CTRL_BYTEREVERSE | GPCRC_CTRL_BITREVERSE | GPCRC_CTRL_POLYSEL_CRC32 | GPCRC_CTRL_EN_ENABLE;
     GPCRC->INIT = 0xFFFFFFFF;

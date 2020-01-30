@@ -26,7 +26,7 @@ void _ldma_isr()
 
 void ldma_init()
 {
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_LDMA;
+    cmu_hfbus_clock_gate(CMU_HFBUSCLKEN0_LDMA, 1);
 
     LDMA->IFC = _LDMA_IFC_MASK; // Clear all flags
     IRQ_CLEAR(LDMA_IRQn); // Clear pending vector

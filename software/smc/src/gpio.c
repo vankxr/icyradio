@@ -26,7 +26,7 @@ void _gpio_odd_isr()
 
 void gpio_init()
 {
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_GPIO;
+    cmu_hfbus_clock_gate(CMU_HFBUSCLKEN0_GPIO, 1);
 
     // NC - Not Connected (not available in mcu package)
     // NR - Not routed (no routing to pin on pcb, floating)

@@ -2,6 +2,7 @@
 #define __CRYPTO_H__
 
 #include <em_device.h>
+#include "cmu.h"
 #include "utils.h"
 
 #define SHA256STRU "%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X"

@@ -3,6 +3,7 @@
 
 #include <em_device.h>
 #include <stdlib.h>
+#include "cmu.h"
 #include "atomic.h"
 #include "nvic.h"
 #include "utils.h"

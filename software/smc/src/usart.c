@@ -12,7 +12,7 @@ void usart0_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART0;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART0, 1);
 
     USART0->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -145,7 +145,7 @@ void usart0_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART0;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART0, 1);
 
     USART0->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -258,7 +258,7 @@ void usart1_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART1;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART1, 1);
 
     USART1->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -391,7 +391,7 @@ void usart1_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART1;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART1, 1);
 
     USART1->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -504,7 +504,7 @@ void usart2_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART2;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART2, 1);
 
     USART2->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -637,7 +637,7 @@ void usart2_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART2;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART2, 1);
 
     USART2->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -750,7 +750,7 @@ void usart3_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART3;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART3, 1);
 
     USART3->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -883,7 +883,7 @@ void usart3_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART3;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART3, 1);
 
     USART3->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -996,7 +996,7 @@ void usart4_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART4;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART4, 1);
 
     USART4->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -1129,7 +1129,7 @@ void usart4_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART4;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART4, 1);
 
     USART4->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -1242,7 +1242,7 @@ void usart5_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, int8_t bMIS
     if(ubCLKLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART5;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART5, 1);
 
     USART5->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -1375,7 +1375,7 @@ void usart5_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, 
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_USART5;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_USART5, 1);
 
     USART5->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX | USART_CMD_TXTRIDIS | USART_CMD_RXBLOCKDIS | USART_CMD_TXDIS | USART_CMD_RXDIS;
 
@@ -1558,7 +1558,7 @@ void uart0_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, i
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN1 |= CMU_HFPERCLKEN1_UART0;
+    cmu_hfper1_clock_gate(CMU_HFPERCLKEN1_UART0, 1);
 
     UART0->CMD = UART_CMD_CLEARRX | UART_CMD_CLEARTX | UART_CMD_TXTRIDIS | UART_CMD_RXBLOCKDIS | UART_CMD_TXDIS | UART_CMD_RXDIS;
 
@@ -1740,7 +1740,7 @@ void uart1_init(uint32_t ulBaud, uint32_t ulFrameSettings, int8_t bRXLocation, i
     if(bRTSLocation > -1 && bRTSLocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN1 |= CMU_HFPERCLKEN1_UART1;
+    cmu_hfper1_clock_gate(CMU_HFPERCLKEN1_UART1, 1);
 
     UART1->CMD = UART_CMD_CLEARRX | UART_CMD_CLEARTX | UART_CMD_TXTRIDIS | UART_CMD_RXBLOCKDIS | UART_CMD_TXDIS | UART_CMD_RXDIS;
 

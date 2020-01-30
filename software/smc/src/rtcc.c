@@ -2,10 +2,9 @@
 
 void rtcc_init()
 {
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_LE;
+    cmu_hfbus_clock_gate(CMU_HFBUSCLKEN0_LE, 1);
 
-    CMU->LFEPRESC0 = (CMU->LFEPRESC0 & ~_CMU_LFEPRESC0_RTCC_MASK) | CMU_LFEPRESC0_RTCC_DIV1;
-    CMU->LFECLKEN0 |= CMU_LFECLKEN0_RTCC;
+    cmu_lfe_rtcc_clock_config(1, CMU_LFEPRESC0_RTCC_DIV1);
 
     cmu_update_clocks();
 

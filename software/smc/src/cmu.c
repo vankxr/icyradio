@@ -41,59 +41,44 @@ uint32_t RTCC_CLOCK_FREQ;
 
 void cmu_init()
 {
-    // Disable DPLL if enabled
-    if(CMU->STATUS & CMU_STATUS_DPLLENS)
-    {
-        CMU->OSCENCMD = CMU_OSCENCMD_DPLLDIS;
-        while(CMU->STATUS & CMU_STATUS_DPLLENS);
-    }
+    // Disable DPLL
+    cmu_dpll_config(0, 0, 0, 0);
 
-    // Disable HFXO if enabled
-    if(CMU->STATUS & CMU_STATUS_HFXOENS)
-    {
-        CMU->OSCENCMD = CMU_OSCENCMD_HFXODIS;
-        while(CMU->STATUS & CMU_STATUS_HFXOENS);
-    }
-
-    // Config peripherals for the new frequency
+    // Configure peripherals for the new frequency
     cmu_config_waitstates(36000000);
     msc_config_waitstates(72000000);
 
-    // Set prescalers
-    CMU->HFPRESC = CMU_HFPRESC_HFCLKLEPRESC_DIV2 | CMU_HFPRESC_PRESC_NODIVISION;
-    CMU->HFBUSPRESC = 1 << _CMU_HFBUSPRESC_PRESC_SHIFT;
-    CMU->HFCOREPRESC = 0 << _CMU_HFCOREPRESC_PRESC_SHIFT;
-    CMU->HFPERPRESC = 1 << _CMU_HFPERPRESC_PRESC_SHIFT;
-    CMU->HFEXPPRESC = 0 << _CMU_HFEXPPRESC_PRESC_SHIFT;
-    CMU->HFPERPRESCB = 0 << _CMU_HFPERPRESCB_PRESC_SHIFT;
-    CMU->HFPERPRESCC = 1 << _CMU_HFPERPRESCC_PRESC_SHIFT;
+    // Configure HF clock tree for the new frequency
+    cmu_hf_clock_config(CMU_HFCLKSEL_HF_HFRCO, 1); // HFCLK = HFRCO / 1
+    cmu_hfle_clock_config(CMU_HFPRESC_HFCLKLEPRESC_DIV2); // HFCLKLE = HFCLK / 2
+    cmu_hfbus_clock_config(2); // HFBUSCLK = HFCLK / 2
+    cmu_hfcore_clock_config(1); // HFCORECLK = HFCLK / 1
+    cmu_hfper_clock_config(1, 2, 1, 2); // Peripheral clocks enabled, HFPERCLK = HFCLK / 2, HFPERBCLK = HFCLK / 1, HFPERCCLK = HFCLK / 2
+    cmu_hfexp_clock_config(1); // HFEXPCLK = HFCLK / 1
 
     // Calibrate HFRCO for 72MHz
-    cmu_hfrco_calib(HFRCO_CALIB_72M, 72000000);
+    cmu_hfrco_config(1, HFRCO_CALIB_72M, 72000000); // HFRCO enabled, coarse tuned for 72Mhz
 
-    // Switch main clock to HFRCO and wait for it to be selected
-    CMU->HFCLKSEL = CMU_HFCLKSEL_HF_HFRCO;
-    while((CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_HFRCO);
+    // Calibrate USHFRCO for 50MHz
+    cmu_ushfrco_config(1, USHFRCO_CALIB_50M, 50000000);
 
-    // Enable clock to peripherals
-    CMU->CTRL |= CMU_CTRL_HFPERCLKEN;
+    // Calibrate AUXHFRCO for 32MHz
+    cmu_auxhfrco_config(1, AUXHFRCO_CALIB_32M, 32000000);
 
-    // Disable LFXO if enabled
-    if(CMU->STATUS & CMU_STATUS_LFXOENS)
-    {
-        CMU->OSCENCMD = CMU_OSCENCMD_LFXODIS;
-        while(CMU->STATUS & CMU_STATUS_LFXOENS);
-    }
+    // Configure LFXO
+    cmu_lfxo_config(1, CMU_LFXOCTRL_TIMEOUT_2KCYCLES | CMU_LFXOCTRL_AGC | CMU_LFXOCTRL_MODE_XTAL, 25.f, 32768);
 
-    // Setup LFXO
-    CMU->LFXOCTRL = (CMU->LFXOCTRL & (CMU_LFXOCTRL_GAIN_DEFAULT | _CMU_LFXOCTRL_TUNING_MASK)) | CMU_LFXOCTRL_TIMEOUT_2KCYCLES | CMU_LFXOCTRL_AGC | CMU_LFXOCTRL_MODE_XTAL;
+    // Configure LFE clock
+    cmu_lfe_clock_config(CMU_LFECLKSEL_LFE_LFXO);
 
-    // Enable LFXO and wait for it to be ready
-    CMU->OSCENCMD = CMU_OSCENCMD_LFXOEN;
-    while(!(CMU->STATUS & CMU_STATUS_LFXORDY));
+    // Disable unused oscillators
+    cmu_hfxo_config(0, 0, 0);
+    cmu_ushfrco_config(0, 0, 0);
+    cmu_auxhfrco_config(0, 0, 0);
+    cmu_lfrco_config(0, 0);
 
-    // LFE Clock
-    CMU->LFECLKSEL = CMU_LFECLKSEL_LFE_LFXO;
+    // Update Clocks
+    cmu_update_clocks();
 }
 void cmu_update_clocks()
 {
@@ -434,9 +419,12 @@ void cmu_hfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFrequ
         return;
     }
 
+    if(!ulFrequency)
+        return;
+
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFRCOBSY);
 
-    CMU->HFRCOCTRL = ulCalibration;
+    CMU->HFRCOCTRL = ulCalibration & _CMU_HFRCOCTRL_MASK;
 
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFRCOBSY);
 
@@ -463,9 +451,12 @@ void cmu_ushfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFre
         return;
     }
 
+    if(!ulFrequency)
+        return;
+
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_USHFRCOBSY);
 
-    CMU->USHFRCOCTRL = ulCalibration;
+    CMU->USHFRCOCTRL = ulCalibration & _CMU_USHFRCOCTRL_MASK;
 
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_USHFRCOBSY);
 
@@ -489,9 +480,12 @@ void cmu_auxhfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFr
         return;
     }
 
+    if(!ulFrequency)
+        return;
+
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_AUXHFRCOBSY);
 
-    CMU->AUXHFRCOCTRL = ulCalibration;
+    CMU->AUXHFRCOCTRL = ulCalibration & _CMU_AUXHFRCOCTRL_MASK;
 
     while(CMU->SYNCBUSY & CMU_SYNCBUSY_AUXHFRCOBSY);
 
@@ -535,8 +529,42 @@ void cmu_dpll_config(uint8_t ubEnable, uint32_t ulConfig, uint16_t usM, uint16_t
     while(!(CMU->STATUS & CMU_STATUS_DPLLRDY));
 }
 
-void cmu_hfxo_config(uint8_t ubEnable, uint32_t ulConfig, uint32_t ulFrequency);
-void cmu_hfxo_timeout_config(uint8_t ubPeakDetTimeout, uint8_t ubSteadyTimeout, uint8_t ubStartupTimeout);
+void cmu_hfxo_config(uint8_t ubEnable, uint32_t ulConfig, uint32_t ulFrequency)
+{
+    if(!ubEnable && (CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != CMU_HFCLKSTATUS_SELECTED_HFXO)
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_HFXODIS;
+        while(CMU->STATUS & CMU_STATUS_HFXOENS);
+
+        return;
+    }
+
+    if(!ulFrequency)
+        return;
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
+
+    CMU->HFXOCTRL = ulConfig & _CMU_HFXOCTRL_MASK;
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
+
+    if(ubEnable && !(CMU->STATUS & CMU_STATUS_HFXOENS))
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_HFXOEN;
+
+        while(!(CMU->STATUS & CMU_STATUS_HFXORDY));
+    }
+
+    HFXO_OSC_FREQ = ulFrequency;
+}
+void cmu_hfxo_timeout_config(uint32_t ulPeakDetTimeout, uint32_t ulSteadyTimeout, uint32_t ulStartupTimeout)
+{
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
+
+    CMU->HFXOTIMEOUTCTRL = (ulPeakDetTimeout & _CMU_HFXOTIMEOUTCTRL_PEAKDETTIMEOUT_MASK) | (ulSteadyTimeout & _CMU_HFXOTIMEOUTCTRL_STEADYTIMEOUT_MASK) | (ulStartupTimeout & _CMU_HFXOTIMEOUTCTRL_STARTUPTIMEOUT_MASK);
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
+}
 void cmu_hfxo_startup_config(float fCurrent, float fCapacitance)
 {
     if(fCurrent < HFXO_MIN_UA || fCurrent > HFXO_MAX_UA)
@@ -547,6 +575,8 @@ void cmu_hfxo_startup_config(float fCurrent, float fCapacitance)
 
     uint32_t ulCTune = HFXO_PF_TO_CTUNE(fCapacitance);
     uint32_t ulIBTrim = HFXO_UA_TO_IBTRIM(fCurrent);
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
 
     CMU->HFXOSTARTUPCTRL = (CMU->HFXOSTARTUPCTRL & ~(_CMU_HFXOSTARTUPCTRL_CTUNE_MASK | _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK)) | ((ulCTune << _CMU_HFXOSTARTUPCTRL_CTUNE_SHIFT) & _CMU_HFXOSTARTUPCTRL_CTUNE_MASK) | ((ulIBTrim << _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTARTUPCTRL_IBTRIMXOCORE_MASK);
 }
@@ -568,6 +598,8 @@ void cmu_hfxo_steady_config(float fCurrent, float fCapacitance)
 
     uint32_t ulCTune = HFXO_PF_TO_CTUNE(fCapacitance);
     uint32_t ulIBTrim = HFXO_UA_TO_IBTRIM(fCurrent);
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_HFXOBSY);
 
     CMU->HFXOSTEADYSTATECTRL = (CMU->HFXOSTEADYSTATECTRL & ~(_CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK | _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK)) | ((ulCTune << _CMU_HFXOSTEADYSTATECTRL_CTUNE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_CTUNE_MASK) | ((ulIBTrim << _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_SHIFT) & _CMU_HFXOSTEADYSTATECTRL_IBTRIMXOCORE_MASK);
 }
@@ -604,32 +636,167 @@ float cmu_hfxo_get_pma_current()
     return HFXO_IBTRIM_TO_UA(ulIBTrim);
 }
 
-void cmu_hf_clock_config(uint32_t ulSource, uint8_t ubPrescaler);
-void cmu_hfle_clock_config(uint32_t ulPrescaler);
-void cmu_hfbus_clock_config(uint8_t ubPrescaler);
-void cmu_hfcore_clock_config(uint8_t ubPrescaler);
-void cmu_hfper_clock_config(uint8_t ubEnable, uint8_t ubPERPrescaler, uint8_t ubPERBPrescaler, uint8_t ubPERCPrescaler);
-void cmu_hfexp_clock_config(uint8_t ubPrescaler);
-void cmu_dbg_clock_config(uint32_t ulSource);
-void cmu_qspi_clock_config(uint8_t ubEnable, uint32_t ulSource);
-void cmu_sdio_clock_config(uint8_t ubEnable, uint32_t ulSource);
-void cmu_usb_clock_config(uint8_t ubEnable, uint32_t ulSource);
-void cmu_adc0_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert);
-void cmu_adc1_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert);
+void cmu_hf_clock_config(uint32_t ulSource, uint8_t ubPrescaler)
+{
+    if(ubPrescaler)
+        CMU->HFPRESC = (CMU->HFPRESC & ~_CMU_HFPRESC_HFCLKLEPRESC_MASK) | (((ubPrescaler - 1) << _CMU_HFPRESC_HFCLKLEPRESC_SHIFT) & _CMU_HFPRESC_HFCLKLEPRESC_MASK);
 
-void cmu_hfbus_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
-void cmu_hfper0_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
-void cmu_hfper1_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable);
+    CMU->HFCLKSEL = (ulSource & _CMU_HFCLKSEL_HF_MASK);
 
-void cmu_lfrco_config(uint8_t ubEnable, uint32_t ulConfig);
+    while((CMU->HFCLKSTATUS & _CMU_HFCLKSTATUS_SELECTED_MASK) != (ulSource & _CMU_HFCLKSTATUS_MASK));
+}
+void cmu_hfle_clock_config(uint32_t ulPrescaler)
+{
+    CMU->HFPRESC = (CMU->HFPRESC & ~_CMU_HFPRESC_HFCLKLEPRESC_SHIFT) | (ulPrescaler & _CMU_HFPRESC_HFCLKLEPRESC_SHIFT);
+}
+void cmu_hfbus_clock_config(uint8_t ubPrescaler)
+{
+    if(ubPrescaler)
+        CMU->HFBUSPRESC = ((ubPrescaler - 1) << _CMU_HFBUSPRESC_PRESC_SHIFT) & _CMU_HFBUSPRESC_PRESC_MASK;
+}
+void cmu_hfcore_clock_config(uint8_t ubPrescaler)
+{
+    if(ubPrescaler)
+        CMU->HFCOREPRESC = ((ubPrescaler - 1) << _CMU_HFCOREPRESC_PRESC_SHIFT) & _CMU_HFCOREPRESC_PRESC_MASK;
+}
+void cmu_hfper_clock_config(uint8_t ubEnable, uint8_t ubPERPrescaler, uint8_t ubPERBPrescaler, uint8_t ubPERCPrescaler)
+{
+    if(!ubEnable)
+    {
+        CMU->CTRL &= ~CMU_CTRL_HFPERCLKEN;
+
+        return;
+    }
+
+    if(ubPERPrescaler)
+        CMU->HFPERPRESC = ((ubPERPrescaler - 1) << _CMU_HFPERPRESC_PRESC_SHIFT) & _CMU_HFPERPRESC_PRESC_MASK;
+
+    if(ubPERBPrescaler)
+        CMU->HFPERPRESCB = ((ubPERBPrescaler - 1) << _CMU_HFPERPRESCB_PRESC_SHIFT) & _CMU_HFPERPRESCB_PRESC_MASK;
+
+    if(ubPERCPrescaler)
+        CMU->HFPERPRESCC = ((ubPERCPrescaler - 1) << _CMU_HFPERPRESCC_PRESC_SHIFT) & _CMU_HFPERPRESCC_PRESC_MASK;
+
+    CMU->CTRL |= CMU_CTRL_HFPERCLKEN;
+}
+void cmu_hfexp_clock_config(uint8_t ubPrescaler)
+{
+    CMU->HFEXPPRESC = ((ubPrescaler - 1) << _CMU_HFEXPPRESC_PRESC_SHIFT) & _CMU_HFEXPPRESC_PRESC_MASK;
+}
+void cmu_dbg_clock_config(uint32_t ulSource)
+{
+    CMU->DBGCLKSEL = ulSource & _CMU_DBGCLKSEL_DBG_MASK;
+}
+void cmu_qspi_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->QSPICTRL |= CMU_QSPICTRL_QSPI0CLKDIS;
+
+        return;
+    }
+
+    CMU->QSPICTRL = ulSource & _CMU_QSPICTRL_QSPI0CLKSEL_MASK;
+    CMU->QSPICTRL &= ~CMU_QSPICTRL_QSPI0CLKDIS;
+}
+void cmu_sdio_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->SDIOCTRL |= CMU_SDIOCTRL_SDIOCLKDIS;
+
+        return;
+    }
+
+    CMU->SDIOCTRL = ulSource & _CMU_SDIOCTRL_SDIOCLKSEL_MASK;
+    CMU->SDIOCTRL &= ~CMU_SDIOCTRL_SDIOCLKDIS;
+}
+void cmu_usb_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->USBCTRL &= ~CMU_USBCTRL_USBCLKEN;
+
+        return;
+    }
+
+    CMU->USBCTRL = ulSource & _CMU_USBCTRL_USBCLKSEL_MASK;
+    CMU->USBCTRL |= CMU_USBCTRL_USBCLKEN;
+}
+void cmu_adc0_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert)
+{
+    CMU->ADCCTRL = (CMU->ADCCTRL & ~(_CMU_ADCCTRL_ADC0CLKSEL_MASK | _CMU_ADCCTRL_ADC0CLKINV_MASK | _CMU_ADCCTRL_ADC0CLKDIV_MASK)) | (ulSource & _CMU_ADCCTRL_ADC0CLKSEL_MASK) | (ubInvert ? CMU_ADCCTRL_ADC0CLKINV : 0) | (((ubPrescaler - 1) << _CMU_ADCCTRL_ADC0CLKDIV_SHIFT) & _CMU_ADCCTRL_ADC0CLKDIV_MASK);
+}
+void cmu_adc1_clock_config(uint32_t ulSource, uint8_t ubPrescaler, uint8_t ubInvert)
+{
+    CMU->ADCCTRL = (CMU->ADCCTRL & ~(_CMU_ADCCTRL_ADC1CLKSEL_MASK | _CMU_ADCCTRL_ADC1CLKINV_MASK | _CMU_ADCCTRL_ADC1CLKDIV_MASK)) | (ulSource & _CMU_ADCCTRL_ADC1CLKSEL_MASK) | (ubInvert ? CMU_ADCCTRL_ADC1CLKINV : 0) | (((ubPrescaler - 1) << _CMU_ADCCTRL_ADC1CLKDIV_SHIFT) & _CMU_ADCCTRL_ADC1CLKDIV_MASK);
+}
+
+void cmu_hfbus_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable)
+{
+    if(ubEnable)
+        CMU->HFBUSCLKEN0 |= (ulPeripheral & _CMU_HFBUSCLKEN0_MASK);
+    else
+        CMU->HFBUSCLKEN0 &= ~(ulPeripheral & _CMU_HFBUSCLKEN0_MASK);
+}
+void cmu_hfper0_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable)
+{
+    if(ubEnable)
+        CMU->HFPERCLKEN0 |= (ulPeripheral & _CMU_HFPERCLKEN0_MASK);
+    else
+        CMU->HFPERCLKEN0 &= ~(ulPeripheral & _CMU_HFPERCLKEN0_MASK);
+}
+void cmu_hfper1_clock_gate(uint32_t ulPeripheral, uint8_t ubEnable)
+{
+    if(ubEnable)
+        CMU->HFPERCLKEN1 |= (ulPeripheral & _CMU_HFPERCLKEN1_MASK);
+    else
+        CMU->HFPERCLKEN1 &= ~(ulPeripheral & _CMU_HFPERCLKEN1_MASK);
+}
+
+void cmu_lfrco_config(uint8_t ubEnable, uint32_t ulConfig)
+{
+    if(!ubEnable)
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_LFRCODIS;
+        while(CMU->STATUS & CMU_STATUS_LFRCOENS);
+
+        return;
+    }
+
+    ulConfig &= _CMU_LFRCOCTRL_TIMEOUT_MASK | _CMU_LFRCOCTRL_ENDEM_MASK | _CMU_LFRCOCTRL_ENCHOP_MASK | _CMU_LFRCOCTRL_ENVREF_MASK;
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_LFRCOBSY);
+
+    CMU->LFRCOCTRL = (CMU->LFRCOCTRL & ~(_CMU_LFRCOCTRL_TIMEOUT_MASK | _CMU_LFRCOCTRL_ENDEM_MASK | _CMU_LFRCOCTRL_ENCHOP_MASK | _CMU_LFRCOCTRL_ENVREF_MASK)) | ulConfig;
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_LFRCOBSY);
+
+    CMU->OSCENCMD = CMU_OSCENCMD_LFRCOEN;
+    while(!(CMU->STATUS & CMU_STATUS_LFRCORDY));
+}
 
 void cmu_lfxo_config(uint8_t ubEnable, uint32_t ulConfig, float fCapacitance, uint32_t ulFrequency)
 {
-    if(CMU->STATUS & CMU_STATUS_LFXOENS)
+    if(!ubEnable)
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_LFXODIS;
+        while(CMU->STATUS & CMU_STATUS_LFXOENS);
+
+        return;
+    }
+
+    if(!ulFrequency)
         return;
 
     if(fCapacitance < LFXO_MIN_PF || fCapacitance > LFXO_MAX_PF)
         return;
+
+    if(CMU->STATUS & CMU_STATUS_LFXOENS)
+    {
+        CMU->OSCENCMD = CMU_OSCENCMD_LFXODIS;
+        while(CMU->STATUS & CMU_STATUS_LFXOENS);
+    }
 
     float fCLoad = fCapacitance / 2.f;
     uint8_t ubCTune = LFXO_PF_TO_CTUNE(fCapacitance);
@@ -644,7 +811,13 @@ void cmu_lfxo_config(uint8_t ubEnable, uint32_t ulConfig, float fCapacitance, ui
     else
         ubGain = 3;
 
-    CMU->LFXOCTRL = (CMU->LFXOCTRL & ~(_CMU_LFXOCTRL_GAIN_MASK | _CMU_LFXOCTRL_TUNING_MASK)) | ((uint32_t)ubGain << _CMU_LFXOCTRL_GAIN_SHIFT) | (((uint32_t)ubCTune << _CMU_LFXOCTRL_TUNING_SHIFT) & _CMU_LFXOCTRL_TUNING_MASK);
+    ulConfig &= _CMU_LFXOCTRL_MODE_MASK | _CMU_LFXOCTRL_HIGHAMPL_MASK | _CMU_LFXOCTRL_AGC_MASK | _CMU_LFXOCTRL_TIMEOUT_MASK;
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_LFXOBSY);
+
+    CMU->LFXOCTRL = (CMU->LFXOCTRL & ~(_CMU_LFXOCTRL_GAIN_MASK | _CMU_LFXOCTRL_TUNING_MASK | _CMU_LFXOCTRL_MODE_MASK | _CMU_LFXOCTRL_HIGHAMPL_MASK | _CMU_LFXOCTRL_AGC_MASK | _CMU_LFXOCTRL_TIMEOUT_MASK)) | ulConfig | ((uint32_t)ubGain << _CMU_LFXOCTRL_GAIN_SHIFT) | (((uint32_t)ubCTune << _CMU_LFXOCTRL_TUNING_SHIFT) & _CMU_LFXOCTRL_TUNING_MASK);
+
+    while(CMU->SYNCBUSY & CMU_SYNCBUSY_LFXOBSY);
 
     CMU->OSCENCMD = CMU_OSCENCMD_LFXOEN;
     while(!(CMU->STATUS & CMU_STATUS_LFXORDY));
@@ -799,6 +972,39 @@ void cmu_lfe_rtcc_clock_config(uint8_t ubEnable, uint32_t ulPrescaler)
     CMU->LFEPRESC0 = (CMU->LFEPRESC0 & ~_CMU_LFEPRESC0_RTCC_MASK) | (ulPrescaler & _CMU_LFEPRESC0_RTCC_MASK);
     CMU->LFECLKEN0 |= CMU_LFECLKEN0_RTCC;
 }
-void cmu_pcnt0_clock_config(uint8_t ubEnable, uint32_t ulSource);
-void cmu_pcnt1_clock_config(uint8_t ubEnable, uint32_t ulSource);
-void cmu_pcnt2_clock_config(uint8_t ubEnable, uint32_t ulSource);
+void cmu_pcnt0_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->PCNTCTRL &= ~CMU_PCNTCTRL_PCNT0CLKEN;
+
+        return;
+    }
+
+    CMU->PCNTCTRL = (CMU->PCNTCTRL & ~_CMU_PCNTCTRL_PCNT0CLKSEL_MASK) | (ulSource & _CMU_PCNTCTRL_PCNT0CLKSEL_MASK);
+    CMU->PCNTCTRL |= CMU_PCNTCTRL_PCNT0CLKEN;
+}
+void cmu_pcnt1_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->PCNTCTRL &= ~CMU_PCNTCTRL_PCNT1CLKEN;
+
+        return;
+    }
+
+    CMU->PCNTCTRL = (CMU->PCNTCTRL & ~_CMU_PCNTCTRL_PCNT1CLKSEL_MASK) | (ulSource & _CMU_PCNTCTRL_PCNT1CLKSEL_MASK);
+    CMU->PCNTCTRL |= CMU_PCNTCTRL_PCNT1CLKEN;
+}
+void cmu_pcnt2_clock_config(uint8_t ubEnable, uint32_t ulSource)
+{
+    if(!ubEnable)
+    {
+        CMU->PCNTCTRL &= ~CMU_PCNTCTRL_PCNT2CLKEN;
+
+        return;
+    }
+
+    CMU->PCNTCTRL = (CMU->PCNTCTRL & ~_CMU_PCNTCTRL_PCNT2CLKSEL_MASK) | (ulSource & _CMU_PCNTCTRL_PCNT2CLKSEL_MASK);
+    CMU->PCNTCTRL |= CMU_PCNTCTRL_PCNT2CLKEN;
+}

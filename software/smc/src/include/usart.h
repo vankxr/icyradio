@@ -4,6 +4,7 @@
 #include <em_device.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cmu.h"
 #include "nvic.h"
 #include "utils.h"
 #include "atomic.h"

@@ -1,6 +1,7 @@
 #include <em_device.h>
 #include <stdlib.h>
 #include <math.h>
+#include "arm_math.h"
 #include "debug_macros.h"
 #include "utils.h"
 #include "nvic.h"
@@ -23,6 +24,7 @@
 #include "si5351.h"
 #include "ft6x36.h"
 #include "ili9488.h"
+#include "r820t2.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
@@ -40,6 +42,8 @@ static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
 
 static void touch_button_callback(uint8_t ubButtonID);
+
+static void init_clock_manager();
 
 // Variables
 static uint8_t ubScreenNum = 0;
@@ -290,20 +294,146 @@ void touch_button_callback(uint8_t ubButtonID)
     }
 }
 
+void init_clock_manager()
+{
+    si5351_set_clkin_divider(2); // fPFD = CLKIN / 2
+
+    DBGPRINTLN_CTX("CLKMNGR - CLKIN Clock: %.1f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLKIN Divider Clock: %.1f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
+
+    //// PLLA
+    si5351_pll_set_source(0, SI5351_PLL_SRC_CLKIN);
+    si5351_pll_set_freq(0, 800000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - PLLA Source Clock: %.1f MHz", (float)SI5351_PLL_SRC_FREQ[0] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLA VCO Clock: %.1f MHz", (float)SI5351_PLL_FREQ[0] / 1000000);
+
+    //// PLLB
+    si5351_pll_set_source(1, SI5351_PLL_SRC_CLKIN);
+    si5351_pll_set_freq(1, 840000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - PLLB Source Clock: %.1f MHz", (float)SI5351_PLL_SRC_FREQ[1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLB VCO Clock: %.1f MHz", (float)SI5351_PLL_FREQ[1] / 1000000);
+
+    //// FPGA Clock #1
+    si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 45158400);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_FPGA_CLK1, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_FPGA_CLK1, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_FPGA_CLK1, 0); // Not inverted
+    si5351_clock_set_source(SI5351_FPGA_CLK1, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_FPGA_CLK1, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 1000000);
+
+    si5351_clock_power_up(SI5351_FPGA_CLK1); // Power the output stage up
+    si5351_clock_enable(SI5351_FPGA_CLK1); // Software enable the clock output
+
+    //// FPGA Clock #2
+    si5351_multisynth_set_source(SI5351_FPGA_CLK2, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 80000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_FPGA_CLK2, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_FPGA_CLK2, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_FPGA_CLK2, 0); // Not inverted
+    si5351_clock_set_source(SI5351_FPGA_CLK2, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_FPGA_CLK2, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK2] / 1000000);
+
+    si5351_clock_power_up(SI5351_FPGA_CLK2); // Power the output stage up
+    si5351_clock_enable(SI5351_FPGA_CLK2); // Software enable the clock output
+
+    //// FPGA Clock #3
+    si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 20000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK3] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_FPGA_CLK3, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_FPGA_CLK3, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_FPGA_CLK3, 0); // Not inverted
+    si5351_clock_set_source(SI5351_FPGA_CLK3, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_FPGA_CLK3, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000);
+
+    si5351_clock_power_up(SI5351_FPGA_CLK3); // Power the output stage up
+    si5351_clock_enable(SI5351_FPGA_CLK3); // Software enable the clock output
+
+    //// FPGA Clock #4
+    si5351_multisynth_set_source(SI5351_FPGA_CLK4, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 12000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_FPGA_CLK4, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_FPGA_CLK4, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_FPGA_CLK4, 0); // Not inverted
+    si5351_clock_set_source(SI5351_FPGA_CLK4, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_FPGA_CLK4, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK4] / 1000000);
+
+    si5351_clock_power_up(SI5351_FPGA_CLK4); // Power the output stage up
+    //si5351_clock_enable(SI5351_FPGA_CLK4); // Software enable the clock output
+
+    //// SMC Main Clock
+    si5351_multisynth_set_source(SI5351_SMC_MAIN_CLK, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_SMC_MAIN_CLK, 50000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_SMC_MAIN_CLK, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_SMC_MAIN_CLK, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_SMC_MAIN_CLK, 0); // Not inverted
+    si5351_clock_set_source(SI5351_SMC_MAIN_CLK, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_SMC_MAIN_CLK, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+
+    si5351_clock_power_up(SI5351_SMC_MAIN_CLK); // Power the output stage up
+    si5351_clock_enable(SI5351_SMC_MAIN_CLK); // Software enable the clock output
+
+    //// DSP Main Clock
+    si5351_multisynth_set_source(SI5351_DSP_MAIN_CLK, SI5351_MS_SRC_PLLB);
+    si5351_multisynth_set_freq(SI5351_DSP_MAIN_CLK, 12000000);
+
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+
+    si5351_clock_set_disable_state(SI5351_DSP_MAIN_CLK, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_DSP_MAIN_CLK, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_DSP_MAIN_CLK, 0); // Not inverted
+    si5351_clock_set_source(SI5351_DSP_MAIN_CLK, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_DSP_MAIN_CLK, 1); // Divide by 1 at the output
+
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+
+    si5351_clock_power_up(SI5351_DSP_MAIN_CLK); // Power the output stage up
+    //si5351_clock_enable(SI5351_DSP_MAIN_CLK); // Software enable the clock output
+
+    //// Global output enable
+    CLK_MNGR_OUT_EN();
+}
+
 int init()
 {
     rmu_init(RMU_CTRL_PINRMODE_FULL, RMU_CTRL_SYSRMODE_EXTENDED, RMU_CTRL_LOCKUPRMODE_EXTENDED, RMU_CTRL_WDOGRMODE_EXTENDED); // Init RMU and set reset modes
 
     emu_init(1); // Init EMU, ignore DCDC and switch digital power immediatly to DVDD
 
-    cmu_lfxo_calib(0x12); // Config LFXO for 12.5 pF (5 pF + 1 pF CLOAD)
-
     cmu_init(); // Init Clocks
-
-    cmu_ushfrco_calib(1, USHFRCO_CALIB_50M, 50000000); // Enable and calibrate USHFRCO for 50 MHz
-    cmu_auxhfrco_calib(1, AUXHFRCO_CALIB_32M, 32000000); // Enable and calibrate AUXHFRCO for 32 MHz
-
-    cmu_update_clocks(); // Update Clocks
 
     dbg_init(); // Init Debug module
     dbg_swo_config(BIT(0) | BIT(1), 6000000); // Init SWO channels 0 and 1 at 6 MHz
@@ -413,6 +543,10 @@ int init()
 
     delay_ms(100);
 
+    I2S_BRG_CFG_EN();
+    I2S_BRG_UNRESET();
+    CODEC_UNRESET();
+
     DBGPRINTLN_CTX("Scanning I2C bus 0...");
 
     for(uint8_t a = 0x08; a < 0x78; a++)
@@ -428,8 +562,18 @@ int init()
     DBGPRINTLN_CTX("Scanning I2C bus 2...");
 
     for(uint8_t a = 0x08; a < 0x78; a++)
-        if(0 && i2c2_write(a, NULL, 0, I2C_STOP))
+        if(i2c2_write(a, NULL, 0, I2C_STOP))
             DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
+
+    if(fpga_load_bitstream(v1_icyradio_bin, v1_icyradio_bin_len))
+        DBGPRINTLN_CTX("FPGA load OK!");
+    else
+        DBGPRINTLN_CTX("FPGA load NOK!");
+
+    if(fpga_init())
+        DBGPRINTLN_CTX("FPGA init OK!");
+    else
+        DBGPRINTLN_CTX("FPGA init NOK!");
 
     if(ili9488_init())
         DBGPRINTLN_CTX("ILI9488 init OK!");
@@ -446,62 +590,71 @@ int init()
     else
         DBGPRINTLN_CTX("SI5351 init NOK!");
 
+    if(r820t2_init())
+        DBGPRINTLN_CTX("R820T2 init OK!");
+    else
+        DBGPRINTLN_CTX("R820T2 init NOK!");
 
     return 0;
 }
 int main()
 {
-    // Clock manager info & config
+    // Clock manager info & configuration
     DBGPRINTLN_CTX("SI5351 Revision ID: %hhu", si5351_read_revision_id());
 
-    si5351_write_clock_enable(SI5351_SMC_MAIN_CLK, 1); // Enable SMC clock
+    init_clock_manager();
 
-    // Bypass, enable HFXO and wait for it to be enabled
-    CMU->HFXOCTRL = CMU_HFXOCTRL_MODE_DIGEXTCLK;
-    CMU->OSCENCMD = CMU_OSCENCMD_HFXOEN;
-    while(!(CMU->STATUS & CMU_STATUS_HFXOENS));
+    // HFXO and DPLL setup
+    cmu_hfxo_config(1, CMU_HFXOCTRL_MODE_DIGEXTCLK, 50000000);
+    cmu_dpll_config(1, CMU_DPLLCTRL_REFSEL_HFXO | CMU_DPLLCTRL_AUTORECOVER | CMU_DPLLCTRL_EDGESEL_RISE | CMU_DPLLCTRL_MODE_FREQLL, 1000, 1440); // 50 MHz * 1440 / 1000 = 72 MHz
 
-    // Setup the DPLL
-    CMU->DPLLCTRL = CMU_DPLLCTRL_REFSEL_HFXO | CMU_DPLLCTRL_AUTORECOVER | CMU_DPLLCTRL_EDGESEL_RISE | CMU_DPLLCTRL_MODE_FREQLL;
-    CMU->DPLLCTRL1 = (1439 << _CMU_DPLLCTRL1_N_SHIFT) | (999 << _CMU_DPLLCTRL1_M_SHIFT); // fHFRCO = fHFXO * (N + 1) / (M + 1)
+    // FPGA design info
+    DBGPRINTLN_CTX("FPGA Design ID: 0x%04X", fpga_read_design_id());
+    DBGPRINTLN_CTX("FPGA Design version: v%hu", fpga_read_design_version());
 
-    // Enable the DPLL and wait for it to be ready
-    CMU->OSCENCMD = CMU_OSCENCMD_DPLLEN;
-    while(!(CMU->STATUS & CMU_STATUS_DPLLRDY));
+    fpga_rgb_led_enable();
 
-    // Init FPGA
-    DBGPRINTLN_CTX("FPGA LOAD %hhu", fpga_load_bitstream(v1_icyradio_bin, v1_icyradio_bin_len));
+    fpga_i2s_mux_set_codec_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_BRIDGE);
+    fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
 
-    FPGA_SOFT_RESET();
-    si5351_write_clock_enable(SI5351_FPGA_CLK2, 1); // Enable FPGA clock #2
-    si5351_write_clock_enable(SI5351_FPGA_CLK3, 1); // Enable FPGA clock #3
+    I2S_BRG_RESET();
+    I2S_BRG_CFG_DIS();
+    delay_ms(100);
+    I2S_BRG_UNRESET();
 
-    FPGA_SOFT_UNRESET();
-    delay_ms(20);
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0);
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_SOFT_RST, 0);
 
-    FPGA_SELECT();
-    usart1_spi_transfer_byte(0x10);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0x01);
-    FPGA_UNSELECT();
+    r820t2_set_mixer_gain(0.f, 1); // Auto
+    r820t2_set_lna_gain(0.f, 1); // Auto
+    r820t2_set_vga_gain(23.1f); // 23.1 dB
 
-    FPGA_SELECT();
-    usart1_spi_transfer_byte(0x12);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0x00);
-    usart1_spi_transfer_byte(0xFF);
-    FPGA_UNSELECT();
+    r820t2_set_if_bandwidth(0, 5, 13);
 
-    FPGA_SELECT();
-    usart1_spi_transfer_byte(0x80);
-    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
-    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
-    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
-    DBGPRINTLN_CTX("FPGA DATA %02X", usart1_spi_transfer_byte(0x00));
-    FPGA_UNSELECT();
+    r820t2_set_if_freq(5000000); // 5 MHz IF
+
+    DBGPRINTLN_CTX("TUNER SET FREQ? %hhu", r820t2_set_freq(105000000));
+
+    RXADC_POWER_UP();
+    RXADC_GAIN_X1P5();
+    RXADC_DITHER_OFF();
+
+    delay_ms(100);
+
+    uint32_t *buf = (uint32_t *)malloc(4096 * sizeof(uint32_t));
+    memset(buf, 0, 4096 * sizeof(uint32_t));
+
+    fpga_adc_dpram_sample(buf, 4096);
+
+    DBGPRINT_CTX("TD DATA: {");
+
+    for(uint16_t i = 0; i < 4096; i++)
+        DBGPRINTLN("%hi", buf[i] & 0xFFFF);
+
+    DBGPRINTLN("} TD DATA END ");
+
+    free(buf);
 
     // TFT Controller info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());
@@ -592,6 +745,15 @@ int main()
         if(g_ullSystemTick > (ullLastTftRoutine + 1000))
         {
             LED_TOGGLE();
+
+            static uint16_t duty = 0;
+
+            fpga_rbg_led_set_duty(FPGA_LED_BLUE, duty);
+
+            duty += 2;
+
+            if(duty >= 4096)
+                duty = 0;
 
             static uint8_t ubCount = 0;
 

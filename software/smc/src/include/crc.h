@@ -2,6 +2,7 @@
 #define __CRC_H__
 
 #include <em_device.h>
+#include "cmu.h"
 
 //#define CRC_IMPL_SOFTWARE
 

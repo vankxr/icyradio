@@ -8,7 +8,7 @@ void i2c0_init(uint8_t ubMode, uint8_t ubSCLLocation, uint8_t ubSDALocation)
     if(ubSDALocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_I2C0;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_I2C0, 1);
 
     I2C0->CTRL = I2C_CTRL_CLHR_STANDARD | I2C_CTRL_TXBIL_EMPTY;
     I2C0->ROUTEPEN = I2C_ROUTEPEN_SCLPEN | I2C_ROUTEPEN_SDAPEN;
@@ -136,7 +136,7 @@ void i2c1_init(uint8_t ubMode, uint8_t ubSCLLocation, uint8_t ubSDALocation)
     if(ubSDALocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_I2C1;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_I2C1, 1);
 
     I2C1->CTRL = I2C_CTRL_CLHR_STANDARD | I2C_CTRL_TXBIL_EMPTY;
     I2C1->ROUTEPEN = I2C_ROUTEPEN_SCLPEN | I2C_ROUTEPEN_SDAPEN;
@@ -264,7 +264,7 @@ void i2c2_init(uint8_t ubMode, uint8_t ubSCLLocation, uint8_t ubSDALocation)
     if(ubSDALocation > AFCHANLOC_MAX)
         return;
 
-    CMU->HFPERCLKEN0 |= CMU_HFPERCLKEN0_I2C2;
+    cmu_hfper0_clock_gate(CMU_HFPERCLKEN0_I2C2, 1);
 
     I2C2->CTRL = I2C_CTRL_CLHR_STANDARD | I2C_CTRL_TXBIL_EMPTY;
     I2C2->ROUTEPEN = I2C_ROUTEPEN_SCLPEN | I2C_ROUTEPEN_SDAPEN;

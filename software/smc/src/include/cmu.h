@@ -3,6 +3,7 @@
 
 #include <em_device.h>
 #include "msc.h"
+#include "utils.h"
 
 extern uint32_t HFXO_OSC_FREQ;
 extern uint32_t HFRCO_OSC_FREQ;
@@ -154,7 +155,7 @@ void cmu_auxhfrco_config(uint8_t ubEnable, uint32_t ulCalibration, uint32_t ulFr
 void cmu_dpll_config(uint8_t ubEnable, uint32_t ulConfig, uint16_t usM, uint16_t usN);
 
 void cmu_hfxo_config(uint8_t ubEnable, uint32_t ulConfig, uint32_t ulFrequency);
-void cmu_hfxo_timeout_config(uint8_t ubPeakDetTimeout, uint8_t ubSteadyTimeout, uint8_t ubStartupTimeout);
+void cmu_hfxo_timeout_config(uint32_t ulPeakDetTimeout, uint32_t ulSteadyTimeout, uint32_t ulStartupTimeout);
 void cmu_hfxo_startup_config(float fCurrent, float fCapacitance);
 float cmu_hfxo_get_startup_current();
 float cmu_hfxo_get_startup_cap();

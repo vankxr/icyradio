@@ -2,7 +2,7 @@
 
 void crypto_init()
 {
-    CMU->HFBUSCLKEN0 |= CMU_HFBUSCLKEN0_CRYPTO0;
+    cmu_hfbus_clock_gate(CMU_HFBUSCLKEN0_CRYPTO0, 1);
 }
 void crypto_sha256(uint8_t *pubData, uint32_t ulDataSize, uint8_t pubDigest[32])
 {

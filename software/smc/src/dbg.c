@@ -7,7 +7,7 @@ void _putchar(char ch)
 
 void dbg_init()
 {
-    CMU->DBGCLKSEL = CMU_DBGCLKSEL_DBG_HFRCODIV2;
+    cmu_dbg_clock_config(CMU_DBGCLKSEL_DBG_HFRCODIV2);
 
     cmu_update_clocks();
 }
