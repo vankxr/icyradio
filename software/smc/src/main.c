@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "arm_math.h"
+#include "arm_const_structs.h"
 #include "debug_macros.h"
 #include "utils.h"
 #include "nvic.h"
@@ -25,6 +26,7 @@
 #include "ft6x36.h"
 #include "ili9488.h"
 #include "r820t2.h"
+#include "ad9117.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
@@ -41,16 +43,11 @@ static uint32_t get_free_ram();
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
 
-static void touch_button_callback(uint8_t ubButtonID);
-
-static void init_clock_manager();
+static void init_system_clocks();
+static void init_rx_chain();
+static void init_tx_chain();
 
 // Variables
-static uint8_t ubScreenNum = 0;
-tft_graph_t *pGraph = NULL;
-tft_terminal_t *pTerminal = NULL;
-tft_textbox_t *pTextbox = NULL;
-tft_button_t *pButtons[5] = {NULL};
 
 // ISRs
 
@@ -202,99 +199,7 @@ uint16_t get_device_revision()
     return usRevision;
 }
 
-void touch_button_callback(uint8_t ubButtonID)
-{
-    switch(ubButtonID)
-    {
-        case 0: // image
-            if(ubScreenNum != 0)
-            {
-                ubScreenNum = 0;
-                tft_fill_screen(RGB565_WHITE);
-                for(uint8_t x = 0; x < 4; x++)
-                {
-                    for(uint8_t y = 0; y < 6; y++)
-                    {
-                        tft_draw_image(&xPepeImage, 32 + (x * 64), 32 + (y * 64));
-                    }
-                }
-                tft_button_draw(pButtons[0], "img", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[1], "grph", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[2], "trm", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[3], "txt", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[4], "blnk", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-            }
-            DBGPRINTLN_CTX("Button 0 Pressed!");
-            break;
-
-        case 1: // graph
-            if(ubScreenNum != 1)
-            {
-                ubScreenNum = 1;
-                tft_fill_screen(RGB565_DARKGREY);
-                tft_graph_draw_frame(pGraph);
-                tft_button_draw(pButtons[0], "img", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[1], "grph", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[2], "trm", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[3], "txt", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[4], "blnk", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-            }
-            DBGPRINTLN_CTX("Button 1 Pressed!");
-            break;
-
-        case 2: // terminal
-            if(ubScreenNum != 2)
-            {
-                ubScreenNum = 2;
-                tft_fill_screen(RGB565_BLACK);
-                tft_terminal_update(pTerminal);
-                tft_button_draw(pButtons[0], "img", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[1], "grph", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[2], "trm", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[3], "txt", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[4], "blnk", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-            }
-            DBGPRINTLN_CTX("Button 2 Pressed!");
-            break;
-
-        case 3: // text box
-        if(ubScreenNum != 3)
-            {
-                ubScreenNum = 3;
-                tft_fill_screen(RGB565_WHITE);
-                tft_draw_rectangle(10, 65, 295 + 15 + 5, 75 + tft_get_text_height(&xSans9pFont, 6), RGB565_DARKGREEN, 1);
-                tft_textbox_clear(pTextbox);
-                tft_printf(&xSans18pFont, 10, 10, RGB565_DARKGREY, RGB565_WHITE, "Display is the wey");
-                tft_button_draw(pButtons[0], "img", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[1], "grph", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[2], "trm", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[3], "txt", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[4], "blnk", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-            }
-            DBGPRINTLN_CTX("Button 3 Pressed!");
-            break;
-
-        case 4: // blank
-            if(ubScreenNum != 4)
-            {
-                ubScreenNum = 4;
-                tft_fill_screen(RGB565_BLACK);
-                tft_button_draw(pButtons[0], "img", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[1], "grph", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[2], "trm", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[3], "txt", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-                tft_button_draw(pButtons[4], "blnk", &xSans9pFont, RGB565_CYAN, RGB565_BLACK);
-            }
-            DBGPRINTLN_CTX("Button 4 Pressed!");
-            break;
-
-        default:
-            DBGPRINTLN_CTX("Sum Ting Wong");
-            break;
-    }
-}
-
-void init_clock_manager()
+void init_system_clocks()
 {
     si5351_set_clkin_divider(2); // fPFD = CLKIN / 2
 
@@ -371,7 +276,7 @@ void init_clock_manager()
 
     //// FPGA Clock #4
     si5351_multisynth_set_source(SI5351_FPGA_CLK4, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 12000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 10000000);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
@@ -385,7 +290,7 @@ void init_clock_manager()
     DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK4] / 1000000);
 
     si5351_clock_power_up(SI5351_FPGA_CLK4); // Power the output stage up
-    //si5351_clock_enable(SI5351_FPGA_CLK4); // Software enable the clock output
+    si5351_clock_enable(SI5351_FPGA_CLK4); // Software enable the clock output
 
     //// SMC Main Clock
     si5351_multisynth_set_source(SI5351_SMC_MAIN_CLK, SI5351_MS_SRC_PLLA);
@@ -426,6 +331,113 @@ void init_clock_manager()
     //// Global output enable
     CLK_MNGR_OUT_EN();
 }
+void init_rx_chain()
+{
+    r820t2_set_lna_gain(0.f, 1); // Auto
+    DBGPRINTLN_CTX("RX Tuner LNA AGC: ON");
+
+    r820t2_set_mixer_gain(0.f, 1); // Auto
+    DBGPRINTLN_CTX("RX Tuner mixer AGC: ON");
+
+    r820t2_set_vga_gain(30.f); // 30 dB
+    DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
+
+    r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~10 MHz
+    DBGPRINTLN_CTX("RX Tuner IF filter config");
+
+    r820t2_set_if_freq(5000000); // 5 MHz IF
+    DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
+
+    if(r820t2_set_freq(100300000))
+        DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
+    else
+        DBGPRINTLN_CTX("RX Tuner failed to tune!");
+
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA ADC DPRAM enabled!");
+
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA ADC enabled!");
+
+    RXADC_POWER_UP();
+    RXADC_GAIN_X1P5();
+    RXADC_DITHER_OFF();
+    DBGPRINTLN_CTX("RX ADC powered up, gain x1,5, dither disabled!");
+
+    delay_ms(100);
+
+    uint32_t *buf = (uint32_t *)malloc(8192 * sizeof(uint32_t));
+    memset(buf, 0, 4096 * sizeof(uint32_t));
+
+    fpga_adc_dpram_sample(buf, 4096);
+
+    q15_t *fft_buf = (q15_t *)malloc(2 * 4096 * sizeof(q15_t));
+    memset(fft_buf, 0, 2 * 4096 * sizeof(q15_t));
+
+    for(uint16_t i = 0; i < 4096; i++)
+    {
+        fft_buf[i * 2 + 0] = buf[i] & 0xFFFF; // Real
+        fft_buf[i * 2 + 1] = 0; // Complex
+
+        char obuf[64];
+        uint32_t osz = snprintf(obuf, 64, "%.6f\r\n", (float)((int16_t)(buf[i] & 0xFFFF)) / INT16_MAX);
+
+        for(uint32_t isz = 0; isz < osz; isz++)
+            dbg_swo_send_uint8(obuf[isz], 1);
+    }
+
+    free(buf);
+
+    arm_cfft_q15(&arm_cfft_sR_q15_len4096, fft_buf, 0, 1);
+
+    uint32_t ulCenterFrequency = 0;
+    uint32_t ulSampleRate = SI5351_CLK_FREQ[SI5351_FPGA_CLK1];
+
+    float fMaxPower = -INFINITY;
+    float fMaxPowerFrequency = 0.f;
+
+    //DBGPRINT_CTX("ADC FFT DATA: {");
+
+    for(uint16_t i = 0; i < 4096; i++)
+    {
+        float fReal = (float)fft_buf[i * 2 + 0] / INT16_MAX;
+        float fImag = (float)fft_buf[i * 2 + 1] / INT16_MAX;
+
+        float fPower = 10 * log10(fReal * fReal + fImag * fImag);
+        float fFrequency = 0;
+
+        if(i < 4096 / 2)
+            fFrequency = (ulCenterFrequency + i * ((float)ulSampleRate / 4096));
+        else
+            fFrequency = (ulCenterFrequency + ((int16_t)i - 4096) * ((float)ulSampleRate / 4096));
+        /*
+        char obuf[64];
+        uint32_t osz = snprintf(obuf, 64, "%.2f\t%.2f\r\n", fFrequency, fPower);
+
+        for(uint32_t isz = 0; isz < osz; isz++)
+            dbg_swo_send_uint8(obuf[isz], 1);
+        */
+        if(fPower > fMaxPower)
+        {
+            fMaxPower = fPower;
+            fMaxPowerFrequency = fFrequency;
+        }
+    }
+
+    //DBGPRINTLN("} FFT DATA END ");
+
+    free(fft_buf);
+
+    DBGPRINTLN_CTX("Peak power = %.2f dB at frequency %.2f MHz", fMaxPower, fMaxPowerFrequency / 1000000);
+}
+void init_tx_chain()
+{
+    fpga_reset_module(FPGA_REG_RST_CNTRL_DAC_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA DAC enabled!");
+
+    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
+    DBGPRINTLN_CTX("TX DAC calibrated!");
+}
 
 int init()
 {
@@ -461,7 +473,7 @@ int init()
     fDVDDHighThresh = fDVDDLowThresh + 0.026f; // Hysteresis from datasheet
     fIOVDDHighThresh = fIOVDDLowThresh + 0.026f; // Hysteresis from datasheet
 
-    usart1_init(18000000, 3, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 18 MHz (FPGA)
+    usart1_init(18000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 18 MHz (FPGA)
     usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
     usart3_init(18000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 18 MHz (DSP)
     usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
@@ -570,11 +582,6 @@ int init()
     else
         DBGPRINTLN_CTX("FPGA load NOK!");
 
-    if(fpga_init())
-        DBGPRINTLN_CTX("FPGA init OK!");
-    else
-        DBGPRINTLN_CTX("FPGA init NOK!");
-
     if(ili9488_init())
         DBGPRINTLN_CTX("ILI9488 init OK!");
     else
@@ -595,6 +602,11 @@ int init()
     else
         DBGPRINTLN_CTX("R820T2 init NOK!");
 
+    if(ad9117_init())
+        DBGPRINTLN_CTX("AD9117 init OK!");
+    else
+        DBGPRINTLN_CTX("AD9117 init NOK!");
+
     return 0;
 }
 int main()
@@ -602,15 +614,21 @@ int main()
     // Clock manager info & configuration
     DBGPRINTLN_CTX("SI5351 Revision ID: %hhu", si5351_read_revision_id());
 
-    init_clock_manager();
+    init_system_clocks();
 
     // HFXO and DPLL setup
     cmu_hfxo_config(1, CMU_HFXOCTRL_MODE_DIGEXTCLK, 50000000);
     cmu_dpll_config(1, CMU_DPLLCTRL_REFSEL_HFXO | CMU_DPLLCTRL_AUTORECOVER | CMU_DPLLCTRL_EDGESEL_RISE | CMU_DPLLCTRL_MODE_FREQLL, 1000, 1440); // 50 MHz * 1440 / 1000 = 72 MHz
 
+    // FPGA design init
+    if(fpga_init())
+        DBGPRINTLN_CTX("FPGA init OK!");
+    else
+        DBGPRINTLN_CTX("FPGA init NOK!");
+
     // FPGA design info
-    DBGPRINTLN_CTX("FPGA Design ID: 0x%04X", fpga_read_design_id());
-    DBGPRINTLN_CTX("FPGA Design version: v%hu", fpga_read_design_version());
+    DBGPRINTLN_CTX("FPGA design ID: 0x%04X", fpga_read_design_id());
+    DBGPRINTLN_CTX("FPGA design version: v%hu", fpga_read_design_version());
 
     fpga_rgb_led_enable();
 
@@ -623,43 +641,14 @@ int main()
     delay_ms(100);
     I2S_BRG_UNRESET();
 
-    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0);
-    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_SOFT_RST, 0);
+    // RX Chain configuration
+    init_rx_chain();
 
-    r820t2_set_mixer_gain(0.f, 1); // Auto
-    r820t2_set_lna_gain(0.f, 1); // Auto
-    r820t2_set_vga_gain(23.1f); // 23.1 dB
+    // TX Chain configuration
+    init_tx_chain();
 
-    r820t2_set_if_bandwidth(0, 5, 13);
-
-    r820t2_set_if_freq(5000000); // 5 MHz IF
-
-    DBGPRINTLN_CTX("TUNER SET FREQ? %hhu", r820t2_set_freq(105000000));
-
-    RXADC_POWER_UP();
-    RXADC_GAIN_X1P5();
-    RXADC_DITHER_OFF();
-
-    delay_ms(100);
-
-    uint32_t *buf = (uint32_t *)malloc(4096 * sizeof(uint32_t));
-    memset(buf, 0, 4096 * sizeof(uint32_t));
-
-    fpga_adc_dpram_sample(buf, 4096);
-
-    DBGPRINT_CTX("TD DATA: {");
-
-    for(uint16_t i = 0; i < 4096; i++)
-        DBGPRINTLN("%hi", buf[i] & 0xFFFF);
-
-    DBGPRINTLN("} TD DATA END ");
-
-    free(buf);
-
-    // TFT Controller info
+    // TFT info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());
-
-    // TFT Touch info
     DBGPRINTLN_CTX("FT6236 Vendor ID: 0x%02X", ft6x36_get_vendor_id());
     DBGPRINTLN_CTX("FT6236 Chip ID: 0x%02X", ft6x36_get_chip_id());
     DBGPRINTLN_CTX("FT6236 Firmware version: 0x%02X", ft6x36_get_firmware_version());
@@ -669,70 +658,18 @@ int main()
 
     // TFT Init
     tft_init();
-    tft_set_button_callback(touch_button_callback);
     tft_bl_init(2000); // Init backlight PWM at 2 kHz
     tft_bl_set(0.f); // Set backlight to 0%
     tft_display_on(); // Turn display on
     tft_set_rotation(ILI9488_ROTATION_VERTICAL_FLIP); // Set rotation (vertical, ribbon at the bottom)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    pGraph = tft_graph_create(60, 30, 220, 360, 0, 30, 5, 20, 35, 1, 1, "%.0f", "%.0f", "Temperature", "t", "C", &xSans9pFont, RGB565_WHITE, RGB565_BLACK, RGB565_CYAN, RGB565_BLACK, RGB565_DARKGREY);
+    tft_graph_t *pGraph = tft_graph_create(60, 30, 220, 360, 0, 30, 5, 20, 35, 1, 1, "%.0f", "%.0f", "Temperature", "t", "C", &xSans9pFont, RGB565_WHITE, RGB565_BLACK, RGB565_CYAN, RGB565_BLACK, RGB565_DARKGREY);
     if(!pGraph)
     {
         DBGPRINTLN_CTX("Could not allocate graph");
         while(1);
     }
-
-    pTerminal = tft_terminal_create(10, 10, 18, 300, &xSans9pFont, RGB565_GREEN, RGB565_BLACK);
-    if(!pTerminal)
-    {
-        DBGPRINTLN_CTX("Could not allocate terminal");
-        while(1);
-    }
-
-    pTextbox = tft_textbox_create(15, 70, 6, 295, 0, 0, &xSans9pFont, RGB565_BLUE, RGB565_WHITE);
-    if(!pTextbox)
-    {
-        DBGPRINTLN_CTX("Could not allocate textbox");
-        while(1);
-    }
-
-    pButtons[0] = tft_button_create(0, 10, 420, 50, 50);
-    if(!pButtons[0])
-    {
-        DBGPRINTLN_CTX("Could not allocate button");
-        while(1);
-    }
-
-    pButtons[1] = tft_button_create(1, 70, 420, 50, 50);
-    if(!pButtons[1])
-    {
-        DBGPRINTLN_CTX("Could not allocate button");
-        while(1);
-    }
-
-    pButtons[2] = tft_button_create(2, 130, 420, 50, 50);
-    if(!pButtons[2])
-    {
-        DBGPRINTLN_CTX("Could not allocate button");
-        while(1);
-    }
-
-    pButtons[3] = tft_button_create(3, 190, 420, 50, 50);
-    if(!pButtons[3])
-    {
-        DBGPRINTLN_CTX("Could not allocate button");
-        while(1);
-    }
-
-    pButtons[4] = tft_button_create(4, 250, 420, 50, 50);
-    if(!pButtons[4])
-    {
-        DBGPRINTLN_CTX("Could not allocate button");
-        while(1);
-    }
-
-    touch_button_callback(4);
 
     tft_bl_set(0.75f); // Set backlight to 75%
 
@@ -740,83 +677,71 @@ int main()
     {
         ft6x36_tick();
 
-        static uint64_t ullLastTftRoutine = 0;
+        static uint64_t ullLastPWMTick = 0;
+        static uint64_t ullLastTFTTick = 0;
+        static uint64_t ullLastDebugPrint = 0;
 
-        if(g_ullSystemTick > (ullLastTftRoutine + 1000))
+        if(g_ullSystemTick > (ullLastPWMTick + 50))
         {
+            ullLastPWMTick = g_ullSystemTick;
+
+            static int8_t duty_sig[3] = {1, 1, 1};
+            static int16_t duty[3] = {0, 1000, 2000};
+
+            fpga_rbg_led_set_duty(FPGA_LED_RED, duty[0]);
+            fpga_rbg_led_set_duty(FPGA_LED_GREEN, duty[1]);
+            fpga_rbg_led_set_duty(FPGA_LED_BLUE, duty[2]);
+
+            for(uint8_t i = 0; i < 3; i++)
+            {
+                duty[i] += 20 * duty_sig[i];
+
+                if(duty[i] >= 4096)
+                {
+                    duty[i] = 4096;
+
+                    duty_sig[i] = -1;
+                }
+
+                if(duty[i] <= 0)
+                {
+                    duty[i] = 0;
+
+                    duty_sig[i] = 1;
+                }
+            }
+        }
+
+        if(g_ullSystemTick > (ullLastTFTTick + 1000))
+        {
+            ullLastTFTTick = g_ullSystemTick;
+
             LED_TOGGLE();
-
-            static uint16_t duty = 0;
-
-            fpga_rbg_led_set_duty(FPGA_LED_BLUE, duty);
-
-            duty += 2;
-
-            if(duty >= 4096)
-                duty = 0;
 
             static uint8_t ubCount = 0;
 
-            switch(ubScreenNum)
+            if(ubCount == 31)
             {
-                case 1: // graph
-
-                    if(ubCount == 31)
-                    {
-                        tft_graph_clear(pGraph);
-                        tft_graph_draw_frame(pGraph);
-                        ubCount = 0;
-                    }
-
-                    float fCount = ubCount;
-                    float fTemp = 0;
-
-                    tft_graph_draw_data(pGraph, &fCount, &fTemp, 1);
-
-                    ubCount++;
-
-                    break;
-
-                case 2: // terminal
-                    if(pTerminal->ubUpdatePending)
-                        tft_terminal_update(pTerminal);
-                    break;
-
-                case 3: // text box
-                    tft_textbox_goto(pTextbox, 0, 0, 1);
-                    tft_textbox_set_color(pTextbox, RGB565_BLUE, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "ADC Temp: ");
-                    tft_textbox_set_color(pTextbox, RGB565_RED, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "%.2f\n\r", adc_get_temperature());
-                    tft_textbox_set_color(pTextbox, RGB565_BLUE, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "EMU Temp: ");
-                    tft_textbox_set_color(pTextbox, RGB565_RED, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "%.2f\n\r", emu_get_temperature());
-                    tft_textbox_set_color(pTextbox, RGB565_BLUE, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "RTCC Time: ");
-                    tft_textbox_set_color(pTextbox, RGB565_RED, RGB565_WHITE);
-                    tft_textbox_printf(pTextbox, "%lu\n\r", rtcc_get_time());
-                    break;
-
-                default:
-                    break;
+                tft_graph_clear(pGraph);
+                tft_graph_draw_frame(pGraph);
+                ubCount = 0;
             }
 
-            ullLastTftRoutine = g_ullSystemTick;
+            float fCount = ubCount;
+            float fTemp = 0;
+
+            tft_graph_draw_data(pGraph, &fCount, &fTemp, 1);
+
+            ubCount++;
         }
 
-        static uint64_t ullLastSwoPrint = 0;
-
-        if(g_ullSystemTick > (ullLastSwoPrint + 10000))
+        if(g_ullSystemTick > (ullLastDebugPrint + 60000))
         {
+            ullLastDebugPrint = g_ullSystemTick;
 
-            DBGPRINTLN_CTX("ADC Temp: %.2f", adc_get_temperature());
-            DBGPRINTLN_CTX("EMU Temp: %.2f", emu_get_temperature());
-            DBGPRINTLN_CTX("RTCC Time: %lu", rtcc_get_time());
-
-            tft_terminal_printf(pTerminal, 0, "Free RAM: %lu KiB\n", get_free_ram() >> 10);
-
-            ullLastSwoPrint = g_ullSystemTick;
+            DBGPRINTLN_CTX("ADC Temp: %.2f C", adc_get_temperature());
+            DBGPRINTLN_CTX("EMU Temp: %.2f C", emu_get_temperature());
+            DBGPRINTLN_CTX("RTCC Time: %lu s", rtcc_get_time());
         }
     }
 

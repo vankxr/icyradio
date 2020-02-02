@@ -249,7 +249,8 @@ set_io ADC_D14          T2      # IN    # ADC Data input 14
 set_io ADC_D15          T1      # IN    # ADC Data input 15
 set_io ADC_OF           R1      # IN    # ADC Overflow input
 set_io ADC_OEn          P2      # OUT   # ADC Output enable output
-set_io DAC_CLK          D1      # OUT   # DAC clock
+set_io DAC_CLK          D2      # OUT   # DAC clock
+set_io DAC_DCLK         D1      # OUT   # DAC Data clock
 set_io DAC_D0           A7      # OUT   # DAC Data output 0
 set_io DAC_D1           B7      # OUT   # DAC Data output 1
 set_io DAC_D2           A6      # OUT   # DAC Data output 2

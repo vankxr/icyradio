@@ -54,7 +54,7 @@ static uint32_t fpga_read_register(uint8_t ubRegister)
     {
         FPGA_SELECT();
 
-        usart1_spi_write_byte(0x80 | (ubRegister & 0x7F), 1);
+        usart1_spi_write_byte(0x80 | (ubRegister & 0x7F), 0);
         usart1_spi_read(ubBuf, 4, 0x00);
 
         FPGA_UNSELECT();
@@ -92,7 +92,15 @@ uint8_t fpga_init()
     if(fpga_read_design_id() != 0xDADC)
         return 0;
 
+    fpga_irq_set_mask(FPGA_IRQ_SMC, FPGA_REG_IRQ_CNTRL_STATUS_ADC_DPRAM_WR_EN | FPGA_REG_IRQ_CNTRL_STATUS_nADC_DPRAM_WR_EN);
+
     return 1;
+}
+void fpga_isr()
+{
+    uint8_t ubIRQFlags = fpga_irq_get_status();
+
+    fpga_irq_clear(ubIRQFlags);
 }
 
 uint16_t fpga_read_design_id()

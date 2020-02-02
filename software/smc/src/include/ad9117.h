@@ -64,13 +64,13 @@
 #define AD9117_REG_DATA_CTL_IFIRST          0x20
 #define AD9117_REG_DATA_CTL_QRISING         0x00
 #define AD9117_REG_DATA_CTL_IRISING         0x10
-#define AD9117_REG_DATA_CTL_SIMUL_OFF       0x00
-#define AD9117_REG_DATA_CTL_SIMUL_ON        0x08
+#define AD9117_REG_DATA_CTL_SIMUL_OFF       0x08
+#define AD9117_REG_DATA_CTL_SIMUL_ON        0x00
 #define AD9117_REG_DATA_CTL_DCI_OFF         0x00
 #define AD9117_REG_DATA_CTL_DCI_ON          0x04
 #define AD9117_REG_DATA_CTL_DCO_OFF         0x00
 #define AD9117_REG_DATA_CTL_DCO_SINGLE      0x02
-#define AD9117_REG_DATA_CTL_DCO_DOUBLE      0x03
+#define AD9117_REG_DATA_CTL_DCO_DOUBLE      0x01
 
 // AD9117_REG_IRSET
 #define AD9117_REG_IRSET_DISABLE    0x00
@@ -119,7 +119,8 @@
 #define AD9117_REG_CAL_CTL_PRELOADI         0x40
 #define AD9117_REG_CAL_CTL_CALQ             0x20
 #define AD9117_REG_CAL_CTL_CALI             0x10
-#define AD9117_REG_CAL_CTL_CAL_CLK          0x08
+#define AD9117_REG_CAL_CTL_CAL_CLK_DISABLE  0x00
+#define AD9117_REG_CAL_CTL_CAL_CLK_ENABLE   0x08
 #define AD9117_REG_CAL_CTL_CAL_CLK_DIV256   0x00
 #define AD9117_REG_CAL_CTL_CAL_CLK_DIV128   0x01
 #define AD9117_REG_CAL_CTL_CAL_CLK_DIV64    0x02
@@ -163,6 +164,18 @@
 
 
 uint8_t ad9117_init();
+
+void ad9117_config_reset();
+
+void ad9117_calibrate(uint32_t ulCLKINFrequency);
+
+void ad9117_i_offset_config(uint8_t ubEnable, uint8_t ubRange);
+void ad9117_i_offset_set_value(uint16_t usOffset);
+uint16_t ad9117_i_offset_get_value();
+
+void ad9117_q_offset_config(uint8_t ubEnable, uint8_t ubRange);
+void ad9117_q_offset_set_value(uint16_t usOffset);
+uint16_t ad9117_q_offset_get_value();
 
 
 #endif // __AD9117_H__

@@ -80,6 +80,7 @@
 uint8_t fpga_load_bitstream(const uint8_t *pubBitstream, const uint32_t ulBitstreamSize);
 
 uint8_t fpga_init();
+void fpga_isr();
 
 uint16_t fpga_read_design_id();
 uint16_t fpga_read_design_version();

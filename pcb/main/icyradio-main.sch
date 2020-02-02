@@ -9400,7 +9400,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <pinref part="U101" gate="G$1" pin="PB1"/>
 </segment>
 </net>
-<net name="FPGA_CBSEL0" class="0">
+<net name="!FPGA_SMC_IRQ" class="0">
 <segment>
 <wire x1="292.1" y1="297.18" x2="297.18" y2="297.18" width="0.1524" layer="91"/>
 <label x="297.18" y="297.18" size="1.778" layer="95" xref="yes"/>
@@ -11626,7 +11626,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <junction x="193.04" y="335.28"/>
 </segment>
 </net>
-<net name="FPGA_CBSEL0" class="0">
+<net name="!FPGA_SMC_IRQ" class="0">
 <segment>
 <pinref part="U301" gate=".BANK2SPI" pin="CBSEL0/IOB_103"/>
 <wire x1="373.38" y1="157.48" x2="411.48" y2="157.48" width="0.1524" layer="91"/>

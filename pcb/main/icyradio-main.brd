@@ -16898,7 +16898,7 @@ design rules under a new name.</description>
 <wire x1="72.5" y1="38.48085" x2="73.28085" y2="38.48085" width="0.095" layer="1"/>
 <wire x1="73.28085" y1="38.48085" x2="75.9" y2="41.1" width="0.095" layer="1"/>
 </signal>
-<signal name="FPGA_CBSEL0">
+<signal name="!FPGA_SMC_IRQ">
 <contactref element="U301" pad="K11"/>
 <wire x1="68.1" y1="48.8" x2="68.500003125" y2="48.399996875" width="0.095" layer="1"/>
 <via x="68.500003125" y="48.399996875" extent="1-16" drill="0.2"/>

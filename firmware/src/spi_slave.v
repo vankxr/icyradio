@@ -78,7 +78,7 @@ always @(negedge spi_sck or posedge rst)
                 if((bit_cnt == (ASZ + 1)) && rnw)
                     miso_shift <= data_in; // Load shift register with outgoing data
                 else
-                    miso_shift <= {miso_shift[DSZ - 2:0], 1'b0};
+                    miso_shift <= {miso_shift[DSZ - 2:0], miso_shift[DSZ - 1]};
             end
     end
 

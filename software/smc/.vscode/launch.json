@@ -25,6 +25,13 @@
                         "port": 0,
                         "label": "Console",
                         "type": "console",
+                        "showOnStartup": true
+                    },
+                    {
+                        "port": 1,
+                        "label": "RX Debug data",
+                        "type": "console",
+                        "showOnStartup": false
                     }
                 ]
             }

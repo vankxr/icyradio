@@ -13,18 +13,18 @@ static uint8_t ubRegisterCache[32];
 static const uint8_t ubRegisterInitValues[32] =
 {
 	0x00, 0x00, 0x00, 0x00,	0x00, // Read-only registers do not need initialization
-    0x90, // R5 - LT off, LNA gain manual set to 0
-    0x80, // R6 - PDET1 off, PDET3 off, Filter gain 0 dB, LNA max power
-    0x60, // R7 - Mixer on, normal current, manual gain set to 0
+    0x80, // R5 - LT off, LNA AGC on
+    0x30, // R6 - PDET1 on, PDET3 off, Filter gain +3 dB, LNA max power
+    0x70, // R7 - Mixer on, normal current, AGC on
     0x80, // R8 - Mixer buffer on, high current, IGA = 0
     0x40, // R9 - IF filter on, low current, IPA = 0
-    0xA8, // R10 - Filter power on, mid power, mid fine bandwidth
+    0x98, // R10 - Filter power on, highest power, mid fine bandwidth
     0x0F, // R11 - Filter coarse widest, HPF corner lowest
-    0x40, // R12 - VGA on, controlled by code, min gain
+    0xE0, // R12 - VGA on, controlled by code, min gain
     0x63, // R13 - LNA AGC VTH = 0,94 V, VTL = 0,64 V
     0x75, // R14 - Mixer AGC VTH = 1,04 V, VTL = 0,84 V
     0xF8, // R15 - CLKOUT disabled, AGC clock on
-    0x7C, // R16 - VCO div = 1, REF div by 2, XTAL cap 30pF
+    0x7C, // R16 - VCO div = 1, REF div by 2, XTAL cap 0pF
     0x83, // R17 - LDO 2,0 V
     0x80, // R18 - TODO: Find documentation for this
     0x00, // R19 - TODO: Find documentation for this
@@ -33,12 +33,12 @@ static const uint8_t ubRegisterInitValues[32] =
     0xC0, // R22 - PLL related, init value not important
     0x30, // R23 - PLL related, init value not important
     0x48, // R24 - TODO: Find documentation for this
-    0xCC, // R25 - RF Filter on, AGC input 2 selected
-    0x60, // R26 - Bypass TF, PLL autotune 128 kHz, RF filter highest band
+    0xEC, // R25 - RF Filter on, AGC input 2 selected
+    0x40, // R26 - Bypass TF, PLL autotune 128 kHz, RF filter highest band
     0x00, // R27 - Highest corner for LPNF and LPF
     0x54, // R28 - PDET3 TOP = 5
     0xAE, // R29 - PDET1 TOP = 5, PDET2 TOP = 6
-    0x0A, // R30 - Filter extension disabled, PDET timing = 10
+    0x4E, // R30 - Filter extension enabled, PDET timing = 14
     0xC0  // R31 - TODO: Find documentation for this
 };
 static const r820t2_freq_range_t xFrequencyRanges[] =
@@ -228,10 +228,17 @@ uint8_t r820t2_init()
     if(!i2c1_write(R820T2_I2C_ADDR, NULL, 0, I2C_STOP)) // Check ACK from the expected address
         return 0;
 
+    if(r820t2_read_register(0x00) != 0x96)
+        return 0;
+
     RXTUNER_REF_28M8();
 
     for(uint8_t i = 5; i < 32; i++)
         r820t2_write_register(i, ubRegisterInitValues[i]);
+
+    r820t2_read_register(0x1F); // Force the register cache to load
+
+    delay_ms(20);
 
     if(!r820t2_calibrate())
         return 0;
@@ -241,22 +248,24 @@ uint8_t r820t2_init()
 
 uint8_t r820t2_calibrate()
 {
+    r820t2_rmw_register_cached(0x13, (uint8_t)~0x3F, 0x31);
+
     for(uint8_t i = 0; i < 5; i++)
     {
-        r820t2_rmw_register_cached(0x0B, (uint8_t)~0x60, 0x00); // Set widest filter
+        r820t2_rmw_register_cached(0x0B, (uint8_t)~0x60, 0x60); // Set narrowest filter
         r820t2_rmw_register_cached(0x0F, (uint8_t)~0x04, 0x04); // Enable calibration clock
         r820t2_rmw_register_cached(0x10, (uint8_t)~0x03, 0x00); // 0 pF XTAL cap
 
-        if(!r820t2_set_pll_freq(88000000))
+        if(!r820t2_set_pll_freq(56000000))
             return 0;
 
         r820t2_rmw_register_cached(0x0B, (uint8_t)~0x10, 0x10); // Trigger
 
-        delay_ms(2);
+        delay_ms(10);
 
         r820t2_rmw_register_cached(0x0B, (uint8_t)~0x10, 0x00); // Stop trigger
 
-        r820t2_rmw_register_cached(0x0F, (uint8_t)~0x04, 0x04); // Disable calibration clock
+        r820t2_rmw_register_cached(0x0F, (uint8_t)~0x04, 0x00); // Disable calibration clock
 
         uint8_t ubCalibrationCode = r820t2_read_register(0x04) & 0x0F;
 
@@ -267,6 +276,35 @@ uint8_t r820t2_calibrate()
     return 0;
 }
 
+void r820t2_sleep()
+{
+    r820t2_write_register(0x05, 0xA0);
+    r820t2_write_register(0x06, 0xD0);
+    r820t2_write_register(0x07, 0x00);
+    r820t2_write_register(0x08, 0x40);
+    r820t2_write_register(0x09, 0xC0);
+    r820t2_write_register(0x0a, 0x70);
+    r820t2_write_register(0x0c, 0xA0);
+    r820t2_write_register(0x0f, 0x2A);
+    r820t2_write_register(0x11, 0x03);
+    r820t2_write_register(0x17, 0xF4);
+    r820t2_write_register(0x19, 0x0C);
+}
+uint8_t r820t2_wakeup()
+{
+    for(uint8_t i = 5; i < 32; i++)
+        r820t2_write_register(i, ubRegisterInitValues[i]);
+
+    r820t2_read_register(0x1F); // Force the register cache to load
+
+    delay_ms(20);
+
+    if(!r820t2_calibrate())
+        return 0;
+
+    return 1;
+}
+
 uint8_t r820t2_set_tf_freq(uint32_t ulFrequency)
 {
     if(!ulFrequency)
@@ -275,23 +313,20 @@ uint8_t r820t2_set_tf_freq(uint32_t ulFrequency)
     float fFreqMHz = (float)ulFrequency / 1000000;
 
     const r820t2_freq_range_t *pFreqRange = NULL;
+    uint8_t ubFreqRangeIndex;
 
-    for(uint8_t i = 0; i < (sizeof(xFrequencyRanges) / sizeof(xFrequencyRanges[0])) - 1; i++)
+    for(ubFreqRangeIndex = 0; ubFreqRangeIndex < (sizeof(xFrequencyRanges) / sizeof(xFrequencyRanges[0])) - 1; ubFreqRangeIndex++)
     {
-        if(fFreqMHz < xFrequencyRanges[i + 1].usFrequency)
-        {
-            pFreqRange = &xFrequencyRanges[i];
-
+        if(fFreqMHz < xFrequencyRanges[ubFreqRangeIndex + 1].usFrequency)
             break;
-        }
     }
 
-    if(!pFreqRange)
-        return 0;
+    pFreqRange = &xFrequencyRanges[ubFreqRangeIndex];
 
     r820t2_rmw_register_cached(0x17, (uint8_t)~0x08, pFreqRange->ubOpenDrain);
     r820t2_rmw_register_cached(0x1A, (uint8_t)~0xC3, pFreqRange->ubRFMuxFilter);
     r820t2_write_register(0x1B, pFreqRange->ubTrackingFilter);
+    r820t2_rmw_register_cached(0x10, (uint8_t)~0x0B, 0x00);
 
     return 1;
 }
@@ -494,7 +529,7 @@ void r820t2_set_vga_gain(float fGain)
 
     r820t2_rmw_register_cached(0x0C, (uint8_t)~0x0F, ubCode & 0x0F);
 }
-float r820t2_get_vna_gain()
+float r820t2_get_vga_gain()
 {
     uint8_t ubCode = r820t2_read_register(0x0C) & 0x0F;
     float fGain = fVGABaseGain;

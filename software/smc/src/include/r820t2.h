@@ -33,6 +33,9 @@ uint8_t r820t2_init();
 
 uint8_t r820t2_calibrate();
 
+void r820t2_sleep();
+uint8_t r820t2_wakeup();
+
 uint8_t r820t2_set_tf_freq(uint32_t ulFrequency);
 uint8_t r820t2_set_pll_freq(uint32_t ulFrequency);
 void r820t2_set_if_freq(uint32_t ulFrequency);
@@ -45,6 +48,6 @@ float r820t2_get_lna_gain();
 void r820t2_set_mixer_gain(float fGain, uint8_t ubAGCEnabled);
 float r820t2_get_mixer_gain();
 void r820t2_set_vga_gain(float fGain);
-float r820t2_get_vna_gain();
+float r820t2_get_vga_gain();
 
 #endif // __R820T2_H__

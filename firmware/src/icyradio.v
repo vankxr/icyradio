@@ -43,6 +43,7 @@ module icyradio
     output ADC_OEn,
     // DAC Signals
     output DAC_CLK,
+    input DAC_DCLK,
     inout DAC_D0,
     inout DAC_D1,
     inout DAC_D2,
@@ -134,7 +135,7 @@ assign adc_dpram_rd_clk = clk2; // ADC DP RAM read clock is CLK2 (same as the co
 assign adc_dpram_wr_clk = clk1; // ADC DP RAM write clock is CLK1 (same as ADC)
 assign adc_clk          = clk1; // ADC clock is CLK1
 assign ddc_clk          = clk1; // DDC clock is CLK1 (same as the ADC)
-assign dac_clk          = clk1; // DAC clock is CLK1
+assign dac_clk          = clk4; // DAC clock is CLK4
 assign bb_i2s_clk       = clk1; // Baseband I2S clock is CLK1 (same as the DDC)
 assign qspi_clk         = clk2; // QSPI clock is CLK2
 assign irq_clk          = clk2; // IRQ clock is CLK2
@@ -322,7 +323,7 @@ SB_IO #(
 dac_data [13:0]
 (
     .PACKAGE_PIN({DAC_D13, DAC_D12, DAC_D11, DAC_D10, DAC_D9, DAC_D8, DAC_D7, DAC_D6, DAC_D5, DAC_D4, DAC_D3, DAC_D2, DAC_D1, DAC_D0}),
-    .OUTPUT_CLK(DAC_CLK),
+    .OUTPUT_CLK(dac_clk),
     .D_OUT_0(dac_data_pos),
     .D_OUT_1(dac_data_neg)
 );
@@ -333,7 +334,7 @@ always @(posedge dac_clk)
     begin
         if(dac_rst)
             begin
-                dac_data_pos <= 14'h0000;
+                dac_data_pos <= 14'h1FFF; // 2's complement max (14 bit)
                 dac_data_neg <= 14'h0000;
             end
         else

@@ -2,9 +2,13 @@
 
 static void gpio_isr(uint32_t ulFlags)
 {
+    extern void fpga_isr();
     extern void ft6x36_isr();
 
-    if(ulFlags & BIT(12))
+    if(ulFlags & BIT(1))
+        fpga_isr();
+
+    if(ulFlags & BIT(2))
         ft6x36_isr();
 }
 void _gpio_even_isr()
@@ -33,8 +37,8 @@ void gpio_init()
     // NU - Not used (not currently in use)
 
     // Port A
-    GPIO->P[0].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[0].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[0].MODEL  = GPIO_P_MODEL_MODE0_PUSHPULL                 // DSP_SPI_MOSI - USART3 - Location 0
                       | GPIO_P_MODEL_MODE1_INPUTPULL                // DSP_SPI_MISO - USART3 - Location 0
                       | GPIO_P_MODEL_MODE2_PUSHPULL                 // DSP_SPI_SCK - USART3 - Location 0
@@ -55,11 +59,11 @@ void gpio_init()
     GPIO->P[0].OVTDIS = 0;
 
     // Port B
-    GPIO->P[1].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[1].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[1].MODEL  = GPIO_P_MODEL_MODE0_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE1_INPUTPULLFILTER          // FPGA_CDONE
-                      | GPIO_P_MODEL_MODE2_INPUTPULLFILTER          // FPGA_CBSEL0
+                      | GPIO_P_MODEL_MODE2_INPUTPULLFILTER          // FPGA_SMC_IRQ
                       | GPIO_P_MODEL_MODE3_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE4_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE5_INPUTPULLFILTER          // FPGA_CBSEL1
@@ -77,8 +81,8 @@ void gpio_init()
     GPIO->P[1].OVTDIS = BIT(11);
 
     // Port C
-    GPIO->P[2].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[2].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[2].MODEL  = GPIO_P_MODEL_MODE0_PUSHPULL                 // FPGA_SPI_CS - USART1 - Location 4
                       | GPIO_P_MODEL_MODE1_PUSHPULL                 // FPGA_SPI_SDI - USART1 - Location 4
                       | GPIO_P_MODEL_MODE2_INPUTPULL                // FPGA_SPI_SDO - USART1 - Location 4
@@ -95,12 +99,12 @@ void gpio_init()
                       | GPIO_P_MODEH_MODE13_DISABLED                // NC
                       | GPIO_P_MODEH_MODE14_DISABLED                // NC
                       | GPIO_P_MODEH_MODE15_DISABLED;               // NC
-    GPIO->P[2].DOUT   = BIT(0) | BIT(8) | BIT(10) | BIT(11);
+    GPIO->P[2].DOUT   = BIT(0) | BIT(2) | BIT(8) | BIT(10) | BIT(11);
     GPIO->P[2].OVTDIS = 0;
 
     // Port D
-    GPIO->P[3].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[3].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[3].MODEL  = GPIO_P_MODEL_MODE0_PUSHPULL                 // CODEC_RST
                       | GPIO_P_MODEL_MODE1_PUSHPULL                 // TFT_BL_PWM - TIM0 Channel 0 - Location 2
                       | GPIO_P_MODEL_MODE2_INPUTPULLFILTER          // TFT_TOUCH_IRQ
@@ -121,8 +125,8 @@ void gpio_init()
     GPIO->P[3].OVTDIS = BIT(6) | BIT(10);
 
     // Port E
-    GPIO->P[4].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[4].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[4].MODEL  = GPIO_P_MODEL_MODE0_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE1_DISABLED                 // NR
                       | GPIO_P_MODEL_MODE2_DISABLED                 // NR
@@ -143,8 +147,8 @@ void gpio_init()
     GPIO->P[4].OVTDIS = 0;
 
     // Port F
-    GPIO->P[5].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (6 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
-                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (6 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
+    GPIO->P[5].CTRL   = GPIO_P_CTRL_DRIVESTRENGTHALT_STRONG | (5 << _GPIO_P_CTRL_SLEWRATEALT_SHIFT)
+                      | GPIO_P_CTRL_DRIVESTRENGTH_STRONG | (5 << _GPIO_P_CTRL_SLEWRATE_SHIFT);
     GPIO->P[5].MODEL  = GPIO_P_MODEL_MODE0_PUSHPULL                 // DBG_SWCLK - Location 0
                       | GPIO_P_MODEL_MODE1_PUSHPULL                 // DBG_SWDIO - Location 0
                       | GPIO_P_MODEL_MODE2_PUSHPULL                 // DBG_SWO - Location 0
@@ -171,7 +175,7 @@ void gpio_init()
 
     // External interrupts
     GPIO->EXTIPSELL = GPIO_EXTIPSELL_EXTIPSEL0_PORTB            // FPGA_CDONE
-                    | GPIO_EXTIPSELL_EXTIPSEL1_PORTB            // FPGA_CBSEL0
+                    | GPIO_EXTIPSELL_EXTIPSEL1_PORTB            // FPGA_SMC_IRQ
                     | GPIO_EXTIPSELL_EXTIPSEL2_PORTD            // TFT_TOUCH_IRQ
                     | GPIO_EXTIPSELL_EXTIPSEL3_PORTA            // NU
                     | GPIO_EXTIPSELL_EXTIPSEL4_PORTE            // CLK_MNGR_IRQ
@@ -188,7 +192,7 @@ void gpio_init()
                     | GPIO_EXTIPSELH_EXTIPSEL15_PORTA;          // NU
 
     GPIO->EXTIPINSELL = GPIO_EXTIPINSELL_EXTIPINSEL0_PIN1       // FPGA_CDONE
-                      | GPIO_EXTIPINSELL_EXTIPINSEL1_PIN2       // FPGA_CBSEL0
+                      | GPIO_EXTIPINSELL_EXTIPINSEL1_PIN2       // FPGA_SMC_IRQ
                       | GPIO_EXTIPINSELL_EXTIPINSEL2_PIN2       // TFT_TOUCH_IRQ
                       | GPIO_EXTIPINSELL_EXTIPINSEL3_PIN1       // NU
                       | GPIO_EXTIPINSELL_EXTIPINSEL4_PIN6       // CLK_MNGR_IRQ
@@ -205,7 +209,7 @@ void gpio_init()
                       | GPIO_EXTIPINSELH_EXTIPINSEL15_PIN12;    // NU
 
     GPIO->EXTIRISE = 0; // TODO: IRQs
-    GPIO->EXTIFALL = 0; // TODO: IRQs
+    GPIO->EXTIFALL = BIT(1); // TODO: IRQs
 
     GPIO->IFC = _GPIO_IFC_MASK; // Clear pending IRQs
     IRQ_CLEAR(GPIO_EVEN_IRQn); // Clear pending vector
@@ -214,5 +218,5 @@ void gpio_init()
     IRQ_SET_PRIO(GPIO_ODD_IRQn, 0, 0); // Set priority 0,0 (max)
     IRQ_ENABLE(GPIO_EVEN_IRQn); // Enable vector
     IRQ_ENABLE(GPIO_ODD_IRQn); // Enable vector
-    GPIO->IEN = 0; // Enable interrupts TODO: IRQs
+    GPIO->IEN = BIT(1); // Enable interrupts TODO: IRQs
 }
