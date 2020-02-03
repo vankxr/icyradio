@@ -27,15 +27,9 @@
                     {
                         "port": 0,
                         "label": "Console",
-                        "type": "console"
+                        "type": "console",
+                        "showOnStartup": true
                     },
-                    {
-                        "port": 1,
-                        "graphId": "Test graph",
-                        "scale": 1,
-                        "encoding": "signed",
-                        "type": "graph"
-                    }
                 ]
             }
         }

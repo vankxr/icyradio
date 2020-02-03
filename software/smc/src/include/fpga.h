@@ -7,6 +7,7 @@
 #include "systick.h"
 #include "atomic.h"
 #include "gpio.h"
+#include "si5351.h"
 #include "usart.h"
 
 #define FPGA_REG_ID                 0x00
@@ -67,7 +68,7 @@
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP      0x00000400
 
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
-#define FPGA_DDC_LO_CLK_FREQ    49152000 // Hz
+#define FPGA_DDC_LO_CLK_FREQ    SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
 #define FPGA_DDC_LO_FSZ         26 // Bits
 
 #define FPGA_IRQ_SMC    0

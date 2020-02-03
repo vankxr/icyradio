@@ -1,7 +1,7 @@
 # App Config
 ARM_LIBROOT ?= /mnt/e/Projetos/ARM/ARMdev/lib/
-DEVICEDIR = $(ARM_LIBROOT)/Atmel.SAMV71_DFP.2.4.182/samv71b/include
-COREDIR = $(ARM_LIBROOT)/ARM.CMSIS.5.5.1/CMSIS/Include
+DEVICEDIR = $(ARM_LIBROOT)/Atmel.SAMV71_DFP.2.4.182/samv71b
+COREDIR = $(ARM_LIBROOT)/ARM.CMSIS.5.5.1/CMSIS
 MCU_TYPE = __SAMV71N21B__
 MAINXO_VALUE = 12000000UL
 SLOWXO_VALUE = 32768UL
@@ -20,7 +20,7 @@ INCLUDEDIR = include
 STRUCT := $(shell find $(SOURCEDIR) -type d)
 
 SOURCEDIRSTRUCT := $(filter-out %/include, $(STRUCT))
-INCLUDEDIRSTRUCT := $(filter %/include, $(STRUCT)) $(DEVICEDIR)/ $(COREDIR)/
+INCLUDEDIRSTRUCT := $(filter %/include, $(STRUCT)) $(DEVICEDIR)/include $(COREDIR)/Include
 OBJECTDIRSTRUCT := $(subst $(SOURCEDIR), $(OBJECTDIR), $(SOURCEDIRSTRUCT))
 
 # Build type
@@ -60,7 +60,8 @@ ASFLAGS = -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
 CFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Os -std=gnu99 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DMAINXO_VALUE=$(MAINXO_VALUE) -DSLOWXO_VALUE=$(SLOWXO_VALUE) -DBUILD_VERSION=$(BUILD_VERSION)
 CXXFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -fno-rtti -fno-exceptions -Os -std=c++17 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DMAINXO_VALUE=$(MAINXO_VALUE) -DSLOWXO_VALUE=$(SLOWXO_VALUE) -DBUILD_VERSION=$(BUILD_VERSION)
 LDFLAGS = -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 --specs=nano.specs --specs=nosys.specs -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Wl,--gc-sections
-LDLIBS = -lm -lc -lgcc -lnosys
+LDLIBS = -lm -lc -lgcc -lnosys -larm_cortexM7lfdp_math
+LDLIBSPATH = -L$(COREDIR)/DSP/Lib/GCC
 
 ifeq ($(BUILD_TYPE), debug)
 CFLAGS += -g
@@ -114,7 +115,7 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJECTS)
 	@echo ---------------------------------------------------------------------------
 	@echo Creating ELF file \'$@\'...
-	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) $(LDLIBS) -Wl,-Map=$(TARGET).map
+	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) $(LDLIBSPATH) $(LDLIBS) -Wl,-Map=$(TARGET).map
 ifeq ($(BUILD_TYPE), release)
 	@$(STRIP) -g $@
 endif

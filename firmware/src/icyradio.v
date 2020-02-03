@@ -328,17 +328,36 @@ dac_data [13:0]
     .D_OUT_1(dac_data_neg)
 );
 
+// Test Sine wave samples
+reg signed [13:0] dac_test_rom [0:31];
+reg        [4:0]  dac_test_rom_rd_addr;
+reg               dac_test_sel;
+
+initial
+    $readmemh("./src/dac_sine_test_lut.memh", dac_test_rom);
+
 // TODO: DAC controller
 
 always @(posedge dac_clk)
     begin
         if(dac_rst)
             begin
-                dac_data_pos <= 14'h1FFF; // 2's complement max (14 bit)
+                dac_data_pos <= 14'h0000; // 2's complement min (14 bit)
                 dac_data_neg <= 14'h0000;
             end
         else
             begin
+                dac_test_rom_rd_addr <= dac_test_rom_rd_addr + 1;
+
+                if(dac_test_sel)
+                    dac_data_pos <= dac_test_rom[dac_test_rom_rd_addr];
+                else
+                    dac_data_pos <= 14'h0000;
+
+                if(!dac_test_sel)
+                    dac_data_neg <= dac_test_rom[dac_test_rom_rd_addr];
+                else
+                    dac_data_neg <= 14'h0000;
             end
     end
 /// DAC Interface ///
@@ -811,6 +830,7 @@ always @(posedge cntrl_spi_clk)
                                     dac_soft_rst <= cntrl_spi_data_out[3];
                                     bb_i2s_soft_rst <= cntrl_spi_data_out[4];
                                     qspi_soft_rst <= cntrl_spi_data_out[5];
+                                    dac_test_sel <= cntrl_spi_data_out[16];
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin

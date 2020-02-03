@@ -1,7 +1,7 @@
 #include "si5351.h"
 
-uint32_t SI5351_XTAL_FREQ = 26000000UL;
-uint32_t SI5351_CLKIN_FREQ = 50000000UL;
+uint32_t SI5351_XTAL_FREQ;
+uint32_t SI5351_CLKIN_FREQ;
 uint32_t SI5351_CLKIN_DIV_FREQ;
 uint32_t SI5351_PLL_SRC_FREQ[2];
 uint32_t SI5351_PLL_FREQ[2];
@@ -99,16 +99,30 @@ uint8_t si5351_read_status()
     return si5351_read_register(SI5351_REG_STATUS) & 0xF0;
 }
 
-uint8_t si5351_set_clkin_divider(uint8_t ubDivider)
+uint8_t si5351_xtal_config(uint32_t ulFrequency, uint8_t ubCapacitance)
 {
+    if(ulFrequency < 25000000UL || ulFrequency > 27000000UL)
+        return 0;
+
+    SI5351_XTAL_FREQ = ulFrequency;
+
+    // TODO: Capacitance
+}
+uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
+{
+    if(!ulFrequency)
+        return 0;
+
     if(!ubDivider)
         return 0;
 
-    if(SI5351_CLKIN_FREQ / ubDivider < 10000000UL)
+    if(ulFrequency / ubDivider < 10000000UL)
         return 0;
 
-    if(SI5351_CLKIN_FREQ / ubDivider > 40000000UL)
+    if(ulFrequency / ubDivider > 40000000UL)
         return 0;
+
+    SI5351_CLKIN_FREQ = ulFrequency;
 
     switch(ubDivider)
     {

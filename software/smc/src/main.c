@@ -27,6 +27,7 @@
 #include "ili9488.h"
 #include "r820t2.h"
 #include "ad9117.h"
+#include "adf4351.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
@@ -201,7 +202,7 @@ uint16_t get_device_revision()
 
 void init_system_clocks()
 {
-    si5351_set_clkin_divider(2); // fPFD = CLKIN / 2
+    si5351_clkin_config(50000000, 2); // fPFD = CLKIN / 2
 
     DBGPRINTLN_CTX("CLKMNGR - CLKIN Clock: %.1f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - CLKIN Divider Clock: %.1f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
@@ -276,7 +277,7 @@ void init_system_clocks()
 
     //// FPGA Clock #4
     si5351_multisynth_set_source(SI5351_FPGA_CLK4, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 10000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 32000000);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
@@ -435,8 +436,34 @@ void init_tx_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_DAC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA DAC enabled!");
 
-    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
+    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK4]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
+
+    fpga_reset_module(BIT(16), 0);
+
+    adf4351_pfd_config(50000000, 1, 0, 1, 1);
+    DBGPRINTLN_CTX("TX PLL Reference frequency: %.1f MHz", (float)ADF4351_REF_FREQ / 1000000);
+    DBGPRINTLN_CTX("TX PLL PFD frequency: %.1f MHz", (float)ADF4351_PFD_FREQ / 1000000);
+
+    adf4351_charge_pump_set_current(5.f);
+    DBGPRINTLN_CTX("TX PLL CP current: %.2f mA", adf4351_charge_pump_get_current());
+
+    adf4351_main_out_config(1, -4);
+    DBGPRINTLN_CTX("TX PLL output power: %hhi dBm", adf4351_main_out_get_power());
+
+    adf4351_set_frequency(100000000);
+    DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
+
+    TXPLL_UNMUTE();
+
+    TXMIXER_ENABLE();
+
+    TXPA_BIAS_ENABLE();
+
+    delay_ms(100);
+
+    DBGPRINTLN_CTX("TX Mixer temperature: %.2f C", adc_get_tx_mixer_temperature());
+    DBGPRINTLN_CTX("TX Amplifier overcurrent: %s", TXPA_OVERCURRENT() ? "yes" : "no");
 }
 
 int init()
@@ -607,6 +634,11 @@ int init()
     else
         DBGPRINTLN_CTX("AD9117 init NOK!");
 
+    if(adf4351_init())
+        DBGPRINTLN_CTX("ADF4351 init OK!");
+    else
+        DBGPRINTLN_CTX("ADF4351 init NOK!");
+
     return 0;
 }
 int main()
@@ -686,7 +718,7 @@ int main()
             ullLastPWMTick = g_ullSystemTick;
 
             static int8_t duty_sig[3] = {1, 1, 1};
-            static int16_t duty[3] = {0, 1000, 2000};
+            static int16_t duty[3] = {10, 1010, 2010};
 
             fpga_rbg_led_set_duty(FPGA_LED_RED, duty[0]);
             fpga_rbg_led_set_duty(FPGA_LED_GREEN, duty[1]);
@@ -703,9 +735,9 @@ int main()
                     duty_sig[i] = -1;
                 }
 
-                if(duty[i] <= 0)
+                if(duty[i] <= 10)
                 {
-                    duty[i] = 0;
+                    duty[i] = 10;
 
                     duty_sig[i] = 1;
                 }
@@ -739,9 +771,10 @@ int main()
         {
             ullLastDebugPrint = g_ullSystemTick;
 
-            DBGPRINTLN_CTX("ADC Temp: %.2f C", adc_get_temperature());
-            DBGPRINTLN_CTX("EMU Temp: %.2f C", emu_get_temperature());
-            DBGPRINTLN_CTX("RTCC Time: %lu s", rtcc_get_time());
+            DBGPRINTLN_CTX("TX Mixer temperature: %.2f C", adc_get_tx_mixer_temperature());
+            DBGPRINTLN_CTX("ADC temperature: %.2f C", adc_get_temperature());
+            DBGPRINTLN_CTX("EMU temperature: %.2f C", emu_get_temperature());
+            DBGPRINTLN_CTX("RTCC time: %lu s", rtcc_get_time());
         }
     }
 

@@ -195,7 +195,8 @@ void si5351_isr();
 uint8_t si5351_read_revision_id();
 uint8_t si5351_read_status();
 
-uint8_t si5351_set_clkin_divider(uint8_t ubDivider);
+uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider);
+uint8_t si5351_xtal_config(uint32_t ulFrequency, uint8_t ubCapacitance);
 
 uint8_t si5351_pll_reset(uint8_t ubPLL);
 uint8_t si5351_pll_set_source(uint8_t ubPLL, uint8_t ubSource);
