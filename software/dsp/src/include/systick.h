@@ -2,6 +2,7 @@
 #define __SYSTICK_H__
 
 #include <sam.h>
+#include "pmc.h"
 #include "atomic.h"
 
 extern volatile uint64_t g_ullSystemTick;

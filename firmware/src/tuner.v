@@ -5,6 +5,7 @@ module tuner
     input  signed [DSZ - 1:0] in,       // Input data
     input         [FSZ - 1:0] lo_freq,  // NCO Frequency tuning word
     input                     lo_ns_en, // NCO noise shaping enable
+    input                     iq_swap,  // I and Q swap
     output signed [DSZ - 1:0] out_i,    // In-phase output
     output signed [DSZ - 1:0] out_q     // Quadrature output
 );
@@ -42,7 +43,7 @@ tuner_mixer i_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(1'b1),
+    .cos(!iq_swap),
     .in(in),
     .phs(phs),
     .out(out_i)
@@ -53,7 +54,7 @@ tuner_mixer q_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(1'b0),
+    .cos(iq_swap),
     .in(in),
     .phs(phs),
     .out(out_q)

@@ -8,7 +8,7 @@ void _systick_isr()
 }
 void systick_init()
 {
-    SysTick->LOAD = (12000000 / 1000) - 1;
+    SysTick->LOAD = (FCLK_CLOCK_FREQ / 1000) - 1;
     SysTick->VAL = 0;
     SysTick->CTRL = SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_CLKSOURCE_Msk;
 

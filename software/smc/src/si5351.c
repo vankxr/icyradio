@@ -245,8 +245,8 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
         return 0;
     }
 
-    uint32_t ulP1 = 128 * pMultiplier->ulInt + (uint32_t)(128.f * (float)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
-    uint32_t ulP2 = 128 * pMultiplier->ulNum - pMultiplier->ulDen * (uint32_t)(128.f * (float)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
+    uint32_t ulP1 = 128 * pMultiplier->ulInt + (uint32_t)(128.f * (double)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
+    uint32_t ulP2 = 128 * pMultiplier->ulNum - pMultiplier->ulDen * (uint32_t)(128.f * (double)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
     uint32_t ulP3 = pMultiplier->ulDen;
 
     if(!pMultiplier->ulNum && !(pMultiplier->ulInt & 1)) // If multiplier is an even integer, turn on integer mode
@@ -265,7 +265,7 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
 
     si5351_pll_reset(ubPLL);
 
-    SI5351_PLL_FREQ[ubPLL] = SI5351_PLL_SRC_FREQ[ubPLL] * ((float)pMultiplier->ulInt + ((float)pMultiplier->ulNum / pMultiplier->ulDen));
+    SI5351_PLL_FREQ[ubPLL] = SI5351_PLL_SRC_FREQ[ubPLL] * ((double)pMultiplier->ulInt + ((double)pMultiplier->ulNum / pMultiplier->ulDen));
 
     free(pMultiplier);
 
@@ -374,8 +374,8 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
             return 0;
         }
 
-        uint32_t ulP1 = 128 * pDivider->ulInt + (uint32_t)(128.f * (float)pDivider->ulNum / pDivider->ulDen) - 512;
-        uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)(128.f * (float)pDivider->ulNum / pDivider->ulDen) - 512;
+        uint32_t ulP1 = 128 * pDivider->ulInt + (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen) - 512;
+        uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen) - 512;
         uint32_t ulP3 = pDivider->ulDen;
 
         if(!pDivider->ulNum && !(pDivider->ulInt & 1)) // If multiplier is an even integer, turn on integer mode
@@ -393,7 +393,7 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         si5351_write_register(SI5351_REG_MSn_P3_2_MSB(ubMS), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
     }
 
-    SI5351_MS_FREQ[ubMS] = SI5351_MS_SRC_FREQ[ubMS] / ((float)pDivider->ulInt + ((float)pDivider->ulNum / pDivider->ulDen));
+    SI5351_MS_FREQ[ubMS] = SI5351_MS_SRC_FREQ[ubMS] / ((double)pDivider->ulInt + ((double)pDivider->ulNum / pDivider->ulDen));
 
     free(pDivider);
 

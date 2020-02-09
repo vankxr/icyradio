@@ -51,6 +51,7 @@
 
 // FPGA_REG_DDC_CNTRL
 #define FPGA_REG_DDC_CNTRL_LO_NS_EN     BIT(0)
+#define FPGA_REG_DDC_CNTRL_IQ_SWAP      BIT(1)
 
 // FPGA_REG_AUDIO_I2S_MUX_SEL
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_INPUT        0x00000000
@@ -100,6 +101,7 @@ uint16_t fpga_rbg_led_get_duty(uint8_t ubColor);
 
 void fpga_adc_dpram_sample(uint32_t *pulData, uint16_t usSize);
 
+void fpga_ddc_set_iq_swap(uint8_t ubEnable);
 void fpga_ddc_set_lo_noise_shaping(uint8_t ubEnable);
 void fpga_ddc_set_lo_freq(uint32_t ulFrequency);
 uint32_t fpga_ddc_get_lo_freq();

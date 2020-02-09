@@ -44,20 +44,20 @@ module icyradio
     // DAC Signals
     output DAC_CLK,
     input DAC_DCLK,
-    inout DAC_D0,
-    inout DAC_D1,
-    inout DAC_D2,
-    inout DAC_D3,
-    inout DAC_D4,
-    inout DAC_D5,
-    inout DAC_D6,
-    inout DAC_D7,
-    inout DAC_D8,
-    inout DAC_D9,
-    inout DAC_D10,
-    inout DAC_D11,
-    inout DAC_D12,
-    inout DAC_D13,
+    output DAC_D0,
+    output DAC_D1,
+    output DAC_D2,
+    output DAC_D3,
+    output DAC_D4,
+    output DAC_D5,
+    output DAC_D6,
+    output DAC_D7,
+    output DAC_D8,
+    output DAC_D9,
+    output DAC_D10,
+    output DAC_D11,
+    output DAC_D12,
+    output DAC_D13,
     // Control SPI slave
     input SPI_SCK,
     input SPI_MOSI,
@@ -294,6 +294,7 @@ wire signed [15:0] ddc_q;
 reg         [25:0] ddc_lo_freq; // Controlled by host via SPI
 wire               ddc_valid;
 reg                ddc_lo_ns_en; // Controlled by host via SPI
+reg                ddc_iq_swap; // Controlled by host via SPI
 
 // Module
 ddc adc_ddc
@@ -303,6 +304,7 @@ ddc adc_ddc
     .in(adc_data),
     .lo_freq(ddc_lo_freq),
     .lo_ns_en(ddc_lo_ns_en),
+    .iq_swap(ddc_iq_swap),
     .out_valid(ddc_valid),
     .out_i(ddc_i),
     .out_q(ddc_q)
@@ -317,7 +319,7 @@ reg  [13:0] dac_data_neg;
 assign DAC_CLK = dac_clk && !dac_rst;
 
 SB_IO #(
-    .PIN_TYPE(6'b0100_01),
+    .PIN_TYPE(6'b0100_00),
     .PULLUP(1'b0)
 )
 dac_data [13:0]
@@ -329,9 +331,8 @@ dac_data [13:0]
 );
 
 // Test Sine wave samples
-reg signed [13:0] dac_test_rom [0:31];
+reg signed [15:0] dac_test_rom [0:31];
 reg        [4:0]  dac_test_rom_rd_addr;
-reg               dac_test_sel;
 
 initial
     $readmemh("./src/dac_sine_test_lut.memh", dac_test_rom);
@@ -344,20 +345,15 @@ always @(posedge dac_clk)
             begin
                 dac_data_pos <= 14'h0000; // 2's complement min (14 bit)
                 dac_data_neg <= 14'h0000;
+
+                dac_test_rom_rd_addr <= 5'b00000;
             end
         else
             begin
                 dac_test_rom_rd_addr <= dac_test_rom_rd_addr + 1;
 
-                if(dac_test_sel)
-                    dac_data_pos <= dac_test_rom[dac_test_rom_rd_addr];
-                else
-                    dac_data_pos <= 14'h0000;
-
-                if(!dac_test_sel)
-                    dac_data_neg <= dac_test_rom[dac_test_rom_rd_addr];
-                else
-                    dac_data_neg <= 14'h0000;
+                dac_data_pos <= dac_test_rom[dac_test_rom_rd_addr + 9][13:0];
+                dac_data_neg <= dac_test_rom[dac_test_rom_rd_addr][13:0];
             end
     end
 /// DAC Interface ///
@@ -738,8 +734,18 @@ wire cntrl_spi_ncs;
 
 assign SPI_SCK = cntrl_spi_sck;
 assign SPI_MOSI = cntrl_spi_mosi;
-assign SPI_MISO = cntrl_spi_miso;
 assign SPI_CSn = cntrl_spi_ncs;
+
+SB_IO #(
+    .PIN_TYPE(6'b1010_01),
+    .PULLUP(1'b0)
+)
+cntrl_spi_miso_od
+(
+    .PACKAGE_PIN(SPI_MISO),
+    .OUTPUT_ENABLE(~cntrl_spi_ncs),
+    .D_OUT_0(cntrl_spi_miso)
+);
 
 wire [6:0]  cntrl_spi_addr;
 wire [31:0] cntrl_spi_data_out;
@@ -803,6 +809,7 @@ always @(posedge cntrl_spi_clk)
                 adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
 
                 ddc_lo_ns_en <= 1'b0;
+                ddc_iq_swap <= 1'b0;
 
                 ddc_lo_freq <= 26'h0000000;
 
@@ -822,6 +829,10 @@ always @(posedge cntrl_spi_clk)
                 if(cntrl_spi_wr_en) // Synchronous writes
                     begin
                         case(cntrl_spi_addr)
+                            CNTRL_SPI_REG_ID:
+                                begin
+                                    // Nothing to do
+                                end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
                                     adc_dpram_soft_rst <= cntrl_spi_data_out[0];
@@ -830,7 +841,6 @@ always @(posedge cntrl_spi_clk)
                                     dac_soft_rst <= cntrl_spi_data_out[3];
                                     bb_i2s_soft_rst <= cntrl_spi_data_out[4];
                                     qspi_soft_rst <= cntrl_spi_data_out[5];
-                                    dac_test_sel <= cntrl_spi_data_out[16];
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
@@ -871,6 +881,7 @@ always @(posedge cntrl_spi_clk)
                             CNTRL_SPI_REG_DDC_CNTRL:
                                 begin
                                     ddc_lo_ns_en <= cntrl_spi_data_out[0];
+                                    ddc_iq_swap <= cntrl_spi_data_out[1];
                                 end
                             CNTRL_SPI_REG_DDC_LO_FREQ:
                                 begin
@@ -890,82 +901,68 @@ always @(posedge cntrl_spi_clk)
                 if(cntrl_spi_rd_en) // Synchronous reads
                     begin
                         case(cntrl_spi_addr)
+                            CNTRL_SPI_REG_ID:
+                                begin
+                                    cntrl_spi_data_in <= {16'hDADC, 16'h0001};
+                                end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {26'd0, qspi_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {8'd0, irq_state, irq_mask[1], irq_mask[0]};
                                 end
                             CNTRL_SPI_REG_LED_CNTRL:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {31'd0, led_en};
+                                end
+                            CNTRL_SPI_REG_RED_LED_DUTY:
+                                begin
+                                    cntrl_spi_data_in <= {20'd0, led_duty[0]};
+                                end
+                            CNTRL_SPI_REG_GREEN_LED_DUTY:
+                                begin
+                                    cntrl_spi_data_in <= {20'd0, led_duty[1]};
+                                end
+                            CNTRL_SPI_REG_BLUE_LED_DUTY:
+                                begin
+                                    cntrl_spi_data_in <= {20'd0, led_duty[2]};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {29'd0, adc_dpram_wr_en, adc_dpram_rd_addr_inc, adc_dpram_trig};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {{(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_wr_addr, {(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_rd_addr};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_DATA:
                                 begin
-                                    // Read is done asynchronously
+                                    cntrl_spi_data_in <= {15'd0, adc_dpram_data_out};
 
                                     if(adc_dpram_rd_addr_inc)
                                         adc_dpram_rd_addr <= adc_dpram_rd_addr + 1;
                                 end
                             CNTRL_SPI_REG_DDC_CNTRL:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {30'd0, ddc_iq_swap, ddc_lo_ns_en};
                                 end
                             CNTRL_SPI_REG_DDC_LO_FREQ:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {6'd0, ddc_lo_freq};
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    // Nothing to do (read is done asynchronously)
+                                    cntrl_spi_data_in <= {20'd0, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
+                                end
+                            default:
+                                begin
+                                    cntrl_spi_data_in <= 32'h00000000;
                                 end
                         endcase
                     end
             end
-    end
-
-always @(*)
-    begin
-        case(cntrl_spi_addr)
-            CNTRL_SPI_REG_ID:
-                cntrl_spi_data_in = 32'hDADC0001;
-            CNTRL_SPI_REG_RST_CNTRL:
-                cntrl_spi_data_in = {26'd0, qspi_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
-            CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
-                cntrl_spi_data_in = {8'd0, irq_state, irq_mask[1], irq_mask[0]};
-            CNTRL_SPI_REG_LED_CNTRL:
-                cntrl_spi_data_in = {31'd0, led_en};
-            CNTRL_SPI_REG_RED_LED_DUTY:
-                cntrl_spi_data_in = {20'd0, led_duty[0]};
-            CNTRL_SPI_REG_GREEN_LED_DUTY:
-                cntrl_spi_data_in = {20'd0, led_duty[1]};
-            CNTRL_SPI_REG_BLUE_LED_DUTY:
-                cntrl_spi_data_in = {20'd0, led_duty[2]};
-            CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
-                cntrl_spi_data_in = {29'd0, adc_dpram_wr_en, adc_dpram_rd_addr_inc, adc_dpram_trig};
-            CNTRL_SPI_REG_ADC_DPRAM_ADDR:
-                cntrl_spi_data_in = {{(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_wr_addr, {(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_rd_addr};
-            CNTRL_SPI_REG_ADC_DPRAM_DATA:
-                cntrl_spi_data_in = {15'd0, adc_dpram_data_out};
-            CNTRL_SPI_REG_DDC_CNTRL:
-                cntrl_spi_data_in = {31'd0, ddc_lo_ns_en};
-            CNTRL_SPI_REG_DDC_LO_FREQ:
-                cntrl_spi_data_in = {6'd0, ddc_lo_freq};
-            CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
-                cntrl_spi_data_in = {20'd0, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
-            default:
-                cntrl_spi_data_in = 32'h00000000;
-        endcase
     end
 /// Control SPI slave interface ///
 

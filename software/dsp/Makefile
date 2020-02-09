@@ -2,9 +2,7 @@
 ARM_LIBROOT ?= /mnt/e/Projetos/ARM/ARMdev/lib/
 DEVICEDIR = $(ARM_LIBROOT)/Atmel.SAMV71_DFP.2.4.182/samv71b
 COREDIR = $(ARM_LIBROOT)/ARM.CMSIS.5.5.1/CMSIS
-MCU_TYPE = __SAMV71N21B__
-MAINXO_VALUE = 12000000UL
-SLOWXO_VALUE = 32768UL
+MCU_TYPE = __SAMV71Q21B__
 APP_ADDRESS = 0x00000000
 APP_NAME = icyradio-dsp
 
@@ -57,8 +55,8 @@ GDB = arm-none-eabi-gdb
 
 # Compillers & Linker flags
 ASFLAGS = -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
-CFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Os -std=gnu99 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DMAINXO_VALUE=$(MAINXO_VALUE) -DSLOWXO_VALUE=$(SLOWXO_VALUE) -DBUILD_VERSION=$(BUILD_VERSION)
-CXXFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -fno-rtti -fno-exceptions -Os -std=c++17 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DMAINXO_VALUE=$(MAINXO_VALUE) -DSLOWXO_VALUE=$(SLOWXO_VALUE) -DBUILD_VERSION=$(BUILD_VERSION)
+CFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Os -std=gnu99 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
+CXXFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -fno-rtti -fno-exceptions -Os -std=c++17 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
 LDFLAGS = -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 --specs=nano.specs --specs=nosys.specs -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Wl,--gc-sections
 LDLIBS = -lm -lc -lgcc -lnosys -larm_cortexM7lfdp_math
 LDLIBSPATH = -L$(COREDIR)/DSP/Lib/GCC

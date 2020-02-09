@@ -83,7 +83,7 @@ always @(negedge spi_sck)
             begin
                 spi_ncs <= 1'b0;
 
-                spi_mosi <= (40'h1200000000 >> (42 - sim_periods));
+                spi_mosi <= (40'h9200000000 >> (42 - sim_periods));
             end
         else
             begin

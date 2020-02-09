@@ -28,12 +28,17 @@
 #include "r820t2.h"
 #include "ad9117.h"
 #include "adf4351.h"
+#include "tscs25xx.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
 #include "v1.icyradio.h"
 
 // Structs
+
+// Helper macros
+#define RX_IF_TO_RF(i) (R820T2_FREQ - ((i) - R820T2_IF_FREQ))
+#define RX_RF_TO_IF(r) ((R820T2_FREQ - (r)) + R820T2_IF_FREQ)
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -43,6 +48,10 @@ static uint32_t get_free_ram();
 
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
+
+static void rx_get_psd(float *pfPower);
+static float rx_get_max_power(float *pfPower, uint32_t *pulFrequency);
+static float rx_get_power(float *pfPower, uint32_t ulFrequency);
 
 static void init_system_clocks();
 static void init_rx_chain();
@@ -84,13 +93,21 @@ void sleep()
 
 uint32_t get_free_ram()
 {
-    void *pCurrentHeap = malloc(1);
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        extern void *_sbrk(int);
 
-    uint32_t ulFreeRAM = (uint32_t)__get_MSP() - (uint32_t)pCurrentHeap;
+        void *pCurrentHeap = _sbrk(1);
 
-    free(pCurrentHeap);
+        if(!pCurrentHeap)
+            return 0;
 
-    return ulFreeRAM;
+        uint32_t ulFreeRAM = (uint32_t)__get_MSP() - (uint32_t)pCurrentHeap;
+
+        _sbrk(-1);
+
+        return ulFreeRAM;
+    }
 }
 
 void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize)
@@ -200,6 +217,96 @@ uint16_t get_device_revision()
     return usRevision;
 }
 
+void rx_get_psd(float *pfPower)
+{
+    if(!pfPower)
+        return;
+
+    uint32_t *pulTDData = (uint32_t *)malloc(4096 * sizeof(uint32_t));
+
+    if(!pulTDData)
+        return;
+
+    memset(pulTDData, 0, 4096 * sizeof(uint32_t));
+
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0); // Enable ADC DPRAM
+
+    fpga_adc_dpram_sample(pulTDData, 4096); // Sample
+
+    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 1); // Disable ADC DPRAM
+
+    // Samples come as 16-bit signed stuffed into a 32-bit unsigned because of the OF bit
+    // We re-use the same buffer and zero the high 16-bit word in case any of them comes with the OF bit set
+    int16_t *psFFTBuffer = (int16_t *)pulTDData;
+
+    for(uint16_t i = 0; i < 4096; i++)
+    {
+        psFFTBuffer[i * 2 + 1] = 0;
+
+        char obuf[64];
+        uint32_t osz = snprintf(obuf, 64, "%.6f\r\n", (float)psFFTBuffer[i * 2 + 0] / INT16_MAX);
+
+        for(uint32_t isz = 0; isz < osz; isz++)
+            dbg_swo_send_uint8(obuf[isz], 1);
+    }
+
+    arm_cfft_q15(&arm_cfft_sR_q15_len4096, psFFTBuffer, 0, 1); // Compute FFT
+
+    // Compute PSD for half of the spectrum since it's mirrored around DC
+    for(uint16_t i = 0; i < 2048; i++)
+    {
+        float fReal = (float)psFFTBuffer[i * 2 + 0] / INT16_MAX;
+        float fImag = (float)psFFTBuffer[i * 2 + 1] / INT16_MAX;
+
+        pfPower[i] = 10 * log10(fReal * fReal + fImag * fImag);
+    }
+
+    free(pulTDData);
+}
+float rx_get_max_power(float *pfPower, uint32_t *pulFrequency)
+{
+    if(!pfPower)
+        return 0.f;
+
+    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096;
+
+    float fMaxPower = -INFINITY;
+    uint32_t ulMaxPowerFrequency = 0.f;
+
+    // Ignore DC bin (index 0)
+    for(uint16_t i = 1; i < 2048; i++)
+    {
+        float fPower = pfPower[i];
+
+        if(fPower > fMaxPower)
+        {
+            fMaxPower = fPower;
+            ulMaxPowerFrequency = i * fBinStep;
+        }
+    }
+
+    if(pulFrequency)
+        *pulFrequency = ulMaxPowerFrequency;
+
+    return fMaxPower;
+}
+float rx_get_power(float *pfPower, uint32_t ulFrequency)
+{
+    if(!pfPower)
+        return 0.f;
+
+    if(ulFrequency >= SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 2) // Nyquist frequency
+        return 0.f;
+
+    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096;
+    uint16_t usBinIndex = ulFrequency / fBinStep;
+
+    if(usBinIndex >= 2048)
+        return 0.f;
+
+    return pfPower[usBinIndex];
+}
+
 void init_system_clocks()
 {
     si5351_clkin_config(50000000, 2); // fPFD = CLKIN / 2
@@ -241,7 +348,7 @@ void init_system_clocks()
 
     //// FPGA Clock #2
     si5351_multisynth_set_source(SI5351_FPGA_CLK2, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 80000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 100000000);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
@@ -327,7 +434,7 @@ void init_system_clocks()
     DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
 
     si5351_clock_power_up(SI5351_DSP_MAIN_CLK); // Power the output stage up
-    //si5351_clock_enable(SI5351_DSP_MAIN_CLK); // Software enable the clock output
+    si5351_clock_enable(SI5351_DSP_MAIN_CLK); // Software enable the clock output
 
     //// Global output enable
     CLK_MNGR_OUT_EN();
@@ -335,27 +442,23 @@ void init_system_clocks()
 void init_rx_chain()
 {
     r820t2_set_lna_gain(0.f, 1); // Auto
-    DBGPRINTLN_CTX("RX Tuner LNA AGC: ON");
+    DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
     r820t2_set_mixer_gain(0.f, 1); // Auto
-    DBGPRINTLN_CTX("RX Tuner mixer AGC: ON");
+    DBGPRINTLN_CTX("RX Tuner mixer gain: %.1f dB", r820t2_get_mixer_gain());
 
     r820t2_set_vga_gain(30.f); // 30 dB
     DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
 
-    r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~10 MHz
-    DBGPRINTLN_CTX("RX Tuner IF filter config");
+    r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
 
-    r820t2_set_if_freq(5000000); // 5 MHz IF
+    r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(100300000))
+    if(r820t2_set_freq(106000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
-
-    fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0);
-    DBGPRINTLN_CTX("FPGA ADC DPRAM enabled!");
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA ADC enabled!");
@@ -367,69 +470,35 @@ void init_rx_chain()
 
     delay_ms(100);
 
-    uint32_t *buf = (uint32_t *)malloc(8192 * sizeof(uint32_t));
-    memset(buf, 0, 4096 * sizeof(uint32_t));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(105600000));
+    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
-    fpga_adc_dpram_sample(buf, 4096);
+    fpga_ddc_set_lo_noise_shaping(1);
+    fpga_ddc_set_iq_swap(1);
 
-    q15_t *fft_buf = (q15_t *)malloc(2 * 4096 * sizeof(q15_t));
-    memset(fft_buf, 0, 2 * 4096 * sizeof(q15_t));
+    fpga_reset_module(FPGA_REG_RST_CNTRL_DDC_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA DDC enabled!");
 
-    for(uint16_t i = 0; i < 4096; i++)
-    {
-        fft_buf[i * 2 + 0] = buf[i] & 0xFFFF; // Real
-        fft_buf[i * 2 + 1] = 0; // Complex
+    fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
 
-        char obuf[64];
-        uint32_t osz = snprintf(obuf, 64, "%.6f\r\n", (float)((int16_t)(buf[i] & 0xFFFF)) / INT16_MAX);
+    float *pfRXPSD = (float *)malloc(2048 * sizeof(float));
 
-        for(uint32_t isz = 0; isz < osz; isz++)
-            dbg_swo_send_uint8(obuf[isz], 1);
-    }
+    if(!pfRXPSD)
+        return;
 
-    free(buf);
+    memset(pfRXPSD, 0, 2048 * sizeof(float));
 
-    arm_cfft_q15(&arm_cfft_sR_q15_len4096, fft_buf, 0, 1);
+    rx_get_psd(pfRXPSD);
 
-    uint32_t ulCenterFrequency = 0;
-    uint32_t ulSampleRate = SI5351_CLK_FREQ[SI5351_FPGA_CLK1];
+    DBGPRINTLN_CTX("RX tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
 
-    float fMaxPower = -INFINITY;
-    float fMaxPowerFrequency = 0.f;
+    uint32_t ulMaxPowerFrequency = 0;
+    float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
 
-    //DBGPRINT_CTX("ADC FFT DATA: {");
+    DBGPRINTLN_CTX("RX peak power: %.2f dB at %.2f MHz", fMaxPower, (float)RX_IF_TO_RF(ulMaxPowerFrequency) / 1000000);
 
-    for(uint16_t i = 0; i < 4096; i++)
-    {
-        float fReal = (float)fft_buf[i * 2 + 0] / INT16_MAX;
-        float fImag = (float)fft_buf[i * 2 + 1] / INT16_MAX;
-
-        float fPower = 10 * log10(fReal * fReal + fImag * fImag);
-        float fFrequency = 0;
-
-        if(i < 4096 / 2)
-            fFrequency = (ulCenterFrequency + i * ((float)ulSampleRate / 4096));
-        else
-            fFrequency = (ulCenterFrequency + ((int16_t)i - 4096) * ((float)ulSampleRate / 4096));
-        /*
-        char obuf[64];
-        uint32_t osz = snprintf(obuf, 64, "%.2f\t%.2f\r\n", fFrequency, fPower);
-
-        for(uint32_t isz = 0; isz < osz; isz++)
-            dbg_swo_send_uint8(obuf[isz], 1);
-        */
-        if(fPower > fMaxPower)
-        {
-            fMaxPower = fPower;
-            fMaxPowerFrequency = fFrequency;
-        }
-    }
-
-    //DBGPRINTLN("} FFT DATA END ");
-
-    free(fft_buf);
-
-    DBGPRINTLN_CTX("Peak power = %.2f dB at frequency %.2f MHz", fMaxPower, fMaxPowerFrequency / 1000000);
+    free(pfRXPSD);
 }
 void init_tx_chain()
 {
@@ -439,7 +508,19 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK4]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    fpga_reset_module(BIT(16), 0);
+    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_2V0 | AD9117_REG_AUX_CTLI_TOP_2V5);
+    ad9117_i_offset_set_value(950);
+    DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
+
+    ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_1V0);
+    ad9117_q_offset_set_value(0);
+    DBGPRINTLN_CTX("TX DAC Q offset: %hu", ad9117_q_offset_get_value());
+
+    ad9117_i_gain_set_value(0);
+    DBGPRINTLN_CTX("TX DAC I gain: %hu", ad9117_i_gain_get_value());
+
+    ad9117_q_gain_set_value(0);
+    DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
     adf4351_pfd_config(50000000, 1, 0, 1, 1);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.1f MHz", (float)ADF4351_REF_FREQ / 1000000);
@@ -448,10 +529,10 @@ void init_tx_chain()
     adf4351_charge_pump_set_current(5.f);
     DBGPRINTLN_CTX("TX PLL CP current: %.2f mA", adf4351_charge_pump_get_current());
 
-    adf4351_main_out_config(1, -4);
-    DBGPRINTLN_CTX("TX PLL output power: %hhi dBm", adf4351_main_out_get_power());
+    adf4351_main_out_config(1, 5);
+    DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(100000000);
+    adf4351_set_frequency(2 * 300000000); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
@@ -639,12 +720,17 @@ int init()
     else
         DBGPRINTLN_CTX("ADF4351 init NOK!");
 
+    if(tscs25xx_init())
+        DBGPRINTLN_CTX("TSCS25xx init OK!");
+    else
+        DBGPRINTLN_CTX("TSCS25xx init NOK!");
+
     return 0;
 }
 int main()
 {
     // Clock manager info & configuration
-    DBGPRINTLN_CTX("SI5351 Revision ID: %hhu", si5351_read_revision_id());
+    DBGPRINTLN_CTX("SI5351 revision ID: %hhu", si5351_read_revision_id());
 
     init_system_clocks();
 
@@ -677,7 +763,14 @@ int main()
     init_rx_chain();
 
     // TX Chain configuration
-    init_tx_chain();
+    //init_tx_chain();
+
+    // CODEC info & configuration
+    DBGPRINTLN_CTX("TSCS25xx ID: 0x%04X", tscs25xx_read_device_id());
+
+    uint8_t ubCodecRevision = tscs25xx_read_revision_id();
+
+    DBGPRINTLN_CTX("TSCS25xx revision ID: %hhu.%hhu", ubCodecRevision >> 4, ubCodecRevision & 0x0F);
 
     // TFT info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());

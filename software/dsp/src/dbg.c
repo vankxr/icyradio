@@ -15,14 +15,16 @@ void dbg_init()
 void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 {
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    TPI->SPPR = 2 << TPI_SPPR_TXMODE_Pos;
-    TPI->ACPR = (pmc_get_pck_clock_freq(3) / ulFrequency) - 1;
-    TPI->FFCR = 0x00000100;
-    DWT->CTRL = 0x400003FE;
-    ITM->LAR = 0xC5ACCE55;
-    ITM->TCR = (1 << ITM_TCR_TraceBusID_Pos) | ITM_TCR_SWOENA_Msk | ITM_TCR_ITMENA_Msk;
-    ITM->TPR = ulChannelMask;
+
+    ITM->LAR = 0xC5ACCE55; // Unlock ITM registers
+
+    ITM->TCR = (1 << ITM_TCR_TraceBusID_Pos) | ITM_TCR_SWOENA_Msk | ITM_TCR_SYNCENA_Msk | ITM_TCR_ITMENA_Msk;
     ITM->TER = ulChannelMask;
+    ITM->TPR = ulChannelMask;
+
+    TPI->SPPR = (2 << TPI_SPPR_TXMODE_Pos);
+    TPI->FFCR = TPI_FFCR_TrigIn_Msk;
+    TPI->ACPR = (pmc_get_pck_clock_freq(3) / ulFrequency) - 1;
 }
 void dbg_swo_putc(char c, uint8_t ubChannel)
 {

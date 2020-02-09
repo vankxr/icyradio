@@ -49,15 +49,15 @@ uint8_t ad9117_init()
     ad9117_write_register(AD9117_REG_POWER_DOWN, AD9117_REG_POWER_DOWN_LDO_ON | AD9117_REG_POWER_DOWN_PWR_UP | AD9117_REG_POWER_DOWN_QDAC_ON | AD9117_REG_POWER_DOWN_IDAC_ON | AD9117_REG_POWER_DOWN_QCLK_ON | AD9117_REG_POWER_DOWN_ICLK_ON | AD9117_REG_POWER_DOWN_INT_REF);
     ad9117_write_register(AD9117_REG_DATA_CTL, AD9117_REG_DATA_CTL_TWOS | AD9117_REG_DATA_CTL_IFIRST | AD9117_REG_DATA_CTL_IRISING | AD9117_REG_DATA_CTL_SIMUL_ON | AD9117_REG_DATA_CTL_DCI_ON | AD9117_REG_DATA_CTL_DCO_DOUBLE);
 
-    ad9117_write_register(AD9117_REG_IDAC_GAIN, 0x00); // No extra gain
     ad9117_write_register(AD9117_REG_IRSET, AD9117_REG_IRSET_ENABLE | 0x20); // IRset = 1,6 kOhm, IIFS = 20mA
     ad9117_write_register(AD9117_REG_IRCML, AD9117_REG_IRCML_DISABLE); // Use external common mode resistor
 
-    ad9117_write_register(AD9117_REG_QDAC_GAIN, 0x00); // No extra gain
-    ad9117_write_register(AD9117_REG_QRSET, AD9117_REG_QRSET_ENABLE | 0x20); // IRset = 1,6 kOhm, IQFS = 20mA
+    ad9117_write_register(AD9117_REG_QRSET, AD9117_REG_QRSET_ENABLE | 0x20); // QRset = 1,6 kOhm, IQFS = 20mA
     ad9117_write_register(AD9117_REG_QRCML, AD9117_REG_QRCML_DISABLE); // Use external common mode resistor
 
+    ad9117_i_gain_set_value(0); // Disable I gain
     ad9117_i_offset_config(0, 0); // Disable I offset
+    ad9117_q_gain_set_value(0); // Disable Q gain
     ad9117_q_offset_config(0, 0); // Disable Q offset
 
     ad9117_write_register(AD9117_REG_RREF, 0x00); // RRef = 10 kOhm, VREFIO = 1.0V
@@ -108,6 +108,14 @@ void ad9117_calibrate(uint32_t ulCLKINFrequency)
     ad9117_rmw_register(AD9117_REG_CAL_CTL, (uint8_t)~AD9117_REG_CAL_CTL_CAL_CLK_ENABLE, AD9117_REG_CAL_CTL_CAL_CLK_DISABLE); // Disable calibration clock
 }
 
+void ad9117_i_gain_set_value(uint8_t ubGain)
+{
+    ad9117_write_register(AD9117_REG_IDAC_GAIN, ubGain & 0x3F);
+}
+uint8_t ad9117_i_gain_get_value()
+{
+    return ad9117_read_register(AD9117_REG_IDAC_GAIN) & 0x3F;
+}
 void ad9117_i_offset_config(uint8_t ubEnable, uint8_t ubRange)
 {
     if(!ubEnable)
@@ -129,6 +137,14 @@ uint16_t ad9117_i_offset_get_value()
     return ((uint16_t)(ad9117_read_register(AD9117_REG_AUX_CTLI) & 0x03) << 8) | (uint16_t)ad9117_read_register(AD9117_REG_AUXDACI);
 }
 
+void ad9117_q_gain_set_value(uint8_t ubGain)
+{
+    ad9117_write_register(AD9117_REG_QDAC_GAIN, ubGain & 0x3F);
+}
+uint8_t ad9117_q_gain_get_value()
+{
+    return ad9117_read_register(AD9117_REG_QDAC_GAIN) & 0x3F;
+}
 void ad9117_q_offset_config(uint8_t ubEnable, uint8_t ubRange)
 {
     if(!ubEnable)

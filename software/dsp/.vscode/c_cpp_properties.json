@@ -444,10 +444,8 @@
                 "__WINT_MIN__=0U",
                 "__WINT_TYPE__=unsigned int",
                 "__WINT_WIDTH__=32",
-                "MAINXO_VALUE=8000000UL",
-                "SLOWXO_VALUE=32768UL",
                 "BUILD_VERSION",
-                "__SAMV71N21B__"
+                "__SAMV71Q21B__"
             ],
             "compilerPath": "/opt/gcc-arm-none-eabi/bin/arm-none-eabi-gcc -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16",
             "cStandard": "c99",

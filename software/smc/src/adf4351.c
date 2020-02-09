@@ -155,8 +155,8 @@ uint8_t adf4351_set_frequency(uint64_t ullFrequency)
     if(ubRFDivider == 0xFF)
         return 0;
 
-    // fVCO = fPFD * M
-    // M = fVCO / fPFD
+    // fVCO = fPFD * N
+    // N = fVCO / fPFD
 
     adf4351_mixed_number_t *pMultiplier = (adf4351_mixed_number_t *)malloc(sizeof(adf4351_mixed_number_t));
 
@@ -177,10 +177,10 @@ uint8_t adf4351_set_frequency(uint64_t ullFrequency)
     if(pMultiplier->ulInt > 65535 || pMultiplier->ulInt < 23) // INT limits (min 23, 16-bit wide)
         return 0;
 
-    if(pMultiplier->ulDen > 4095) // MOD limits (12 bit long)
+    if(pMultiplier->ulDen > 4095) // MOD limits (12 bit wide)
         return 0;
 
-    if(pMultiplier->ulNum > 4095) // FRAC limits (12 bit long)
+    if(pMultiplier->ulNum > 4095) // FRAC limits (12 bit wide)
         return 0;
 
     uint16_t usINT = pMultiplier->ulInt;

@@ -9,7 +9,7 @@ module spi_slave
     output [ASZ - 1:0] addr,      // Address
     output [DSZ - 1:0] data_out,  // Data paralellized from MOSI
     input  [DSZ - 1:0] data_in,   // Data to serialize on MISO
-    output             wr_en,     // Write Enable
+    output             wr_en,     // Write enable
     output             rd_en      // Read enable
 );
 
@@ -39,7 +39,6 @@ always @(posedge spi_sck or posedge rst)
                 mosi_shift <= {DSZ{1'b0}};
                 eoa <= 1'b0;
                 rnw <= 1'b1;
-                eot <= 1'b0;
             end
         else
             begin
@@ -48,7 +47,10 @@ always @(posedge spi_sck or posedge rst)
                 mosi_shift <= {mosi_shift[DSZ - 2:0], spi_mosi}; // Shift data in
 
                 if(bit_cnt == 0) // First bit is RnW bit (data direction)
-                    rnw <= spi_mosi;
+                    begin
+                        rnw <= spi_mosi;
+                        eot <= 1'b0; // Only reset EOT flag here so it has time to sync to the high-speed clock
+                    end
 
                 if(bit_cnt == ASZ) // Next 7 bits are address
                     begin
@@ -83,26 +85,26 @@ always @(negedge spi_sck or posedge rst)
     end
 
 // Edge detection on end-of-address and end-of-transfer signals to generate synchronous read and write enables
-reg [1:0] eoa_ed; // EOA edge detector
-reg [1:0] eot_ed; // EOT edge detector
+reg eoa_ed; // EOA edge detector
+reg eot_ed; // EOT edge detector
 
 always @(posedge clk)
     begin
         if(rst)
             begin
-                eoa_ed <= 2'b00;
-                eot_ed <= 2'b00;
+                eoa_ed <= 1'b0;
+                eot_ed <= 1'b0;
 
                 rd_en <= 1'b0;
                 wr_en <= 1'b0;
             end
         else
             begin
-                eoa_ed <= {eoa_ed[0], eoa};
-                eot_ed <= {eot_ed[0], eot};
+                eoa_ed <= eoa;
+                eot_ed <= eot;
 
-                rd_en <= !eoa_ed[1] && eoa_ed[0] && rnw;
-                wr_en <= !eot_ed[1] && eot_ed[0] && !rnw;
+                rd_en <= ~eoa_ed & eoa & rnw;
+                wr_en <= ~eot_ed & eot & ~rnw;
             end
     end
 endmodule

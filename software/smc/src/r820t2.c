@@ -12,7 +12,7 @@ static const float fMixerGainSteps[]  = {0.f, 0.5f, 1.0f, 1.0f, 1.9f, 0.9f, 1.0f
 static uint8_t ubRegisterCache[32];
 static const uint8_t ubRegisterInitValues[32] =
 {
-	0x00, 0x00, 0x00, 0x00,	0x00, // Read-only registers do not need initialization
+    0x00, 0x00, 0x00, 0x00, 0x00, // Read-only registers do not need initialization
     0x80, // R5 - LT off, LNA AGC on
     0x30, // R6 - PDET1 on, PDET3 off, Filter gain +3 dB, LNA max power
     0x70, // R7 - Mixer on, normal current, AGC on
@@ -236,6 +236,8 @@ uint8_t r820t2_init()
     for(uint8_t i = 5; i < 32; i++)
         r820t2_write_register(i, ubRegisterInitValues[i]);
 
+    delay_ms(20);
+
     r820t2_read_register(0x1F); // Force the register cache to load
 
     delay_ms(20);
@@ -337,7 +339,7 @@ uint8_t r820t2_set_pll_freq(uint32_t ulFrequency)
 
     uint32_t ulPLLReference = (R820T2_REF_FREQ > 24000000) ? (R820T2_REF_FREQ >> 1) : R820T2_REF_FREQ;
 
-    r820t2_rmw_register_cached(0x10, (uint8_t)~0x10, ((R820T2_REF_FREQ > 24000000) ? BIT(4) : 0)); // Set REFSEL divider
+    r820t2_rmw_register_cached(0x10, (uint8_t)~0x10, ((R820T2_REF_FREQ > 24000000) ? 0x10 : 0)); // Set REFSEL divider
     r820t2_rmw_register_cached(0x1A, (uint8_t)~0x0C, 0x00); // PLL Autotune freq = 128kHz
     r820t2_rmw_register_cached(0x12, (uint8_t)~0xE0, 0x80); // VCO current = 100
 
@@ -345,20 +347,20 @@ uint8_t r820t2_set_pll_freq(uint32_t ulFrequency)
     uint8_t ubOutputDivider;
 
     // Calculate output divider
-    for(ubOutputDivider = 0; ubOutputDivider++ < 5; ubOutputDivider++)
+    for(ubOutputDivider = 0; ubOutputDivider < 5; ubOutputDivider++)
     {
-        ullVCOFreq = ulFrequency << (ubOutputDivider + 1);
+        ullVCOFreq = (uint64_t)ulFrequency << (ubOutputDivider + 1);
 
         if(ullVCOFreq >= R820T2_VCO_MIN && ullVCOFreq <= R820T2_VCO_MAX)
-			break;
-	}
+            break;
+    }
 
     uint8_t ubVCOFineTune = (r820t2_read_register(0x04) & 0x30) >> 4;
 
-	if(ubVCOFineTune > R820T2_VCO_POWER_REF)
-		ubOutputDivider -= 1;
-	else if(ubVCOFineTune < R820T2_VCO_POWER_REF)
-		ubOutputDivider += 1;
+    if(ubVCOFineTune > R820T2_VCO_POWER_REF)
+        ubOutputDivider -= 1;
+    else if(ubVCOFineTune < R820T2_VCO_POWER_REF)
+        ubOutputDivider += 1;
 
     r820t2_rmw_register_cached(0x10, (uint8_t)~0xE0, (ubOutputDivider << 5)); // Set VCO output divider
 
@@ -366,8 +368,8 @@ uint8_t r820t2_set_pll_freq(uint32_t ulFrequency)
     uint8_t ubIntDiv = ullVCOFreq / (2 * ulPLLReference);
     uint32_t ulFracDiv = (ullVCOFreq - 2 * ulPLLReference * ubIntDiv) / 1000;
 
-	uint8_t ubNi = (ubIntDiv - 13) / 4;
-	uint8_t ubSi = ubIntDiv - 4 * ubNi - 13;
+    uint8_t ubNi = (ubIntDiv - 13) / 4;
+    uint8_t ubSi = ubIntDiv - 4 * ubNi - 13;
 
     r820t2_write_register(0x14, ubNi + (ubSi << 6));
 
@@ -382,17 +384,17 @@ uint8_t r820t2_set_pll_freq(uint32_t ulFrequency)
 
     while(ulFracDiv > 1)
     {
-		if(ulFracDiv > (2 * (ulPLLReference / 1000) / usSDMCount))
+        if(ulFracDiv > (2 * (ulPLLReference / 1000) / usSDMCount))
         {
-			usSDM = usSDM + 32768 / (usSDMCount / 2);
-			ulFracDiv -= 2 * (ulPLLReference / 1000) / usSDMCount;
+            usSDM = usSDM + 32768 / (usSDMCount / 2);
+            ulFracDiv -= 2 * (ulPLLReference / 1000) / usSDMCount;
 
             if(usSDMCount >= 0x8000)
-				break;
-		}
+                break;
+        }
 
-		usSDMCount <<= 1;
-	}
+        usSDMCount <<= 1;
+    }
 
     r820t2_write_register(0x16, usSDM >> 8);
     r820t2_write_register(0x15, usSDM & 0xFF);
@@ -411,9 +413,9 @@ uint8_t r820t2_set_pll_freq(uint32_t ulFrequency)
             break;
         }
 
-		if(!i)
-			r820t2_rmw_register_cached(0x12, (uint8_t)~0xE0, 0x60); // Increase VCO current
-	}
+        if(!i)
+            r820t2_rmw_register_cached(0x12, (uint8_t)~0xE0, 0x60); // Increase VCO current
+    }
 
     if(!ubPLLLocked)
         return 0;
@@ -470,6 +472,9 @@ void r820t2_set_lna_gain(float fGain, uint8_t ubAGCEnabled)
             break;
     }
 
+    if(ubCode >= 16)
+        ubCode = 15;
+
     r820t2_rmw_register_cached(0x05, (uint8_t)~0x1F, 0x10 | (ubCode & 0x0F));
 }
 float r820t2_get_lna_gain()
@@ -502,6 +507,9 @@ void r820t2_set_mixer_gain(float fGain, uint8_t ubAGCEnabled)
             break;
     }
 
+    if(ubCode >= 16)
+        ubCode = 15;
+
     r820t2_rmw_register_cached(0x07, (uint8_t)~0x1F, ubCode & 0x0F);
 }
 float r820t2_get_mixer_gain()
@@ -526,6 +534,9 @@ void r820t2_set_vga_gain(float fGain)
         if(fTotalGain >= fGain)
             break;
     }
+
+    if(ubCode >= 16)
+        ubCode = 15;
 
     r820t2_rmw_register_cached(0x0C, (uint8_t)~0x0F, ubCode & 0x0F);
 }

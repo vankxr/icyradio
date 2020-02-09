@@ -75,7 +75,7 @@ void gpio_init()
                       | GPIO_P_MODEL_MODE7_DISABLED;                // SMC_LFXTAL_P
     GPIO->P[1].MODEH  = GPIO_P_MODEH_MODE8_DISABLED                 // SMC_LFXTAL_N
                       | GPIO_P_MODEH_MODE9_DISABLED                 // NR
-                      | GPIO_P_MODEH_MODE10_PUSHPULL                // DSP_RESET
+                      | GPIO_P_MODEH_MODE10_DISABLED                // DSP_RESET - TODO: Put this back to PUSHPULL
                       | GPIO_P_MODEH_MODE11_DISABLED                // RXTUNER_IF_VAGC
                       | GPIO_P_MODEH_MODE12_PUSHPULL                // I2S_BRG_CFG
                       | GPIO_P_MODEH_MODE13_PUSHPULL                // I2S_BRG_RST

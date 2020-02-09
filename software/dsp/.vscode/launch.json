@@ -15,13 +15,13 @@
             "configFiles": [
                 "${workspaceRoot}/.vscode/openocd-scripts/target.cfg"
             ],
-            "device": "ATSAMV71N21B",
-            "svdFile": "${env:ARM_LIBROOT}/Atmel.SAMV71_DFP.2.4.182/samv71b/svd/ATSAMV71N21B.svd",
+            "device": "ATSAMV71Q21B",
+            "svdFile": "${env:ARM_LIBROOT}/Atmel.SAMV71_DFP.2.4.182/samv71b/svd/ATSAMV71Q21B.svd",
             "interface": "swd",
             "swoConfig": {
                 "enabled": true,
-                "swoFrequency": 12000000,
-                "cpuFrequency": 12000000,
+                "swoFrequency": 6000000,
+                "cpuFrequency": 300000000,
                 "source": "/dev/ttyUSB1",
                 "decoders": [
                     {

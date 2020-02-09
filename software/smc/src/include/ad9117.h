@@ -169,10 +169,14 @@ void ad9117_config_reset();
 
 void ad9117_calibrate(uint32_t ulCLKINFrequency);
 
+void ad9117_i_gain_set_value(uint8_t ubGain);
+uint8_t ad9117_i_gain_get_value();
 void ad9117_i_offset_config(uint8_t ubEnable, uint8_t ubRange);
 void ad9117_i_offset_set_value(uint16_t usOffset);
 uint16_t ad9117_i_offset_get_value();
 
+void ad9117_q_gain_set_value(uint8_t ubGain);
+uint8_t ad9117_q_gain_get_value();
 void ad9117_q_offset_config(uint8_t ubEnable, uint8_t ubRange);
 void ad9117_q_offset_set_value(uint16_t usOffset);
 uint16_t ad9117_q_offset_get_value();

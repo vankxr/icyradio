@@ -1,14 +1,17 @@
 #include "pmc.h"
 
-uint32_t MAINRCO_VALUE = 12000000UL;
-uint32_t SLOWRCO_VALUE = 32000UL;
+
+uint32_t MAINXO_OSC_FREQ = 12000000UL;
+uint32_t MAINRCO_OSC_FREQ = 12000000UL;
+uint32_t SLOWXO_OSC_FREQ;
+uint32_t SLOWRCO_OSC_FREQ = 32000UL;
 
 uint32_t MAINCK_CLOCK_FREQ;
 uint32_t SLCK_CLOCK_FREQ;
 uint32_t PLLACK_CLOCK_FREQ;
 uint32_t UPLLCK_CLOCK_FREQ;
 uint32_t MCK_CLOCK_FREQ;
-uint32_t HCLK_CLOCK_FREQ;
+uint32_t FCLK_CLOCK_FREQ;
 
 void pmc_init()
 {
@@ -30,12 +33,15 @@ void pmc_init()
     } while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINF_Msk));
 
     // Setup and enable PLLA to output 300 MHz, 63 SCLK cycles to lock
-    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((300000000UL / MAINXO_VALUE) - 1) << CKGR_PLLAR_MULA_Pos) | (63 << CKGR_PLLAR_PLLACOUNT_Pos) | CKGR_PLLAR_DIVA_BYPASS;
+    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((300000000UL / MAINXO_OSC_FREQ) - 1) << CKGR_PLLAR_MULA_Pos) | (63 << CKGR_PLLAR_PLLACOUNT_Pos) | CKGR_PLLAR_DIVA_BYPASS;
 
     // Wait for it to be locked
     while(!(PMC->PMC_SR & PMC_SR_LOCKA));
 
-    // Setup HCLK and MCK dividers
+    // Configure flash waitstates
+    eefc_config_waitstates(150000000);
+
+    // Setup FCLK and MCK dividers
     PMC->PMC_MCKR = (PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) | PMC_MCKR_UPLLDIV2 | PMC_MCKR_MDIV_PCK_DIV2 | PMC_MCKR_PRES_CLK_1;
 
     // Wait for them to be ready
@@ -52,20 +58,20 @@ void pmc_update_clocks()
     switch(SUPC->SUPC_SR & SUPC_SR_OSCSEL_Msk)
     {
         case SUPC_SR_OSCSEL_RC:
-            SLCK_CLOCK_FREQ = SLOWRCO_VALUE;
+            SLCK_CLOCK_FREQ = SLOWRCO_OSC_FREQ;
         break;
         case SUPC_SR_OSCSEL_CRYST:
-            SLCK_CLOCK_FREQ = SLOWXO_VALUE;
+            SLCK_CLOCK_FREQ = SLOWXO_OSC_FREQ;
         break;
     }
 
     switch(PMC->CKGR_MOR & CKGR_MOR_MOSCSEL_Msk)
     {
         case 0:
-            MAINCK_CLOCK_FREQ = MAINRCO_VALUE;
+            MAINCK_CLOCK_FREQ = MAINRCO_OSC_FREQ;
         break;
         case CKGR_MOR_MOSCSEL:
-            MAINCK_CLOCK_FREQ = MAINXO_VALUE;
+            MAINCK_CLOCK_FREQ = MAINXO_OSC_FREQ;
         break;
     }
 
@@ -75,7 +81,7 @@ void pmc_update_clocks()
     if(fPLLADiv == 0 || fPLLAMul == 0)
         PLLACK_CLOCK_FREQ = 0;
     else
-        PLLACK_CLOCK_FREQ = ((float)MAINCK_CLOCK_FREQ / fPLLADiv) * (fPLLAMul - 1);
+        PLLACK_CLOCK_FREQ = ((float)MAINCK_CLOCK_FREQ / fPLLADiv) * (fPLLAMul + 1.f);
 
     if(!(PMC->CKGR_UCKR & CKGR_UCKR_UPLLEN))
         UPLLCK_CLOCK_FREQ = 0;
@@ -85,45 +91,45 @@ void pmc_update_clocks()
     switch(PMC->PMC_MCKR & PMC_MCKR_CSS_Msk)
     {
         case PMC_MCKR_CSS_SLOW_CLK:
-            HCLK_CLOCK_FREQ = SLCK_CLOCK_FREQ;
+            FCLK_CLOCK_FREQ = SLCK_CLOCK_FREQ;
         break;
         case PMC_MCKR_CSS_MAIN_CLK:
-            HCLK_CLOCK_FREQ = MAINCK_CLOCK_FREQ;
+            FCLK_CLOCK_FREQ = MAINCK_CLOCK_FREQ;
         break;
         case PMC_MCKR_CSS_UPLL_CLK:
-            HCLK_CLOCK_FREQ = UPLLCK_CLOCK_FREQ;
+            FCLK_CLOCK_FREQ = UPLLCK_CLOCK_FREQ;
         break;
         case PMC_MCKR_CSS_PLLA_CLK:
-            HCLK_CLOCK_FREQ = PLLACK_CLOCK_FREQ;
+            FCLK_CLOCK_FREQ = PLLACK_CLOCK_FREQ;
         break;
     }
 
     switch(PMC->PMC_MCKR & PMC_MCKR_PRES_Msk)
     {
         case PMC_MCKR_PRES_CLK_1:
-            HCLK_CLOCK_FREQ >>= 0;
+            FCLK_CLOCK_FREQ >>= 0;
         break;
         case PMC_MCKR_PRES_CLK_2:
-            HCLK_CLOCK_FREQ >>= 1;
+            FCLK_CLOCK_FREQ >>= 1;
         break;
         case PMC_MCKR_PRES_CLK_4:
-            HCLK_CLOCK_FREQ >>= 2;
+            FCLK_CLOCK_FREQ >>= 2;
         break;
         case PMC_MCKR_PRES_CLK_8:
-            HCLK_CLOCK_FREQ >>= 3;
+            FCLK_CLOCK_FREQ >>= 3;
         break;
         case PMC_MCKR_PRES_CLK_16:
-            HCLK_CLOCK_FREQ >>= 4;
+            FCLK_CLOCK_FREQ >>= 4;
         break;
         case PMC_MCKR_PRES_CLK_32:
-            HCLK_CLOCK_FREQ >>= 5;
+            FCLK_CLOCK_FREQ >>= 5;
         break;
         case PMC_MCKR_PRES_CLK_3:
-            HCLK_CLOCK_FREQ /= 3;
+            FCLK_CLOCK_FREQ /= 3;
         break;
     }
 
-    MCK_CLOCK_FREQ = HCLK_CLOCK_FREQ;
+    MCK_CLOCK_FREQ = FCLK_CLOCK_FREQ;
 
     switch(PMC->PMC_MCKR & PMC_MCKR_MDIV_Msk)
     {

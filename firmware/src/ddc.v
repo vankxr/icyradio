@@ -2,9 +2,10 @@ module ddc
 (
     input                       clk,       // Clock
     input                       reset,     // Reset
-    input           [ISZ - 1:0] in,        // Input data
+    input   signed  [ISZ - 1:0] in,        // Input data
     input           [FSZ - 1:0] lo_freq,   // NCO tuning word
     input                       lo_ns_en,  // NCO noise shaping enable
+    input                       iq_swap,   // IQ swap enable
     output                      out_valid, // Output valid
     output  signed  [OSZ - 1:0] out_i,     // In-phase output
     output  signed  [OSZ - 1:0] out_q      // Quadrature output
@@ -41,17 +42,6 @@ always @(posedge clk)
             end
     end
 
-// Convert to signed
-reg signed [ISZ - 1:0] in_sig;
-
-always @(posedge clk)
-    begin
-        if(reset)
-            in_sig <= {ISZ{1'b0}};
-        else
-            in_sig <= in ^ {1'b1, {(ISZ - 1){1'b0}}};
-    end
-
 // Tuner
 wire signed [ISZ - 1:0] tuner_i;
 wire signed [ISZ - 1:0] tuner_q;
@@ -60,9 +50,10 @@ tuner in_tuner
 (
     .clk(clk),
     .reset(reset),
-    .in(in_sig),
+    .in(in),
     .lo_freq(lo_freq),
     .lo_ns_en(lo_ns_en),
+    .iq_swap(iq_swap),
     .out_i(tuner_i),
     .out_q(tuner_q)
 );

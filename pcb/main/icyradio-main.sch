@@ -9756,27 +9756,27 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 </plain>
 <instances>
 <instance part="U201" gate=".PWRCTRL" x="231.14" y="325.12" smashed="yes">
-<attribute name="NAME" x="198.12" y="329.946" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="198.12" y="328.676" size="1.27" layer="95"/>
 <attribute name="VALUE" x="198.12" y="326.39" size="1.27" layer="96"/>
 </instance>
 <instance part="U201" gate=".PIOA" x="127" y="160.02" smashed="yes">
-<attribute name="NAME" x="106.68" y="164.846" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="106.68" y="163.576" size="1.27" layer="95"/>
 <attribute name="VALUE" x="106.68" y="161.29" size="1.27" layer="96"/>
 </instance>
 <instance part="U201" gate=".PIOB" x="127" y="91.44" smashed="yes">
-<attribute name="NAME" x="106.68" y="96.266" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="106.68" y="94.996" size="1.27" layer="95"/>
 <attribute name="VALUE" x="106.68" y="92.71" size="1.27" layer="96"/>
 </instance>
 <instance part="U201" gate=".PIOC" x="251.46" y="160.02" smashed="yes">
-<attribute name="NAME" x="231.14" y="164.846" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="231.14" y="163.576" size="1.27" layer="95"/>
 <attribute name="VALUE" x="231.14" y="161.29" size="1.27" layer="96"/>
 </instance>
 <instance part="U201" gate=".PIOD" x="370.84" y="160.02" smashed="yes">
-<attribute name="NAME" x="350.52" y="164.846" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="350.52" y="163.576" size="1.27" layer="95"/>
 <attribute name="VALUE" x="350.52" y="161.29" size="1.27" layer="96"/>
 </instance>
 <instance part="U201" gate=".PIOE" x="251.46" y="91.44" smashed="yes">
-<attribute name="NAME" x="231.14" y="96.266" size="1.27" layer="95" align="top-left"/>
+<attribute name="NAME" x="231.14" y="94.996" size="1.27" layer="95"/>
 <attribute name="VALUE" x="231.14" y="92.71" size="1.27" layer="96"/>
 </instance>
 <instance part="TC201" gate="-1(VTARGET)" x="515.62" y="78.74" smashed="yes">
@@ -9828,7 +9828,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="50.5714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND203" gate="G$1" x="55.88" y="350.52" smashed="yes">
-<attribute name="VALUE" x="53.086" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="55.88" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3201" gate="G$1" x="55.88" y="368.3" smashed="yes">
 <attribute name="VALUE" x="53.34" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9839,7 +9839,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="63.2714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND205" gate="G$1" x="68.58" y="350.52" smashed="yes">
-<attribute name="VALUE" x="65.786" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="68.58" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3202" gate="G$1" x="68.58" y="368.3" smashed="yes">
 <attribute name="VALUE" x="66.04" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9850,7 +9850,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="75.9714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND207" gate="G$1" x="81.28" y="350.52" smashed="yes">
-<attribute name="VALUE" x="78.486" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="81.28" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3203" gate="G$1" x="81.28" y="368.3" smashed="yes">
 <attribute name="VALUE" x="78.74" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9861,7 +9861,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="88.6714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND209" gate="G$1" x="93.98" y="350.52" smashed="yes">
-<attribute name="VALUE" x="91.186" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="93.98" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3204" gate="G$1" x="93.98" y="368.3" smashed="yes">
 <attribute name="VALUE" x="91.44" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9872,7 +9872,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="101.3714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND211" gate="G$1" x="106.68" y="350.52" smashed="yes">
-<attribute name="VALUE" x="103.886" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="106.68" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3205" gate="G$1" x="106.68" y="368.3" smashed="yes">
 <attribute name="VALUE" x="104.14" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9883,7 +9883,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="114.0714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND213" gate="G$1" x="119.38" y="350.52" smashed="yes">
-<attribute name="VALUE" x="116.586" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="119.38" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3206" gate="G$1" x="119.38" y="368.3" smashed="yes">
 <attribute name="VALUE" x="116.84" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9894,7 +9894,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="167.4114" y="325.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND218" gate="G$1" x="172.72" y="312.42" smashed="yes">
-<attribute name="VALUE" x="169.926" y="307.34" size="1.778" layer="96"/>
+<attribute name="VALUE" x="172.72" y="307.34" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="C214" gate="G$1" x="132.08" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="129.3114" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -9902,7 +9902,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="126.7714" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND214" gate="G$1" x="132.08" y="350.52" smashed="yes">
-<attribute name="VALUE" x="129.286" y="345.44" size="1.778" layer="96"/>
+<attribute name="VALUE" x="132.08" y="345.44" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3207" gate="G$1" x="132.08" y="368.3" smashed="yes">
 <attribute name="VALUE" x="129.54" y="365.76" size="1.778" layer="96" rot="R90"/>
@@ -9935,13 +9935,13 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="136.9314" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND220" gate="G$1" x="187.96" y="238.76" smashed="yes">
-<attribute name="VALUE" x="185.166" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="187.96" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND216" gate="G$1" x="154.94" y="238.76" smashed="yes">
-<attribute name="VALUE" x="152.146" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="154.94" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND215" gate="G$1" x="142.24" y="238.76" smashed="yes">
-<attribute name="VALUE" x="139.446" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="142.24" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="C202" gate="G$1" x="48.26" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="45.4914" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -9974,25 +9974,25 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VOLTAGE" x="106.4514" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND212" gate="G$1" x="111.76" y="238.76" smashed="yes">
-<attribute name="VALUE" x="108.966" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="111.76" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND210" gate="G$1" x="99.06" y="238.76" smashed="yes">
-<attribute name="VALUE" x="96.266" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="99.06" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND208" gate="G$1" x="86.36" y="238.76" smashed="yes">
-<attribute name="VALUE" x="83.566" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="86.36" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND206" gate="G$1" x="73.66" y="238.76" smashed="yes">
-<attribute name="VALUE" x="70.866" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="73.66" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND204" gate="G$1" x="60.96" y="238.76" smashed="yes">
-<attribute name="VALUE" x="58.166" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="60.96" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND202" gate="G$1" x="48.26" y="238.76" smashed="yes">
-<attribute name="VALUE" x="45.466" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="48.26" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND201" gate="G$1" x="35.56" y="238.76" smashed="yes">
-<attribute name="VALUE" x="32.766" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="35.56" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="C218" gate="G$1" x="177.8" y="266.7" smashed="yes" rot="R270">
 <attribute name="VALUE" x="175.0314" y="266.7" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -10005,10 +10005,10 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="TOLERANCE" x="162.3314" y="266.7" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND219" gate="G$1" x="177.8" y="238.76" smashed="yes">
-<attribute name="VALUE" x="175.006" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="177.8" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND217" gate="G$1" x="167.64" y="238.76" smashed="yes">
-<attribute name="VALUE" x="164.846" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="167.64" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="R202" gate="G$1" x="172.72" y="363.22" smashed="yes" rot="R270">
 <attribute name="VALUE" x="169.9514" y="363.22" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -10016,7 +10016,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="TOLERANCE" x="167.4114" y="363.22" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
 <instance part="GND221" gate="G$1" x="241.3" y="238.76" smashed="yes">
-<attribute name="VALUE" x="238.506" y="233.68" size="1.778" layer="96"/>
+<attribute name="VALUE" x="241.3" y="233.68" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="3V3211" gate="G$1" x="241.3" y="276.86" smashed="yes">
 <attribute name="VALUE" x="238.76" y="274.32" size="1.778" layer="96" rot="R90"/>
@@ -10037,10 +10037,10 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VALUE" x="495.3" y="54.61" size="1.778" layer="96"/>
 </instance>
 <instance part="TP1" gate="G$1" x="243.84" y="317.5" smashed="yes" rot="R270">
-<attribute name="NAME" x="245.11" y="318.77" size="1.778" layer="95" rot="R270"/>
+<attribute name="NAME" x="245.618" y="317.5" size="1.778" layer="95" rot="R270" align="center"/>
 </instance>
 <instance part="TP2" gate="G$1" x="254" y="314.96" smashed="yes" rot="R270">
-<attribute name="NAME" x="255.27" y="316.23" size="1.778" layer="95" rot="R270"/>
+<attribute name="NAME" x="255.778" y="314.96" size="1.778" layer="95" rot="R270" align="center"/>
 </instance>
 <instance part="R203" gate="G$1" x="508" y="134.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="505.2314" y="134.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
