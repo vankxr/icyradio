@@ -205,6 +205,7 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq);
 uint8_t si5351_multisynth_set_source(uint8_t ubMS, uint8_t ubSource);
 uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq);
 uint8_t si5351_multisynth_set_phase_offset(uint8_t ubMS, float fOffset);
+float si5351_multisynth_get_phase_offset(uint8_t ubMS);
 
 uint8_t si5351_clock_power_up(uint8_t ubClock);
 uint8_t si5351_clock_power_down(uint8_t ubClock);

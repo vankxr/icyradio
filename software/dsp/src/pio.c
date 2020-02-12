@@ -40,15 +40,15 @@ void pio_init()
     PIOA->PIO_MDER = 0;
     ////// Output set enable (ER) or disable (DR)
     PIOA->PIO_OWDR = 0xFFFFFFFF;
-    PIOA->PIO_OWER = BIT(0) | BIT(1) | BIT(4) | BIT(15) | BIT(30);
+    PIOA->PIO_OWER = BIT(0) | BIT(4) | BIT(30);
     ////// Output set (S) or clear (C)
     PIOA->PIO_SODR = BIT(4);
-    PIOA->PIO_CODR = BIT(0) | BIT(1) | BIT(15) | BIT(30);
+    PIOA->PIO_CODR = BIT(0) | BIT(30);
     ////// Output enable (ER) or disable (DR)
     PIOA->PIO_ODR = 0xFFFFFFFF;
-    PIOA->PIO_OER = BIT(0) | BIT(1) | BIT(4) | BIT(15) | BIT(30);
+    PIOA->PIO_OER = BIT(0) | BIT(4) | BIT(30);
     ////// High drive enable
-    PIOA->PIO_DRIVER = BIT(0) | BIT(1) | BIT(4) | BIT(15) | BIT(30);
+    PIOA->PIO_DRIVER = BIT(0) | BIT(4) | BIT(30);
     //// INPUT ////
     ////// Input filter enable (ER) or disable (DR)
     PIOA->PIO_IFDR = 0xFFFFFFFF;
@@ -65,7 +65,7 @@ void pio_init()
     PIOA->PIO_PUER = 0;
     ////// Pull-down enable (ER) or disable (DR)
     PIOA->PIO_PPDDR = 0xFFFFFFFF;
-    PIOA->PIO_PPDER = BIT(16) | BIT(20);
+    PIOA->PIO_PPDER = BIT(1) | BIT(15) | BIT(16) | BIT(20);
     //// PERIPHERALS ////
     ////// Peripheral mux select
     PIO_PERI_MUX_SELECT(PIOA,  0, 3); // I2SC0_MCK

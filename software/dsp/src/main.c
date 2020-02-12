@@ -29,12 +29,21 @@ static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint8_t get_device_revision();
 
 static void init_baseband();
+static void init_audio();
 
 // Variables
 volatile iq16_t x[8192];
+volatile iq16_t xDemod;
 volatile uint32_t cnt = 0;
 
 // ISRs
+void _i2sc0_isr()
+{
+    uint16_t x = xDemod.i;
+
+    if(I2SC0->I2SC_SR & I2SC_SR_TXRDY)
+        I2SC0->I2SC_THR = ((uint32_t)x << 16) | x;
+}
 void _i2sc1_isr()
 {
     if(I2SC1->I2SC_SR & I2SC_SR_RXRDY)
@@ -46,16 +55,14 @@ void _i2sc1_isr()
             .q = ulSample & 0xFFFF
         };
 
-        xSample.i *= 10;
-        xSample.q *= 10;
+        xSample.i *= 30;
+        xSample.q *= 30;
+
+        xDemod.i = fm_demod(xSample);
+        xDemod.q = 0;
 
         if(cnt >= 8192)
             return;
-
-        iq16_t xDemod = {
-            .i = fm_demod(xSample),
-            .q = 0
-        };
 
         x[cnt++] = xDemod;
     }
@@ -220,7 +227,22 @@ void init_baseband()
     IRQ_ENABLE(I2SC1_IRQn); // Enable vector
     I2SC1->I2SC_IER = I2SC_IER_RXRDY; // Enable TX & RX interrupt requests
 
-    I2SC1->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
+    I2SC1->I2SC_CR = I2SC_CR_RXEN; // Enable TX & RX
+}
+void init_audio()
+{
+    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (I2SC0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+
+    I2SC0->I2SC_CR |= I2SC_CR_SWRST; // Reset baseband I2S peripheral
+    I2SC0->I2SC_MR = I2SC_MR_DATALENGTH_16_BITS_COMPACT | I2SC_MR_MODE_SLAVE; // Configure baseband I2S peripheral
+
+    I2SC0->I2SC_SCR = I2SC_SCR_MASK; // Clear all interrupts
+    IRQ_CLEAR(I2SC0_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(I2SC0_IRQn, 3, 0); // Set priority 3,0
+    IRQ_ENABLE(I2SC0_IRQn); // Enable vector
+    I2SC0->I2SC_IER = I2SC_IER_TXRDY; // Enable TX & RX interrupt requests
+
+    I2SC0->I2SC_CR = I2SC_CR_TXEN; // Enable TX & RX
 }
 int init()
 {
@@ -279,6 +301,7 @@ int init()
 int main()
 {
     init_baseband();
+    init_audio();
 
     while(1)
     {

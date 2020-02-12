@@ -378,7 +378,9 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen) - 512;
         uint32_t ulP3 = pDivider->ulDen;
 
-        if(!pDivider->ulNum && !(pDivider->ulInt & 1)) // If multiplier is an even integer, turn on integer mode
+        float fPhase = si5351_multisynth_get_phase_offset(ubMS);
+
+        if(!pDivider->ulNum && !(pDivider->ulInt & 1) && fPhase == 0.f) // If multiplier is an even integer, and we are not using phase offset, turn on integer mode
             si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_INT);
         else
             si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
@@ -391,6 +393,8 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         si5351_write_register(SI5351_REG_MSn_P3_LSB(ubMS), (ulP3 >> 0) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_MID(ubMS), (ulP3 >> 8) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_2_MSB(ubMS), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
+
+        si5351_multisynth_set_phase_offset(ubMS, fPhase);
     }
 
     SI5351_MS_FREQ[ubMS] = SI5351_MS_SRC_FREQ[ubMS] / ((double)pDivider->ulInt + ((double)pDivider->ulNum / pDivider->ulDen));
@@ -404,10 +408,32 @@ uint8_t si5351_multisynth_set_phase_offset(uint8_t ubMS, float fOffset)
     if(ubMS > 5)
         return 0;
 
-    // TODO: phase offset
-    //si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
+    if(fOffset < 0.f || fOffset >= 360.f)
+        return 0;
 
-    return 0;
+    float fTimeOffset = (fOffset / 360.f) * 1000000.f / SI5351_MS_FREQ[ubMS]; // In microsseconds
+    float fOffsetCode = (SI5351_MS_SRC_FREQ[ubMS] * 4.f / 1000000.f) * fTimeOffset;
+
+    uint8_t ubOffsetCode = fOffsetCode + 0.5f; // Round to nearest
+
+    if(ubOffsetCode > 127)
+        return 0;
+
+    si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC); // Fractional mode is required to use phase offsets
+    si5351_write_register(SI5351_REG_CLKn_PHOFF(ubMS), ubOffsetCode);
+
+    return 1;
+}
+float si5351_multisynth_get_phase_offset(uint8_t ubMS)
+{
+    if(ubMS > 5)
+        return 0.f;
+
+    uint8_t ubOffsetCode = si5351_read_register(SI5351_REG_CLKn_PHOFF(ubMS));
+
+    float fTimeOffset = (float)ubOffsetCode / (SI5351_MS_SRC_FREQ[ubMS] * 4.f / 1000000.f);
+
+    return fTimeOffset * 360.f / (1000000.f / SI5351_MS_FREQ[ubMS]);
 }
 
 uint8_t si5351_clock_power_up(uint8_t ubClock)

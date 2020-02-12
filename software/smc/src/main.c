@@ -54,6 +54,7 @@ static float rx_get_max_power(float *pfPower, uint32_t *pulFrequency);
 static float rx_get_power(float *pfPower, uint32_t ulFrequency);
 
 static void init_system_clocks();
+static void init_audio();
 static void init_rx_chain();
 static void init_tx_chain();
 
@@ -330,10 +331,12 @@ void init_system_clocks()
 
     //// FPGA Clock #1
     si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 45158400);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 49152000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 120.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK1, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK1));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK1, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_FPGA_CLK1, 8); // 8 mA
@@ -349,9 +352,11 @@ void init_system_clocks()
     //// FPGA Clock #2
     si5351_multisynth_set_source(SI5351_FPGA_CLK2, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 100000000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK2, 45.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK2, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK2));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK2, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_FPGA_CLK2, 8); // 8 mA
@@ -366,10 +371,12 @@ void init_system_clocks()
 
     //// FPGA Clock #3
     si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 20000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12000000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK3, 90.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK3] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK3, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK3));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK3, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_FPGA_CLK3, 8); // 8 mA
@@ -385,9 +392,11 @@ void init_system_clocks()
     //// FPGA Clock #4
     si5351_multisynth_set_source(SI5351_FPGA_CLK4, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 32000000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK4, 30.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK4, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK4));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK4, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_FPGA_CLK4, 8); // 8 mA
@@ -403,9 +412,11 @@ void init_system_clocks()
     //// SMC Main Clock
     si5351_multisynth_set_source(SI5351_SMC_MAIN_CLK, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_SMC_MAIN_CLK, 50000000);
+    si5351_multisynth_set_phase_offset(SI5351_SMC_MAIN_CLK, 0.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_SMC_MAIN_CLK, si5351_multisynth_get_phase_offset(SI5351_SMC_MAIN_CLK));
 
     si5351_clock_set_disable_state(SI5351_SMC_MAIN_CLK, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_SMC_MAIN_CLK, 8); // 8 mA
@@ -439,15 +450,96 @@ void init_system_clocks()
     //// Global output enable
     CLK_MNGR_OUT_EN();
 }
+void init_audio()
+{
+    fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA audio I2S enabled!");
+
+    fpga_i2s_mux_set_codec_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
+    DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
+
+    fpga_i2s_mux_set_dsp_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_FPGA);
+    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
+    DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
+
+    fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
+    DBGPRINTLN_CTX("FPGA bridge I2S mux configured!");
+
+    if(tscs25xx_timebase_config(SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
+        DBGPRINTLN_CTX("CODEC timebase configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    else
+        DBGPRINTLN_CTX("CODEC failed to configure timebase!");
+
+    if(tscs25xx_pll_config(1, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
+        DBGPRINTLN_CTX("CODEC PLL #1 configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    else
+        DBGPRINTLN_CTX("CODEC failed to configure PLL #1!");
+
+    if(tscs25xx_pll_config(2, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
+        DBGPRINTLN_CTX("CODEC PLL #2 configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    else
+        DBGPRINTLN_CTX("CODEC failed to configure PLL #2!");
+
+    uint32_t ulAudioSampleRate = SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 32 / 8 / 4;
+
+    if(tscs25xx_sample_rate_config(ulAudioSampleRate))
+        DBGPRINTLN_CTX("CODEC sample rate: %.3f kHz", (float)ulAudioSampleRate / 1000.f);
+    else
+        DBGPRINTLN_CTX("CODEC failed to configure sample rate!");
+
+    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
+    DBGPRINTLN_CTX("CODEC ADC input configured!");
+
+    tscs25xx_dac_config_left_output(0); // Not inverted
+    tscs25xx_dac_config_right_output(0); // Not inverted
+    tscs25xx_dac_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
+    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DYN_FULL, 1); // Full dynamic dither, Deemphasis filter enabled
+    DBGPRINTLN_CTX("CODEC DAC output configured!");
+
+    tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
+    DBGPRINTLN_CTX("CODEC zero detector configured!");
+
+    tscs25xx_noise_gate_config(1, -50.f); // Mute input if signal below -50 dBFS
+    DBGPRINTLN_CTX("CODEC noise gate configured!");
+
+    tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
+    DBGPRINTLN_CTX("CODEC volume configured!");
+
+    tscs25xx_hp_set_left_volume(-20.f); // -20.000 dB
+    tscs25xx_hp_set_right_volume(-20.f); // -20.000 dB
+    DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
+    DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
+
+    tscs25xx_input_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_input_set_right_volume(0.f); // 0.000 dB
+    DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
+    DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
+
+    tscs25xx_dac_set_left_volume(-0.f); // -10.000 dB
+    tscs25xx_dac_set_right_volume(-0.f); // -10.000 dB
+    DBGPRINTLN_CTX("CODEC left DAC volume: %.3f dB", tscs25xx_dac_get_left_volume());
+    DBGPRINTLN_CTX("CODEC right DAC volume: %.3f dB", tscs25xx_dac_get_right_volume());
+
+    tscs25xx_adc_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_adc_set_right_volume(0.f); // 0.000 dB
+    DBGPRINTLN_CTX("CODEC left ADC volume: %.3f dB", tscs25xx_adc_get_left_volume());
+    DBGPRINTLN_CTX("CODEC right ADC volume: %.3f dB", tscs25xx_adc_get_right_volume());
+
+    tscs25xx_dac_set_mute(0);
+    tscs25xx_adc_set_mute(0);
+}
 void init_rx_chain()
 {
-    r820t2_set_lna_gain(0.f, 1); // Auto
+    r820t2_set_lna_gain(20.f, 0); // +20 dB
     DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
     r820t2_set_mixer_gain(0.f, 1); // Auto
     DBGPRINTLN_CTX("RX Tuner mixer gain: %.1f dB", r820t2_get_mixer_gain());
 
-    r820t2_set_vga_gain(30.f); // 30 dB
+    r820t2_set_vga_gain(30.f); // +30 dB
     DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
 
     r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
@@ -455,7 +547,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(106000000))
+    if(r820t2_set_freq(104000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -470,7 +562,7 @@ void init_rx_chain()
 
     delay_ms(100);
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(105600000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(100800000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -491,7 +583,8 @@ void init_rx_chain()
 
     rx_get_psd(pfRXPSD);
 
-    DBGPRINTLN_CTX("RX tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
+    DBGPRINTLN_CTX("RX hard-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
+    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(100800000)));
 
     uint32_t ulMaxPowerFrequency = 0;
     float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
@@ -725,6 +818,12 @@ int init()
     else
         DBGPRINTLN_CTX("TSCS25xx init NOK!");
 
+    // TODO: Remove this
+    I2S_BRG_RESET();
+    I2S_BRG_CFG_DIS();
+    delay_ms(100);
+    I2S_BRG_UNRESET();
+
     return 0;
 }
 int main()
@@ -750,27 +849,24 @@ int main()
 
     fpga_rgb_led_enable();
 
-    fpga_i2s_mux_set_codec_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_BRIDGE);
-    fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
+    // CODEC info & configuration
+    DBGPRINTLN_CTX("TSCS25xx ID: 0x%04X", tscs25xx_read_device_id());
 
-    I2S_BRG_RESET();
-    I2S_BRG_CFG_DIS();
-    delay_ms(100);
-    I2S_BRG_UNRESET();
+    uint8_t ubCodecRevision = tscs25xx_read_revision_id();
+
+    DBGPRINTLN_CTX("TSCS25xx revision ID: %hhu.%hhu", TSCS25XX_REV_MAJOR(ubCodecRevision), TSCS25XX_REV_MINOR(ubCodecRevision));
+    DBGPRINTLN_CTX("TSCS25xx version: %hhu", tscs25xx_read_mf_otp_version());
+    DBGPRINTLN_CTX("TSCS25xx wafer ID: %hhu", tscs25xx_read_mf_wafer_id());
+    DBGPRINTLN_CTX("TSCS25xx wafer coordinates: (%hhu, %hhu)", tscs25xx_read_mf_wafer_x(), tscs25xx_read_mf_wafer_y());
+
+    // Audio configuration
+    init_audio();
 
     // RX Chain configuration
     init_rx_chain();
 
     // TX Chain configuration
     //init_tx_chain();
-
-    // CODEC info & configuration
-    DBGPRINTLN_CTX("TSCS25xx ID: 0x%04X", tscs25xx_read_device_id());
-
-    uint8_t ubCodecRevision = tscs25xx_read_revision_id();
-
-    DBGPRINTLN_CTX("TSCS25xx revision ID: %hhu.%hhu", ubCodecRevision >> 4, ubCodecRevision & 0x0F);
 
     // TFT info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());
@@ -821,9 +917,9 @@ int main()
             {
                 duty[i] += 20 * duty_sig[i];
 
-                if(duty[i] >= 4096)
+                if(duty[i] >= 4095)
                 {
-                    duty[i] = 4096;
+                    duty[i] = 4095;
 
                     duty_sig[i] = -1;
                 }
