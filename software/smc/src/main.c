@@ -466,6 +466,11 @@ void init_audio()
     fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA bridge I2S mux configured!");
 
+    fpga_i2s_mux_set_fpga_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
+    DBGPRINTLN_CTX("FPGA I2S mux configured!");
+
+    delay_ms(100);
+
     if(tscs25xx_timebase_config(SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
         DBGPRINTLN_CTX("CODEC timebase configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
     else
@@ -496,7 +501,7 @@ void init_audio()
     tscs25xx_dac_config_left_output(0); // Not inverted
     tscs25xx_dac_config_right_output(0); // Not inverted
     tscs25xx_dac_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
-    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DYN_FULL, 1); // Full dynamic dither, Deemphasis filter enabled
+    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 0); // Dither disabled, Deemphasis filter disabled
     DBGPRINTLN_CTX("CODEC DAC output configured!");
 
     tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
@@ -508,8 +513,8 @@ void init_audio()
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
     DBGPRINTLN_CTX("CODEC volume configured!");
 
-    tscs25xx_hp_set_left_volume(-20.f); // -20.000 dB
-    tscs25xx_hp_set_right_volume(-20.f); // -20.000 dB
+    tscs25xx_hp_set_left_volume(-20.f); // -12.000 dB
+    tscs25xx_hp_set_right_volume(-20.f); // -12.000 dB
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
@@ -518,8 +523,8 @@ void init_audio()
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
-    tscs25xx_dac_set_left_volume(-0.f); // -10.000 dB
-    tscs25xx_dac_set_right_volume(-0.f); // -10.000 dB
+    tscs25xx_dac_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_dac_set_right_volume(0.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left DAC volume: %.3f dB", tscs25xx_dac_get_left_volume());
     DBGPRINTLN_CTX("CODEC right DAC volume: %.3f dB", tscs25xx_dac_get_right_volume());
 
@@ -529,7 +534,7 @@ void init_audio()
     DBGPRINTLN_CTX("CODEC right ADC volume: %.3f dB", tscs25xx_adc_get_right_volume());
 
     tscs25xx_dac_set_mute(0);
-    tscs25xx_adc_set_mute(0);
+    tscs25xx_adc_set_mute(1);
 }
 void init_rx_chain()
 {
@@ -539,7 +544,7 @@ void init_rx_chain()
     r820t2_set_mixer_gain(0.f, 1); // Auto
     DBGPRINTLN_CTX("RX Tuner mixer gain: %.1f dB", r820t2_get_mixer_gain());
 
-    r820t2_set_vga_gain(30.f); // +30 dB
+    r820t2_set_vga_gain(20.f); // +20 dB
     DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
 
     r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
@@ -547,7 +552,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(104000000))
+    if(r820t2_set_freq(103000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -556,13 +561,13 @@ void init_rx_chain()
     DBGPRINTLN_CTX("FPGA ADC enabled!");
 
     RXADC_POWER_UP();
-    RXADC_GAIN_X1P5();
+    RXADC_GAIN_X1();
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1,5, dither disabled!");
 
     delay_ms(100);
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(100800000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(104300000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -574,6 +579,8 @@ void init_rx_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
 
+    DSP_UNRESET();
+
     float *pfRXPSD = (float *)malloc(2048 * sizeof(float));
 
     if(!pfRXPSD)
@@ -584,7 +591,7 @@ void init_rx_chain()
     rx_get_psd(pfRXPSD);
 
     DBGPRINTLN_CTX("RX hard-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(100800000)));
+    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(104300000)));
 
     uint32_t ulMaxPowerFrequency = 0;
     float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
@@ -632,7 +639,7 @@ void init_tx_chain()
 
     TXMIXER_ENABLE();
 
-    TXPA_BIAS_ENABLE();
+    //TXPA_BIAS_ENABLE();
 
     delay_ms(100);
 
@@ -847,7 +854,11 @@ int main()
     DBGPRINTLN_CTX("FPGA design ID: 0x%04X", fpga_read_design_id());
     DBGPRINTLN_CTX("FPGA design version: v%hu", fpga_read_design_version());
 
-    fpga_rgb_led_enable();
+    fpga_reset_module(FPGA_REG_RST_CNTRL_LED_SOFT_RST, 0);
+
+    fpga_rgb_led_enable(FPGA_LED_RED);
+    fpga_rgb_led_enable(FPGA_LED_GREEN);
+    fpga_rgb_led_enable(FPGA_LED_BLUE);
 
     // CODEC info & configuration
     DBGPRINTLN_CTX("TSCS25xx ID: 0x%04X", tscs25xx_read_device_id());
@@ -936,7 +947,23 @@ int main()
         if(g_ullSystemTick > (ullLastTFTTick + 1000))
         {
             ullLastTFTTick = g_ullSystemTick;
+            /*
+            do
+            {
+                DSP_SELECT();
+                DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xAA));
+                DSP_UNSELECT();
 
+                delay_ms(500);
+            } while(PERI_REG_BIT(&(GPIO->P[4].DIN), 13));
+
+            DSP_SELECT();
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xBB));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
+            DSP_UNSELECT();
+            */
             LED_TOGGLE();
 
             static uint8_t ubCount = 0;

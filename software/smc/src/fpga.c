@@ -92,7 +92,7 @@ uint8_t fpga_init()
     if(fpga_read_design_id() != 0xDADC)
         return 0;
 
-    fpga_irq_set_mask(FPGA_IRQ_SMC, FPGA_REG_IRQ_CNTRL_STATUS_ADC_DPRAM_WR_EN | FPGA_REG_IRQ_CNTRL_STATUS_nADC_DPRAM_WR_EN);
+    fpga_irq_set_mask(FPGA_IRQ_SMC, FPGA_REG_IRQ_CNTRL_STATUS_ADC_OVERFLOW);
 
     return 1;
 }
@@ -149,13 +149,19 @@ void fpga_irq_clear(uint8_t ubMask)
     fpga_rmw_register(FPGA_REG_IRQ_CNTRL_STATUS, 0x0000FFFF, (ubMask & 0xFF) << 16);
 }
 
-void fpga_rgb_led_enable()
+void fpga_rgb_led_enable(uint8_t ubColor)
 {
-    fpga_write_register(FPGA_REG_LED_CNTRL, FPGA_REG_LED_CNTRL_LED_EN);
+    if(ubColor > FPGA_LED_BLUE)
+        return;
+
+    fpga_rmw_register(FPGA_REG_LED_CNTRL, ~BIT(ubColor), BIT(ubColor));
 }
-void fpga_rgb_led_disable()
+void fpga_rgb_led_disable(uint8_t ubColor)
 {
-    fpga_write_register(FPGA_REG_LED_CNTRL, 0);
+    if(ubColor > FPGA_LED_BLUE)
+        return;
+
+    fpga_rmw_register(FPGA_REG_LED_CNTRL, ~BIT(ubColor), 0);
 }
 void fpga_rbg_led_set_duty(uint8_t ubColor, uint16_t usDuty)
 {
@@ -232,25 +238,33 @@ uint32_t fpga_i2s_mux_get_codec_clock()
 }
 void fpga_i2s_mux_set_dsp_sdin(uint32_t ulSource)
 {
-    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFEFF, (ulSource & 0x00000100));
+    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFCFF, (ulSource & 0x00000300));
 }
 uint32_t fpga_i2s_mux_get_dsp_sdin()
 {
-    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000100;
+    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000300;
 }
 void fpga_i2s_mux_set_codec_sdin(uint32_t ulSource)
 {
-    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFDFF, (ulSource & 0x00000200));
+    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFF3FF, (ulSource & 0x00000C00));
 }
 uint32_t fpga_i2s_mux_get_codec_sdin()
 {
-    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000200;
+    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000C00;
 }
 void fpga_i2s_mux_set_bridge_sdin(uint32_t ulSource)
 {
-    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFBFF, (ulSource & 0x00000400));
+    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFCFFF, (ulSource & 0x00003000));
 }
 uint32_t fpga_i2s_mux_get_bridge_sdin()
 {
-    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000400;
+    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00003000;
+}
+void fpga_i2s_mux_set_fpga_sdin(uint32_t ulSource)
+{
+    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFF3FFF, (ulSource & 0x0000C000));
+}
+uint32_t fpga_i2s_mux_get_fpga_sdin()
+{
+    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x0000C000;
 }

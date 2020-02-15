@@ -46,7 +46,7 @@ uint8_t tscs25xx_init()
 
     tscs25xx_write_register(TSCS25XX_REG_PLLCTL1C, TSCS25XX_REG_PLLCTL1C_PLL1_POWER_DOWN | TSCS25XX_REG_PLLCTL1C_PLL2_POWER_DOWN);
     tscs25xx_write_register(TSCS25XX_REG_PLLCTLD, 0x1A);
-    tscs25xx_write_register(TSCS25XX_REG_PLLCTL12, 0x1A);
+    tscs25xx_write_register(TSCS25XX_REG_PLLCTL12, 0x2A);
     tscs25xx_write_register(TSCS25XX_REG_PLLCTL1B, 0x14);
     tscs25xx_write_register(TSCS25XX_REG_PLLREFSEL, TSCS25XX_REG_PLLREFSEL_PLL2_REF_MCLK2 | TSCS25XX_REG_PLLREFSEL_PLL1_REF_MCLK2);
 
@@ -195,7 +195,7 @@ uint8_t tscs25xx_sample_rate_config(uint32_t ulSampleRate)
     {
         tscs25xx_write_register(TSCS25XX_REG_PLLCTL1C, TSCS25XX_REG_PLLCTL1C_PLL1_POWER_UP);
 
-        for(uint8_t i = 0; i < 5; i++)
+        for(uint8_t i = 0; i < 10; i++)
         {
             if(tscs25xx_read_register(TSCS25XX_REG_PLLCTL0) & TSCS25XX_REG_PLLCTL0_PLL1_LOCKED)
                 break;
@@ -240,7 +240,7 @@ uint8_t tscs25xx_sample_rate_config(uint32_t ulSampleRate)
     {
         tscs25xx_write_register(TSCS25XX_REG_PLLCTL1C, TSCS25XX_REG_PLLCTL1C_PLL2_POWER_UP);
 
-        for(uint8_t i = 0; i < 5; i++)
+        for(uint8_t i = 0; i < 10; i++)
         {
             if(tscs25xx_read_register(TSCS25XX_REG_PLLCTL0) & TSCS25XX_REG_PLLCTL0_PLL2_LOCKED)
                 break;

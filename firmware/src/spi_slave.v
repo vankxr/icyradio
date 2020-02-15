@@ -103,8 +103,8 @@ always @(posedge clk)
                 eoa_ed <= eoa;
                 eot_ed <= eot;
 
-                rd_en <= ~eoa_ed & eoa & rnw;
-                wr_en <= ~eot_ed & eot & ~rnw;
+                rd_en <= !eoa_ed & eoa & rnw;
+                wr_en <= !eot_ed & eot & !rnw;
             end
     end
 endmodule

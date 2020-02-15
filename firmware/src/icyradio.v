@@ -177,6 +177,8 @@ wire audio_i2s_rst;
 reg  audio_i2s_soft_rst; // Controlled by host via SPI
 wire qspi_rst;
 reg  qspi_soft_rst; // Controlled by host via SPI
+wire led_rst;
+reg  led_soft_rst; // Controlled by host via SPI
 wire irq_rst;
 wire cntrl_spi_rst;
 
@@ -185,8 +187,9 @@ assign adc_rst       = extrst | adc_soft_rst; // ADC is reset by external pin an
 assign dac_rst       = extrst | dac_soft_rst; // DAC is reset by external pin and software
 assign ddc_rst       = extrst | ddc_soft_rst; // DDC is reset by external pin and software
 assign bb_i2s_rst    = extrst | bb_i2s_soft_rst; // Baseband I2S is reset by external pin and software
-assign audio_i2s_rst = extrst | audio_i2s_soft_rst; // Baseband I2S is reset by external pin and software
+assign audio_i2s_rst = extrst | audio_i2s_soft_rst; // Audio I2S is reset by external pin and software
 assign qspi_rst      = extrst | qspi_soft_rst; // QSPI is reset by external pin and software
+assign led_rst       = extrst | led_soft_rst; // LED driver is reset by external pin and software
 assign irq_rst       = extrst; // IRQ is reset by external pin
 assign cntrl_spi_rst = extrst; // Control SPI interface is reset by external pin
 
@@ -257,6 +260,7 @@ always @(posedge adc_dpram_wr_clk)
 // Inputs
 reg  [15:0] adc_data;
 wire [15:0] adc_data_in;
+reg         adc_of;
 wire        adc_of_in;
 
 assign ADC_CLK = adc_clk && !adc_rst;
@@ -284,11 +288,13 @@ always @(posedge adc_clk)
         if(adc_rst)
             begin
                 adc_data <= 16'h00000;
+                adc_of <= 1'b0;
                 adc_dpram_data_in <= 17'h00000;
             end
         else
             begin
                 adc_data <= adc_data_in;
+                adc_of <= adc_of_in;
                 adc_dpram_data_in <= {adc_of_in, adc_data_in};
             end
     end
@@ -375,8 +381,8 @@ reg  [2:0]  bb_i2s_clk_sync;
 reg  [2:0]  bb_i2s_clk_div;
 wire        bb_i2s_bclk;
 wire        bb_i2s_lrclk;
-wire        bb_i2s_sdin;
 wire        bb_i2s_sdout;
+wire        bb_i2s_sdin;
 
 assign BB_I2S_DSP_BCLK = bb_i2s_bclk & bb_i2s_clk_sync[2];
 assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
@@ -388,7 +394,7 @@ assign bb_i2s_bclk = bb_i2s_clk_div[2]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_
 // Module
 i2s_master bb_i2s
 (
-    .reset(bb_i2s_rst | ~bb_i2s_clk_sync[2]),
+    .reset(bb_i2s_rst | !bb_i2s_clk_sync[2]),
     .i2s_bclk(bb_i2s_bclk),
     .i2s_lrclk(bb_i2s_lrclk),
     .i2s_sdout(bb_i2s_sdout),
@@ -436,20 +442,41 @@ always @(posedge bb_i2s_clk)
 
 /// Audio I2S Clock generation ///
 // Inputs
+wire [15:0] audio_i2s_left_data_out;
+wire [15:0] audio_i2s_right_data_out;
+reg  [15:0] audio_i2s_left_data_in;
+reg  [15:0] audio_i2s_right_data_in;
 reg  [9:0]  audio_i2s_clk_div;
 wire        audio_i2s_mclk;
 wire        audio_i2s_bclk;
 wire        audio_i2s_lrclk;
+wire        audio_i2s_sdout;
+reg         audio_i2s_sdin;
 
-assign audio_i2s_mclk = audio_i2s_mclk_src & ~audio_i2s_rst;
+assign audio_i2s_mclk = audio_i2s_mclk_src & !audio_i2s_rst;
 assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2 = ADC_CLK / 32
-assign audio_i2s_lrclk = audio_i2s_clk_div[9]; // Word clock = (ADC_CLK / CIC_DEC / FIR_DEC / 4) = ADC_CLK / 1024
 
 // Module
+i2s_master audio_i2s
+(
+    .reset(audio_i2s_rst),
+    .i2s_bclk(audio_i2s_bclk),
+    .i2s_lrclk(audio_i2s_lrclk),
+    .i2s_sdout(audio_i2s_sdout),
+    .i2s_sdin(audio_i2s_sdin),
+    .left_data_out(audio_i2s_left_data_out),
+    .right_data_out(audio_i2s_right_data_out),
+    .left_data_in(audio_i2s_left_data_in),
+    .right_data_in(audio_i2s_right_data_in)
+);
+
 always @(posedge audio_i2s_clk)
     begin
         if(audio_i2s_rst)
             begin
+                audio_i2s_left_data_in <= 16'h0000;
+                audio_i2s_right_data_in <= 16'h0000;
+
                 audio_i2s_clk_div <= 10'd0;
             end
         else
@@ -585,37 +612,64 @@ always @(*)
     end
 
 // Data mux
-reg audio_i2s_dsp_sdin_sel; // Controlled by host via SPI
-reg audio_i2s_codec_sdin_sel; // Controlled by host via SPI
-reg audio_i2s_brg_sdin_sel; // Controlled by host via SPI
+reg  [1:0] audio_i2s_dsp_sdin_sel; // Controlled by host via SPI
+reg  [1:0] audio_i2s_codec_sdin_sel; // Controlled by host via SPI
+reg  [1:0] audio_i2s_brg_sdin_sel; // Controlled by host via SPI
+reg  [1:0] audio_i2s_sdin_sel; // Controlled by host via SPI
 
 always @(*)
     begin
         case(audio_i2s_dsp_sdin_sel)
-            1'b0:
-                audio_i2s_dsp_sdin <= audio_i2s_brg_sdout;
-            1'b1:
+            2'b00:
+                audio_i2s_dsp_sdin <= audio_i2s_dsp_sdout;
+            2'b01:
                 audio_i2s_dsp_sdin <= audio_i2s_codec_sdout;
+            2'b10:
+                audio_i2s_dsp_sdin <= audio_i2s_brg_sdout;
+            2'b11:
+                audio_i2s_dsp_sdin <= audio_i2s_sdout;
         endcase
     end
 
 always @(*)
     begin
         case(audio_i2s_codec_sdin_sel)
-            1'b0:
-                audio_i2s_codec_sdin <= audio_i2s_brg_sdout;
-            1'b1:
+            2'b00:
                 audio_i2s_codec_sdin <= audio_i2s_dsp_sdout;
+            2'b01:
+                audio_i2s_codec_sdin <= audio_i2s_codec_sdout;
+            2'b10:
+                audio_i2s_codec_sdin <= audio_i2s_brg_sdout;
+            2'b11:
+                audio_i2s_codec_sdin <= audio_i2s_sdout;
         endcase
     end
 
 always @(*)
     begin
         case(audio_i2s_brg_sdin_sel)
-            1'b0:
-                audio_i2s_brg_sdin <= audio_i2s_codec_sdout;
-            1'b1:
+            2'b00:
                 audio_i2s_brg_sdin <= audio_i2s_dsp_sdout;
+            2'b01:
+                audio_i2s_brg_sdin <= audio_i2s_codec_sdout;
+            2'b10:
+                audio_i2s_brg_sdin <= audio_i2s_brg_sdout;
+            2'b11:
+                audio_i2s_brg_sdin <= audio_i2s_sdout;
+        endcase
+    end
+
+always @(*)
+    begin
+        case(audio_i2s_sdin_sel)
+            2'b00:
+                audio_i2s_sdin <= audio_i2s_dsp_sdout;
+            2'b01:
+                audio_i2s_sdin <= audio_i2s_codec_sdout;
+            2'b10:
+                audio_i2s_sdin <= audio_i2s_brg_sdout;
+            2'b11:
+                audio_i2s_sdin <= audio_i2s_sdout;
         endcase
     end
 /// Audio I2S multiplexer ///
@@ -659,6 +713,53 @@ always @(posedge qspi_clk)
     end
 /// QSPI Memory interface ///
 
+/// LED ///
+// Inputs
+reg [11:0] led_cnt;
+reg [11:0] led_duty [0:2]; // Controlled by host via SPI
+reg [2:0]  led_en; // Controlled by host via SPI
+reg [2:0]  led_status;
+
+assign RED_LED = led_status[0] & !led_rst & led_en[0];
+assign GREEN_LED = led_status[1] & !led_rst & led_en[1];
+assign BLUE_LED = led_status[2] & !led_rst & led_en[2];
+
+always @(posedge led_clk)
+    begin
+        if(led_rst)
+            begin
+                led_cnt <= 12'h000;
+            end
+        else
+            begin
+                led_cnt <= led_cnt + 1;
+            end
+    end
+
+generate
+    genvar i;
+
+    for(i = 0; i < 3; i = i + 1)
+        begin
+            always @(posedge led_clk)
+                begin
+                    if(!led_duty[i])
+                        begin
+                            led_status[i] <= 1'b0;
+                        end
+                    else
+                        begin
+                            if(led_cnt == led_duty[i])
+                                led_status[i] <= 1'b0;
+
+                            if(!led_cnt)
+                                led_status[i] <= 1'b1;
+                        end
+                end
+        end
+endgenerate
+/// LED ///
+
 /// Interrupt Request ///
 // Config
 localparam IRQ_COUNT = 8;
@@ -678,7 +779,7 @@ assign DSP_IRQn = !(|(irq_state & irq_mask[1]));
 assign irq_lines[0] = adc_dpram_wr_en;
 assign irq_lines[1] = !adc_dpram_wr_en;
 assign irq_lines[2] = ddc_valid;
-assign irq_lines[3] = 1'b0;
+assign irq_lines[3] = adc_of;
 assign irq_lines[4] = 1'b0;
 assign irq_lines[5] = 1'b0;
 assign irq_lines[6] = 1'b0;
@@ -710,53 +811,6 @@ generate
 endgenerate
 /// Interrupt Request ///
 
-/// LED ///
-// Inputs
-reg [11:0] led_cnt;
-reg [11:0] led_duty [0:2]; // Controlled by host via SPI
-reg        led_en;
-reg [2:0]  led_status;
-
-assign RED_LED = led_status[0];
-assign GREEN_LED = led_status[1];
-assign BLUE_LED = led_status[2];
-
-always @(posedge led_clk)
-    begin
-        if(!led_en)
-            begin
-                led_cnt <= 12'h000;
-            end
-        else
-            begin
-                led_cnt <= led_cnt + 1;
-            end
-    end
-
-generate
-    genvar i;
-
-    for(i = 0; i < 3; i = i + 1)
-        begin
-            always @(posedge led_clk)
-                begin
-                    if(!led_en || !led_duty[i])
-                        begin
-                            led_status[i] <= 1'b0;
-                        end
-                    else
-                        begin
-                            if(led_cnt == led_duty[i])
-                                led_status[i] <= 1'b0;
-
-                            if(!led_cnt)
-                                led_status[i] <= 1'b1;
-                        end
-                end
-        end
-endgenerate
-/// LED ///
-
 /// Control SPI slave interface ///
 // Inputs
 wire cntrl_spi_sck;
@@ -775,7 +829,7 @@ SB_IO #(
 cntrl_spi_miso_od
 (
     .PACKAGE_PIN(SPI_MISO),
-    .OUTPUT_ENABLE(~cntrl_spi_ncs),
+    .OUTPUT_ENABLE(!cntrl_spi_ncs),
     .D_OUT_0(cntrl_spi_miso)
 );
 
@@ -826,13 +880,14 @@ always @(posedge cntrl_spi_clk)
                 bb_i2s_soft_rst <= 1'b1;
                 audio_i2s_soft_rst <= 1'b1;
                 qspi_soft_rst <= 1'b1;
+                led_soft_rst <= 1'b1;
 
                 irq_mask[0] <= {IRQ_COUNT{1'b0}};
                 irq_mask[1] <= {IRQ_COUNT{1'b0}};
                 irq_clear <= {IRQ_COUNT{1'b0}};
                 irq_set <= {IRQ_COUNT{1'b0}};
 
-                led_en <= 1'b0;
+                led_en <= 3'b000;
                 led_duty[0] <= 12'h000;
                 led_duty[1] <= 12'h000;
                 led_duty[2] <= 12'h000;
@@ -847,11 +902,12 @@ always @(posedge cntrl_spi_clk)
 
                 ddc_lo_freq <= 26'h0000000;
 
-                audio_i2s_dsp_clk_sel <= 2'b01;
+                audio_i2s_dsp_clk_sel <= 2'b00;
                 audio_i2s_codec_clk_sel <= 2'b01;
-                audio_i2s_dsp_sdin_sel <= 1'b0;
-                audio_i2s_codec_sdin_sel <= 1'b0;
-                audio_i2s_brg_sdin_sel <= 1'b0;
+                audio_i2s_dsp_sdin_sel <= 2'b00;
+                audio_i2s_codec_sdin_sel <= 2'b01;
+                audio_i2s_brg_sdin_sel <= 2'b10;
+                audio_i2s_sdin_sel <= 2'b11;
             end
         else
             begin
@@ -876,6 +932,7 @@ always @(posedge cntrl_spi_clk)
                                     bb_i2s_soft_rst <= cntrl_spi_data_out[4];
                                     audio_i2s_soft_rst <= cntrl_spi_data_out[5];
                                     qspi_soft_rst <= cntrl_spi_data_out[6];
+                                    led_soft_rst <= cntrl_spi_data_out[7];
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
@@ -886,7 +943,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_LED_CNTRL:
                                 begin
-                                    led_en <= cntrl_spi_data_out[0];
+                                    led_en <= cntrl_spi_data_out[2:0];
                                 end
                             CNTRL_SPI_REG_RED_LED_DUTY:
                                 begin
@@ -926,9 +983,10 @@ always @(posedge cntrl_spi_clk)
                                 begin
                                     audio_i2s_dsp_clk_sel <= cntrl_spi_data_out[1:0];
                                     audio_i2s_codec_clk_sel <= cntrl_spi_data_out[3:2];
-                                    audio_i2s_dsp_sdin_sel <= cntrl_spi_data_out[8];
-                                    audio_i2s_codec_sdin_sel <= cntrl_spi_data_out[9];
-                                    audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[10];
+                                    audio_i2s_dsp_sdin_sel <= cntrl_spi_data_out[9:8];
+                                    audio_i2s_codec_sdin_sel <= cntrl_spi_data_out[11:10];
+                                    audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[13:12];
+                                    audio_i2s_sdin_sel <= cntrl_spi_data_out[15:14];
                                 end
                         endcase
                     end
@@ -942,7 +1000,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {25'd0, qspi_soft_rst, audio_i2s_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
+                                    cntrl_spi_data_in <= {24'd0, led_soft_rst, qspi_soft_rst, audio_i2s_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
@@ -950,7 +1008,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_LED_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {31'd0, led_en};
+                                    cntrl_spi_data_in <= {29'd0, led_en};
                                 end
                             CNTRL_SPI_REG_RED_LED_DUTY:
                                 begin
@@ -989,7 +1047,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    cntrl_spi_data_in <= {20'd0, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
+                                    cntrl_spi_data_in <= {16'd0, audio_i2s_sdin_sel, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
                                 end
                             default:
                                 begin

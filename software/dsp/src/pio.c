@@ -221,13 +221,13 @@ void pio_init()
     PIOD->PIO_MDER = 0;
     ////// Output set enable (ER) or disable (DR)
     PIOD->PIO_OWDR = 0xFFFFFFFF;
-    PIOD->PIO_OWER = 0;
+    PIOD->PIO_OWER = BIT(20);
     ////// Output set (S) or clear (C)
     PIOD->PIO_SODR = 0;
-    PIOD->PIO_CODR = 0;
+    PIOD->PIO_CODR = BIT(20);
     ////// Output enable (ER) or disable (DR)
     PIOD->PIO_ODR = 0xFFFFFFFF;
-    PIOD->PIO_OER = 0;
+    PIOD->PIO_OER = BIT(20);
     ////// High drive enable
     PIOD->PIO_DRIVER = BIT(20);
     //// INPUT ////
@@ -282,13 +282,13 @@ void pio_init()
     PIOE->PIO_MDER = 0;
     ////// Output set enable (ER) or disable (DR)
     PIOE->PIO_OWDR = 0xFFFFFFFF;
-    PIOE->PIO_OWER = 0;
+    PIOE->PIO_OWER = BIT(1);
     ////// Output set (S) or clear (C)
     PIOE->PIO_SODR = 0;
-    PIOE->PIO_CODR = 0;
+    PIOE->PIO_CODR = BIT(1);
     ////// Output enable (ER) or disable (DR)
     PIOE->PIO_ODR = 0xFFFFFFFF;
-    PIOE->PIO_OER = 0;
+    PIOE->PIO_OER = BIT(1);
     ////// High drive enable
     PIOE->PIO_DRIVER = BIT(1);
     //// INPUT ////

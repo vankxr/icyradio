@@ -189,7 +189,7 @@ static inline void dcache_addr_invalidate(void *pAddr, uint32_t ulSize)
         SCB->DCIMVAC = ulOpAddress;
 
         ulOpAddress += 32;
-        ulOpSize -= 32;
+        ulOpSize -= (ulOpSize > 32) ? 32 : ulOpSize;
     }
     while(ulOpSize);
 
@@ -199,7 +199,7 @@ static inline void dcache_addr_invalidate(void *pAddr, uint32_t ulSize)
 
 static inline void dcache_addr_clean(void *pAddr, uint32_t ulSize)
 {
-    if(!ulSize || (ulSize & 31))
+    if(!ulSize)
         return;
 
     uint32_t ulOpAddress = (uint32_t)pAddr;
@@ -212,7 +212,7 @@ static inline void dcache_addr_clean(void *pAddr, uint32_t ulSize)
         SCB->DCCMVAC = ulOpAddress;
 
         ulOpAddress += 32;
-        ulOpSize -= 32;
+        ulOpSize -= (ulOpSize > 32) ? 32 : ulOpSize;
     }
     while(ulOpSize);
 
@@ -222,7 +222,7 @@ static inline void dcache_addr_clean(void *pAddr, uint32_t ulSize)
 
 static inline void dcache_addr_clean_invalidate(void *pAddr, uint32_t ulSize)
 {
-    if(!ulSize || (ulSize & 31))
+    if(!ulSize)
         return;
 
     uint32_t ulOpAddress = (uint32_t)pAddr;
@@ -235,7 +235,7 @@ static inline void dcache_addr_clean_invalidate(void *pAddr, uint32_t ulSize)
         SCB->DCCIMVAC = ulOpAddress;
 
         ulOpAddress += 32;
-        ulOpSize -= 32;
+        ulOpSize -= (ulOpSize > 32) ? 32 : ulOpSize;
     }
     while(ulOpSize);
 

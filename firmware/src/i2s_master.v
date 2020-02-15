@@ -27,7 +27,7 @@ always @(posedge i2s_bclk)
     begin
         if(reset)
             begin
-                bit_cnt <= 4'b1110;
+                bit_cnt <= (DSZ - 2);
                 sdin_shift <= {DSZ{1'b0}};
             end
         else

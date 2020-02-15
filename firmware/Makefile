@@ -94,7 +94,7 @@ erase:
 
 timing: $(TARGET).asc
 	@echo Running timing analysis tool...
-	@icetime -p $(PCFILE) -P $(PACKAGE) -tm -d $(DEVICE) -r $(TARGET)-timing.txt $< | grep "Timing estimate"
+	@icetime -p $(PCFILE) -P $(PACKAGE) -t -d $(DEVICE) -r $(TARGET)-timing.txt $< | grep "Timing estimate"
 
 pnr-gui: $(TARGET).json
 	@nextpnr-ice40 --gui -q --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE)
