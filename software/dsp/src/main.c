@@ -558,7 +558,7 @@ int main()
             // Start performance counters
             uint64_t ullProcessingStart = g_ullSystemTick;
 
-            // Figure out which buffer has new samples
+            // Figure out which baseband buffer has new samples
             volatile uint32_t *pulBaseband = pulBasebandBuffer + (ubBasebandReady - 1) * BASEBAND_SAMPLE_BUFFER_SIZE;
 
             // Process samples
@@ -571,7 +571,7 @@ int main()
                     .q = pulBaseband[i] & 0xFFFF
                 };
 
-                xSample.i *= 10;
+                xSample.i *= 10; // TODO: AGC
                 xSample.q *= 10;
 
                 pDemod[i] = dsp_fm_demod(pFMDemod, xSample);
@@ -579,10 +579,13 @@ int main()
 
             fir_decimator_filter(pFilter, pDemod, NULL);
 
+            // Load audio buffer
             load_audio_buffer(pDemod, pDemod);
 
+            // Declare done processing baseband buffer
             ubBasebandReady = 0;
 
+            // Stop performance counters
             ullProcessingTimeUsed = g_ullSystemTick - ullProcessingStart;
         }
     }

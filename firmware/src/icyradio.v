@@ -141,7 +141,7 @@ assign dac_clk              = clk4; // DAC clock is CLK4
 assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the DDC)
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the DDC)
 assign audio_i2s_mclk_src   = clk3; // Audio I2S master source clock is CLK4
-assign qspi_clk             = clk2; // QSPI clock is CLK2
+assign qspi_clk             = clk1; // QSPI clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
 assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
@@ -676,39 +676,70 @@ always @(*)
 
 /// QSPI Memory interface ///
 // Inputs
-reg         qspi_mem_sck;
+reg  [21:0] qspi_mem_addr;
+wire [15:0] qspi_mem_data_out;
+reg  [15:0] qspi_mem_data_in;
+wire        qspi_mem_wr_valid;
+wire        qspi_mem_rd_valid;
+reg         qspi_mem_wr_req;
+reg         qspi_mem_rd_req;
+reg  [6:0]  qspi_mem_clk_div;
+wire        qspi_mem_sck;
+reg         qspi_mem_sdata_oe;
+reg  [3:0]  qspi_mem_sdata_out;
+wire [3:0]  qspi_mem_sdata_in;
 reg         qspi_mem_ncs;
-reg         qspi_mem_data_oe;
-reg  [3:0]  qspi_mem_data_out;
-wire [3:0]  qspi_mem_data_in;
 
 SB_IO #(
     .PIN_TYPE(6'b1010_01),
     .PULLUP(1'b0)
 )
-qspi_mem_data [3:0]
+qspi_mem_sdata [3:0]
 (
     .PACKAGE_PIN({QSPI_MEM_IO3, QSPI_MEM_IO2, QSPI_MEM_IO1, QSPI_MEM_IO0}),
-    .OUTPUT_ENABLE(qspi_mem_data_oe),
-    .D_OUT_0(qspi_mem_data_out),
-    .D_IN_0(qspi_mem_data_in)
+    .OUTPUT_ENABLE(qspi_mem_sdata_oe),
+    .D_OUT_0(qspi_mem_sdata_out),
+    .D_IN_0(qspi_mem_sdata_in)
 );
 
-assign QSPI_MEM_SCK = qspi_mem_sck;
+assign QSPI_MEM_SCK = qspi_mem_sck & !qspi_mem_ncs;
 assign QSPI_MEM_CSn = qspi_mem_ncs;
 
-// TODO: QSPI controller module
+assign qspi_mem_sck = qspi_mem_clk_div[6]; // Serial clock = ((ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2) / 4 = ADC_CLK / 128
+
+// Module
+qspi_master qspi_mem
+(
+    .clk(qspi_clk),
+    .reset(qspi_rst),
+    .qspi_sck(qspi_mem_sck),
+    .qspi_data_out_en(qspi_mem_sdata_oe),
+    .qspi_data_out(qspi_mem_sdata_out),
+    .qspi_data_in(qspi_mem_sdata_in),
+    .qspi_ncs(qspi_mem_ncs),
+    .addr(qspi_mem_addr),
+    .data_out(qspi_mem_data_out),
+    .data_in(qspi_mem_data_in),
+    .wr_valid(qspi_mem_wr_valid),
+    .rd_valid(qspi_mem_rd_valid),
+    .wr_req(qspi_mem_wr_req),
+    .rd_req(qspi_mem_rd_req)
+);
+
 always @(posedge qspi_clk)
     begin
         if(qspi_rst)
             begin
-                qspi_mem_ncs <= 1'b1;
-                qspi_mem_sck <= 1'b0;
-                qspi_mem_data_out <= 4'b0000;
-                qspi_mem_data_oe <= 1'b0;
+                qspi_mem_wr_req <= 1'b0;
+                qspi_mem_rd_req <= 1'b0;
+                qspi_mem_addr <= 22'h000000;
+                qspi_mem_data_in <= 16'h0000;
+
+                qspi_mem_clk_div <= 7'd0;
             end
         else
             begin
+                qspi_mem_clk_div <= qspi_mem_clk_div + 1;
             end
     end
 /// QSPI Memory interface ///
@@ -813,14 +844,15 @@ endgenerate
 
 /// Control SPI slave interface ///
 // Inputs
-wire cntrl_spi_sck;
-wire cntrl_spi_mosi;
-wire cntrl_spi_miso;
-wire cntrl_spi_ncs;
-
-assign SPI_SCK = cntrl_spi_sck;
-assign SPI_MOSI = cntrl_spi_mosi;
-assign SPI_CSn = cntrl_spi_ncs;
+wire [6:0]  cntrl_spi_addr;
+wire [31:0] cntrl_spi_data_out;
+reg  [31:0] cntrl_spi_data_in;
+wire        cntrl_spi_wr_en;
+wire        cntrl_spi_rd_en;
+wire        cntrl_spi_sck;
+wire        cntrl_spi_mosi;
+wire        cntrl_spi_miso;
+wire        cntrl_spi_ncs;
 
 SB_IO #(
     .PIN_TYPE(6'b1010_01),
@@ -833,11 +865,9 @@ cntrl_spi_miso_od
     .D_OUT_0(cntrl_spi_miso)
 );
 
-wire [6:0]  cntrl_spi_addr;
-wire [31:0] cntrl_spi_data_out;
-reg  [31:0] cntrl_spi_data_in;
-wire        cntrl_spi_wr_en;
-wire        cntrl_spi_rd_en;
+assign SPI_SCK = cntrl_spi_sck;
+assign SPI_MOSI = cntrl_spi_mosi;
+assign SPI_CSn = cntrl_spi_ncs;
 
 // Module
 spi_slave cntrl_spi
@@ -868,6 +898,10 @@ localparam CNTRL_SPI_REG_ADC_DPRAM_DATA     = 7'h22;
 localparam CNTRL_SPI_REG_DDC_CNTRL          = 7'h30;
 localparam CNTRL_SPI_REG_DDC_LO_FREQ        = 7'h31;
 localparam CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL  = 7'h40;
+localparam CNTRL_SPI_REG_QSPI_CNTRL         = 7'h50;
+localparam CNTRL_SPI_REG_QSPI_START_ADDR    = 7'h51;
+localparam CNTRL_SPI_REG_QSPI_STOP_ADDR     = 7'h52;
+localparam CNTRL_SPI_REG_QSPI_DATA          = 7'h53;
 
 always @(posedge cntrl_spi_clk)
     begin

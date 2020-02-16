@@ -501,7 +501,7 @@ void init_audio()
     tscs25xx_dac_config_left_output(0); // Not inverted
     tscs25xx_dac_config_right_output(0); // Not inverted
     tscs25xx_dac_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
-    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 0); // Dither disabled, Deemphasis filter disabled
+    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 1); // Dither disabled, Deemphasis filter disabled
     DBGPRINTLN_CTX("CODEC DAC output configured!");
 
     tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
@@ -563,7 +563,7 @@ void init_rx_chain()
     RXADC_POWER_UP();
     RXADC_GAIN_X1();
     RXADC_DITHER_OFF();
-    DBGPRINTLN_CTX("RX ADC powered up, gain x1,5, dither disabled!");
+    DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
     delay_ms(100);
 
