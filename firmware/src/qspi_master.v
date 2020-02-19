@@ -31,8 +31,8 @@ reg              wr_valid;              // Internal write data being consumed fl
 reg              rd_valid;              // Internal read data valid flag
 reg              wr_req_q;              // Latched write request flag
 reg              rd_req_q;              // Latched read request flag
-wire [2:0]       req;                   // Combined request flags
-wire [2:0]       req_q;                 // Coombined latched request flags
+wire [1:0]       req;                   // Combined request flags
+wire [1:0]       req_q;                 // Coombined latched request flags
 
 assign req = {wr_req, rd_req};
 assign req_q = {wr_req_q, rd_req_q};
