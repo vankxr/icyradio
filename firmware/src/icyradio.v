@@ -126,8 +126,8 @@ wire ddc_clk;
 wire dac_clk;
 wire bb_i2s_clk;
 wire audio_i2s_clk;
-wire audio_i2s_mclk_src;
-wire qspi_clk;
+wire audio_i2s_mclk;
+wire qspi_mem_clk;
 wire irq_clk;
 wire led_clk;
 wire cntrl_spi_clk;
@@ -140,8 +140,8 @@ assign ddc_clk              = clk1; // DDC clock is CLK1 (same as the ADC)
 assign dac_clk              = clk4; // DAC clock is CLK4
 assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the DDC)
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the DDC)
-assign audio_i2s_mclk_src   = clk3; // Audio I2S master source clock is CLK4
-assign qspi_clk             = clk1; // QSPI clock is CLK1
+assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK4
+assign qspi_mem_clk         = clk2; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
 assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
@@ -175,8 +175,8 @@ wire bb_i2s_rst;
 reg  bb_i2s_soft_rst; // Controlled by host via SPI
 wire audio_i2s_rst;
 reg  audio_i2s_soft_rst; // Controlled by host via SPI
-wire qspi_rst;
-reg  qspi_soft_rst; // Controlled by host via SPI
+wire qspi_mem_rst;
+reg  qspi_mem_soft_rst; // Controlled by host via SPI
 wire led_rst;
 reg  led_soft_rst; // Controlled by host via SPI
 wire irq_rst;
@@ -188,7 +188,7 @@ assign dac_rst       = extrst | dac_soft_rst; // DAC is reset by external pin an
 assign ddc_rst       = extrst | ddc_soft_rst; // DDC is reset by external pin and software
 assign bb_i2s_rst    = extrst | bb_i2s_soft_rst; // Baseband I2S is reset by external pin and software
 assign audio_i2s_rst = extrst | audio_i2s_soft_rst; // Audio I2S is reset by external pin and software
-assign qspi_rst      = extrst | qspi_soft_rst; // QSPI is reset by external pin and software
+assign qspi_mem_rst  = extrst | qspi_mem_soft_rst; // QSPI memory is reset by external pin and software
 assign led_rst       = extrst | led_soft_rst; // LED driver is reset by external pin and software
 assign irq_rst       = extrst; // IRQ is reset by external pin
 assign cntrl_spi_rst = extrst; // Control SPI interface is reset by external pin
@@ -209,7 +209,7 @@ reg  [ADC_DPRAM_SIZE - 1:0] adc_dpram_rd_addr; // Controlled by host via SPI
 reg  [ADC_DPRAM_SIZE - 1:0] adc_dpram_wr_addr;
 reg  [16:0]                 adc_dpram_data_in;
 wire [16:0]                 adc_dpram_data_out; // Controlled by host via SPI
-reg                         adc_dpram_trig; // Controlled by host via SPI
+reg                         adc_dpram_wr_req; // Controlled by host via SPI
 reg                         adc_dpram_rd_addr_inc; // Controlled by host via SPI
 reg                         adc_dpram_wr_en;
 
@@ -240,7 +240,7 @@ always @(posedge adc_dpram_wr_clk)
             begin
                 if(!adc_dpram_wr_en)
                     begin
-                        if(adc_dpram_trig)
+                        if(adc_dpram_wr_req)
                             adc_dpram_wr_en <= 1'b1;
 
                         adc_dpram_wr_addr <= {ADC_DPRAM_SIZE{1'b0}};
@@ -391,10 +391,36 @@ assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
 assign bb_i2s_bclk = bb_i2s_clk_div[2]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC) * I2S_WS * 2 = ADC_CLK / 8
 
+// Clock divider and data synchronizer
+always @(posedge bb_i2s_clk)
+    begin
+        if(bb_i2s_rst)
+            begin
+                bb_i2s_clk_div <= 3'b000;
+                bb_i2s_clk_sync <= 3'b000;
+            end
+        else
+            begin
+                if(!bb_i2s_clk_sync[2])
+                    begin
+                        bb_i2s_clk_sync <= {bb_i2s_clk_sync[1:0], ddc_valid};
+
+                        if(ddc_valid && bb_i2s_clk_sync == 3'b000)
+                            bb_i2s_clk_div <= 3'b100;
+                        else
+                            bb_i2s_clk_div <= 3'b000;
+                    end
+                else
+                    begin
+                        bb_i2s_clk_div <= bb_i2s_clk_div + 1;
+                    end
+            end
+    end
+
 // Module
 i2s_master bb_i2s
 (
-    .reset(bb_i2s_rst | !bb_i2s_clk_sync[2]),
+    .reset(!bb_i2s_clk_sync[2]),
     .i2s_bclk(bb_i2s_bclk),
     .i2s_lrclk(bb_i2s_lrclk),
     .i2s_sdout(bb_i2s_sdout),
@@ -411,9 +437,6 @@ always @(posedge bb_i2s_clk)
             begin
                 bb_i2s_left_data_in <= 16'h0000;
                 bb_i2s_right_data_in <= 16'h0000;
-
-                bb_i2s_clk_div <= 3'b000;
-                bb_i2s_clk_sync <= 3'b000;
             end
         else
             begin
@@ -421,20 +444,6 @@ always @(posedge bb_i2s_clk)
                     begin
                         bb_i2s_left_data_in <= ddc_i;
                         bb_i2s_right_data_in <= ddc_q;
-                    end
-
-                if(!bb_i2s_clk_sync[2])
-                    begin
-                        bb_i2s_clk_sync <= {bb_i2s_clk_sync[1:0], ddc_valid};
-
-                        if(ddc_valid && bb_i2s_clk_sync == 3'b000)
-                            bb_i2s_clk_div <= 3'b100;
-                        else
-                            bb_i2s_clk_div <= 3'b000;
-                    end
-                else
-                    begin
-                        bb_i2s_clk_div <= bb_i2s_clk_div + 1;
                     end
             end
     end
@@ -447,14 +456,16 @@ wire [15:0] audio_i2s_right_data_out;
 reg  [15:0] audio_i2s_left_data_in;
 reg  [15:0] audio_i2s_right_data_in;
 reg  [9:0]  audio_i2s_clk_div;
-wire        audio_i2s_mclk;
 wire        audio_i2s_bclk;
 wire        audio_i2s_lrclk;
 wire        audio_i2s_sdout;
 reg         audio_i2s_sdin;
 
-assign audio_i2s_mclk = audio_i2s_mclk_src & !audio_i2s_rst;
 assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2 = ADC_CLK / 32
+
+// Clock divider
+always @(posedge audio_i2s_clk)
+    audio_i2s_clk_div <= audio_i2s_clk_div + 1;
 
 // Module
 i2s_master audio_i2s
@@ -476,12 +487,9 @@ always @(posedge audio_i2s_clk)
             begin
                 audio_i2s_left_data_in <= 16'h0000;
                 audio_i2s_right_data_in <= 16'h0000;
-
-                audio_i2s_clk_div <= 10'd0;
             end
         else
             begin
-                audio_i2s_clk_div <= audio_i2s_clk_div + 1;
             end
     end
 /// Audio I2S Clock generation ///
@@ -574,8 +582,8 @@ always @(*)
                 end
             1'b1:
                 begin
-                    audio_i2s_dsp_mclk_out <= audio_i2s_mclk;
-                    audio_i2s_dsp_bclk_out <= audio_i2s_bclk;
+                    audio_i2s_dsp_mclk_out <= audio_i2s_mclk & !audio_i2s_rst;
+                    audio_i2s_dsp_bclk_out <= audio_i2s_bclk & !audio_i2s_rst;
                     audio_i2s_dsp_lrclk_out <= audio_i2s_lrclk;
                 end
         endcase
@@ -604,8 +612,8 @@ always @(*)
                 end
             2'b11:
                 begin
-                    audio_i2s_codec_mclk_out <= audio_i2s_mclk;
-                    audio_i2s_codec_bclk_out <= audio_i2s_bclk;
+                    audio_i2s_codec_mclk_out <= audio_i2s_mclk & !audio_i2s_rst;
+                    audio_i2s_codec_bclk_out <= audio_i2s_bclk & !audio_i2s_rst;
                     audio_i2s_codec_lrclk_out <= audio_i2s_lrclk;
                 end
         endcase
@@ -676,19 +684,26 @@ always @(*)
 
 /// QSPI Memory interface ///
 // Inputs
+reg  [21:0] qspi_mem_start_addr; // Controlled by host via SPI
+reg  [21:0] qspi_mem_end_addr; // Controlled by host via SPI
 reg  [21:0] qspi_mem_addr;
 wire [15:0] qspi_mem_data_out;
+reg  [2:0]  qspi_mem_data_in_sel; // Controlled by host via SPI
 reg  [15:0] qspi_mem_data_in;
 wire        qspi_mem_wr_valid;
+reg         qspi_mem_wr_valid_ed;
 wire        qspi_mem_rd_valid;
-reg         qspi_mem_wr_req;
-reg         qspi_mem_rd_req;
+reg         qspi_mem_rd_valid_ed;
+reg         qspi_mem_wr_req; // Controlled by host via SPI
+reg         qspi_mem_wr_req_q;
+reg         qspi_mem_rd_req; // Controlled by host via SPI
+reg         qspi_mem_rd_req_q;
 reg  [6:0]  qspi_mem_clk_div;
 wire        qspi_mem_sck;
-reg         qspi_mem_sdata_oe;
-reg  [3:0]  qspi_mem_sdata_out;
+wire        qspi_mem_sdata_oe;
+wire [3:0]  qspi_mem_sdata_out;
 wire [3:0]  qspi_mem_sdata_in;
-reg         qspi_mem_ncs;
+wire        qspi_mem_ncs;
 
 SB_IO #(
     .PIN_TYPE(6'b1010_01),
@@ -702,16 +717,20 @@ qspi_mem_sdata [3:0]
     .D_IN_0(qspi_mem_sdata_in)
 );
 
-assign QSPI_MEM_SCK = qspi_mem_sck & !qspi_mem_ncs;
-assign QSPI_MEM_CSn = qspi_mem_ncs;
+assign QSPI_MEM_SCK = qspi_mem_sck & !qspi_mem_ncs & !qspi_mem_rst;
+assign QSPI_MEM_CSn = qspi_mem_ncs | qspi_mem_rst;
 
 assign qspi_mem_sck = qspi_mem_clk_div[6]; // Serial clock = ((ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2) / 4 = ADC_CLK / 128
+
+// Clock divider
+always @(posedge qspi_mem_clk)
+    qspi_mem_clk_div <= qspi_mem_clk_div + 1;
 
 // Module
 qspi_master qspi_mem
 (
-    .clk(qspi_clk),
-    .reset(qspi_rst),
+    .clk(qspi_mem_clk),
+    .reset(qspi_mem_rst),
     .qspi_sck(qspi_mem_sck),
     .qspi_data_out_en(qspi_mem_sdata_oe),
     .qspi_data_out(qspi_mem_sdata_out),
@@ -722,24 +741,67 @@ qspi_master qspi_mem
     .data_in(qspi_mem_data_in),
     .wr_valid(qspi_mem_wr_valid),
     .rd_valid(qspi_mem_rd_valid),
-    .wr_req(qspi_mem_wr_req),
-    .rd_req(qspi_mem_rd_req)
+    .wr_req(qspi_mem_wr_req_q),
+    .rd_req(qspi_mem_rd_req_q)
 );
 
-always @(posedge qspi_clk)
+always @(posedge qspi_mem_clk)
     begin
-        if(qspi_rst)
+        if(qspi_mem_rst)
             begin
-                qspi_mem_wr_req <= 1'b0;
-                qspi_mem_rd_req <= 1'b0;
                 qspi_mem_addr <= 22'h000000;
                 qspi_mem_data_in <= 16'h0000;
 
-                qspi_mem_clk_div <= 7'd0;
+                qspi_mem_wr_valid_ed <= 1'b0;
+                qspi_mem_rd_valid_ed <= 1'b0;
+                qspi_mem_wr_req_q <= 1'b0;
+                qspi_mem_rd_req_q <= 1'b0;
             end
         else
             begin
-                qspi_mem_clk_div <= qspi_mem_clk_div + 1;
+                qspi_mem_wr_valid_ed <= qspi_mem_wr_valid;
+                qspi_mem_rd_valid_ed <= qspi_mem_rd_valid;
+
+                if(qspi_mem_rd_req && !qspi_mem_rd_req_q && !qspi_mem_wr_req && !qspi_mem_wr_req_q)
+                    begin
+                        qspi_mem_rd_req_q <= 1'b1;
+
+                        qspi_mem_addr <= qspi_mem_start_addr;
+                    end
+
+                if(qspi_mem_wr_req && !qspi_mem_wr_req_q && !qspi_mem_rd_req && !qspi_mem_rd_req_q)
+                    begin
+                        qspi_mem_wr_req_q <= 1'b1;
+
+                        qspi_mem_addr <= qspi_mem_start_addr;
+                    end
+
+                if((qspi_mem_wr_valid_ed && !qspi_mem_wr_valid) || (!qspi_mem_rd_valid_ed && qspi_mem_rd_valid))
+                    qspi_mem_addr <= qspi_mem_addr + 2;
+
+                if(!qspi_mem_wr_valid_ed && qspi_mem_wr_valid)
+                    begin
+                        case(qspi_mem_data_in_sel)
+                            3'b000:
+                                begin
+                                    qspi_mem_data_in <= audio_i2s_left_data_out;
+                                end
+                            3'b001:
+                                begin
+                                    qspi_mem_data_in <= audio_i2s_right_data_out;
+                                end
+                            default:
+                                begin
+                                    qspi_mem_data_in <= 16'hA567;
+                                end
+                        endcase
+                    end
+
+                if(qspi_mem_addr[21:1] == qspi_mem_end_addr[21:1])
+                    begin
+                        qspi_mem_rd_req_q <= 1'b0;
+                        qspi_mem_wr_req_q <= 1'b0;
+                    end
             end
     end
 /// QSPI Memory interface ///
@@ -797,6 +859,7 @@ localparam IRQ_COUNT = 8;
 
 // Inputs
 wire [IRQ_COUNT - 1:0] irq_lines;
+wire [IRQ_COUNT - 1:0] irq_lines_q;
 reg  [IRQ_COUNT - 1:0] irq_lines_ed;
 reg  [IRQ_COUNT - 1:0] irq_state;
 reg  [IRQ_COUNT - 1:0] irq_mask [0:1]; // Controlled by host via SPI
@@ -811,10 +874,18 @@ assign irq_lines[0] = adc_dpram_wr_en;
 assign irq_lines[1] = !adc_dpram_wr_en;
 assign irq_lines[2] = ddc_valid;
 assign irq_lines[3] = adc_of;
-assign irq_lines[4] = 1'b0;
-assign irq_lines[5] = 1'b0;
+assign irq_lines[4] = qspi_mem_wr_valid;
+assign irq_lines[5] = qspi_mem_rd_valid;
 assign irq_lines[6] = 1'b0;
 assign irq_lines[7] = 1'b0;
+
+// Synchronizer
+synchronizer irq_lines_sync [IRQ_COUNT - 1:0]
+(
+    .clk(irq_clk),
+    .in(irq_lines),
+    .out(irq_lines_q)
+);
 
 generate
     genvar i;
@@ -826,15 +897,16 @@ generate
                     if(irq_rst)
                         begin
                             irq_state[i] <= 1'b0;
+                            irq_lines_ed[i] <= 1'b0;
                         end
                     else
                         begin
-                            irq_lines_ed[i] <= irq_lines[i];
+                            irq_lines_ed[i] <= irq_lines_q[i];
 
                             if(irq_clear[i])
                                 irq_state[i] <= 1'b0;
 
-                            if((!irq_lines_ed[i] && irq_lines[i]) || irq_set[i])
+                            if((!irq_lines_ed[i] && irq_lines_q[i]) || irq_set[i])
                                 irq_state[i] <= 1'b1;
                         end
                 end
@@ -885,23 +957,24 @@ spi_slave cntrl_spi
     .rd_en(cntrl_spi_rd_en)
 );
 
-localparam CNTRL_SPI_REG_ID                 = 7'h00;
-localparam CNTRL_SPI_REG_RST_CNTRL          = 7'h01;
-localparam CNTRL_SPI_REG_IRQ_CNTRL_STATUS   = 7'h02;
-localparam CNTRL_SPI_REG_LED_CNTRL          = 7'h10;
-localparam CNTRL_SPI_REG_RED_LED_DUTY       = 7'h11;
-localparam CNTRL_SPI_REG_GREEN_LED_DUTY     = 7'h12;
-localparam CNTRL_SPI_REG_BLUE_LED_DUTY      = 7'h13;
-localparam CNTRL_SPI_REG_ADC_DPRAM_CNTRL    = 7'h20;
-localparam CNTRL_SPI_REG_ADC_DPRAM_ADDR     = 7'h21;
-localparam CNTRL_SPI_REG_ADC_DPRAM_DATA     = 7'h22;
-localparam CNTRL_SPI_REG_DDC_CNTRL          = 7'h30;
-localparam CNTRL_SPI_REG_DDC_LO_FREQ        = 7'h31;
-localparam CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL  = 7'h40;
-localparam CNTRL_SPI_REG_QSPI_CNTRL         = 7'h50;
-localparam CNTRL_SPI_REG_QSPI_START_ADDR    = 7'h51;
-localparam CNTRL_SPI_REG_QSPI_STOP_ADDR     = 7'h52;
-localparam CNTRL_SPI_REG_QSPI_DATA          = 7'h53;
+localparam CNTRL_SPI_REG_ID                     = 7'h00;
+localparam CNTRL_SPI_REG_RST_CNTRL              = 7'h01;
+localparam CNTRL_SPI_REG_IRQ_CNTRL_STATUS       = 7'h02;
+localparam CNTRL_SPI_REG_LED_CNTRL              = 7'h10;
+localparam CNTRL_SPI_REG_RED_LED_DUTY           = 7'h11;
+localparam CNTRL_SPI_REG_GREEN_LED_DUTY         = 7'h12;
+localparam CNTRL_SPI_REG_BLUE_LED_DUTY          = 7'h13;
+localparam CNTRL_SPI_REG_ADC_DPRAM_CNTRL        = 7'h20;
+localparam CNTRL_SPI_REG_ADC_DPRAM_ADDR         = 7'h21;
+localparam CNTRL_SPI_REG_ADC_DPRAM_DATA         = 7'h22;
+localparam CNTRL_SPI_REG_DDC_CNTRL              = 7'h30;
+localparam CNTRL_SPI_REG_DDC_LO_FREQ            = 7'h31;
+localparam CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL      = 7'h40;
+localparam CNTRL_SPI_REG_QSPI_MEM_CNTRL         = 7'h50;
+localparam CNTRL_SPI_REG_QSPI_MEM_ADDR          = 7'h51;
+localparam CNTRL_SPI_REG_QSPI_MEM_START_ADDR    = 7'h52;
+localparam CNTRL_SPI_REG_QSPI_MEM_END_ADDR      = 7'h53;
+localparam CNTRL_SPI_REG_QSPI_MEM_DATA          = 7'h54;
 
 always @(posedge cntrl_spi_clk)
     begin
@@ -913,7 +986,7 @@ always @(posedge cntrl_spi_clk)
                 ddc_soft_rst <= 1'b1;
                 bb_i2s_soft_rst <= 1'b1;
                 audio_i2s_soft_rst <= 1'b1;
-                qspi_soft_rst <= 1'b1;
+                qspi_mem_soft_rst <= 1'b1;
                 led_soft_rst <= 1'b1;
 
                 irq_mask[0] <= {IRQ_COUNT{1'b0}};
@@ -926,7 +999,7 @@ always @(posedge cntrl_spi_clk)
                 led_duty[1] <= 12'h000;
                 led_duty[2] <= 12'h000;
 
-                adc_dpram_trig <= 1'b0;
+                adc_dpram_wr_req <= 1'b0;
                 adc_dpram_rd_addr_inc <= 1'b0;
 
                 adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
@@ -942,13 +1015,24 @@ always @(posedge cntrl_spi_clk)
                 audio_i2s_codec_sdin_sel <= 2'b01;
                 audio_i2s_brg_sdin_sel <= 2'b10;
                 audio_i2s_sdin_sel <= 2'b11;
+
+                qspi_mem_wr_req <= 1'b0;
+                qspi_mem_rd_req <= 1'b0;
+                qspi_mem_data_in_sel <= 3'b000;
+
+                qspi_mem_start_addr <= 22'h000000;
+
+                qspi_mem_end_addr <= 22'h000000;
             end
         else
             begin
                 irq_clear <= irq_state & irq_clear; // Remove IRQ clear requests on lines that are already cleared
                 irq_set <= ~irq_state & irq_set; // Remove IRQ set requests on lines that are already set
 
-                adc_dpram_trig <= ~adc_dpram_wr_en & adc_dpram_trig; // Remove ADC DPRAM trigger if the write enable strobe is already set
+                adc_dpram_wr_req <= ~adc_dpram_wr_en & adc_dpram_wr_req; // Remove ADC DPRAM write request if the write enable strobe is already set
+
+                qspi_mem_wr_req <= ~qspi_mem_wr_req_q & qspi_mem_wr_req; // Remove QSPI write request if the qualified request is already set
+                qspi_mem_rd_req <= ~qspi_mem_rd_req_q & qspi_mem_rd_req; // Remove QSPI read request if the qualified request is already set
 
                 if(cntrl_spi_wr_en) // Synchronous writes
                     begin
@@ -965,7 +1049,7 @@ always @(posedge cntrl_spi_clk)
                                     dac_soft_rst <= cntrl_spi_data_out[3];
                                     bb_i2s_soft_rst <= cntrl_spi_data_out[4];
                                     audio_i2s_soft_rst <= cntrl_spi_data_out[5];
-                                    qspi_soft_rst <= cntrl_spi_data_out[6];
+                                    qspi_mem_soft_rst <= cntrl_spi_data_out[6];
                                     led_soft_rst <= cntrl_spi_data_out[7];
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
@@ -993,8 +1077,8 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    adc_dpram_trig <= cntrl_spi_data_out[0];
-                                    adc_dpram_rd_addr_inc <= cntrl_spi_data_out[1];
+                                    adc_dpram_wr_req <= cntrl_spi_data_out[0];
+                                    adc_dpram_rd_addr_inc <= cntrl_spi_data_out[2];
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
@@ -1022,6 +1106,28 @@ always @(posedge cntrl_spi_clk)
                                     audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[13:12];
                                     audio_i2s_sdin_sel <= cntrl_spi_data_out[15:14];
                                 end
+                            CNTRL_SPI_REG_QSPI_MEM_CNTRL:
+                                begin
+                                    qspi_mem_wr_req <= cntrl_spi_data_out[0];
+                                    qspi_mem_rd_req <= cntrl_spi_data_out[2];
+                                    qspi_mem_data_in_sel <= cntrl_spi_data_out[10:8];
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_ADDR:
+                                begin
+                                    // Nothing to do
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_START_ADDR:
+                                begin
+                                    qspi_mem_start_addr <= cntrl_spi_data_out[21:0];
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_END_ADDR:
+                                begin
+                                    qspi_mem_end_addr <= cntrl_spi_data_out[21:0];
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_DATA:
+                                begin
+                                    // Nothing to do
+                                end
                         endcase
                     end
 
@@ -1034,7 +1140,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {24'd0, led_soft_rst, qspi_soft_rst, audio_i2s_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
+                                    cntrl_spi_data_in <= {24'd0, led_soft_rst, qspi_mem_soft_rst, audio_i2s_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
@@ -1058,7 +1164,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {29'd0, adc_dpram_wr_en, adc_dpram_rd_addr_inc, adc_dpram_trig};
+                                    cntrl_spi_data_in <= {29'd0, adc_dpram_rd_addr_inc, adc_dpram_wr_en, adc_dpram_wr_req};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
@@ -1082,6 +1188,26 @@ always @(posedge cntrl_spi_clk)
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
                                     cntrl_spi_data_in <= {16'd0, audio_i2s_sdin_sel, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_CNTRL:
+                                begin
+                                    cntrl_spi_data_in <= {21'd0, qspi_mem_data_in_sel, 4'b0000, qspi_mem_rd_req_q, qspi_mem_rd_req, qspi_mem_wr_req_q, qspi_mem_wr_req};
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_ADDR:
+                                begin
+                                    cntrl_spi_data_in <= {10'd0, qspi_mem_addr};
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_START_ADDR:
+                                begin
+                                    cntrl_spi_data_in <= {10'd0, qspi_mem_start_addr};
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_END_ADDR:
+                                begin
+                                    cntrl_spi_data_in <= {10'd0, qspi_mem_end_addr};
+                                end
+                            CNTRL_SPI_REG_QSPI_MEM_DATA:
+                                begin
+                                    cntrl_spi_data_in <= {16'd0, qspi_mem_data_out};
                                 end
                             default:
                                 begin

@@ -54,7 +54,7 @@ static float rx_get_max_power(float *pfPower, uint32_t *pulFrequency);
 static float rx_get_power(float *pfPower, uint32_t ulFrequency);
 
 static void init_system_clocks();
-static void init_audio();
+static void init_audio_chain();
 static void init_rx_chain();
 static void init_tx_chain();
 
@@ -450,7 +450,7 @@ void init_system_clocks()
     //// Global output enable
     CLK_MNGR_OUT_EN();
 }
-void init_audio()
+void init_audio_chain()
 {
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
@@ -501,7 +501,7 @@ void init_audio()
     tscs25xx_dac_config_left_output(0); // Not inverted
     tscs25xx_dac_config_right_output(0); // Not inverted
     tscs25xx_dac_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
-    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 1); // Dither disabled, Deemphasis filter disabled
+    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 1); // Dither disabled, Deemphasis filter enabled
     DBGPRINTLN_CTX("CODEC DAC output configured!");
 
     tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
@@ -552,7 +552,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(103000000))
+    if(r820t2_set_freq(93000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -565,13 +565,11 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    delay_ms(100);
-
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(104300000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(94000000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
-    fpga_ddc_set_iq_swap(1);
+    fpga_ddc_set_iq_swap(1); // Tuner uses high-side LO injection, so invert the spectrum in the DDC
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_DDC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA DDC enabled!");
@@ -591,7 +589,7 @@ void init_rx_chain()
     rx_get_psd(pfRXPSD);
 
     DBGPRINTLN_CTX("RX hard-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(104300000)));
+    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(94000000)));
 
     uint32_t ulMaxPowerFrequency = 0;
     float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
@@ -626,13 +624,13 @@ void init_tx_chain()
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.1f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.1f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
-    adf4351_charge_pump_set_current(5.f);
+    adf4351_charge_pump_set_current(5.f); // 5 mA
     DBGPRINTLN_CTX("TX PLL CP current: %.2f mA", adf4351_charge_pump_get_current());
 
-    adf4351_main_out_config(1, 5);
+    adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 300000000); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 433000000); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
@@ -871,10 +869,12 @@ int main()
     DBGPRINTLN_CTX("TSCS25xx wafer coordinates: (%hhu, %hhu)", tscs25xx_read_mf_wafer_x(), tscs25xx_read_mf_wafer_y());
 
     // Audio configuration
-    init_audio();
+    init_audio_chain();
 
     // RX Chain configuration
     init_rx_chain();
+
+    fpga_psram_test(); // TODO: Remove this
 
     // TX Chain configuration
     //init_tx_chain();

@@ -186,7 +186,7 @@ void fpga_adc_dpram_sample(uint32_t *pulData, uint16_t usSize)
     if(!usSize || usSize > FPGA_ADC_DPRAM_SIZE)
         return;
 
-    fpga_write_register(FPGA_REG_ADC_DPRAM_CNTRL, FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC | FPGA_REG_ADC_DPRAM_CNTRL_TRIG); // Enable auto address increment and trigger write
+    fpga_write_register(FPGA_REG_ADC_DPRAM_CNTRL, FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC | FPGA_REG_ADC_DPRAM_CNTRL_WR_REQUEST); // Enable auto address increment and trigger write
 
     while(!(fpga_read_register(FPGA_REG_ADC_DPRAM_CNTRL) & FPGA_REG_ADC_DPRAM_CNTRL_WR_EN)); // Wait for the write to start
     while(fpga_read_register(FPGA_REG_ADC_DPRAM_CNTRL) & FPGA_REG_ADC_DPRAM_CNTRL_WR_EN); // Wait for the write to end
@@ -267,4 +267,49 @@ void fpga_i2s_mux_set_fpga_sdin(uint32_t ulSource)
 uint32_t fpga_i2s_mux_get_fpga_sdin()
 {
     return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x0000C000;
+}
+
+
+void fpga_psram_test() // TODO: Remove this
+{
+    #include "debug_macros.h"
+
+    fpga_reset_module(FPGA_REG_RST_CNTRL_QSPI_SOFT_RST, 0);
+    delay_ms(80);
+
+    fpga_write_register(FPGA_REG_QSPI_MEM_START_ADDR, 0x00000000);
+    fpga_write_register(FPGA_REG_QSPI_MEM_END_ADDR, 0x00000010);
+    fpga_write_register(FPGA_REG_QSPI_MEM_CNTRL, FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST);
+    while(!(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST_Q));
+    DBGPRINTLN_CTX("read started %02X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+
+    while(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST_Q);
+    DBGPRINTLN_CTX("read ended %02X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+    DBGPRINTLN_CTX("data %08X", fpga_read_register(FPGA_REG_QSPI_MEM_DATA));
+
+    fpga_write_register(FPGA_REG_QSPI_MEM_START_ADDR, 0x00000000);
+    fpga_write_register(FPGA_REG_QSPI_MEM_END_ADDR, 0x00000012);
+    fpga_write_register(FPGA_REG_QSPI_MEM_CNTRL, 0x0000FF00 | FPGA_REG_QSPI_MEM_CNTRL_WR_REQUEST);
+    while(!(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_WR_REQUEST_Q));
+    DBGPRINTLN_CTX("write started %08X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+    while(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_WR_REQUEST_Q);
+    DBGPRINTLN_CTX("write ended %08X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+
+    fpga_write_register(FPGA_REG_QSPI_MEM_START_ADDR, 0x00000000);
+    fpga_write_register(FPGA_REG_QSPI_MEM_END_ADDR, 0x00000010);
+    fpga_write_register(FPGA_REG_QSPI_MEM_CNTRL, FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST);
+    while(!(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST_Q));
+    DBGPRINTLN_CTX("read started %02X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+
+    while(fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL) & FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST_Q);
+    DBGPRINTLN_CTX("read ended %02X", fpga_read_register(FPGA_REG_QSPI_MEM_CNTRL));
+
+    DBGPRINTLN_CTX("addr %08X", fpga_read_register(FPGA_REG_QSPI_MEM_ADDR));
+    DBGPRINTLN_CTX("data %08X", fpga_read_register(FPGA_REG_QSPI_MEM_DATA));
 }

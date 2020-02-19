@@ -10,19 +10,24 @@
 #include "si5351.h"
 #include "usart.h"
 
-#define FPGA_REG_ID                 0x00
-#define FPGA_REG_RST_CNTRL          0x01
-#define FPGA_REG_IRQ_CNTRL_STATUS   0x02
-#define FPGA_REG_LED_CNTRL          0x10
-#define FPGA_REG_RED_LED_DUTY       0x11
-#define FPGA_REG_GREEN_LED_DUTY     0x12
-#define FPGA_REG_BLUE_LED_DUTY      0x13
-#define FPGA_REG_ADC_DPRAM_CNTRL    0x20
-#define FPGA_REG_ADC_DPRAM_ADDR     0x21
-#define FPGA_REG_ADC_DPRAM_DATA     0x22
-#define FPGA_REG_DDC_CNTRL          0x30
-#define FPGA_REG_DDC_LO_FREQ        0x31
-#define FPGA_REG_AUDIO_I2S_MUX_SEL  0x40
+#define FPGA_REG_ID                     0x00
+#define FPGA_REG_RST_CNTRL              0x01
+#define FPGA_REG_IRQ_CNTRL_STATUS       0x02
+#define FPGA_REG_LED_CNTRL              0x10
+#define FPGA_REG_RED_LED_DUTY           0x11
+#define FPGA_REG_GREEN_LED_DUTY         0x12
+#define FPGA_REG_BLUE_LED_DUTY          0x13
+#define FPGA_REG_ADC_DPRAM_CNTRL        0x20
+#define FPGA_REG_ADC_DPRAM_ADDR         0x21
+#define FPGA_REG_ADC_DPRAM_DATA         0x22
+#define FPGA_REG_DDC_CNTRL              0x30
+#define FPGA_REG_DDC_LO_FREQ            0x31
+#define FPGA_REG_AUDIO_I2S_MUX_SEL      0x40
+#define FPGA_REG_QSPI_MEM_CNTRL         0x50
+#define FPGA_REG_QSPI_MEM_ADDR          0x51
+#define FPGA_REG_QSPI_MEM_START_ADDR    0x52
+#define FPGA_REG_QSPI_MEM_END_ADDR      0x53
+#define FPGA_REG_QSPI_MEM_DATA          0x54
 
 // FPGA_REG_ID
 #define FPGA_REG_ID_DESIGN_ID       0xFFFF0000
@@ -43,6 +48,8 @@
 #define FPGA_REG_IRQ_CNTRL_STATUS_nADC_DPRAM_WR_EN  BIT(1)
 #define FPGA_REG_IRQ_CNTRL_STATUS_DDC_VALID         BIT(2)
 #define FPGA_REG_IRQ_CNTRL_STATUS_ADC_OVERFLOW      BIT(3)
+#define FPGA_REG_IRQ_CNTRL_STATUS_QSPI_MEM_WR_VALID BIT(4)
+#define FPGA_REG_IRQ_CNTRL_STATUS_QSPI_MEM_RD_VALID BIT(5)
 
 // FPGA_REG_LED_CNTRL
 #define FPGA_REG_LED_CNTRL_RED_LED_EN   BIT(0)
@@ -50,9 +57,9 @@
 #define FPGA_REG_LED_CNTRL_BLUE_LED_EN  BIT(2)
 
 // FPGA_REG_ADC_DPRAM_CNTRL
-#define FPGA_REG_ADC_DPRAM_CNTRL_TRIG           BIT(0)
-#define FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC    BIT(1)
-#define FPGA_REG_ADC_DPRAM_CNTRL_WR_EN          BIT(2)
+#define FPGA_REG_ADC_DPRAM_CNTRL_WR_REQUEST     BIT(0)
+#define FPGA_REG_ADC_DPRAM_CNTRL_WR_EN          BIT(1)
+#define FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC    BIT(2)
 
 // FPGA_REG_DDC_CNTRL
 #define FPGA_REG_DDC_CNTRL_LO_NS_EN     BIT(0)
@@ -82,6 +89,15 @@
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_FPGA_SDIN_SEL_CODEC      0x00004000
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_FPGA_SDIN_SEL_BRIDGE     0x00008000
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_FPGA_SDIN_SEL_FPGA       0x0000C000
+
+// FPGA_REG_QSPI_MEM_CNTRL
+#define FPGA_REG_QSPI_MEM_CNTRL_WR_REQUEST                      BIT(0)
+#define FPGA_REG_QSPI_MEM_CNTRL_WR_REQUEST_Q                    BIT(1)
+#define FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST                      BIT(2)
+#define FPGA_REG_QSPI_MEM_CNTRL_RD_REQUEST_Q                    BIT(3)
+#define FPGA_REG_QSPI_MEM_CNTRL_DATA_IN_SEL_AUDIO_I2S_LEFT      0x00000000
+#define FPGA_REG_QSPI_MEM_CNTRL_DATA_IN_SEL_AUDIO_I2S_RIGHT     0x00000100
+
 
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
 #define FPGA_DDC_LO_CLK_FREQ    SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
@@ -133,5 +149,8 @@ void fpga_i2s_mux_set_bridge_sdin(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_bridge_sdin();
 void fpga_i2s_mux_set_fpga_sdin(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_fpga_sdin();
+
+
+void fpga_psram_test(); // TODO: Remove this
 
 #endif // __FPGA_H__
