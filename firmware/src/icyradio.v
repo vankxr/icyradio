@@ -141,7 +141,7 @@ assign dac_clk              = clk4; // DAC clock is CLK4
 assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the DDC)
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the DDC)
 assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK4
-assign qspi_mem_clk         = clk2; // QSPI memory clock is CLK1
+assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
 assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
@@ -164,21 +164,21 @@ assign extrst = (|extrst_pipe) | porst; // External pin reset
 
 // Module reset lines
 wire adc_dpram_rst;
-reg  adc_dpram_soft_rst; // Controlled by host via SPI
+wire adc_dpram_soft_rst; // Controlled by SMC via SPI
 wire adc_rst;
-reg  adc_soft_rst; // Controlled by host via SPI
+wire adc_soft_rst; // Controlled by SMC via SPI
 wire ddc_rst;
-reg  ddc_soft_rst; // Controlled by host via SPI
+wire ddc_soft_rst; // Controlled by SMC via SPI
 wire dac_rst;
-reg  dac_soft_rst; // Controlled by host via SPI
+wire dac_soft_rst; // Controlled by SMC via SPI
 wire bb_i2s_rst;
-reg  bb_i2s_soft_rst; // Controlled by host via SPI
+wire bb_i2s_soft_rst; // Controlled by SMC via SPI
 wire audio_i2s_rst;
-reg  audio_i2s_soft_rst; // Controlled by host via SPI
+wire audio_i2s_soft_rst; // Controlled by SMC via SPI
 wire qspi_mem_rst;
-reg  qspi_mem_soft_rst; // Controlled by host via SPI
+wire qspi_mem_soft_rst; // Controlled by SMC via SPI
 wire led_rst;
-reg  led_soft_rst; // Controlled by host via SPI
+wire led_soft_rst; // Controlled by SMC via SPI
 wire irq_rst;
 wire cntrl_spi_rst;
 
@@ -205,12 +205,12 @@ always @(posedge rst_clk)
 localparam ADC_DPRAM_SIZE = 12; // 2 ^ 12 = 4096 (4K samples)
 
 // Inputs
-reg  [ADC_DPRAM_SIZE - 1:0] adc_dpram_rd_addr; // Controlled by host via SPI
+wire [ADC_DPRAM_SIZE - 1:0] adc_dpram_rd_addr; // Controlled by SMC via SPI
 reg  [ADC_DPRAM_SIZE - 1:0] adc_dpram_wr_addr;
 reg  [16:0]                 adc_dpram_data_in;
-wire [16:0]                 adc_dpram_data_out; // Controlled by host via SPI
-reg                         adc_dpram_wr_req; // Controlled by host via SPI
-reg                         adc_dpram_rd_addr_inc; // Controlled by host via SPI
+wire [16:0]                 adc_dpram_data_out; // Used by SMC via SPI
+wire                        adc_dpram_wr_req; // Controlled by SMC via SPI
+wire                        adc_dpram_rd_addr_inc; // Controlled by SMC via SPI
 reg                         adc_dpram_wr_en;
 
 // Module
@@ -304,10 +304,10 @@ always @(posedge adc_clk)
 // Inputs
 wire signed [15:0] ddc_i;
 wire signed [15:0] ddc_q;
-reg         [25:0] ddc_lo_freq; // Controlled by host via SPI
+wire        [25:0] ddc_lo_freq; // Controlled by SMC via SPI
 wire               ddc_valid;
-reg                ddc_lo_ns_en; // Controlled by host via SPI
-reg                ddc_iq_swap; // Controlled by host via SPI
+wire               ddc_lo_ns_en; // Controlled by SMC via SPI
+wire               ddc_iq_swap; // Controlled by SMC via SPI
 
 // Module
 ddc adc_ddc
@@ -344,8 +344,8 @@ dac_data [13:0]
 );
 
 // Test Sine wave samples
-reg signed [15:0] dac_test_rom [0:31];
-reg        [4:0]  dac_test_rom_rd_addr;
+reg signed [15:0] dac_test_rom [0:511];
+reg        [8:0]  dac_test_rom_rd_addr;
 
 initial
     $readmemh("./src/dac_sine_test_lut.memh", dac_test_rom);
@@ -356,16 +356,16 @@ always @(posedge dac_clk)
     begin
         if(dac_rst)
             begin
-                dac_data_pos <= 14'h0000; // 2's complement min (14 bit)
+                dac_data_pos <= 14'h0000;
                 dac_data_neg <= 14'h0000;
 
-                dac_test_rom_rd_addr <= 5'b00000;
+                dac_test_rom_rd_addr <= 8'h00;
             end
         else
             begin
                 dac_test_rom_rd_addr <= dac_test_rom_rd_addr + 1;
 
-                dac_data_pos <= dac_test_rom[dac_test_rom_rd_addr + 9][13:0];
+                dac_data_pos <= dac_test_rom[dac_test_rom_rd_addr + 129][13:0];
                 dac_data_neg <= dac_test_rom[dac_test_rom_rd_addr][13:0];
             end
     end
@@ -566,8 +566,8 @@ assign I2S_BRG_SDOUT = audio_i2s_brg_sdout;
 assign I2S_BRG_SDIN = audio_i2s_brg_sdin;
 
 // Clock mux
-reg  [1:0] audio_i2s_dsp_clk_sel; // Controlled by host via SPI
-reg  [1:0] audio_i2s_codec_clk_sel; // Controlled by host via SPI
+wire [1:0] audio_i2s_dsp_clk_sel; // Controlled by SMC via SPI
+wire [1:0] audio_i2s_codec_clk_sel; // Controlled by SMC via SPI
 
 assign audio_i2s_dsp_clk_oe = audio_i2s_dsp_clk_sel[1];
 
@@ -620,10 +620,10 @@ always @(*)
     end
 
 // Data mux
-reg  [1:0] audio_i2s_dsp_sdin_sel; // Controlled by host via SPI
-reg  [1:0] audio_i2s_codec_sdin_sel; // Controlled by host via SPI
-reg  [1:0] audio_i2s_brg_sdin_sel; // Controlled by host via SPI
-reg  [1:0] audio_i2s_sdin_sel; // Controlled by host via SPI
+wire [1:0] audio_i2s_dsp_sdin_sel; // Controlled by SMC via SPI
+wire [1:0] audio_i2s_codec_sdin_sel; // Controlled by SMC via SPI
+wire [1:0] audio_i2s_brg_sdin_sel; // Controlled by SMC via SPI
+wire [1:0] audio_i2s_sdin_sel; // Controlled by SMC via SPI
 
 always @(*)
     begin
@@ -684,20 +684,20 @@ always @(*)
 
 /// QSPI Memory interface ///
 // Inputs
-reg  [21:0] qspi_mem_start_addr; // Controlled by host via SPI
-reg  [21:0] qspi_mem_end_addr; // Controlled by host via SPI
+wire [21:0] qspi_mem_start_addr; // Controlled by SMC via SPI
+wire [21:0] qspi_mem_end_addr; // Controlled by SMC via SPI
 reg  [21:0] qspi_mem_addr;
-wire [15:0] qspi_mem_data_out;
-reg  [2:0]  qspi_mem_data_in_sel; // Controlled by host via SPI
+wire [15:0] qspi_mem_data_out; // Used by SMC via SPI
+wire [2:0]  qspi_mem_data_in_sel; // Controlled by SMC via SPI
 reg  [15:0] qspi_mem_data_in;
 wire        qspi_mem_wr_valid;
 reg         qspi_mem_wr_valid_ed;
 wire        qspi_mem_rd_valid;
 reg         qspi_mem_rd_valid_ed;
-reg         qspi_mem_wr_req; // Controlled by host via SPI
-reg         qspi_mem_wr_req_q;
-reg         qspi_mem_rd_req; // Controlled by host via SPI
-reg         qspi_mem_rd_req_q;
+wire        qspi_mem_wr_req; // Controlled by SMC via SPI
+wire        qspi_mem_rd_req; // Controlled by SMC via SPI
+reg         qspi_mem_ctrl_wr_req;
+reg         qspi_mem_ctrl_rd_req;
 reg  [6:0]  qspi_mem_clk_div;
 wire        qspi_mem_sck;
 wire        qspi_mem_sdata_oe;
@@ -741,8 +741,8 @@ qspi_master qspi_mem
     .data_in(qspi_mem_data_in),
     .wr_valid(qspi_mem_wr_valid),
     .rd_valid(qspi_mem_rd_valid),
-    .wr_req(qspi_mem_wr_req_q),
-    .rd_req(qspi_mem_rd_req_q)
+    .wr_req(qspi_mem_ctrl_wr_req),
+    .rd_req(qspi_mem_ctrl_rd_req)
 );
 
 always @(posedge qspi_mem_clk)
@@ -754,26 +754,23 @@ always @(posedge qspi_mem_clk)
 
                 qspi_mem_wr_valid_ed <= 1'b0;
                 qspi_mem_rd_valid_ed <= 1'b0;
-                qspi_mem_wr_req_q <= 1'b0;
-                qspi_mem_rd_req_q <= 1'b0;
+                qspi_mem_ctrl_wr_req <= 1'b0;
+                qspi_mem_ctrl_rd_req <= 1'b0;
             end
         else
             begin
                 qspi_mem_wr_valid_ed <= qspi_mem_wr_valid;
                 qspi_mem_rd_valid_ed <= qspi_mem_rd_valid;
 
-                if(qspi_mem_rd_req && !qspi_mem_rd_req_q && !qspi_mem_wr_req && !qspi_mem_wr_req_q)
+                if(!qspi_mem_ctrl_rd_req && !qspi_mem_ctrl_wr_req)
                     begin
-                        qspi_mem_rd_req_q <= 1'b1;
-
                         qspi_mem_addr <= qspi_mem_start_addr;
-                    end
 
-                if(qspi_mem_wr_req && !qspi_mem_wr_req_q && !qspi_mem_rd_req && !qspi_mem_rd_req_q)
-                    begin
-                        qspi_mem_wr_req_q <= 1'b1;
+                        if(qspi_mem_rd_req && !qspi_mem_wr_req)
+                            qspi_mem_ctrl_rd_req <= 1'b1;
 
-                        qspi_mem_addr <= qspi_mem_start_addr;
+                        if(qspi_mem_wr_req && !qspi_mem_rd_req)
+                            qspi_mem_ctrl_wr_req <= 1'b1;
                     end
 
                 if((qspi_mem_wr_valid_ed && !qspi_mem_wr_valid) || (!qspi_mem_rd_valid_ed && qspi_mem_rd_valid))
@@ -792,15 +789,15 @@ always @(posedge qspi_mem_clk)
                                 end
                             default:
                                 begin
-                                    qspi_mem_data_in <= 16'hA567;
+                                    qspi_mem_data_in <= 16'hA5A5;
                                 end
                         endcase
                     end
 
                 if(qspi_mem_addr[21:1] == qspi_mem_end_addr[21:1])
                     begin
-                        qspi_mem_rd_req_q <= 1'b0;
-                        qspi_mem_wr_req_q <= 1'b0;
+                        qspi_mem_ctrl_rd_req <= 1'b0;
+                        qspi_mem_ctrl_wr_req <= 1'b0;
                     end
             end
     end
@@ -808,10 +805,10 @@ always @(posedge qspi_mem_clk)
 
 /// LED ///
 // Inputs
-reg [11:0] led_cnt;
-reg [11:0] led_duty [0:2]; // Controlled by host via SPI
-reg [2:0]  led_en; // Controlled by host via SPI
-reg [2:0]  led_status;
+reg  [11:0] led_cnt;
+wire [11:0] led_duty [0:2]; // Controlled by SMC via SPI
+wire [2:0]  led_en; // Controlled by SMC via SPI
+reg  [2:0]  led_status;
 
 assign RED_LED = led_status[0] & !led_rst & led_en[0];
 assign GREEN_LED = led_status[1] & !led_rst & led_en[1];
@@ -862,9 +859,9 @@ wire [IRQ_COUNT - 1:0] irq_lines;
 wire [IRQ_COUNT - 1:0] irq_lines_q;
 reg  [IRQ_COUNT - 1:0] irq_lines_ed;
 reg  [IRQ_COUNT - 1:0] irq_state;
-reg  [IRQ_COUNT - 1:0] irq_mask [0:1]; // Controlled by host via SPI
-reg  [IRQ_COUNT - 1:0] irq_clear; // Controlled by host via SPI
-reg  [IRQ_COUNT - 1:0] irq_set; // Controlled by host via SPI
+wire [IRQ_COUNT - 1:0] irq_mask [0:1]; // Controlled by SMC via SPI
+wire [IRQ_COUNT - 1:0] irq_clear; // Controlled by SMC via SPI
+wire [IRQ_COUNT - 1:0] irq_set; // Controlled by SMC via SPI
 
 assign SMC_IRQn = !(|(irq_state & irq_mask[0]));
 assign DSP_IRQn = !(|(irq_state & irq_mask[1]));
@@ -941,22 +938,7 @@ assign SPI_SCK = cntrl_spi_sck;
 assign SPI_MOSI = cntrl_spi_mosi;
 assign SPI_CSn = cntrl_spi_ncs;
 
-// Module
-spi_slave cntrl_spi
-(
-    .clk(cntrl_spi_clk),
-    .reset(cntrl_spi_rst),
-    .spi_sck(cntrl_spi_sck),
-    .spi_mosi(cntrl_spi_mosi),
-    .spi_miso(cntrl_spi_miso),
-    .spi_ncs(cntrl_spi_ncs),
-    .addr(cntrl_spi_addr),
-    .data_out(cntrl_spi_data_out),
-    .data_in(cntrl_spi_data_in),
-    .wr_en(cntrl_spi_wr_en),
-    .rd_en(cntrl_spi_rd_en)
-);
-
+// Registers
 localparam CNTRL_SPI_REG_ID                     = 7'h00;
 localparam CNTRL_SPI_REG_RST_CNTRL              = 7'h01;
 localparam CNTRL_SPI_REG_IRQ_CNTRL_STATUS       = 7'h02;
@@ -976,63 +958,341 @@ localparam CNTRL_SPI_REG_QSPI_MEM_START_ADDR    = 7'h52;
 localparam CNTRL_SPI_REG_QSPI_MEM_END_ADDR      = 7'h53;
 localparam CNTRL_SPI_REG_QSPI_MEM_DATA          = 7'h54;
 
+// Register parameters
+//// CNTRL_SPI_REG_RST_CNTRL
+reg  cntrl_spi_adc_dpram_soft_rst;
+reg  cntrl_spi_adc_soft_rst;
+reg  cntrl_spi_ddc_soft_rst;
+reg  cntrl_spi_dac_soft_rst;
+reg  cntrl_spi_bb_i2s_soft_rst;
+reg  cntrl_spi_audio_i2s_soft_rst;
+reg  cntrl_spi_qspi_mem_soft_rst;
+reg  cntrl_spi_led_soft_rst;
+
+//// CNTRL_SPI_REG_IRQ_CNTRL_STATUS
+wire [IRQ_COUNT - 1:0] cntrl_spi_irq_state;
+reg  [IRQ_COUNT - 1:0] cntrl_spi_irq_mask [0:1];
+reg  [IRQ_COUNT - 1:0] cntrl_spi_irq_clear;
+reg  [IRQ_COUNT - 1:0] cntrl_spi_irq_set;
+
+//// CNTRL_SPI_REG_LED_CNTRL
+reg  [2:0]  cntrl_spi_led_en;
+
+//// CNTRL_SPI_REG_RED_LED_DUTY
+//// CNTRL_SPI_REG_GREEN_LED_DUTY
+//// CNTRL_SPI_REG_BLUE_LED_DUTY
+reg  [11:0] cntrl_spi_led_duty [0:2];
+
+//// CNTRL_SPI_REG_ADC_DPRAM_CNTRL
+reg  cntrl_spi_adc_dpram_wr_req;
+wire cntrl_spi_adc_dpram_wr_en;
+reg  cntrl_spi_adc_dpram_rd_addr_inc;
+
+//// CNTRL_SPI_REG_ADC_DPRAM_ADDR
+wire [ADC_DPRAM_SIZE - 1:0] cntrl_spi_adc_dpram_wr_addr;
+reg  [ADC_DPRAM_SIZE - 1:0] cntrl_spi_adc_dpram_rd_addr;
+
+//// CNTRL_SPI_REG_ADC_DPRAM_DATA
+wire [16:0] cntrl_spi_adc_dpram_data_out;
+
+//// CNTRL_SPI_REG_DDC_CNTRL
+reg  cntrl_spi_ddc_lo_ns_en;
+reg  cntrl_spi_ddc_iq_swap;
+
+//// CNTRL_SPI_REG_DDC_LO_FREQ
+reg  [25:0] cntrl_spi_ddc_lo_freq;
+
+//// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
+reg  [1:0]  cntrl_spi_audio_i2s_dsp_clk_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_codec_clk_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_dsp_sdin_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_codec_sdin_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_brg_sdin_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_sdin_sel;
+
+//// CNTRL_SPI_REG_QSPI_MEM_CNTRL
+reg         cntrl_spi_qspi_mem_wr_req;
+reg         cntrl_spi_qspi_mem_rd_req;
+wire        cntrl_spi_qspi_mem_ctrl_wr_req;
+wire        cntrl_spi_qspi_mem_ctrl_rd_req;
+reg  [2:0]  cntrl_spi_qspi_mem_data_in_sel;
+
+//// CNTRL_SPI_REG_QSPI_MEM_ADDR
+wire [21:0] cntrl_spi_qspi_mem_addr;
+
+//// CNTRL_SPI_REG_QSPI_MEM_START_ADDR
+reg  [21:0] cntrl_spi_qspi_mem_start_addr;
+
+//// CNTRL_SPI_REG_QSPI_MEM_END_ADDR
+reg  [21:0] cntrl_spi_qspi_mem_end_addr;
+
+//// CNTRL_SPI_REG_QSPI_MEM_DATA
+wire [15:0] cntrl_spi_qspi_mem_data_out;
+
+// Synchronizers
+//// CNTRL_SPI_REG_RST_CNTRL
+synchronizer cntrl_spi_adc_dpram_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_adc_dpram_soft_rst),
+    .out(adc_dpram_soft_rst)
+);
+synchronizer cntrl_spi_adc_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_adc_soft_rst),
+    .out(adc_soft_rst)
+);
+synchronizer cntrl_spi_ddc_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_ddc_soft_rst),
+    .out(ddc_soft_rst)
+);
+synchronizer cntrl_spi_dac_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_dac_soft_rst),
+    .out(dac_soft_rst)
+);
+synchronizer cntrl_spi_bb_i2s_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_bb_i2s_soft_rst),
+    .out(bb_i2s_soft_rst)
+);
+synchronizer cntrl_spi_audio_i2s_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_audio_i2s_soft_rst),
+    .out(audio_i2s_soft_rst)
+);
+synchronizer cntrl_spi_qspi_mem_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_qspi_mem_soft_rst),
+    .out(qspi_mem_soft_rst)
+);
+synchronizer cntrl_spi_led_soft_rst_sync
+(
+    .clk(rst_clk),
+    .in(cntrl_spi_led_soft_rst),
+    .out(led_soft_rst)
+);
+
+//// CNTRL_SPI_REG_IRQ_CNTRL_STATUS
+assign cntrl_spi_irq_state = irq_state; // No sync needed since runs on the same clock
+assign irq_mask[0] = cntrl_spi_irq_mask[0]; // No sync needed since runs on the same clock
+assign irq_mask[1] = cntrl_spi_irq_mask[1]; // No sync needed since runs on the same clock
+assign irq_clear = cntrl_spi_irq_clear; // No sync needed since runs on the same clock
+assign irq_set = cntrl_spi_irq_set; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_LED_CNTRL
+assign led_en = cntrl_spi_led_en; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_RED_LED_DUTY
+assign led_duty[0] = cntrl_spi_led_duty[0]; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_GREEN_LED_DUTY
+assign led_duty[1] = cntrl_spi_led_duty[1]; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_BLUE_LED_DUTY
+assign led_duty[2] = cntrl_spi_led_duty[2]; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_ADC_DPRAM_CNTRL
+synchronizer cntrl_spi_adc_dpram_wr_req_sync
+(
+    .clk(adc_dpram_wr_clk),
+    .in(cntrl_spi_adc_dpram_wr_req),
+    .out(adc_dpram_wr_req)
+);
+synchronizer cntrl_spi_adc_dpram_wr_en_sync
+(
+    .clk(cntrl_spi_clk),
+    .in(adc_dpram_wr_en),
+    .out(cntrl_spi_adc_dpram_wr_en)
+);
+assign adc_dpram_rd_addr_inc = cntrl_spi_adc_dpram_rd_addr_inc; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_ADC_DPRAM_ADDR
+synchronizer cntrl_spi_adc_dpram_wr_addr_sync [ADC_DPRAM_SIZE - 1:0]
+(
+    .clk(cntrl_spi_clk),
+    .in(adc_dpram_wr_addr),
+    .out(cntrl_spi_adc_dpram_wr_addr)
+);
+assign adc_dpram_rd_addr = cntrl_spi_adc_dpram_rd_addr; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_ADC_DPRAM_DATA
+assign cntrl_spi_adc_dpram_data_out = adc_dpram_data_out; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_DDC_CNTRL
+synchronizer cntrl_spi_ddc_lo_ns_en_sync
+(
+    .clk(ddc_clk),
+    .in(cntrl_spi_ddc_lo_ns_en),
+    .out(ddc_lo_ns_en)
+);
+synchronizer cntrl_spi_ddc_iq_swap_sync
+(
+    .clk(ddc_clk),
+    .in(cntrl_spi_ddc_iq_swap),
+    .out(ddc_iq_swap)
+);
+
+//// CNTRL_SPI_REG_DDC_LO_FREQ
+synchronizer cntrl_spi_ddc_lo_freq_sync [25:0]
+(
+    .clk(ddc_clk),
+    .in(cntrl_spi_ddc_lo_freq),
+    .out(ddc_lo_freq)
+);
+
+//// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
+assign audio_i2s_dsp_clk_sel = cntrl_spi_audio_i2s_dsp_clk_sel; // No sync needed
+assign audio_i2s_codec_clk_sel = cntrl_spi_audio_i2s_codec_clk_sel; // No sync needed
+assign audio_i2s_dsp_sdin_sel = cntrl_spi_audio_i2s_dsp_sdin_sel; // No sync needed
+assign audio_i2s_codec_sdin_sel = cntrl_spi_audio_i2s_codec_sdin_sel; // No sync needed
+assign audio_i2s_brg_sdin_sel = cntrl_spi_audio_i2s_brg_sdin_sel; // No sync needed
+assign audio_i2s_sdin_sel = cntrl_spi_audio_i2s_sdin_sel; // No sync needed
+
+//// CNTRL_SPI_REG_QSPI_MEM_CNTRL
+synchronizer cntrl_spi_qspi_mem_wr_req_sync
+(
+    .clk(qspi_mem_clk),
+    .in(cntrl_spi_qspi_mem_wr_req),
+    .out(qspi_mem_wr_req)
+);
+synchronizer cntrl_spi_qspi_mem_rd_req_sync
+(
+    .clk(qspi_mem_clk),
+    .in(cntrl_spi_qspi_mem_rd_req),
+    .out(qspi_mem_rd_req)
+);
+synchronizer cntrl_spi_qspi_mem_ctrl_wr_req_sync
+(
+    .clk(cntrl_spi_clk),
+    .in(qspi_mem_ctrl_wr_req),
+    .out(cntrl_spi_qspi_mem_ctrl_wr_req)
+);
+synchronizer cntrl_spi_qspi_mem_ctrl_rd_req_sync
+(
+    .clk(cntrl_spi_clk),
+    .in(qspi_mem_ctrl_rd_req),
+    .out(cntrl_spi_qspi_mem_ctrl_rd_req)
+);
+synchronizer cntrl_spi_qspi_mem_data_in_sel_sync [2:0]
+(
+    .clk(qspi_mem_clk),
+    .in(cntrl_spi_qspi_mem_data_in_sel),
+    .out(qspi_mem_data_in_sel)
+);
+
+//// CNTRL_SPI_REG_QSPI_MEM_ADDR
+synchronizer cntrl_spi_qspi_mem_addr_sync [21:0]
+(
+    .clk(cntrl_spi_clk),
+    .in(qspi_mem_addr),
+    .out(cntrl_spi_qspi_mem_addr)
+);
+
+//// CNTRL_SPI_REG_QSPI_MEM_START_ADDR
+synchronizer cntrl_spi_qspi_mem_start_addr_sync [21:0]
+(
+    .clk(qspi_mem_clk),
+    .in(cntrl_spi_qspi_mem_start_addr),
+    .out(qspi_mem_start_addr)
+);
+
+//// CNTRL_SPI_REG_QSPI_MEM_END_ADDR
+synchronizer cntrl_spi_qspi_mem_end_addr_sync [21:0]
+(
+    .clk(qspi_mem_clk),
+    .in(cntrl_spi_qspi_mem_end_addr),
+    .out(qspi_mem_end_addr)
+);
+
+//// CNTRL_SPI_REG_QSPI_MEM_DATA
+synchronizer cntrl_spi_qspi_mem_data_out_sync [15:0]
+(
+    .clk(cntrl_spi_clk),
+    .in(qspi_mem_data_out),
+    .out(cntrl_spi_qspi_mem_data_out)
+);
+
+// Module
+spi_slave cntrl_spi
+(
+    .clk(cntrl_spi_clk),
+    .reset(cntrl_spi_rst),
+    .spi_sck(cntrl_spi_sck),
+    .spi_mosi(cntrl_spi_mosi),
+    .spi_miso(cntrl_spi_miso),
+    .spi_ncs(cntrl_spi_ncs),
+    .addr(cntrl_spi_addr),
+    .data_out(cntrl_spi_data_out),
+    .data_in(cntrl_spi_data_in),
+    .wr_en(cntrl_spi_wr_en),
+    .rd_en(cntrl_spi_rd_en)
+);
+
 always @(posedge cntrl_spi_clk)
     begin
         if(cntrl_spi_rst) // Register reset values
             begin
-                adc_dpram_soft_rst <= 1'b1;
-                adc_soft_rst <= 1'b1;
-                dac_soft_rst <= 1'b1;
-                ddc_soft_rst <= 1'b1;
-                bb_i2s_soft_rst <= 1'b1;
-                audio_i2s_soft_rst <= 1'b1;
-                qspi_mem_soft_rst <= 1'b1;
-                led_soft_rst <= 1'b1;
+                cntrl_spi_adc_dpram_soft_rst <= 1'b1;
+                cntrl_spi_adc_soft_rst <= 1'b1;
+                cntrl_spi_ddc_soft_rst <= 1'b1;
+                cntrl_spi_dac_soft_rst <= 1'b1;
+                cntrl_spi_bb_i2s_soft_rst <= 1'b1;
+                cntrl_spi_audio_i2s_soft_rst <= 1'b1;
+                cntrl_spi_qspi_mem_soft_rst <= 1'b1;
+                cntrl_spi_led_soft_rst <= 1'b1;
 
-                irq_mask[0] <= {IRQ_COUNT{1'b0}};
-                irq_mask[1] <= {IRQ_COUNT{1'b0}};
-                irq_clear <= {IRQ_COUNT{1'b0}};
-                irq_set <= {IRQ_COUNT{1'b0}};
+                cntrl_spi_irq_mask[0] <= {IRQ_COUNT{1'b0}};
+                cntrl_spi_irq_mask[1] <= {IRQ_COUNT{1'b0}};
+                cntrl_spi_irq_clear <= {IRQ_COUNT{1'b0}};
+                cntrl_spi_irq_set <= {IRQ_COUNT{1'b0}};
 
-                led_en <= 3'b000;
-                led_duty[0] <= 12'h000;
-                led_duty[1] <= 12'h000;
-                led_duty[2] <= 12'h000;
+                cntrl_spi_led_en <= 3'b000;
+                cntrl_spi_led_duty[0] <= 12'h000;
+                cntrl_spi_led_duty[1] <= 12'h000;
+                cntrl_spi_led_duty[2] <= 12'h000;
 
-                adc_dpram_wr_req <= 1'b0;
-                adc_dpram_rd_addr_inc <= 1'b0;
+                cntrl_spi_adc_dpram_wr_req <= 1'b0;
+                cntrl_spi_adc_dpram_rd_addr_inc <= 1'b0;
 
-                adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
+                cntrl_spi_adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
 
-                ddc_lo_ns_en <= 1'b0;
-                ddc_iq_swap <= 1'b0;
+                cntrl_spi_ddc_lo_ns_en <= 1'b0;
+                cntrl_spi_ddc_iq_swap <= 1'b0;
 
-                ddc_lo_freq <= 26'h0000000;
+                cntrl_spi_ddc_lo_freq <= 26'h0000000;
 
-                audio_i2s_dsp_clk_sel <= 2'b00;
-                audio_i2s_codec_clk_sel <= 2'b01;
-                audio_i2s_dsp_sdin_sel <= 2'b00;
-                audio_i2s_codec_sdin_sel <= 2'b01;
-                audio_i2s_brg_sdin_sel <= 2'b10;
-                audio_i2s_sdin_sel <= 2'b11;
+                cntrl_spi_audio_i2s_dsp_clk_sel <= 2'b00;
+                cntrl_spi_audio_i2s_codec_clk_sel <= 2'b01;
+                cntrl_spi_audio_i2s_dsp_sdin_sel <= 2'b00;
+                cntrl_spi_audio_i2s_codec_sdin_sel <= 2'b01;
+                cntrl_spi_audio_i2s_brg_sdin_sel <= 2'b10;
+                cntrl_spi_audio_i2s_sdin_sel <= 2'b11;
 
-                qspi_mem_wr_req <= 1'b0;
-                qspi_mem_rd_req <= 1'b0;
-                qspi_mem_data_in_sel <= 3'b000;
+                cntrl_spi_qspi_mem_wr_req <= 1'b0;
+                cntrl_spi_qspi_mem_rd_req <= 1'b0;
+                cntrl_spi_qspi_mem_data_in_sel <= 3'b000;
 
-                qspi_mem_start_addr <= 22'h000000;
+                cntrl_spi_qspi_mem_start_addr <= 22'h000000;
 
-                qspi_mem_end_addr <= 22'h000000;
+                cntrl_spi_qspi_mem_end_addr <= 22'h000000;
             end
         else
             begin
-                irq_clear <= irq_state & irq_clear; // Remove IRQ clear requests on lines that are already cleared
-                irq_set <= ~irq_state & irq_set; // Remove IRQ set requests on lines that are already set
+                cntrl_spi_irq_clear <= cntrl_spi_irq_state & cntrl_spi_irq_clear; // Remove IRQ clear requests on lines that are already cleared
+                cntrl_spi_irq_set <= ~cntrl_spi_irq_state & cntrl_spi_irq_set; // Remove IRQ set requests on lines that are already set
 
-                adc_dpram_wr_req <= ~adc_dpram_wr_en & adc_dpram_wr_req; // Remove ADC DPRAM write request if the write enable strobe is already set
+                cntrl_spi_adc_dpram_wr_req <= ~cntrl_spi_adc_dpram_wr_en & cntrl_spi_adc_dpram_wr_req; // Remove ADC DPRAM write request if the write enable strobe is already set
 
-                qspi_mem_wr_req <= ~qspi_mem_wr_req_q & qspi_mem_wr_req; // Remove QSPI write request if the qualified request is already set
-                qspi_mem_rd_req <= ~qspi_mem_rd_req_q & qspi_mem_rd_req; // Remove QSPI read request if the qualified request is already set
+                cntrl_spi_qspi_mem_wr_req <= ~cntrl_spi_qspi_mem_ctrl_wr_req & cntrl_spi_qspi_mem_wr_req; // Remove QSPI write request if the qualified request is already set
+                cntrl_spi_qspi_mem_rd_req <= ~cntrl_spi_qspi_mem_ctrl_rd_req & cntrl_spi_qspi_mem_rd_req; // Remove QSPI read request if the qualified request is already set
 
                 if(cntrl_spi_wr_en) // Synchronous writes
                     begin
@@ -1043,46 +1303,46 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    adc_dpram_soft_rst <= cntrl_spi_data_out[0];
-                                    adc_soft_rst <= cntrl_spi_data_out[1];
-                                    ddc_soft_rst <= cntrl_spi_data_out[2];
-                                    dac_soft_rst <= cntrl_spi_data_out[3];
-                                    bb_i2s_soft_rst <= cntrl_spi_data_out[4];
-                                    audio_i2s_soft_rst <= cntrl_spi_data_out[5];
-                                    qspi_mem_soft_rst <= cntrl_spi_data_out[6];
-                                    led_soft_rst <= cntrl_spi_data_out[7];
+                                    cntrl_spi_adc_dpram_soft_rst <= cntrl_spi_data_out[0];
+                                    cntrl_spi_adc_soft_rst <= cntrl_spi_data_out[1];
+                                    cntrl_spi_ddc_soft_rst <= cntrl_spi_data_out[2];
+                                    cntrl_spi_dac_soft_rst <= cntrl_spi_data_out[3];
+                                    cntrl_spi_bb_i2s_soft_rst <= cntrl_spi_data_out[4];
+                                    cntrl_spi_audio_i2s_soft_rst <= cntrl_spi_data_out[5];
+                                    cntrl_spi_qspi_mem_soft_rst <= cntrl_spi_data_out[6];
+                                    cntrl_spi_led_soft_rst <= cntrl_spi_data_out[7];
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
-                                    irq_mask[0] <= cntrl_spi_data_out[7:0];
-                                    irq_mask[1] <= cntrl_spi_data_out[15:8];
-                                    irq_clear <= cntrl_spi_data_out[23:16];
-                                    irq_set <= cntrl_spi_data_out[31:24];
+                                    cntrl_spi_irq_mask[0] <= cntrl_spi_data_out[7:0];
+                                    cntrl_spi_irq_mask[1] <= cntrl_spi_data_out[15:8];
+                                    cntrl_spi_irq_clear <= cntrl_spi_data_out[23:16];
+                                    cntrl_spi_irq_set <= cntrl_spi_data_out[31:24];
                                 end
                             CNTRL_SPI_REG_LED_CNTRL:
                                 begin
-                                    led_en <= cntrl_spi_data_out[2:0];
+                                    cntrl_spi_led_en <= cntrl_spi_data_out[2:0];
                                 end
                             CNTRL_SPI_REG_RED_LED_DUTY:
                                 begin
-                                    led_duty[0] <= cntrl_spi_data_out[11:0];
+                                    cntrl_spi_led_duty[0] <= cntrl_spi_data_out[11:0];
                                 end
                             CNTRL_SPI_REG_GREEN_LED_DUTY:
                                 begin
-                                    led_duty[1] <= cntrl_spi_data_out[11:0];
+                                    cntrl_spi_led_duty[1] <= cntrl_spi_data_out[11:0];
                                 end
                             CNTRL_SPI_REG_BLUE_LED_DUTY:
                                 begin
-                                    led_duty[2] <= cntrl_spi_data_out[11:0];
+                                    cntrl_spi_led_duty[2] <= cntrl_spi_data_out[11:0];
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    adc_dpram_wr_req <= cntrl_spi_data_out[0];
-                                    adc_dpram_rd_addr_inc <= cntrl_spi_data_out[2];
+                                    cntrl_spi_adc_dpram_wr_req <= cntrl_spi_data_out[0];
+                                    cntrl_spi_adc_dpram_rd_addr_inc <= cntrl_spi_data_out[2];
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
-                                    adc_dpram_rd_addr <= cntrl_spi_data_out[ADC_DPRAM_SIZE - 1:0];
+                                    cntrl_spi_adc_dpram_rd_addr <= cntrl_spi_data_out[ADC_DPRAM_SIZE - 1:0];
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_DATA:
                                 begin
@@ -1090,27 +1350,27 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_DDC_CNTRL:
                                 begin
-                                    ddc_lo_ns_en <= cntrl_spi_data_out[0];
-                                    ddc_iq_swap <= cntrl_spi_data_out[1];
+                                    cntrl_spi_ddc_lo_ns_en <= cntrl_spi_data_out[0];
+                                    cntrl_spi_ddc_iq_swap <= cntrl_spi_data_out[1];
                                 end
                             CNTRL_SPI_REG_DDC_LO_FREQ:
                                 begin
-                                    ddc_lo_freq <= cntrl_spi_data_out[25:0];
+                                    cntrl_spi_ddc_lo_freq <= cntrl_spi_data_out[25:0];
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    audio_i2s_dsp_clk_sel <= cntrl_spi_data_out[1:0];
-                                    audio_i2s_codec_clk_sel <= cntrl_spi_data_out[3:2];
-                                    audio_i2s_dsp_sdin_sel <= cntrl_spi_data_out[9:8];
-                                    audio_i2s_codec_sdin_sel <= cntrl_spi_data_out[11:10];
-                                    audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[13:12];
-                                    audio_i2s_sdin_sel <= cntrl_spi_data_out[15:14];
+                                    cntrl_spi_audio_i2s_dsp_clk_sel <= cntrl_spi_data_out[1:0];
+                                    cntrl_spi_audio_i2s_codec_clk_sel <= cntrl_spi_data_out[3:2];
+                                    cntrl_spi_audio_i2s_dsp_sdin_sel <= cntrl_spi_data_out[9:8];
+                                    cntrl_spi_audio_i2s_codec_sdin_sel <= cntrl_spi_data_out[11:10];
+                                    cntrl_spi_audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[13:12];
+                                    cntrl_spi_audio_i2s_sdin_sel <= cntrl_spi_data_out[15:14];
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_CNTRL:
                                 begin
-                                    qspi_mem_wr_req <= cntrl_spi_data_out[0];
-                                    qspi_mem_rd_req <= cntrl_spi_data_out[2];
-                                    qspi_mem_data_in_sel <= cntrl_spi_data_out[10:8];
+                                    cntrl_spi_qspi_mem_wr_req <= cntrl_spi_data_out[0];
+                                    cntrl_spi_qspi_mem_rd_req <= cntrl_spi_data_out[2];
+                                    cntrl_spi_qspi_mem_data_in_sel <= cntrl_spi_data_out[10:8];
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_ADDR:
                                 begin
@@ -1118,11 +1378,11 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_START_ADDR:
                                 begin
-                                    qspi_mem_start_addr <= cntrl_spi_data_out[21:0];
+                                    cntrl_spi_qspi_mem_start_addr <= cntrl_spi_data_out[21:0];
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_END_ADDR:
                                 begin
-                                    qspi_mem_end_addr <= cntrl_spi_data_out[21:0];
+                                    cntrl_spi_qspi_mem_end_addr <= cntrl_spi_data_out[21:0];
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_DATA:
                                 begin
@@ -1140,74 +1400,74 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {24'd0, led_soft_rst, qspi_mem_soft_rst, audio_i2s_soft_rst, bb_i2s_soft_rst, dac_soft_rst, ddc_soft_rst, adc_soft_rst, adc_dpram_soft_rst};
+                                    cntrl_spi_data_in <= {24'd0, cntrl_spi_led_soft_rst, cntrl_spi_qspi_mem_soft_rst, cntrl_spi_audio_i2s_soft_rst, cntrl_spi_bb_i2s_soft_rst, cntrl_spi_dac_soft_rst, cntrl_spi_ddc_soft_rst, cntrl_spi_adc_soft_rst, cntrl_spi_adc_dpram_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_CNTRL_STATUS:
                                 begin
-                                    cntrl_spi_data_in <= {8'd0, irq_state, irq_mask[1], irq_mask[0]};
+                                    cntrl_spi_data_in <= {8'd0, cntrl_spi_irq_state, cntrl_spi_irq_mask[1], cntrl_spi_irq_mask[0]};
                                 end
                             CNTRL_SPI_REG_LED_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {29'd0, led_en};
+                                    cntrl_spi_data_in <= {29'd0, cntrl_spi_led_en};
                                 end
                             CNTRL_SPI_REG_RED_LED_DUTY:
                                 begin
-                                    cntrl_spi_data_in <= {20'd0, led_duty[0]};
+                                    cntrl_spi_data_in <= {20'd0, cntrl_spi_led_duty[0]};
                                 end
                             CNTRL_SPI_REG_GREEN_LED_DUTY:
                                 begin
-                                    cntrl_spi_data_in <= {20'd0, led_duty[1]};
+                                    cntrl_spi_data_in <= {20'd0, cntrl_spi_led_duty[1]};
                                 end
                             CNTRL_SPI_REG_BLUE_LED_DUTY:
                                 begin
-                                    cntrl_spi_data_in <= {20'd0, led_duty[2]};
+                                    cntrl_spi_data_in <= {20'd0, cntrl_spi_led_duty[2]};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {29'd0, adc_dpram_rd_addr_inc, adc_dpram_wr_en, adc_dpram_wr_req};
+                                    cntrl_spi_data_in <= {29'd0, cntrl_spi_adc_dpram_rd_addr_inc, cntrl_spi_adc_dpram_wr_en, cntrl_spi_adc_dpram_wr_req};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
-                                    cntrl_spi_data_in <= {{(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_wr_addr, {(16 - ADC_DPRAM_SIZE){1'b0}}, adc_dpram_rd_addr};
+                                    cntrl_spi_data_in <= {{(16 - ADC_DPRAM_SIZE){1'b0}}, cntrl_spi_adc_dpram_wr_addr, {(16 - ADC_DPRAM_SIZE){1'b0}}, cntrl_spi_adc_dpram_rd_addr};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_DATA:
                                 begin
-                                    cntrl_spi_data_in <= {15'd0, adc_dpram_data_out};
+                                    cntrl_spi_data_in <= {15'd0, cntrl_spi_adc_dpram_data_out};
 
-                                    if(adc_dpram_rd_addr_inc)
-                                        adc_dpram_rd_addr <= adc_dpram_rd_addr + 1;
+                                    if(cntrl_spi_adc_dpram_rd_addr_inc)
+                                        cntrl_spi_adc_dpram_rd_addr <= cntrl_spi_adc_dpram_rd_addr + 1;
                                 end
                             CNTRL_SPI_REG_DDC_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {30'd0, ddc_iq_swap, ddc_lo_ns_en};
+                                    cntrl_spi_data_in <= {30'd0, cntrl_spi_ddc_iq_swap, cntrl_spi_ddc_lo_ns_en};
                                 end
                             CNTRL_SPI_REG_DDC_LO_FREQ:
                                 begin
-                                    cntrl_spi_data_in <= {6'd0, ddc_lo_freq};
+                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_ddc_lo_freq};
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    cntrl_spi_data_in <= {16'd0, audio_i2s_sdin_sel, audio_i2s_brg_sdin_sel, audio_i2s_codec_sdin_sel, audio_i2s_dsp_sdin_sel, 4'b0000, audio_i2s_codec_clk_sel, audio_i2s_dsp_clk_sel};
+                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_audio_i2s_sdin_sel, cntrl_spi_audio_i2s_brg_sdin_sel, cntrl_spi_audio_i2s_codec_sdin_sel, cntrl_spi_audio_i2s_dsp_sdin_sel, 4'b0000, cntrl_spi_audio_i2s_codec_clk_sel, cntrl_spi_audio_i2s_dsp_clk_sel};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {21'd0, qspi_mem_data_in_sel, 4'b0000, qspi_mem_rd_req_q, qspi_mem_rd_req, qspi_mem_wr_req_q, qspi_mem_wr_req};
+                                    cntrl_spi_data_in <= {21'd0, cntrl_spi_qspi_mem_data_in_sel, 4'b0000, cntrl_spi_qspi_mem_ctrl_rd_req, cntrl_spi_qspi_mem_rd_req, cntrl_spi_qspi_mem_ctrl_wr_req, cntrl_spi_qspi_mem_wr_req};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_ADDR:
                                 begin
-                                    cntrl_spi_data_in <= {10'd0, qspi_mem_addr};
+                                    cntrl_spi_data_in <= {10'd0, cntrl_spi_qspi_mem_addr};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_START_ADDR:
                                 begin
-                                    cntrl_spi_data_in <= {10'd0, qspi_mem_start_addr};
+                                    cntrl_spi_data_in <= {10'd0, cntrl_spi_qspi_mem_start_addr};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_END_ADDR:
                                 begin
-                                    cntrl_spi_data_in <= {10'd0, qspi_mem_end_addr};
+                                    cntrl_spi_data_in <= {10'd0, cntrl_spi_qspi_mem_end_addr};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_DATA:
                                 begin
-                                    cntrl_spi_data_in <= {16'd0, qspi_mem_data_out};
+                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_qspi_mem_data_out};
                                 end
                             default:
                                 begin

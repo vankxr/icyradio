@@ -552,7 +552,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(93000000))
+    if(r820t2_set_freq(89000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -565,7 +565,7 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(94000000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(93000000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -589,7 +589,7 @@ void init_rx_chain()
     rx_get_psd(pfRXPSD);
 
     DBGPRINTLN_CTX("RX hard-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(94000000)));
+    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(93000000)));
 
     uint32_t ulMaxPowerFrequency = 0;
     float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
