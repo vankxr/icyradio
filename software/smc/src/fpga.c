@@ -275,7 +275,7 @@ void fpga_psram_test() // TODO: Remove this
     #include "debug_macros.h"
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_QSPI_SOFT_RST, 0);
-    delay_ms(80);
+    delay_ms(100);
 
     fpga_write_register(FPGA_REG_QSPI_MEM_START_ADDR, 0x00000000);
     fpga_write_register(FPGA_REG_QSPI_MEM_END_ADDR, 0x00000010);

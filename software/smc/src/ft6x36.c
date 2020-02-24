@@ -36,9 +36,12 @@ uint8_t ft6x36_init()
     TFT_TOUCH_RESET();
     delay_ms(10);
     TFT_TOUCH_UNRESET();
-    delay_ms(10);
+    delay_ms(300);
 
     if(!i2c0_write(FT6X06_I2C_ADDR, NULL, 0, I2C_STOP)) // Check ACK from the expected address
+        return 0;
+
+    if(ft6x36_get_chip_id() != 0x36)
         return 0;
 
     ft6x36_write_register(FT6X06_REG_PERIODACTIVE, 0x01);

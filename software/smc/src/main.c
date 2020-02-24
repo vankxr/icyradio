@@ -50,6 +50,7 @@ static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
 
 static void rx_get_psd(float *pfPower);
+static void rx_draw_psd(tft_graph_t *pGraph, float *pfPower);
 static float rx_get_max_power(float *pfPower, uint32_t *pulFrequency);
 static float rx_get_power(float *pfPower, uint32_t ulFrequency);
 
@@ -263,6 +264,30 @@ void rx_get_psd(float *pfPower)
     }
 
     free(pulTDData);
+}
+void rx_draw_psd(tft_graph_t *pGraph, float *pfPower)
+{
+    if(!pGraph)
+        return;
+
+    if(!pfPower)
+        return;
+
+    float *pfFrequency = (float *)malloc(2048 * sizeof(float));
+
+    if(!pfFrequency)
+        return;
+
+    memset(pfFrequency, 0.f, 2048 * sizeof(float));
+
+    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096 / 1000000;
+
+    for(uint16_t i = 0; i < 2048; i++)
+        pfFrequency[i] = i * fBinStep;
+
+    tft_graph_draw_data(pGraph, pfFrequency, pfPower, 2048);
+
+    free(pfFrequency);
 }
 float rx_get_max_power(float *pfPower, uint32_t *pulFrequency)
 {
@@ -538,13 +563,13 @@ void init_audio_chain()
 }
 void init_rx_chain()
 {
-    r820t2_set_lna_gain(20.f, 0); // +20 dB
+    r820t2_set_lna_gain(10.f, 0); // +20 dB
     DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
     r820t2_set_mixer_gain(0.f, 1); // Auto
     DBGPRINTLN_CTX("RX Tuner mixer gain: %.1f dB", r820t2_get_mixer_gain());
 
-    r820t2_set_vga_gain(20.f); // +20 dB
+    r820t2_set_vga_gain(30.f); // +30 dB
     DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
 
     r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
@@ -552,7 +577,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(89000000))
+    if(r820t2_set_freq(96000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -578,25 +603,6 @@ void init_rx_chain()
     DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
 
     DSP_UNRESET();
-
-    float *pfRXPSD = (float *)malloc(2048 * sizeof(float));
-
-    if(!pfRXPSD)
-        return;
-
-    memset(pfRXPSD, 0, 2048 * sizeof(float));
-
-    rx_get_psd(pfRXPSD);
-
-    DBGPRINTLN_CTX("RX hard-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-    DBGPRINTLN_CTX("RX soft-tuned power: %.2f dB", rx_get_power(pfRXPSD, RX_RF_TO_IF(93000000)));
-
-    uint32_t ulMaxPowerFrequency = 0;
-    float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
-
-    DBGPRINTLN_CTX("RX peak power: %.2f dB at %.2f MHz", fMaxPower, (float)RX_IF_TO_RF(ulMaxPowerFrequency) / 1000000);
-
-    free(pfRXPSD);
 }
 void init_tx_chain()
 {
@@ -761,6 +767,7 @@ int init()
 
     delay_ms(100);
 
+    TFT_TOUCH_UNRESET();
     I2S_BRG_CFG_EN();
     I2S_BRG_UNRESET();
     CODEC_UNRESET();
@@ -893,27 +900,57 @@ int main()
     tft_bl_init(2000); // Init backlight PWM at 2 kHz
     tft_bl_set(0.f); // Set backlight to 0%
     tft_display_on(); // Turn display on
-    tft_set_rotation(ILI9488_ROTATION_VERTICAL_FLIP); // Set rotation (vertical, ribbon at the bottom)
+    tft_set_rotation(ILI9488_ROTATION_HORIZONTAL); // Set rotation (horizontal, ribbon to the right)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    tft_graph_t *pGraph = tft_graph_create(60, 30, 220, 360, 0, 30, 5, 20, 35, 1, 1, "%.0f", "%.0f", "Temperature", "t", "C", &xSans9pFont, RGB565_WHITE, RGB565_BLACK, RGB565_CYAN, RGB565_BLACK, RGB565_DARKGREY);
+    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 20, 1, -70, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
     if(!pGraph)
     {
         DBGPRINTLN_CTX("Could not allocate graph");
         while(1);
     }
 
-    tft_bl_set(0.75f); // Set backlight to 75%
+    tft_graph_clear(pGraph);
+    tft_graph_draw_frame(pGraph);
+
+    tft_bl_set(0.3f); // Set backlight to 30%
 
     while(1)
     {
         ft6x36_tick();
 
+        static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastPWMTick = 0;
         static uint64_t ullLastTFTTick = 0;
         static uint64_t ullLastDebugPrint = 0;
 
-        if(g_ullSystemTick > (ullLastPWMTick + 50))
+
+        if(g_ullSystemTick - ullLastLEDTick > 500)
+        {
+            ullLastLEDTick = g_ullSystemTick;
+
+            /*
+            do
+            {
+                DSP_SELECT();
+                DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xAA));
+                DSP_UNSELECT();
+
+                delay_ms(500);
+            } while(PERI_REG_BIT(&(GPIO->P[4].DIN), 13));
+
+            DSP_SELECT();
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xBB));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
+            DSP_UNSELECT();
+            */
+
+            LED_TOGGLE();
+        }
+
+        if(g_ullSystemTick - ullLastPWMTick > 50)
         {
             ullLastPWMTick = g_ullSystemTick;
 
@@ -944,46 +981,35 @@ int main()
             }
         }
 
-        if(g_ullSystemTick > (ullLastTFTTick + 1000))
+        if(g_ullSystemTick - ullLastTFTTick > 5000)
         {
             ullLastTFTTick = g_ullSystemTick;
-            /*
-            do
+
+            float *pfRXPSD = (float *)malloc(2048 * sizeof(float));
+
+            if(pfRXPSD)
             {
-                DSP_SELECT();
-                DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xAA));
-                DSP_UNSELECT();
+                memset(pfRXPSD, 0, 2048 * sizeof(float));
 
-                delay_ms(500);
-            } while(PERI_REG_BIT(&(GPIO->P[4].DIN), 13));
+                rx_get_psd(pfRXPSD);
 
-            DSP_SELECT();
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xBB));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
-            DSP_UNSELECT();
-            */
-            LED_TOGGLE();
+                DBGPRINTLN_CTX("RX hard-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
+                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(93000000)));
 
-            static uint8_t ubCount = 0;
+                uint32_t ulMaxPowerFrequency = 0;
+                float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
 
-            if(ubCount == 31)
-            {
+                DBGPRINTLN_CTX("RX peak power: %.2f dBFS at %.2f MHz", fMaxPower, (float)RX_IF_TO_RF(ulMaxPowerFrequency) / 1000000);
+
                 tft_graph_clear(pGraph);
                 tft_graph_draw_frame(pGraph);
-                ubCount = 0;
+                rx_draw_psd(pGraph, pfRXPSD);
+
+                free(pfRXPSD);
             }
-
-            float fCount = ubCount;
-            float fTemp = 0;
-
-            tft_graph_draw_data(pGraph, &fCount, &fTemp, 1);
-
-            ubCount++;
         }
 
-        if(g_ullSystemTick > (ullLastDebugPrint + 60000))
+        if(g_ullSystemTick - ullLastDebugPrint > 60000)
         {
             ullLastDebugPrint = g_ullSystemTick;
 

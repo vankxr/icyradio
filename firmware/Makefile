@@ -67,8 +67,8 @@ $(TARGET).bin: $(TARGET).asc
 $(TARGET).h: $(TARGET).bin
 	@echo Generating C header file...
 	@xxd -i $< $@
-	@sed -i 's/unsigned char $(TARGETDIR)_/const uint8_t /g' $@
-	@sed -i 's/unsigned int $(TARGETDIR)_/const uint32_t /g' $@
+	@sed -i 's/unsigned char $(TARGETDIR)_/static const uint8_t /g' $@
+	@sed -i 's/unsigned int $(TARGETDIR)_/static const uint32_t /g' $@
 
 inc-version: clean
 	@echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version

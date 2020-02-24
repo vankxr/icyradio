@@ -30,14 +30,14 @@ struct tft_button_t
 };
 struct tft_graph_t
 {
-    uint8_t ubDrawLabelsFlag : 1;
-    uint8_t ubRedrawFlag : 1;
+    uint8_t ubDrawLabelsFlag;
+    uint8_t ubRedrawFlag;
     uint16_t usOldX;
     uint16_t usOldY;
     uint16_t usOriginX;
     uint16_t usOriginY;
     uint16_t usWidth;
-    uint16_t usHeigth;
+    uint16_t usHeight;
     float fXScaleMin;
     float fXScaleMax;
     float fXScaleInc;
@@ -125,7 +125,7 @@ tft_graph_t* tft_graph_create(uint16_t usX, uint16_t usY, uint16_t usWidth, uint
 void tft_graph_delete(tft_graph_t *pxGraph);
 void tft_graph_clear(tft_graph_t *pxGraph);
 void tft_graph_draw_frame(tft_graph_t *pxGraph);
-void tft_graph_draw_data(tft_graph_t *pxGraph, float *pfXData, float *pfYData, uint16_t usDataSize);
+void tft_graph_draw_data(tft_graph_t *pGraph, float *pfXData, float *pfYData, uint32_t ulDataSize);
 
 uint8_t tft_draw_char(char cChar, const font_t *xFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor);
 void tft_draw_string(char *pszStr, const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor);
