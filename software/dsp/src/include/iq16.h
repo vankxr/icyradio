@@ -8,7 +8,7 @@
 // IQ complex pair - 16 bit
 typedef struct iq16_t iq16_t;
 
-struct iq16_t
+struct __attribute__((packed, aligned(2 * sizeof(int16_t)))) iq16_t
 {
     int16_t i;
     int16_t q;
@@ -35,14 +35,14 @@ struct iq16_t
 #define IQ16_SCALAR_PRODUCT(x, y)               \
     ((iq16_t)                                   \
     {                                           \
-        .i = ((int32_t)x.i * y) / INT16_MAX,    \
-        .q = ((int32_t)x.q * y) / INT16_MAX     \
+        .i = ((int64_t)x.i * y) / INT16_MAX,    \
+        .q = ((int64_t)x.q * y) / INT16_MAX     \
     })
 #define IQ16_SCALAR_QUOTIENT(x, y)              \
     ((iq16_t)                                   \
     {                                           \
-        .i = ((int32_t)x.i * INT16_MAX) / y,    \
-        .q = ((int32_t)x.q * INT16_MAX) / y     \
+        .i = ((int64_t)x.i * INT16_MAX) / y,    \
+        .q = ((int64_t)x.q * INT16_MAX) / y     \
     })
 
 #endif  // __IQ16_H__

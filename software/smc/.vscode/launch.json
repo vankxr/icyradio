@@ -13,7 +13,7 @@
             "preLaunchTask": "Build",
             "servertype": "jlink",
             "device": "EFM32GG11B420F2048",
-            "svdFile": "${env:ARM_LIBROOT}/SiliconLabs.EFM32GG11B_DFP.5.8.0/SVD/EFM32GG11B/EFM32GG11B420F2048GL112.svd",
+            "svdFile": "${env:ARM_LIBROOT}/SiliconLabs.GeckoPlatform_EFM32GG11B_DFP.2.7.0/SVD/EFM32GG11B/EFM32GG11B420F2048GL112.svd",
             "interface": "swd",
             "swoConfig": {
                 "enabled": true,

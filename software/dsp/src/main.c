@@ -19,66 +19,20 @@
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
-
-
-
-#define FILTER_TAP_NUM 43
-static q15_t filter_taps[FILTER_TAP_NUM] =
-{
-    0,
-    -11,
-    -23,
-    -43,
-    -70,
-    -102,
-    -135,
-    -161,
-    -172,
-    -157,
-    -107,
-    -12,
-    132,
-    325,
-    563,
-    832,
-    1116,
-    1393,
-    1640,
-    1835,
-    1960,
-    2003,
-    1960,
-    1835,
-    1640,
-    1393,
-    1116,
-    832,
-    563,
-    325,
-    132,
-    -12,
-    -107,
-    -157,
-    -172,
-    -161,
-    -135,
-    -102,
-    -70,
-    -43,
-    -23,
-    -11,
-    0
-};
-
-
+#include "pilot_filter.h"
+#include "stereo_pilot_filter.h"
+#include "rds_pilot_filter.h"
+#include "stereo_filter.h"
+#include "rds_filter.h"
+#include "audio_filter.h"
 
 // Structs
 
 // Helper macros
 #define BASEBAND_I2S_DMA_CHANNEL        0
 #define AUDIO_I2S_DMA_CHANNEL           1
-#define BASEBAND_SAMPLE_BUFFER_SIZE     8192
-#define AUDIO_SAMPLE_BUFFER_SIZE        2048
+#define BASEBAND_SAMPLE_BUFFER_SIZE     4096
+#define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
 // Forward declarations
 int16_t fm_demod(iq16_t xSample);
@@ -93,9 +47,13 @@ static uint8_t get_device_revision();
 
 static void load_audio_buffer(int16_t *psLeft, int16_t *psRight);
 
+static void mpx_extract_pilots(int16_t *psMPX, int16_t *psPilot, int16_t *psStereoPilot, int16_t *psRDSPilot);
+static void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psLeft, int16_t *psRight);
+
 static void init_baseband_i2s();
 static void init_audio_i2s();
 static void init_control_spi();
+static void init_dsp_components();
 
 // Variables
 xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pBasebandDMADescriptor[2];
@@ -113,7 +71,12 @@ volatile uint8_t ubSPIOutputLock = 0;
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
 dsp_fm_demod_ctx_t *pFMDemod = NULL;
-fir_decimator_ctx_t *pFilter = NULL;
+fir_ctx_t *pPilotFilter = NULL;
+fir_ctx_t *pStereoPilotFilter = NULL;
+fir_ctx_t *pRDSPilotFilter = NULL;
+fir_ctx_t *pStereoFilter = NULL;
+fir_ctx_t *pRDSFilter = NULL;
+fir_decimator_ctx_t *pAudioFilter[2] = {NULL, NULL};
 
 // ISRs
 void _spi0_isr()
@@ -286,9 +249,98 @@ void load_audio_buffer(int16_t *psLeft, int16_t *psRight)
         pulAudioDestAddress = pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE;
 
     for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-        pulAudioDestAddress[i] = (((uint32_t)psRight[i] & 0xFFFF) << 16) | (((uint32_t)psRight[i] & 0xFFFF) << 0);
+        pulAudioDestAddress[i] = (((uint32_t)psRight[i] & 0xFFFF) << 16) | (((uint32_t)psLeft[i] & 0xFFFF) << 0);
 
     dcache_addr_clean(pulAudioDestAddress, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+}
+
+void mpx_extract_pilots(int16_t *psMPX, int16_t *psPilot, int16_t *psStereoPilot, int16_t *psRDSPilot)
+{
+    if(!psMPX)
+        return;
+
+    if(!psPilot)
+        return;
+
+    fir_filter(pPilotFilter, psMPX, psPilot);
+
+    for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+        psPilot[i] *= 10; // Apply some gain
+
+    // Stereo Pilot
+    if(psStereoPilot)
+    {
+        // 19 ^ 2 = 38, HPF to remove uwanted spectrum
+        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+        {
+            psStereoPilot[i] = psPilot[i];
+
+            for(uint8_t i = 0; i < 1; i++) // if taking x^n, then loop until i < n - 1
+                psStereoPilot[i] = ((int64_t)psStereoPilot[i] * psPilot[i]) / INT16_MAX;
+        }
+
+        fir_filter(pStereoPilotFilter, psStereoPilot, NULL);
+
+        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+            psStereoPilot[i] *= 4; // Apply some gain
+    }
+
+    // RDS Pilot
+    if(psRDSPilot)
+    {
+        // 19 ^ 3 = 57, HPF to remove unwanted spectrum
+        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+        {
+            psRDSPilot[i] = psPilot[i];
+
+            for(uint8_t i = 0; i < 2; i++) // if taking x^n, then loop until i < n - 1
+                psRDSPilot[i] = ((int64_t)psRDSPilot[i] * psPilot[i]) / INT16_MAX;
+        }
+
+        fir_filter(pRDSPilotFilter, psRDSPilot, NULL);
+
+        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+            psRDSPilot[i] *= 4; // Apply some gain
+    }
+}
+void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psLeft, int16_t *psRight)
+{
+    if(!psMPX)
+        return;
+
+    if(!psStereoPilot)
+        return;
+
+    if(!psLeft)
+        return;
+
+    if(!psRight)
+        return;
+
+    // Mono audio (Left + Right)
+    int16_t psMonoAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+
+    fir_decimator_filter(pAudioFilter[0], psMPX, psMonoAudio);
+
+    for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
+        psMonoAudio[i] /= 2; // Attenuate to increase stereo ratio (TODO: AGC)
+
+    // Stereo audio (Left - Right)
+    int16_t psStereoAudio[BASEBAND_SAMPLE_BUFFER_SIZE];
+
+    fir_filter(pStereoFilter, psMPX, psStereoAudio); // Bandpass the L-R (38k) subcarrier
+
+    for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+        psStereoAudio[i] = ((int64_t)psStereoAudio[i] * psStereoPilot[i]) / INT16_MAX; // Bring it to baseband
+
+    fir_decimator_filter(pAudioFilter[1], psStereoAudio, NULL);
+
+    // Mix audio channels
+    for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
+    {
+        psLeft[i] = psMonoAudio[i] + psStereoAudio[i]; // (L + R) + (L - R) = L + R + L - R = 2L
+        psRight[i] = psMonoAudio[i] - psStereoAudio[i]; // (L + R) - (L - R) = L + R - L + R = 2R
+    }
 }
 
 void init_baseband_i2s()
@@ -402,6 +454,71 @@ void init_control_spi()
 
     SPI0->SPI_CR = SPI_CR_SPIEN; // Enable SPI
 }
+void init_dsp_components()
+{
+    // FM Demodulator
+    pFMDemod = dsp_fm_demod_init();
+
+    if(pFMDemod)
+        DBGPRINTLN_CTX("FM Demodulator intialized!");
+    else
+        DBGPRINTLN_CTX("Failed FM Demodulator intialization!");
+
+    // 19 kHz pilot band-pass filter
+    pPilotFilter = fir_init(pilot_filter_taps_size, pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pPilotFilter)
+        DBGPRINTLN_CTX("19 kHz pilot FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed 19 kHz pilot FIR intialization!");
+
+    // 38 kHz stereo pilot high-pass filter
+    pStereoPilotFilter = fir_init(stereo_pilot_filter_taps_size, stereo_pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pStereoPilotFilter)
+        DBGPRINTLN_CTX("Stereo pilot FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed Stereo pilot FIR intialization!");
+
+    // 57 kHz RDS pilot high-pass filter
+    pRDSPilotFilter = fir_init(rds_pilot_filter_taps_size, rds_pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pRDSPilotFilter)
+        DBGPRINTLN_CTX("RDS pilot FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed RDS pilot FIR intialization!");
+
+    // Stereo band-pass filter
+    pStereoFilter = fir_init(stereo_filter_taps_size, stereo_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pStereoFilter)
+        DBGPRINTLN_CTX("Stereo FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed Stereo FIR intialization!");
+
+    // RDS band-pass filter
+    pRDSFilter = fir_init(rds_filter_taps_size, rds_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pRDSFilter)
+        DBGPRINTLN_CTX("RDS FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed RDS FIR intialization!");
+
+    // Final audio filters
+    pAudioFilter[0] = fir_decimator_init(audio_filter_taps_size, 4, audio_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pAudioFilter[0])
+        DBGPRINTLN_CTX("Mono audio FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed Mono audio FIR intialization!");
+
+    pAudioFilter[1] = fir_decimator_init(audio_filter_taps_size, 4, audio_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pAudioFilter[1])
+        DBGPRINTLN_CTX("Stereo audio FIR intialized!");
+    else
+        DBGPRINTLN_CTX("Failed Stereo audio FIR intialization!");
+}
 int init()
 {
     icache_enable();
@@ -462,16 +579,12 @@ int main()
     init_baseband_i2s();
     init_audio_i2s();
     init_control_spi();
+    DBGPRINTLN_CTX("Interfaces initialized!");
 
-    pFMDemod = dsp_fm_demod_init();
+    init_dsp_components();
+    DBGPRINTLN_CTX("DSP components initialized!");
 
-    if(!pFMDemod)
-        while(1);
-
-    pFilter = fir_decimator_init(FILTER_TAP_NUM, 4, filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(!pFilter)
-        while(1);
+    DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
 
     while(1)
     {
@@ -527,32 +640,6 @@ int main()
             ubBasebandOverflow = 0;
         }
 
-        /*
-        static uint8_t done = 0;
-
-        if(x && !done)
-        {
-            done = 1;
-
-            DBGPRINTLN_CTX("REAL");
-
-            for(uint32_t i = 0; i < 2048; i++)
-            {
-                iq16_t xSample = {
-                    .i = pulBasebandBuffer[i] >> 16,
-                    .q = pulBasebandBuffer[i] & 0xFFFF
-                };
-
-                DBGPRINTLN_CTX("%.6f\t%.6f", (float)xSample.i / INT16_MAX, (float)xSample.q / INT16_MAX);
-
-                if(!(i % 20))
-                    delay_ms(10);
-
-                wdt_feed();
-            }
-        }
-        */
-
         if(ubBasebandReady)
         {
             // Start performance counters
@@ -562,25 +649,38 @@ int main()
             volatile uint32_t *pulBaseband = pulBasebandBuffer + (ubBasebandReady - 1) * BASEBAND_SAMPLE_BUFFER_SIZE;
 
             // Process samples
-            int16_t pDemod[BASEBAND_SAMPLE_BUFFER_SIZE];
+            int16_t psMPX[BASEBAND_SAMPLE_BUFFER_SIZE];
 
             for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
             {
+                // Build IQ pair from 32-bit I2S word
                 iq16_t xSample = {
-                    .i = pulBaseband[i] >> 16,
-                    .q = pulBaseband[i] & 0xFFFF
+                    .i = pulBaseband[i] >> 16,      // Right I2S channel -> I
+                    .q = pulBaseband[i] & 0xFFFF    // Left I2S channel  -> Q
                 };
 
                 xSample.i *= 10; // TODO: AGC
                 xSample.q *= 10;
 
-                pDemod[i] = dsp_fm_demod(pFMDemod, xSample);
+                // FM Demodulate
+                psMPX[i] = dsp_fm_demod(pFMDemod, xSample);
             }
 
-            fir_decimator_filter(pFilter, pDemod, NULL);
+            // Extract pilots
+            int16_t psPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
+            int16_t psStereoPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
+            //int16_t psRDSPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
+
+            mpx_extract_pilots(psMPX, psPilot, psStereoPilot, NULL);
+
+            // Stereo audio
+            int16_t psLeftAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+            int16_t psRightAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+
+            mpx_stereo_audio_demod(psMPX, psStereoPilot, psLeftAudio, psRightAudio);
 
             // Load audio buffer
-            load_audio_buffer(pDemod, pDemod);
+            load_audio_buffer(psLeftAudio, psRightAudio);
 
             // Declare done processing baseband buffer
             ubBasebandReady = 0;
