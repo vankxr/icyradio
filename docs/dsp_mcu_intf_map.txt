@@ -1,4 +1,4 @@
-AuDIo I2S:
+Audio I2S:
 I2SC0_MCK   PA0     C11
 I2SC0_CK    PA1     D12
 I2SC0_WS    PA15    L5
