@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.1">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1312,28 +1312,34 @@
 </packages>
 <symbols>
 <symbol name="A2-LANDSCAPE">
-<wire x1="463.55" y1="3.81" x2="558.8" y2="3.81" width="0.1016" layer="94"/>
-<wire x1="558.8" y1="3.81" x2="558.8" y2="24.13" width="0.1016" layer="94"/>
+<wire x1="463.55" y1="3.81" x2="490.72" y2="3.81" width="0.1016" layer="94"/>
+<wire x1="490.72" y1="3.81" x2="558.8" y2="3.81" width="0.1016" layer="94"/>
+<wire x1="558.8" y1="3.81" x2="558.8" y2="26.67" width="0.1016" layer="94"/>
 <frame x1="0" y1="0" x2="562.61" y2="387.35" columns="8" rows="5" layer="94"/>
-<rectangle x1="464.5152" y1="3.81" x2="465.1248" y2="24.13" layer="94"/>
-<rectangle x1="511.5052" y1="-22.606" x2="512.1148" y2="71.374" layer="94" rot="R90"/>
-<wire x1="511.04" y1="3.964" x2="511.04" y2="9.144" width="0.1016" layer="94"/>
-<wire x1="511.04" y1="9.144" x2="558.8" y2="9.144" width="0.1016" layer="94"/>
-<wire x1="511.04" y1="9.144" x2="464.82" y2="9.144" width="0.1016" layer="94"/>
-<wire x1="464.82" y1="14.224" x2="511.04" y2="14.224" width="0.1016" layer="94"/>
-<wire x1="511.04" y1="14.224" x2="558.8" y2="14.224" width="0.1016" layer="94"/>
-<wire x1="464.82" y1="19.304" x2="558.8" y2="19.304" width="0.1016" layer="94"/>
-<wire x1="511.04" y1="9.144" x2="511.04" y2="14.224" width="0.1016" layer="94"/>
-<wire x1="464.82" y1="23.114" x2="464.82" y2="24.384" width="0.6096" layer="94"/>
-<wire x1="464.82" y1="24.384" x2="466.09" y2="24.384" width="0.6096" layer="94"/>
-<text x="467.36" y="15.494" size="2.54" layer="94" font="vector">&gt;DRAWING_NAME</text>
-<text x="467.36" y="10.414" size="2.286" layer="94" font="vector">&gt;LAST_DATE_TIME</text>
-<text x="481.33" y="5.334" size="2.54" layer="94" font="vector">&gt;SHEET</text>
-<text x="467.36" y="5.334" size="2.54" layer="94" font="vector">Sheet:</text>
-<text x="467.36" y="20.574" size="2.54" layer="94" font="vector">&gt;CNAME</text>
-<text x="511.91" y="5.334" size="2.54" layer="94" font="vector">Rev:</text>
-<text x="512.01" y="10.414" size="2.54" layer="94" font="vector">&gt;DESIGNER</text>
-<text x="520.67" y="5.234" size="2.54" layer="94" font="vector">&gt;CREVISION</text>
+<rectangle x1="444.1952" y1="3.81" x2="444.8048" y2="26.67" layer="94"/>
+<rectangle x1="511.5052" y1="-17.526" x2="512.1148" y2="76.454" layer="94" rot="R90"/>
+<wire x1="444.5" y1="9.144" x2="490.72" y2="9.144" width="0.1016" layer="94"/>
+<wire x1="490.72" y1="9.144" x2="558.8" y2="9.144" width="0.1016" layer="94"/>
+<wire x1="444.5" y1="24.384" x2="538.98" y2="24.384" width="0.1016" layer="94"/>
+<wire x1="490.72" y1="3.81" x2="490.72" y2="9.144" width="0.1016" layer="94"/>
+<wire x1="444.5" y1="25.654" x2="444.5" y2="29.464" width="0.6096" layer="94"/>
+<wire x1="444.5" y1="29.464" x2="508" y2="29.464" width="0.6096" layer="94"/>
+<text x="447.04" y="20.574" size="2.54" layer="94" font="vector">&gt;DRAWING_NAME</text>
+<text x="458.47" y="5.334" size="2.286" layer="94" font="vector">&gt;LAST_DATE_TIME</text>
+<text x="458.47" y="10.414" size="2.54" layer="94" font="vector">&gt;SHEET</text>
+<text x="447.04" y="10.414" size="2.54" layer="94" font="vector">Sheet:</text>
+<text x="447.04" y="25.654" size="2.54" layer="94" font="vector">&gt;CNAME</text>
+<text x="491.59" y="5.334" size="2.54" layer="94" font="vector">Rev:</text>
+<text x="447.04" y="15.494" size="2.54" layer="94" font="vector">&gt;DESIGNER</text>
+<text x="500.35" y="5.234" size="2.54" layer="94" font="vector">&gt;CREVISION</text>
+<wire x1="444.5" y1="14.224" x2="558.8" y2="14.224" width="0.1016" layer="94"/>
+<text x="491.69" y="10.414" size="2.54" layer="94" font="vector">&gt;SHEET_HEADLINE</text>
+<wire x1="490.72" y1="9.144" x2="490.72" y2="14.224" width="0.1016" layer="94"/>
+<text x="447.04" y="5.334" size="2.54" layer="94" font="vector">Date:</text>
+<wire x1="444.5" y1="19.304" x2="538.98" y2="19.304" width="0.1016" layer="94"/>
+<wire x1="538.98" y1="14.224" x2="538.98" y2="19.304" width="0.1016" layer="94"/>
+<wire x1="538.98" y1="19.304" x2="538.98" y2="24.384" width="0.1016" layer="94"/>
+<wire x1="538.98" y1="24.384" x2="538.98" y2="29.464" width="0.1016" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -7924,7 +7930,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 </library>
 </libraries>
 <attributes>
-<attribute name="CNAME" value="None"/>
+<attribute name="CNAME" value=""/>
 <attribute name="CREVISION" value="1"/>
 <attribute name="DESIGNER" value="Joao Silva"/>
 </attributes>
@@ -8957,12 +8963,13 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VALUE" x="507.746" y="106.68" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME10" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -10055,12 +10062,13 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VALUE" x="505.206" y="99.06" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME9" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -11086,12 +11094,13 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <attribute name="VALUE" x="424.18" y="297.18" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="FRAME8" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 <instance part="R306" gate="G$1" x="193.04" y="355.6" smashed="yes" rot="R270">
 <attribute name="VALUE" x="190.2714" y="355.6" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -12854,12 +12863,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="296.926" y="299.72" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME7" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -14183,12 +14193,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="304.546" y="129.54" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME6" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -15313,12 +15324,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="93.726" y="106.68" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME5" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -16230,12 +16242,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="159.766" y="299.72" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME4" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -17121,12 +17134,13 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="VALUE" x="266.7" y="284.48" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="FRAME3" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -17608,12 +17622,13 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="TOLERANCE" x="370.84" y="180.1114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
 <instance part="FRAME2" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 <instance part="C908" gate="G$1" x="312.42" y="261.62" smashed="yes" rot="R270">
 <attribute name="VALUE" x="309.6514" y="261.62" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -18440,12 +18455,13 @@ DSP_MAIN_CLK = 12 MHz (DSP main clock)</text>
 <attribute name="VALUE" x="220.726" y="292.1" size="1.778" layer="96"/>
 </instance>
 <instance part="FRAME1" gate="G$1" x="0" y="0" smashed="yes">
-<attribute name="DRAWING_NAME" x="467.36" y="15.494" size="2.54" layer="94" font="vector"/>
-<attribute name="LAST_DATE_TIME" x="467.36" y="10.414" size="2.286" layer="94" font="vector"/>
-<attribute name="SHEET" x="481.33" y="5.334" size="2.54" layer="94" font="vector"/>
-<attribute name="CNAME" x="467.36" y="20.574" size="2.54" layer="94" font="vector"/>
-<attribute name="DESIGNER" x="512.01" y="10.414" size="2.54" layer="94" font="vector"/>
-<attribute name="CREVISION" x="520.67" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="DRAWING_NAME" x="447.04" y="20.574" size="2.54" layer="94" font="vector"/>
+<attribute name="LAST_DATE_TIME" x="458.47" y="5.334" size="2.286" layer="94" font="vector"/>
+<attribute name="SHEET" x="458.47" y="10.414" size="2.54" layer="94" font="vector"/>
+<attribute name="CNAME" x="447.04" y="25.654" size="2.54" layer="94" font="vector"/>
+<attribute name="DESIGNER" x="447.04" y="15.494" size="2.54" layer="94" font="vector"/>
+<attribute name="CREVISION" x="500.35" y="5.234" size="2.54" layer="94" font="vector"/>
+<attribute name="SHEET_HEADLINE" x="491.69" y="10.414" size="2.54" layer="94" font="vector"/>
 </instance>
 </instances>
 <busses>
