@@ -29,6 +29,7 @@
 #include "ad9117.h"
 #include "adf4351.h"
 #include "tscs25xx.h"
+#include "biquad.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
@@ -518,6 +519,133 @@ void init_audio_chain()
     else
         DBGPRINTLN_CTX("CODEC failed to configure sample rate!");
 
+    const float fEQPrescaler[2] = {
+        1.f,
+        1.f
+    };
+    const uint32_t ulEQFilterCutoffFreq[2][6] = {
+        {
+            6000,
+            200,
+            70,
+            0,
+            0,
+            0
+        },
+        {
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        }
+    };
+    const uint8_t ubEQFilterType[2][6] = {
+        {
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_HIGHSHELF,
+            BIQUAD_TYPE_PEAK,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS
+        },
+        {
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS,
+            BIQUAD_TYPE_LOWPASS
+        }
+    };
+    const float fEQFilterQFactor[2][6] = {
+        {
+            0.707106781186f,
+            0.707106781186f,
+            2.f,
+            0.707106781186f,
+            0.707106781186f,
+            0.707106781186f
+        },
+        {
+            0.707106781186f,
+            0.707106781186f,
+            0.707106781186f,
+            0.707106781186f,
+            0.707106781186f,
+            0.707106781186f
+        }
+    };
+    const float fEQFilterGain[2][6] = {
+        {
+            1.f,
+            -9.f,
+            6.f,
+            1.f,
+            1.f,
+            1.f
+        },
+        {
+            1.f,
+            1.f,
+            1.f,
+            1.f,
+            1.f,
+            1.f
+        }
+    };
+
+    for(uint8_t i = 0; i < 2; i++)
+    {
+        tscs25xx_eq_config_prescaler(i, TSCS25XX_EQ_CHANNEL_LEFT, fEQPrescaler[i]);
+        tscs25xx_eq_config_prescaler(i, TSCS25XX_EQ_CHANNEL_RIGHT, fEQPrescaler[i]);
+
+        DBGPRINTLN_CTX("CODEC EQ%hhu prescaler: %.3f", i + 1, fEQPrescaler[i]);
+
+        for(uint8_t j = 0; j < 6; j++)
+        {
+            if(!ulEQFilterCutoffFreq[i][j])
+                continue;
+
+            biquad_t *pBiquadFilter = biquad_init(ubEQFilterType[i][j], ulAudioSampleRate, ulEQFilterCutoffFreq[i][j]);
+
+            if(!pBiquadFilter)
+            {
+                DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu failed to initialize!", i + 1, j);
+
+                continue;
+            }
+
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu type: %hhu", i + 1, j, ubEQFilterType[i][j]);
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu cutoff frequency: %lu Hz", i + 1, j, ulEQFilterCutoffFreq[i][j]);
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu gain: %.2f dB", i + 1, j, fEQFilterGain[i][j]);
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu Q factor: %.5f", i + 1, j, fEQFilterQFactor[i][j]);
+
+            biquad_calc_coefs(pBiquadFilter, fEQFilterQFactor[i][j], fEQFilterGain[i][j]);
+
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu calculated! (b0: %.8f, b1: %.8f, b2: %.8f, a1: %.8f, a2: %.8f)", i + 1, j, pBiquadFilter->fB0, pBiquadFilter->fB1, pBiquadFilter->fB2, pBiquadFilter->fA1, pBiquadFilter->fA2);
+
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu gain at cutoff: %.2f dB", i + 1, j, 20 * log10f(biquad_get_gain(pBiquadFilter, ulEQFilterCutoffFreq[i][j])));
+
+            tscs25xx_eq_config_band(i, TSCS25XX_EQ_CHANNEL_LEFT, j, pBiquadFilter);
+            tscs25xx_eq_config_band(i, TSCS25XX_EQ_CHANNEL_RIGHT, j, pBiquadFilter);
+
+            DBGPRINTLN_CTX("CODEC EQ%hhu band %hhu configured!", i + 1, j);
+
+            biquad_delete(pBiquadFilter);
+        }
+    }
+
+    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_2); // Enable EQ 1 prescaler and Bands 0 to 2
+    DBGPRINTLN_CTX("CODEC EQ1 configured!");
+
+    tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
+    DBGPRINTLN_CTX("CODEC EQ2 configured!");
+
+    tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
+    DBGPRINTLN_CTX("CODEC effects configured!");
+
     tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
     tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
     tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
@@ -538,8 +666,8 @@ void init_audio_chain()
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
     DBGPRINTLN_CTX("CODEC volume configured!");
 
-    tscs25xx_hp_set_left_volume(-20.f); // -12.000 dB
-    tscs25xx_hp_set_right_volume(-20.f); // -12.000 dB
+    tscs25xx_hp_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_hp_set_right_volume(0.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
@@ -548,8 +676,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
-    tscs25xx_dac_set_left_volume(0.f); // 0.000 dB
-    tscs25xx_dac_set_right_volume(0.f); // 0.000 dB
+    tscs25xx_dac_set_left_volume(-3.f); // -3.000 dB
+    tscs25xx_dac_set_right_volume(-3.f); // -3.000 dB
     DBGPRINTLN_CTX("CODEC left DAC volume: %.3f dB", tscs25xx_dac_get_left_volume());
     DBGPRINTLN_CTX("CODEC right DAC volume: %.3f dB", tscs25xx_dac_get_right_volume());
 
@@ -590,7 +718,7 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(93000000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(97400000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -900,10 +1028,10 @@ int main()
     tft_bl_init(2000); // Init backlight PWM at 2 kHz
     tft_bl_set(0.f); // Set backlight to 0%
     tft_display_on(); // Turn display on
-    tft_set_rotation(ILI9488_ROTATION_HORIZONTAL); // Set rotation (horizontal, ribbon to the right)
+    tft_set_rotation(ILI9488_ROTATION_HORIZONTAL_FLIP); // Set rotation (horizontal, ribbon to the left)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 20, 1, -70, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
+    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -80, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
     if(!pGraph)
     {
         DBGPRINTLN_CTX("Could not allocate graph");
@@ -923,7 +1051,6 @@ int main()
         static uint64_t ullLastPWMTick = 0;
         static uint64_t ullLastTFTTick = 0;
         static uint64_t ullLastDebugPrint = 0;
-
 
         if(g_ullSystemTick - ullLastLEDTick > 500)
         {
@@ -994,7 +1121,7 @@ int main()
                 rx_get_psd(pfRXPSD);
 
                 DBGPRINTLN_CTX("RX hard-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(93000000)));
+                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(97400000)));
 
                 uint32_t ulMaxPowerFrequency = 0;
                 float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);

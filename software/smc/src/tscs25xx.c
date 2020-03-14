@@ -495,6 +495,73 @@ uint8_t tscs25xx_dac_ram_read(uint8_t ubAddress, uint32_t *pulData, uint8_t ubDa
     return 1;
 }
 
+void tscs25xx_effects_config(uint8_t ub3DEnable, uint8_t ubTrebleEnable, uint8_t ubTrebleNLEnable, uint8_t ubBassEnable, uint8_t ubBassNLEnable)
+{
+    uint8_t ubData = 0;
+
+    ubData |= ub3DEnable ? TSCS25XX_REG_FXCTL_3DEN_ENABLED : TSCS25XX_REG_FXCTL_3DEN_DISABLED;
+    ubData |= ubTrebleEnable ? TSCS25XX_REG_FXCTL_TEEN_ENABLED : TSCS25XX_REG_FXCTL_TEEN_DISABLED;
+    ubData |= ubTrebleNLEnable ? TSCS25XX_REG_FXCTL_TNLFBYP_ENABLED : TSCS25XX_REG_FXCTL_TNLFBYP_BYPASS;
+    ubData |= ubBassEnable ? TSCS25XX_REG_FXCTL_BEEN_ENABLED : TSCS25XX_REG_FXCTL_BEEN_DISABLED;
+    ubData |= ubBassNLEnable ? TSCS25XX_REG_FXCTL_BNLFBYP_ENABLED : TSCS25XX_REG_FXCTL_BNLFBYP_BYPASS;
+
+    tscs25xx_write_register(TSCS25XX_REG_FXCTL, ubData);
+}
+
+void tscs25xx_eq_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubBands)
+{
+    if(ubID > 1)
+        return;
+
+    if(!ubEnable)
+    {
+        tscs25xx_rmw_register(TSCS25XX_REG_CONFIG1, (uint8_t)~(0x0F << (ubID * 4)), 0x00);
+
+        return;
+    }
+
+    if(ubBands > 6)
+        return;
+
+    tscs25xx_rmw_register(TSCS25XX_REG_CONFIG1, (uint8_t)~(0x0F << (ubID * 4)), ((TSCS25XX_REG_CONFIG1_EQ1_ENABLED | ubBands) << (ubID * 4)));
+}
+void tscs25xx_eq_config_prescaler(uint8_t ubID, uint8_t ubChannelID, float fPrescale)
+{
+    if(ubID > 1)
+        return;
+
+    if(ubChannelID > 1)
+        return;
+
+    int32_t lPrescale = fPrescale / powf(2.f, -22.f);
+
+    tscs25xx_dac_ram_write(TSCS25XX_DAC_RAM_EQx_PRESCALEn(ubID, ubChannelID), (uint32_t *)&lPrescale, 1);
+}
+void tscs25xx_eq_config_band(uint8_t ubID, uint8_t ubChannelID, uint8_t ubBandID, biquad_t *pFilter)
+{
+    if(ubID > 1)
+        return;
+
+    if(ubChannelID > 1)
+        return;
+
+    if(ubBandID > 5)
+        return;
+
+    if(!pFilter)
+        return;
+
+    int32_t lCoef[5];
+
+    lCoef[0] = pFilter->fB0 / powf(2.f, -22.f);
+    lCoef[1] = pFilter->fB1 / powf(2.f, -22.f);
+    lCoef[2] = pFilter->fB2 / powf(2.f, -22.f);
+    lCoef[3] = -pFilter->fA1 / powf(2.f, -22.f);
+    lCoef[4] = -pFilter->fA2 / powf(2.f, -22.f);
+
+    tscs25xx_dac_ram_write(TSCS25XX_DAC_RAM_EQx_COEF_nFi_B0(ubID, ubChannelID, ubBandID), (uint32_t *)lCoef, 5);
+}
+
 void tscs25xx_volume_config(uint8_t ubFade, uint8_t ubIndividualUpdate, uint8_t ubZeroUpdate)
 {
     uint8_t ubValue = 0x00;

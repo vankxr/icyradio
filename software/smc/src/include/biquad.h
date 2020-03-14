@@ -28,9 +28,9 @@ struct biquad_t
     float fA2;
 };
 
-biquad_t* biquad_init(uint8_t ubType, uint32_t ulSampleFreq, uint32_t ulCutoffFreq, float fQFactor, float fGain);
+biquad_t* biquad_init(uint8_t ubType, uint32_t ulSampleFreq, uint32_t ulCutoffFreq);
 void biquad_delete(biquad_t *pFilter);
-void biquad_calc_coefs(biquad_t *pFilter);
-void biquad_get_gain(biquad_t *pFilter, uint32_t ulFrequency);
+void biquad_calc_coefs(biquad_t *pFilter, float fQFactor, float fGain);
+float biquad_get_gain(biquad_t *pFilter, uint32_t ulFrequency);
 
 #endif  // __BIQUAD_H__

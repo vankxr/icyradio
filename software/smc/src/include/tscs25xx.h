@@ -6,6 +6,7 @@
 #include <math.h>
 #include "systick.h"
 #include "utils.h"
+#include "biquad.h"
 #include "atomic.h"
 #include "gpio.h"
 #include "i2c.h"
@@ -537,9 +538,27 @@
 #define TSCS25XX_REG_DACMBCCTL_WINDOW_SEL1_512      0x00
 #define TSCS25XX_REG_DACMBCCTL_WINDOW_SEL1_64       0x01
 
-// Constants
+// DAC RAM
 #define TSCS25XX_DAC_RAM_SIZE   206
 
+#define TSCS25XX_DAC_RAM_EQx_COEF_nFi_B0(x, n, i)   (0x40 * (x) + 0x20 * (n) + 0x05 * (i) + 0x00)
+#define TSCS25XX_DAC_RAM_EQx_COEF_nFi_B1(x, n, i)   (0x40 * (x) + 0x20 * (n) + 0x05 * (i) + 0x01)
+#define TSCS25XX_DAC_RAM_EQx_COEF_nFi_B2(x, n, i)   (0x40 * (x) + 0x20 * (n) + 0x05 * (i) + 0x02)
+#define TSCS25XX_DAC_RAM_EQx_COEF_nFi_A1(x, n, i)   (0x40 * (x) + 0x20 * (n) + 0x05 * (i) + 0x03)
+#define TSCS25XX_DAC_RAM_EQx_COEF_nFi_A2(x, n, i)   (0x40 * (x) + 0x20 * (n) + 0x05 * (i) + 0x04)
+#define TSCS25XX_DAC_RAM_EQx_PRESCALEn(x, n)        (0x40 * (x) + 0x20 * (n) + 0x1F)
+#define TSCS25XX_DAC_RAM_BASS_COEF_EXTn_B0(n)       (0x05 * (n) + 0x80)
+#define TSCS25XX_DAC_RAM_BASS_COEF_EXTn_B1(n)       (0x05 * (n) + 0x81)
+#define TSCS25XX_DAC_RAM_BASS_COEF_EXTn_B2(n)       (0x05 * (n) + 0x82)
+#define TSCS25XX_DAC_RAM_BASS_COEF_EXTn_A1(n)       (0x05 * (n) + 0x83)
+#define TSCS25XX_DAC_RAM_BASS_COEF_EXTn_A2(n)       (0x05 * (n) + 0x84)
+#define TSCS25XX_DAC_RAM_TREB_COEF_EXTn_B0(n)       (0x05 * (n) + 0x97)
+#define TSCS25XX_DAC_RAM_TREB_COEF_EXTn_B1(n)       (0x05 * (n) + 0x98)
+#define TSCS25XX_DAC_RAM_TREB_COEF_EXTn_B2(n)       (0x05 * (n) + 0x99)
+#define TSCS25XX_DAC_RAM_TREB_COEF_EXTn_A1(n)       (0x05 * (n) + 0x9A)
+#define TSCS25XX_DAC_RAM_TREB_COEF_EXTn_A2(n)       (0x05 * (n) + 0x9B)
+
+// Constants
 #define TSCS25XX_PLL1_OUTPUT_FREQ       (48000UL * 2560) // 48.0 kHz sample rate and multiples
 #define TSCS25XX_PLL2_OUTPUT_FREQ       (44100UL * 2560) // 44.1 kHz sample rate and multiples
 
@@ -559,6 +578,20 @@
 #define TSCS25XX_MONO_MIX_LEFT      1
 #define TSCS25XX_MONO_MIX_RIGHT     2
 #define TSCS25XX_MONO_MIX_BOTH      3
+
+#define TSCS25XX_EQ1    0
+#define TSCS25XX_EQ2    1
+
+#define TSCS25XX_EQ_CHANNEL_LEFT    0
+#define TSCS25XX_EQ_CHANNEL_RIGHT   1
+
+#define TSCS25XX_EQ_BAND_PRESC      0
+#define TSCS25XX_EQ_BAND_PRESC_B0   1
+#define TSCS25XX_EQ_BAND_PRESC_B0_1 2
+#define TSCS25XX_EQ_BAND_PRESC_B0_2 3
+#define TSCS25XX_EQ_BAND_PRESC_B0_3 4
+#define TSCS25XX_EQ_BAND_PRESC_B0_4 5
+#define TSCS25XX_EQ_BAND_PRESC_B0_5 6
 
 // Utility
 #define TSCS25XX_REV_MAJOR(x)      (((x) & 0xF0) >> 4)
@@ -595,6 +628,12 @@ void tscs25xx_dac_config(uint8_t ubDitherMode, uint8_t ubDeempEnable);
 
 uint8_t tscs25xx_dac_ram_write(uint8_t ubAddress, uint32_t *pulData, uint8_t ubDataSize);
 uint8_t tscs25xx_dac_ram_read(uint8_t ubAddress, uint32_t *pulData, uint8_t ubDataSize);
+
+void tscs25xx_effects_config(uint8_t ub3DEnable, uint8_t ubTrebleEnable, uint8_t ubTrebleNLEnable, uint8_t ubBassEnable, uint8_t ubBassNLEnable);
+
+void tscs25xx_eq_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubBands);
+void tscs25xx_eq_config_prescaler(uint8_t ubID, uint8_t ubChannelID, float fPrescale);
+void tscs25xx_eq_config_band(uint8_t ubID, uint8_t ubChannelID, uint8_t ubBandID, biquad_t *pFilter);
 
 void tscs25xx_volume_config(uint8_t ubFade, uint8_t ubIndividualUpdate, uint8_t ubZeroUpdate);
 

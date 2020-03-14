@@ -576,8 +576,6 @@ void tft_graph_draw_data(tft_graph_t *pGraph, float *pfXData, float *pfYData, ui
         }
 
         tft_draw_line(pGraph->usOldX, pGraph->usOldY, usXH, usYH, pGraph->xDataLineColor);
-        tft_draw_line(pGraph->usOldX, pGraph->usOldY + 1, usXH, usYH + 1, pGraph->xDataLineColor);
-        tft_draw_line(pGraph->usOldX, pGraph->usOldY - 1, usXH, usYH - 1, pGraph->xDataLineColor);
 
         pGraph->usOldX = usXH;
         pGraph->usOldY = usYH;
