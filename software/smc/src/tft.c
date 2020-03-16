@@ -7,26 +7,26 @@ void tft_touch_callback(uint8_t ubEvent, uint16_t usX, uint16_t usY)
 {
     switch(g_ubILI9488Rotation)
     {
-        case ILI9488_ROTATION_HORIZONTAL:
-        {
-            usX = (usX * ILI9488_TFTWIDTH) / ILI9488_TFTHEIGHT;
-            usY = (usY * ILI9488_TFTHEIGHT) / ILI9488_TFTWIDTH;
-        }
-        break;
         case ILI9488_ROTATION_VERTICAL:
             break;
-        case ILI9488_ROTATION_HORIZONTAL_FLIP:
+        case ILI9488_ROTATION_HORIZONTAL:
         {
-            usX = ILI9488_TFTWIDTH - usX;
-            usY = ILI9488_TFTHEIGHT - usY;
-            usX = (usX * ILI9488_TFTWIDTH) / ILI9488_TFTHEIGHT;
-            usY = (usY * ILI9488_TFTHEIGHT) / ILI9488_TFTWIDTH;
+            SWAP(usX, usY);
+
+            usY = ILI9488_TFTWIDTH - usY;
         }
         break;
         case ILI9488_ROTATION_VERTICAL_FLIP:
         {
             usX = ILI9488_TFTWIDTH - usX;
             usY = ILI9488_TFTHEIGHT - usY;
+        }
+        break;
+        case ILI9488_ROTATION_HORIZONTAL_FLIP:
+        {
+            SWAP(usX, usY);
+
+            usX = ILI9488_TFTHEIGHT - usX;
         }
         break;
         default:

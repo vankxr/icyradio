@@ -225,6 +225,8 @@ void rx_get_psd(float *pfPower)
     if(!pfPower)
         return;
 
+    memset(pfPower, 0, 2048 * sizeof(float));
+
     uint32_t *pulTDData = (uint32_t *)malloc(4096 * sizeof(uint32_t));
 
     if(!pulTDData)
@@ -242,6 +244,7 @@ void rx_get_psd(float *pfPower)
     // We re-use the same buffer and zero the high 16-bit word in case any of them comes with the OF bit set
     int16_t *psFFTBuffer = (int16_t *)pulTDData;
 
+    /*
     for(uint16_t i = 0; i < 4096; i++)
     {
         psFFTBuffer[i * 2 + 1] = 0;
@@ -252,6 +255,7 @@ void rx_get_psd(float *pfPower)
         for(uint32_t isz = 0; isz < osz; isz++)
             dbg_swo_send_uint8(obuf[isz], 1);
     }
+    */
 
     arm_cfft_q15(&arm_cfft_sR_q15_len4096, psFFTBuffer, 0, 1); // Compute FFT
 
@@ -520,7 +524,7 @@ void init_audio_chain()
         DBGPRINTLN_CTX("CODEC failed to configure sample rate!");
 
     const float fEQPrescaler[2] = {
-        1.f,
+        1.5f,
         1.f
     };
     const uint32_t ulEQFilterCutoffFreq[2][6] = {
@@ -637,7 +641,7 @@ void init_audio_chain()
         }
     }
 
-    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_2); // Enable EQ 1 prescaler and Bands 0 to 2
+    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0); // Enable EQ 1 prescaler and Bands 0 to 2
     DBGPRINTLN_CTX("CODEC EQ1 configured!");
 
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
@@ -666,8 +670,8 @@ void init_audio_chain()
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
     DBGPRINTLN_CTX("CODEC volume configured!");
 
-    tscs25xx_hp_set_left_volume(0.f); // 0.000 dB
-    tscs25xx_hp_set_right_volume(0.f); // 0.000 dB
+    tscs25xx_hp_set_left_volume(-12.f); // -12.000 dB
+    tscs25xx_hp_set_right_volume(-12.f); // -12.000 dB
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
@@ -676,8 +680,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
-    tscs25xx_dac_set_left_volume(-3.f); // -3.000 dB
-    tscs25xx_dac_set_right_volume(-3.f); // -3.000 dB
+    tscs25xx_dac_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_dac_set_right_volume(0.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left DAC volume: %.3f dB", tscs25xx_dac_get_left_volume());
     DBGPRINTLN_CTX("CODEC right DAC volume: %.3f dB", tscs25xx_dac_get_right_volume());
 
@@ -813,7 +817,7 @@ int init()
     fDVDDHighThresh = fDVDDLowThresh + 0.026f; // Hysteresis from datasheet
     fIOVDDHighThresh = fIOVDDLowThresh + 0.026f; // Hysteresis from datasheet
 
-    usart1_init(18000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 18 MHz (FPGA)
+    usart1_init(12000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 12 MHz (FPGA)
     usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
     usart3_init(18000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 18 MHz (DSP)
     usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
@@ -1009,7 +1013,7 @@ int main()
     // RX Chain configuration
     init_rx_chain();
 
-    fpga_psram_test(); // TODO: Remove this
+    //fpga_psram_test(); // TODO: Remove this
 
     // TX Chain configuration
     //init_tx_chain();
@@ -1116,8 +1120,6 @@ int main()
 
             if(pfRXPSD)
             {
-                memset(pfRXPSD, 0, 2048 * sizeof(float));
-
                 rx_get_psd(pfRXPSD);
 
                 DBGPRINTLN_CTX("RX hard-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));

@@ -789,7 +789,7 @@ always @(posedge qspi_mem_clk)
                                 end
                             default:
                                 begin
-                                    qspi_mem_data_in <= 16'hA5A5;
+                                    qspi_mem_data_in <= 16'h0000;
                                 end
                         endcase
                     end

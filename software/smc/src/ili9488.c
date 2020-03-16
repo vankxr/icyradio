@@ -226,22 +226,22 @@ void ili9488_set_rotation(uint8_t ubRotation)
 
     switch(ubRotation)
     {
-        case 0:
+        case ILI9488_ROTATION_VERTICAL:
             ubBuf = ILI9488_MADCTL_MX | ILI9488_MADCTL_BGR;
             usMaxWidth = ILI9488_TFTWIDTH - 1;
             usMaxHeigth = ILI9488_TFTHEIGHT - 1;
             break;
-        case 1:
+        case ILI9488_ROTATION_HORIZONTAL:
             ubBuf = ILI9488_MADCTL_MV | ILI9488_MADCTL_BGR;
             usMaxWidth = ILI9488_TFTHEIGHT - 1;
             usMaxHeigth = ILI9488_TFTWIDTH - 1;
             break;
-        case 2:
+        case ILI9488_ROTATION_VERTICAL_FLIP:
             ubBuf = ILI9488_MADCTL_MY | ILI9488_MADCTL_BGR;
             usMaxWidth = ILI9488_TFTWIDTH - 1;
             usMaxHeigth = ILI9488_TFTHEIGHT - 1;
             break;
-        case 3:
+        case ILI9488_ROTATION_HORIZONTAL_FLIP:
             ubBuf = ILI9488_MADCTL_MX | ILI9488_MADCTL_MY | ILI9488_MADCTL_MV | ILI9488_MADCTL_BGR;
             usMaxWidth = ILI9488_TFTHEIGHT - 1;
             usMaxHeigth = ILI9488_TFTWIDTH - 1;
