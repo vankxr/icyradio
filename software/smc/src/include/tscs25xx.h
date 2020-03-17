@@ -609,9 +609,6 @@ uint8_t tscs25xx_read_mf_wafer_id();
 uint8_t tscs25xx_read_mf_wafer_x();
 uint8_t tscs25xx_read_mf_wafer_y();
 
-void tscs25xx_power_up();
-void tscs25xx_power_down();
-
 uint8_t tscs25xx_pll_config(uint8_t ubPLLID, uint32_t ulRefFrequency);
 uint8_t tscs25xx_timebase_config(uint32_t ulRefFrequency);
 uint8_t tscs25xx_sample_rate_config(uint32_t ulSampleRate);

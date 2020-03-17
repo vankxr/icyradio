@@ -264,43 +264,34 @@ void mpx_extract_pilots(int16_t *psMPX, int16_t *psPilot, int16_t *psStereoPilot
 
     fir_filter(pPilotFilter, psMPX, psPilot);
 
-    for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-        psPilot[i] *= 10; // Apply some gain
+    arm_scale_q15(psPilot, 0.625f * INT16_MAX, 4, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (0.625 * 2⁴ = 10)
 
     // Stereo Pilot
     if(psStereoPilot)
     {
         // 19 ^ 2 = 38, HPF to remove uwanted spectrum
-        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-        {
-            psStereoPilot[i] = psPilot[i];
+        memcpy(psStereoPilot, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
 
-            for(uint8_t i = 0; i < 1; i++) // if taking x^n, then loop until i < n - 1
-                psStereoPilot[i] = ((int64_t)psStereoPilot[i] * psPilot[i]) / INT16_MAX;
-        }
+        for(uint8_t i = 0; i < 1; i++) // if taking x^n, then loop until i < n - 1
+            arm_mult_q15(psStereoPilot, psPilot, psStereoPilot, BASEBAND_SAMPLE_BUFFER_SIZE);
 
         fir_filter(pStereoPilotFilter, psStereoPilot, NULL);
 
-        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-            psStereoPilot[i] *= 4; // Apply some gain
+        arm_scale_q15(psStereoPilot, 1 * INT16_MAX, 2, psStereoPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (1 * 2² = 4)
     }
 
     // RDS Pilot
     if(psRDSPilot)
     {
         // 19 ^ 3 = 57, HPF to remove unwanted spectrum
-        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-        {
-            psRDSPilot[i] = psPilot[i];
+        memcpy(psRDSPilot, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
 
-            for(uint8_t i = 0; i < 2; i++) // if taking x^n, then loop until i < n - 1
-                psRDSPilot[i] = ((int64_t)psRDSPilot[i] * psPilot[i]) / INT16_MAX;
-        }
+        for(uint8_t i = 0; i < 2; i++) // if taking x^n, then loop until i < n - 1
+            arm_mult_q15(psRDSPilot, psPilot, psRDSPilot, BASEBAND_SAMPLE_BUFFER_SIZE);
 
         fir_filter(pRDSPilotFilter, psRDSPilot, NULL);
 
-        for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-            psRDSPilot[i] *= 4; // Apply some gain
+        arm_scale_q15(psRDSPilot, 1 * INT16_MAX, 2, psRDSPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (1 * 2² = 4)
     }
 }
 void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psLeft, int16_t *psRight)
@@ -322,25 +313,20 @@ void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psL
 
     fir_decimator_filter(pAudioFilter[0], psMPX, psMonoAudio);
 
-    for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-        psMonoAudio[i] /= 2; // Attenuate to increase stereo ratio (TODO: AGC)
+    arm_scale_q15(psMonoAudio, 0.5f * INT16_MAX, 0, psMonoAudio, AUDIO_SAMPLE_BUFFER_SIZE); // Attenuate to increase stereo ratio (TODO: AGC) (0.5 * 2⁰ = 0.5)
 
     // Stereo audio (Left - Right)
     int16_t psStereoAudio[BASEBAND_SAMPLE_BUFFER_SIZE];
 
     fir_filter(pStereoFilter, psMPX, psStereoAudio); // Bandpass the L-R (38k) subcarrier
 
-    for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
-        psStereoAudio[i] = ((int64_t)psStereoAudio[i] * psStereoPilot[i]) / INT16_MAX; // Bring it to baseband
+    arm_mult_q15(psStereoAudio, psStereoPilot, psStereoAudio, BASEBAND_SAMPLE_BUFFER_SIZE); // Bring it to baseband
 
     fir_decimator_filter(pAudioFilter[1], psStereoAudio, NULL);
 
     // Mix audio channels
-    for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-    {
-        psLeft[i] = psMonoAudio[i] + psStereoAudio[i]; // (L + R) + (L - R) = L + R + L - R = 2L
-        psRight[i] = psMonoAudio[i] - psStereoAudio[i]; // (L + R) - (L - R) = L + R - L + R = 2R
-    }
+    arm_add_q15(psMonoAudio, psStereoAudio, psLeft, AUDIO_SAMPLE_BUFFER_SIZE);  // (L + R) + (L - R) = L + R + L - R = 2L
+    arm_sub_q15(psMonoAudio, psStereoAudio, psRight, AUDIO_SAMPLE_BUFFER_SIZE); // (L + R) - (L - R) = L + R - L + R = 2R
 }
 
 void init_baseband_i2s()

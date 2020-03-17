@@ -342,30 +342,30 @@ void init_system_clocks()
 {
     si5351_clkin_config(50000000, 2); // fPFD = CLKIN / 2
 
-    DBGPRINTLN_CTX("CLKMNGR - CLKIN Clock: %.1f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - CLKIN Divider Clock: %.1f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLKIN Clock: %.3f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLKIN Divider Clock: %.3f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
 
     //// PLLA
     si5351_pll_set_source(0, SI5351_PLL_SRC_CLKIN);
     si5351_pll_set_freq(0, 800000000);
 
-    DBGPRINTLN_CTX("CLKMNGR - PLLA Source Clock: %.1f MHz", (float)SI5351_PLL_SRC_FREQ[0] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - PLLA VCO Clock: %.1f MHz", (float)SI5351_PLL_FREQ[0] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLA Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[0] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLA VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[0] / 1000000);
 
     //// PLLB
     si5351_pll_set_source(1, SI5351_PLL_SRC_CLKIN);
     si5351_pll_set_freq(1, 840000000);
 
-    DBGPRINTLN_CTX("CLKMNGR - PLLB Source Clock: %.1f MHz", (float)SI5351_PLL_SRC_FREQ[1] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - PLLB VCO Clock: %.1f MHz", (float)SI5351_PLL_FREQ[1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLB Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLB VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[1] / 1000000);
 
     //// FPGA Clock #1
     si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 49152000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 120.f);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK1, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK1));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK1, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
@@ -374,7 +374,7 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_FPGA_CLK1, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_FPGA_CLK1, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK1, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 1000000);
 
     si5351_clock_power_up(SI5351_FPGA_CLK1); // Power the output stage up
     si5351_clock_enable(SI5351_FPGA_CLK1); // Software enable the clock output
@@ -384,8 +384,8 @@ void init_system_clocks()
     si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 100000000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK2, 45.f);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK2, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK2));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK2, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
@@ -394,18 +394,18 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_FPGA_CLK2, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_FPGA_CLK2, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK2, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK2] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK2] / 1000000);
 
     si5351_clock_power_up(SI5351_FPGA_CLK2); // Power the output stage up
     si5351_clock_enable(SI5351_FPGA_CLK2); // Software enable the clock output
 
     //// FPGA Clock #3
     si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12288000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK3, 90.f);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK3] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK3] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK3, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK3));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK3, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
@@ -414,7 +414,7 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_FPGA_CLK3, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_FPGA_CLK3, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK3, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK3, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000);
 
     si5351_clock_power_up(SI5351_FPGA_CLK3); // Power the output stage up
     si5351_clock_enable(SI5351_FPGA_CLK3); // Software enable the clock output
@@ -424,8 +424,8 @@ void init_system_clocks()
     si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 32000000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK4, 30.f);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK4, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK4));
 
     si5351_clock_set_disable_state(SI5351_FPGA_CLK4, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
@@ -434,7 +434,7 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_FPGA_CLK4, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_FPGA_CLK4, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_FPGA_CLK4, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK4] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK4, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK4] / 1000000);
 
     si5351_clock_power_up(SI5351_FPGA_CLK4); // Power the output stage up
     si5351_clock_enable(SI5351_FPGA_CLK4); // Software enable the clock output
@@ -444,8 +444,8 @@ void init_system_clocks()
     si5351_multisynth_set_freq(SI5351_SMC_MAIN_CLK, 50000000);
     si5351_multisynth_set_phase_offset(SI5351_SMC_MAIN_CLK, 0.f);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Phase offset: %.1f deg", SI5351_SMC_MAIN_CLK, si5351_multisynth_get_phase_offset(SI5351_SMC_MAIN_CLK));
 
     si5351_clock_set_disable_state(SI5351_SMC_MAIN_CLK, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
@@ -454,7 +454,7 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_SMC_MAIN_CLK, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_SMC_MAIN_CLK, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_SMC_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_SMC_MAIN_CLK] / 1000000);
 
     si5351_clock_power_up(SI5351_SMC_MAIN_CLK); // Power the output stage up
     si5351_clock_enable(SI5351_SMC_MAIN_CLK); // Software enable the clock output
@@ -463,8 +463,8 @@ void init_system_clocks()
     si5351_multisynth_set_source(SI5351_DSP_MAIN_CLK, SI5351_MS_SRC_PLLB);
     si5351_multisynth_set_freq(SI5351_DSP_MAIN_CLK, 12000000);
 
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_SRC_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_MS_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
 
     si5351_clock_set_disable_state(SI5351_DSP_MAIN_CLK, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
     si5351_clock_set_drive_current(SI5351_DSP_MAIN_CLK, 8); // 8 mA
@@ -472,7 +472,7 @@ void init_system_clocks()
     si5351_clock_set_source(SI5351_DSP_MAIN_CLK, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
     si5351_clock_set_output_divider(SI5351_DSP_MAIN_CLK, 1); // Divide by 1 at the output
 
-    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.1f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_DSP_MAIN_CLK, (float)SI5351_CLK_FREQ[SI5351_DSP_MAIN_CLK] / 1000000);
 
     si5351_clock_power_up(SI5351_DSP_MAIN_CLK); // Power the output stage up
     si5351_clock_enable(SI5351_DSP_MAIN_CLK); // Software enable the clock output
@@ -502,17 +502,17 @@ void init_audio_chain()
     delay_ms(100);
 
     if(tscs25xx_timebase_config(SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC timebase configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+        DBGPRINTLN_CTX("CODEC timebase configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure timebase!");
 
     if(tscs25xx_pll_config(1, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC PLL #1 configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+        DBGPRINTLN_CTX("CODEC PLL #1 configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure PLL #1!");
 
     if(tscs25xx_pll_config(2, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC PLL #2 configured for %.1f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+        DBGPRINTLN_CTX("CODEC PLL #2 configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure PLL #2!");
 
@@ -524,7 +524,7 @@ void init_audio_chain()
         DBGPRINTLN_CTX("CODEC failed to configure sample rate!");
 
     const float fEQPrescaler[2] = {
-        1.5f,
+        1.f,
         1.f
     };
     const uint32_t ulEQFilterCutoffFreq[2][6] = {
@@ -647,7 +647,7 @@ void init_audio_chain()
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
     DBGPRINTLN_CTX("CODEC EQ2 configured!");
 
-    tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
+    tscs25xx_effects_config(0, 0, 0, 0, 0); // 3D OFF, Treble OFF, Treble non-linear OFF, Bass OFF, Bass non-linear OFF
     DBGPRINTLN_CTX("CODEC effects configured!");
 
     tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
@@ -670,8 +670,8 @@ void init_audio_chain()
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
     DBGPRINTLN_CTX("CODEC volume configured!");
 
-    tscs25xx_hp_set_left_volume(-12.f); // -12.000 dB
-    tscs25xx_hp_set_right_volume(-12.f); // -12.000 dB
+    tscs25xx_hp_set_left_volume(-6.f); // -6.000 dB
+    tscs25xx_hp_set_right_volume(-6.f); // -6.000 dB
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
@@ -695,7 +695,7 @@ void init_audio_chain()
 }
 void init_rx_chain()
 {
-    r820t2_set_lna_gain(10.f, 0); // +20 dB
+    r820t2_set_lna_gain(20.f, 0); // +20 dB
     DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
     r820t2_set_mixer_gain(0.f, 1); // Auto
@@ -707,10 +707,10 @@ void init_rx_chain()
     r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
 
     r820t2_set_if_freq(6000000); // 6 MHz IF
-    DBGPRINTLN_CTX("RX Tuner IF frequency: %.1f MHz", (float)R820T2_IF_FREQ / 1000000);
+    DBGPRINTLN_CTX("RX Tuner IF frequency: %.3f MHz", (float)R820T2_IF_FREQ / 1000000);
 
     if(r820t2_set_freq(96000000))
-        DBGPRINTLN_CTX("RX Tuner tuned to %.1f MHz", (float)R820T2_FREQ / 1000000);
+        DBGPRINTLN_CTX("RX Tuner tuned to %.3f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
 
@@ -723,7 +723,7 @@ void init_rx_chain()
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
     fpga_ddc_set_lo_freq(RX_RF_TO_IF(97400000));
-    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.1f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
+    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
     fpga_ddc_set_iq_swap(1); // Tuner uses high-side LO injection, so invert the spectrum in the DDC
@@ -759,8 +759,8 @@ void init_tx_chain()
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
     adf4351_pfd_config(50000000, 1, 0, 1, 1);
-    DBGPRINTLN_CTX("TX PLL Reference frequency: %.1f MHz", (float)ADF4351_REF_FREQ / 1000000);
-    DBGPRINTLN_CTX("TX PLL PFD frequency: %.1f MHz", (float)ADF4351_PFD_FREQ / 1000000);
+    DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
+    DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
     adf4351_charge_pump_set_current(5.f); // 5 mA
     DBGPRINTLN_CTX("TX PLL CP current: %.2f mA", adf4351_charge_pump_get_current());
@@ -859,29 +859,29 @@ int init()
     DBGPRINTLN_CTX("EMU - IOVDD Status: %s", g_ubIOVDDLow ? "LOW" : "OK");
     DBGPRINTLN_CTX("EMU - Core Voltage: %.2f mV", adc_get_corevdd());
 
-    DBGPRINTLN_CTX("CMU - HFXO Oscillator: %.1f MHz", (float)HFXO_OSC_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFRCO Oscillator: %.1f MHz", (float)HFRCO_OSC_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - USHFRCO Oscillator: %.1f MHz", (float)USHFRCO_OSC_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - AUXHFRCO Oscillator: %.1f MHz", (float)AUXHFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFXO Oscillator: %.3f MHz", (float)HFXO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFRCO Oscillator: %.3f MHz", (float)HFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - USHFRCO Oscillator: %.3f MHz", (float)USHFRCO_OSC_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - AUXHFRCO Oscillator: %.3f MHz", (float)AUXHFRCO_OSC_FREQ / 1000000);
     DBGPRINTLN_CTX("CMU - LFXO Oscillator: %.3f kHz", (float)LFXO_OSC_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - LFRCO Oscillator: %.3f kHz", (float)LFRCO_OSC_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - ULFRCO Oscillator: %.3f kHz", (float)ULFRCO_OSC_FREQ / 1000);
-    DBGPRINTLN_CTX("CMU - HFSRC Clock: %.1f MHz", (float)HFSRC_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HF Clock: %.1f MHz", (float)HF_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFBUS Clock: %.1f MHz", (float)HFBUS_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFCORE Clock: %.1f MHz", (float)HFCORE_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFEXP Clock: %.1f MHz", (float)HFEXP_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFPER Clock: %.1f MHz", (float)HFPER_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFPERB Clock: %.1f MHz", (float)HFPERB_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFPERC Clock: %.1f MHz", (float)HFPERC_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - HFLE Clock: %.1f MHz", (float)HFLE_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - QSPI Clock: %.1f MHz", (float)QSPI_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - SDIO Clock: %.1f MHz", (float)SDIO_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - USB Clock: %.1f MHz", (float)USB_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - ADC0 Clock: %.1f MHz", (float)ADC0_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - ADC1 Clock: %.1f MHz", (float)ADC1_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - DBG Clock: %.1f MHz", (float)DBG_CLOCK_FREQ / 1000000);
-    DBGPRINTLN_CTX("CMU - AUX Clock: %.1f MHz", (float)AUX_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFSRC Clock: %.3f MHz", (float)HFSRC_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HF Clock: %.3f MHz", (float)HF_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFBUS Clock: %.3f MHz", (float)HFBUS_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFCORE Clock: %.3f MHz", (float)HFCORE_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFEXP Clock: %.3f MHz", (float)HFEXP_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFPER Clock: %.3f MHz", (float)HFPER_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFPERB Clock: %.3f MHz", (float)HFPERB_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFPERC Clock: %.3f MHz", (float)HFPERC_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - HFLE Clock: %.3f MHz", (float)HFLE_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - QSPI Clock: %.3f MHz", (float)QSPI_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - SDIO Clock: %.3f MHz", (float)SDIO_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - USB Clock: %.3f MHz", (float)USB_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - ADC0 Clock: %.3f MHz", (float)ADC0_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - ADC1 Clock: %.3f MHz", (float)ADC1_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - DBG Clock: %.3f MHz", (float)DBG_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("CMU - AUX Clock: %.3f MHz", (float)AUX_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("CMU - LFA Clock: %.3f kHz", (float)LFA_CLOCK_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - LESENSE Clock: %.3f kHz", (float)LESENSE_CLOCK_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - RTC Clock: %.3f kHz", (float)RTC_CLOCK_FREQ / 1000);
@@ -1035,7 +1035,7 @@ int main()
     tft_set_rotation(ILI9488_ROTATION_HORIZONTAL_FLIP); // Set rotation (horizontal, ribbon to the left)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -80, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
+    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -70, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
     if(!pGraph)
     {
         DBGPRINTLN_CTX("Could not allocate graph");

@@ -45,9 +45,9 @@ uint8_t tscs25xx_init()
     tscs25xx_write_register(TSCS25XX_REG_PWRM2, TSCS25XX_REG_PWRM2_D2S_POWER_UP | TSCS25XX_REG_PWRM2_HPL_POWER_UP | TSCS25XX_REG_PWRM2_HPR_POWER_UP | TSCS25XX_REG_PWRM2_VREF_POWER_UP);
 
     tscs25xx_write_register(TSCS25XX_REG_PLLCTL1C, TSCS25XX_REG_PLLCTL1C_PLL1_POWER_DOWN | TSCS25XX_REG_PLLCTL1C_PLL2_POWER_DOWN);
-    tscs25xx_write_register(TSCS25XX_REG_PLLCTLD, 0x1C);
-    tscs25xx_write_register(TSCS25XX_REG_PLLCTL12, 0x2C);
-    tscs25xx_write_register(TSCS25XX_REG_PLLCTL1B, 0x3C);
+    tscs25xx_write_register(TSCS25XX_REG_PLLCTLD, 0x1A); // PLL1 Zero R & charge pump current
+    tscs25xx_write_register(TSCS25XX_REG_PLLCTL12, 0x22); // PLL2 Zero R & charge pump current
+    tscs25xx_write_register(TSCS25XX_REG_PLLCTL1B, 0x14); // PLL1 & PLL2 VCO current
     tscs25xx_write_register(TSCS25XX_REG_PLLREFSEL, TSCS25XX_REG_PLLREFSEL_PLL2_REF_MCLK2 | TSCS25XX_REG_PLLREFSEL_PLL1_REF_MCLK2);
 
     tscs25xx_write_register(TSCS25XX_REG_ATEST16, 0x06);
@@ -55,13 +55,37 @@ uint8_t tscs25xx_init()
     tscs25xx_write_register(TSCS25XX_REG_ATEST7, 0x02);
     tscs25xx_write_register(TSCS25XX_REG_ATEST5, 0x01);
 
-    tscs25xx_write_register(TSCS25XX_REG_CONFIG0, TSCS25XX_REG_CONFIG0_ASDM_FULL | TSCS25XX_REG_CONFIG0_DSDM_FULL);
+    tscs25xx_write_register(TSCS25XX_REG_DCOFSEL, 0x07);
+
+    tscs25xx_write_register(TSCS25XX_REG_CONFIG0, TSCS25XX_REG_CONFIG0_ASDM_HALF | TSCS25XX_REG_CONFIG0_DSDM_HALF | TSCS25XX_REG_CONFIG0_DC_FILTER_ON | TSCS25XX_REG_CONFIG0_SD_NO_FORCE_ON);
 
     tscs25xx_write_register(TSCS25XX_REG_ATEST1, 0x60);
 
     tscs25xx_write_register(TSCS25XX_REG_AIC1, TSCS25XX_REG_AIC1_BCLK_NOT_INV | TSCS25XX_REG_AIC1_MS_SLAVE | TSCS25XX_REG_AIC1_LRCLK_NOT_INV | TSCS25XX_REG_AIC1_WL_16_BIT | TSCS25XX_REG_AIC1_FORMAT_I2S);
     tscs25xx_write_register(TSCS25XX_REG_AIC2, TSCS25XX_REG_AIC2_DAC_STEREO | TSCS25XX_REG_AIC2_ADC_STEREO | TSCS25XX_REG_AIC2_TRI_OUTPUT | (3 << 0));
     tscs25xx_write_register(TSCS25XX_REG_AIC3, TSCS25XX_REG_AIC3_ADOPD_ENABLED | TSCS25XX_REG_AIC3_ALRPD_ENABLED | TSCS25XX_REG_AIC3_ABCPD_ENABLED | TSCS25XX_REG_AIC3_DDIPD_ENABLED | TSCS25XX_REG_AIC3_DLRPD_ENABLED | TSCS25XX_REG_AIC3_DBCPD_ENABLED);
+
+    tscs25xx_write_register(0x26, 0x00); // Set make up gain
+    tscs25xx_write_register(0x27, 0xe9); // Compressor Threshold
+    tscs25xx_write_register(0x28, 0x03); // Compressor Ratio
+    tscs25xx_write_register(0x29, 0x67); // Compressor Attack Time (Low)
+    tscs25xx_write_register(0x2a, 0xb1); // Compressor Attack Time (High)
+    tscs25xx_write_register(0x2b, 0x62); // Compressor Release Time (Low)
+    tscs25xx_write_register(0x2c, 0xfa); // Compressor Release Time (High)
+    tscs25xx_write_register(0x2d, 0xf1); // Limiter Threshold
+    tscs25xx_write_register(0x2e, 0xf1); // Limiter Target
+    tscs25xx_write_register(0x2f, 0xb3); // Limiter Attack Time (Low)
+    tscs25xx_write_register(0x30, 0xd8); // Limiter Attack Time (High)
+    tscs25xx_write_register(0x31, 0x36); // Limiter Release Time (Low)
+    tscs25xx_write_register(0x32, 0xff); // Limiter Release Time (High)
+    tscs25xx_write_register(0x33, 0x94); // Expander Threshold
+    tscs25xx_write_register(0x34, 0x01); // Expander Ratio
+    tscs25xx_write_register(0x35, 0xb3); // Expander Attack Time (Low)
+    tscs25xx_write_register(0x36, 0xd8); // Expander Attack Time (High)
+    tscs25xx_write_register(0x37, 0x9b); // Expander Release Time (Low)
+    tscs25xx_write_register(0x38, 0xff); // Expander Release Time (High)
+
+    tscs25xx_write_register(TSCS25XX_REG_CLECTL, TSCS25XX_REG_CLECTL_WINDOW_SEL_512 | TSCS25XX_REG_CLECTL_LVL_MODE_AVERAGE | TSCS25XX_REG_CLECTL_EXPANDER_ENABLED | TSCS25XX_REG_CLECTL_LIMITER_DISABLED | TSCS25XX_REG_CLECTL_COMPRESSOR_ENABLED);
 
     return 1;
 }
