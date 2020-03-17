@@ -5,7 +5,7 @@ module tuner
     input  signed [DSZ - 1:0] in,       // Input data
     input         [FSZ - 1:0] lo_freq,  // NCO Frequency tuning word
     input                     lo_ns_en, // NCO noise shaping enable
-    input                     iq_swap,  // I and Q swap
+    input                     iq_swap,  // IQ swap enable
     output signed [DSZ - 1:0] out_i,    // In-phase output
     output signed [DSZ - 1:0] out_q     // Quadrature output
 );

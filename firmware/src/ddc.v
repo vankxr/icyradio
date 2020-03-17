@@ -14,7 +14,7 @@ module ddc
 localparam ISZ = 16;   // Input word size
 localparam FSZ = 26;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
-localparam CICSZ = 36; // CIC output word size -> (see cic localparam OSZ)
+localparam CICSZ = 36; // CIC output word size -> (see CIC localparam OSZ)
 
 // Clock divider
 reg [4:0]   clk_div;
@@ -24,15 +24,15 @@ always @(posedge clk)
     begin
         if(reset)
             begin
-                clk_div <= 5'b0;
+                clk_div <= 5'b00000;
                 cic_out_clk <= 1'b0;
             end
         else
             begin
-                if(clk_div == 5'b11111) // Decimation ratio (32) - 1
+                if(&clk_div) // Decimation ratio (32) - 1
                     begin
                         cic_out_clk <= 1'b1;
-                        clk_div <= 5'b0;
+                        clk_div <= 5'b00000;
                     end
                 else
                     begin
