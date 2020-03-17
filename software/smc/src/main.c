@@ -240,22 +240,36 @@ void rx_get_psd(float *pfPower)
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 1); // Disable ADC DPRAM
 
+    // FFT Window
+    static uint8_t ubWindowInit = 0;
+    static int16_t sWindowBuffer[4096];
+
+    if(!ubWindowInit)
+    {
+        // Generate Hamming window LUT
+        for(uint16_t i = 0; i < 4096; i++)
+            sWindowBuffer[i] = (0.53836f - 0.46164f * cosf(2.f * M_PI * (float)i / 4096)) * INT16_MAX;
+
+        ubWindowInit = 1;
+    }
+
     // Samples come as 16-bit signed stuffed into a 32-bit unsigned because of the OF bit
     // We re-use the same buffer and zero the high 16-bit word in case any of them comes with the OF bit set
     int16_t *psFFTBuffer = (int16_t *)pulTDData;
 
-    /*
     for(uint16_t i = 0; i < 4096; i++)
     {
+        psFFTBuffer[i * 2 + 0] = ((int64_t)psFFTBuffer[i * 2 + 0] * sWindowBuffer[i]) / INT16_MAX; // Apply FFT window
         psFFTBuffer[i * 2 + 1] = 0;
 
+        /*
         char obuf[64];
         uint32_t osz = snprintf(obuf, 64, "%.6f\r\n", (float)psFFTBuffer[i * 2 + 0] / INT16_MAX);
 
         for(uint32_t isz = 0; isz < osz; isz++)
             dbg_swo_send_uint8(obuf[isz], 1);
+        */
     }
-    */
 
     arm_cfft_q15(&arm_cfft_sR_q15_len4096, psFFTBuffer, 0, 1); // Compute FFT
 
@@ -647,7 +661,7 @@ void init_audio_chain()
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
     DBGPRINTLN_CTX("CODEC EQ2 configured!");
 
-    tscs25xx_effects_config(0, 0, 0, 0, 0); // 3D OFF, Treble OFF, Treble non-linear OFF, Bass OFF, Bass non-linear OFF
+    tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
     DBGPRINTLN_CTX("CODEC effects configured!");
 
     tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled

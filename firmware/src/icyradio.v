@@ -377,14 +377,13 @@ wire [15:0] bb_i2s_left_data_out;
 wire [15:0] bb_i2s_right_data_out;
 reg  [15:0] bb_i2s_left_data_in;
 reg  [15:0] bb_i2s_right_data_in;
-reg  [2:0]  bb_i2s_clk_sync;
 reg  [2:0]  bb_i2s_clk_div;
 wire        bb_i2s_bclk;
 wire        bb_i2s_lrclk;
 wire        bb_i2s_sdout;
 wire        bb_i2s_sdin;
 
-assign BB_I2S_DSP_BCLK = bb_i2s_bclk & bb_i2s_clk_sync[2];
+assign BB_I2S_DSP_BCLK = bb_i2s_bclk & !bb_i2s_rst;
 assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
@@ -393,34 +392,12 @@ assign bb_i2s_bclk = bb_i2s_clk_div[2]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_
 
 // Clock divider and data synchronizer
 always @(posedge bb_i2s_clk)
-    begin
-        if(bb_i2s_rst)
-            begin
-                bb_i2s_clk_div <= 3'b000;
-                bb_i2s_clk_sync <= 3'b000;
-            end
-        else
-            begin
-                if(!bb_i2s_clk_sync[2])
-                    begin
-                        bb_i2s_clk_sync <= {bb_i2s_clk_sync[1:0], ddc_valid};
-
-                        if(ddc_valid && bb_i2s_clk_sync == 3'b000)
-                            bb_i2s_clk_div <= 3'b100;
-                        else
-                            bb_i2s_clk_div <= 3'b000;
-                    end
-                else
-                    begin
-                        bb_i2s_clk_div <= bb_i2s_clk_div + 1;
-                    end
-            end
-    end
+    bb_i2s_clk_div <= bb_i2s_clk_div + 1;
 
 // Module
 i2s_master bb_i2s
 (
-    .reset(!bb_i2s_clk_sync[2]),
+    .reset(bb_i2s_rst),
     .i2s_bclk(bb_i2s_bclk),
     .i2s_lrclk(bb_i2s_lrclk),
     .i2s_sdout(bb_i2s_sdout),
