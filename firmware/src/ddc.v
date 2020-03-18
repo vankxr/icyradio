@@ -14,7 +14,7 @@ module ddc
 localparam ISZ = 16;   // Input word size
 localparam FSZ = 26;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
-localparam CICSZ = 36; // CIC output word size -> (see CIC localparam OSZ)
+localparam CICSZ = 31; // CIC output word size -> (see CIC localparam OSZ)
 
 // Clock divider
 reg [4:0]   clk_div;

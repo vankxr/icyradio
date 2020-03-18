@@ -8,7 +8,7 @@ module cic_decimator
     output                          out_valid // Output valid
 );
 
-localparam NUM_STAGES = 4;                        // Stages of int / comb
+localparam NUM_STAGES = 3;                        // Stages of int / comb
 localparam STG_GSZ = 5;                           // Bit growth per stage -> log2(Decimation Ratio)
 localparam ISZ = 16;                              // Input word size
 localparam ASZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Integrator/Adder word size

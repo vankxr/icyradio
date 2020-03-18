@@ -12,7 +12,9 @@
 
 #define FPGA_REG_ID                     0x00
 #define FPGA_REG_RST_CNTRL              0x01
-#define FPGA_REG_IRQ_CNTRL_STATUS       0x02
+#define FPGA_REG_IRQ_STATE              0x02
+#define FPGA_REG_IRQ_MASK               0x03
+#define FPGA_REG_IRQ_SET_CLEAR          0x04
 #define FPGA_REG_LED_CNTRL              0x10
 #define FPGA_REG_RED_LED_DUTY           0x11
 #define FPGA_REG_GREEN_LED_DUTY         0x12
@@ -22,6 +24,7 @@
 #define FPGA_REG_ADC_DPRAM_DATA         0x22
 #define FPGA_REG_DDC_CNTRL              0x30
 #define FPGA_REG_DDC_LO_FREQ            0x31
+#define FPGA_REG_QDUC_CNTRL             0x35
 #define FPGA_REG_AUDIO_I2S_MUX_SEL      0x40
 #define FPGA_REG_QSPI_MEM_CNTRL         0x50
 #define FPGA_REG_QSPI_MEM_ADDR          0x51
@@ -37,19 +40,20 @@
 #define FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST   BIT(0)
 #define FPGA_REG_RST_CNTRL_ADC_SOFT_RST         BIT(1)
 #define FPGA_REG_RST_CNTRL_DDC_SOFT_RST         BIT(2)
-#define FPGA_REG_RST_CNTRL_DAC_SOFT_RST         BIT(3)
-#define FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST      BIT(4)
-#define FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST   BIT(5)
-#define FPGA_REG_RST_CNTRL_QSPI_SOFT_RST        BIT(6)
-#define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(7)
+#define FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST      BIT(3)
+#define FPGA_REG_RST_CNTRL_QDUC_SOFT_RST        BIT(4)
+#define FPGA_REG_RST_CNTRL_DAC_SOFT_RST         BIT(5)
+#define FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST   BIT(6)
+#define FPGA_REG_RST_CNTRL_QSPI_SOFT_RST        BIT(7)
+#define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(8)
 
-// FPGA_REG_IRQ_CNTRL_STATUS
-#define FPGA_REG_IRQ_CNTRL_STATUS_ADC_DPRAM_WR_EN   BIT(0)
-#define FPGA_REG_IRQ_CNTRL_STATUS_nADC_DPRAM_WR_EN  BIT(1)
-#define FPGA_REG_IRQ_CNTRL_STATUS_DDC_VALID         BIT(2)
-#define FPGA_REG_IRQ_CNTRL_STATUS_ADC_OVERFLOW      BIT(3)
-#define FPGA_REG_IRQ_CNTRL_STATUS_QSPI_MEM_WR_VALID BIT(4)
-#define FPGA_REG_IRQ_CNTRL_STATUS_QSPI_MEM_RD_VALID BIT(5)
+// FPGA_REG_IRQ_x
+#define FPGA_REG_IRQ_ADC_DPRAM_WR_EN    BIT(0)
+#define FPGA_REG_IRQ_nADC_DPRAM_WR_EN   BIT(1)
+#define FPGA_REG_IRQ_DDC_VALID          BIT(2)
+#define FPGA_REG_IRQ_ADC_OVERFLOW       BIT(3)
+#define FPGA_REG_IRQ_QSPI_MEM_WR_VALID  BIT(4)
+#define FPGA_REG_IRQ_QSPI_MEM_RD_VALID  BIT(5)
 
 // FPGA_REG_LED_CNTRL
 #define FPGA_REG_LED_CNTRL_RED_LED_EN   BIT(0)
@@ -64,6 +68,8 @@
 // FPGA_REG_DDC_CNTRL
 #define FPGA_REG_DDC_CNTRL_LO_NS_EN     BIT(0)
 #define FPGA_REG_DDC_CNTRL_IQ_SWAP      BIT(1)
+
+// FPGA_REG_QDUC_CNTRL
 
 // FPGA_REG_AUDIO_I2S_MUX_SEL
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_INPUT        0x00000000
@@ -121,7 +127,7 @@ uint16_t fpga_read_design_version();
 void fpga_reset_module(uint32_t ulModule, uint8_t ubReset);
 
 void fpga_irq_set_mask(uint8_t ubID, uint8_t ubMask);
-uint8_t fpga_irq_get_status();
+uint8_t fpga_irq_get_state();
 void fpga_irq_set(uint8_t ubMask);
 void fpga_irq_clear(uint8_t ubMask);
 
@@ -130,7 +136,7 @@ void fpga_rgb_led_disable(uint8_t ubColor);
 void fpga_rbg_led_set_duty(uint8_t ubColor, uint16_t usDuty);
 uint16_t fpga_rbg_led_get_duty(uint8_t ubColor);
 
-void fpga_adc_dpram_sample(uint32_t *pulData, uint16_t usSize);
+void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize);
 
 void fpga_ddc_set_iq_swap(uint8_t ubEnable);
 void fpga_ddc_set_lo_noise_shaping(uint8_t ubEnable);

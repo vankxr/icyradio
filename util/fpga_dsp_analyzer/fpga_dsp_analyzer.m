@@ -17,7 +17,7 @@ Fres = 1000;
 f = 0 : (Fres/FsCIC) : (CICDec / 2);
 
 %% CIC
-CICOrder = 4;
+CICOrder = 3;
 CICZeroGain = 20 * log10(2 ^ (CICOrder * log2(CICDec))); % Gain due to bit growth
 CICResp = 20 .* log10(abs(sin(pi .* f) ./ sin(pi .* (f ./ CICDec))) .^ CICOrder) - CICZeroGain;
 

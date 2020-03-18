@@ -227,16 +227,16 @@ void rx_get_psd(float *pfPower)
 
     memset(pfPower, 0, 2048 * sizeof(float));
 
-    uint32_t *pulTDData = (uint32_t *)malloc(4096 * sizeof(uint32_t));
+    int16_t *psTDData = (int16_t *)malloc(4096 * sizeof(int16_t));
 
-    if(!pulTDData)
+    if(!psTDData)
         return;
 
-    memset(pulTDData, 0, 4096 * sizeof(uint32_t));
+    memset(psTDData, 0, 4096 * sizeof(int16_t));
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0); // Enable ADC DPRAM
 
-    fpga_adc_dpram_sample(pulTDData, 4096); // Sample
+    fpga_adc_dpram_sample(psTDData, 4096); // Sample
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 1); // Disable ADC DPRAM
 
@@ -253,14 +253,19 @@ void rx_get_psd(float *pfPower)
         ubWindowInit = 1;
     }
 
-    // Samples come as 16-bit signed stuffed into a 32-bit unsigned because of the OF bit
-    // We re-use the same buffer and zero the high 16-bit word in case any of them comes with the OF bit set
-    int16_t *psFFTBuffer = (int16_t *)pulTDData;
+    int16_t *psFFTBuffer = (int16_t *)malloc(2 * 4096 * sizeof(int16_t));
+
+    if(!psFFTBuffer)
+        return;
+
+    memset(psFFTBuffer, 0, 2 * 4096 * sizeof(int16_t));
 
     for(uint16_t i = 0; i < 4096; i++)
     {
+        psFFTBuffer[i * 2 + 0] = psTDData[i];   // Real part
+        psFFTBuffer[i * 2 + 1] = 0;             // Imaginary part
+
         psFFTBuffer[i * 2 + 0] = ((int64_t)psFFTBuffer[i * 2 + 0] * sWindowBuffer[i]) / INT16_MAX; // Apply FFT window
-        psFFTBuffer[i * 2 + 1] = 0;
 
         /*
         char obuf[64];
@@ -270,6 +275,8 @@ void rx_get_psd(float *pfPower)
             dbg_swo_send_uint8(obuf[isz], 1);
         */
     }
+
+    free(psTDData);
 
     arm_cfft_q15(&arm_cfft_sR_q15_len4096, psFFTBuffer, 0, 1); // Compute FFT
 
@@ -282,7 +289,7 @@ void rx_get_psd(float *pfPower)
         pfPower[i] = 10 * log10(fReal * fReal + fImag * fImag);
     }
 
-    free(pulTDData);
+    free(psFFTBuffer);
 }
 void rx_draw_psd(tft_graph_t *pGraph, float *pfPower)
 {
@@ -538,7 +545,7 @@ void init_audio_chain()
         DBGPRINTLN_CTX("CODEC failed to configure sample rate!");
 
     const float fEQPrescaler[2] = {
-        1.f,
+        1.5f,
         1.f
     };
     const uint32_t ulEQFilterCutoffFreq[2][6] = {
@@ -655,7 +662,7 @@ void init_audio_chain()
         }
     }
 
-    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0); // Enable EQ 1 prescaler and Bands 0 to 2
+    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_2); // Enable EQ 1 prescaler and Bands 0 to 2
     DBGPRINTLN_CTX("CODEC EQ1 configured!");
 
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
@@ -723,7 +730,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.3f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(96000000))
+    if(r820t2_set_freq(101000000))
         DBGPRINTLN_CTX("RX Tuner tuned to %.3f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -736,7 +743,7 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(97400000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(104300000));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -752,10 +759,13 @@ void init_rx_chain()
 }
 void init_tx_chain()
 {
+    fpga_reset_module(FPGA_REG_RST_CNTRL_QDUC_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA QDUC enabled!");
+
     fpga_reset_module(FPGA_REG_RST_CNTRL_DAC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA DAC enabled!");
 
-    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK4]);
+    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
     ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_2V0 | AD9117_REG_AUX_CTLI_TOP_2V5);
@@ -1049,7 +1059,7 @@ int main()
     tft_set_rotation(ILI9488_ROTATION_HORIZONTAL_FLIP); // Set rotation (horizontal, ribbon to the left)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -70, 0, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
+    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -70, -20, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
     if(!pGraph)
     {
         DBGPRINTLN_CTX("Could not allocate graph");
@@ -1137,7 +1147,7 @@ int main()
                 rx_get_psd(pfRXPSD);
 
                 DBGPRINTLN_CTX("RX hard-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(97400000)));
+                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(104300000)));
 
                 uint32_t ulMaxPowerFrequency = 0;
                 float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);

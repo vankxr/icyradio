@@ -84,23 +84,6 @@ always @(negedge spi_sck or posedge rst)
             end
     end
 
-// Synchronize EOA and EOT flags to fast clock
-wire eoa_q;
-wire eot_q;
-
-synchronizer eoa_sync
-(
-    .clk(clk),
-    .in(eoa),
-    .out(eoa_q)
-);
-synchronizer eot_sync
-(
-    .clk(clk),
-    .in(eot),
-    .out(eot_q)
-);
-
 // Edge detection on end-of-address and end-of-transfer signals to generate synchronous read and write enables
 reg eoa_ed; // EOA edge detector
 reg eot_ed; // EOT edge detector
@@ -117,11 +100,11 @@ always @(posedge clk)
             end
         else
             begin
-                eoa_ed <= eoa_q;
-                eot_ed <= eot_q;
+                eoa_ed <= eoa;
+                eot_ed <= eot;
 
-                rd_en <= !eoa_ed & eoa_q & rnw;
-                wr_en <= !eot_ed & eot_q & !rnw;
+                rd_en <= !eoa_ed & eoa & rnw;
+                wr_en <= !eot_ed & eot & !rnw;
             end
     end
 endmodule

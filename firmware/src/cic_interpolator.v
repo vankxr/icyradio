@@ -7,7 +7,7 @@ module cic_interpolator
     output  signed [OSZ - 1:0]      out,      // Output data
 );
 
-localparam NUM_STAGES = 4;                        // Stages of int / comb
+localparam NUM_STAGES = 3;                        // Stages of int / comb
 localparam STG_GSZ = 5;                           // Bit growth per stage -> log2(Interpolation Ratio)
 localparam ISZ = 16;                              // Input word size
 localparam ASZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Integrator/Adder word size
@@ -17,7 +17,7 @@ localparam OSZ = ASZ;                             // Output word size
 reg signed  [ISZ - 1:0] comb_diff [0:NUM_STAGES];
 reg signed  [ISZ - 1:0] comb_dly  [0:NUM_STAGES];
 
-always @(posedge clk)
+always @(posedge out_clk)
     begin
         if(reset)
             begin
@@ -26,7 +26,7 @@ always @(posedge clk)
             end
         else
             begin
-                comb_diff[0] <= in;
+                comb_diff[0] <= clk ? in : {ISZ{1'b0}};
                 comb_dly[0] <= comb_diff[0];
             end
     end
@@ -36,7 +36,7 @@ generate
 
     for(j = 1; j <= NUM_STAGES; j = j + 1)
         begin
-            always @(posedge clk)
+            always @(posedge out_clk)
                 begin
                     if(reset)
                         begin
@@ -52,9 +52,6 @@ generate
         end
 endgenerate
 
-// Input clock edge detector
-reg [1:0] clk_ed;
-
 // Integrators
 reg signed [ASZ - 1:0] integrator [0:NUM_STAGES - 1];
 
@@ -62,16 +59,11 @@ always @(posedge out_clk)
     begin
         if(reset)
             begin
-                clk_ed <= 2'b00;
-
                 integrator[0] <= {ASZ{1'b0}};
             end
         else
             begin
-                clk_ed <= {clk_ed[0], clk};
-
-                if(!clk_ed[1] && clk_ed[0])
-                    integrator[0] <= integrator[0] + {{(ASZ - ISZ){comb_diff[NUM_STAGES][ISZ - 1]}}, comb_diff[NUM_STAGES]};
+                integrator[0] <= integrator[0] + {{(ASZ - ISZ){comb_diff[NUM_STAGES][ISZ - 1]}}, comb_diff[NUM_STAGES]};
             end
     end
 

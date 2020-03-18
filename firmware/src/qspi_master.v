@@ -38,7 +38,7 @@ assign req = {wr_req, rd_req};
 assign req_q = {wr_req_q, rd_req_q};
 
 assign qspi_data_out = qspi_data_out_shift[DSZ - 1:DSZ - 4]; // QSPI data out are the MSBs of the shift register
-assign qspi_data_out_en = qspi_data_out_en_int & !qspi_ncs; // Output enable gated by Chip Select
+assign qspi_data_out_en = qspi_data_out_en_int && !qspi_ncs; // Output enable gated by Chip Select
 
 always @(posedge qspi_sck)
     begin
@@ -138,7 +138,7 @@ always @(negedge qspi_sck)
                     begin
                         cycle_cnt <= 4'b0000;
 
-                        if(|req & !&req)
+                        if(|req && !&req)
                             begin
                                 wr_req_q <= wr_req;
                                 rd_req_q <= rd_req;

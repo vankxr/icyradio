@@ -45,7 +45,6 @@ uint8_t fpga_load_bitstream(const uint8_t *pubBitstream, const uint32_t ulBitstr
 }
 
 // Design specific
-
 static uint32_t fpga_read_register(uint8_t ubRegister)
 {
     uint8_t ubBuf[4];
@@ -92,13 +91,16 @@ uint8_t fpga_init()
     if(fpga_read_design_id() != 0xDADC)
         return 0;
 
-    fpga_irq_set_mask(FPGA_IRQ_SMC, FPGA_REG_IRQ_CNTRL_STATUS_ADC_OVERFLOW);
+    fpga_irq_clear(0xFF); // Clear all IRQs
+
+    fpga_irq_set_mask(FPGA_IRQ_SMC, 0x01);
+    fpga_irq_set_mask(FPGA_IRQ_DSP, 0x00);
 
     return 1;
 }
 void fpga_isr()
 {
-    uint8_t ubIRQFlags = fpga_irq_get_status();
+    uint8_t ubIRQFlags = fpga_irq_get_state();
 
     fpga_irq_clear(ubIRQFlags);
 }
@@ -129,24 +131,24 @@ void fpga_irq_set_mask(uint8_t ubID, uint8_t ubMask)
     switch(ubID)
     {
         case FPGA_IRQ_SMC:
-            fpga_rmw_register(FPGA_REG_IRQ_CNTRL_STATUS, 0x0000FF00, (ubMask & 0xFF) << 0);
+            fpga_rmw_register(FPGA_REG_IRQ_MASK, 0x0000FF00, (ubMask & 0xFF) << 0);
         break;
         case FPGA_IRQ_DSP:
-            fpga_rmw_register(FPGA_REG_IRQ_CNTRL_STATUS, 0x000000FF, (ubMask & 0xFF) << 8);
+            fpga_rmw_register(FPGA_REG_IRQ_MASK, 0x000000FF, (ubMask & 0xFF) << 8);
         break;
     }
 }
-uint8_t fpga_irq_get_status()
+uint8_t fpga_irq_get_state()
 {
-    return (fpga_read_register(FPGA_REG_IRQ_CNTRL_STATUS) >> 16) & 0xFF;
+    return fpga_read_register(FPGA_REG_IRQ_STATE);
 }
 void fpga_irq_set(uint8_t ubMask)
 {
-    fpga_rmw_register(FPGA_REG_IRQ_CNTRL_STATUS, 0x0000FFFF, (ubMask & 0xFF) << 24);
+    fpga_write_register(FPGA_REG_IRQ_SET_CLEAR, (ubMask & 0xFF) << 0);
 }
 void fpga_irq_clear(uint8_t ubMask)
 {
-    fpga_rmw_register(FPGA_REG_IRQ_CNTRL_STATUS, 0x0000FFFF, (ubMask & 0xFF) << 16);
+    fpga_write_register(FPGA_REG_IRQ_SET_CLEAR, (ubMask & 0xFF) << 8);
 }
 
 void fpga_rgb_led_enable(uint8_t ubColor)
@@ -178,23 +180,24 @@ uint16_t fpga_rbg_led_get_duty(uint8_t ubColor)
     return fpga_read_register(FPGA_REG_RED_LED_DUTY + ubColor);
 }
 
-void fpga_adc_dpram_sample(uint32_t *pulData, uint16_t usSize)
+void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize)
 {
-    if(!pulData)
+    if(!psData)
         return;
 
     if(!usSize || usSize > FPGA_ADC_DPRAM_SIZE)
         return;
 
+    while(fpga_read_register(FPGA_REG_ADC_DPRAM_CNTRL) & FPGA_REG_ADC_DPRAM_CNTRL_WR_EN); // Wait if the previous did not finish yet
+
     fpga_write_register(FPGA_REG_ADC_DPRAM_CNTRL, FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC | FPGA_REG_ADC_DPRAM_CNTRL_WR_REQUEST); // Enable auto address increment and trigger write
 
     while(!(fpga_read_register(FPGA_REG_ADC_DPRAM_CNTRL) & FPGA_REG_ADC_DPRAM_CNTRL_WR_EN)); // Wait for the write to start
-    while(fpga_read_register(FPGA_REG_ADC_DPRAM_CNTRL) & FPGA_REG_ADC_DPRAM_CNTRL_WR_EN); // Wait for the write to end
 
     fpga_write_register(FPGA_REG_ADC_DPRAM_ADDR, 0); // Reset the read address
 
     while(usSize--)
-        *pulData++ = fpga_read_register(FPGA_REG_ADC_DPRAM_DATA);
+        *psData++ = fpga_read_register(FPGA_REG_ADC_DPRAM_DATA) & 0xFFFF;
 }
 
 void fpga_ddc_set_iq_swap(uint8_t ubEnable)
