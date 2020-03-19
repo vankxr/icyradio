@@ -47,13 +47,8 @@
 #define FPGA_REG_RST_CNTRL_QSPI_SOFT_RST        BIT(7)
 #define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(8)
 
-// FPGA_REG_IRQ_x
-#define FPGA_REG_IRQ_ADC_DPRAM_WR_EN    BIT(0)
-#define FPGA_REG_IRQ_nADC_DPRAM_WR_EN   BIT(1)
-#define FPGA_REG_IRQ_DDC_VALID          BIT(2)
-#define FPGA_REG_IRQ_ADC_OVERFLOW       BIT(3)
-#define FPGA_REG_IRQ_QSPI_MEM_WR_VALID  BIT(4)
-#define FPGA_REG_IRQ_QSPI_MEM_RD_VALID  BIT(5)
+// FPGA_REG_IRQ_STATE
+#define FPGA_REG_IRQ_STATE_CLEAR_ON_READ    BIT(0)
 
 // FPGA_REG_LED_CNTRL
 #define FPGA_REG_LED_CNTRL_RED_LED_EN   BIT(0)
@@ -106,11 +101,19 @@
 
 
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
+#define FPGA_QSPI_RAM_SIZE      4194304 // Words
 #define FPGA_DDC_LO_CLK_FREQ    SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
 #define FPGA_DDC_LO_FSZ         26 // Bits
 
 #define FPGA_IRQ_SMC    0
 #define FPGA_IRQ_DSP    1
+
+#define FPGA_IRQ_ADC_DPRAM_WR_EN    BIT(0)
+#define FPGA_IRQ_nADC_DPRAM_WR_EN   BIT(1)
+#define FPGA_IRQ_DDC_VALID          BIT(2)
+#define FPGA_IRQ_ADC_OVERFLOW       BIT(3)
+#define FPGA_IRQ_QSPI_MEM_WR_VALID  BIT(4)
+#define FPGA_IRQ_QSPI_MEM_RD_VALID  BIT(5)
 
 #define FPGA_LED_RED    0
 #define FPGA_LED_GREEN  1
@@ -156,7 +159,9 @@ uint32_t fpga_i2s_mux_get_bridge_sdin();
 void fpga_i2s_mux_set_fpga_sdin(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_fpga_sdin();
 
-
-void fpga_psram_test(); // TODO: Remove this
+void fpga_qspi_mux_set_data_in(uint32_t ulSource);
+uint32_t fpga_qspi_mux_get_data_in();
+void fpga_qspi_mem_write(uint32_t ulAddress, uint32_t ulSize);
+void fpga_qspi_mem_read(uint32_t ulAddress, int16_t *psData, uint32_t ulSize);
 
 #endif // __FPGA_H__

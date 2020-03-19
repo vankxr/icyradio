@@ -1,8 +1,8 @@
 module cic_decimator
 (
-    input                           clk,      // Clock
     input                           reset,    // Reset
-    input                           out_clk,  // Decimated output rate
+    input                           in_clk,   // Input rate
+    input                           out_clk,  // Output rate
     input   signed [ISZ - 1:0]      in,       // Input data
     output  signed [OSZ - 1:0]      out,      // Output data
     output                          out_valid // Output valid
@@ -17,7 +17,7 @@ localparam OSZ = ASZ;                             // Output word size
 // Integrators
 reg signed [ASZ - 1:0] integrator [0:NUM_STAGES - 1];
 
-always @(posedge clk)
+always @(posedge in_clk)
     begin
         if(reset)
             integrator[0] <= {ASZ{1'b0}};
@@ -30,9 +30,9 @@ generate
 
     for(i = 1; i < NUM_STAGES; i = i + 1)
         begin
-            always @(posedge clk)
+            always @(posedge in_clk)
                 begin
-                    if(reset == 1'b1)
+                    if(reset)
                         integrator[i] <= {ASZ{1'b0}};
                     else
                         integrator[i] <= integrator[i] + integrator[i - 1];
@@ -45,7 +45,7 @@ reg         [NUM_STAGES:0]  comb_en;
 reg signed  [OSZ - 1:0]     comb_diff [0:NUM_STAGES];
 reg signed  [OSZ - 1:0]     comb_dly  [0:NUM_STAGES];
 
-always @(posedge clk)
+always @(posedge in_clk)
     begin
         if(reset)
             begin
@@ -70,7 +70,7 @@ generate
 
     for(j = 1; j <= NUM_STAGES; j = j + 1)
         begin
-            always @(posedge clk)
+            always @(posedge in_clk)
                 begin
                     if(reset)
                         begin

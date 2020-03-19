@@ -84,27 +84,27 @@ always @(negedge spi_sck or posedge rst)
             end
     end
 
-// Edge detection on end-of-address and end-of-transfer signals to generate synchronous read and write enables
-reg eoa_ed; // EOA edge detector
-reg eot_ed; // EOT edge detector
+// Synchronization and Edge detection on end-of-address and end-of-transfer signals to generate synchronous read and write enables
+reg [2:0] eoa_ed; // EOA edge detector
+reg [2:0] eot_ed; // EOT edge detector
 
 always @(posedge clk)
     begin
         if(rst)
             begin
-                eoa_ed <= 1'b0;
-                eot_ed <= 1'b0;
+                eoa_ed <= 3'b000;
+                eot_ed <= 3'b000;
 
                 rd_en <= 1'b0;
                 wr_en <= 1'b0;
             end
         else
             begin
-                eoa_ed <= eoa;
-                eot_ed <= eot;
+                eoa_ed <= {eoa_ed[1:0], eoa};
+                eot_ed <= {eot_ed[1:0], eot};
 
-                rd_en <= !eoa_ed & eoa & rnw;
-                wr_en <= !eot_ed & eot & !rnw;
+                rd_en <= !eoa_ed[2] & eoa_ed[1] & rnw;
+                wr_en <= !eot_ed[2] & eot_ed[1] & !rnw;
             end
     end
 endmodule

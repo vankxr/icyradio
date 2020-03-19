@@ -225,8 +225,10 @@ void rx_get_psd(float *pfPower)
     if(!pfPower)
         return;
 
+    // Zero output buffer
     memset(pfPower, 0, 2048 * sizeof(float));
 
+    // Allocate buffer to store time-domain data
     int16_t *psTDData = (int16_t *)malloc(4096 * sizeof(int16_t));
 
     if(!psTDData)
@@ -234,6 +236,7 @@ void rx_get_psd(float *pfPower)
 
     memset(psTDData, 0, 4096 * sizeof(int16_t));
 
+    // Get samples from ADC
     fpga_reset_module(FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST, 0); // Enable ADC DPRAM
 
     fpga_adc_dpram_sample(psTDData, 4096); // Sample
@@ -246,20 +249,33 @@ void rx_get_psd(float *pfPower)
 
     if(!ubWindowInit)
     {
-        // Generate Hamming window LUT
+        // Generate window LUT
         for(uint16_t i = 0; i < 4096; i++)
-            sWindowBuffer[i] = (0.53836f - 0.46164f * cosf(2.f * M_PI * (float)i / 4096)) * INT16_MAX;
+        {
+            // Hanning
+            //sWindowBuffer[i] = (0.5f - 0.5f * cosf(2.f * M_PI * (float)i / 4096)) * INT16_MAX;
+            // Hamming
+            //sWindowBuffer[i] = (0.53836f - 0.46164f * cosf(2.f * M_PI * (float)i / 4096)) * INT16_MAX;
+            // Blackman-Harris
+            sWindowBuffer[i] = (0.35875f - 0.48829f * cosf(2.f * M_PI * (float)i / 4096) + 0.14128f * cosf(4.f * M_PI * (float)i / 4096) - 0.01168f * cosf(6.f * M_PI * (float)i / 4096)) * INT16_MAX;
+        }
 
         ubWindowInit = 1;
     }
 
+    // Allocate buffer to store FFT data
     int16_t *psFFTBuffer = (int16_t *)malloc(2 * 4096 * sizeof(int16_t));
 
     if(!psFFTBuffer)
+    {
+        free(psTDData);
+
         return;
+    }
 
     memset(psFFTBuffer, 0, 2 * 4096 * sizeof(int16_t));
 
+    // Fill FFT buffer and apply the window
     for(uint16_t i = 0; i < 4096; i++)
     {
         psFFTBuffer[i * 2 + 0] = psTDData[i];   // Real part
@@ -662,7 +678,7 @@ void init_audio_chain()
         }
     }
 
-    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_2); // Enable EQ 1 prescaler and Bands 0 to 2
+    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_1); // Enable EQ 1 prescaler and Bands 0 to 2
     DBGPRINTLN_CTX("CODEC EQ1 configured!");
 
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
@@ -1036,8 +1052,6 @@ int main()
 
     // RX Chain configuration
     init_rx_chain();
-
-    //fpga_psram_test(); // TODO: Remove this
 
     // TX Chain configuration
     //init_tx_chain();

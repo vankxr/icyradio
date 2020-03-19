@@ -13,29 +13,17 @@ localparam OSZ = 14;   // Output word size
 localparam CICSZ = 31; // CIC output word size -> (see CIC localparam OSZ)
 
 // Clock divider
-reg [4:0]   clk_div;
-reg         cic_in_clk;
+reg [7:0]   clk_div;
+wire        cic_in_clk;
+
+assign cic_in_clk = &clk_div; // One pulse every 256 = Interpolation ratio
 
 always @(posedge clk)
     begin
         if(reset)
-            begin
-                clk_div <= 5'b00000;
-                cic_in_clk <= 1'b0;
-            end
+            clk_div <= 8'b00000000;
         else
-            begin
-                if(&clk_div) // Interpolation ratio (32) - 1
-                    begin
-                        cic_in_clk <= 1'b1;
-                        clk_div <= 5'b00000;
-                    end
-                else
-                    begin
-                        cic_in_clk <= 1'b0;
-                        clk_div <= clk_div + 1;
-                    end
-            end
+            clk_div <= clk_div + 1;
     end
 
 // CIC interpolators
@@ -45,8 +33,8 @@ wire signed [CICSZ - 1:0] cic_q;
 
 cic_interpolator cic_int_i
 (
-    .clk(cic_in_clk),
     .reset(reset),
+    .in_clk(cic_in_clk),
     .out_clk(clk),
     .in(in_i),
     .out(cic_i),
@@ -54,8 +42,8 @@ cic_interpolator cic_int_i
 
 cic_interpolator cic_int_q
 (
-    .clk(cic_in_clk),
     .reset(reset),
+    .in_clk(cic_in_clk),
     .out_clk(clk),
     .in(in_q),
     .out(cic_q),

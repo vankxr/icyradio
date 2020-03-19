@@ -105,6 +105,35 @@ void _spi0_isr()
         }
     }
 }
+void _i2sc1_isr()
+{
+    if(I2SC1->I2SC_SR & I2SC_SR_TXRDY)
+    {
+        static uint32_t ulCount = 0;
+        static uint32_t pulBuffer[10];
+        static uint8_t ubBufferInit = 0;
+
+        if(!ubBufferInit)
+        {
+            for(uint32_t i = 0; i < 10; i++)
+            {
+                iq16_t xSample = {
+                    .i = -arm_cos_q15(INT16_MAX * (float)i / 10),
+                    .q = -arm_sin_q15(INT16_MAX * (float)i / 10)
+                };
+
+                pulBuffer[i] = (((uint32_t)xSample.q & 0xFFFF) << 16) | (((uint32_t)xSample.i & 0xFFFF) << 0);
+            }
+
+            ubBufferInit = 1;
+        }
+
+        I2SC1->I2SC_THR = pulBuffer[ulCount++];
+
+        if(ulCount >= 10)
+            ulCount = 0;
+    }
+}
 void fpga_isr()
 {
     DBGPRINTLN_CTX("FPGA ISR");
@@ -376,7 +405,13 @@ void init_baseband_i2s()
     xdmac_ch_load(BASEBAND_I2S_DMA_CHANNEL, pBasebandDMADescriptor, 3, 0);
     xdmac_ch_enable(BASEBAND_I2S_DMA_CHANNEL);
 
-    I2SC1->I2SC_CR = I2SC_CR_RXEN; // Enable RX
+    I2SC1->I2SC_SCR = I2SC_SCR_MASK; // Clear all interrupts
+    IRQ_CLEAR(I2SC1_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(I2SC1_IRQn, 3, 0); // Set priority 3,0
+    IRQ_ENABLE(I2SC1_IRQn); // Enable vector
+    I2SC1->I2SC_IER = I2SC_IER_RXRDY; // Enable TX & RX interrupt requests
+
+    I2SC1->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
 }
 void init_audio_i2s()
 {

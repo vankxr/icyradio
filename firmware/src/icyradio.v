@@ -215,7 +215,6 @@ reg  [ADC_DPRAM_SIZE - 1:0] adc_dpram_wr_addr;
 wire [15:0]                 adc_dpram_data_in;
 wire [15:0]                 adc_dpram_data_out; // Used by SMC via SPI
 wire                        adc_dpram_wr_req; // Controlled by SMC via SPI
-wire                        adc_dpram_rd_addr_inc; // Controlled by SMC via SPI
 reg                         adc_dpram_wr_en;
 
 // Module
@@ -413,8 +412,8 @@ dac_data [13:0]
 (
     .PACKAGE_PIN({DAC_D13, DAC_D12, DAC_D11, DAC_D10, DAC_D9, DAC_D8, DAC_D7, DAC_D6, DAC_D5, DAC_D4, DAC_D3, DAC_D2, DAC_D1, DAC_D0}),
     .OUTPUT_CLK(dac_clk),
-    .D_OUT_0(qduc_i),
-    .D_OUT_1(qduc_q)
+    .D_OUT_0(-qduc_i), // TxDAC differential output polarity is swapped for routing ease, so reverse the polarity here
+    .D_OUT_1(-qduc_q)  // TxDAC differential output polarity is swapped for routing ease, so reverse the polarity here
 );
 /// DAC Interface ///
 
@@ -758,7 +757,7 @@ always @(posedge qspi_mem_clk)
                                 end
                             default:
                                 begin
-                                    qspi_mem_data_in <= 16'h0000;
+                                    qspi_mem_data_in <= 16'hA5A5;
                                 end
                         endcase
                     end
@@ -836,39 +835,38 @@ assign SMC_IRQn = !(|(irq_state & irq_mask[0]));
 assign DSP_IRQn = !(|(irq_state & irq_mask[1]));
 
 // IRQ lines selection
-assign irq_lines[0] = adc_dpram_wr_en;
-assign irq_lines[1] = !adc_dpram_wr_en;
-assign irq_lines[2] = ddc_valid;
-assign irq_lines[3] = adc_of;
-assign irq_lines[4] = qspi_mem_wr_valid;
-assign irq_lines[5] = qspi_mem_rd_valid;
-assign irq_lines[6] = 1'b0;
 assign irq_lines[7] = 1'b0;
+assign irq_lines[6] = 1'b0;
+assign irq_lines[5] = qspi_mem_rd_valid;
+assign irq_lines[4] = qspi_mem_wr_valid;
+assign irq_lines[3] = adc_of;
+assign irq_lines[2] = ddc_valid;
+assign irq_lines[1] = !adc_dpram_wr_en;
+assign irq_lines[0] = adc_dpram_wr_en;
 
-generate
-    genvar i;
+// Synchronizer
+synchronizer irq_lines_sync [IRQ_COUNT - 1:0]
+(
+    .in_clk({1'b0, 1'b0, qspi_mem_clk, qspi_mem_clk, adc_clk, ddc_clk, adc_dpram_wr_clk, adc_dpram_wr_clk}),
+    .out_clk(irq_clk),
+    .in(irq_lines),
+    .out(irq_lines_q)
+);
 
-    for(i = 0; i < IRQ_COUNT; i = i + 1)
-        begin
-            always @(posedge irq_clk)
-                begin
-                    if(irq_rst)
-                        begin
-                            irq_state[i] <= 1'b0;
-                            irq_lines_ed[i] <= 1'b0;
-                        end
-                    else
-                        begin
-                            irq_lines_ed[i] <= irq_lines[i];
+always @(posedge irq_clk)
+    begin
+        if(irq_rst)
+            begin
+                irq_lines_ed <= {IRQ_COUNT{1'b0}};
+                irq_state <= {IRQ_COUNT{1'b0}};
+            end
+        else
+            begin
+                irq_lines_ed <= irq_lines_q;
 
-                            if(irq_clear[i])
-                                irq_state[i] <= 1'b0;
-                            else if((!irq_lines_ed[i] && irq_lines[i]) || irq_set[i])
-                                irq_state[i] <= 1'b1;
-                        end
-                end
-        end
-endgenerate
+                irq_state <= (irq_state | irq_set | (~irq_lines_ed & irq_lines_q)) & ~irq_clear;
+            end
+    end
 /// Interrupt Request ///
 
 /// Control SPI slave interface ///
@@ -935,6 +933,7 @@ reg  cntrl_spi_led_soft_rst;
 
 //// CNTRL_SPI_REG_IRQ_STATE
 wire [IRQ_COUNT - 1:0] cntrl_spi_irq_state;
+reg                    cntrl_spi_irq_state_clear_on_read;
 
 //// CNTRL_SPI_REG_IRQ_MASK
 reg  [IRQ_COUNT - 1:0] cntrl_spi_irq_mask [0:1];
@@ -1001,60 +1000,15 @@ wire [15:0] cntrl_spi_qspi_mem_data_out;
 
 // Synchronizers
 //// CNTRL_SPI_REG_RST_CNTRL
-synchronizer cntrl_spi_adc_dpram_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_adc_dpram_soft_rst),
-    .out(adc_dpram_soft_rst)
-);
-synchronizer cntrl_spi_adc_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_adc_soft_rst),
-    .out(adc_soft_rst)
-);
-synchronizer cntrl_spi_ddc_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_ddc_soft_rst),
-    .out(ddc_soft_rst)
-);
-synchronizer cntrl_spi_bb_i2s_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_bb_i2s_soft_rst),
-    .out(bb_i2s_soft_rst)
-);
-synchronizer cntrl_spi_qduc_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_qduc_soft_rst),
-    .out(qduc_soft_rst)
-);
-synchronizer cntrl_spi_dac_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_dac_soft_rst),
-    .out(dac_soft_rst)
-);
-synchronizer cntrl_spi_audio_i2s_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_audio_i2s_soft_rst),
-    .out(audio_i2s_soft_rst)
-);
-synchronizer cntrl_spi_qspi_mem_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_qspi_mem_soft_rst),
-    .out(qspi_mem_soft_rst)
-);
-synchronizer cntrl_spi_led_soft_rst_sync
-(
-    .clk(rst_clk),
-    .in(cntrl_spi_led_soft_rst),
-    .out(led_soft_rst)
-);
+assign adc_dpram_soft_rst = cntrl_spi_adc_dpram_soft_rst; // No sync needed since runs on the same clock
+assign adc_soft_rst = cntrl_spi_adc_soft_rst; // No sync needed since runs on the same clock
+assign ddc_soft_rst = cntrl_spi_ddc_soft_rst; // No sync needed since runs on the same clock
+assign bb_i2s_soft_rst = cntrl_spi_bb_i2s_soft_rst; // No sync needed since runs on the same clock
+assign qduc_soft_rst = cntrl_spi_qduc_soft_rst; // No sync needed since runs on the same clock
+assign dac_soft_rst = cntrl_spi_dac_soft_rst; // No sync needed since runs on the same clock
+assign audio_i2s_soft_rst = cntrl_spi_audio_i2s_soft_rst; // No sync needed since runs on the same clock
+assign qspi_mem_soft_rst = cntrl_spi_qspi_mem_soft_rst; // No sync needed since runs on the same clock
+assign led_soft_rst = cntrl_spi_led_soft_rst; // No sync needed since runs on the same clock
 
 //// CNTRL_SPI_REG_IRQ_STATE
 assign cntrl_spi_irq_state = irq_state; // No sync needed since runs on the same clock
@@ -1082,22 +1036,24 @@ assign led_duty[2] = cntrl_spi_led_duty[2]; // No sync needed since runs on the 
 //// CNTRL_SPI_REG_ADC_DPRAM_CNTRL
 synchronizer cntrl_spi_adc_dpram_wr_req_sync
 (
-    .clk(adc_dpram_wr_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(adc_dpram_wr_clk),
     .in(cntrl_spi_adc_dpram_wr_req),
     .out(adc_dpram_wr_req)
 );
 synchronizer cntrl_spi_adc_dpram_wr_en_sync
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(adc_dpram_wr_clk),
+    .out_clk(cntrl_spi_clk),
     .in(adc_dpram_wr_en),
     .out(cntrl_spi_adc_dpram_wr_en)
 );
-assign adc_dpram_rd_addr_inc = cntrl_spi_adc_dpram_rd_addr_inc; // No sync needed since runs on the same clock
 
 //// CNTRL_SPI_REG_ADC_DPRAM_ADDR
 synchronizer cntrl_spi_adc_dpram_wr_addr_sync [ADC_DPRAM_SIZE - 1:0]
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(adc_dpram_wr_clk),
+    .out_clk(cntrl_spi_clk),
     .in(adc_dpram_wr_addr),
     .out(cntrl_spi_adc_dpram_wr_addr)
 );
@@ -1109,13 +1065,15 @@ assign cntrl_spi_adc_dpram_data_out = adc_dpram_data_out; // No sync needed sinc
 //// CNTRL_SPI_REG_DDC_CNTRL
 synchronizer cntrl_spi_ddc_lo_ns_en_sync
 (
-    .clk(ddc_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(ddc_clk),
     .in(cntrl_spi_ddc_lo_ns_en),
     .out(ddc_lo_ns_en)
 );
 synchronizer cntrl_spi_ddc_iq_swap_sync
 (
-    .clk(ddc_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(ddc_clk),
     .in(cntrl_spi_ddc_iq_swap),
     .out(ddc_iq_swap)
 );
@@ -1123,7 +1081,8 @@ synchronizer cntrl_spi_ddc_iq_swap_sync
 //// CNTRL_SPI_REG_DDC_LO_FREQ
 synchronizer cntrl_spi_ddc_lo_freq_sync [25:0]
 (
-    .clk(ddc_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(ddc_clk),
     .in(cntrl_spi_ddc_lo_freq),
     .out(ddc_lo_freq)
 );
@@ -1141,31 +1100,36 @@ assign audio_i2s_sdin_sel = cntrl_spi_audio_i2s_sdin_sel; // No sync needed
 //// CNTRL_SPI_REG_QSPI_MEM_CNTRL
 synchronizer cntrl_spi_qspi_mem_wr_req_sync
 (
-    .clk(qspi_mem_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qspi_mem_clk),
     .in(cntrl_spi_qspi_mem_wr_req),
     .out(qspi_mem_wr_req)
 );
 synchronizer cntrl_spi_qspi_mem_rd_req_sync
 (
-    .clk(qspi_mem_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qspi_mem_clk),
     .in(cntrl_spi_qspi_mem_rd_req),
     .out(qspi_mem_rd_req)
 );
 synchronizer cntrl_spi_qspi_mem_ctrl_wr_req_sync
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(qspi_mem_clk),
+    .out_clk(cntrl_spi_clk),
     .in(qspi_mem_ctrl_wr_req),
     .out(cntrl_spi_qspi_mem_ctrl_wr_req)
 );
 synchronizer cntrl_spi_qspi_mem_ctrl_rd_req_sync
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(qspi_mem_clk),
+    .out_clk(cntrl_spi_clk),
     .in(qspi_mem_ctrl_rd_req),
     .out(cntrl_spi_qspi_mem_ctrl_rd_req)
 );
 synchronizer cntrl_spi_qspi_mem_data_in_sel_sync [2:0]
 (
-    .clk(qspi_mem_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qspi_mem_clk),
     .in(cntrl_spi_qspi_mem_data_in_sel),
     .out(qspi_mem_data_in_sel)
 );
@@ -1173,7 +1137,8 @@ synchronizer cntrl_spi_qspi_mem_data_in_sel_sync [2:0]
 //// CNTRL_SPI_REG_QSPI_MEM_ADDR
 synchronizer cntrl_spi_qspi_mem_addr_sync [21:0]
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(qspi_mem_clk),
+    .out_clk(cntrl_spi_clk),
     .in(qspi_mem_addr),
     .out(cntrl_spi_qspi_mem_addr)
 );
@@ -1181,7 +1146,8 @@ synchronizer cntrl_spi_qspi_mem_addr_sync [21:0]
 //// CNTRL_SPI_REG_QSPI_MEM_START_ADDR
 synchronizer cntrl_spi_qspi_mem_start_addr_sync [21:0]
 (
-    .clk(qspi_mem_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qspi_mem_clk),
     .in(cntrl_spi_qspi_mem_start_addr),
     .out(qspi_mem_start_addr)
 );
@@ -1189,7 +1155,8 @@ synchronizer cntrl_spi_qspi_mem_start_addr_sync [21:0]
 //// CNTRL_SPI_REG_QSPI_MEM_END_ADDR
 synchronizer cntrl_spi_qspi_mem_end_addr_sync [21:0]
 (
-    .clk(qspi_mem_clk),
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qspi_mem_clk),
     .in(cntrl_spi_qspi_mem_end_addr),
     .out(qspi_mem_end_addr)
 );
@@ -1197,7 +1164,8 @@ synchronizer cntrl_spi_qspi_mem_end_addr_sync [21:0]
 //// CNTRL_SPI_REG_QSPI_MEM_DATA
 synchronizer cntrl_spi_qspi_mem_data_out_sync [15:0]
 (
-    .clk(cntrl_spi_clk),
+    .in_clk(qspi_mem_clk),
+    .out_clk(cntrl_spi_clk),
     .in(qspi_mem_data_out),
     .out(cntrl_spi_qspi_mem_data_out)
 );
@@ -1231,6 +1199,8 @@ always @(posedge cntrl_spi_clk)
                 cntrl_spi_audio_i2s_soft_rst <= 1'b1;
                 cntrl_spi_qspi_mem_soft_rst <= 1'b1;
                 cntrl_spi_led_soft_rst <= 1'b1;
+
+                cntrl_spi_irq_state_clear_on_read <= 1'b0;
 
                 cntrl_spi_irq_mask[0] <= {IRQ_COUNT{1'b0}};
                 cntrl_spi_irq_mask[1] <= {IRQ_COUNT{1'b0}};
@@ -1299,7 +1269,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_IRQ_STATE:
                                 begin
-                                    // Nothing to do
+                                    cntrl_spi_irq_state_clear_on_read <= cntrl_spi_data_out[0];
                                 end
                             CNTRL_SPI_REG_IRQ_MASK:
                                 begin
@@ -1401,6 +1371,9 @@ always @(posedge cntrl_spi_clk)
                             CNTRL_SPI_REG_IRQ_STATE:
                                 begin
                                     cntrl_spi_data_in <= {24'd0, cntrl_spi_irq_state};
+
+                                    if(cntrl_spi_irq_state_clear_on_read)
+                                        cntrl_spi_irq_clear <= cntrl_spi_irq_state;
                                 end
                             CNTRL_SPI_REG_IRQ_MASK:
                                 begin

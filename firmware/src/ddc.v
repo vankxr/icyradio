@@ -18,28 +18,16 @@ localparam CICSZ = 31; // CIC output word size -> (see CIC localparam OSZ)
 
 // Clock divider
 reg [4:0]   clk_div;
-reg         cic_out_clk;
+wire        cic_out_clk;
+
+assign cic_out_clk = &clk_div; // One pulse every 32 = Decimation ratio
 
 always @(posedge clk)
     begin
         if(reset)
-            begin
-                clk_div <= 5'b00000;
-                cic_out_clk <= 1'b0;
-            end
+            clk_div <= 5'b00000;
         else
-            begin
-                if(&clk_div) // Decimation ratio (32) - 1
-                    begin
-                        cic_out_clk <= 1'b1;
-                        clk_div <= 5'b00000;
-                    end
-                else
-                    begin
-                        cic_out_clk <= 1'b0;
-                        clk_div <= clk_div + 1;
-                    end
-            end
+            clk_div <= clk_div + 1;
     end
 
 // Tuner
@@ -65,8 +53,8 @@ wire signed [CICSZ - 1:0] cic_q;
 
 cic_decimator cic_dec_i
 (
-    .clk(clk),
     .reset(reset),
+    .in_clk(clk),
     .out_clk(cic_out_clk),
     .in(tuner_i),
     .out(cic_i),
@@ -75,8 +63,8 @@ cic_decimator cic_dec_i
 
 cic_decimator cic_dec_q
 (
-    .clk(clk),
     .reset(reset),
+    .in_clk(clk),
     .out_clk(cic_out_clk),
     .in(tuner_q),
     .out(cic_q),
@@ -103,18 +91,20 @@ always @(posedge clk)
             begin
                 prev_cic_valid <= cic_valid;
 
-                if((prev_cic_valid == 1'b0) & (cic_valid == 1'b1))
+                if(!prev_cic_valid && cic_valid)
                     begin
                         cic_mux_valid <= 1'b1;
                         cic_iq_mux <= cic_i_trim;
                     end
-                else if((prev_cic_valid == 1'b1) & (cic_valid == 1'b0))
+                else if(prev_cic_valid && !cic_valid)
                     begin
                         cic_mux_valid <= 1'b1;
                         cic_iq_mux <= cic_q_trim;
                     end
                 else
-                    cic_mux_valid <= 1'b0;
+                    begin
+                        cic_mux_valid <= 1'b0;
+                    end
             end
     end
 
