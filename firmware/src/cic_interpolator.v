@@ -8,7 +8,7 @@ module cic_interpolator
 );
 
 localparam NUM_STAGES = 3;                        // Stages of int / comb
-localparam STG_GSZ = 5;                           // Bit growth per stage -> log2(Interpolation Ratio)
+localparam STG_GSZ = 8;                           // Bit growth per stage -> log2(Interpolation Ratio)
 localparam ISZ = 16;                              // Input word size
 localparam ASZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Integrator/Adder word size
 localparam OSZ = ASZ;                             // Output word size

@@ -168,14 +168,14 @@ void fpga_rgb_led_disable(uint8_t ubColor)
 
     fpga_rmw_register(FPGA_REG_LED_CNTRL, ~BIT(ubColor), 0);
 }
-void fpga_rbg_led_set_duty(uint8_t ubColor, uint16_t usDuty)
+void fpga_rgb_led_set_duty(uint8_t ubColor, uint16_t usDuty)
 {
     if(ubColor > FPGA_LED_BLUE)
         return;
 
     fpga_write_register(FPGA_REG_RED_LED_DUTY + ubColor, usDuty);
 }
-uint16_t fpga_rbg_led_get_duty(uint8_t ubColor)
+uint16_t fpga_rgb_led_get_duty(uint8_t ubColor)
 {
     if(ubColor > FPGA_LED_BLUE)
         return 0;

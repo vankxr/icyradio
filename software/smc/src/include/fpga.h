@@ -136,8 +136,8 @@ void fpga_irq_clear(uint8_t ubMask);
 
 void fpga_rgb_led_enable(uint8_t ubColor);
 void fpga_rgb_led_disable(uint8_t ubColor);
-void fpga_rbg_led_set_duty(uint8_t ubColor, uint16_t usDuty);
-uint16_t fpga_rbg_led_get_duty(uint8_t ubColor);
+void fpga_rgb_led_set_duty(uint8_t ubColor, uint16_t usDuty);
+uint16_t fpga_rgb_led_get_duty(uint8_t ubColor);
 
 void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize);
 

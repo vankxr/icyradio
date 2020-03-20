@@ -118,8 +118,8 @@ void _i2sc1_isr()
             for(uint32_t i = 0; i < 10; i++)
             {
                 iq16_t xSample = {
-                    .i = -arm_cos_q15(INT16_MAX * (float)i / 10),
-                    .q = -arm_sin_q15(INT16_MAX * (float)i / 10)
+                    .i = arm_cos_q15(INT16_MAX * (float)i / 10),
+                    .q = arm_sin_q15(INT16_MAX * (float)i / 10)
                 };
 
                 pulBuffer[i] = (((uint32_t)xSample.q & 0xFFFF) << 16) | (((uint32_t)xSample.i & 0xFFFF) << 0);
@@ -553,7 +553,7 @@ int init()
     eefc_init(); // Init flash controller
 
     dbg_init(); // Init Debug module
-    dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 6 MHz
+    dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 12 MHz
 
     systick_init(); // Init system tick
 
@@ -676,8 +676,8 @@ int main()
             {
                 // Build IQ pair from 32-bit I2S word
                 iq16_t xSample = {
-                    .i = pulBaseband[i] >> 16,      // Right I2S channel -> I
-                    .q = pulBaseband[i] & 0xFFFF    // Left I2S channel  -> Q
+                    .i = pulBaseband[i] & 0xFFFF,   // Left I2S channel  -> I
+                    .q = pulBaseband[i] >> 16       // Right I2S channel -> Q
                 };
 
                 xSample.i *= 10; // TODO: AGC

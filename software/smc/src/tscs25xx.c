@@ -30,7 +30,7 @@ uint8_t tscs25xx_init()
     CODEC_RESET();
     delay_ms(10);
     CODEC_UNRESET();
-    delay_ms(10);
+    delay_ms(50);
 
     if(!i2c2_write(TSCS25XX_I2C_ADDR, NULL, 0, I2C_STOP)) // Check ACK from the expected address
         return 0;
@@ -40,6 +40,8 @@ uint8_t tscs25xx_init()
 
     tscs25xx_adc_set_mute(1);
     tscs25xx_dac_set_mute(1);
+
+    delay_ms(50);
 
     tscs25xx_write_register(TSCS25XX_REG_PWRM1, TSCS25XX_REG_PWRM1_BSTL_POWER_UP | TSCS25XX_REG_PWRM1_BSTR_POWER_UP | TSCS25XX_REG_PWRM1_PGAL_POWER_UP | TSCS25XX_REG_PWRM1_PGAR_POWER_UP | TSCS25XX_REG_PWRM1_ADCL_POWER_UP | TSCS25XX_REG_PWRM1_ADCR_POWER_UP | TSCS25XX_REG_PWRM1_MICB_POWER_UP | TSCS25XX_REG_PWRM1_DIGENB_MCLK_ENABLED);
     tscs25xx_write_register(TSCS25XX_REG_PWRM2, TSCS25XX_REG_PWRM2_D2S_POWER_UP | TSCS25XX_REG_PWRM2_HPL_POWER_UP | TSCS25XX_REG_PWRM2_HPR_POWER_UP | TSCS25XX_REG_PWRM2_VREF_POWER_UP);

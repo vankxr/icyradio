@@ -1,7 +1,6 @@
 #include "tft.h"
 
 static tft_button_t *pButtonList = NULL;
-static tft_button_callback_fn_t pfButtonCallback = NULL;
 
 void tft_touch_callback(uint8_t ubEvent, uint16_t usX, uint16_t usY)
 {
@@ -40,8 +39,9 @@ void tft_touch_callback(uint8_t ubEvent, uint16_t usX, uint16_t usY)
             if((usX >= pButton->usOriginX) &&
                (usX < (pButton->usOriginX + pButton->usWidth)) &&
                (usY >= pButton->usOriginY) &&
-               (usY < (pButton->usOriginY + pButton->usHeight)))
-                pfButtonCallback(pButton->ubID);
+               (usY < (pButton->usOriginY + pButton->usHeight)) &&
+               pButton->pfCallback)
+                pButton->pfCallback(pButton->ulID);
         }
     }
 
@@ -298,15 +298,21 @@ void tft_draw_bitmap(const uint8_t *pubBitmap, uint16_t usX, uint16_t usY, uint1
 
 uint16_t tft_get_text_height(const font_t *pFont, uint16_t usNumLines)
 {
+    if(!pFont)
+        return 0;
+
     return (usNumLines * pFont->ubYAdvance) + pFont->ubLineOffset;
 }
-static uint8_t tft_search_char(char *ubStr, uint8_t ubChar)
+static uint8_t tft_search_char(const char *pszStr, char cChar)
 {
+    if(!pszStr)
+        return 0;
+
     uint8_t ubCnt = 0;
 
-    while(*ubStr++)
+    while(*pszStr++)
     {
-        if(*ubStr == ubChar)
+        if(*pszStr == cChar)
             ubCnt++;
     }
 
@@ -314,6 +320,12 @@ static uint8_t tft_search_char(char *ubStr, uint8_t ubChar)
 }
 static uint16_t tft_get_str_pix_len(const font_t *pFont, const uint8_t *pubStr)
 {
+    if(!pFont)
+        return 0;
+
+    if(!pFont->pGlyph)
+        return 0;
+
     uint16_t usLength = 0;
 
     while(*pubStr)
@@ -325,8 +337,14 @@ static uint16_t tft_get_str_pix_len(const font_t *pFont, const uint8_t *pubStr)
     return usLength;
 }
 
-tft_button_t* tft_button_create(uint8_t ubID, uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHeight)
+tft_button_t* tft_button_create(uint32_t ulID, uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHeight, const char *pszText, const font_t *pFont, rgb565_t xBackColor, rgb565_t xTextColor)
 {
+    if(!pszText)
+        return NULL;
+
+    if(!pFont)
+        return NULL;
+
     tft_button_t *pNewButton = (tft_button_t *)malloc(sizeof(tft_button_t));
 
     if(!pNewButton)
@@ -334,11 +352,24 @@ tft_button_t* tft_button_create(uint8_t ubID, uint16_t usX, uint16_t usY, uint16
 
     memset(pNewButton, 0, sizeof(tft_button_t));
 
-    pNewButton->ubID = ubID;
+    pNewButton->ulID = ulID;
     pNewButton->usOriginX = usX;
     pNewButton->usOriginY = usY;
     pNewButton->usWidth = usWidth;
     pNewButton->usHeight = usHeight;
+    pNewButton->pFont = pFont;
+    pNewButton->xTextColor = xTextColor;
+    pNewButton->xBackColor = xBackColor;
+    pNewButton->pfCallback = NULL;
+
+    pNewButton->pszText = strdup(pszText);
+
+    if(!pNewButton->pszText)
+    {
+        free(pNewButton);
+
+        return NULL;
+    }
 
     // Insert at the head of the list
     pNewButton->pNext = pButtonList;
@@ -367,29 +398,42 @@ void tft_button_delete(tft_button_t *pButton)
 
     free(pButton);
 }
-void tft_button_clear()
+void tft_button_set_callback(tft_button_t *pButton, tft_button_callback_fn_t pfFunc)
 {
-    while(pButtonList)
-    {
-        tft_button_t *pButton = pButtonList;
+    if(!pButton)
+        return;
 
-        pButtonList = pButton->pNext;
+    pButton->pfCallback = pfFunc;
+}
+void tft_button_draw(tft_button_t *pButton)
+{
+    if(!pButton)
+        return;
 
-        free(pButton);
-    }
-}
-void tft_set_button_callback(tft_button_callback_fn_t pfFunc)
-{
-    pfButtonCallback = pfFunc;
-}
-void tft_button_draw(tft_button_t *pButton, const uint8_t *pubStr, const font_t *pFont, rgb565_t xBackColor, rgb565_t xTextColor)
-{
-    tft_draw_rectangle(pButton->usOriginX, pButton->usOriginY, pButton->usOriginX + pButton->usWidth - 1, pButton->usOriginY + pButton->usHeight - 1, xBackColor, 1);
-    tft_printf(pFont, pButton->usOriginX + ((pButton->usWidth - tft_get_str_pix_len(pFont, pubStr)) / 2) - 1, pButton->usOriginY + ((pButton->usHeight - pFont->ubYAdvance - pFont->ubLineOffset) / 2) - 1, xTextColor, xBackColor, pubStr);
+    tft_draw_rectangle(pButton->usOriginX, pButton->usOriginY, pButton->usOriginX + pButton->usWidth - 1, pButton->usOriginY + pButton->usHeight - 1, pButton->xBackColor, 1);
+    tft_printf(pButton->pFont, pButton->usOriginX + ((pButton->usWidth - tft_get_str_pix_len(pButton->pFont, pButton->pszText)) / 2) - 1, pButton->usOriginY + ((pButton->usHeight - pButton->pFont->ubYAdvance - pButton->pFont->ubLineOffset) / 2) - 1, pButton->xTextColor, pButton->xBackColor, pButton->pszText);
 }
 
 tft_graph_t* tft_graph_create(uint16_t usX, uint16_t usY, uint16_t usWidth, uint16_t usHeight, float fXScaleMin, float fXScaleMax, float fXScaleInc, float fYScaleMin, float fYScaleMax, float fYScaleInc, uint8_t ubDrawLabels, const char *pszXScaleFmt, const char *pszYScaleFmt, const char *pszTitle, const char *pszXLabel, const char *pszYLabel, const font_t *pFont, rgb565_t xGridColor, rgb565_t xAxisColor, rgb565_t xDataLineColor, rgb565_t xTextColor, rgb565_t xBackColor)
 {
+    if(!pszXScaleFmt)
+        return NULL;
+
+    if(!pszYScaleFmt)
+        return NULL;
+
+    if(!pszTitle)
+        return NULL;
+
+    if(!pszXLabel)
+        return NULL;
+
+    if(!pszYLabel)
+        return NULL;
+
+    if(!pFont)
+        return NULL;
+
     tft_graph_t *pNewGraph = (tft_graph_t *)malloc(sizeof(tft_graph_t));
 
     if(!pNewGraph)
@@ -474,6 +518,9 @@ tft_graph_t* tft_graph_create(uint16_t usX, uint16_t usY, uint16_t usWidth, uint
 }
 void tft_graph_delete(tft_graph_t *pGraph)
 {
+    if(!pGraph)
+        return;
+
     free(pGraph->pszYLabel);
     free(pGraph->pszXLabel);
     free(pGraph->pszTitle);
@@ -484,12 +531,18 @@ void tft_graph_delete(tft_graph_t *pGraph)
 }
 void tft_graph_clear(tft_graph_t *pGraph)
 {
+    if(!pGraph)
+        return;
+
     pGraph->ubRedrawFlag = 1;
 
     tft_draw_rectangle(pGraph->usOriginX, pGraph->usOriginY, pGraph->usOriginX + pGraph->usWidth - 1,  pGraph->usOriginY + pGraph->usHeight - 1, pGraph->xBackColor, 1);
 }
 void tft_graph_draw_frame(tft_graph_t *pGraph)
 {
+    if(!pGraph)
+        return;
+
     // draw y scale
     for(float i = pGraph->fYScaleMin; i <= pGraph->fYScaleMax; i += pGraph->fYScaleInc)
     {
@@ -549,6 +602,18 @@ void tft_graph_draw_frame(tft_graph_t *pGraph)
 }
 void tft_graph_draw_data(tft_graph_t *pGraph, float *pfXData, float *pfYData, uint32_t ulDataSize)
 {
+    if(!pGraph)
+        return;
+
+    if(!pfXData)
+        return;
+
+    if(!pfYData)
+        return;
+
+    if(!ulDataSize)
+        return;
+
     while(ulDataSize--)
     {
         float fXData = *pfXData++;
@@ -584,6 +649,12 @@ void tft_graph_draw_data(tft_graph_t *pGraph, float *pfXData, float *pfYData, ui
 
 uint8_t tft_draw_char(char cChar, const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor)
 {
+    if(!pFont)
+        return 0;
+
+    if(!pFont->pGlyph)
+        return 0;
+
     if((cChar < pFont->cFirstChar) || (cChar > pFont->cLastChar))
         cChar = '?';
 
@@ -593,8 +664,14 @@ uint8_t tft_draw_char(char cChar, const font_t *pFont, uint16_t usX, uint16_t us
 
     return pFont->pGlyph[cChar].ubXAdvance;
 }
-void tft_draw_string(char *pszStr, const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor)
+void tft_draw_string(const char *pszStr, const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor)
 {
+    if(!pszStr)
+        return;
+
+    if(!pFont)
+        return;
+
     uint16_t usXh = usX;
     uint16_t usYh = usY;
 
@@ -612,6 +689,12 @@ void tft_draw_string(char *pszStr, const font_t *pFont, uint16_t usX, uint16_t u
 }
 void tft_printf(const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor, rgb565_t xBackColor, const char* pszFmt, ...)
 {
+    if(!pFont)
+        return;
+
+    if(!pszFmt)
+        return;
+
     va_list args;
     va_start(args, pszFmt);
 
@@ -634,8 +717,11 @@ void tft_printf(const font_t *pFont, uint16_t usX, uint16_t usY, rgb565_t xColor
     va_end(args);
 }
 
-tft_textbox_t* tft_textbox_create(uint16_t usX, uint16_t usY, uint16_t usNumLines, uint16_t usLenght, uint8_t ubLineWrapping, uint8_t ubCursorWrapping, const font_t *pFont, rgb565_t xColor, rgb565_t xBackColor)
+tft_textbox_t* tft_textbox_create(uint16_t usX, uint16_t usY, uint16_t usNumLines, uint16_t usLength, uint8_t ubLineWrapping, uint8_t ubCursorWrapping, const font_t *pFont, rgb565_t xTextColor, rgb565_t xBackColor)
 {
+    if(!pFont)
+        return NULL;
+
     tft_textbox_t *pNewTextbox = (tft_textbox_t *)malloc(sizeof(tft_textbox_t));
 
     if(!pNewTextbox)
@@ -646,9 +732,9 @@ tft_textbox_t* tft_textbox_create(uint16_t usX, uint16_t usY, uint16_t usNumLine
     pNewTextbox->usX = usX;
     pNewTextbox->usY = usY;
     pNewTextbox->usNumLines = usNumLines;
-    pNewTextbox->usLen = usLenght;
+    pNewTextbox->usLen = usLength;
     pNewTextbox->pFont = pFont;
-    pNewTextbox->xColor = xColor;
+    pNewTextbox->xTextColor = xTextColor;
     pNewTextbox->xBackColor = xBackColor;
     pNewTextbox->ubCursorWrapping = ubCursorWrapping;
     pNewTextbox->ubLineWrapping = ubLineWrapping;
@@ -659,15 +745,24 @@ tft_textbox_t* tft_textbox_create(uint16_t usX, uint16_t usY, uint16_t usNumLine
 }
 void tft_textbox_delete(tft_textbox_t *pTextbox)
 {
+    if(!pTextbox)
+        return;
+
     free(pTextbox);
 }
-void tft_textbox_set_color(tft_textbox_t *pTextbox, rgb565_t xColor, rgb565_t xBackColor)
+void tft_textbox_set_color(tft_textbox_t *pTextbox, rgb565_t xTextColor, rgb565_t xBackColor)
 {
-    pTextbox->xColor = xColor;
+    if(!pTextbox)
+        return;
+
+    pTextbox->xTextColor = xTextColor;
     pTextbox->xBackColor = xBackColor;
 }
 void tft_textbox_clear(tft_textbox_t *pTextbox)
 {
+    if(!pTextbox)
+        return;
+
     tft_draw_rectangle(
         pTextbox->usX,
         pTextbox->usY,
@@ -682,6 +777,9 @@ void tft_textbox_clear(tft_textbox_t *pTextbox)
 }
 void tft_textbox_clear_line(tft_textbox_t *pTextbox)
 {
+    if(!pTextbox)
+        return;
+
     tft_draw_rectangle(
         pTextbox->usX,
         pTextbox->usY + (pTextbox->usCurrentLine * pTextbox->pFont->ubYAdvance) + ((!!pTextbox->usCurrentLine) * pTextbox->pFont->ubLineOffset),
@@ -695,6 +793,9 @@ void tft_textbox_clear_line(tft_textbox_t *pTextbox)
 }
 void tft_textbox_goto(tft_textbox_t *pTextbox, uint16_t usCursor, uint16_t usLine, uint8_t ubClearLine)
 {
+    if(!pTextbox)
+        return;
+
     usCursor += pTextbox->usX;
 
     if(usCursor > pTextbox->usLen + pTextbox->usX)
@@ -712,8 +813,14 @@ void tft_textbox_goto(tft_textbox_t *pTextbox, uint16_t usCursor, uint16_t usLin
     if(ubClearLine)
         tft_textbox_clear_line(pTextbox);
 }
-void tft_textbox_draw_string(tft_textbox_t *pTextbox, char *pszStr)
+void tft_textbox_draw_string(tft_textbox_t *pTextbox, const char *pszStr)
 {
+    if(!pTextbox)
+        return;
+
+    if(!pszStr)
+        return;
+
     while(*pszStr)
     {
         if(*pszStr == '\n')
@@ -756,7 +863,7 @@ void tft_textbox_draw_string(tft_textbox_t *pTextbox, char *pszStr)
                 pTextbox->pFont,
                 pTextbox->usCursor,
                 pTextbox->usY + (pTextbox->usCurrentLine * pTextbox->pFont->ubYAdvance),
-                pTextbox->xColor,
+                pTextbox->xTextColor,
                 pTextbox->xBackColor
                 );
         }
@@ -766,6 +873,12 @@ void tft_textbox_draw_string(tft_textbox_t *pTextbox, char *pszStr)
 }
 void tft_textbox_printf(tft_textbox_t *pTextbox, const char* pszFmt, ...)
 {
+    if(!pTextbox)
+        return;
+
+    if(!pszFmt)
+        return;
+
     va_list args;
     va_start(args, pszFmt);
 
@@ -788,14 +901,17 @@ void tft_textbox_printf(tft_textbox_t *pTextbox, const char* pszFmt, ...)
     va_end(args);
 }
 
-tft_terminal_t* tft_terminal_create(uint16_t usX, uint16_t usY, uint16_t usNumLines, uint16_t usLenght, const font_t *pFont, rgb565_t xColor, rgb565_t xBackColor)
+tft_terminal_t* tft_terminal_create(uint16_t usX, uint16_t usY, uint16_t usNumLines, uint16_t usLength, const font_t *pFont, rgb565_t xTextColor, rgb565_t xBackColor)
 {
+    if(!pFont)
+        return NULL;
+
     tft_terminal_t *pNewTerminal = (tft_terminal_t *)malloc(sizeof(tft_terminal_t));
 
     if(!pNewTerminal)
         return NULL;
 
-    pNewTerminal->pTextbox = tft_textbox_create(usX, usY, usNumLines, usLenght, 1, 1, pFont, xColor, xBackColor);
+    pNewTerminal->pTextbox = tft_textbox_create(usX, usY, usNumLines, usLength, 1, 1, pFont, xTextColor, xBackColor);
 
     if(!pNewTerminal->pTextbox)
     {
@@ -822,6 +938,9 @@ tft_terminal_t* tft_terminal_create(uint16_t usX, uint16_t usY, uint16_t usNumLi
 }
 void tft_terminal_delete(tft_terminal_t *pTerminal)
 {
+    if(!pTerminal)
+        return;
+
     for(uint16_t i = 0; i < pTerminal->pTextbox->usNumLines; i++)
         free(pTerminal->ppszBuf[i]);
 
@@ -831,6 +950,9 @@ void tft_terminal_delete(tft_terminal_t *pTerminal)
 }
 static void tft_terminal_scroll(tft_terminal_t *pTerminal, uint16_t usNumLines)
 {
+    if(!pTerminal)
+        return;
+
     while(usNumLines--)
     {
         free(pTerminal->ppszBuf[0]);
@@ -841,8 +963,14 @@ static void tft_terminal_scroll(tft_terminal_t *pTerminal, uint16_t usNumLines)
         pTerminal->ppszBuf[pTerminal->pTextbox->usNumLines - 1] = NULL;
     }
 }
-void tft_terminal_draw_string(tft_terminal_t *pTerminal, char *pszStr)
+void tft_terminal_draw_string(tft_terminal_t *pTerminal, const char *pszStr)
 {
+    if(!pTerminal)
+        return;
+
+    if(!pszStr)
+        return;
+
     uint8_t ubMaxStrLen = strlen(pTerminal->ppszBuf[pTerminal->pTextbox->usNumLines - 1]) + strlen(pszStr);
 
     char *pszTempStr = (char *)malloc(ubMaxStrLen + 1);
@@ -928,6 +1056,9 @@ void tft_terminal_draw_string(tft_terminal_t *pTerminal, char *pszStr)
 }
 void tft_terminal_update(tft_terminal_t *pTerminal)
 {
+    if(!pTerminal)
+        return;
+
     for(uint8_t i = 0; i < pTerminal->pTextbox->usNumLines; i++)
     {
         tft_textbox_goto(pTerminal->pTextbox, 0, i, 1);
@@ -939,6 +1070,9 @@ void tft_terminal_update(tft_terminal_t *pTerminal)
 }
 void tft_terminal_clear(tft_terminal_t *pTerminal)
 {
+    if(!pTerminal)
+        return;
+
     for(uint8_t i = 0; i < pTerminal->pTextbox->usNumLines; i++)
     {
         free(pTerminal->ppszBuf[i]);
@@ -951,6 +1085,9 @@ void tft_terminal_clear(tft_terminal_t *pTerminal)
 void tft_terminal_printf(tft_terminal_t *pTerminal, uint8_t ubUpdate, const char* pszFmt, ...)
 {
     if(!pTerminal)
+        return;
+
+    if(!pszFmt)
         return;
 
     va_list args;

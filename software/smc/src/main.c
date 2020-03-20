@@ -50,17 +50,26 @@ static uint32_t get_free_ram();
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
 
+static void tft_button_touch_callback(uint32_t ulButtonID);
+
 static void rx_get_psd(float *pfPower);
 static void rx_draw_psd(tft_graph_t *pGraph, float *pfPower);
 static float rx_get_max_power(float *pfPower, uint32_t *pulFrequency);
 static float rx_get_power(float *pfPower, uint32_t ulFrequency);
 
+static void init_user_interface();
 static void init_system_clocks();
 static void init_audio_chain();
+static void init_baseband_chain();
 static void init_rx_chain();
 static void init_tx_chain();
 
 // Variables
+static uint32_t ulRXHardTunedFrequency = 101000000;
+static uint32_t ulRXSoftTunedFrequency = 105400000;
+static tft_graph_t *pRXIFPSDGraph = NULL;
+static tft_textbox_t *pRXTunedFreqTextbox = NULL;
+static tft_button_t *pRXTunedFreqButtons[2] = {NULL, NULL};
 
 // ISRs
 
@@ -220,6 +229,35 @@ uint16_t get_device_revision()
     return usRevision;
 }
 
+void tft_button_touch_callback(uint32_t ulButtonID)
+{
+    switch(ulButtonID)
+    {
+        case 0:
+        {
+            ulRXSoftTunedFrequency -= 100000;
+
+            if(ulRXSoftTunedFrequency < 87500000)
+                ulRXSoftTunedFrequency = 87500000;
+        }
+        break;
+        case 1:
+        {
+            ulRXSoftTunedFrequency += 100000;
+
+            if(ulRXSoftTunedFrequency > 108000000)
+                ulRXSoftTunedFrequency = 108000000;
+        }
+        break;
+    }
+
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
+    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
+
+    tft_textbox_clear(pRXTunedFreqTextbox);
+    tft_textbox_printf(pRXTunedFreqTextbox, "Hard: %.2f MHz\n\rSoft: %.2f MHz", (float)ulRXHardTunedFrequency / 1000000, (float)ulRXSoftTunedFrequency / 1000000);
+}
+
 void rx_get_psd(float *pfPower)
 {
     if(!pfPower)
@@ -327,6 +365,8 @@ void rx_draw_psd(tft_graph_t *pGraph, float *pfPower)
     for(uint16_t i = 0; i < 2048; i++)
         pfFrequency[i] = i * fBinStep;
 
+    tft_graph_clear(pGraph);
+    tft_graph_draw_frame(pGraph);
     tft_graph_draw_data(pGraph, pfFrequency, pfPower, 2048);
 
     free(pfFrequency);
@@ -375,6 +415,40 @@ float rx_get_power(float *pfPower, uint32_t ulFrequency)
     return pfPower[usBinIndex];
 }
 
+void init_user_interface()
+{
+    pRXIFPSDGraph = tft_graph_create(50, 100, 480 - 2 * 50, 320 - 2 * 50 - 50, 0, 12, 1, -70, -20, 10, 1, "%.0f", "%.0f", "IF PSD", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_FROM_RGB(0x00, 0x70, 0xD9), RGB565_WHITE, RGB565_BLACK);
+
+    if(!pRXIFPSDGraph)
+        return;
+
+    tft_graph_clear(pRXIFPSDGraph);
+    tft_graph_draw_frame(pRXIFPSDGraph);
+
+    pRXTunedFreqTextbox = tft_textbox_create(50, 20, 2, 260, 0, 0, &xSans9pFont, RGB565_LIGHTBLUE, RGB565_BLACK);
+
+    if(!pRXTunedFreqTextbox)
+        return;
+
+    tft_textbox_clear(pRXTunedFreqTextbox);
+    tft_textbox_printf(pRXTunedFreqTextbox, "Hard: %.2f MHz\n\rSoft: %.2f MHz", (float)ulRXHardTunedFrequency / 1000000, (float)ulRXSoftTunedFrequency / 1000000);
+
+    pRXTunedFreqButtons[0] = tft_button_create(0, 320, 20, 50, 50, "<", &xSans18pFont, RGB565_NAVY, RGB565_BLACK);
+
+    if(!pRXTunedFreqButtons[0])
+        return;
+
+    tft_button_set_callback(pRXTunedFreqButtons[0], tft_button_touch_callback);
+    tft_button_draw(pRXTunedFreqButtons[0]);
+
+    pRXTunedFreqButtons[1] = tft_button_create(1, 380, 20, 50, 50, ">", &xSans18pFont, RGB565_NAVY, RGB565_BLACK);
+
+    if(!pRXTunedFreqButtons[1])
+        return;
+
+    tft_button_set_callback(pRXTunedFreqButtons[1], tft_button_touch_callback);
+    tft_button_draw(pRXTunedFreqButtons[1]);
+}
 void init_system_clocks()
 {
     si5351_clkin_config(50000000, 2); // fPFD = CLKIN / 2
@@ -727,8 +801,18 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left ADC volume: %.3f dB", tscs25xx_adc_get_left_volume());
     DBGPRINTLN_CTX("CODEC right ADC volume: %.3f dB", tscs25xx_adc_get_right_volume());
 
+    delay_ms(50);
+
     tscs25xx_dac_set_mute(0);
     tscs25xx_adc_set_mute(1);
+}
+void init_baseband_chain()
+{
+    fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
+
+    DSP_UNRESET();
+    DBGPRINTLN_CTX("DSP processor enabled!");
 }
 void init_rx_chain()
 {
@@ -746,7 +830,7 @@ void init_rx_chain()
     r820t2_set_if_freq(6000000); // 6 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.3f MHz", (float)R820T2_IF_FREQ / 1000000);
 
-    if(r820t2_set_freq(101000000))
+    if(r820t2_set_freq(ulRXHardTunedFrequency))
         DBGPRINTLN_CTX("RX Tuner tuned to %.3f MHz", (float)R820T2_FREQ / 1000000);
     else
         DBGPRINTLN_CTX("RX Tuner failed to tune!");
@@ -759,7 +843,7 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(104300000));
+    fpga_ddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
     DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
 
     fpga_ddc_set_lo_noise_shaping(1);
@@ -767,11 +851,6 @@ void init_rx_chain()
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_DDC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA DDC enabled!");
-
-    fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
-    DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
-
-    DSP_UNRESET();
 }
 void init_tx_chain()
 {
@@ -784,8 +863,8 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_2V0 | AD9117_REG_AUX_CTLI_TOP_2V5);
-    ad9117_i_offset_set_value(950);
+    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_1V0);
+    ad9117_i_offset_set_value(0);
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
     ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_1V0);
@@ -816,11 +895,6 @@ void init_tx_chain()
     TXMIXER_ENABLE();
 
     //TXPA_BIAS_ENABLE();
-
-    delay_ms(100);
-
-    DBGPRINTLN_CTX("TX Mixer temperature: %.2f C", adc_get_tx_mixer_temperature());
-    DBGPRINTLN_CTX("TX Amplifier overcurrent: %s", TXPA_OVERCURRENT() ? "yes" : "no");
 }
 
 int init()
@@ -937,8 +1011,6 @@ int init()
     DBGPRINTLN_CTX("CMU - LFE Clock: %.3f kHz", (float)LFE_CLOCK_FREQ / 1000);
     DBGPRINTLN_CTX("CMU - RTCC Clock: %.3f kHz", (float)RTCC_CLOCK_FREQ / 1000);
 
-    delay_ms(100);
-
     TFT_TOUCH_UNRESET();
     I2S_BRG_CFG_EN();
     I2S_BRG_UNRESET();
@@ -1005,7 +1077,7 @@ int init()
     // TODO: Remove this
     I2S_BRG_RESET();
     I2S_BRG_CFG_DIS();
-    delay_ms(100);
+    delay_ms(50);
     I2S_BRG_UNRESET();
 
     return 0;
@@ -1047,14 +1119,17 @@ int main()
     DBGPRINTLN_CTX("TSCS25xx wafer ID: %hhu", tscs25xx_read_mf_wafer_id());
     DBGPRINTLN_CTX("TSCS25xx wafer coordinates: (%hhu, %hhu)", tscs25xx_read_mf_wafer_x(), tscs25xx_read_mf_wafer_y());
 
-    // Audio configuration
-    init_audio_chain();
-
     // RX Chain configuration
     init_rx_chain();
 
     // TX Chain configuration
     //init_tx_chain();
+
+    // Baseband configuration
+    init_baseband_chain();
+
+    // Audio configuration
+    init_audio_chain();
 
     // TFT info
     DBGPRINTLN_CTX("ILI9488 ID: 0x%06X", ili9488_read_id());
@@ -1073,17 +1148,10 @@ int main()
     tft_set_rotation(ILI9488_ROTATION_HORIZONTAL_FLIP); // Set rotation (horizontal, ribbon to the left)
     tft_fill_screen(RGB565_BLACK); // Fill display
 
-    tft_graph_t *pGraph = tft_graph_create(50, 50, 480 - 2 * 50, 320 - 2 * 50, 0, 12, 1, -70, -20, 10, 1, "%.0f", "%.0f", "RX ADC FFT", "MHz", "dBFS", &xSans9pFont, RGB565_DARKGREY, RGB565_DARKGREY, RGB565_CYAN, RGB565_WHITE, RGB565_BLACK);
-    if(!pGraph)
-    {
-        DBGPRINTLN_CTX("Could not allocate graph");
-        while(1);
-    }
+    // UI Init
+    init_user_interface();
 
-    tft_graph_clear(pGraph);
-    tft_graph_draw_frame(pGraph);
-
-    tft_bl_set(0.3f); // Set backlight to 30%
+    tft_bl_set(0.5f); // Set backlight to 50%
 
     while(1)
     {
@@ -1126,9 +1194,9 @@ int main()
             static int8_t duty_sig[3] = {1, 1, 1};
             static int16_t duty[3] = {10, 1010, 2010};
 
-            fpga_rbg_led_set_duty(FPGA_LED_RED, duty[0]);
-            fpga_rbg_led_set_duty(FPGA_LED_GREEN, duty[1]);
-            fpga_rbg_led_set_duty(FPGA_LED_BLUE, duty[2]);
+            fpga_rgb_led_set_duty(FPGA_LED_RED, duty[0]);
+            fpga_rgb_led_set_duty(FPGA_LED_GREEN, duty[1]);
+            fpga_rgb_led_set_duty(FPGA_LED_BLUE, duty[2]);
 
             for(uint8_t i = 0; i < 3; i++)
             {
@@ -1161,16 +1229,14 @@ int main()
                 rx_get_psd(pfRXPSD);
 
                 DBGPRINTLN_CTX("RX hard-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(R820T2_FREQ)));
-                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(104300000)));
+                DBGPRINTLN_CTX("RX soft-tuned power: %.2f dBFS", rx_get_power(pfRXPSD, RX_RF_TO_IF(ulRXSoftTunedFrequency)));
 
                 uint32_t ulMaxPowerFrequency = 0;
                 float fMaxPower = rx_get_max_power(pfRXPSD, &ulMaxPowerFrequency);
 
                 DBGPRINTLN_CTX("RX peak power: %.2f dBFS at %.2f MHz", fMaxPower, (float)RX_IF_TO_RF(ulMaxPowerFrequency) / 1000000);
 
-                tft_graph_clear(pGraph);
-                tft_graph_draw_frame(pGraph);
-                rx_draw_psd(pGraph, pfRXPSD);
+                rx_draw_psd(pRXIFPSDGraph, pfRXPSD);
 
                 free(pfRXPSD);
             }
@@ -1180,6 +1246,7 @@ int main()
         {
             ullLastDebugPrint = g_ullSystemTick;
 
+            DBGPRINTLN_CTX("TX Amplifier overcurrent: %s", TXPA_OVERCURRENT() ? "yes" : "no");
             DBGPRINTLN_CTX("TX Mixer temperature: %.2f C", adc_get_tx_mixer_temperature());
             DBGPRINTLN_CTX("ADC temperature: %.2f C", adc_get_temperature());
             DBGPRINTLN_CTX("EMU temperature: %.2f C", emu_get_temperature());

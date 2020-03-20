@@ -293,7 +293,7 @@ always @(posedge adc_clk)
     begin
         if(adc_rst)
             begin
-                adc_data <= 16'h00000;
+                adc_data <= 16'h0000;
                 adc_of <= 1'b0;
             end
         else
@@ -306,8 +306,9 @@ always @(posedge adc_clk)
 
 /// Digital down-converter ///
 // Inputs
-wire signed [15:0] ddc_i;
-wire signed [15:0] ddc_q;
+reg  signed [15:0] ddc_in;
+wire signed [15:0] ddc_i_out;
+wire signed [15:0] ddc_q_out;
 wire        [25:0] ddc_lo_freq; // Controlled by SMC via SPI
 wire               ddc_valid;
 wire               ddc_lo_ns_en; // Controlled by SMC via SPI
@@ -318,14 +319,26 @@ ddc adc_ddc
 (
     .clk(ddc_clk),
     .reset(ddc_rst),
-    .in(adc_data),
+    .in(ddc_in),
     .lo_freq(ddc_lo_freq),
     .lo_ns_en(ddc_lo_ns_en),
     .iq_swap(ddc_iq_swap),
     .out_valid(ddc_valid),
-    .out_i(ddc_i),
-    .out_q(ddc_q)
+    .out_i(ddc_i_out),
+    .out_q(ddc_q_out)
 );
+
+always @(posedge ddc_clk)
+    begin
+        if(ddc_rst)
+            begin
+                ddc_in <= 16'h0000;
+            end
+        else
+            begin
+                ddc_in <= adc_data;
+            end
+    end
 /// Digital down-converter ///
 
 /// Baseband I2S ///
@@ -347,7 +360,7 @@ assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
 assign bb_i2s_bclk = bb_i2s_clk_div[2]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC) * I2S_WS * 2 = ADC_CLK / 8
 
-// Clock divider and data synchronizer
+// Clock divider
 always @(posedge bb_i2s_clk)
     bb_i2s_clk_div <= bb_i2s_clk_div + 1;
 
@@ -376,8 +389,8 @@ always @(posedge bb_i2s_clk)
             begin
                 if(ddc_valid)
                     begin
-                        bb_i2s_left_data_in <= ddc_i;
-                        bb_i2s_right_data_in <= ddc_q;
+                        bb_i2s_left_data_in <= ddc_i_out;
+                        bb_i2s_right_data_in <= ddc_q_out;
                     end
             end
     end
@@ -385,23 +398,42 @@ always @(posedge bb_i2s_clk)
 
 /// Quadrature digital up-converter ///
 // Inputs
-wire signed [13:0] qduc_i;
-wire signed [13:0] qduc_q;
+reg  signed [15:0] qduc_i_im;
+reg  signed [15:0] qduc_q_im;
+wire signed [13:0] qduc_i_out;
+wire signed [13:0] qduc_q_out;
 
 // Module
 qduc dac_qduc
 (
     .clk(qduc_clk),
     .reset(qduc_rst),
-    .in_i(bb_i2s_left_data_out),
-    .in_q(bb_i2s_right_data_out),
-    .out_i(qduc_i),
-    .out_q(qduc_q)
+    .in_i(qduc_i_im),
+    .in_q(qduc_q_im),
+    .out_i(qduc_i_out),
+    .out_q(qduc_q_out)
 );
+
+always @(posedge qduc_clk)
+    begin
+        if(qduc_rst)
+            begin
+                qduc_i_im <= 16'h0000;
+                qduc_q_im <= 16'h0000;
+            end
+        else
+            begin
+                qduc_i_im <= bb_i2s_left_data_out;
+                qduc_q_im <= bb_i2s_right_data_out;
+            end
+    end
 /// Quadrature digital up-converter ///
 
 /// DAC Interface ///
 // Inputs
+reg  [13:0] dac_data_rise;
+reg  [13:0] dac_data_fall;
+
 assign DAC_CLK = dac_clk && !dac_rst;
 
 SB_IO #(
@@ -412,9 +444,23 @@ dac_data [13:0]
 (
     .PACKAGE_PIN({DAC_D13, DAC_D12, DAC_D11, DAC_D10, DAC_D9, DAC_D8, DAC_D7, DAC_D6, DAC_D5, DAC_D4, DAC_D3, DAC_D2, DAC_D1, DAC_D0}),
     .OUTPUT_CLK(dac_clk),
-    .D_OUT_0(-qduc_i), // TxDAC differential output polarity is swapped for routing ease, so reverse the polarity here
-    .D_OUT_1(-qduc_q)  // TxDAC differential output polarity is swapped for routing ease, so reverse the polarity here
+    .D_OUT_0(dac_data_rise),
+    .D_OUT_1(dac_data_fall)
 );
+
+always @(posedge dac_clk)
+    begin
+        if(dac_rst)
+            begin
+                dac_data_rise <= 14'h0000;
+                dac_data_fall <= 14'h0000;
+            end
+        else
+            begin
+                dac_data_rise <= -qduc_i_out; // TxDAC differential output polarity is swapped for PCB routing ease, so reverse the polarity here
+                dac_data_fall <= -qduc_q_out; // TxDAC differential output polarity is swapped for PCB routing ease, so reverse the polarity here
+            end
+    end
 /// DAC Interface ///
 
 /// Audio I2S Clock generation ///
