@@ -398,8 +398,8 @@ always @(posedge bb_i2s_clk)
 
 /// Quadrature digital up-converter ///
 // Inputs
-reg  signed [15:0] qduc_i_im;
-reg  signed [15:0] qduc_q_im;
+reg  signed [15:0] qduc_i_in;
+reg  signed [15:0] qduc_q_in;
 wire signed [13:0] qduc_i_out;
 wire signed [13:0] qduc_q_out;
 
@@ -408,8 +408,8 @@ qduc dac_qduc
 (
     .clk(qduc_clk),
     .reset(qduc_rst),
-    .in_i(qduc_i_im),
-    .in_q(qduc_q_im),
+    .in_i(qduc_i_in),
+    .in_q(qduc_q_in),
     .out_i(qduc_i_out),
     .out_q(qduc_q_out)
 );
@@ -418,13 +418,13 @@ always @(posedge qduc_clk)
     begin
         if(qduc_rst)
             begin
-                qduc_i_im <= 16'h0000;
-                qduc_q_im <= 16'h0000;
+                qduc_i_in <= 16'h0000;
+                qduc_q_in <= 16'h0000;
             end
         else
             begin
-                qduc_i_im <= bb_i2s_left_data_out;
-                qduc_q_im <= bb_i2s_right_data_out;
+                qduc_i_in <= bb_i2s_left_data_out;
+                qduc_q_in <= bb_i2s_right_data_out;
             end
     end
 /// Quadrature digital up-converter ///

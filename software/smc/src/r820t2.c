@@ -285,9 +285,9 @@ void r820t2_sleep()
     r820t2_write_register(0x07, 0x00);
     r820t2_write_register(0x08, 0x40);
     r820t2_write_register(0x09, 0xC0);
-    r820t2_write_register(0x0a, 0x70);
-    r820t2_write_register(0x0c, 0xA0);
-    r820t2_write_register(0x0f, 0x2A);
+    r820t2_write_register(0x0A, 0x70);
+    r820t2_write_register(0x0C, 0xA0);
+    r820t2_write_register(0x0F, 0x2A);
     r820t2_write_register(0x11, 0x03);
     r820t2_write_register(0x17, 0xF4);
     r820t2_write_register(0x19, 0x0C);

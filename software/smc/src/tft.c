@@ -45,15 +45,15 @@ void tft_touch_callback(uint8_t ubEvent, uint16_t usX, uint16_t usY)
         }
     }
 
+    /*
     static uint16_t usLastX, usLastY;
 
     if(ubEvent == FT6X06_REG_Pn_XH_EVENT_FLAG_CONTACT)
-    {
         tft_draw_line(usLastX, usLastY, usX, usY, RGB565_YELLOW);
-    }
 
     usLastX = usX;
     usLastY = usY;
+    */
 }
 
 void tft_init()
