@@ -1,7 +1,8 @@
 # icyradio
 ![](https://raw.githubusercontent.com/vankxr/icyradio/master/pcb/main/icyradio-main.top.png)  
-A **S**oftware **D**efined **R**adio development board.  
-Main components are:
+A **S**oftware **D**efined **R**adio development board.
+
+## Main components
  - [LTC2205/6](https://www.analog.com/media/en/technical-documentation/data-sheets/22076fc.pdf) - 60/80 MSPS 16-bit RX ADC
  - [AD9117](https://www.analog.com/media/en/technical-documentation/data-sheets/ad9114_9115_9116_9117.pdf) - 125 MSPS 14-bit TX DAC
  - ...
