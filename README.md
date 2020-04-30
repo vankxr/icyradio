@@ -1,5 +1,5 @@
 # icyradio
-![](https://raw.githubusercontent.com/vankxr/icyradio/master/pcb/main/icyradio-main.top.png)  
+![](https://raw.githubusercontent.com/vankxr/icyradio/master/pcb/main/icyradio-main.top.png?token=AEOHTOYVPC7EXIN74P3PJDC6WL2LA)  
 A **S**oftware **D**efined **R**adio development board.
 
 ## Main components
