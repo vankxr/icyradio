@@ -10,7 +10,7 @@ module qduc
 
 localparam ISZ = 16;   // Input word size
 localparam OSZ = 14;   // Output word size
-localparam CICSZ = 40; // CIC output word size -> (see CIC localparam OSZ)
+localparam CICSZ = 32; // CIC output word size -> (see CIC localparam OSZ)
 
 // Clock divider
 reg [7:0]   clk_div;

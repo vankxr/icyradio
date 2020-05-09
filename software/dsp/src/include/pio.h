@@ -10,7 +10,7 @@
 // GPIO Helper macros
 #define PIO_PERI_MUX_SELECT(p, i, n)                                                    \
     (p)->PIO_ABCDSR[0] = ((p)->PIO_ABCDSR[0] & ~BIT(i)) | (!!((n) & BIT(0)) << (i));    \
-    (p)->PIO_ABCDSR[1] = ((p)->PIO_ABCDSR[0] & ~BIT(i)) | (!!((n) & BIT(1)) << (i));
+    (p)->PIO_ABCDSR[1] = ((p)->PIO_ABCDSR[1] & ~BIT(i)) | (!!((n) & BIT(1)) << (i));
 
 // LED MACROS
 #define LED_HIGH()          PIOB->PIO_SODR = PIO_SODR_P4;

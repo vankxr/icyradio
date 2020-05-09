@@ -110,19 +110,21 @@ void _i2sc1_isr()
     if(I2SC1->I2SC_SR & I2SC_SR_TXRDY)
     {
         static uint32_t ulCount = 0;
-        static uint32_t pulBuffer[10];
+        static uint32_t pulBuffer[2];
         static uint8_t ubBufferInit = 0;
 
         if(!ubBufferInit)
         {
-            for(uint32_t i = 0; i < 10; i++)
+            for(uint32_t i = 0; i < 2; i++)
             {
                 iq16_t xSample = {
-                    .i = arm_cos_q15(INT16_MAX * (float)i / 10),
-                    .q = arm_sin_q15(INT16_MAX * (float)i / 10)
+                    .i = arm_cos_q15(INT16_MAX * (float)i / 2),
+                    .q = arm_sin_q15(INT16_MAX * (float)i / 2)
                 };
 
                 pulBuffer[i] = (((uint32_t)xSample.q & 0xFFFF) << 16) | (((uint32_t)xSample.i & 0xFFFF) << 0);
+
+                DBGPRINTLN_CTX("TX Sample #%hhu %08X", i, pulBuffer[i]);
             }
 
             ubBufferInit = 1;
@@ -130,7 +132,7 @@ void _i2sc1_isr()
 
         I2SC1->I2SC_THR = pulBuffer[ulCount++];
 
-        if(ulCount >= 10)
+        if(ulCount >= 2)
             ulCount = 0;
     }
 }
@@ -409,7 +411,7 @@ void init_baseband_i2s()
     IRQ_CLEAR(I2SC1_IRQn); // Clear pending vector
     IRQ_SET_PRIO(I2SC1_IRQn, 3, 0); // Set priority 3,0
     IRQ_ENABLE(I2SC1_IRQn); // Enable vector
-    I2SC1->I2SC_IER = I2SC_IER_RXRDY; // Enable TX & RX interrupt requests
+    I2SC1->I2SC_IER = I2SC_IER_RXRDY | I2SC_IER_TXRDY; // Enable TX & RX interrupt requests
 
     I2SC1->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
 }

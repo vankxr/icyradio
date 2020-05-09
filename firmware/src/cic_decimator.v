@@ -11,18 +11,17 @@ module cic_decimator
 localparam NUM_STAGES = 3;                        // Stages of int / comb
 localparam STG_GSZ = 5;                           // Bit growth per stage -> log2(Decimation Ratio)
 localparam ISZ = 16;                              // Input word size
-localparam ASZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Integrator/Adder word size
-localparam OSZ = ASZ;                             // Output word size
+localparam OSZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Output word size
 
 // Integrators
-reg signed [ASZ - 1:0] integrator [0:NUM_STAGES - 1];
+reg signed [OSZ - 1:0] integrator [0:NUM_STAGES - 1];
 
 always @(posedge in_clk)
     begin
         if(reset)
-            integrator[0] <= {ASZ{1'b0}};
+            integrator[0] <= {OSZ{1'b0}};
         else
-            integrator[0] <= integrator[0] + {{(ASZ - ISZ){in[ISZ - 1]}}, in}; // Sign-extended
+            integrator[0] <= integrator[0] + {{(OSZ - ISZ){in[ISZ - 1]}}, in}; // Sign-extended
     end
 
 generate
@@ -33,7 +32,7 @@ generate
             always @(posedge in_clk)
                 begin
                     if(reset)
-                        integrator[i] <= {ASZ{1'b0}};
+                        integrator[i] <= {OSZ{1'b0}};
                     else
                         integrator[i] <= integrator[i] + integrator[i - 1];
                 end
@@ -57,7 +56,7 @@ always @(posedge in_clk)
             begin
                 if(out_clk)
                     begin
-                        comb_diff[0] <= integrator[NUM_STAGES - 1] >>> (ASZ - OSZ);
+                        comb_diff[0] <= integrator[NUM_STAGES - 1] >>> (OSZ - OSZ);
                         comb_dly[0] <= comb_diff[0];
                     end
 

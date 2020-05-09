@@ -7,30 +7,29 @@ module cic_interpolator
     output  signed [OSZ - 1:0]      out,      // Output data
 );
 
-localparam NUM_STAGES = 3;                        // Stages of int / comb
-localparam STG_GSZ = 8;                           // Bit growth per stage -> log2(Interpolation Ratio)
-localparam ISZ = 16;                              // Input word size
-localparam ASZ = (ISZ + (NUM_STAGES * STG_GSZ));  // Integrator/Adder word size
-localparam OSZ = ASZ;                             // Output word size
+localparam NUM_STAGES = 3;                              // Stages of int / comb
+localparam STG_GSZ = 8;                                 // Bit growth per stage -> log2(Interpolation Ratio)
+localparam ISZ = 16;                                    // Input word size
+localparam OSZ = (ISZ + ((NUM_STAGES - 1) * STG_GSZ));  // Output word size
 
 // Combs
 reg         [NUM_STAGES:0]  comb_en;
-reg signed  [ISZ - 1:0] comb_diff [0:NUM_STAGES];
-reg signed  [ISZ - 1:0] comb_dly  [0:NUM_STAGES];
+reg signed  [OSZ - 1:0]     comb_diff [0:NUM_STAGES];
+reg signed  [OSZ - 1:0]     comb_dly  [0:NUM_STAGES];
 
 always @(posedge out_clk)
     begin
         if(reset)
             begin
                 comb_en <= {(NUM_STAGES + 2){1'b0}};
-                comb_diff[0] <= {ISZ{1'b0}};
-                comb_dly[0] <= {ISZ{1'b0}};
+                comb_diff[0] <= {OSZ{1'b0}};
+                comb_dly[0] <= {OSZ{1'b0}};
             end
         else
             begin
                 if(in_clk)
                     begin
-                        comb_diff[0] <= in;
+                        comb_diff[0] <= {{(OSZ - ISZ){in[ISZ - 1]}}, in}; // Sign-extended
                         comb_dly[0] <= comb_diff[0];
                     end
 
@@ -47,8 +46,8 @@ generate
                 begin
                     if(reset)
                         begin
-                            comb_diff[j] <= {ISZ{1'b0}};
-                            comb_dly[j] <= {ISZ{1'b0}};
+                            comb_diff[j] <= {OSZ{1'b0}};
+                            comb_dly[j] <= {OSZ{1'b0}};
                         end
                     else if(comb_en[j - 1])
                         begin
@@ -60,18 +59,18 @@ generate
 endgenerate
 
 // Integrators
-reg signed [ASZ - 1:0] integrator [0:NUM_STAGES - 1];
+reg signed [OSZ - 1:0] integrator [0:NUM_STAGES - 1];
 
 always @(posedge out_clk)
     begin
         if(reset)
             begin
-                integrator[0] <= {ASZ{1'b0}};
+                integrator[0] <= {OSZ{1'b0}};
             end
         else
             begin
                 if(comb_en[NUM_STAGES])
-                    integrator[0] <= integrator[0] + {{(ASZ - ISZ){comb_diff[NUM_STAGES][ISZ - 1]}}, comb_diff[NUM_STAGES]};
+                    integrator[0] <= integrator[0] + comb_diff[NUM_STAGES];
             end
     end
 
@@ -83,7 +82,7 @@ generate
             always @(posedge out_clk)
                 begin
                     if(reset)
-                        integrator[i] <= {ASZ{1'b0}};
+                        integrator[i] <= {OSZ{1'b0}};
                     else
                         integrator[i] <= integrator[i] + integrator[i - 1];
                 end
