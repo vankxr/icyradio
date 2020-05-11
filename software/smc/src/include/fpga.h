@@ -22,8 +22,8 @@
 #define FPGA_REG_ADC_DPRAM_CNTRL        0x20
 #define FPGA_REG_ADC_DPRAM_ADDR         0x21
 #define FPGA_REG_ADC_DPRAM_DATA         0x22
-#define FPGA_REG_DDC_CNTRL              0x30
-#define FPGA_REG_DDC_LO_FREQ            0x31
+#define FPGA_REG_QDDC_CNTRL              0x30
+#define FPGA_REG_QDDC_LO_FREQ            0x31
 #define FPGA_REG_QDUC_CNTRL             0x35
 #define FPGA_REG_AUDIO_I2S_MUX_SEL      0x40
 #define FPGA_REG_QSPI_MEM_CNTRL         0x50
@@ -39,7 +39,7 @@
 // FPGA_REG_RST_CNTRL
 #define FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST   BIT(0)
 #define FPGA_REG_RST_CNTRL_ADC_SOFT_RST         BIT(1)
-#define FPGA_REG_RST_CNTRL_DDC_SOFT_RST         BIT(2)
+#define FPGA_REG_RST_CNTRL_QDDC_SOFT_RST         BIT(2)
 #define FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST      BIT(3)
 #define FPGA_REG_RST_CNTRL_QDUC_SOFT_RST        BIT(4)
 #define FPGA_REG_RST_CNTRL_DAC_SOFT_RST         BIT(5)
@@ -60,9 +60,9 @@
 #define FPGA_REG_ADC_DPRAM_CNTRL_WR_EN          BIT(1)
 #define FPGA_REG_ADC_DPRAM_CNTRL_RD_ADDR_INC    BIT(2)
 
-// FPGA_REG_DDC_CNTRL
-#define FPGA_REG_DDC_CNTRL_LO_NS_EN     BIT(0)
-#define FPGA_REG_DDC_CNTRL_IQ_SWAP      BIT(1)
+// FPGA_REG_QDDC_CNTRL
+#define FPGA_REG_QDDC_CNTRL_LO_NS_EN     BIT(0)
+#define FPGA_REG_QDDC_CNTRL_IQ_SWAP      BIT(1)
 
 // FPGA_REG_QDUC_CNTRL
 
@@ -102,15 +102,15 @@
 
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
 #define FPGA_QSPI_RAM_SIZE      4194304 // Words
-#define FPGA_DDC_LO_CLK_FREQ    SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
-#define FPGA_DDC_LO_FSZ         26 // Bits
+#define FPGA_QDDC_LO_CLK_FREQ    SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
+#define FPGA_QDDC_LO_FSZ         26 // Bits
 
 #define FPGA_IRQ_SMC    0
 #define FPGA_IRQ_DSP    1
 
 #define FPGA_IRQ_ADC_DPRAM_WR_EN    BIT(0)
 #define FPGA_IRQ_nADC_DPRAM_WR_EN   BIT(1)
-#define FPGA_IRQ_DDC_VALID          BIT(2)
+#define FPGA_IRQ_QDDC_VALID          BIT(2)
 #define FPGA_IRQ_ADC_OVERFLOW       BIT(3)
 #define FPGA_IRQ_QSPI_MEM_WR_VALID  BIT(4)
 #define FPGA_IRQ_QSPI_MEM_RD_VALID  BIT(5)
@@ -141,10 +141,10 @@ uint16_t fpga_rgb_led_get_duty(uint8_t ubColor);
 
 void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize);
 
-void fpga_ddc_set_iq_swap(uint8_t ubEnable);
-void fpga_ddc_set_lo_noise_shaping(uint8_t ubEnable);
-void fpga_ddc_set_lo_freq(uint32_t ulFrequency);
-uint32_t fpga_ddc_get_lo_freq();
+void fpga_qddc_set_iq_swap(uint8_t ubEnable);
+void fpga_qddc_set_lo_noise_shaping(uint8_t ubEnable);
+void fpga_qddc_set_lo_freq(uint32_t ulFrequency);
+uint32_t fpga_qddc_get_lo_freq();
 
 void fpga_i2s_mux_set_dsp_clock(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_dsp_clock();

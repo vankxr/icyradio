@@ -90,7 +90,7 @@ module icyradio
 
 /// Clocks ///
 // Inputs
-wire clk1; // Fast clock, feeds the ADC, the DDC and the baseband I2S controller
+wire clk1; // Fast clock, feeds the ADC, the QDDC and the baseband I2S controller
 wire clk2; // Fast clock, feeds the reset generator, control SPI and IRQ controller
 wire clk3; // Fast clock, feeds the LED PWM controller
 wire clk4;
@@ -122,7 +122,7 @@ wire rst_clk;
 wire adc_dpram_rd_clk;
 wire adc_dpram_wr_clk;
 wire adc_clk;
-wire ddc_clk;
+wire qddc_clk;
 wire bb_i2s_clk;
 wire qduc_clk;
 wire dac_clk;
@@ -137,11 +137,11 @@ assign rst_clk              = clk2; // Reset clock is CLK2
 assign adc_dpram_rd_clk     = clk2; // ADC DP RAM read clock is CLK2 (same as the control SPI interface clock)
 assign adc_dpram_wr_clk     = clk1; // ADC DP RAM write clock is CLK1 (same as ADC)
 assign adc_clk              = clk1; // ADC clock is CLK1
-assign ddc_clk              = clk1; // DDC clock is CLK1 (same as the ADC)
-assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the DDC)
+assign qddc_clk             = clk1; // QDDC clock is CLK1 (same as the ADC)
+assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the QDDC)
 assign qduc_clk             = clk1; // QDUC clock is CLK1 (same as the DAC)
 assign dac_clk              = clk1; // DAC clock is CLK1
-assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the DDC)
+assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the QDDC)
 assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK3
 assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
@@ -169,8 +169,8 @@ wire adc_dpram_rst;
 wire adc_dpram_soft_rst; // Controlled by SMC via SPI
 wire adc_rst;
 wire adc_soft_rst; // Controlled by SMC via SPI
-wire ddc_rst;
-wire ddc_soft_rst; // Controlled by SMC via SPI
+wire qddc_rst;
+wire qddc_soft_rst; // Controlled by SMC via SPI
 wire bb_i2s_rst;
 wire bb_i2s_soft_rst; // Controlled by SMC via SPI
 wire qduc_rst;
@@ -188,7 +188,7 @@ wire cntrl_spi_rst;
 
 assign adc_dpram_rst = extrst || adc_dpram_soft_rst; // ADC DP RAM is reset by external pin and software
 assign adc_rst       = extrst || adc_soft_rst; // ADC is reset by external pin and software
-assign ddc_rst       = extrst || ddc_soft_rst; // DDC is reset by external pin and software
+assign qddc_rst      = extrst || qddc_soft_rst; // QDDC is reset by external pin and software
 assign bb_i2s_rst    = extrst || bb_i2s_soft_rst; // Baseband I2S is reset by external pin and software
 assign qduc_rst      = extrst || qduc_soft_rst; // QDUC is reset by external pin and software
 assign dac_rst       = extrst || dac_soft_rst; // DAC is reset by external pin and software
@@ -304,42 +304,42 @@ always @(posedge adc_clk)
     end
 /// ADC Interface ///
 
-/// Digital down-converter ///
+/// Quadrature digital down-converter ///
 // Inputs
-reg  signed [15:0] ddc_in;
-wire signed [15:0] ddc_i_out;
-wire signed [15:0] ddc_q_out;
-wire        [25:0] ddc_lo_freq; // Controlled by SMC via SPI
-wire               ddc_valid;
-wire               ddc_lo_ns_en; // Controlled by SMC via SPI
-wire               ddc_iq_swap; // Controlled by SMC via SPI
+reg  signed [15:0] qddc_in;
+wire signed [15:0] qddc_i_out;
+wire signed [15:0] qddc_q_out;
+wire        [25:0] qddc_lo_freq; // Controlled by SMC via SPI
+wire               qddc_valid;
+wire               qddc_lo_ns_en; // Controlled by SMC via SPI
+wire               qddc_iq_swap; // Controlled by SMC via SPI
 
 // Module
-ddc adc_ddc
+qddc adc_qddc
 (
-    .clk(ddc_clk),
-    .reset(ddc_rst),
-    .in(ddc_in),
-    .lo_freq(ddc_lo_freq),
-    .lo_ns_en(ddc_lo_ns_en),
-    .iq_swap(ddc_iq_swap),
-    .out_valid(ddc_valid),
-    .out_i(ddc_i_out),
-    .out_q(ddc_q_out)
+    .clk(qddc_clk),
+    .reset(qddc_rst),
+    .in(qddc_in),
+    .lo_freq(qddc_lo_freq),
+    .lo_ns_en(qddc_lo_ns_en),
+    .iq_swap(qddc_iq_swap),
+    .out_valid(qddc_valid),
+    .out_i(qddc_i_out),
+    .out_q(qddc_q_out)
 );
 
-always @(posedge ddc_clk)
+always @(posedge qddc_clk)
     begin
-        if(ddc_rst)
+        if(qddc_rst)
             begin
-                ddc_in <= 16'h0000;
+                qddc_in <= 16'h0000;
             end
         else
             begin
-                ddc_in <= adc_data;
+                qddc_in <= adc_data;
             end
     end
-/// Digital down-converter ///
+/// Quadrature digital down-converter ///
 
 /// Baseband I2S ///
 // Inputs
@@ -387,10 +387,10 @@ always @(posedge bb_i2s_clk)
             end
         else
             begin
-                if(ddc_valid)
+                if(qddc_valid)
                     begin
-                        bb_i2s_left_data_in <= ddc_i_out;
-                        bb_i2s_right_data_in <= ddc_q_out;
+                        bb_i2s_left_data_in <= qddc_i_out;
+                        bb_i2s_right_data_in <= qddc_q_out;
                     end
             end
     end
@@ -886,14 +886,14 @@ assign irq_lines[6] = 1'b0;
 assign irq_lines[5] = qspi_mem_rd_valid;
 assign irq_lines[4] = qspi_mem_wr_valid;
 assign irq_lines[3] = adc_of;
-assign irq_lines[2] = ddc_valid;
+assign irq_lines[2] = qddc_valid;
 assign irq_lines[1] = !adc_dpram_wr_en;
 assign irq_lines[0] = adc_dpram_wr_en;
 
 // Synchronizer
 synchronizer irq_lines_sync [IRQ_COUNT - 1:0]
 (
-    .in_clk({1'b0, 1'b0, qspi_mem_clk, qspi_mem_clk, adc_clk, ddc_clk, adc_dpram_wr_clk, adc_dpram_wr_clk}),
+    .in_clk({1'b0, 1'b0, qspi_mem_clk, qspi_mem_clk, adc_clk, qddc_clk, adc_dpram_wr_clk, adc_dpram_wr_clk}),
     .out_clk(irq_clk),
     .in(irq_lines),
     .out(irq_lines_q)
@@ -955,8 +955,8 @@ localparam CNTRL_SPI_REG_BLUE_LED_DUTY          = 7'h13;
 localparam CNTRL_SPI_REG_ADC_DPRAM_CNTRL        = 7'h20;
 localparam CNTRL_SPI_REG_ADC_DPRAM_ADDR         = 7'h21;
 localparam CNTRL_SPI_REG_ADC_DPRAM_DATA         = 7'h22;
-localparam CNTRL_SPI_REG_DDC_CNTRL              = 7'h30;
-localparam CNTRL_SPI_REG_DDC_LO_FREQ            = 7'h31;
+localparam CNTRL_SPI_REG_QDDC_CNTRL             = 7'h30;
+localparam CNTRL_SPI_REG_QDDC_LO_FREQ           = 7'h31;
 localparam CNTRL_SPI_REG_QDUC_CNTRL             = 7'h35;
 localparam CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL      = 7'h40;
 localparam CNTRL_SPI_REG_QSPI_MEM_CNTRL         = 7'h50;
@@ -969,7 +969,7 @@ localparam CNTRL_SPI_REG_QSPI_MEM_DATA          = 7'h54;
 //// CNTRL_SPI_REG_RST_CNTRL
 reg  cntrl_spi_adc_dpram_soft_rst;
 reg  cntrl_spi_adc_soft_rst;
-reg  cntrl_spi_ddc_soft_rst;
+reg  cntrl_spi_qddc_soft_rst;
 reg  cntrl_spi_bb_i2s_soft_rst;
 reg  cntrl_spi_qduc_soft_rst;
 reg  cntrl_spi_dac_soft_rst;
@@ -1008,12 +1008,12 @@ reg  [ADC_DPRAM_SIZE - 1:0] cntrl_spi_adc_dpram_rd_addr;
 //// CNTRL_SPI_REG_ADC_DPRAM_DATA
 wire [15:0] cntrl_spi_adc_dpram_data_out;
 
-//// CNTRL_SPI_REG_DDC_CNTRL
-reg  cntrl_spi_ddc_lo_ns_en;
-reg  cntrl_spi_ddc_iq_swap;
+//// CNTRL_SPI_REG_QDDC_CNTRL
+reg  cntrl_spi_qddc_lo_ns_en;
+reg  cntrl_spi_qddc_iq_swap;
 
-//// CNTRL_SPI_REG_DDC_LO_FREQ
-reg  [25:0] cntrl_spi_ddc_lo_freq;
+//// CNTRL_SPI_REG_QDDC_LO_FREQ
+reg  [25:0] cntrl_spi_qddc_lo_freq;
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
 
@@ -1048,7 +1048,7 @@ wire [15:0] cntrl_spi_qspi_mem_data_out;
 //// CNTRL_SPI_REG_RST_CNTRL
 assign adc_dpram_soft_rst = cntrl_spi_adc_dpram_soft_rst; // No sync needed since runs on the same clock
 assign adc_soft_rst = cntrl_spi_adc_soft_rst; // No sync needed since runs on the same clock
-assign ddc_soft_rst = cntrl_spi_ddc_soft_rst; // No sync needed since runs on the same clock
+assign qddc_soft_rst = cntrl_spi_qddc_soft_rst; // No sync needed since runs on the same clock
 assign bb_i2s_soft_rst = cntrl_spi_bb_i2s_soft_rst; // No sync needed since runs on the same clock
 assign qduc_soft_rst = cntrl_spi_qduc_soft_rst; // No sync needed since runs on the same clock
 assign dac_soft_rst = cntrl_spi_dac_soft_rst; // No sync needed since runs on the same clock
@@ -1108,29 +1108,29 @@ assign adc_dpram_rd_addr = cntrl_spi_adc_dpram_rd_addr; // No sync needed since 
 //// CNTRL_SPI_REG_ADC_DPRAM_DATA
 assign cntrl_spi_adc_dpram_data_out = adc_dpram_data_out; // No sync needed since runs on the same clock
 
-//// CNTRL_SPI_REG_DDC_CNTRL
-synchronizer cntrl_spi_ddc_lo_ns_en_sync
+//// CNTRL_SPI_REG_QDDC_CNTRL
+synchronizer cntrl_spi_qddc_lo_ns_en_sync
 (
     .in_clk(cntrl_spi_clk),
-    .out_clk(ddc_clk),
-    .in(cntrl_spi_ddc_lo_ns_en),
-    .out(ddc_lo_ns_en)
+    .out_clk(qddc_clk),
+    .in(cntrl_spi_qddc_lo_ns_en),
+    .out(qddc_lo_ns_en)
 );
-synchronizer cntrl_spi_ddc_iq_swap_sync
+synchronizer cntrl_spi_qddc_iq_swap_sync
 (
     .in_clk(cntrl_spi_clk),
-    .out_clk(ddc_clk),
-    .in(cntrl_spi_ddc_iq_swap),
-    .out(ddc_iq_swap)
+    .out_clk(qddc_clk),
+    .in(cntrl_spi_qddc_iq_swap),
+    .out(qddc_iq_swap)
 );
 
-//// CNTRL_SPI_REG_DDC_LO_FREQ
-synchronizer cntrl_spi_ddc_lo_freq_sync [25:0]
+//// CNTRL_SPI_REG_QDDC_LO_FREQ
+synchronizer cntrl_spi_qddc_lo_freq_sync [25:0]
 (
     .in_clk(cntrl_spi_clk),
-    .out_clk(ddc_clk),
-    .in(cntrl_spi_ddc_lo_freq),
-    .out(ddc_lo_freq)
+    .out_clk(qddc_clk),
+    .in(cntrl_spi_qddc_lo_freq),
+    .out(qddc_lo_freq)
 );
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
@@ -1238,7 +1238,7 @@ always @(posedge cntrl_spi_clk)
             begin
                 cntrl_spi_adc_dpram_soft_rst <= 1'b1;
                 cntrl_spi_adc_soft_rst <= 1'b1;
-                cntrl_spi_ddc_soft_rst <= 1'b1;
+                cntrl_spi_qddc_soft_rst <= 1'b1;
                 cntrl_spi_bb_i2s_soft_rst <= 1'b1;
                 cntrl_spi_qduc_soft_rst <= 1'b1;
                 cntrl_spi_dac_soft_rst <= 1'b1;
@@ -1264,10 +1264,10 @@ always @(posedge cntrl_spi_clk)
 
                 cntrl_spi_adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
 
-                cntrl_spi_ddc_lo_ns_en <= 1'b0;
-                cntrl_spi_ddc_iq_swap <= 1'b0;
+                cntrl_spi_qddc_lo_ns_en <= 1'b0;
+                cntrl_spi_qddc_iq_swap <= 1'b0;
 
-                cntrl_spi_ddc_lo_freq <= 26'h0000000;
+                cntrl_spi_qddc_lo_freq <= 26'h0000000;
 
                 cntrl_spi_audio_i2s_dsp_clk_sel <= 2'b00;
                 cntrl_spi_audio_i2s_codec_clk_sel <= 2'b01;
@@ -1305,7 +1305,7 @@ always @(posedge cntrl_spi_clk)
                                 begin
                                     cntrl_spi_adc_dpram_soft_rst <= cntrl_spi_data_out[0];
                                     cntrl_spi_adc_soft_rst <= cntrl_spi_data_out[1];
-                                    cntrl_spi_ddc_soft_rst <= cntrl_spi_data_out[2];
+                                    cntrl_spi_qddc_soft_rst <= cntrl_spi_data_out[2];
                                     cntrl_spi_bb_i2s_soft_rst <= cntrl_spi_data_out[3];
                                     cntrl_spi_qduc_soft_rst <= cntrl_spi_data_out[4];
                                     cntrl_spi_dac_soft_rst <= cntrl_spi_data_out[5];
@@ -1356,14 +1356,14 @@ always @(posedge cntrl_spi_clk)
                                 begin
                                     // Nothing to do
                                 end
-                            CNTRL_SPI_REG_DDC_CNTRL:
+                            CNTRL_SPI_REG_QDDC_CNTRL:
                                 begin
-                                    cntrl_spi_ddc_lo_ns_en <= cntrl_spi_data_out[0];
-                                    cntrl_spi_ddc_iq_swap <= cntrl_spi_data_out[1];
+                                    cntrl_spi_qddc_lo_ns_en <= cntrl_spi_data_out[0];
+                                    cntrl_spi_qddc_iq_swap <= cntrl_spi_data_out[1];
                                 end
-                            CNTRL_SPI_REG_DDC_LO_FREQ:
+                            CNTRL_SPI_REG_QDDC_LO_FREQ:
                                 begin
-                                    cntrl_spi_ddc_lo_freq <= cntrl_spi_data_out[25:0];
+                                    cntrl_spi_qddc_lo_freq <= cntrl_spi_data_out[25:0];
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin
@@ -1412,7 +1412,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {23'd0, cntrl_spi_led_soft_rst, cntrl_spi_qspi_mem_soft_rst, cntrl_spi_audio_i2s_soft_rst, cntrl_spi_dac_soft_rst, cntrl_spi_qduc_soft_rst, cntrl_spi_bb_i2s_soft_rst, cntrl_spi_ddc_soft_rst, cntrl_spi_adc_soft_rst, cntrl_spi_adc_dpram_soft_rst};
+                                    cntrl_spi_data_in <= {23'd0, cntrl_spi_led_soft_rst, cntrl_spi_qspi_mem_soft_rst, cntrl_spi_audio_i2s_soft_rst, cntrl_spi_dac_soft_rst, cntrl_spi_qduc_soft_rst, cntrl_spi_bb_i2s_soft_rst, cntrl_spi_qddc_soft_rst, cntrl_spi_adc_soft_rst, cntrl_spi_adc_dpram_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_STATE:
                                 begin
@@ -1460,13 +1460,13 @@ always @(posedge cntrl_spi_clk)
                                     if(cntrl_spi_adc_dpram_rd_addr_inc)
                                         cntrl_spi_adc_dpram_rd_addr <= cntrl_spi_adc_dpram_rd_addr + 1;
                                 end
-                            CNTRL_SPI_REG_DDC_CNTRL:
+                            CNTRL_SPI_REG_QDDC_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {30'd0, cntrl_spi_ddc_iq_swap, cntrl_spi_ddc_lo_ns_en};
+                                    cntrl_spi_data_in <= {30'd0, cntrl_spi_qddc_iq_swap, cntrl_spi_qddc_lo_ns_en};
                                 end
-                            CNTRL_SPI_REG_DDC_LO_FREQ:
+                            CNTRL_SPI_REG_QDDC_LO_FREQ:
                                 begin
-                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_ddc_lo_freq};
+                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_qddc_lo_freq};
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin

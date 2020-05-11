@@ -36,7 +36,7 @@ cic_interpolator cic_int_i
     .in_clk(cic_in_clk),
     .out_clk(clk),
     .in(in_i),
-    .out(cic_i),
+    .out(cic_i)
 );
 
 cic_interpolator cic_int_q
@@ -45,7 +45,7 @@ cic_interpolator cic_int_q
     .in_clk(cic_in_clk),
     .out_clk(clk),
     .in(in_q),
-    .out(cic_q),
+    .out(cic_q)
 );
 
 wire signed [OSZ - 1:0] out_i = cic_i[(CICSZ - 1):(CICSZ - OSZ)];

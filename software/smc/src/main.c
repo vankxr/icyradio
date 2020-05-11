@@ -251,8 +251,8 @@ void tft_button_touch_callback(uint32_t ulButtonID)
         break;
     }
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
-    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
+    fpga_qddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
+    DBGPRINTLN_CTX("FPGA QDDC tuner LO frequency: %.3f MHz", (float)fpga_qddc_get_lo_freq() / 1000000);
 
     tft_textbox_clear(pRXTunedFreqTextbox);
     tft_textbox_printf(pRXTunedFreqTextbox, "Hard: %.2f MHz\n\rSoft: %.2f MHz", (float)ulRXHardTunedFrequency / 1000000, (float)ulRXSoftTunedFrequency / 1000000);
@@ -843,14 +843,14 @@ void init_rx_chain()
     RXADC_DITHER_OFF();
     DBGPRINTLN_CTX("RX ADC powered up, gain x1, dither disabled!");
 
-    fpga_ddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
-    DBGPRINTLN_CTX("FPGA DDC tuner LO frequency: %.3f MHz", (float)fpga_ddc_get_lo_freq() / 1000000);
+    fpga_qddc_set_lo_freq(RX_RF_TO_IF(ulRXSoftTunedFrequency));
+    DBGPRINTLN_CTX("FPGA QDDC tuner LO frequency: %.3f MHz", (float)fpga_qddc_get_lo_freq() / 1000000);
 
-    fpga_ddc_set_lo_noise_shaping(1);
-    fpga_ddc_set_iq_swap(1); // Tuner uses high-side LO injection, so invert the spectrum in the DDC
+    fpga_qddc_set_lo_noise_shaping(1);
+    fpga_qddc_set_iq_swap(1); // Tuner uses high-side LO injection, so invert the spectrum in the QDDC
 
-    fpga_reset_module(FPGA_REG_RST_CNTRL_DDC_SOFT_RST, 0);
-    DBGPRINTLN_CTX("FPGA DDC enabled!");
+    fpga_reset_module(FPGA_REG_RST_CNTRL_QDDC_SOFT_RST, 0);
+    DBGPRINTLN_CTX("FPGA QDDC enabled!");
 }
 void init_tx_chain()
 {

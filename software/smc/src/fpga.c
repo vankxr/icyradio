@@ -205,27 +205,27 @@ void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize)
         *psData++ = fpga_read_register(FPGA_REG_ADC_DPRAM_DATA) & 0xFFFF;
 }
 
-void fpga_ddc_set_iq_swap(uint8_t ubEnable)
+void fpga_qddc_set_iq_swap(uint8_t ubEnable)
 {
-    fpga_rmw_register(FPGA_REG_DDC_CNTRL, ~FPGA_REG_DDC_CNTRL_IQ_SWAP, ubEnable ? FPGA_REG_DDC_CNTRL_IQ_SWAP : 0);
+    fpga_rmw_register(FPGA_REG_QDDC_CNTRL, ~FPGA_REG_QDDC_CNTRL_IQ_SWAP, ubEnable ? FPGA_REG_QDDC_CNTRL_IQ_SWAP : 0);
 }
-void fpga_ddc_set_lo_noise_shaping(uint8_t ubEnable)
+void fpga_qddc_set_lo_noise_shaping(uint8_t ubEnable)
 {
-    fpga_rmw_register(FPGA_REG_DDC_CNTRL, ~FPGA_REG_DDC_CNTRL_LO_NS_EN, ubEnable ? FPGA_REG_DDC_CNTRL_LO_NS_EN : 0);
+    fpga_rmw_register(FPGA_REG_QDDC_CNTRL, ~FPGA_REG_QDDC_CNTRL_LO_NS_EN, ubEnable ? FPGA_REG_QDDC_CNTRL_LO_NS_EN : 0);
 }
-void fpga_ddc_set_lo_freq(uint32_t ulFrequency)
+void fpga_qddc_set_lo_freq(uint32_t ulFrequency)
 {
-    uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_DDC_LO_FSZ;
-    uint32_t ulValue = ullFrequency / FPGA_DDC_LO_CLK_FREQ;
+    uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDDC_LO_FSZ;
+    uint32_t ulValue = ullFrequency / FPGA_QDDC_LO_CLK_FREQ;
 
-    fpga_write_register(FPGA_REG_DDC_LO_FREQ, ulValue);
+    fpga_write_register(FPGA_REG_QDDC_LO_FREQ, ulValue);
 }
-uint32_t fpga_ddc_get_lo_freq()
+uint32_t fpga_qddc_get_lo_freq()
 {
-    uint32_t ulValue = fpga_read_register(FPGA_REG_DDC_LO_FREQ);
-    uint64_t ullFrequency = (uint64_t)ulValue * FPGA_DDC_LO_CLK_FREQ;
+    uint32_t ulValue = fpga_read_register(FPGA_REG_QDDC_LO_FREQ);
+    uint64_t ullFrequency = (uint64_t)ulValue * FPGA_QDDC_LO_CLK_FREQ;
 
-    return ullFrequency >> FPGA_DDC_LO_FSZ;
+    return ullFrequency >> FPGA_QDDC_LO_FSZ;
 }
 
 void fpga_i2s_mux_set_dsp_clock(uint32_t ulSource)

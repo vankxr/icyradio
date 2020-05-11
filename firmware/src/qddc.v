@@ -1,4 +1,4 @@
-module ddc
+module qddc
 (
     input                       clk,       // Clock
     input                       reset,     // Reset
