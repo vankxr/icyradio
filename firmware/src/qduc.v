@@ -12,7 +12,7 @@ localparam ISZ = 16;   // Input word size
 localparam OSZ = 14;   // Output word size
 localparam CICSZ = 32; // CIC output word size -> (see CIC localparam OSZ)
 
-// Clock divider
+// CIC clock divider
 reg [7:0]   clk_div;
 wire        cic_in_clk;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.1">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1969,46 +1969,46 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <circle x="-3.212" y="2.766" radius="0.3" width="0" layer="21"/>
 </package>
 <package name="QFN24">
-<smd name="33" x="0" y="0" dx="2.5" dy="2.5" layer="1" cream="no"/>
-<smd name="1" x="-1.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="2" x="-0.75" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="3" x="-0.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="4" x="0.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="5" x="0.75" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="6" x="1.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
-<smd name="7" x="1.95" y="-1.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="8" x="1.95" y="-0.75" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="9" x="1.95" y="-0.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="10" x="1.95" y="0.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="11" x="1.95" y="0.75" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="12" x="1.95" y="1.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
-<smd name="13" x="1.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="14" x="0.75" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="15" x="0.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="16" x="-0.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="17" x="-0.75" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="18" x="-1.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
-<smd name="19" x="-1.95" y="1.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<smd name="20" x="-1.95" y="0.75" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<smd name="21" x="-1.95" y="0.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<smd name="22" x="-1.95" y="-0.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<smd name="23" x="-1.95" y="-0.75" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<smd name="24" x="-1.95" y="-1.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
-<wire x1="-2" y1="2" x2="2" y2="2" width="0.127" layer="51"/>
+<smd name="25" x="0" y="0" dx="2.5" dy="2.5" layer="1" rot="R270" cream="no"/>
+<smd name="1" x="-1.95" y="1.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="2" x="-1.95" y="0.75" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="3" x="-1.95" y="0.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="4" x="-1.95" y="-0.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="5" x="-1.95" y="-0.75" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="6" x="-1.95" y="-1.25" dx="0.3" dy="0.85" layer="1" rot="R270"/>
+<smd name="7" x="-1.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="8" x="-0.75" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="9" x="-0.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="10" x="0.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="11" x="0.75" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="12" x="1.25" y="-1.95" dx="0.3" dy="0.85" layer="1"/>
+<smd name="13" x="1.95" y="-1.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="14" x="1.95" y="-0.75" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="15" x="1.95" y="-0.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="16" x="1.95" y="0.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="17" x="1.95" y="0.75" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="18" x="1.95" y="1.25" dx="0.3" dy="0.85" layer="1" rot="R90"/>
+<smd name="19" x="1.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
+<smd name="20" x="0.75" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
+<smd name="21" x="0.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
+<smd name="22" x="-0.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
+<smd name="23" x="-0.75" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
+<smd name="24" x="-1.25" y="1.95" dx="0.3" dy="0.85" layer="1" rot="R180"/>
 <wire x1="2" y1="2" x2="2" y2="-2" width="0.127" layer="51"/>
 <wire x1="2" y1="-2" x2="-2" y2="-2" width="0.127" layer="51"/>
 <wire x1="-2" y1="-2" x2="-2" y2="2" width="0.127" layer="51"/>
-<text x="-2" y="-3.381" size="0.8" layer="25" font="vector" ratio="15">&gt;NAME</text>
-<circle x="-2.413" y="-2.54" radius="0.1016" width="0.2032" layer="21"/>
+<wire x1="-2" y1="2" x2="2" y2="2" width="0.127" layer="51"/>
+<text x="-2" y="2.969" size="0.8" layer="25" font="vector" ratio="15">&gt;NAME</text>
+<circle x="-2.54" y="2.413" radius="0.1016" width="0.2032" layer="21"/>
+<wire x1="-2" y1="1.7" x2="-2" y2="2" width="0.127" layer="21"/>
+<wire x1="-2" y1="2" x2="-1.7" y2="2" width="0.127" layer="21"/>
 <wire x1="-1.7" y1="-2" x2="-2" y2="-2" width="0.127" layer="21"/>
 <wire x1="-2" y1="-2" x2="-2" y2="-1.7" width="0.127" layer="21"/>
 <wire x1="2" y1="-1.7" x2="2" y2="-2" width="0.127" layer="21"/>
 <wire x1="2" y1="-2" x2="1.7" y2="-2" width="0.127" layer="21"/>
 <wire x1="1.7" y1="2" x2="2" y2="2" width="0.127" layer="21"/>
 <wire x1="2" y1="2" x2="2" y2="1.7" width="0.127" layer="21"/>
-<wire x1="-2" y1="1.7" x2="-2" y2="2" width="0.127" layer="21"/>
-<wire x1="-2" y1="2" x2="-1.7" y2="2" width="0.127" layer="21"/>
-<rectangle x1="-0.8" y1="-0.8" x2="0.8" y2="0.8" layer="31"/>
+<rectangle x1="-0.8" y1="-0.8" x2="0.8" y2="0.8" layer="31" rot="R270"/>
 </package>
 <package name="SOT23-5">
 <wire x1="-0.9" y1="1.55" x2="0.9" y2="1.55" width="0.127" layer="21"/>
@@ -9287,8 +9287,8 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="25.0464" y="90.032" size="0.8" layer="27" font="vector" ratio="10" rot="SR180" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="22.1" y="88" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="U501" library="Analog Devices" package="QFN24" value="ADL5385" x="28.3" y="86.7" smashed="yes" rot="R180">
-<attribute name="NAME" x="26.9" y="90.019" size="0.8" layer="25" font="vector" ratio="10" align="center-left"/>
+<element name="U501" library="Analog Devices" package="QFN24" value="ADL5385" x="28.3" y="86.7" smashed="yes" rot="R270">
+<attribute name="NAME" x="29.6" y="89.981" size="0.8" layer="25" font="vector" ratio="10" rot="R180" align="center-left"/>
 </element>
 <element name="U1001" library="Microchip" package="DFN10" value="MIC23155" x="117.1" y="88.2" smashed="yes">
 <attribute name="NAME" x="115.452" y="86.248" size="0.8" layer="25" font="vector" ratio="10" align="center-left"/>
@@ -10356,7 +10356,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="106.8456" y="58.668" size="1.016" layer="27" ratio="10" rot="SR0"/>
 </element>
 <element name="D101" library="LED" package="0603" value="LED0603" x="110.3" y="62.5" smashed="yes" rot="R180">
-<attribute name="COLOR" value="" x="110.3" y="62.5" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="COLOR" value="BLUE" x="110.3" y="62.5" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="NAME" x="108.7536" y="63.916" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="113.2464" y="64.532" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
@@ -10366,7 +10366,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="104.6544" y="62.732" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
 <element name="D201" library="LED" package="0603" value="LED0603" x="101.2" y="62.5" smashed="yes">
-<attribute name="COLOR" value="" x="101.2" y="62.5" size="1.778" layer="27" display="off"/>
+<attribute name="COLOR" value="WHITE" x="101.2" y="62.5" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="99.6536" y="63.916" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="98.2536" y="60.468" size="1.016" layer="27" ratio="10" rot="SR0"/>
 </element>
@@ -10376,7 +10376,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="15.3544" y="83.932" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
 <element name="D501" library="LED" package="0603" value="LED0603" x="11.9" y="80.1" smashed="yes">
-<attribute name="COLOR" value="" x="11.9" y="80.1" size="1.778" layer="27" display="off"/>
+<attribute name="COLOR" value="RED" x="11.9" y="80.1" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="10.3536" y="78.716" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="8.9536" y="78.068" size="1.016" layer="27" ratio="10" rot="SR0"/>
 </element>
@@ -10396,7 +10396,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="148.5544" y="72.632" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
 <element name="D1003" library="LED" package="0603" value="LED0603" x="145.1" y="68.8" smashed="yes">
-<attribute name="COLOR" value="" x="145.1" y="68.8" size="1.778" layer="27" display="off"/>
+<attribute name="COLOR" value="GREEN" x="145.1" y="68.8" size="1.778" layer="27" display="off"/>
 <attribute name="NAME" x="143.4536" y="67.316" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="142.1536" y="66.768" size="1.016" layer="27" ratio="10" rot="SR0"/>
 </element>
@@ -10406,7 +10406,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="132.4544" y="96.632" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
 <element name="D1002" library="LED" package="0603" value="LED0603" x="132.4" y="94.6" smashed="yes" rot="R180">
-<attribute name="COLOR" value="" x="132.4" y="94.6" size="1.778" layer="27" rot="R180" display="off"/>
+<attribute name="COLOR" value="GREEN" x="132.4" y="94.6" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="NAME" x="131.1536" y="96.016" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VALUE" x="135.3464" y="96.632" size="1.016" layer="27" ratio="10" rot="SR180"/>
 </element>
@@ -10561,7 +10561,7 @@ design rules under a new name.</description>
 <contactref element="C904" pad="2"/>
 <contactref element="C902" pad="2"/>
 <contactref element="U501" pad="4"/>
-<contactref element="U501" pad="33"/>
+<contactref element="U501" pad="25"/>
 <contactref element="U501" pad="5"/>
 <contactref element="U501" pad="6"/>
 <contactref element="U501" pad="15"/>
@@ -12626,6 +12626,7 @@ design rules under a new name.</description>
 <via x="87.7" y="80.2" extent="1-16" drill="0.2"/>
 <via x="88.4" y="78.2" extent="1-16" drill="0.2"/>
 <via x="90.1" y="78" extent="1-16" drill="0.2"/>
+<wire x1="65.7" y1="50.4" x2="66.1" y2="50" width="0.3048" layer="1"/>
 </signal>
 <signal name="3V3">
 <contactref element="TC101" pad="1"/>

@@ -16,20 +16,6 @@ localparam FSZ = 26;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
 localparam CICSZ = 31; // CIC output word size -> (see CIC localparam OSZ)
 
-// Clock divider
-reg [4:0]   clk_div;
-wire        cic_out_clk;
-
-assign cic_out_clk = &clk_div; // One pulse every 32 = Decimation ratio
-
-always @(posedge clk)
-    begin
-        if(reset)
-            clk_div <= 5'b00000;
-        else
-            clk_div <= clk_div + 1;
-    end
-
 // Tuner
 wire signed [ISZ - 1:0] tuner_i;
 wire signed [ISZ - 1:0] tuner_q;
@@ -45,6 +31,20 @@ tuner in_tuner
     .out_i(tuner_i),
     .out_q(tuner_q)
 );
+
+// CIC clock divider
+reg [4:0]   clk_div;
+wire        cic_out_clk;
+
+assign cic_out_clk = &clk_div; // One pulse every 32 = Decimation ratio
+
+always @(posedge clk)
+    begin
+        if(reset)
+            clk_div <= 5'b00000;
+        else
+            clk_div <= clk_div + 1;
+    end
 
 // CIC decimators
 wire                      cic_valid;

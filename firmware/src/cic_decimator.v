@@ -56,7 +56,7 @@ always @(posedge in_clk)
             begin
                 if(out_clk)
                     begin
-                        comb_diff[0] <= integrator[NUM_STAGES - 1] >>> (OSZ - OSZ);
+                        comb_diff[0] <= integrator[NUM_STAGES - 1];
                         comb_dly[0] <= comb_diff[0];
                     end
 
