@@ -34,8 +34,6 @@ always @(posedge i2s_bclk)
             begin
                 bit_cnt <= bit_cnt + 1;
 
-                sdin_shift <= {sdin_shift[DSZ - 2:0], i2s_sdin}; // Shift data in
-
                 if(bit_cnt == (DSZ - 1))
                     begin
                         if(i2s_lrclk)
@@ -43,6 +41,8 @@ always @(posedge i2s_bclk)
                         else
                             right_data_out <= {sdin_shift[DSZ - 2:0], i2s_sdin};
                     end
+                else
+                    sdin_shift <= {sdin_shift[DSZ - 2:0], i2s_sdin}; // Shift data in
             end
     end
 
@@ -63,10 +63,10 @@ always @(negedge i2s_bclk)
                         else
                             sdout_shift <= {sdout_shift[DSZ - 1], right_data_in};
 
-                        i2s_lrclk = !i2s_lrclk;
+                        i2s_lrclk <= !i2s_lrclk;
                     end
                 else
-                    sdout_shift <= {sdout_shift[DSZ - 1:0], 1'b0};
+                    sdout_shift <= {sdout_shift[DSZ - 1:0], 1'b0}; // Shift data out
             end
     end
 endmodule

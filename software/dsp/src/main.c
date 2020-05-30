@@ -83,7 +83,6 @@ void _spi0_isr()
 {
     uint32_t ulFlags = SPI0->SPI_SR;
 
-
     if(ulFlags & SPI_SR_RDRF)
     {
         if(!ubSPIInputLock && ubSPIInputIndex < 5)

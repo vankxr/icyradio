@@ -863,8 +863,8 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_2V0 | AD9117_REG_AUX_CTLI_TOP_2V5);
-    ad9117_i_offset_set_value(950);
+    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_1V0);
+    ad9117_i_offset_set_value(0);
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
     ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_1V0);
@@ -887,14 +887,14 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 105400000); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 433000000); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
 
     TXMIXER_ENABLE();
 
-    //TXPA_BIAS_ENABLE();
+    TXPA_BIAS_ENABLE();
 }
 
 int init()
@@ -1126,7 +1126,7 @@ int main()
     init_baseband_chain();
 
     // TX Chain configuration
-    //init_tx_chain();
+    init_tx_chain();
 
     // Audio configuration
     init_audio_chain();
