@@ -28,11 +28,13 @@
 #include "r820t2.h"
 #include "ad9117.h"
 #include "adf4351.h"
+#include "cp2615.h"
 #include "tscs25xx.h"
 #include "biquad.h"
 #include "tft.h"
 #include "images.h"
 #include "fonts.h"
+#include "i2s_bridge_config.h"
 #include "v1.icyradio.h"
 
 // Structs
@@ -66,7 +68,7 @@ static void init_tx_chain();
 
 // Variables
 static uint32_t ulRXHardTunedFrequency = 101000000;
-static uint32_t ulRXSoftTunedFrequency = 105400000;
+static uint32_t ulRXSoftTunedFrequency = 104300000;
 static tft_graph_t *pRXIFPSDGraph = NULL;
 static tft_textbox_t *pRXTunedFreqTextbox = NULL;
 static tft_button_t *pRXTunedFreqButtons[2] = {NULL, NULL};
@@ -596,11 +598,12 @@ void init_audio_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
 
-    fpga_i2s_mux_set_codec_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
     fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
-    fpga_i2s_mux_set_dsp_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_FPGA);
+    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
     fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
     DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
 
@@ -752,7 +755,7 @@ void init_audio_chain()
         }
     }
 
-    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_1); // Enable EQ 1 prescaler and Bands 0 to 2
+    tscs25xx_eq_config(TSCS25XX_EQ1, 1, TSCS25XX_EQ_BAND_PRESC_B0_2); // Enable EQ 1 prescaler and Bands 0 to 2
     DBGPRINTLN_CTX("CODEC EQ1 configured!");
 
     tscs25xx_eq_config(TSCS25XX_EQ2, 0, TSCS25XX_EQ_BAND_PRESC); // Disable EQ 2
@@ -894,7 +897,7 @@ void init_tx_chain()
 
     TXMIXER_ENABLE();
 
-    TXPA_BIAS_ENABLE();
+    //TXPA_BIAS_ENABLE();
 }
 
 int init()
@@ -1069,16 +1072,15 @@ int init()
     else
         DBGPRINTLN_CTX("ADF4351 init NOK!");
 
+    if(cp2615_init())
+        DBGPRINTLN_CTX("CP2615 init OK!");
+    else
+        DBGPRINTLN_CTX("CP2615 init NOK!");
+
     if(tscs25xx_init())
         DBGPRINTLN_CTX("TSCS25xx init OK!");
     else
         DBGPRINTLN_CTX("TSCS25xx init NOK!");
-
-    // TODO: Remove this
-    I2S_BRG_RESET();
-    I2S_BRG_CFG_DIS();
-    delay_ms(50);
-    I2S_BRG_UNRESET();
 
     return 0;
 }
@@ -1109,6 +1111,36 @@ int main()
     fpga_rgb_led_enable(FPGA_LED_GREEN);
     fpga_rgb_led_enable(FPGA_LED_BLUE);
 
+    // I2S Bridge info & configuration
+    char pszBridgeVersion[33];
+
+    cp2615_reset(1);
+    cp2615_read_version(pszBridgeVersion, 33);
+
+    DBGPRINTLN_CTX("CP2615 version: %s", pszBridgeVersion);
+
+    cp2615_rom_read(0x0000, pszBridgeVersion, 4);
+
+    pszBridgeVersion[4] = 0;
+
+    DBGPRINTLN_CTX("CP2615 config signature: %s", pszBridgeVersion);
+
+    if(strncmp(pszBridgeVersion, "2614", 4))
+    {
+        DBGPRINTLN_CTX("CP2615 config not present, loading config...");
+
+        cp2615_rom_erase();
+        cp2615_rom_write(0x0000, i2s_bridge_config, i2s_bridge_config_len);
+
+        cp2615_rom_read(0x0000, pszBridgeVersion, 4);
+
+        pszBridgeVersion[4] = 0;
+
+        DBGPRINTLN_CTX("CP2615 config signature: %s", pszBridgeVersion);
+    }
+
+    cp2615_reset(0);
+
     // CODEC info & configuration
     DBGPRINTLN_CTX("TSCS25xx ID: 0x%04X", tscs25xx_read_device_id());
 
@@ -1126,7 +1158,7 @@ int main()
     init_baseband_chain();
 
     // TX Chain configuration
-    init_tx_chain();
+    //init_tx_chain();
 
     // Audio configuration
     init_audio_chain();

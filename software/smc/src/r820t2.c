@@ -59,13 +59,13 @@ static const r820t2_freq_range_t xFrequencyRanges[] =
         55,     // 55 MHz
         0x08,   // R23[3] = 1 (Low-Z)
         0x02,   // R26[7:6] = 0 (LPF)  R26[1:0] = 2 (low)
-        0x8b,   // R27[7:0]  Band 7, Band 4
+        0x8B,   // R27[7:0]  Band 7, Band 4
     },
     {
         60,     // 60 MHz
         0x08,   // R23[3] = 1 (Low-Z)
         0x02,   // R26[7:6] = 0 (LPF)  R26[1:0] = 2 (low)
-        0x7b,   // R27[7:0]  Band 8, Band 4
+        0x7B,   // R27[7:0]  Band 8, Band 4
     },
     {
         65,     // 65 MHz

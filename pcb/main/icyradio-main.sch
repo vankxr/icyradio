@@ -712,7 +712,7 @@
 </package>
 </packages>
 <symbols>
-<symbol name="ICE40HX8K-CT256-PWRCFG">
+<symbol name="ICE40HX8K-CT256-PWRCTRL">
 <pin name="CDONE" x="5.08" y="-5.08" length="middle" direction="pas" rot="R180"/>
 <pin name="!CRESET" x="5.08" y="-2.54" length="middle" direction="pas" rot="R180"/>
 <pin name="GND@0" x="5.08" y="-43.18" length="middle" direction="pwr" rot="R180"/>
@@ -1034,7 +1034,7 @@
 <devicesets>
 <deviceset name="ICE40HX8K-CT256" prefix="U">
 <gates>
-<gate name=".PWRCTRL" symbol="ICE40HX8K-CT256-PWRCFG" x="0" y="0"/>
+<gate name=".PWRCTRL" symbol="ICE40HX8K-CT256-PWRCTRL" x="0" y="0"/>
 <gate name=".BANK0" symbol="ICE40HX8K-CT256-BANK0" x="-68.58" y="-114.3"/>
 <gate name=".BANK1" symbol="ICE40HX8K-CT256-BANK1" x="-17.78" y="-114.3"/>
 <gate name=".BANK2SPI" symbol="ICE40HX8K-CT256-BANK2SPI" x="33.02" y="-114.3"/>
@@ -4057,6 +4057,11 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <smd name="GND@2" x="-2.54" y="0" dx="1.524" dy="4.064" layer="16"/>
 <smd name="GND@3" x="2.54" y="0" dx="1.524" dy="4.064" layer="16"/>
 <text x="-3.81" y="-1.27" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="-5.015" y="-5.96" size="0.3048" layer="51" rot="R90">PCB Edge</text>
+<wire x1="-4.655" y1="-4.3" x2="-4.355" y2="-3.6" width="0.08" layer="51"/>
+<wire x1="-4.355" y1="-3.6" x2="-4.555" y2="-3.7" width="0.08" layer="51"/>
+<wire x1="-4.355" y1="-3.6" x2="-4.255" y2="-3.8" width="0.08" layer="51"/>
+<wire x1="-5" y1="-3.5" x2="5" y2="-3.5" width="0" layer="51"/>
 </package>
 <package name="PAD-RF">
 <description>&lt;b&gt;SMD PAD&lt;/b&gt;</description>
@@ -6160,7 +6165,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <pin name="VPS3@1" x="-30.48" y="-12.7" length="middle"/>
 <pin name="TEMP" x="5.08" y="-50.8" length="middle" rot="R180"/>
 </symbol>
-<symbol name="ADP150XXX">
+<symbol name="ADP150">
 <pin name="OUT" x="5.08" y="-2.54" length="middle" rot="R180"/>
 <pin name="GND" x="-22.86" y="-12.7" length="middle"/>
 <pin name="VIN" x="-22.86" y="-2.54" length="middle"/>
@@ -6172,7 +6177,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <text x="-17.78" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
 <pin name="EN" x="-22.86" y="-7.62" length="middle"/>
 </symbol>
-<symbol name="ADL55/6XX">
+<symbol name="GAIN_BLOCK">
 <wire x1="-30.48" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-20.32" width="0.254" layer="94"/>
 <wire x1="0" y1="-20.32" x2="-30.48" y2="-20.32" width="0.254" layer="94"/>
@@ -6396,9 +6401,9 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </device>
 </devices>
 </deviceset>
-<deviceset name="ADP150*" prefix="U">
+<deviceset name="ADP150UJZ*" prefix="U">
 <gates>
-<gate name="G$1" symbol="ADP150XXX" x="0" y="0"/>
+<gate name="G$1" symbol="ADP150" x="0" y="0"/>
 </gates>
 <devices>
 <device name="" package="SOT23-5">
@@ -6409,20 +6414,20 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <connect gate="G$1" pin="VIN" pad="1"/>
 </connects>
 <technologies>
-<technology name="UJZ-1.8"/>
-<technology name="UJZ-2.0"/>
-<technology name="UJZ-2.5"/>
-<technology name="UJZ-2.65"/>
-<technology name="UJZ-2.8"/>
-<technology name="UJZ-3.0"/>
-<technology name="UJZ-3.3"/>
+<technology name="-1.8"/>
+<technology name="-2.0"/>
+<technology name="-2.5"/>
+<technology name="-2.65"/>
+<technology name="-2.8"/>
+<technology name="-3.0"/>
+<technology name="-3.3"/>
 </technologies>
 </device>
 </devices>
 </deviceset>
 <deviceset name="ADL5?" prefix="U">
 <gates>
-<gate name="G$1" symbol="ADL55/6XX" x="0" y="0"/>
+<gate name="G$1" symbol="GAIN_BLOCK" x="0" y="0"/>
 </gates>
 <devices>
 <device name="" package="SOT89">
@@ -6435,6 +6440,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <technologies>
 <technology name="545"/>
 <technology name="601"/>
+<technology name="610"/>
 </technologies>
 </device>
 </devices>
@@ -8352,6 +8358,11 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <smd name="TP" x="0" y="0" dx="1.27" dy="1.27" layer="1" roundness="100" cream="no"/>
 <text x="-0.635" y="1.016" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 </package>
+<package name="PAD2.54MM">
+<description>&lt;b&gt;TEST PAD&lt;/b&gt;</description>
+<smd name="TP" x="0" y="0" dx="2.54" dy="2.54" layer="1" roundness="100" cream="no"/>
+<text x="-0.635" y="1.651" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+</package>
 </packages>
 <symbols>
 <symbol name="TESTPOINT">
@@ -8378,6 +8389,14 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 </technologies>
 </device>
 <device name="-0.7MM" package="PAD0.7MM">
+<connects>
+<connect gate="G$1" pin="TP" pad="TP"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-2.54MM" package="PAD2.54MM">
 <connects>
 <connect gate="G$1" pin="TP" pad="TP"/>
 </connects>
@@ -9163,13 +9182,13 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="GND1049" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C1022" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="4.7uF"/>
 <part name="GND1038" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U1004" library="Analog Devices" deviceset="ADP150*" device="" technology="UJZ-1.8"/>
+<part name="U1004" library="Analog Devices" deviceset="ADP150UJZ*" device="" technology="-1.8"/>
 <part name="C1027" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="GND1047" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C1024" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="GND1040" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND1044" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U1005" library="Analog Devices" deviceset="ADP150*" device="" technology="UJZ-3.3" value="ADP150UJZ-3.3"/>
+<part name="U1005" library="Analog Devices" deviceset="ADP150UJZ*" device="" technology="-3.3" value="ADP150UJZ-3.3"/>
 <part name="C1028" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>
 <part name="GND1048" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C1025" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1uF"/>

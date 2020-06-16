@@ -67,13 +67,17 @@
 // FPGA_REG_QDUC_CNTRL
 
 // FPGA_REG_AUDIO_I2S_MUX_SEL
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_INPUT        0x00000000
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_BRIDGE       0x00000002
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_CLK_SEL_FPGA         0x00000003
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_DSP        0x00000000
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_DISABLED   0x00000004
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_BRIDGE     0x00000008
-#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_CLK_SEL_FPGA       0x0000000C
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_DSP       0x00000000
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_DISABLED  0x00000001
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_BRIDGE    0x00000002
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA      0x00000003
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_INPUT       0x00000000
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_BRIDGE      0x00000008
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA        0x0000000C
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_DSP       0x00000000
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_DISABLED  0x00000010
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_BRIDGE    0x00000020
+#define FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA      0x00000030
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_DSP         0x00000000
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC       0x00000100
 #define FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_BRIDGE      0x00000200
@@ -146,10 +150,12 @@ void fpga_qddc_set_lo_noise_shaping(uint8_t ubEnable);
 void fpga_qddc_set_lo_freq(uint32_t ulFrequency);
 uint32_t fpga_qddc_get_lo_freq();
 
-void fpga_i2s_mux_set_dsp_clock(uint32_t ulSource);
-uint32_t fpga_i2s_mux_get_dsp_clock();
-void fpga_i2s_mux_set_codec_clock(uint32_t ulSource);
-uint32_t fpga_i2s_mux_get_codec_clock();
+void fpga_i2s_mux_set_codec_master_clock(uint32_t ulSource);
+uint32_t fpga_i2s_mux_get_codec_master_clock();
+void fpga_i2s_mux_set_dsp_data_clock(uint32_t ulSource);
+uint32_t fpga_i2s_mux_get_dsp_data_clock();
+void fpga_i2s_mux_set_codec_data_clock(uint32_t ulSource);
+uint32_t fpga_i2s_mux_get_codec_data_clock();
 void fpga_i2s_mux_set_dsp_sdin(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_dsp_sdin();
 void fpga_i2s_mux_set_codec_sdin(uint32_t ulSource);

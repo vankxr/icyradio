@@ -510,37 +510,24 @@ always @(posedge audio_i2s_clk)
 
 /// Audio I2S multiplexer ///
 // Inputs
-wire audio_i2s_dsp_clk_oe;
+wire audio_i2s_dsp_dclk_oe;
 reg  audio_i2s_dsp_mclk_out;
 reg  audio_i2s_dsp_bclk_out;
 reg  audio_i2s_dsp_lrclk_out;
-reg  audio_i2s_dsp_mclk_in;
 reg  audio_i2s_dsp_bclk_in;
 reg  audio_i2s_dsp_lrclk_in;
 reg  audio_i2s_dsp_sdout;
 reg  audio_i2s_dsp_sdin;
-reg  audio_i2s_codec_mclk_out;
-reg  audio_i2s_codec_bclk_out;
-reg  audio_i2s_codec_lrclk_out;
+reg  audio_i2s_codec_mclk_in;
+reg  audio_i2s_codec_bclk_in;
+reg  audio_i2s_codec_lrclk_in;
 reg  audio_i2s_codec_sdout;
 reg  audio_i2s_codec_sdin;
-reg  audio_i2s_brg_mclk_in;
-reg  audio_i2s_brg_bclk_in;
-reg  audio_i2s_brg_lrclk_in;
+reg  audio_i2s_brg_mclk_out;
+reg  audio_i2s_brg_bclk_out;
+reg  audio_i2s_brg_lrclk_out;
 reg  audio_i2s_brg_sdout;
 reg  audio_i2s_brg_sdin;
-
-SB_IO #(
-    .PIN_TYPE(6'b1010_01),
-    .PULLUP(1'b0)
-)
-audio_i2s_dsp_mclk
-(
-    .PACKAGE_PIN(I2S_DSP_MCLK),
-    .OUTPUT_ENABLE(audio_i2s_dsp_clk_oe),
-    .D_OUT_0(audio_i2s_dsp_mclk_out),
-    .D_IN_0(audio_i2s_dsp_mclk_in)
-);
 
 SB_IO #(
     .PIN_TYPE(6'b1010_01),
@@ -549,9 +536,9 @@ SB_IO #(
 audio_i2s_dsp_bclk
 (
     .PACKAGE_PIN(I2S_DSP_BCLK),
-    .OUTPUT_ENABLE(audio_i2s_dsp_clk_oe),
-    .D_OUT_0(audio_i2s_dsp_bclk_out),
-    .D_IN_0(audio_i2s_dsp_bclk_in)
+    .OUTPUT_ENABLE(audio_i2s_dsp_dclk_oe),
+    .D_OUT_0(audio_i2s_dsp_bclk_in),
+    .D_IN_0(audio_i2s_dsp_bclk_out)
 );
 
 SB_IO #(
@@ -561,74 +548,94 @@ SB_IO #(
 audio_i2s_dsp_lrclk
 (
     .PACKAGE_PIN(I2S_DSP_LRCLK),
-    .OUTPUT_ENABLE(audio_i2s_dsp_clk_oe),
-    .D_OUT_0(audio_i2s_dsp_lrclk_out),
-    .D_IN_0(audio_i2s_dsp_lrclk_in)
+    .OUTPUT_ENABLE(audio_i2s_dsp_dclk_oe),
+    .D_OUT_0(audio_i2s_dsp_lrclk_in),
+    .D_IN_0(audio_i2s_dsp_lrclk_out)
 );
 
+assign I2S_DSP_MCLK = audio_i2s_dsp_mclk_out;
 assign I2S_DSP_SDOUT = audio_i2s_dsp_sdout;
 assign I2S_DSP_SDIN = audio_i2s_dsp_sdin;
-assign I2S_CODEC_MCLK = audio_i2s_codec_mclk_out;
-assign I2S_CODEC_BCLK = audio_i2s_codec_bclk_out;
-assign I2S_CODEC_LRCLK = audio_i2s_codec_lrclk_out;
+assign I2S_CODEC_MCLK = audio_i2s_codec_mclk_in;
+assign I2S_CODEC_BCLK = audio_i2s_codec_bclk_in;
+assign I2S_CODEC_LRCLK = audio_i2s_codec_lrclk_in;
 assign I2S_CODEC_SDOUT = audio_i2s_codec_sdout;
 assign I2S_CODEC_SDIN = audio_i2s_codec_sdin;
-assign I2S_BRG_MCLK = audio_i2s_brg_mclk_in;
-assign I2S_BRG_BCLK = audio_i2s_brg_bclk_in;
-assign I2S_BRG_LRCLK = audio_i2s_brg_lrclk_in;
+assign I2S_BRG_MCLK = audio_i2s_brg_mclk_out;
+assign I2S_BRG_BCLK = audio_i2s_brg_bclk_out;
+assign I2S_BRG_LRCLK = audio_i2s_brg_lrclk_out;
 assign I2S_BRG_SDOUT = audio_i2s_brg_sdout;
 assign I2S_BRG_SDIN = audio_i2s_brg_sdin;
 
-// Clock mux
-wire [1:0] audio_i2s_dsp_clk_sel; // Controlled by SMC via SPI
-wire [1:0] audio_i2s_codec_clk_sel; // Controlled by SMC via SPI
-
-assign audio_i2s_dsp_clk_oe = audio_i2s_dsp_clk_sel[1];
+// Master clock mux
+wire [1:0] audio_i2s_codec_mclk_sel; // Controlled by SMC via SPI
 
 always @(*)
     begin
-        case(audio_i2s_dsp_clk_sel[0])
+        case(audio_i2s_codec_dclk_sel)
+            2'b00:
+                begin
+                    audio_i2s_codec_mclk_in <= audio_i2s_dsp_mclk_out;
+                end
+            2'b01:
+                begin
+                    audio_i2s_codec_mclk_in <= 1'b0;
+                end
+            2'b10:
+                begin
+                    audio_i2s_codec_mclk_in <= audio_i2s_brg_mclk_out;
+                end
+            2'b11:
+                begin
+                    audio_i2s_codec_mclk_in <= audio_i2s_mclk && !audio_i2s_rst;
+                end
+        endcase
+    end
+
+// Data clock mux
+wire [1:0] audio_i2s_dsp_dclk_sel; // Controlled by SMC via SPI
+wire [1:0] audio_i2s_codec_dclk_sel; // Controlled by SMC via SPI
+
+assign audio_i2s_dsp_dclk_oe = audio_i2s_dsp_dclk_sel[1];
+
+always @(*)
+    begin
+        case(audio_i2s_dsp_dclk_sel[0])
             1'b0:
                 begin
-                    audio_i2s_dsp_mclk_out <= audio_i2s_brg_mclk_in;
-                    audio_i2s_dsp_bclk_out <= audio_i2s_brg_bclk_in;
-                    audio_i2s_dsp_lrclk_out <= audio_i2s_brg_lrclk_in;
+                    audio_i2s_dsp_bclk_in <= audio_i2s_brg_bclk_out;
+                    audio_i2s_dsp_lrclk_in <= audio_i2s_brg_lrclk_out;
                 end
             1'b1:
                 begin
-                    audio_i2s_dsp_mclk_out <= audio_i2s_mclk && !audio_i2s_rst;
-                    audio_i2s_dsp_bclk_out <= audio_i2s_bclk && !audio_i2s_rst;
-                    audio_i2s_dsp_lrclk_out <= audio_i2s_lrclk;
+                    audio_i2s_dsp_bclk_in <= audio_i2s_bclk && !audio_i2s_rst;
+                    audio_i2s_dsp_lrclk_in <= audio_i2s_lrclk;
                 end
         endcase
     end
 
 always @(*)
     begin
-        case(audio_i2s_codec_clk_sel)
+        case(audio_i2s_codec_dclk_sel)
             2'b00:
                 begin
-                    audio_i2s_codec_mclk_out <= audio_i2s_dsp_mclk_in;
-                    audio_i2s_codec_bclk_out <= audio_i2s_dsp_bclk_in;
-                    audio_i2s_codec_lrclk_out <= audio_i2s_dsp_lrclk_in;
+                    audio_i2s_codec_bclk_in <= audio_i2s_dsp_bclk_out;
+                    audio_i2s_codec_lrclk_in <= audio_i2s_dsp_lrclk_out;
                 end
             2'b01:
                 begin
-                    audio_i2s_codec_mclk_out <= 1'b0;
-                    audio_i2s_codec_bclk_out <= 1'b0;
-                    audio_i2s_codec_lrclk_out <= 1'b0;
+                    audio_i2s_codec_bclk_in <= 1'b0;
+                    audio_i2s_codec_lrclk_in <= 1'b0;
                 end
             2'b10:
                 begin
-                    audio_i2s_codec_mclk_out <= audio_i2s_brg_mclk_in;
-                    audio_i2s_codec_bclk_out <= audio_i2s_brg_bclk_in;
-                    audio_i2s_codec_lrclk_out <= audio_i2s_brg_lrclk_in;
+                    audio_i2s_codec_bclk_in <= audio_i2s_brg_bclk_out;
+                    audio_i2s_codec_lrclk_in <= audio_i2s_brg_lrclk_out;
                 end
             2'b11:
                 begin
-                    audio_i2s_codec_mclk_out <= audio_i2s_mclk && !audio_i2s_rst;
-                    audio_i2s_codec_bclk_out <= audio_i2s_bclk && !audio_i2s_rst;
-                    audio_i2s_codec_lrclk_out <= audio_i2s_lrclk;
+                    audio_i2s_codec_bclk_in <= audio_i2s_bclk && !audio_i2s_rst;
+                    audio_i2s_codec_lrclk_in <= audio_i2s_lrclk;
                 end
         endcase
     end
@@ -1018,8 +1025,9 @@ reg  [25:0] cntrl_spi_qddc_lo_freq;
 //// CNTRL_SPI_REG_QDUC_CNTRL
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
-reg  [1:0]  cntrl_spi_audio_i2s_dsp_clk_sel;
-reg  [1:0]  cntrl_spi_audio_i2s_codec_clk_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_codec_mclk_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_dsp_dclk_sel;
+reg  [1:0]  cntrl_spi_audio_i2s_codec_dclk_sel;
 reg  [1:0]  cntrl_spi_audio_i2s_dsp_sdin_sel;
 reg  [1:0]  cntrl_spi_audio_i2s_codec_sdin_sel;
 reg  [1:0]  cntrl_spi_audio_i2s_brg_sdin_sel;
@@ -1136,8 +1144,9 @@ synchronizer cntrl_spi_qddc_lo_freq_sync [25:0]
 //// CNTRL_SPI_REG_QDUC_CNTRL
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
-assign audio_i2s_dsp_clk_sel = cntrl_spi_audio_i2s_dsp_clk_sel; // No sync needed
-assign audio_i2s_codec_clk_sel = cntrl_spi_audio_i2s_codec_clk_sel; // No sync needed
+assign audio_i2s_codec_mclk_sel = cntrl_spi_audio_i2s_codec_mclk_sel; // No sync needed
+assign audio_i2s_dsp_dclk_sel = cntrl_spi_audio_i2s_dsp_dclk_sel; // No sync needed
+assign audio_i2s_codec_dclk_sel = cntrl_spi_audio_i2s_codec_dclk_sel; // No sync needed
 assign audio_i2s_dsp_sdin_sel = cntrl_spi_audio_i2s_dsp_sdin_sel; // No sync needed
 assign audio_i2s_codec_sdin_sel = cntrl_spi_audio_i2s_codec_sdin_sel; // No sync needed
 assign audio_i2s_brg_sdin_sel = cntrl_spi_audio_i2s_brg_sdin_sel; // No sync needed
@@ -1269,8 +1278,9 @@ always @(posedge cntrl_spi_clk)
 
                 cntrl_spi_qddc_lo_freq <= 26'h0000000;
 
-                cntrl_spi_audio_i2s_dsp_clk_sel <= 2'b00;
-                cntrl_spi_audio_i2s_codec_clk_sel <= 2'b01;
+                cntrl_spi_audio_i2s_codec_mclk_sel <= 2'b01;
+                cntrl_spi_audio_i2s_dsp_dclk_sel <= 2'b00;
+                cntrl_spi_audio_i2s_codec_dclk_sel <= 2'b01;
                 cntrl_spi_audio_i2s_dsp_sdin_sel <= 2'b00;
                 cntrl_spi_audio_i2s_codec_sdin_sel <= 2'b01;
                 cntrl_spi_audio_i2s_brg_sdin_sel <= 2'b10;
@@ -1371,8 +1381,9 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    cntrl_spi_audio_i2s_dsp_clk_sel <= cntrl_spi_data_out[1:0];
-                                    cntrl_spi_audio_i2s_codec_clk_sel <= cntrl_spi_data_out[3:2];
+                                    cntrl_spi_audio_i2s_codec_mclk_sel <= cntrl_spi_data_out[1:0];
+                                    cntrl_spi_audio_i2s_dsp_dclk_sel <= cntrl_spi_data_out[3:2];
+                                    cntrl_spi_audio_i2s_codec_dclk_sel <= cntrl_spi_data_out[5:4];
                                     cntrl_spi_audio_i2s_dsp_sdin_sel <= cntrl_spi_data_out[9:8];
                                     cntrl_spi_audio_i2s_codec_sdin_sel <= cntrl_spi_data_out[11:10];
                                     cntrl_spi_audio_i2s_brg_sdin_sel <= cntrl_spi_data_out[13:12];
@@ -1474,7 +1485,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
-                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_audio_i2s_sdin_sel, cntrl_spi_audio_i2s_brg_sdin_sel, cntrl_spi_audio_i2s_codec_sdin_sel, cntrl_spi_audio_i2s_dsp_sdin_sel, 4'b0000, cntrl_spi_audio_i2s_codec_clk_sel, cntrl_spi_audio_i2s_dsp_clk_sel};
+                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_audio_i2s_sdin_sel, cntrl_spi_audio_i2s_brg_sdin_sel, cntrl_spi_audio_i2s_codec_sdin_sel, cntrl_spi_audio_i2s_dsp_sdin_sel, 2'b00, cntrl_spi_audio_i2s_codec_dclk_sel, cntrl_spi_audio_i2s_dsp_dclk_sel, cntrl_spi_audio_i2s_codec_mclk_sel};
                                 end
                             CNTRL_SPI_REG_QSPI_MEM_CNTRL:
                                 begin

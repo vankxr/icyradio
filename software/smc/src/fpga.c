@@ -228,21 +228,29 @@ uint32_t fpga_qddc_get_lo_freq()
     return ullFrequency >> FPGA_QDDC_LO_FSZ;
 }
 
-void fpga_i2s_mux_set_dsp_clock(uint32_t ulSource)
+void fpga_i2s_mux_set_codec_master_clock(uint32_t ulSource)
 {
     fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFFFC, (ulSource & 0x00000003));
 }
-uint32_t fpga_i2s_mux_get_dsp_clock()
+uint32_t fpga_i2s_mux_get_codec_master_clock()
 {
     return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000003;
 }
-void fpga_i2s_mux_set_codec_clock(uint32_t ulSource)
+void fpga_i2s_mux_set_dsp_data_clock(uint32_t ulSource)
 {
     fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFFF3, (ulSource & 0x0000000C));
 }
-uint32_t fpga_i2s_mux_get_codec_clock()
+uint32_t fpga_i2s_mux_get_dsp_data_clock()
 {
     return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x0000000C;
+}
+void fpga_i2s_mux_set_codec_data_clock(uint32_t ulSource)
+{
+    fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFFCF, (ulSource & 0x00000030));
+}
+uint32_t fpga_i2s_mux_get_codec_data_clock()
+{
+    return fpga_read_register(FPGA_REG_AUDIO_I2S_MUX_SEL) & 0x00000030;
 }
 void fpga_i2s_mux_set_dsp_sdin(uint32_t ulSource)
 {

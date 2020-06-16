@@ -67,27 +67,29 @@ uint8_t tscs25xx_init()
     tscs25xx_write_register(TSCS25XX_REG_AIC2, TSCS25XX_REG_AIC2_DAC_STEREO | TSCS25XX_REG_AIC2_ADC_STEREO | TSCS25XX_REG_AIC2_TRI_OUTPUT | (3 << 0));
     tscs25xx_write_register(TSCS25XX_REG_AIC3, TSCS25XX_REG_AIC3_ADOPD_ENABLED | TSCS25XX_REG_AIC3_ALRPD_ENABLED | TSCS25XX_REG_AIC3_ABCPD_ENABLED | TSCS25XX_REG_AIC3_DDIPD_ENABLED | TSCS25XX_REG_AIC3_DLRPD_ENABLED | TSCS25XX_REG_AIC3_DBCPD_ENABLED);
 
+    /*
     tscs25xx_write_register(0x26, 0x00); // Set make up gain
-    tscs25xx_write_register(0x27, 0xe9); // Compressor Threshold
+    tscs25xx_write_register(0x27, 0xE9); // Compressor Threshold
     tscs25xx_write_register(0x28, 0x03); // Compressor Ratio
     tscs25xx_write_register(0x29, 0x67); // Compressor Attack Time (Low)
-    tscs25xx_write_register(0x2a, 0xb1); // Compressor Attack Time (High)
-    tscs25xx_write_register(0x2b, 0x62); // Compressor Release Time (Low)
-    tscs25xx_write_register(0x2c, 0xfa); // Compressor Release Time (High)
-    tscs25xx_write_register(0x2d, 0xf1); // Limiter Threshold
-    tscs25xx_write_register(0x2e, 0xf1); // Limiter Target
-    tscs25xx_write_register(0x2f, 0xb3); // Limiter Attack Time (Low)
-    tscs25xx_write_register(0x30, 0xd8); // Limiter Attack Time (High)
+    tscs25xx_write_register(0x2A, 0xB1); // Compressor Attack Time (High)
+    tscs25xx_write_register(0x2B, 0x62); // Compressor Release Time (Low)
+    tscs25xx_write_register(0x2C, 0xFA); // Compressor Release Time (High)
+    tscs25xx_write_register(0x2D, 0xF1); // Limiter Threshold
+    tscs25xx_write_register(0x2E, 0xF1); // Limiter Target
+    tscs25xx_write_register(0x2F, 0xB3); // Limiter Attack Time (Low)
+    tscs25xx_write_register(0x30, 0xD8); // Limiter Attack Time (High)
     tscs25xx_write_register(0x31, 0x36); // Limiter Release Time (Low)
-    tscs25xx_write_register(0x32, 0xff); // Limiter Release Time (High)
+    tscs25xx_write_register(0x32, 0xFF); // Limiter Release Time (High)
     tscs25xx_write_register(0x33, 0x94); // Expander Threshold
     tscs25xx_write_register(0x34, 0x01); // Expander Ratio
-    tscs25xx_write_register(0x35, 0xb3); // Expander Attack Time (Low)
-    tscs25xx_write_register(0x36, 0xd8); // Expander Attack Time (High)
-    tscs25xx_write_register(0x37, 0x9b); // Expander Release Time (Low)
-    tscs25xx_write_register(0x38, 0xff); // Expander Release Time (High)
+    tscs25xx_write_register(0x35, 0xB3); // Expander Attack Time (Low)
+    tscs25xx_write_register(0x36, 0xD8); // Expander Attack Time (High)
+    tscs25xx_write_register(0x37, 0x9B); // Expander Release Time (Low)
+    tscs25xx_write_register(0x38, 0xFF); // Expander Release Time (High)
+    */
 
-    tscs25xx_write_register(TSCS25XX_REG_CLECTL, TSCS25XX_REG_CLECTL_WINDOW_SEL_512 | TSCS25XX_REG_CLECTL_LVL_MODE_AVERAGE | TSCS25XX_REG_CLECTL_EXPANDER_ENABLED | TSCS25XX_REG_CLECTL_LIMITER_DISABLED | TSCS25XX_REG_CLECTL_COMPRESSOR_ENABLED);
+    tscs25xx_write_register(TSCS25XX_REG_CLECTL, TSCS25XX_REG_CLECTL_WINDOW_SEL_512 | TSCS25XX_REG_CLECTL_LVL_MODE_AVERAGE | TSCS25XX_REG_CLECTL_EXPANDER_DISABLED | TSCS25XX_REG_CLECTL_LIMITER_DISABLED | TSCS25XX_REG_CLECTL_COMPRESSOR_DISABLED);
 
     return 1;
 }

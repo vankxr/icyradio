@@ -1081,6 +1081,11 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <smd name="GND@2" x="-2.54" y="0" dx="1.524" dy="4.064" layer="16"/>
 <smd name="GND@3" x="2.54" y="0" dx="1.524" dy="4.064" layer="16"/>
 <text x="-3.81" y="-1.27" size="1.27" layer="25" rot="R90">&gt;NAME</text>
+<text x="-5.015" y="-5.96" size="0.3048" layer="51" rot="R90">PCB Edge</text>
+<wire x1="-4.655" y1="-4.3" x2="-4.355" y2="-3.6" width="0.08" layer="51"/>
+<wire x1="-4.355" y1="-3.6" x2="-4.555" y2="-3.7" width="0.08" layer="51"/>
+<wire x1="-4.355" y1="-3.6" x2="-4.255" y2="-3.8" width="0.08" layer="51"/>
+<wire x1="-5" y1="-3.5" x2="5" y2="-3.5" width="0" layer="51"/>
 </package>
 <package name="PAD-RF">
 <description>&lt;b&gt;SMD PAD&lt;/b&gt;</description>
@@ -1205,7 +1210,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 </package>
 </packages>
 <symbols>
-<symbol name="ADL55/6XX">
+<symbol name="GAIN_BLOCK">
 <wire x1="-30.48" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-20.32" width="0.254" layer="94"/>
 <wire x1="0" y1="-20.32" x2="-30.48" y2="-20.32" width="0.254" layer="94"/>
@@ -1227,7 +1232,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <devicesets>
 <deviceset name="ADL5?" prefix="U">
 <gates>
-<gate name="G$1" symbol="ADL55/6XX" x="0" y="0"/>
+<gate name="G$1" symbol="GAIN_BLOCK" x="0" y="0"/>
 </gates>
 <devices>
 <device name="" package="SOT89">
@@ -1240,6 +1245,7 @@ This is a footprint for an edge mount RF antenna. Works pretty well with SMA typ
 <technologies>
 <technology name="545"/>
 <technology name="601"/>
+<technology name="610"/>
 </technologies>
 </device>
 </devices>
