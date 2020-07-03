@@ -109,16 +109,16 @@ void _i2sc1_isr()
     if(I2SC1->I2SC_SR & I2SC_SR_TXRDY)
     {
         static uint32_t ulCount = 0;
-        static uint32_t pulBuffer[2];
+        static uint32_t pulBuffer[200];
         static uint8_t ubBufferInit = 0;
 
         if(!ubBufferInit)
         {
-            for(uint32_t i = 0; i < 2; i++)
+            for(uint32_t i = 0; i < 200; i++)
             {
                 iq16_t xSample = {
-                    .i = arm_cos_q15(INT16_MAX * (float)i / 2),
-                    .q = arm_sin_q15(INT16_MAX * (float)i / 2)
+                    .i = arm_cos_q15(INT16_MAX * (float)i / 200),
+                    .q = arm_sin_q15(INT16_MAX * (float)i / 200)
                 };
 
                 pulBuffer[i] = (((uint32_t)xSample.q & 0xFFFF) << 16) | (((uint32_t)xSample.i & 0xFFFF) << 0);
@@ -131,7 +131,7 @@ void _i2sc1_isr()
 
         I2SC1->I2SC_THR = pulBuffer[ulCount++];
 
-        if(ulCount >= 2)
+        if(ulCount >= 200)
             ulCount = 0;
     }
 }
