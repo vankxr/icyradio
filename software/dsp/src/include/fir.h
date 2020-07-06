@@ -42,6 +42,19 @@ struct fir_decimator_complex_ctx_t
     uint32_t ulBlockSize;
     uint8_t ubStateAllocated : 1;
 };
+struct fir_interpolator_ctx_t
+{
+    arm_fir_interpolate_instance_q15 *pInstance;
+    uint32_t ulBlockSize;
+    uint8_t ubStateAllocated : 1;
+};
+struct fir_interpolator_complex_ctx_t
+{
+    arm_fir_interpolate_instance_q15 *pIInstance;
+    arm_fir_interpolate_instance_q15 *pQInstance;
+    uint32_t ulBlockSize;
+    uint8_t ubStateAllocated : 1;
+};
 
 fir_ctx_t* fir_init(uint16_t usNumTaps, const int16_t *psCoefs, int16_t *psState, uint32_t ulBlockSize);
 void fir_delete(fir_ctx_t *pContext);
