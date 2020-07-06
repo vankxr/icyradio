@@ -35,8 +35,6 @@
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
 // Forward declarations
-int16_t fm_demod(iq16_t xSample);
-
 static void reset() __attribute__((noreturn));
 static void sleep();
 
