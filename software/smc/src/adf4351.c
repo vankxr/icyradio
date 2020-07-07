@@ -77,7 +77,7 @@ uint8_t adf4351_init()
     return 1;
 }
 
-uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRevDouble, uint16_t usRDivider, uint8_t ubFastBandSelect)
+uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRefDouble, uint16_t usRDivider, uint8_t ubFastBandSelect)
 {
     if(!ulFrequency)
         return 0;
@@ -85,7 +85,7 @@ uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRe
     if(usRDivider < 1)
         return 0;
 
-    uint32_t ulPFDFrequency = ulFrequency * (1 + !!ubRevDouble) / (usRDivider * (1 + !!ubRefDiv2));
+    uint32_t ulPFDFrequency = ulFrequency * (1 + !!ubRefDouble) / (usRDivider * (1 + !!ubRefDiv2));
 
     if(ulPFDFrequency > 32000000UL)
         return 0;
@@ -100,7 +100,7 @@ uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRe
 
     adf4351_rmw_register(4, ~(0xFF << 12), (uint32_t)usBandSelectDivider << 12);
     adf4351_rmw_register(3, ~ADF4351_R3_BAND_SEL_CLK_HIGH, ubFastBandSelect ? ADF4351_R3_BAND_SEL_CLK_HIGH : ADF4351_R3_BAND_SEL_CLK_LOW);
-    adf4351_rmw_register(2, ~(ADF4351_R2_REF_DOUBLE_ENABLED | ADF4351_R2_REF_DIV2_ENABLED | (0x3FF << 14)), (ubRevDouble ? ADF4351_R2_REF_DOUBLE_ENABLED : ADF4351_R2_REF_DOUBLE_DISABLED) | (ubRefDiv2 ? ADF4351_R2_REF_DIV2_ENABLED : ADF4351_R2_REF_DIV2_DISABLED) | ((uint32_t)usRDivider << 14));
+    adf4351_rmw_register(2, ~(ADF4351_R2_REF_DOUBLE_ENABLED | ADF4351_R2_REF_DIV2_ENABLED | (0x3FF << 14)), (ubRefDouble ? ADF4351_R2_REF_DOUBLE_ENABLED : ADF4351_R2_REF_DOUBLE_DISABLED) | (ubRefDiv2 ? ADF4351_R2_REF_DIV2_ENABLED : ADF4351_R2_REF_DIV2_DISABLED) | ((uint32_t)usRDivider << 14));
     adf4351_write_register(0, ulRegisterCache[0]); // Force double buffer to update by writting to R0
 
     ADF4351_REF_FREQ = ulFrequency;
@@ -166,9 +166,6 @@ uint8_t adf4351_set_frequency(uint64_t ullFrequency)
         return 0;
 
     adf4351_get_mixed_number(ullVCOFrequency, ADF4351_PFD_FREQ, pMultiplier);
-
-    #include "debug_macros.h"
-    DBGPRINTLN_CTX("int %lu, num %lu, den %lu", pMultiplier->ulInt, pMultiplier->ulNum, pMultiplier->ulDen);
 
     if(!pMultiplier->ulDen) // Division by zero, should never happen, unless the previous function failed
     {
