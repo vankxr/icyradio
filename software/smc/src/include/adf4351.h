@@ -92,7 +92,7 @@ extern uint64_t ADF4351_FREQ;
 
 uint8_t adf4351_init();
 
-uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRevDouble, uint16_t usRDivider, uint8_t ubFastBandSelect);
+uint8_t adf4351_pfd_config(uint32_t ulFrequency, uint8_t ubRefDiv2, uint8_t ubRefDouble, uint16_t usRDivider, uint8_t ubFastBandSelect);
 
 uint8_t adf4351_charge_pump_set_current(float fCurrent);
 float adf4351_charge_pump_get_current();
