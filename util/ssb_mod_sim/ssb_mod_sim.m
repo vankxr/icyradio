@@ -21,9 +21,9 @@ for cf = f1:50:f2
 end
 
 %% Design and analyze Hilbert FIR
-Hd = designfilt('hilbertfir', 'FilterOrder', 60, 'TransitionWidth', 0.1, 'DesignMethod', 'equiripple');
-%hfv = fvtool(Hd, 'Analysis', 'Magnitude', 'MagnitudeDisplay', 'Zero-phase', 'FrequencyRange', '[-pi, pi)');
-%hfv.Color = 'white';
+Hd = designfilt('hilbertfir', 'FilterOrder', 80, 'TransitionWidth', 0.08, 'DesignMethod', 'equiripple');
+hfv = fvtool(Hd, 'Analysis', 'Magnitude', 'MagnitudeDisplay', 'Zero-phase', 'FrequencyRange', '[-pi, pi)');
+hfv.Color = 'white';
 
 %% Filter to generate quadrature, delay
 my = filter(Hd, mx);
@@ -56,12 +56,11 @@ subplot(3, 1, 3);
 plot(fS, 10 * log10(abs(S)));
 
 %% Dump coefficients
-outfile = fopen('hb_fir.h', 'w');
-fprintf(outfile, 'uint32_t hb_fir_len = %u;\n', length(Hd.Coefficients));
-fprintf(outfile, 'int16_t hb_fir_coeffs[] = {');
-for i = 1 : 8 : length(Hd.Coefficients)
-    fprintf(outfile, '\n   ');
-    fprintf(outfile, ' 0x%04X', typecast(int16(Hd.Coefficients(i) * 32767), 'uint16'));
-    fprintf(outfile, ', 0x%04X', typecast(int16(Hd.Coefficients(i + 1:min(i + 7, end)) * 32767), 'uint16'));
+outfile = fopen('hilbert_filter.h', 'w');
+fprintf(outfile, 'static const uint32_t hilbert_fir_taps_size = %u;\n', length(Hd.Coefficients));
+fprintf(outfile, 'static const int16_t hilbert_fir_taps[] = {');
+for i = 1 : length(Hd.Coefficients) - 1
+    fprintf(outfile, '\n    %hi,', int16(Hd.Coefficients(length(Hd.Coefficients) - i + 1) * 32767));
 end
+fprintf(outfile, '\n    %hi', int16(Hd.Coefficients(1) * 32767));
 fprintf(outfile, '\n};');

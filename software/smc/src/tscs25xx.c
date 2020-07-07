@@ -49,7 +49,7 @@ uint8_t tscs25xx_init()
     tscs25xx_write_register(TSCS25XX_REG_PLLCTL1C, TSCS25XX_REG_PLLCTL1C_PLL1_POWER_DOWN | TSCS25XX_REG_PLLCTL1C_PLL2_POWER_DOWN);
     tscs25xx_write_register(TSCS25XX_REG_PLLCTLD, 0x1A); // PLL1 Zero R & charge pump current
     tscs25xx_write_register(TSCS25XX_REG_PLLCTL12, 0x22); // PLL2 Zero R & charge pump current
-    tscs25xx_write_register(TSCS25XX_REG_PLLCTL1B, 0x14); // PLL1 & PLL2 VCO current
+    tscs25xx_write_register(TSCS25XX_REG_PLLCTL1B, 0x28); // PLL1 & PLL2 VCO current
     tscs25xx_write_register(TSCS25XX_REG_PLLREFSEL, TSCS25XX_REG_PLLREFSEL_PLL2_REF_MCLK2 | TSCS25XX_REG_PLLREFSEL_PLL1_REF_MCLK2);
 
     tscs25xx_write_register(TSCS25XX_REG_ATEST16, 0x06);

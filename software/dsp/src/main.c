@@ -19,12 +19,9 @@
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
-#include "pilot_filter.h"
-#include "stereo_pilot_filter.h"
-#include "rds_pilot_filter.h"
-#include "stereo_filter.h"
-#include "rds_filter.h"
 #include "audio_filter.h"
+#include "baseband_filter.h"
+#include "hilbert_filter.h"
 
 // Structs
 
@@ -34,9 +31,9 @@
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
-// Forward declarations
-int16_t fm_demod(iq16_t xSample);
+#define BASEBAND_DELAY_SAMPLES          42 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
+// Forward declarations
 static void reset() __attribute__((noreturn));
 static void sleep();
 
@@ -45,10 +42,7 @@ static uint32_t get_free_ram();
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint8_t get_device_revision();
 
-static void load_audio_buffer(int16_t *psLeft, int16_t *psRight);
-
-static void mpx_extract_pilots(int16_t *psMPX, int16_t *psPilot, int16_t *psStereoPilot, int16_t *psRDSPilot);
-static void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psLeft, int16_t *psRight);
+static void load_baseband_buffer(iq16_t *pSamples);
 
 static void init_baseband_i2s();
 static void init_audio_i2s();
@@ -58,10 +52,10 @@ static void init_dsp_components();
 // Variables
 xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pBasebandDMADescriptor[2];
 xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pAudioDMADescriptor[2];
-volatile uint32_t *pulBasebandBuffer = NULL;
-uint32_t *pulAudioBuffer = NULL;
-volatile uint8_t ubBasebandReady = 0;
-volatile uint8_t ubBasebandOverflow = 0;
+uint32_t *pulBasebandBuffer = NULL;
+volatile uint32_t *pulAudioBuffer = NULL;
+volatile uint8_t ubAudioReady = 0;
+volatile uint8_t ubAudioOverflow = 0;
 volatile uint8_t pubSPIInput[5];
 volatile uint8_t ubSPIInputIndex = 0;
 volatile uint8_t ubSPIInputLock = 0;
@@ -70,13 +64,9 @@ volatile uint8_t ubSPIOutputIndex = 0;
 volatile uint8_t ubSPIOutputLock = 0;
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
-dsp_fm_demod_ctx_t *pFMDemod = NULL;
-fir_ctx_t *pPilotFilter = NULL;
-fir_ctx_t *pStereoPilotFilter = NULL;
-fir_ctx_t *pRDSPilotFilter = NULL;
-fir_ctx_t *pStereoFilter = NULL;
-fir_ctx_t *pRDSFilter = NULL;
-fir_decimator_ctx_t *pAudioFilter[2] = {NULL, NULL};
+fir_ctx_t *pAudioFilter = NULL;
+fir_ctx_t *pHilbertFilter = NULL;
+fir_interpolator_ctx_t *pBasebandFilter = NULL;
 
 // ISRs
 void _spi0_isr()
@@ -104,42 +94,11 @@ void _spi0_isr()
         }
     }
 }
-void _i2sc1_isr()
-{
-    if(I2SC1->I2SC_SR & I2SC_SR_TXRDY)
-    {
-        static uint32_t ulCount = 0;
-        static uint32_t pulBuffer[200];
-        static uint8_t ubBufferInit = 0;
-
-        if(!ubBufferInit)
-        {
-            for(uint32_t i = 0; i < 200; i++)
-            {
-                iq16_t xSample = {
-                    .i = arm_cos_q15(INT16_MAX * (float)i / 200),
-                    .q = arm_sin_q15(INT16_MAX * (float)i / 200)
-                };
-
-                pulBuffer[i] = (((uint32_t)xSample.q & 0xFFFF) << 16) | (((uint32_t)xSample.i & 0xFFFF) << 0);
-
-                DBGPRINTLN_CTX("TX Sample #%hhu %08X", i, pulBuffer[i]);
-            }
-
-            ubBufferInit = 1;
-        }
-
-        I2SC1->I2SC_THR = pulBuffer[ulCount++];
-
-        if(ulCount >= 200)
-            ulCount = 0;
-    }
-}
 void fpga_isr()
 {
     DBGPRINTLN_CTX("FPGA ISR");
 }
-void baseband_i2s_dma_isr(uint32_t ulFlags)
+void audio_i2s_dma_isr(uint32_t ulFlags)
 {
     if(ulFlags & XDMAC_CIS_BIS)
     {
@@ -149,29 +108,29 @@ void baseband_i2s_dma_isr(uint32_t ulFlags)
 
         ullLastTick = g_ullSystemTick;
 
-        if(ubBasebandReady) // Overflow - processing not complete
+        if(ubAudioReady) // Overflow - processing not complete
         {
-            ubBasebandOverflow = 1;
+            ubAudioOverflow = 1;
 
             return;
         }
 
-        volatile uint32_t *pulNextDestAddress = (volatile uint32_t *)xdmac_ch_get_next_dst_addr(BASEBAND_I2S_DMA_CHANNEL);
+        volatile uint32_t *pulNextDestAddress = (volatile uint32_t *)xdmac_ch_get_next_dst_addr(AUDIO_I2S_DMA_CHANNEL);
 
-        if(pulNextDestAddress < pulBasebandBuffer || pulNextDestAddress > pulBasebandBuffer + 2 * BASEBAND_SAMPLE_BUFFER_SIZE) // Address out of bounds
+        if(pulNextDestAddress < pulAudioBuffer || pulNextDestAddress > pulAudioBuffer + 2 * AUDIO_SAMPLE_BUFFER_SIZE) // Address out of bounds
             return;
 
-        if(pulNextDestAddress >= pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE)
+        if(pulNextDestAddress >= pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE)
         {
-            dcache_addr_invalidate((uint32_t *)pulBasebandBuffer, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+            dcache_addr_invalidate((uint32_t *)pulAudioBuffer, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-            ubBasebandReady = 1;
+            ubAudioReady = 1;
         }
         else
         {
-            dcache_addr_invalidate((uint32_t *)pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+            dcache_addr_invalidate((uint32_t *)pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-            ubBasebandReady = 2;
+            ubAudioReady = 2;
         }
     }
 }
@@ -258,119 +217,41 @@ uint8_t get_device_revision()
     return (CHIPID->CHIPID_CIDR & CHIPID_CIDR_VERSION_Msk) >> CHIPID_CIDR_VERSION_Pos;
 }
 
-void load_audio_buffer(int16_t *psLeft, int16_t *psRight)
+void load_baseband_buffer(iq16_t *pSamples)
 {
-    if(!psLeft)
+    if(!pSamples)
         return;
 
-    if(!psRight)
+    uint32_t *pulNextSrcAddress = (uint32_t *)xdmac_ch_get_next_src_addr(BASEBAND_I2S_DMA_CHANNEL);
+
+    if(pulNextSrcAddress < pulBasebandBuffer || pulNextSrcAddress > pulBasebandBuffer + 2 * BASEBAND_SAMPLE_BUFFER_SIZE) // Address out of bounds
         return;
 
-    uint32_t *pulNextAudioSrcAddress = (uint32_t *)xdmac_ch_get_next_src_addr(AUDIO_I2S_DMA_CHANNEL);
+    uint32_t *pulDestAddress = NULL;
 
-    if(pulNextAudioSrcAddress < pulAudioBuffer || pulNextAudioSrcAddress > pulAudioBuffer + 2 * AUDIO_SAMPLE_BUFFER_SIZE) // Address out of bounds
-        return;
-
-    uint32_t *pulAudioDestAddress = NULL;
-
-    if(pulNextAudioSrcAddress >= pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE)
-        pulAudioDestAddress = pulAudioBuffer;
+    if(pulNextSrcAddress >= pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE)
+        pulDestAddress = pulBasebandBuffer;
     else
-        pulAudioDestAddress = pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE;
+        pulDestAddress = pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE;
 
-    for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-        pulAudioDestAddress[i] = (((uint32_t)psRight[i] & 0xFFFF) << 16) | (((uint32_t)psLeft[i] & 0xFFFF) << 0);
+    for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
+        pulDestAddress[i] = (((uint32_t)pSamples[i].q & 0xFFFF) << 16) | (((uint32_t)pSamples[i].i & 0xFFFF) << 0);
 
-    dcache_addr_clean(pulAudioDestAddress, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
-}
-
-void mpx_extract_pilots(int16_t *psMPX, int16_t *psPilot, int16_t *psStereoPilot, int16_t *psRDSPilot)
-{
-    if(!psMPX)
-        return;
-
-    if(!psPilot)
-        return;
-
-    fir_filter(pPilotFilter, psMPX, psPilot);
-
-    arm_scale_q15(psPilot, 0.625f * INT16_MAX, 4, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (0.625 * 2⁴ = 10)
-
-    // Stereo Pilot
-    if(psStereoPilot)
-    {
-        // 19 ^ 2 = 38, HPF to remove uwanted spectrum
-        memcpy(psStereoPilot, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
-
-        for(uint8_t i = 0; i < 1; i++) // if taking x^n, then loop until i < n - 1
-            arm_mult_q15(psStereoPilot, psPilot, psStereoPilot, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-        fir_filter(pStereoPilotFilter, psStereoPilot, NULL);
-
-        arm_scale_q15(psStereoPilot, 1 * INT16_MAX, 2, psStereoPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (1 * 2² = 4)
-    }
-
-    // RDS Pilot
-    if(psRDSPilot)
-    {
-        // 19 ^ 3 = 57, HPF to remove unwanted spectrum
-        memcpy(psRDSPilot, psPilot, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
-
-        for(uint8_t i = 0; i < 2; i++) // if taking x^n, then loop until i < n - 1
-            arm_mult_q15(psRDSPilot, psPilot, psRDSPilot, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-        fir_filter(pRDSPilotFilter, psRDSPilot, NULL);
-
-        arm_scale_q15(psRDSPilot, 1 * INT16_MAX, 2, psRDSPilot, BASEBAND_SAMPLE_BUFFER_SIZE); // Apply some gain (1 * 2² = 4)
-    }
-}
-void mpx_stereo_audio_demod(int16_t *psMPX, int16_t *psStereoPilot, int16_t *psLeft, int16_t *psRight)
-{
-    if(!psMPX)
-        return;
-
-    if(!psStereoPilot)
-        return;
-
-    if(!psLeft)
-        return;
-
-    if(!psRight)
-        return;
-
-    // Mono audio (Left + Right)
-    int16_t psMonoAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
-    fir_decimator_filter(pAudioFilter[0], psMPX, psMonoAudio);
-
-    arm_scale_q15(psMonoAudio, 0.5f * INT16_MAX, 0, psMonoAudio, AUDIO_SAMPLE_BUFFER_SIZE); // Attenuate to increase stereo ratio (TODO: AGC) (0.5 * 2⁰ = 0.5)
-
-    // Stereo audio (Left - Right)
-    int16_t psStereoAudio[BASEBAND_SAMPLE_BUFFER_SIZE];
-
-    fir_filter(pStereoFilter, psMPX, psStereoAudio); // Bandpass the L-R (38k) subcarrier
-
-    arm_mult_q15(psStereoAudio, psStereoPilot, psStereoAudio, BASEBAND_SAMPLE_BUFFER_SIZE); // Bring it to baseband
-
-    fir_decimator_filter(pAudioFilter[1], psStereoAudio, NULL);
-
-    // Mix audio channels
-    arm_add_q15(psMonoAudio, psStereoAudio, psLeft, AUDIO_SAMPLE_BUFFER_SIZE);  // (L + R) + (L - R) = L + R + L - R = 2L
-    arm_sub_q15(psMonoAudio, psStereoAudio, psRight, AUDIO_SAMPLE_BUFFER_SIZE); // (L + R) - (L - R) = L + R - L + R = 2R
+    dcache_addr_clean(pulDestAddress, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 }
 
 void init_baseband_i2s()
 {
-    free((void *)pulBasebandBuffer);
+    free(pulBasebandBuffer);
 
-    pulBasebandBuffer = (volatile uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulBasebandBuffer = (uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulBasebandBuffer)
         return;
 
-    memset((void *)pulBasebandBuffer, 0, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t)); // Zero baseband sample buffer
+    memset(pulBasebandBuffer, 0, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t)); // Zero baseband sample buffer
 
-    dcache_addr_clean(pulAudioBuffer, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    dcache_addr_clean(pulBasebandBuffer, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (I2SC1_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
 
@@ -379,13 +260,11 @@ void init_baseband_i2s()
 
     xdmac_ch_disable(BASEBAND_I2S_DMA_CHANNEL);
 
-    xdmac_ch_set_isr(BASEBAND_I2S_DMA_CHANNEL, baseband_i2s_dma_isr);
-
     pBasebandDMADescriptor[0].NDA = &pBasebandDMADescriptor[1];
     pBasebandDMADescriptor[0].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | BASEBAND_SAMPLE_BUFFER_SIZE;
-    pBasebandDMADescriptor[0].SA = (void *)&(I2SC1->I2SC_RHR);
-    pBasebandDMADescriptor[0].DA = pulBasebandBuffer;
-    pBasebandDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC1_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pBasebandDMADescriptor[0].SA = pulBasebandBuffer;
+    pBasebandDMADescriptor[0].DA = (void *)&(I2SC1->I2SC_THR);
+    pBasebandDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pBasebandDMADescriptor[0].BC = 0;
     pBasebandDMADescriptor[0].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pBasebandDMADescriptor[0].SUS = 0x000000;
@@ -393,9 +272,9 @@ void init_baseband_i2s()
 
     pBasebandDMADescriptor[1].NDA = &pBasebandDMADescriptor[0];
     pBasebandDMADescriptor[1].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | BASEBAND_SAMPLE_BUFFER_SIZE;
-    pBasebandDMADescriptor[1].SA = (void *)&(I2SC1->I2SC_RHR);
-    pBasebandDMADescriptor[1].DA = pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE;
-    pBasebandDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC1_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pBasebandDMADescriptor[1].SA = pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE;
+    pBasebandDMADescriptor[1].DA = (void *)&(I2SC1->I2SC_THR);
+    pBasebandDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pBasebandDMADescriptor[1].BC = 0;
     pBasebandDMADescriptor[1].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pBasebandDMADescriptor[1].SUS = 0x000000;
@@ -406,26 +285,20 @@ void init_baseband_i2s()
     xdmac_ch_load(BASEBAND_I2S_DMA_CHANNEL, pBasebandDMADescriptor, 3, 0);
     xdmac_ch_enable(BASEBAND_I2S_DMA_CHANNEL);
 
-    I2SC1->I2SC_SCR = I2SC_SCR_MASK; // Clear all interrupts
-    IRQ_CLEAR(I2SC1_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(I2SC1_IRQn, 3, 0); // Set priority 3,0
-    IRQ_ENABLE(I2SC1_IRQn); // Enable vector
-    I2SC1->I2SC_IER = I2SC_IER_RXRDY | I2SC_IER_TXRDY; // Enable TX & RX interrupt requests
-
     I2SC1->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
 }
 void init_audio_i2s()
 {
-    free(pulAudioBuffer);
+    free((void *)pulAudioBuffer);
 
-    pulAudioBuffer = (uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulAudioBuffer = (volatile uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulAudioBuffer)
         return;
 
-    memset(pulAudioBuffer, 0, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t)); // Zero audio sample buffer
+    memset((void *)pulAudioBuffer, 0xAB, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t)); // Zero audio sample buffer
 
-    dcache_addr_clean(pulAudioBuffer, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    dcache_addr_clean((void *)pulAudioBuffer, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (I2SC0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
 
@@ -434,11 +307,13 @@ void init_audio_i2s()
 
     xdmac_ch_disable(AUDIO_I2S_DMA_CHANNEL);
 
+    xdmac_ch_set_isr(AUDIO_I2S_DMA_CHANNEL, audio_i2s_dma_isr);
+
     pAudioDMADescriptor[0].NDA = &pAudioDMADescriptor[1];
     pAudioDMADescriptor[0].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | AUDIO_SAMPLE_BUFFER_SIZE;
-    pAudioDMADescriptor[0].SA = pulAudioBuffer;
-    pAudioDMADescriptor[0].DA = (void *)&(I2SC0->I2SC_THR);
-    pAudioDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC0_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pAudioDMADescriptor[0].SA = (void *)&(I2SC0->I2SC_RHR);
+    pAudioDMADescriptor[0].DA = pulAudioBuffer;
+    pAudioDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pAudioDMADescriptor[0].BC = 0;
     pAudioDMADescriptor[0].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pAudioDMADescriptor[0].SUS = 0x000000;
@@ -446,9 +321,9 @@ void init_audio_i2s()
 
     pAudioDMADescriptor[1].NDA = &pAudioDMADescriptor[0];
     pAudioDMADescriptor[1].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | AUDIO_SAMPLE_BUFFER_SIZE;
-    pAudioDMADescriptor[1].SA = pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE;
-    pAudioDMADescriptor[1].DA = (void *)&(I2SC0->I2SC_THR);
-    pAudioDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC0_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pAudioDMADescriptor[1].SA = (void *)&(I2SC0->I2SC_RHR);
+    pAudioDMADescriptor[1].DA = pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE;
+    pAudioDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pAudioDMADescriptor[1].BC = 0;
     pAudioDMADescriptor[1].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pAudioDMADescriptor[1].SUS = 0x000000;
@@ -459,7 +334,7 @@ void init_audio_i2s()
     xdmac_ch_load(AUDIO_I2S_DMA_CHANNEL, pAudioDMADescriptor, 3, 0);
     xdmac_ch_enable(AUDIO_I2S_DMA_CHANNEL);
 
-    I2SC0->I2SC_CR = I2SC_CR_TXEN; // Enable TX
+    I2SC0->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
 }
 void init_control_spi()
 {
@@ -478,68 +353,29 @@ void init_control_spi()
 }
 void init_dsp_components()
 {
-    // FM Demodulator
-    pFMDemod = dsp_fm_demod_init();
+    // Audio filter
+    pAudioFilter = fir_init(audio_filter_taps_size, audio_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
-    if(pFMDemod)
-        DBGPRINTLN_CTX("FM Demodulator intialized!");
+    if(pAudioFilter)
+        DBGPRINTLN_CTX("Audio FIR intialized!");
     else
-        DBGPRINTLN_CTX("Failed FM Demodulator intialization!");
+        DBGPRINTLN_CTX("Failed audio FIR intialization!");
 
-    // 19 kHz pilot band-pass filter
-    pPilotFilter = fir_init(pilot_filter_taps_size, pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+    // Baseband interpolating filter
+    pBasebandFilter = fir_interpolator_init(baseband_filter_taps_size, 4, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
-    if(pPilotFilter)
-        DBGPRINTLN_CTX("19 kHz pilot FIR intialized!");
+    if(pBasebandFilter)
+        DBGPRINTLN_CTX("Baseband interpolating FIR intialized!");
     else
-        DBGPRINTLN_CTX("Failed 19 kHz pilot FIR intialization!");
+        DBGPRINTLN_CTX("Failed baseband interpolating FIR intialization!");
 
-    // 38 kHz stereo pilot high-pass filter
-    pStereoPilotFilter = fir_init(stereo_pilot_filter_taps_size, stereo_pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+    // Hilbert filter
+    pHilbertFilter = fir_init(hilbert_fir_taps_size, hilbert_fir_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
 
-    if(pStereoPilotFilter)
-        DBGPRINTLN_CTX("Stereo pilot FIR intialized!");
+    if(pHilbertFilter)
+        DBGPRINTLN_CTX("Hilbert FIR intialized!");
     else
-        DBGPRINTLN_CTX("Failed Stereo pilot FIR intialization!");
-
-    // 57 kHz RDS pilot high-pass filter
-    pRDSPilotFilter = fir_init(rds_pilot_filter_taps_size, rds_pilot_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(pRDSPilotFilter)
-        DBGPRINTLN_CTX("RDS pilot FIR intialized!");
-    else
-        DBGPRINTLN_CTX("Failed RDS pilot FIR intialization!");
-
-    // Stereo band-pass filter
-    pStereoFilter = fir_init(stereo_filter_taps_size, stereo_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(pStereoFilter)
-        DBGPRINTLN_CTX("Stereo FIR intialized!");
-    else
-        DBGPRINTLN_CTX("Failed Stereo FIR intialization!");
-
-    // RDS band-pass filter
-    pRDSFilter = fir_init(rds_filter_taps_size, rds_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(pRDSFilter)
-        DBGPRINTLN_CTX("RDS FIR intialized!");
-    else
-        DBGPRINTLN_CTX("Failed RDS FIR intialization!");
-
-    // Final audio filters
-    pAudioFilter[0] = fir_decimator_init(audio_filter_taps_size, 4, audio_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(pAudioFilter[0])
-        DBGPRINTLN_CTX("Mono audio FIR intialized!");
-    else
-        DBGPRINTLN_CTX("Failed Mono audio FIR intialization!");
-
-    pAudioFilter[1] = fir_decimator_init(audio_filter_taps_size, 4, audio_filter_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
-
-    if(pAudioFilter[1])
-        DBGPRINTLN_CTX("Stereo audio FIR intialized!");
-    else
-        DBGPRINTLN_CTX("Failed Stereo audio FIR intialization!");
+        DBGPRINTLN_CTX("Failed hilbert FIR intialization!");
 }
 int init()
 {
@@ -630,7 +466,7 @@ int main()
             DBGPRINTLN_CTX("Processing time budget: %llu ms", ullProcessingTimeBudget);
             DBGPRINTLN_CTX("Processing time used: %llu ms", ullProcessingTimeUsed);
             DBGPRINTLN_CTX("Budget used: %.2f %%", (float)ullProcessingTimeUsed * 100.f / ullProcessingTimeBudget);
-            DBGPRINTLN_CTX("Baseband buffer overflow: %s", ubBasebandOverflow ? "yes" : "no");
+            DBGPRINTLN_CTX("Audio buffer overflow: %s", ubAudioOverflow ? "yes" : "no");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
 
             if(ubSPIInputLock)
@@ -659,53 +495,67 @@ int main()
                 ubSPIInputLock = 0;
             }
 
-            ubBasebandOverflow = 0;
+            ubAudioOverflow = 0;
         }
 
-        if(ubBasebandReady)
+        if(ubAudioReady)
         {
             // Start performance counters
             uint64_t ullProcessingStart = g_ullSystemTick;
 
-            // Figure out which baseband buffer has new samples
-            volatile uint32_t *pulBaseband = pulBasebandBuffer + (ubBasebandReady - 1) * BASEBAND_SAMPLE_BUFFER_SIZE;
+            // Figure out which audio buffer has new samples
+            volatile uint32_t *pulAudio = pulAudioBuffer + (ubAudioReady - 1) * AUDIO_SAMPLE_BUFFER_SIZE;
 
             // Process samples
-            int16_t psMPX[BASEBAND_SAMPLE_BUFFER_SIZE];
+            int16_t psAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+
+            for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
+            {
+                // Extract left and right channels
+                int16_t psLeft = pulAudio[i] & 0xFFFF;
+                int16_t psRight = pulAudio[i] >> 16;
+
+                // Mix them
+                psAudio[i] = psLeft; // TODO: Mix
+            }
+
+            // Filter the audio
+            fir_filter(pAudioFilter, psAudio, psAudio);
+
+            // Interpolate and upsample to baseband rate
+            int16_t psBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
+
+            fir_interpolator_filter(pBasebandFilter, psAudio, psBaseband);
+
+            // Generate quadrature with the hilbert transform
+            int16_t psHilbertBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
+
+            fir_filter(pHilbertFilter, psBaseband, psHilbertBaseband);
+
+            // Delay real baseband component to match the filter delay and stuff the result in the final baseband IQ pair array
+            static int16_t psDelayedBaseband[BASEBAND_DELAY_SAMPLES];
+            iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
 
             for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
             {
-                // Build IQ pair from 32-bit I2S word
-                iq16_t xSample = {
-                    .i = pulBaseband[i] & 0xFFFF,   // Left I2S channel  -> I
-                    .q = pulBaseband[i] >> 16       // Right I2S channel -> Q
-                };
+                if(i < BASEBAND_DELAY_SAMPLES)
+                {
+                    pBaseband[i].i = psDelayedBaseband[i];
+                    psDelayedBaseband[i] = psBaseband[BASEBAND_SAMPLE_BUFFER_SIZE - BASEBAND_DELAY_SAMPLES + i];
+                }
+                else
+                {
+                    pBaseband[i].i = psBaseband[i - BASEBAND_DELAY_SAMPLES];
+                }
 
-                xSample.i *= 10; // TODO: AGC
-                xSample.q *= 10;
-
-                // FM Demodulate
-                psMPX[i] = dsp_fm_demod(pFMDemod, xSample);
+                pBaseband[i].q = psHilbertBaseband[i];
             }
 
-            // Extract pilots
-            int16_t psPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
-            int16_t psStereoPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
-            //int16_t psRDSPilot[BASEBAND_SAMPLE_BUFFER_SIZE];
+            // Load baseband buffer
+            load_baseband_buffer(pBaseband);
 
-            mpx_extract_pilots(psMPX, psPilot, psStereoPilot, NULL);
-
-            // Stereo audio
-            int16_t psLeftAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-            int16_t psRightAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
-            mpx_stereo_audio_demod(psMPX, psStereoPilot, psLeftAudio, psRightAudio);
-
-            // Load audio buffer
-            load_audio_buffer(psLeftAudio, psRightAudio);
-
-            // Declare done processing baseband buffer
-            ubBasebandReady = 0;
+            // Declare done processing audio buffer
+            ubAudioReady = 0;
 
             // Stop performance counters
             ullProcessingTimeUsed = g_ullSystemTick - ullProcessingStart;

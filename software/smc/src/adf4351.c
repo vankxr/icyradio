@@ -167,6 +167,9 @@ uint8_t adf4351_set_frequency(uint64_t ullFrequency)
 
     adf4351_get_mixed_number(ullVCOFrequency, ADF4351_PFD_FREQ, pMultiplier);
 
+    #include "debug_macros.h"
+    DBGPRINTLN_CTX("int %lu, num %lu, den %lu", pMultiplier->ulInt, pMultiplier->ulNum, pMultiplier->ulDen);
+
     if(!pMultiplier->ulDen) // Division by zero, should never happen, unless the previous function failed
     {
         free(pMultiplier);

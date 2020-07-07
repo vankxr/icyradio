@@ -600,7 +600,7 @@ void init_audio_chain()
 
     fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
     fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
-    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
+    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_CODEC);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
     fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
@@ -764,8 +764,8 @@ void init_audio_chain()
     tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
     DBGPRINTLN_CTX("CODEC effects configured!");
 
-    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
-    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_1, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
     tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
     DBGPRINTLN_CTX("CODEC ADC input configured!");
 
@@ -778,7 +778,7 @@ void init_audio_chain()
     tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
     DBGPRINTLN_CTX("CODEC zero detector configured!");
 
-    tscs25xx_noise_gate_config(1, -50.f); // Mute input if signal below -50 dBFS
+    tscs25xx_noise_gate_config(1, -20.f); // Mute input if signal below -20 dBFS
     DBGPRINTLN_CTX("CODEC noise gate configured!");
 
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
@@ -789,8 +789,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
-    tscs25xx_input_set_left_volume(0.f); // 0.000 dB
-    tscs25xx_input_set_right_volume(0.f); // 0.000 dB
+    tscs25xx_input_set_left_volume(5.f); // 0.000 dB
+    tscs25xx_input_set_right_volume(5.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
@@ -807,7 +807,7 @@ void init_audio_chain()
     delay_ms(50);
 
     tscs25xx_dac_set_mute(0);
-    tscs25xx_adc_set_mute(1);
+    tscs25xx_adc_set_mute(0);
 }
 void init_baseband_chain()
 {
@@ -866,8 +866,8 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_2V5);
-    ad9117_i_offset_set_value(950);
+    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_1V0);
+    ad9117_i_offset_set_value(0);
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
     ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_1V0);
@@ -880,7 +880,7 @@ void init_tx_chain()
     ad9117_q_gain_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
-    adf4351_pfd_config(50000000, 1, 0, 1, 1);
+    adf4351_pfd_config(50000000, 1, 0, 5, 1);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
@@ -890,14 +890,14 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 432000000); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 425503600); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
 
     TXMIXER_ENABLE();
 
-    //TXPA_BIAS_ENABLE();
+    TXPA_BIAS_ENABLE();
 }
 
 int init()
@@ -1158,7 +1158,7 @@ int main()
     init_baseband_chain();
 
     // TX Chain configuration
-    //init_tx_chain();
+    init_tx_chain();
 
     // Audio configuration
     init_audio_chain();
