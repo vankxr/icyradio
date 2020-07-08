@@ -789,8 +789,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
-    tscs25xx_input_set_left_volume(5.f); // 0.000 dB
-    tscs25xx_input_set_right_volume(5.f); // 0.000 dB
+    tscs25xx_input_set_left_volume(15.f); // 0.000 dB
+    tscs25xx_input_set_right_volume(15.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
@@ -866,11 +866,11 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_1V0);
+    ad9117_i_offset_config(0, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_DIRECT);
     ad9117_i_offset_set_value(0);
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
-    ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_1V0);
+    ad9117_q_offset_config(0, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_DIRECT);
     ad9117_q_offset_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q offset: %hu", ad9117_q_offset_get_value());
 
@@ -880,22 +880,24 @@ void init_tx_chain()
     ad9117_q_gain_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
-    adf4351_pfd_config(50000000, 1, 0, 5, 1);
+    adf4351_pfd_config(50000000, 1, 0, 20, 0);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
-    adf4351_charge_pump_set_current(5.f); // 5 mA
+    adf4351_charge_pump_set_current(2.f); // 2 mA
     DBGPRINTLN_CTX("TX PLL CP current: %.2f mA", adf4351_charge_pump_get_current());
 
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 425503600); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 425504500); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
 
     TXMIXER_ENABLE();
+
+    delay_ms(100);
 
     TXPA_BIAS_ENABLE();
 }

@@ -31,7 +31,7 @@
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
-#define BASEBAND_DELAY_SAMPLES          42 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
+#define BASEBAND_DELAY_SAMPLES          102 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
 // Forward declarations
 static void reset() __attribute__((noreturn));

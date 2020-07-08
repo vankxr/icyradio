@@ -7,10 +7,10 @@ clc          % Clean the command window
 %% Config
 fs = 48000;
 fc = 30000;
-f1 = 750;
+f1 = 300;
 f2 = 5000;
 
-L = 20000;
+L = 100000;
 t = 0 : 1/fs : L/f2;
 
 %% Generate real baseband
@@ -21,7 +21,7 @@ for cf = f1:50:f2
 end
 
 %% Design and analyze Hilbert FIR
-Hd = designfilt('hilbertfir', 'FilterOrder', 80, 'TransitionWidth', 0.08, 'DesignMethod', 'equiripple');
+Hd = designfilt('hilbertfir', 'FilterOrder', 200, 'TransitionWidth', 0.02, 'DesignMethod', 'equiripple');
 hfv = fvtool(Hd, 'Analysis', 'Magnitude', 'MagnitudeDisplay', 'Zero-phase', 'FrequencyRange', '[-pi, pi)');
 hfv.Color = 'white';
 
