@@ -9099,7 +9099,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="R509" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="R510" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="GND521" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R515" library="Resistor" deviceset="RESISTOR" device="-0603" value="100 Ohms"/>
+<part name="R515" library="Resistor" deviceset="RESISTOR" device="-0603" value="DNP"/>
 <part name="L502" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
 <part name="L503" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
 <part name="L507" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
@@ -9116,7 +9116,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="R511" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="R512" library="Resistor" deviceset="RESISTOR" device="-0603" value="49.9 Ohms"/>
 <part name="GND522" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R516" library="Resistor" deviceset="RESISTOR" device="-0603" value="100 Ohms"/>
+<part name="R516" library="Resistor" deviceset="RESISTOR" device="-0603" value="DNP"/>
 <part name="L504" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
 <part name="L505" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
 <part name="L509" library="Inductor" deviceset="INDUCTOR" device="-0603" value="1.3uH"/>
@@ -9166,7 +9166,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="GND613" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND612" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND611" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C606" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
+<part name="C606" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10pF"/>
 <part name="R603" library="Resistor" deviceset="RESISTOR" device="-0603" value="5.1K Ohms"/>
 <part name="GND609" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U101" library="EFM32" deviceset="EFM32GG11B4*L112" device="" technology="20F2048G"/>
