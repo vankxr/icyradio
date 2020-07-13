@@ -610,7 +610,7 @@ void init_audio_chain()
     fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA bridge I2S mux configured!");
 
-    fpga_i2s_mux_set_fpga_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
+    fpga_i2s_mux_set_fpga_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_FPGA_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA I2S mux configured!");
 
     delay_ms(100);
