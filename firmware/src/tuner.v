@@ -32,7 +32,7 @@ wire [FSZ - 1:0] res = ns_acc[FSZ - PSZ - 1:0];
 
 always @(posedge clk)
     begin
-        if(reset == 1'b1)
+        if(reset)
             ns_acc <= {FSZ{1'b0}};
         else
             ns_acc <= acc + (lo_ns_en ? {{PSZ{res[FSZ - PSZ - 1]}}, res} : 0);
@@ -43,7 +43,7 @@ tuner_mixer i_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(!iq_swap),
+    .cos(iq_swap),
     .in(in),
     .phs(phs),
     .out(out_i)
@@ -54,7 +54,7 @@ tuner_mixer q_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(iq_swap),
+    .cos(!iq_swap),
     .in(in),
     .phs(phs),
     .out(out_q)
