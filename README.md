@@ -1,5 +1,5 @@
 # icyradio
-![](https://github.com/vankxr/icyradio/blob/ssb-mod/pcb/main/icyradio-main.top.png)  
+![](https://github.com/vankxr/icyradio/blob/master/pcb/main/icyradio-main.top.png)  
 A **S**oftware **D**efined **R**adio development board.
 
 ## Main components
@@ -15,6 +15,9 @@ A **S**oftware **D**efined **R**adio development board.
  - [SI5351C](https://www.silabs.com/documents/public/data-sheets/Si5351-B.pdf) - System clock synthesizer
  - [CP2615](https://www.silabs.com/documents/public/data-sheets/cp2615-datasheet.pdf) - USB to I2S bridge
  - [TSCS25A3X1NDGXZAX](http://temposemi.com/wp-content/uploads/2018/06/TSCS25xx_DS.pdf) - 96 kHz Audio CODEC
+ 
+# Simplified block diagram
+![](https://github.com/vankxr/icyradio/blob/master/docs/block-diagram.png)  
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
