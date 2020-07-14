@@ -6,7 +6,7 @@ clc          % Clean the command window
 
 %% Config
 fs = 48000;
-fc = 30000;
+fc = 10000;
 f1 = 300;
 f2 = 5000;
 

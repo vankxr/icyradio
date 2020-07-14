@@ -514,7 +514,7 @@ void init_system_clocks()
 
     //// FPGA Clock #3
     si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12288000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12000000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK3, 90.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
@@ -598,16 +598,16 @@ void init_audio_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
 
-    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
-    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
-    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_CODEC);
+    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_BRIDGE);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
-    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
-    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
+    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_BRIDGE);
     DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
 
-    fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_DSP);
+    fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
     DBGPRINTLN_CTX("FPGA bridge I2S mux configured!");
 
     fpga_i2s_mux_set_fpga_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_FPGA_SDIN_SEL_DSP);
@@ -764,21 +764,21 @@ void init_audio_chain()
     tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
     DBGPRINTLN_CTX("CODEC effects configured!");
 
-    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
-    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 0 dB gain, not inverted, high-pass enabled
-    tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
+    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_BOTH);
     DBGPRINTLN_CTX("CODEC ADC input configured!");
 
     tscs25xx_dac_config_left_output(0); // Not inverted
     tscs25xx_dac_config_right_output(0); // Not inverted
     tscs25xx_dac_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
-    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 1); // Dither disabled, Deemphasis filter enabled
+    tscs25xx_dac_config(TSCS25XX_DAC_DITHER_DISABLED, 0); // Dither disabled, Deemphasis filter enabled
     DBGPRINTLN_CTX("CODEC DAC output configured!");
 
     tscs25xx_zero_det_config(1, 512); // Mute output if 512 consecutive zeros received
     DBGPRINTLN_CTX("CODEC zero detector configured!");
 
-    tscs25xx_noise_gate_config(1, -20.f); // Mute input if signal below -20 dBFS
+    tscs25xx_noise_gate_config(1, -30.f); // Mute input if signal below -30 dBFS
     DBGPRINTLN_CTX("CODEC noise gate configured!");
 
     tscs25xx_volume_config(1, 1, 1); // Fade enabled, individual update, update on zero cross only
@@ -789,8 +789,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
-    tscs25xx_input_set_left_volume(15.f); // 0.000 dB
-    tscs25xx_input_set_right_volume(15.f); // 0.000 dB
+    tscs25xx_input_set_left_volume(6.f); // 0.000 dB
+    tscs25xx_input_set_right_volume(6.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
@@ -857,7 +857,7 @@ void init_rx_chain()
 }
 void init_tx_chain()
 {
-    fpga_qduc_set_lo_freq(0);
+    fpga_qduc_set_lo_freq(50000);
     DBGPRINTLN_CTX("FPGA QDUC tuner LO frequency: %.3f MHz", (float)fpga_qduc_get_lo_freq() / 1000000);
 
     fpga_qduc_set_lo_noise_shaping(1);

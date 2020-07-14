@@ -512,11 +512,11 @@ int main()
             for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
             {
                 // Extract left and right channels
-                int16_t psLeft = pulAudio[i] & 0xFFFF;
-                int16_t psRight = pulAudio[i] >> 16;
+                int16_t sLeft = pulAudio[i] & 0xFFFF;
+                int16_t sRight = pulAudio[i] >> 16;
 
                 // Mix them
-                psAudio[i] = psLeft; // TODO: Mix
+                psAudio[i] = (sLeft >> 1) + (sRight >> 1);
             }
 
             // Filter the audio
