@@ -857,6 +857,13 @@ void init_rx_chain()
 }
 void init_tx_chain()
 {
+    fpga_qduc_set_lo_freq(0);
+    DBGPRINTLN_CTX("FPGA QDUC tuner LO frequency: %.3f MHz", (float)fpga_qduc_get_lo_freq() / 1000000);
+
+    fpga_qduc_set_lo_noise_shaping(1);
+    fpga_qduc_set_iq_swap(0);
+    fpga_qduc_set_tuner_bypass(1);
+
     fpga_reset_module(FPGA_REG_RST_CNTRL_QDUC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA QDUC enabled!");
 
