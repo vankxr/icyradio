@@ -53,8 +53,8 @@ cic_interpolator cic_int_q
     .out(cic_q)
 );
 
-wire signed [OSZ - 1:0] cic_i_trim = cic_i[(CICSZ - 1):(CICSZ - OSZ)];
-wire signed [OSZ - 1:0] cic_q_trim = cic_q[(CICSZ - 1):(CICSZ - OSZ)];
+wire signed [ISZ - 1:0] cic_i_trim = cic_i[(CICSZ - 1):(CICSZ - ISZ)];
+wire signed [ISZ - 1:0] cic_q_trim = cic_q[(CICSZ - 1):(CICSZ - ISZ)];
 
 // Tuner
 wire signed [ISZ - 1:0] tuner_i;
@@ -64,8 +64,8 @@ tuner in_tuner
 (
     .clk(clk),
     .reset(reset | tuner_byp),
-    .in_i(in_i),
-    .in_q(in_q),
+    .in_i(cic_i_trim),
+    .in_q(cic_q_trim),
     .lo_freq(lo_freq),
     .lo_ns_en(lo_ns_en),
     .out_i(tuner_i),
@@ -87,13 +87,13 @@ always @(posedge clk)
             begin
                 if(tuner_byp)
                     begin
-                        out_i <= iq_swap ? cic_q_trim : cic_i_trim;
-                        out_q <= iq_swap ? cic_i_trim : cic_q_trim;
+                        out_i <= iq_swap ? cic_q_trim[(ISZ - 1):(ISZ - OSZ)] : cic_i_trim[(ISZ - 1):(ISZ - OSZ)];
+                        out_q <= iq_swap ? cic_i_trim[(ISZ - 1):(ISZ - OSZ)] : cic_q_trim[(ISZ - 1):(ISZ - OSZ)];
                     end
                 else
                     begin
-                        out_i <= iq_swap ? tuner_q : tuner_i;
-                        out_q <= iq_swap ? tuner_q : tuner_i;
+                        out_i <= iq_swap ? tuner_q[(ISZ - 1):(ISZ - OSZ)] : tuner_i[(ISZ - 1):(ISZ - OSZ)];
+                        out_q <= iq_swap ? tuner_i[(ISZ - 1):(ISZ - OSZ)] : tuner_q[(ISZ - 1):(ISZ - OSZ)];
                     end
             end
     end
