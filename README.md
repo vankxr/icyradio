@@ -16,7 +16,7 @@ A **S**oftware **D**efined **R**adio development board.
  - [CP2615](https://www.silabs.com/documents/public/data-sheets/cp2615-datasheet.pdf) - USB to I2S bridge
  - [TSCS25A3X1NDGXZAX](http://temposemi.com/wp-content/uploads/2018/06/TSCS25xx_DS.pdf) - 96 kHz Audio CODEC
  
-# Simplified block diagram
+## Simplified block diagram
 ![](https://github.com/vankxr/icyradio/blob/master/docs/block-diagram.png)  
 
 ## Dependencies
