@@ -4,11 +4,16 @@ module qduc
     input                       reset,     // Reset
     input   signed  [ISZ - 1:0] in_i,      // In-phase input
     input   signed  [ISZ - 1:0] in_q,      // Quadrature input
+    input           [FSZ - 1:0] lo_freq,   // NCO tuning word
+    input                       lo_ns_en,  // NCO noise shaping enable
+    input                       iq_swap,   // IQ swap enable
+    input                       tuner_byp, // Tuner bypass enable
     output  signed  [OSZ - 1:0] out_i,     // In-phase output
     output  signed  [OSZ - 1:0] out_q      // Quadrature output
 );
 
 localparam ISZ = 16;   // Input word size
+localparam FSZ = 26;   // NCO tuning word size
 localparam OSZ = 14;   // Output word size
 localparam CICSZ = 32; // CIC output word size -> (see CIC localparam OSZ)
 
@@ -48,8 +53,50 @@ cic_interpolator cic_int_q
     .out(cic_q)
 );
 
-wire signed [OSZ - 1:0] out_i = cic_i[(CICSZ - 1):(CICSZ - OSZ)];
-wire signed [OSZ - 1:0] out_q = cic_q[(CICSZ - 1):(CICSZ - OSZ)];
+wire signed [OSZ - 1:0] cic_i_trim = cic_i[(CICSZ - 1):(CICSZ - OSZ)];
+wire signed [OSZ - 1:0] cic_q_trim = cic_q[(CICSZ - 1):(CICSZ - OSZ)];
+
+// Tuner
+wire signed [ISZ - 1:0] tuner_i;
+wire signed [ISZ - 1:0] tuner_q;
+
+tuner in_tuner
+(
+    .clk(clk),
+    .reset(reset | tuner_byp),
+    .in_i(in_i),
+    .in_q(in_q),
+    .lo_freq(lo_freq),
+    .lo_ns_en(lo_ns_en),
+    .out_i(tuner_i),
+    .out_q(tuner_q)
+);
+
+// Output
+reg  signed [OSZ - 1:0] out_i;
+reg  signed [OSZ - 1:0] out_q;
+
+always @(posedge clk)
+    begin
+        if(reset)
+            begin
+                out_i <= {OSZ{1'b0}};
+                out_q <= {OSZ{1'b0}};
+            end
+        else
+            begin
+                if(tuner_byp)
+                    begin
+                        out_i <= iq_swap ? cic_q_trim : cic_i_trim;
+                        out_q <= iq_swap ? cic_i_trim : cic_q_trim;
+                    end
+                else
+                    begin
+                        out_i <= iq_swap ? tuner_q : tuner_i;
+                        out_q <= iq_swap ? tuner_q : tuner_i;
+                    end
+            end
+    end
 
 endmodule
 

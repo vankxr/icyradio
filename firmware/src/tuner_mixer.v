@@ -9,7 +9,7 @@ module tuner_mixer
 );
 
 localparam DSZ = 16;  // Data word size
-localparam PSZ = 12;  // Phase word size
+localparam PSZ = 11;  // Phase word size
 
 // Split accumulator into quadrant and address and delay sign bit
 wire [1:0]       quad = phs[PSZ - 1:PSZ - 2] + {1'b0, cos};
@@ -34,7 +34,7 @@ always @(posedge clk)
     end
 
 // Look-up table
-reg signed [15:0] sine_lut [0:1023];
+reg signed [15:0] sine_lut [0:511];
 reg signed [15:0] lo_raw;
 
 initial

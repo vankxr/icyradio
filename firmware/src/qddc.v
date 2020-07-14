@@ -24,10 +24,10 @@ tuner in_tuner
 (
     .clk(clk),
     .reset(reset),
-    .in(in),
+    .in_i(in),
+    .in_q(in),
     .lo_freq(lo_freq),
     .lo_ns_en(lo_ns_en),
-    .iq_swap(iq_swap),
     .out_i(tuner_i),
     .out_q(tuner_q)
 );
@@ -148,13 +148,19 @@ always @(posedge clk)
                         end
                     2'b01:
                         begin
-                            out_q <= fir_qi_mux;
+                            if(iq_swap)
+                                out_i <= fir_qi_mux;
+                            else
+                                out_q <= fir_qi_mux;
 
                             out_valid <= 1'b0;
                         end
                     2'b11:
                         begin
-                            out_i <= fir_qi_mux;
+                            if(iq_swap)
+                                out_q <= fir_qi_mux;
+                            else
+                                out_i <= fir_qi_mux;
 
                             out_valid <= 1'b1;
                         end

@@ -110,7 +110,7 @@ always @(posedge clk)
     end
 
 // Input buffer memory
-reg signed [ISZ - 1:0] buffer_ram [0:63];
+reg signed [ISZ - 1:0] buffer_ram [0:(2 * CLEN) - 1];
 reg signed [ISZ - 1:0] r_data;
 
 always @(posedge clk)
@@ -122,7 +122,7 @@ always @(posedge clk)
     end
 
 // Coefficient ROM
-reg signed [CSZ - 1:0] coeff_rom [0:31];
+reg signed [CSZ - 1:0] coeff_rom [0:CLEN - 1];
 reg signed [CSZ - 1:0] c_data;
 
 initial
