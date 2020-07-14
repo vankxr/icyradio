@@ -143,7 +143,7 @@ assign qduc_clk             = clk1; // QDUC clock is CLK1 (same as the DAC)
 assign dac_clk              = clk1; // DAC clock is CLK1
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the QDDC)
 assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK3
-assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
+assign qspi_mem_clk         = 1'b0; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
 assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
@@ -310,9 +310,9 @@ reg  signed [15:0] qddc_in;
 wire signed [15:0] qddc_i_out;
 wire signed [15:0] qddc_q_out;
 wire        [25:0] qddc_lo_freq; // Controlled by SMC via SPI
-wire               qddc_valid;
 wire               qddc_lo_ns_en; // Controlled by SMC via SPI
 wire               qddc_iq_swap; // Controlled by SMC via SPI
+wire               qddc_valid;
 
 // Module
 qddc adc_qddc
@@ -402,6 +402,10 @@ reg  signed [15:0] qduc_i_in;
 reg  signed [15:0] qduc_q_in;
 wire signed [13:0] qduc_i_out;
 wire signed [13:0] qduc_q_out;
+wire        [25:0] qduc_lo_freq; // Controlled by SMC via SPI
+wire               qduc_lo_ns_en; // Controlled by SMC via SPI
+wire               qduc_iq_swap; // Controlled by SMC via SPI
+wire               qduc_tuner_byp; // Controlled by SMC via SPI
 
 // Module
 qduc dac_qduc
@@ -410,6 +414,10 @@ qduc dac_qduc
     .reset(qduc_rst),
     .in_i(qduc_i_in),
     .in_q(qduc_q_in),
+    .lo_freq(qduc_lo_freq),
+    .lo_ns_en(qduc_lo_ns_en),
+    .iq_swap(qduc_iq_swap),
+    .tuner_byp(qduc_tuner_byp),
     .out_i(qduc_i_out),
     .out_q(qduc_q_out)
 );
@@ -965,6 +973,7 @@ localparam CNTRL_SPI_REG_ADC_DPRAM_DATA         = 7'h22;
 localparam CNTRL_SPI_REG_QDDC_CNTRL             = 7'h30;
 localparam CNTRL_SPI_REG_QDDC_LO_FREQ           = 7'h31;
 localparam CNTRL_SPI_REG_QDUC_CNTRL             = 7'h35;
+localparam CNTRL_SPI_REG_QDUC_LO_FREQ           = 7'h36;
 localparam CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL      = 7'h40;
 localparam CNTRL_SPI_REG_QSPI_MEM_CNTRL         = 7'h50;
 localparam CNTRL_SPI_REG_QSPI_MEM_ADDR          = 7'h51;
@@ -1023,6 +1032,12 @@ reg  cntrl_spi_qddc_iq_swap;
 reg  [25:0] cntrl_spi_qddc_lo_freq;
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
+reg  cntrl_spi_qduc_lo_ns_en;
+reg  cntrl_spi_qduc_iq_swap;
+reg  cntrl_spi_qduc_tuner_byp;
+
+//// CNTRL_SPI_REG_QDUC_LO_FREQ
+reg  [25:0] cntrl_spi_qduc_lo_freq;
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
 reg  [1:0]  cntrl_spi_audio_i2s_codec_mclk_sel;
@@ -1142,6 +1157,36 @@ synchronizer cntrl_spi_qddc_lo_freq_sync [25:0]
 );
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
+synchronizer cntrl_spi_qduc_lo_ns_en_sync
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qduc_clk),
+    .in(cntrl_spi_qduc_lo_ns_en),
+    .out(qduc_lo_ns_en)
+);
+synchronizer cntrl_spi_qduc_iq_swap_sync
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qduc_clk),
+    .in(cntrl_spi_qduc_iq_swap),
+    .out(qduc_iq_swap)
+);
+synchronizer cntrl_spi_qduc_tuner_byp_sync
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qduc_clk),
+    .in(cntrl_spi_qduc_tuner_byp),
+    .out(qduc_tuner_byp)
+);
+
+//// CNTRL_SPI_REG_QDUC_LO_FREQ
+synchronizer cntrl_spi_qduc_lo_freq_sync [25:0]
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qduc_clk),
+    .in(cntrl_spi_qduc_lo_freq),
+    .out(qduc_lo_freq)
+);
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
 assign audio_i2s_codec_mclk_sel = cntrl_spi_audio_i2s_codec_mclk_sel; // No sync needed
@@ -1278,6 +1323,12 @@ always @(posedge cntrl_spi_clk)
 
                 cntrl_spi_qddc_lo_freq <= 26'h0000000;
 
+                cntrl_spi_qduc_lo_ns_en <= 1'b0;
+                cntrl_spi_qduc_iq_swap <= 1'b0;
+                cntrl_spi_qduc_tuner_byp <= 1'b1;
+
+                cntrl_spi_qduc_lo_freq <= 26'h0000000;
+
                 cntrl_spi_audio_i2s_codec_mclk_sel <= 2'b01;
                 cntrl_spi_audio_i2s_dsp_dclk_sel <= 2'b00;
                 cntrl_spi_audio_i2s_codec_dclk_sel <= 2'b01;
@@ -1377,7 +1428,13 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin
-                                    // Nothing to do for now
+                                    cntrl_spi_qduc_lo_ns_en <= cntrl_spi_data_out[0];
+                                    cntrl_spi_qduc_iq_swap <= cntrl_spi_data_out[1];
+                                    cntrl_spi_qduc_tuner_byp <= cntrl_spi_data_out[2];
+                                end
+                            CNTRL_SPI_REG_QDUC_LO_FREQ:
+                                begin
+                                    cntrl_spi_qduc_lo_freq <= cntrl_spi_data_out[25:0];
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
@@ -1481,7 +1538,11 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {32'd0};
+                                    cntrl_spi_data_in <= {29'd0, cntrl_spi_qduc_tuner_byp, cntrl_spi_qduc_iq_swap, cntrl_spi_qduc_lo_ns_en};
+                                end
+                            CNTRL_SPI_REG_QDUC_LO_FREQ:
+                                begin
+                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_qduc_lo_freq};
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin

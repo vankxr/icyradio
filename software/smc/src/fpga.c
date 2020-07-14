@@ -228,6 +228,33 @@ uint32_t fpga_qddc_get_lo_freq()
     return ullFrequency >> FPGA_QDDC_LO_FSZ;
 }
 
+void fpga_qduc_set_tuner_bypass(uint8_t ubEnable)
+{
+    fpga_rmw_register(FPGA_REG_QDUC_CNTRL, ~FPGA_REG_QDUC_CNTRL_TUNER_BYP, ubEnable ? FPGA_REG_QDUC_CNTRL_TUNER_BYP : 0);
+}
+void fpga_qduc_set_iq_swap(uint8_t ubEnable)
+{
+    fpga_rmw_register(FPGA_REG_QDUC_CNTRL, ~FPGA_REG_QDUC_CNTRL_IQ_SWAP, ubEnable ? FPGA_REG_QDUC_CNTRL_IQ_SWAP : 0);
+}
+void fpga_qduc_set_lo_noise_shaping(uint8_t ubEnable)
+{
+    fpga_rmw_register(FPGA_REG_QDUC_CNTRL, ~FPGA_REG_QDUC_CNTRL_LO_NS_EN, ubEnable ? FPGA_REG_QDUC_CNTRL_LO_NS_EN : 0);
+}
+void fpga_qduc_set_lo_freq(uint32_t ulFrequency)
+{
+    uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDUC_LO_FSZ;
+    uint32_t ulValue = ullFrequency / FPGA_QDUC_LO_CLK_FREQ;
+
+    fpga_write_register(FPGA_REG_QDUC_LO_FREQ, ulValue);
+}
+uint32_t fpga_qduc_get_lo_freq()
+{
+    uint32_t ulValue = fpga_read_register(FPGA_REG_QDUC_LO_FREQ);
+    uint64_t ullFrequency = (uint64_t)ulValue * FPGA_QDUC_LO_CLK_FREQ;
+
+    return ullFrequency >> FPGA_QDUC_LO_FSZ;
+}
+
 void fpga_i2s_mux_set_codec_master_clock(uint32_t ulSource)
 {
     fpga_rmw_register(FPGA_REG_AUDIO_I2S_MUX_SEL, 0xFFFFFFFC, (ulSource & 0x00000003));

@@ -2,17 +2,17 @@ module tuner
 (
     input                     clk,      // Clock
     input                     reset,    // Reset
-    input  signed [DSZ - 1:0] in,       // Input data
+    input  signed [DSZ - 1:0] in_i,     // In-phase input
+    input  signed [DSZ - 1:0] in_q,     // Quadrature input
     input         [FSZ - 1:0] lo_freq,  // NCO Frequency tuning word
     input                     lo_ns_en, // NCO noise shaping enable
-    input                     iq_swap,  // IQ swap enable
     output signed [DSZ - 1:0] out_i,    // In-phase output
     output signed [DSZ - 1:0] out_q     // Quadrature output
 );
 
 localparam DSZ = 16;  // Data word size
 localparam FSZ = 26;  // NCO tuning word size
-localparam PSZ = 12;  // Phase word size
+localparam PSZ = 11;  // Phase word size
 
 // Phase accumulator
 reg [FSZ - 1:0] acc;
@@ -43,8 +43,8 @@ tuner_mixer i_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(iq_swap),
-    .in(in),
+    .cos(1'b0),
+    .in(in_i),
     .phs(phs),
     .out(out_i)
 );
@@ -54,8 +54,8 @@ tuner_mixer q_mixer
 (
     .clk(clk),
     .reset(reset),
-    .cos(!iq_swap),
-    .in(in),
+    .cos(1'b1),
+    .in(in_q),
     .phs(phs),
     .out(out_q)
 );
