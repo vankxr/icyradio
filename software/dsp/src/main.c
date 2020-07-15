@@ -100,14 +100,14 @@ void _spi0_isr()
 
         if(!ubSPITX)
         {
-            if(ubSPIBufferIndex < 5)
+            if(ubSPIBufferIndex < 4)
             {
                 pubSPIBuffer[ubSPIBufferIndex++] = ubData;
             }
             else
             {
                 uint8_t ubRegister = (pubSPIBuffer[0] & 0x7F);
-                uint32_t ulData = ((uint32_t)pubSPIBuffer[1] << 24) | ((uint32_t)pubSPIBuffer[2] << 16) | ((uint32_t)pubSPIBuffer[3] << 8) | ((uint32_t)pubSPIBuffer[4] << 0);
+                uint32_t ulData = ((uint32_t)pubSPIBuffer[1] << 24) | ((uint32_t)pubSPIBuffer[2] << 16) | ((uint32_t)pubSPIBuffer[3] << 8) | ((uint32_t)ubData << 0);
 
                 pulSPIRegister[ubRegister] = (pulSPIRegister[ubRegister] & ~pulSPIRegisterWriteMask[ubRegister]) | (ulData & pulSPIRegisterWriteMask[ubRegister]);
             }
@@ -369,6 +369,7 @@ void init_audio_i2s()
 void init_control_spi()
 {
     // Init registers and masks
+    //// DSP_REG_ID
     pulSPIRegister[0x00] = 0x0D570001;
     pulSPIRegisterWriteMask[0x00] = 0x00000000;
     pulSPIRegisterReadMask[0x00] = 0xFFFFFFFF;
@@ -471,8 +472,6 @@ int init()
     DBGPRINTLN_CTX("PMC - UPLLCK Clock: %.1f MHz", (float)UPLLCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - MCK Clock: %.1f MHz", (float)MCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
-
-    delay_ms(100);
 
     return 0;
 }

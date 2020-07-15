@@ -5,6 +5,7 @@ static void gpio_isr(uint32_t ulFlags)
     extern void fpga_isr();
     extern void ft6x36_isr();
     extern void si5351_isr();
+    extern void dsp_isr();
 
     if(ulFlags & BIT(1))
         fpga_isr();
@@ -14,6 +15,9 @@ static void gpio_isr(uint32_t ulFlags)
 
     if(ulFlags & BIT(4))
         si5351_isr();
+
+    if(ulFlags & BIT(12))
+        dsp_isr();
 }
 void _gpio_even_isr()
 {
@@ -213,7 +217,7 @@ void gpio_init()
                       | GPIO_EXTIPINSELH_EXTIPINSEL15_PIN12;    // NU
 
     GPIO->EXTIRISE = 0; // N/A
-    GPIO->EXTIFALL = BIT(1) | BIT(2) | BIT(4); // FPGA_SMC_IRQ, TFT_TOUCH_IRQ, CLK_MNGR_IRQ
+    GPIO->EXTIFALL = BIT(1) | BIT(2) | BIT(4) | BIT(12); // FPGA_SMC_IRQ, TFT_TOUCH_IRQ, CLK_MNGR_IRQ, DSP_IRQ
 
     GPIO->IFC = _GPIO_IFC_MASK; // Clear pending IRQs
     IRQ_CLEAR(GPIO_EVEN_IRQn); // Clear pending vector

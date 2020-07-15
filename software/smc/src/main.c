@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "usart.h"
 #include "i2c.h"
+#include "dsp.h"
 #include "fpga.h"
 #include "si5351.h"
 #include "ft6x36.h"
@@ -813,9 +814,6 @@ void init_baseband_chain()
 {
     fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
-
-    DSP_UNRESET();
-    DBGPRINTLN_CTX("DSP processor enabled!");
 }
 void init_rx_chain()
 {
@@ -945,7 +943,7 @@ int init()
 
     usart1_init(12000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 12 MHz (FPGA)
     usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
-    usart3_init(18000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 18 MHz (DSP)
+    usart3_init(8000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 8 MHz (DSP)
     usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
     usart5_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 0, 1); // Init USART5 at 18 MHz (TXDAC)
 
@@ -1120,6 +1118,16 @@ int main()
     fpga_rgb_led_enable(FPGA_LED_GREEN);
     fpga_rgb_led_enable(FPGA_LED_BLUE);
 
+    // DSP init
+    if(dsp_init())
+        DBGPRINTLN_CTX("DSP init OK!");
+    else
+        DBGPRINTLN_CTX("DSP init NOK!");
+
+    // DSP info
+    DBGPRINTLN_CTX("DSP firmware ID: 0x%04X", dsp_read_firmware_id());
+    DBGPRINTLN_CTX("DSP firmware version: v%hu", dsp_read_firmware_version());
+
     // I2S Bridge info & configuration
     char pszBridgeVersion[33];
 
@@ -1263,16 +1271,6 @@ int main()
 
                 free(pfRXPSD);
             }
-
-            /*
-            DSP_SELECT();
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0x80));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
-            DSP_UNSELECT();
-            */
         }
 
         if(g_ullSystemTick - ullLastDebugPrint > 60000)
