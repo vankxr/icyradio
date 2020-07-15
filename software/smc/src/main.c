@@ -1207,24 +1207,6 @@ int main()
         {
             ullLastLEDTick = g_ullSystemTick;
 
-            /*
-            do
-            {
-                DSP_SELECT();
-                DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xAA));
-                DSP_UNSELECT();
-
-                delay_ms(500);
-            } while(PERI_REG_BIT(&(GPIO->P[4].DIN), 13));
-
-            DSP_SELECT();
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xBB));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
-            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
-            DSP_UNSELECT();
-            */
-
             LED_TOGGLE();
         }
 
@@ -1281,6 +1263,16 @@ int main()
 
                 free(pfRXPSD);
             }
+
+            /*
+            DSP_SELECT();
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0x80));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xCC));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xDD));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
+            DBGPRINTLN_CTX("dsp data %02X", usart3_spi_transfer_byte(0xEE));
+            DSP_UNSELECT();
+            */
         }
 
         if(g_ullSystemTick - ullLastDebugPrint > 60000)
