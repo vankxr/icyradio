@@ -67,6 +67,7 @@ uint64_t ullProcessingTimeUsed = 0;
 fir_ctx_t *pAudioFilter = NULL;
 fir_ctx_t *pHilbertFilter = NULL;
 fir_interpolator_ctx_t *pBasebandFilter = NULL;
+dsp_quad_oscillator_t *pBasebandOscillator = NULL;
 
 // ISRs
 void _spi0_isr()
@@ -376,6 +377,14 @@ void init_dsp_components()
         DBGPRINTLN_CTX("Hilbert FIR intialized!");
     else
         DBGPRINTLN_CTX("Failed hilbert FIR intialization!");
+
+    // Baseband oscillator
+    pBasebandOscillator = dsp_quad_oscillator_init(192000, 4800, BASEBAND_SAMPLE_BUFFER_SIZE);
+
+    if(pBasebandOscillator)
+        DBGPRINTLN_CTX("Baseband oscillator intialized!");
+    else
+        DBGPRINTLN_CTX("Failed baseband oscillator intialization!");
 }
 int init()
 {
@@ -550,6 +559,9 @@ int main()
 
                 pBaseband[i].q = psHilbertBaseband[i];
             }
+
+            // Mix with oscillator to move the spectrum up
+            //dsp_quad_oscillator_mix(pBasebandOscillator, pBaseband, NULL);
 
             // Load baseband buffer
             load_baseband_buffer(pBaseband);
