@@ -34,7 +34,9 @@
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
-#define SPI_REGISTER_COUNT              1
+#define SPI_REG_COUNT              1
+#define SPI_REG_INIT(i, d, w, r)        pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (w); pulSPIRegisterReadMask[(i)] = (r);
+#define SPI_REG_ID                      0x00
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -62,9 +64,9 @@ volatile uint32_t *pulBasebandBuffer = NULL;
 uint32_t *pulAudioBuffer = NULL;
 volatile uint8_t ubBasebandReady = 0;
 volatile uint8_t ubBasebandOverflow = 0;
-volatile uint32_t DTCM_DATA pulSPIRegister[SPI_REGISTER_COUNT];
-volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
-volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegister[SPI_REG_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REG_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REG_COUNT];
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
 dsp_fm_demod_ctx_t *pFMDemod = NULL;
@@ -93,7 +95,7 @@ void ITCM_CODE _spi0_isr()
         {
             uint8_t ubRegister = (ubData & 0x7F);
 
-            if(ubRegister < SPI_REGISTER_COUNT)
+            if(ubRegister < SPI_REG_COUNT)
             {
                 uint32_t ulData = pulSPIRegister[ubRegister] & pulSPIRegisterReadMask[ubRegister];
 
@@ -459,10 +461,7 @@ void init_control_spi()
     memset((void *)pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
     memset((void *)pulSPIRegisterReadMask, 0, sizeof(pulSPIRegisterReadMask));
 
-    //// DSP_REG_ID
-    pulSPIRegister[0x00] = 0x0D570001;
-    pulSPIRegisterWriteMask[0x00] = 0x00000000;
-    pulSPIRegisterReadMask[0x00] = 0xFFFFFFFF;
+    SPI_REG_INIT(SPI_REG_ID, 0x0D570001, 0x00000000, 0xFFFFFFFF);
 
     // Init interface
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (SPI0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
