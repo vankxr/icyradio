@@ -33,7 +33,7 @@
 
 #define BASEBAND_DELAY_SAMPLES          102 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
-#define SPI_REGISTER_COUNT              1
+#define SPI_REGISTER_COUNT              16
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -58,9 +58,9 @@ uint32_t *pulBasebandBuffer = NULL;
 volatile uint32_t *pulAudioBuffer = NULL;
 volatile uint8_t ubAudioReady = 0;
 volatile uint8_t ubAudioOverflow = 0;
-volatile uint32_t pulSPIRegister[SPI_REGISTER_COUNT];
-volatile uint32_t pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
-volatile uint32_t pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegister[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
 fir_ctx_t *pAudioFilter = NULL;
@@ -69,7 +69,7 @@ fir_interpolator_ctx_t *pBasebandFilter = NULL;
 dsp_quad_oscillator_t *pBasebandOscillator = NULL;
 
 // ISRs
-void _spi0_isr()
+void ITCM_CODE _spi0_isr()
 {
     static uint8_t pubSPIBuffer[5];
     static uint8_t ubSPIBufferIndex = 0;
@@ -369,6 +369,10 @@ void init_audio_i2s()
 void init_control_spi()
 {
     // Init registers and masks
+    memset((void *)pulSPIRegister, 0, sizeof(pulSPIRegister));
+    memset((void *)pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
+    memset((void *)pulSPIRegisterReadMask, 0, sizeof(pulSPIRegisterReadMask));
+
     //// DSP_REG_ID
     pulSPIRegister[0x00] = 0x0D570001;
     pulSPIRegisterWriteMask[0x00] = 0x00000000;
