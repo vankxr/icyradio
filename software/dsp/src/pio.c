@@ -246,7 +246,7 @@ void pio_init()
     PIOD->PIO_PUER = 0;
     ////// Pull-down enable (ER) or disable (DR)
     PIOD->PIO_PPDDR = 0xFFFFFFFF;
-    PIOD->PIO_PPDER = BIT(21);
+    PIOD->PIO_PPDER = BIT(21) | BIT(22);
     //// PERIPHERALS ////
     ////// Peripheral mux select
     PIO_PERI_MUX_SELECT(PIOD, 20, 1); // SPI0_MISO

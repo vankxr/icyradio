@@ -34,6 +34,8 @@
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
+#define SPI_REGISTER_COUNT              1
+
 // Forward declarations
 static void reset() __attribute__((noreturn));
 static void sleep();
@@ -60,12 +62,9 @@ volatile uint32_t *pulBasebandBuffer = NULL;
 uint32_t *pulAudioBuffer = NULL;
 volatile uint8_t ubBasebandReady = 0;
 volatile uint8_t ubBasebandOverflow = 0;
-volatile uint8_t pubSPIInput[5];
-volatile uint8_t ubSPIInputIndex = 0;
-volatile uint8_t ubSPIInputLock = 0;
-volatile uint8_t pubSPIOutput[3];
-volatile uint8_t ubSPIOutputIndex = 0;
-volatile uint8_t ubSPIOutputLock = 0;
+volatile uint32_t pulSPIRegister[SPI_REGISTER_COUNT];
+volatile uint32_t pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
+volatile uint32_t pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
 dsp_fm_demod_ctx_t *pFMDemod = NULL;
@@ -80,27 +79,57 @@ fir_decimator_ctx_t *pAudioFilter[2] = {NULL, NULL};
 // ISRs
 void _spi0_isr()
 {
+    static uint8_t pubSPIBuffer[5];
+    static uint8_t ubSPIBufferIndex = 0;
+    static uint8_t ubSPITX = 0;
+
     uint32_t ulFlags = SPI0->SPI_SR;
 
     if(ulFlags & SPI_SR_RDRF)
     {
-        if(!ubSPIInputLock && ubSPIInputIndex < 5)
-            pubSPIInput[ubSPIInputIndex++] = SPI0->SPI_RDR;
-        else
-            REG_DISCARD(&SPI0->SPI_RDR);
+        uint8_t ubData = SPI0->SPI_RDR;
+
+        if(ubSPIBufferIndex == 0 && (ubData & 0x80))
+        {
+            uint8_t ubRegister = (ubData & 0x7F);
+
+            if(ubRegister < SPI_REGISTER_COUNT)
+            {
+                uint32_t ulData = pulSPIRegister[ubRegister] & pulSPIRegisterReadMask[ubRegister];
+
+                pubSPIBuffer[0] = ulData >> 24;
+                pubSPIBuffer[1] = ulData >> 16;
+                pubSPIBuffer[2] = ulData >> 8;
+                pubSPIBuffer[3] = ulData >> 0;
+
+                ubSPITX = 1;
+            }
+        }
+
+        if(!ubSPITX)
+        {
+            if(ubSPIBufferIndex < 5)
+            {
+                pubSPIBuffer[ubSPIBufferIndex++] = ubData;
+            }
+            else
+            {
+                uint8_t ubRegister = (pubSPIBuffer[0] & 0x7F);
+                uint32_t ulData = ((uint32_t)pubSPIBuffer[1] << 24) | ((uint32_t)pubSPIBuffer[2] << 16) | ((uint32_t)pubSPIBuffer[3] << 8) | ((uint32_t)pubSPIBuffer[4] << 0);
+
+                pulSPIRegister[ubRegister] = (pulSPIRegister[ubRegister] & ~pulSPIRegisterWriteMask[ubRegister]) | (ulData & pulSPIRegisterWriteMask[ubRegister]);
+            }
+        }
+        else if(ubSPIBufferIndex < 4)
+        {
+            SPI0->SPI_TDR = pubSPIBuffer[ubSPIBufferIndex++];
+        }
     }
 
     if(ulFlags & SPI_SR_NSSR)
     {
-        DSP_IRQ_DEASSERT();
-
-        if(!ubSPIInputLock)
-        {
-            if(ubSPIInputIndex == 1 || ubSPIInputIndex == 5)
-                ubSPIInputLock = 1;
-            else
-                ubSPIInputIndex = 0;
-        }
+        ubSPIBufferIndex = 0;
+        ubSPITX = 0;
     }
 }
 void fpga_isr()
@@ -425,6 +454,12 @@ void init_audio_i2s()
 }
 void init_control_spi()
 {
+    // Init registers and masks
+    pulSPIRegister[0x00] = 0x0D570001;
+    pulSPIRegisterWriteMask[0x00] = 0x00000000;
+    pulSPIRegisterReadMask[0x00] = 0xFFFFFFFF;
+
+    // Init interface
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (SPI0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
 
     SPI0->SPI_CR |= SPI_CR_SWRST; // Reset control SPI peripheral
@@ -594,32 +629,6 @@ int main()
             DBGPRINTLN_CTX("Budget used: %.2f %%", (float)ullProcessingTimeUsed * 100.f / ullProcessingTimeBudget);
             DBGPRINTLN_CTX("Baseband buffer overflow: %s", ubBasebandOverflow ? "yes" : "no");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
-
-            if(ubSPIInputLock)
-            {
-                DBGPRINT_CTX("SPI Data [");
-
-                for(uint8_t i = 0; i < ubSPIInputIndex; i++)
-                    DBGPRINT("%02X", pubSPIInput[i]);
-
-                DBGPRINTLN("]");
-
-                if(ubSPIInputIndex == 1)
-                {
-                    //SPI0->SPI_TDR   = 0xBB;
-                    pubSPIOutput[0] = 0xCC;
-                    pubSPIOutput[1] = 0xDD;
-                    pubSPIOutput[2] = 0xEE;
-
-                    ubSPIOutputIndex = 0;
-                    ubSPIOutputLock = 1;
-
-                    DSP_IRQ_ASSERT();
-                }
-
-                ubSPIInputIndex = 0;
-                ubSPIInputLock = 0;
-            }
 
             ubBasebandOverflow = 0;
         }
