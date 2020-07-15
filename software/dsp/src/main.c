@@ -62,9 +62,9 @@ volatile uint32_t *pulBasebandBuffer = NULL;
 uint32_t *pulAudioBuffer = NULL;
 volatile uint8_t ubBasebandReady = 0;
 volatile uint8_t ubBasebandOverflow = 0;
-volatile uint32_t pulSPIRegister[SPI_REGISTER_COUNT];
-volatile uint32_t pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
-volatile uint32_t pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegister[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REGISTER_COUNT];
+volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REGISTER_COUNT];
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
 dsp_fm_demod_ctx_t *pFMDemod = NULL;
@@ -77,7 +77,7 @@ fir_decimator_ctx_t *pAudioFilter[2] = {NULL, NULL};
 
 
 // ISRs
-void _spi0_isr()
+void ITCM_CODE _spi0_isr()
 {
     static uint8_t pubSPIBuffer[5];
     static uint8_t ubSPIBufferIndex = 0;
@@ -455,6 +455,10 @@ void init_audio_i2s()
 void init_control_spi()
 {
     // Init registers and masks
+    memset((void *)pulSPIRegister, 0, sizeof(pulSPIRegister));
+    memset((void *)pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
+    memset((void *)pulSPIRegisterReadMask, 0, sizeof(pulSPIRegisterReadMask));
+
     //// DSP_REG_ID
     pulSPIRegister[0x00] = 0x0D570001;
     pulSPIRegisterWriteMask[0x00] = 0x00000000;
