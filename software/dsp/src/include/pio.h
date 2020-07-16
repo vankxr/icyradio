@@ -13,13 +13,13 @@
     (p)->PIO_ABCDSR[1] = ((p)->PIO_ABCDSR[1] & ~BIT(i)) | (!!((n) & BIT(1)) << (i));
 
 // LED MACROS
-#define LED_HIGH()          PIOB->PIO_SODR = PIO_SODR_P4;
-#define LED_LOW()           PIOB->PIO_CODR = PIO_CODR_P4;
-#define LED_TOGGLE()        if(PIOB->PIO_ODSR & BIT(4)) LED_LOW() else LED_HIGH();
+#define LED_HIGH()          PIOB->PIO_SODR = PIO_SODR_P4
+#define LED_LOW()           PIOB->PIO_CODR = PIO_CODR_P4
+#define LED_TOGGLE()        if(PIOB->PIO_ODSR & BIT(4)) LED_LOW(); else LED_HIGH();
 
 // IRQ MACROS
-#define DSP_IRQ_ASSERT()    PIOA->PIO_CODR = PIO_CODR_P4;
-#define DSP_IRQ_DEASSERT()  PIOA->PIO_SODR = PIO_SODR_P4;
+#define DSP_IRQ_ASSERT()    PIOA->PIO_CODR = PIO_CODR_P4
+#define DSP_IRQ_DEASSERT()  PIOA->PIO_SODR = PIO_SODR_P4
 
 void pio_init();
 
