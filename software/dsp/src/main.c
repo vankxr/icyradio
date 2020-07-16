@@ -36,6 +36,11 @@
 #define SPI_REG_COUNT                   16
 #define SPI_REG_INIT(i, d, w, r)        pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (w); pulSPIRegisterReadMask[(i)] = (r);
 #define SPI_REG_ID                      0x00
+#define SPI_REG_IRQ_STATE               0x01
+#define SPI_REG_IRQ_MASK                0x02
+#define SPI_REG_IRQ_SET_CLEAR           0x03
+#define SPI_REG_AUDIO_CNTRL             0x10
+#define SPI_REG_AUDIO_RMS               0x11
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -47,6 +52,8 @@ static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint8_t get_device_revision();
 
 static void load_baseband_buffer(iq16_t *pSamples);
+
+static void irq_update();
 
 static void init_baseband_i2s();
 static void init_audio_i2s();
@@ -272,6 +279,24 @@ void load_baseband_buffer(iq16_t *pSamples)
     dcache_addr_clean(pulDestAddress, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 }
 
+void irq_update()
+{
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        uint32_t ulIRQSet = (pulSPIRegister[SPI_REG_IRQ_SET_CLEAR] & 0x0000FFFF) >> 0;
+        uint32_t ulIRQClear = (pulSPIRegister[SPI_REG_IRQ_SET_CLEAR] & 0xFFFF0000) >> 16;
+
+        pulSPIRegister[SPI_REG_IRQ_STATE] |= ulIRQSet;
+        pulSPIRegister[SPI_REG_IRQ_STATE] &= ~ulIRQClear;
+        pulSPIRegister[SPI_REG_IRQ_SET_CLEAR] = 0x00000000;
+
+        if(pulSPIRegister[SPI_REG_IRQ_STATE] & pulSPIRegister[SPI_REG_IRQ_MASK])
+            DSP_IRQ_ASSERT();
+        else
+            DSP_IRQ_DEASSERT();
+    }
+}
+
 void init_baseband_i2s()
 {
     free(pulBasebandBuffer);
@@ -375,7 +400,12 @@ void init_control_spi()
     memset((void *)pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
     memset((void *)pulSPIRegisterReadMask, 0, sizeof(pulSPIRegisterReadMask));
 
-    SPI_REG_INIT(SPI_REG_ID, 0x0D570001, 0x00000000, 0xFFFFFFFF);
+    SPI_REG_INIT(SPI_REG_ID,            0x0D570001, 0x00000000, 0xFFFFFFFF);
+    SPI_REG_INIT(SPI_REG_IRQ_STATE,     0x00000000, 0x00000000, 0xFFFFFFFF);
+    SPI_REG_INIT(SPI_REG_IRQ_MASK,      0x00000000, 0xFFFFFFFF, 0xFFFFFFFF);
+    SPI_REG_INIT(SPI_REG_IRQ_SET_CLEAR, 0x00000000, 0xFFFFFFFF, 0x00000000);
+    SPI_REG_INIT(SPI_REG_AUDIO_CNTRL,   0x00000001, 0x00000003, 0x00FFFF13);
+    SPI_REG_INIT(SPI_REG_AUDIO_CNTRL,   0x00000001, 0x00000003, 0x00000013);
 
     // Init interface
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (SPI0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
@@ -493,6 +523,7 @@ int main()
     while(1)
     {
         wdt_feed();
+        irq_update();
 
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
@@ -537,6 +568,22 @@ int main()
 
                 // Mix them
                 psAudio[i] = (sLeft >> 1) + (sRight >> 1);
+            }
+
+            // Check for the RMS calculation flag
+            if(pulSPIRegister[SPI_REG_AUDIO_CNTRL] & BIT(1))
+            {
+                int16_t sAudioRMS;
+
+                arm_rms_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &sAudioRMS);
+
+                pulSPIRegister[SPI_REG_AUDIO_CNTRL] = (pulSPIRegister[SPI_REG_AUDIO_CNTRL] & 0xFF0000FF) | (((uint32_t)sAudioRMS & 0xFFFF) << 8) | BIT(4);
+            }
+
+            // Check for the mute flag
+            if(pulSPIRegister[SPI_REG_AUDIO_CNTRL] & BIT(0))
+            {
+                memset(psAudio, 0, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
             }
 
             // Filter the audio
