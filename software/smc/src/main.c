@@ -895,7 +895,7 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 145004000); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 145002100); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     //TXPLL_UNMUTE();
@@ -943,7 +943,7 @@ int init()
 
     usart1_init(12000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 12 MHz (FPGA)
     usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
-    usart3_init(18000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 18 MHz (DSP)
+    usart3_init(8000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 8 MHz (DSP)
     usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
     usart5_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 0, 1); // Init USART5 at 18 MHz (TXDAC)
 
