@@ -898,13 +898,13 @@ void init_tx_chain()
     adf4351_set_frequency(2 * 145002100); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
-    //TXPLL_UNMUTE();
+    TXPLL_UNMUTE();
 
-    //TXMIXER_ENABLE();
+    TXMIXER_ENABLE();
 
     delay_ms(100);
 
-    //TXPA_BIAS_ENABLE();
+    TXPA_BIAS_ENABLE();
 }
 
 int init()

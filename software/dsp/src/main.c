@@ -67,6 +67,9 @@ volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REG_COUNT];
 volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REG_COUNT];
 volatile uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
+int16_t sAudioRMS;
+uint8_t ubAudioMuted = 0;
+uint8_t ubAudioSquelchLevel = 0;
 fir_ctx_t *pAudioFilter = NULL;
 fir_ctx_t *pHilbertFilter = NULL;
 fir_interpolator_ctx_t *pBasebandFilter = NULL;
@@ -516,6 +519,9 @@ int main()
             DBGPRINTLN_CTX("Budget used: %.2f %%", (float)ullProcessingTimeUsed * 100.f / ullProcessingTimeBudget);
             DBGPRINTLN_CTX("Audio buffer overflow: %s", ubAudioOverflow ? "yes" : "no");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
+            DBGPRINTLN_CTX("Audio power: %.2f dBFS", 10.f * log10f((float)sAudioRMS / INT16_MAX));
+            DBGPRINTLN_CTX("Audio squelch level: %hhu", ubAudioSquelchLevel);
+            DBGPRINTLN_CTX("Audio muted: %s", ubAudioMuted ? "yes" : "no");
 
             ubAudioOverflow = 0;
         }
@@ -541,10 +547,18 @@ int main()
                 psAudio[i] = (sLeft >> 1) + (sRight >> 1);
             }
 
-            // Calculate audio RMS value
-            int16_t sAudioRMS;
-
+            // Calculate audio RMS value for later processing
             arm_rms_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &sAudioRMS);
+
+            if(sAudioRMS < 500 && ubAudioSquelchLevel > 0)
+                ubAudioSquelchLevel--;
+            else if(sAudioRMS > 3000 && ubAudioSquelchLevel < 250)
+                ubAudioSquelchLevel++;
+
+            ubAudioMuted = ubAudioSquelchLevel < 1;
+
+            if(ubAudioMuted)
+                memset(psAudio, 0, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
 
             // Filter the audio
             fir_filter(pAudioFilter, psAudio, psAudio);
