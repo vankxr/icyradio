@@ -78,6 +78,12 @@ void fir_delete(fir_ctx_t *pContext)
 }
 void fir_filter(fir_ctx_t *pContext, int16_t *psInput, int16_t *psOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!psInput)
+        return;
+
     int16_t *psFIROutput = psOutput;
     uint8_t ubOutputAllocated = 0;
 
@@ -208,6 +214,12 @@ void fir_complex_delete(fir_complex_ctx_t *pContext)
 }
 void fir_complex_filter(fir_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!pInput)
+        return;
+
     int16_t *psInput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
 
     if(!psInput)
@@ -325,6 +337,12 @@ void fir_decimator_delete(fir_decimator_ctx_t *pContext)
 }
 void fir_decimator_filter(fir_decimator_ctx_t *pContext, int16_t *psInput, int16_t *psOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!psInput)
+        return;
+
     int16_t *psFIROutput = psOutput;
     uint8_t ubOutputAllocated = 0;
 
@@ -458,6 +476,12 @@ void fir_decimator_complex_delete(fir_decimator_complex_ctx_t *pContext)
 }
 void fir_decimator_complex_filter(fir_decimator_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!pInput)
+        return;
+
     int16_t *psInput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
 
     if(!psInput)
@@ -577,6 +601,12 @@ void fir_interpolator_delete(fir_interpolator_ctx_t *pContext)
 }
 void fir_interpolator_filter(fir_interpolator_ctx_t *pContext, int16_t *psInput, int16_t *psOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!psInput)
+        return;
+
     int16_t *psFIROutput = psOutput;
     uint8_t ubOutputAllocated = 0;
 
@@ -710,6 +740,12 @@ void fir_interpolator_complex_delete(fir_interpolator_complex_ctx_t *pContext)
 }
 void fir_interpolaator_complex_filter(fir_interpolator_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
 {
+    if(!pContext)
+        return;
+
+    if(!pInput)
+        return;
+
     int16_t *psInput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
 
     if(!psInput)
