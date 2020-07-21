@@ -28,13 +28,15 @@
 // Helper macros
 #define BASEBAND_I2S_DMA_CHANNEL        0
 #define AUDIO_I2S_DMA_CHANNEL           1
+#define CONTROL_SPI_RX_DMA_CHANNEL      2
+#define CONTROL_SPI_TX_DMA_CHANNEL      3
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
 #define BASEBAND_DELAY_SAMPLES          102 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
 #define SPI_REG_COUNT                   16
-#define SPI_REG_INIT(i, d, w, r)        pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (w); pulSPIRegisterReadMask[(i)] = (r);
+#define SPI_REG_INIT(i, d, m)           pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (m);
 #define SPI_REG_ID                      0x00
 
 // Forward declarations
@@ -58,15 +60,17 @@ static void init_dsp_components();
 // Variables
 xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pBasebandDMADescriptor[2];
 xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pAudioDMADescriptor[2];
+xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pSPIRxDMADescriptor;
+xdmac_view3_descriptor_t __attribute__ ((aligned (4))) pSPITxDMADescriptor;
 uint32_t *pulBasebandBuffer = NULL;
 volatile uint32_t *pulAudioBuffer = NULL;
 volatile uint8_t ubAudioReady = 0;
 volatile uint8_t ubAudioOverflow = 0;
-volatile uint32_t DTCM_DATA pulSPIRegister[SPI_REG_COUNT];
-volatile uint32_t DTCM_DATA pulSPIRegisterWriteMask[SPI_REG_COUNT];
-volatile uint32_t DTCM_DATA pulSPIRegisterReadMask[SPI_REG_COUNT];
-volatile uint64_t ullProcessingTimeBudget = 0;
+uint64_t ullProcessingTimeBudget = 0;
 uint64_t ullProcessingTimeUsed = 0;
+volatile uint8_t *pubSPIRxBuffer = NULL;
+uint32_t pulSPIRegister[SPI_REG_COUNT];
+uint32_t pulSPIRegisterWriteMask[SPI_REG_COUNT];
 int16_t sAudioRMS;
 uint8_t ubAudioMuted = 0;
 uint8_t ubAudioSquelchLevel = 0;
@@ -78,57 +82,53 @@ dsp_quad_oscillator_t *pBasebandOscillator = NULL;
 // ISRs
 void ITCM_CODE _spi0_isr()
 {
-    static uint8_t pubSPIBuffer[5];
-    static uint8_t ubSPIBufferIndex = 0;
-    static uint8_t ubSPITX = 0;
-
     uint32_t ulFlags = SPI0->SPI_SR;
-
-    if(ulFlags & SPI_SR_RDRF)
-    {
-        uint8_t ubData = SPI0->SPI_RDR;
-
-        if(ubSPIBufferIndex == 0 && (ubData & 0x80))
-        {
-            uint8_t ubRegister = (ubData & 0x7F);
-
-            if(ubRegister < SPI_REG_COUNT)
-            {
-                uint32_t ulData = pulSPIRegister[ubRegister] & pulSPIRegisterReadMask[ubRegister];
-
-                pubSPIBuffer[0] = ulData >> 24;
-                pubSPIBuffer[1] = ulData >> 16;
-                pubSPIBuffer[2] = ulData >> 8;
-                pubSPIBuffer[3] = ulData >> 0;
-
-                ubSPITX = 1;
-            }
-        }
-
-        if(!ubSPITX)
-        {
-            if(ubSPIBufferIndex < 4)
-            {
-                pubSPIBuffer[ubSPIBufferIndex++] = ubData;
-            }
-            else
-            {
-                uint8_t ubRegister = (pubSPIBuffer[0] & 0x7F);
-                uint32_t ulData = ((uint32_t)pubSPIBuffer[1] << 24) | ((uint32_t)pubSPIBuffer[2] << 16) | ((uint32_t)pubSPIBuffer[3] << 8) | ((uint32_t)ubData << 0);
-
-                pulSPIRegister[ubRegister] = (pulSPIRegister[ubRegister] & ~pulSPIRegisterWriteMask[ubRegister]) | (ulData & pulSPIRegisterWriteMask[ubRegister]);
-            }
-        }
-        else if(ubSPIBufferIndex < 4)
-        {
-            SPI0->SPI_TDR = pubSPIBuffer[ubSPIBufferIndex++];
-        }
-    }
 
     if(ulFlags & SPI_SR_NSSR)
     {
-        ubSPIBufferIndex = 0;
-        ubSPITX = 0;
+        xdmac_ch_disable(CONTROL_SPI_TX_DMA_CHANNEL);
+        xdmac_ch_disable(CONTROL_SPI_RX_DMA_CHANNEL);
+
+        uint16_t usRemainingXfers = xdmac_ch_get_remaining_xfers(CONTROL_SPI_RX_DMA_CHANNEL);
+
+        xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
+        xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
+        xdmac_ch_load(CONTROL_SPI_RX_DMA_CHANNEL, &pSPIRxDMADescriptor, 3, 0);
+        xdmac_ch_enable(CONTROL_SPI_RX_DMA_CHANNEL);
+
+        dcache_addr_invalidate((void *)pubSPIRxBuffer, SPI_REG_COUNT * sizeof(uint32_t) + 1);
+
+        uint32_t ulReadSize = SPI_REG_COUNT * sizeof(uint32_t) - usRemainingXfers;
+
+        if(!ulReadSize)
+            return;
+
+        if(ulReadSize % sizeof(uint32_t))
+            return;
+
+        uint8_t ubRegister = pubSPIRxBuffer[0];
+
+        if(ubRegister & 0x80)
+            return;
+
+        ubRegister &= 0x7F;
+
+        if(ubRegister >= SPI_REG_COUNT)
+            return;
+
+        volatile uint32_t *pulSPIRxBuffer = (volatile uint32_t *)&pubSPIRxBuffer[1];
+        uint32_t ulWriteSize = SPI_REG_COUNT - ubRegister;
+        ulReadSize /= sizeof(uint32_t);
+
+        for(uint32_t i = 0; i < ulReadSize; i++)
+        {
+            if(i < ulWriteSize)
+                pulSPIRegister[ubRegister + i] = (pulSPIRegister[ubRegister + i] & ~pulSPIRegisterWriteMask[ubRegister + i]) | (pulSPIRxBuffer[i] & pulSPIRegisterWriteMask[ubRegister + i]);
+            else
+                pulSPIRegister[i - ulWriteSize] = (pulSPIRegister[i - ulWriteSize] & ~pulSPIRegisterWriteMask[ubRegister + i]) | (pulSPIRxBuffer[i] & pulSPIRegisterWriteMask[i - ulWriteSize]);
+        }
+
+        dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
     }
 }
 void fpga_isr()
@@ -301,7 +301,7 @@ void init_baseband_i2s()
     pBasebandDMADescriptor[0].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | BASEBAND_SAMPLE_BUFFER_SIZE;
     pBasebandDMADescriptor[0].SA = pulBasebandBuffer;
     pBasebandDMADescriptor[0].DA = (void *)&(I2SC1->I2SC_THR);
-    pBasebandDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pBasebandDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pBasebandDMADescriptor[0].BC = 0;
     pBasebandDMADescriptor[0].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pBasebandDMADescriptor[0].SUS = 0x000000;
@@ -311,7 +311,7 @@ void init_baseband_i2s()
     pBasebandDMADescriptor[1].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | BASEBAND_SAMPLE_BUFFER_SIZE;
     pBasebandDMADescriptor[1].SA = pulBasebandBuffer + BASEBAND_SAMPLE_BUFFER_SIZE;
     pBasebandDMADescriptor[1].DA = (void *)&(I2SC1->I2SC_THR);
-    pBasebandDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pBasebandDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC1_TX_LEFT | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pBasebandDMADescriptor[1].BC = 0;
     pBasebandDMADescriptor[1].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pBasebandDMADescriptor[1].SUS = 0x000000;
@@ -350,7 +350,7 @@ void init_audio_i2s()
     pAudioDMADescriptor[0].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | AUDIO_SAMPLE_BUFFER_SIZE;
     pAudioDMADescriptor[0].SA = (void *)&(I2SC0->I2SC_RHR);
     pAudioDMADescriptor[0].DA = pulAudioBuffer;
-    pAudioDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pAudioDMADescriptor[0].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pAudioDMADescriptor[0].BC = 0;
     pAudioDMADescriptor[0].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pAudioDMADescriptor[0].SUS = 0x000000;
@@ -360,7 +360,7 @@ void init_audio_i2s()
     pAudioDMADescriptor[1].UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | AUDIO_SAMPLE_BUFFER_SIZE;
     pAudioDMADescriptor[1].SA = (void *)&(I2SC0->I2SC_RHR);
     pAudioDMADescriptor[1].DA = pulAudioBuffer + AUDIO_SAMPLE_BUFFER_SIZE;
-    pAudioDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pAudioDMADescriptor[1].CFG = XDMAC_CC_PERID_I2SC0_RX_LEFT | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_WORD | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
     pAudioDMADescriptor[1].BC = 0;
     pAudioDMADescriptor[1].DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
     pAudioDMADescriptor[1].SUS = 0x000000;
@@ -376,23 +376,69 @@ void init_audio_i2s()
 void init_control_spi()
 {
     // Init registers and masks
-    memset((void *)pulSPIRegister, 0, sizeof(pulSPIRegister));
-    memset((void *)pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
-    memset((void *)pulSPIRegisterReadMask, 0, sizeof(pulSPIRegisterReadMask));
+    memset(pulSPIRegister, 0, sizeof(pulSPIRegister));
+    memset(pulSPIRegisterWriteMask, 0, sizeof(pulSPIRegisterWriteMask));
 
-    SPI_REG_INIT(SPI_REG_ID,            0x0D570001, 0x00000000, 0xFFFFFFFF);
+    SPI_REG_INIT(SPI_REG_ID,            0x0D570000 | (BUILD_VERSION & 0xFFFF), 0x00000000);
+
+    dcache_addr_clean((void *)pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
 
     // Init interface
+    free((void *)pubSPIRxBuffer);
+
+    pubSPIRxBuffer = (uint8_t *)malloc(SPI_REG_COUNT * sizeof(uint32_t) + 1);
+
+    if(!pubSPIRxBuffer)
+        return;
+
+    memset((void *)pubSPIRxBuffer, 0, SPI_REG_COUNT * sizeof(uint32_t) + 1); // Zero SPI RX buffer
+
+    dcache_addr_clean((void *)pubSPIRxBuffer, SPI_REG_COUNT * sizeof(uint32_t) + 1);
+
     PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (SPI0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
 
     SPI0->SPI_CR |= SPI_CR_SWRST; // Reset control SPI peripheral
     SPI0->SPI_MR = SPI_MR_MSTR_SLAVE; // Configure control SPI peripheral
     SPI0->SPI_CSR[0] = SPI_CSR_BITS_8_BIT | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_CPOL_IDLE_LOW; // Configure control SPI peripheral
 
+    xdmac_ch_disable(CONTROL_SPI_RX_DMA_CHANNEL);
+
+    pSPIRxDMADescriptor.NDA = &pSPIRxDMADescriptor;
+    pSPIRxDMADescriptor.UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | (SPI_REG_COUNT * sizeof(uint32_t) + 1);
+    pSPIRxDMADescriptor.SA = (void *)&(SPI0->SPI_RDR);
+    pSPIRxDMADescriptor.DA = pubSPIRxBuffer;
+    pSPIRxDMADescriptor.CFG = XDMAC_CC_PERID_SPI0_RX | XDMAC_CC_DAM_INCREMENTED_AM | XDMAC_CC_SAM_FIXED_AM | XDMAC_CC_DIF_AHB_IF0 | XDMAC_CC_SIF_AHB_IF1 | XDMAC_CC_DWIDTH_BYTE | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_PER2MEM | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pSPIRxDMADescriptor.BC = 0;
+    pSPIRxDMADescriptor.DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
+    pSPIRxDMADescriptor.SUS = 0x000000;
+    pSPIRxDMADescriptor.DUS = 0x000000;
+
+    dcache_addr_clean(&pSPIRxDMADescriptor, sizeof(pSPIRxDMADescriptor));
+
+    xdmac_ch_load(CONTROL_SPI_RX_DMA_CHANNEL, &pSPIRxDMADescriptor, 3, 0);
+    xdmac_ch_enable(CONTROL_SPI_RX_DMA_CHANNEL);
+
+    xdmac_ch_disable(CONTROL_SPI_TX_DMA_CHANNEL);
+
+    pSPITxDMADescriptor.NDA = &pSPITxDMADescriptor;
+    pSPITxDMADescriptor.UBC = (3 << 27) | BIT(26) | BIT(25) | BIT(24) | (SPI_REG_COUNT * sizeof(uint32_t));
+    pSPITxDMADescriptor.SA = pulSPIRegister;
+    pSPITxDMADescriptor.DA = (void *)&(SPI0->SPI_TDR);
+    pSPITxDMADescriptor.CFG = XDMAC_CC_PERID_SPI0_TX | XDMAC_CC_DAM_FIXED_AM | XDMAC_CC_SAM_INCREMENTED_AM | XDMAC_CC_DIF_AHB_IF1 | XDMAC_CC_SIF_AHB_IF0 | XDMAC_CC_DWIDTH_BYTE | XDMAC_CC_CSIZE_CHK_1 | XDMAC_CC_MEMSET_NORMAL_MODE | XDMAC_CC_SWREQ_HWR_CONNECTED | XDMAC_CC_DSYNC_MEM2PER | XDMAC_CC_MBSIZE_SINGLE | XDMAC_CC_TYPE_PER_TRAN;
+    pSPITxDMADescriptor.BC = 0;
+    pSPITxDMADescriptor.DS = (0x0000 << XDMAC_CDS_MSP_DDS_MSP_Pos) | (0x0000 << XDMAC_CDS_MSP_SDS_MSP_Pos);
+    pSPITxDMADescriptor.SUS = 0x000000;
+    pSPITxDMADescriptor.DUS = 0x000000;
+
+    dcache_addr_clean(&pSPITxDMADescriptor, sizeof(pSPITxDMADescriptor));
+
+    xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
+    xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
+
     IRQ_CLEAR(SPI0_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(SPI0_IRQn, 2, 0); // Set priority 2,0
+    IRQ_SET_PRIO(SPI0_IRQn, 3, 0); // Set priority 3,0
     IRQ_ENABLE(SPI0_IRQn); // Enable vector
-    SPI0->SPI_IER = SPI_IER_NSSR | SPI_IER_RDRF; // Enable interrupts
+    SPI0->SPI_IER = SPI_IER_NSSR; // Enable interrupts
 
     SPI0->SPI_CR = SPI_CR_SPIEN; // Enable SPI
 }

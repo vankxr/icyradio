@@ -176,7 +176,7 @@ static inline void dcache_clean_invalidate()
 
 static inline void dcache_addr_invalidate(void *pAddr, uint32_t ulSize)
 {
-    if(!ulSize || (ulSize & 31))
+    if(!ulSize)
         return;
 
     uint32_t ulOpAddress = (uint32_t)pAddr;
