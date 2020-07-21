@@ -1,14 +1,14 @@
 #include "pio.h"
 
-void _pioa_isr()
+void ITCM_CODE _pioa_isr()
 {
     uint32_t ulFlags = PIOA->PIO_ISR;
 }
-void _piob_isr()
+void ITCM_CODE _piob_isr()
 {
     uint32_t ulFlags = PIOB->PIO_ISR;
 }
-void _pioc_isr()
+void ITCM_CODE _pioc_isr()
 {
     extern void fpga_isr();
 
@@ -17,11 +17,11 @@ void _pioc_isr()
     if(ulFlags & BIT(30))
         fpga_isr();
 }
-void _piod_isr()
+void ITCM_CODE _piod_isr()
 {
     uint32_t ulFlags = PIOD->PIO_ISR;
 }
-void _pioe_isr()
+void ITCM_CODE _pioe_isr()
 {
     uint32_t ulFlags = PIOE->PIO_ISR;
 }

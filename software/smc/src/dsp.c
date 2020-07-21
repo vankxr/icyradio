@@ -8,13 +8,15 @@ static uint32_t dsp_read_register(uint8_t ubRegister)
     {
         DSP_SELECT();
 
-        usart3_spi_write_byte(0x80 | (ubRegister & 0x7F), 1);
-        usart3_spi_read(ubBuf, 4, 0x00);
+        for(uint32_t i = 0; i < ubRegister * 4 + 1; i++)
+            usart3_spi_write_byte(0x80, 0);
+
+        usart3_spi_read(ubBuf, 4, 0x80);
 
         DSP_UNSELECT();
     }
 
-    return ((uint32_t)ubBuf[0] << 24) | ((uint32_t)ubBuf[1] << 16) | ((uint32_t)ubBuf[2] << 8) | ((uint32_t)ubBuf[3] << 0);
+    return ((uint32_t)ubBuf[0] << 0) | ((uint32_t)ubBuf[1] << 8) | ((uint32_t)ubBuf[2] << 16) | ((uint32_t)ubBuf[3] << 24);
 }
 static void dsp_write_register(uint8_t ubRegister, uint32_t ulValue)
 {
@@ -22,11 +24,11 @@ static void dsp_write_register(uint8_t ubRegister, uint32_t ulValue)
     {
         DSP_SELECT();
 
-        usart3_spi_write_byte(ubRegister & 0x7F, 1);
-        usart3_spi_write_byte((ulValue >> 24) & 0xFF, 0);
-        usart3_spi_write_byte((ulValue >> 16) & 0xFF, 0);
+        usart3_spi_write_byte(ubRegister & 0x7F, 0);
+        usart3_spi_write_byte((ulValue >> 0) & 0xFF, 0);
         usart3_spi_write_byte((ulValue >> 8) & 0xFF, 0);
-        usart3_spi_write_byte((ulValue >> 0) & 0xFF, 1);
+        usart3_spi_write_byte((ulValue >> 16) & 0xFF, 0);
+        usart3_spi_write_byte((ulValue >> 24) & 0xFF, 1);
 
         DSP_UNSELECT();
     }
