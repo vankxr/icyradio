@@ -26,6 +26,11 @@ A **S**oftware **D**efined **R**adio development board.
  - [Core CMSIS](https://github.com/ARM-software/CMSIS_5) - CMSIS headers defining the ARM Cores
  - [armmem](https://github.com/vankxr/armmem) - ELF file analyzer (required for the MCU Makefiles to work)
 
+## Errata
+ - Microchip DS12x1 has the wrong package in the PCB version that was sent for manufacturing. The package in the datasheet has the pins wrongly named clockwise.
+ - The oscillators used have a drift of +-20ppm, this is really high for transmitting narrow band signals above ~300MHz, and can easily be heard. A +-0.5ppm oscillator was deadbugged in place for the ADF4351 reference.
+ - The DAC common mode pins were not connected in the PCB version that was sent for manufacturing. Solution was to scrape a bit of the GND plane and solder the pins to it.
+
 ## Authors
 
 * **João Silva** - [vankxr](https://github.com/vankxr)
