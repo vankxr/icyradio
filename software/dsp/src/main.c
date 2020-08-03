@@ -38,6 +38,8 @@
 #define SPI_REG_COUNT                   16
 #define SPI_REG_INIT(i, d, m)           pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (m);
 #define SPI_REG_ID                      0x00
+#define SPI_REG_AUDIO_CNTRL             0x00
+#define SPI_REG_AUDIO_THRESH            0x00
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -50,7 +52,7 @@ static uint8_t get_device_revision();
 
 static void load_baseband_buffer(iq16_t *pSamples);
 
-static void irq_update();
+static void ITCM_CODE irq_update();
 
 static void init_baseband_i2s();
 static void init_audio_i2s();
@@ -71,6 +73,7 @@ uint64_t ullProcessingTimeUsed = 0;
 volatile uint8_t *pubSPIRxBuffer = NULL;
 uint32_t pulSPIRegister[SPI_REG_COUNT];
 uint32_t pulSPIRegisterWriteMask[SPI_REG_COUNT];
+volatile uint8_t ubSPIRegisterUpdated = 0;
 int16_t sAudioRMS;
 uint8_t ubAudioMuted = 0;
 uint8_t ubAudioSquelchLevel = 0;
@@ -90,6 +93,8 @@ void ITCM_CODE _spi0_isr()
         xdmac_ch_disable(CONTROL_SPI_RX_DMA_CHANNEL);
 
         uint16_t usRemainingXfers = xdmac_ch_get_remaining_xfers(CONTROL_SPI_RX_DMA_CHANNEL);
+
+        dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
 
         xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
         xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
@@ -129,6 +134,8 @@ void ITCM_CODE _spi0_isr()
         }
 
         dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
+
+        ubSPIRegisterUpdated = 0;
     }
 }
 void fpga_isr()
@@ -275,6 +282,11 @@ void load_baseband_buffer(iq16_t *pSamples)
         pulDestAddress[i] = (((uint32_t)pSamples[i].q & 0xFFFF) << 16) | (((uint32_t)pSamples[i].i & 0xFFFF) << 0);
 
     dcache_addr_clean(pulDestAddress, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+}
+
+void irq_update()
+{
+
 }
 
 void init_baseband_i2s()
@@ -548,6 +560,20 @@ int main()
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
 
+        if(!ubSPIRegisterUpdated && (PIOB->PIO_PDSR & BIT(2))) // Clean register cache if SPI_CS is high
+        {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
+
+                xdmac_ch_disable(CONTROL_SPI_TX_DMA_CHANNEL);
+                xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
+                xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
+
+                ubSPIRegisterUpdated = 1;
+            }
+        }
+
         if(g_ullSystemTick - ullLastLEDTick > 250)
         {
             ullLastLEDTick = g_ullSystemTick;
@@ -596,10 +622,10 @@ int main()
             // Calculate audio RMS value for later processing
             arm_rms_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &sAudioRMS);
 
-            if(sAudioRMS < 500 && ubAudioSquelchLevel > 0)
-                ubAudioSquelchLevel--;
-            else if(sAudioRMS > 3000 && ubAudioSquelchLevel < 250)
-                ubAudioSquelchLevel++;
+            if(sAudioRMS < 800 && ubAudioSquelchLevel > 0)
+                ubAudioSquelchLevel -= 1;
+            else if(sAudioRMS > 1200 && ubAudioSquelchLevel < 100)
+                ubAudioSquelchLevel += 5;
 
             ubAudioMuted = ubAudioSquelchLevel < 1;
 

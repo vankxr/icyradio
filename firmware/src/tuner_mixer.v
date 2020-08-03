@@ -22,7 +22,7 @@ always @(posedge clk)
         if(reset)
             begin
                 quad_q <= 2'b0;
-                lut_addr <= {PSZ - 3{1'b0}};
+                lut_addr <= {(PSZ - 3){1'b0}};
                 lo_sign <= 1'b0;
             end
         else

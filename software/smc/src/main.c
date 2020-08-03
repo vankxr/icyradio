@@ -515,7 +515,7 @@ void init_system_clocks()
 
     //// FPGA Clock #3
     si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12000000);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 12288000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK3, 90.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK3, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK3] / 1000000);
@@ -599,13 +599,13 @@ void init_audio_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
 
-    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
-    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_BRIDGE);
+    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
+    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
     DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
 
     fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
@@ -767,7 +767,7 @@ void init_audio_chain()
 
     tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
     tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
-    tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_BOTH);
+    tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
     DBGPRINTLN_CTX("CODEC ADC input configured!");
 
     tscs25xx_dac_config_left_output(0); // Not inverted
@@ -790,8 +790,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
-    tscs25xx_input_set_left_volume(6.f); // 0.000 dB
-    tscs25xx_input_set_right_volume(6.f); // 0.000 dB
+    tscs25xx_input_set_left_volume(0.f); // 0.000 dB
+    tscs25xx_input_set_right_volume(0.f); // 0.000 dB
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
@@ -885,7 +885,7 @@ void init_tx_chain()
     ad9117_q_gain_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
-    adf4351_pfd_config(50000000, 1, 0, 20, 0);
+    adf4351_pfd_config(32000000, 1, 0, 10, 0);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
@@ -895,7 +895,7 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 145002100); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 425000000); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
