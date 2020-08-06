@@ -670,7 +670,7 @@ int main()
 
                 fir_filter(pHilbertFilter, psAudio, psHilbertAudio);
 
-                // Delay real baseband component to match the filter delay and stuff the result in the final baseband IQ pair array
+                // Delay real (I) component to match the filter delay and stuff the result in the final IQ pair array
                 static int16_t psDelayedAudio[AUDIO_SAMPLE_BUFFER_SIZE];
                 iq16_t pAudio[AUDIO_SAMPLE_BUFFER_SIZE];
 
