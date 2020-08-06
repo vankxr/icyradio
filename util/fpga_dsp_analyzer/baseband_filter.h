@@ -1,4 +1,4 @@
-static const uint32_t baseband_flter_taps_size = 44;
+static const uint32_t baseband_filter_taps_size = 44;
 static const int16_t baseband_filter_taps[] = {
     -181,
     -493,
