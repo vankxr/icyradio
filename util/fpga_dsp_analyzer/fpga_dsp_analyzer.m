@@ -75,7 +75,7 @@ title('Up to FsOut / 2');
 
 %% Dump coefficients
 outfile = fopen('baseband_filter.h', 'w');
-fprintf(outfile, 'static const uint32_t baseband_flter_taps_size = %u;\n', length(FIR));
+fprintf(outfile, 'static const uint32_t baseband_filter_taps_size = %u;\n', length(FIR));
 fprintf(outfile, 'static const int16_t baseband_filter_taps[] = {');
 for i = 1 : length(FIR) - 1
     fprintf(outfile, '\n    %hi,', int16(FIR(length(FIR) - i + 1) * 32767));
