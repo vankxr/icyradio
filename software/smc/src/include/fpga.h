@@ -111,9 +111,9 @@
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
 #define FPGA_QSPI_RAM_SIZE      4194304 // Words
 #define FPGA_QDDC_LO_CLK_FREQ   SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
-#define FPGA_QDDC_LO_FSZ        26 // Bits
+#define FPGA_QDDC_LO_FSZ        31 // Bits
 #define FPGA_QDUC_LO_CLK_FREQ   SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
-#define FPGA_QDUC_LO_FSZ        26 // Bits
+#define FPGA_QDUC_LO_FSZ        31 // Bits
 
 #define FPGA_IRQ_SMC    0
 #define FPGA_IRQ_DSP    1
@@ -153,14 +153,14 @@ void fpga_adc_dpram_sample(int16_t *psData, uint16_t usSize);
 
 void fpga_qddc_set_iq_swap(uint8_t ubEnable);
 void fpga_qddc_set_lo_noise_shaping(uint8_t ubEnable);
-void fpga_qddc_set_lo_freq(uint32_t ulFrequency);
-uint32_t fpga_qddc_get_lo_freq();
+void fpga_qddc_set_lo_freq(int32_t lFrequency);
+int32_t fpga_qddc_get_lo_freq();
 
 void fpga_qduc_set_tuner_bypass(uint8_t ubEnable);
 void fpga_qduc_set_iq_swap(uint8_t ubEnable);
 void fpga_qduc_set_lo_noise_shaping(uint8_t ubEnable);
-void fpga_qduc_set_lo_freq(uint32_t ulFrequency);
-uint32_t fpga_qduc_get_lo_freq();
+void fpga_qduc_set_lo_freq(int32_t lFrequency);
+int32_t fpga_qduc_get_lo_freq();
 
 void fpga_i2s_mux_set_codec_master_clock(uint32_t ulSource);
 uint32_t fpga_i2s_mux_get_codec_master_clock();

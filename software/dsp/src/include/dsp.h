@@ -8,11 +8,23 @@
 #include "arm_math.h"
 #include "iq16.h"
 
+typedef struct dsp_agc_t dsp_agc_t;
 typedef struct dsp_oscillator_t dsp_oscillator_t;
 typedef struct dsp_quad_oscillator_t dsp_quad_oscillator_t;
 typedef struct dsp_am_demod_ctx_t dsp_am_demod_ctx_t;
 typedef struct dsp_fm_demod_ctx_t dsp_fm_demod_ctx_t;
 
+struct dsp_agc_t
+{
+    float fGain;
+    float fMinGain;
+    float fMaxGain;
+    float fAttack;
+    float fRelease;
+    int16_t sTargetPeak;
+    int16_t sLimitPeak;
+    uint32_t ulChunkSize;
+};
 struct dsp_oscillator_t
 {
     uint32_t ulSteps;
@@ -38,7 +50,12 @@ struct dsp_fm_demod_ctx_t
 #define INT16_PI     INT16_MAX
 
 uint16_t dsp_abs_int16(int16_t sValue);
+uint8_t dsp_log2_int16(int16_t sValue);
 int16_t dsp_atan2_int16(int16_t sX, int16_t sY);
+
+dsp_agc_t* dsp_agc_init(float fStartGain, float fMinGain, float fMaxGain, float fAttack, float fRelease, float fTargetPeak, float fLimitPeak, uint32_t ulChunkSize);
+void dsp_agc_process(dsp_agc_t *pAGC, int16_t *psInput, int16_t *psOutput, uint32_t ulSize);
+void dsp_agc_delete(dsp_agc_t *pAGC);
 
 dsp_oscillator_t* dsp_oscillator_init(uint32_t ulSampleRate, int32_t lFreqneucy);
 void dsp_oscillator_delete(dsp_oscillator_t *pOscillator);

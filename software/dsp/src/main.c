@@ -33,7 +33,7 @@
 #define AUDIO_I2S_DMA_CHANNEL           1
 #define CONTROL_SPI_RX_DMA_CHANNEL      2
 #define CONTROL_SPI_TX_DMA_CHANNEL      3
-#define BASEBAND_SAMPLE_BUFFER_SIZE     4096
+#define BASEBAND_SAMPLE_BUFFER_SIZE     8192
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
 #define SPI_REG_COUNT                   16
