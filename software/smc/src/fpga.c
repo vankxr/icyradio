@@ -47,7 +47,7 @@ uint8_t fpga_load_bitstream(const uint8_t *pubBitstream, const uint32_t ulBitstr
 // Design specific
 static volatile uint8_t ubADCDPRAMWriteStarted = 0;
 
-static uint32_t fpga_read_register(uint8_t ubRegister)
+uint32_t fpga_read_register(uint8_t ubRegister)
 {
     uint8_t ubBuf[4];
 
@@ -213,19 +213,22 @@ void fpga_qddc_set_lo_noise_shaping(uint8_t ubEnable)
 {
     fpga_rmw_register(FPGA_REG_QDDC_CNTRL, ~FPGA_REG_QDDC_CNTRL_LO_NS_EN, ubEnable ? FPGA_REG_QDDC_CNTRL_LO_NS_EN : 0);
 }
-void fpga_qddc_set_lo_freq(uint32_t ulFrequency)
+void fpga_qddc_set_lo_freq(int32_t lFrequency)
 {
+    uint32_t ulFrequency = lFrequency > 0 ? lFrequency : -lFrequency;
+    uint32_t ulDirection = lFrequency > 0 ? 0x00000000 : 0x80000000;
+
     uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDDC_LO_FSZ;
     uint32_t ulValue = ullFrequency / FPGA_QDDC_LO_CLK_FREQ;
 
-    fpga_write_register(FPGA_REG_QDDC_LO_FREQ, ulValue);
+    fpga_write_register(FPGA_REG_QDDC_LO_FREQ, ulDirection | ulValue);
 }
-uint32_t fpga_qddc_get_lo_freq()
+int32_t fpga_qddc_get_lo_freq()
 {
     uint32_t ulValue = fpga_read_register(FPGA_REG_QDDC_LO_FREQ);
-    uint64_t ullFrequency = (uint64_t)ulValue * FPGA_QDDC_LO_CLK_FREQ;
+    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDDC_LO_CLK_FREQ;
 
-    return ullFrequency >> FPGA_QDDC_LO_FSZ;
+    return (ullFrequency >> FPGA_QDDC_LO_FSZ) * ((ulValue & 0x80000000) ? -1 : 1);
 }
 
 void fpga_qduc_set_tuner_bypass(uint8_t ubEnable)
@@ -240,19 +243,22 @@ void fpga_qduc_set_lo_noise_shaping(uint8_t ubEnable)
 {
     fpga_rmw_register(FPGA_REG_QDUC_CNTRL, ~FPGA_REG_QDUC_CNTRL_LO_NS_EN, ubEnable ? FPGA_REG_QDUC_CNTRL_LO_NS_EN : 0);
 }
-void fpga_qduc_set_lo_freq(uint32_t ulFrequency)
+void fpga_qduc_set_lo_freq(int32_t lFrequency)
 {
+    uint32_t ulFrequency = lFrequency > 0 ? lFrequency : -lFrequency;
+    uint32_t ulDirection = lFrequency > 0 ? 0x00000000 : 0x80000000;
+
     uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDUC_LO_FSZ;
     uint32_t ulValue = ullFrequency / FPGA_QDUC_LO_CLK_FREQ;
 
-    fpga_write_register(FPGA_REG_QDUC_LO_FREQ, ulValue);
+    fpga_write_register(FPGA_REG_QDUC_LO_FREQ, ulDirection | ulValue);
 }
-uint32_t fpga_qduc_get_lo_freq()
+int32_t fpga_qduc_get_lo_freq()
 {
     uint32_t ulValue = fpga_read_register(FPGA_REG_QDUC_LO_FREQ);
-    uint64_t ullFrequency = (uint64_t)ulValue * FPGA_QDUC_LO_CLK_FREQ;
+    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDUC_LO_CLK_FREQ;
 
-    return ullFrequency >> FPGA_QDUC_LO_FSZ;
+    return (ullFrequency >> FPGA_QDUC_LO_FSZ) * ((ulValue & 0x80000000) ? -1 : 1);
 }
 
 void fpga_i2s_mux_set_codec_master_clock(uint32_t ulSource)

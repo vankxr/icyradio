@@ -9,6 +9,43 @@ uint16_t dsp_abs_int16(int16_t sValue)
 
     return sValue;
 }
+uint8_t dsp_log2_int16(int16_t sValue)
+{
+    if(sValue <= 1)
+        return 0;
+    else if(sValue <= 2)
+        return 1;
+    else if(sValue <= 4)
+        return 2;
+    else if(sValue <= 8)
+        return 3;
+    else if(sValue <= 16)
+        return 4;
+    else if(sValue <= 32)
+        return 5;
+    else if(sValue <= 64)
+        return 6;
+    else if(sValue <= 128)
+        return 7;
+    else if(sValue <= 256)
+        return 8;
+    else if(sValue <= 512)
+        return 9;
+    else if(sValue <= 1024)
+        return 10;
+    else if(sValue <= 2048)
+        return 11;
+    else if(sValue <= 4096)
+        return 12;
+    else if(sValue <= 8192)
+        return 13;
+    else if(sValue <= 16284)
+        return 14;
+    else if(sValue <= 32768)
+        return 15;
+
+    return 0;
+}
 int16_t dsp_atan2_int16(int16_t sX, int16_t sY)
 {
     uint16_t usAbsX = dsp_abs_int16(sX);
@@ -42,6 +79,120 @@ int16_t dsp_atan2_int16(int16_t sX, int16_t sY)
         else
             return (INT16_PI * -1 / 4) - sTheta; // quadrant IV.  -1/8 = 7/8
     }
+}
+
+dsp_agc_t* dsp_agc_init(float fStartGain, float fMinGain, float fMaxGain, float fAttack, float fRelease, float fTargetPeak, float fLimitPeak, uint32_t ulChunkSize)
+{
+    if(!fMaxGain)
+        return NULL;
+
+    if(fMinGain >= fMaxGain)
+        return NULL;
+
+    if(fStartGain > fMaxGain)
+        return NULL;
+
+    if(fStartGain < fMinGain)
+        return NULL;
+
+    if(!fAttack || !fRelease)
+        return NULL;
+
+    if(!fTargetPeak || !fLimitPeak)
+        return NULL;
+
+    if(!ulChunkSize)
+        return NULL;
+
+    dsp_agc_t *pAGC = (dsp_agc_t *)malloc(sizeof(dsp_agc_t));
+
+    if(!pAGC)
+        return NULL;
+
+    pAGC->fGain = fStartGain;
+    pAGC->fMinGain = fMinGain;
+    pAGC->fMaxGain = fMaxGain;
+    pAGC->fAttack = fAttack;
+    pAGC->fRelease = fRelease;
+    pAGC->sTargetPeak = fTargetPeak * INT16_MAX;
+    pAGC->sLimitPeak = fLimitPeak * INT16_MAX;
+    pAGC->ulChunkSize = ulChunkSize;
+
+    return pAGC;
+}
+void dsp_agc_process(dsp_agc_t *pAGC, int16_t *psInput, int16_t *psOutput, uint32_t ulSize)
+{
+    if(!pAGC)
+        return;
+
+    if(!psInput)
+        return;
+
+    if(!ulSize)
+        return;
+
+    if(ulSize % pAGC->ulChunkSize)
+        return;
+
+    int16_t *psDataOutput = psOutput;
+    uint8_t ubOutputAllocated = 0;
+
+    if(!psDataOutput)
+    {
+        psDataOutput = (int16_t *)malloc(ulSize * sizeof(int16_t));
+
+        if(!psDataOutput)
+            return;
+
+        ubOutputAllocated = 1;
+    }
+
+    arm_abs_q15(psInput, psDataOutput, ulSize);
+
+    for(uint32_t i = 0; i < ulSize; i += pAGC->ulChunkSize)
+    {
+        int16_t sPeak;
+        uint32_t ulPeakPosition;
+
+        arm_max_q15(&psDataOutput[i], pAGC->ulChunkSize, &sPeak, &ulPeakPosition);
+
+        float fCurrentGain = pAGC->fGain;
+        float fLimitGain = (float)pAGC->sLimitPeak / (float)sPeak;
+
+        if(fCurrentGain > fLimitGain)
+            fCurrentGain = fLimitGain;
+
+        int8_t bCurrentGainShift = dsp_log2_int16(fCurrentGain) + 1;
+        int16_t sCurrentGainFract = (int32_t)(fCurrentGain * INT16_MAX) >> bCurrentGainShift;
+
+        arm_scale_q15(&psInput[i], sCurrentGainFract, bCurrentGainShift, &psDataOutput[i], pAGC->ulChunkSize);
+
+        sPeak *= fCurrentGain;
+
+        if(sPeak < pAGC->sTargetPeak)
+            pAGC->fGain += pAGC->fAttack;
+        if(sPeak > pAGC->sTargetPeak)
+            pAGC->fGain -= pAGC->fRelease;
+
+        if(pAGC->fGain > pAGC->fMaxGain)
+            pAGC->fGain = pAGC->fMaxGain;
+        if(pAGC->fGain < pAGC->fMinGain)
+            pAGC->fGain = pAGC->fMinGain;
+    }
+
+    if(ubOutputAllocated)
+    {
+        arm_copy_q15(psDataOutput, psInput, ulSize);
+
+        free(psDataOutput);
+    }
+}
+void dsp_agc_delete(dsp_agc_t *pAGC)
+{
+    if(!pAGC)
+        return;
+
+    free(pAGC);
 }
 
 dsp_oscillator_t* dsp_oscillator_init(uint32_t ulSampleRate, int32_t lFreqneucy)
@@ -144,7 +295,7 @@ void dsp_oscillator_mix(dsp_oscillator_t *pOscillator, int16_t *psInput, int16_t
 
     if(ubOutputAllocated)
     {
-        memcpy(psInput, psDataOutput, ulSize * sizeof(int16_t));
+        arm_copy_q15(psDataOutput, psInput, ulSize);
 
         free(psDataOutput);
     }
@@ -253,7 +404,7 @@ void dsp_quad_oscillator_mix(dsp_quad_oscillator_t *pOscillator, iq16_t *pInput,
 
     if(ubOutputAllocated)
     {
-        memcpy(pInput, pDataOutput, ulSize * sizeof(iq16_t));
+        arm_copy_q15((int16_t *)pDataOutput, (int16_t *)pInput, ulSize * sizeof(iq16_t) / sizeof(int16_t));
 
         free(pDataOutput);
     }

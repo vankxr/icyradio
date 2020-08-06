@@ -101,7 +101,7 @@ void fir_filter(fir_ctx_t *pContext, int16_t *psInput, int16_t *psOutput)
 
     if(ubOutputAllocated)
     {
-        memcpy(psInput, psFIROutput, pContext->ulBlockSize * sizeof(int16_t));
+        arm_copy_q15(psFIROutput, psInput, pContext->ulBlockSize);
 
         free(psFIROutput);
     }
@@ -360,7 +360,7 @@ void fir_decimator_filter(fir_decimator_ctx_t *pContext, int16_t *psInput, int16
 
     if(ubOutputAllocated)
     {
-        memcpy(psInput, psFIROutput, pContext->ulBlockSize / pContext->pInstance->M * sizeof(int16_t));
+        arm_copy_q15(psFIROutput, psInput, pContext->ulBlockSize / pContext->pInstance->M);
 
         free(psFIROutput);
     }
@@ -624,7 +624,7 @@ void fir_interpolator_filter(fir_interpolator_ctx_t *pContext, int16_t *psInput,
 
     if(ubOutputAllocated)
     {
-        memcpy(psInput, psFIROutput, pContext->ulBlockSize * pContext->pInstance->L * sizeof(int16_t));
+        arm_copy_q15(psFIROutput, psInput, pContext->ulBlockSize * pContext->pInstance->L);
 
         free(psFIROutput);
     }
@@ -704,7 +704,7 @@ fir_interpolator_complex_ctx_t* fir_interpolator_complex_init(uint16_t usNumTaps
         return NULL;
     }
 
-    if(arm_fir_interpolate_init_q15(pNewContext->pQInstance, ubInterpolationFactor, usNumTaps, psCoefs, psFIRState + (usNumTaps + ulBlockSize - 1), ulBlockSize) != ARM_MATH_SUCCESS)
+    if(arm_fir_interpolate_init_q15(pNewContext->pQInstance, ubInterpolationFactor, usNumTaps, psCoefs, psFIRState + ((usNumTaps / ubInterpolationFactor) + ulBlockSize - 1), ulBlockSize) != ARM_MATH_SUCCESS)
     {
         if(pNewContext->ubStateAllocated)
             free(psFIRState);
@@ -738,7 +738,7 @@ void fir_interpolator_complex_delete(fir_interpolator_complex_ctx_t *pContext)
 
     free(pContext);
 }
-void fir_interpolaator_complex_filter(fir_interpolator_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
+void fir_interpolator_complex_filter(fir_interpolator_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
 {
     if(!pContext)
         return;

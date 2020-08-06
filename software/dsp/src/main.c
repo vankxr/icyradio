@@ -20,6 +20,7 @@
 #include "wdt.h"
 #include "pio.h"
 #include "audio_filter.h"
+#include "pre_emphasis_filter.h"
 #include "baseband_filter.h"
 #include "hilbert_filter.h"
 
@@ -30,10 +31,10 @@
 #define AUDIO_I2S_DMA_CHANNEL           1
 #define CONTROL_SPI_RX_DMA_CHANNEL      2
 #define CONTROL_SPI_TX_DMA_CHANNEL      3
-#define BASEBAND_SAMPLE_BUFFER_SIZE     4096
+#define BASEBAND_SAMPLE_BUFFER_SIZE     8192
 #define AUDIO_SAMPLE_BUFFER_SIZE        1024
 
-#define BASEBAND_DELAY_SAMPLES          102 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
+#define HILBERT_DELAY_SAMPLES           101 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
 #define SPI_REG_COUNT                   16
 #define SPI_REG_INIT(i, d, m)           pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (m);
@@ -74,13 +75,14 @@ volatile uint8_t *pubSPIRxBuffer = NULL;
 uint32_t pulSPIRegister[SPI_REG_COUNT];
 uint32_t pulSPIRegisterWriteMask[SPI_REG_COUNT];
 volatile uint8_t ubSPIRegisterUpdated = 0;
-int16_t sAudioRMS;
+float fAudioPower = -120.f;
 uint8_t ubAudioMuted = 0;
 uint8_t ubAudioSquelchLevel = 0;
 fir_ctx_t *pAudioFilter = NULL;
+fir_ctx_t *pPreEmphasisFilter = NULL;
 fir_ctx_t *pHilbertFilter = NULL;
-fir_interpolator_ctx_t *pBasebandFilter = NULL;
-dsp_quad_oscillator_t *pBasebandOscillator = NULL;
+fir_interpolator_complex_ctx_t *pBasebandFilter = NULL;
+dsp_agc_t *pAudioAGC = NULL;
 
 // ISRs
 void ITCM_CODE _spi0_isr()
@@ -464,29 +466,37 @@ void init_dsp_components()
     else
         DBGPRINTLN_CTX("Failed audio FIR intialization!");
 
-    // Baseband interpolating filter
-    pBasebandFilter = fir_interpolator_init(baseband_filter_taps_size, 4, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
+    // Pre-emphasis filter
+    pPreEmphasisFilter = fir_init(pre_emphasis_filter_taps_size, pre_emphasis_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
-    if(pBasebandFilter)
-        DBGPRINTLN_CTX("Baseband interpolating FIR intialized!");
+    if(pPreEmphasisFilter)
+        DBGPRINTLN_CTX("Pre-emphasis FIR intialized!");
     else
-        DBGPRINTLN_CTX("Failed baseband interpolating FIR intialization!");
+        DBGPRINTLN_CTX("Failed pre-emphasis FIR intialization!");
 
     // Hilbert filter
-    pHilbertFilter = fir_init(hilbert_fir_taps_size, hilbert_fir_taps, NULL, BASEBAND_SAMPLE_BUFFER_SIZE);
+    pHilbertFilter = fir_init(hilbert_filter_taps_size, hilbert_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
     if(pHilbertFilter)
         DBGPRINTLN_CTX("Hilbert FIR intialized!");
     else
         DBGPRINTLN_CTX("Failed hilbert FIR intialization!");
 
-    // Baseband oscillator
-    pBasebandOscillator = dsp_quad_oscillator_init(192000, 4800);
+    // Baseband interpolating filter
+    pBasebandFilter = fir_interpolator_complex_init(baseband_filter_taps_size, 8, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
-    if(pBasebandOscillator)
-        DBGPRINTLN_CTX("Baseband oscillator intialized!");
+    if(pBasebandFilter)
+        DBGPRINTLN_CTX("Baseband interpolating FIR intialized!");
     else
-        DBGPRINTLN_CTX("Failed baseband oscillator intialization!");
+        DBGPRINTLN_CTX("Failed baseband interpolating FIR intialization!");
+
+    // Audio AGC
+    pAudioAGC = dsp_agc_init(1.f, 1.f, 20.f, 0.001f, 0.005f, 0.85f, 0.9f, 32);
+
+    if(pAudioAGC)
+        DBGPRINTLN_CTX("Audio AGC intialized!");
+    else
+        DBGPRINTLN_CTX("Failed audio AGC intialization!");
 }
 int init()
 {
@@ -591,7 +601,8 @@ int main()
             DBGPRINTLN_CTX("Budget used: %.2f %%", (float)ullProcessingTimeUsed * 100.f / ullProcessingTimeBudget);
             DBGPRINTLN_CTX("Audio buffer overflow: %s", ubAudioOverflow ? "yes" : "no");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
-            DBGPRINTLN_CTX("Audio power: %.2f dBFS", 10.f * log10f((float)sAudioRMS / INT16_MAX));
+            DBGPRINTLN_CTX("Audio power: %.2f dBFS", fAudioPower);
+            DBGPRINTLN_CTX("Audio AGC gain: %.2f", pAudioAGC->fGain);
             DBGPRINTLN_CTX("Audio squelch level: %hhu", ubAudioSquelchLevel);
             DBGPRINTLN_CTX("Audio muted: %s", ubAudioMuted ? "yes" : "no");
 
@@ -619,56 +630,73 @@ int main()
                 psAudio[i] = (sLeft >> 1) + (sRight >> 1);
             }
 
-            // Calculate audio RMS value for later processing
-            arm_rms_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &sAudioRMS);
+            // Calculate audio power value for later processing
+            int64_t llAudioPower;
 
-            if(sAudioRMS < 800 && ubAudioSquelchLevel > 0)
+            arm_power_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &llAudioPower);
+
+            fAudioPower = 10.f * log10f((float)llAudioPower / ((1ULL << 33) - 1));
+
+            if(fAudioPower < -25.f && ubAudioSquelchLevel > 0)
                 ubAudioSquelchLevel -= 1;
-            else if(sAudioRMS > 1200 && ubAudioSquelchLevel < 100)
-                ubAudioSquelchLevel += 5;
+            else if(fAudioPower > -20.f && ubAudioSquelchLevel < 10)
+                ubAudioSquelchLevel += 3;
 
             ubAudioMuted = ubAudioSquelchLevel < 1;
 
             if(ubAudioMuted)
-                memset(psAudio, 0, AUDIO_SAMPLE_BUFFER_SIZE * sizeof(int16_t));
-
-            // Filter the audio
-            fir_filter(pAudioFilter, psAudio, psAudio);
-
-            // Interpolate and upsample to baseband rate
-            int16_t psBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
-            fir_interpolator_filter(pBasebandFilter, psAudio, psBaseband);
-
-            // Generate quadrature with the hilbert transform
-            int16_t psHilbertBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
-            fir_filter(pHilbertFilter, psBaseband, psHilbertBaseband);
-
-            // Delay real baseband component to match the filter delay and stuff the result in the final baseband IQ pair array
-            static int16_t psDelayedBaseband[BASEBAND_DELAY_SAMPLES];
-            iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
-            for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
             {
-                if(i < BASEBAND_DELAY_SAMPLES)
-                {
-                    pBaseband[i].i = psDelayedBaseband[i];
-                    psDelayedBaseband[i] = psBaseband[BASEBAND_SAMPLE_BUFFER_SIZE - BASEBAND_DELAY_SAMPLES + i];
-                }
-                else
-                {
-                    pBaseband[i].i = psBaseband[i - BASEBAND_DELAY_SAMPLES];
-                }
+                iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
 
-                pBaseband[i].q = psHilbertBaseband[i];
+                // Fill dummy baseband buffer with zeros
+                arm_fill_q15(0, (int16_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t) / sizeof(int16_t));
+
+                // Load baseband buffer
+                load_baseband_buffer(pBaseband);
             }
+            else
+            {
+                // Apply pre-emphasis to the audio
+                fir_filter(pPreEmphasisFilter, psAudio, NULL);
 
-            // Mix with oscillator to move the spectrum up
-            //dsp_quad_oscillator_mix(pBasebandOscillator, pBaseband, NULL, BASEBAND_SAMPLE_BUFFER_SIZE, 0);
+                // Filter the audio
+                fir_filter(pAudioFilter, psAudio, NULL);
 
-            // Load baseband buffer
-            load_baseband_buffer(pBaseband);
+                // Pass through AGC
+                dsp_agc_process(pAudioAGC, psAudio, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
+
+                // Generate quadrature with the hilbert transform
+                int16_t psHilbertAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+
+                fir_filter(pHilbertFilter, psAudio, psHilbertAudio);
+
+                // Delay real baseband component to match the filter delay and stuff the result in the final baseband IQ pair array
+                static int16_t psDelayedAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+                iq16_t pAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+
+                for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
+                {
+                    if(i < HILBERT_DELAY_SAMPLES)
+                    {
+                        pAudio[i].i = psDelayedAudio[i];
+                        psDelayedAudio[i] = psAudio[AUDIO_SAMPLE_BUFFER_SIZE - HILBERT_DELAY_SAMPLES + i];
+                    }
+                    else
+                    {
+                        pAudio[i].i = psAudio[i - HILBERT_DELAY_SAMPLES];
+                    }
+
+                    pAudio[i].q = psHilbertAudio[i];
+                }
+
+                // Interpolate and upsample to baseband rate
+                iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
+
+                fir_interpolator_complex_filter(pBasebandFilter, pAudio, pBaseband);
+
+                // Load baseband buffer
+                load_baseband_buffer(pBaseband);
+            }
 
             // Declare done processing audio buffer
             ubAudioReady = 0;

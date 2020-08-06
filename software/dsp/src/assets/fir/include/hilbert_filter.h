@@ -1,5 +1,5 @@
-static const uint32_t hilbert_fir_taps_size = 202;
-static const int16_t hilbert_fir_taps[] = {
+static const uint32_t hilbert_filter_taps_size = 202;
+static const int16_t hilbert_filter_taps[] = {
     0,
     328,
     0,

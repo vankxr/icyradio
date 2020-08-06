@@ -143,7 +143,7 @@ assign qduc_clk             = clk1; // QDUC clock is CLK1 (same as the DAC)
 assign dac_clk              = clk1; // DAC clock is CLK1
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the QDDC)
 assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK3
-assign qspi_mem_clk         = 1'b0; // QSPI memory clock is CLK1
+assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
 assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
@@ -309,7 +309,8 @@ always @(posedge adc_clk)
 reg  signed [15:0] qddc_in;
 wire signed [15:0] qddc_i_out;
 wire signed [15:0] qddc_q_out;
-wire        [25:0] qddc_lo_freq; // Controlled by SMC via SPI
+wire        [30:0] qddc_lo_freq; // Controlled by SMC via SPI
+wire               qddc_lo_dir; // Controlled by SMC via SPI
 wire               qddc_lo_ns_en; // Controlled by SMC via SPI
 wire               qddc_iq_swap; // Controlled by SMC via SPI
 wire               qddc_valid;
@@ -321,6 +322,7 @@ qddc adc_qddc
     .reset(qddc_rst),
     .in(qddc_in),
     .lo_freq(qddc_lo_freq),
+    .lo_dir(qddc_lo_dir),
     .lo_ns_en(qddc_lo_ns_en),
     .iq_swap(qddc_iq_swap),
     .out_valid(qddc_valid),
@@ -347,7 +349,7 @@ wire [15:0] bb_i2s_left_data_out;
 wire [15:0] bb_i2s_right_data_out;
 reg  [15:0] bb_i2s_left_data_in;
 reg  [15:0] bb_i2s_right_data_in;
-reg  [2:0]  bb_i2s_clk_div;
+reg  [1:0]  bb_i2s_clk_div;
 wire        bb_i2s_bclk;
 wire        bb_i2s_lrclk;
 wire        bb_i2s_sdout;
@@ -358,7 +360,7 @@ assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
-assign bb_i2s_bclk = bb_i2s_clk_div[2]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC) * I2S_WS * 2 = ADC_CLK / 8
+assign bb_i2s_bclk = bb_i2s_clk_div[1]; // Bit clock = (ADC_CLK / CIC_DEC) * I2S_WS * 2 = ADC_CLK / 4
 
 // Clock divider
 always @(posedge bb_i2s_clk)
@@ -402,7 +404,8 @@ reg  signed [15:0] qduc_i_in;
 reg  signed [15:0] qduc_q_in;
 wire signed [13:0] qduc_i_out;
 wire signed [13:0] qduc_q_out;
-wire        [25:0] qduc_lo_freq; // Controlled by SMC via SPI
+wire        [30:0] qduc_lo_freq; // Controlled by SMC via SPI
+wire               qduc_lo_dir; // Controlled by SMC via SPI
 wire               qduc_lo_ns_en; // Controlled by SMC via SPI
 wire               qduc_iq_swap; // Controlled by SMC via SPI
 wire               qduc_tuner_byp; // Controlled by SMC via SPI
@@ -415,6 +418,7 @@ qduc dac_qduc
     .in_i(qduc_i_in),
     .in_q(qduc_q_in),
     .lo_freq(qduc_lo_freq),
+    .lo_dir(qduc_lo_dir),
     .lo_ns_en(qduc_lo_ns_en),
     .iq_swap(qduc_iq_swap),
     .tuner_byp(qduc_tuner_byp),
@@ -483,7 +487,7 @@ wire        audio_i2s_lrclk;
 wire        audio_i2s_sdout;
 reg         audio_i2s_sdin;
 
-assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = (ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2 = ADC_CLK / 32
+assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = (ADC_CLK / CIC_DEC / 8) * I2S_WS * 2 = ADC_CLK / 32
 
 // Clock divider
 always @(posedge audio_i2s_clk)
@@ -1029,7 +1033,8 @@ reg  cntrl_spi_qddc_lo_ns_en;
 reg  cntrl_spi_qddc_iq_swap;
 
 //// CNTRL_SPI_REG_QDDC_LO_FREQ
-reg  [25:0] cntrl_spi_qddc_lo_freq;
+reg  [30:0] cntrl_spi_qddc_lo_freq;
+reg         cntrl_spi_qddc_lo_dir;
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
 reg  cntrl_spi_qduc_lo_ns_en;
@@ -1037,7 +1042,8 @@ reg  cntrl_spi_qduc_iq_swap;
 reg  cntrl_spi_qduc_tuner_byp;
 
 //// CNTRL_SPI_REG_QDUC_LO_FREQ
-reg  [25:0] cntrl_spi_qduc_lo_freq;
+reg  [30:0] cntrl_spi_qduc_lo_freq;
+reg         cntrl_spi_qduc_lo_dir;
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
 reg  [1:0]  cntrl_spi_audio_i2s_codec_mclk_sel;
@@ -1148,12 +1154,19 @@ synchronizer cntrl_spi_qddc_iq_swap_sync
 );
 
 //// CNTRL_SPI_REG_QDDC_LO_FREQ
-synchronizer cntrl_spi_qddc_lo_freq_sync [25:0]
+synchronizer cntrl_spi_qddc_lo_freq_sync [30:0]
 (
     .in_clk(cntrl_spi_clk),
     .out_clk(qddc_clk),
     .in(cntrl_spi_qddc_lo_freq),
     .out(qddc_lo_freq)
+);
+synchronizer cntrl_spi_qddc_lo_dir_sync
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qddc_clk),
+    .in(cntrl_spi_qddc_lo_dir),
+    .out(qddc_lo_dir)
 );
 
 //// CNTRL_SPI_REG_QDUC_CNTRL
@@ -1180,12 +1193,19 @@ synchronizer cntrl_spi_qduc_tuner_byp_sync
 );
 
 //// CNTRL_SPI_REG_QDUC_LO_FREQ
-synchronizer cntrl_spi_qduc_lo_freq_sync [25:0]
+synchronizer cntrl_spi_qduc_lo_freq_sync [30:0]
 (
     .in_clk(cntrl_spi_clk),
     .out_clk(qduc_clk),
     .in(cntrl_spi_qduc_lo_freq),
     .out(qduc_lo_freq)
+);
+synchronizer cntrl_spi_qduc_lo_dir_sync
+(
+    .in_clk(cntrl_spi_clk),
+    .out_clk(qduc_clk),
+    .in(cntrl_spi_qduc_lo_dir),
+    .out(qduc_lo_dir)
 );
 
 //// CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL
@@ -1321,13 +1341,15 @@ always @(posedge cntrl_spi_clk)
                 cntrl_spi_qddc_lo_ns_en <= 1'b0;
                 cntrl_spi_qddc_iq_swap <= 1'b0;
 
-                cntrl_spi_qddc_lo_freq <= 26'h0000000;
+                cntrl_spi_qddc_lo_freq <= 31'h00000000;
+                cntrl_spi_qddc_lo_dir <= 1'b0;
 
                 cntrl_spi_qduc_lo_ns_en <= 1'b0;
                 cntrl_spi_qduc_iq_swap <= 1'b0;
                 cntrl_spi_qduc_tuner_byp <= 1'b1;
 
-                cntrl_spi_qduc_lo_freq <= 26'h0000000;
+                cntrl_spi_qduc_lo_freq <= 31'h00000000;
+                cntrl_spi_qduc_lo_dir <= 1'b0;
 
                 cntrl_spi_audio_i2s_codec_mclk_sel <= 2'b01;
                 cntrl_spi_audio_i2s_dsp_dclk_sel <= 2'b00;
@@ -1424,7 +1446,8 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDDC_LO_FREQ:
                                 begin
-                                    cntrl_spi_qddc_lo_freq <= cntrl_spi_data_out[25:0];
+                                    cntrl_spi_qddc_lo_freq <= cntrl_spi_data_out[30:0];
+                                    cntrl_spi_qddc_lo_dir <= cntrl_spi_data_out[31];
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin
@@ -1434,7 +1457,8 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDUC_LO_FREQ:
                                 begin
-                                    cntrl_spi_qduc_lo_freq <= cntrl_spi_data_out[25:0];
+                                    cntrl_spi_qduc_lo_freq <= cntrl_spi_data_out[30:0];
+                                    cntrl_spi_qduc_lo_dir <= cntrl_spi_data_out[31];
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
@@ -1534,7 +1558,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDDC_LO_FREQ:
                                 begin
-                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_qddc_lo_freq};
+                                    cntrl_spi_data_in <= {cntrl_spi_qddc_lo_dir, cntrl_spi_qddc_lo_freq};
                                 end
                             CNTRL_SPI_REG_QDUC_CNTRL:
                                 begin
@@ -1542,7 +1566,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_QDUC_LO_FREQ:
                                 begin
-                                    cntrl_spi_data_in <= {6'd0, cntrl_spi_qduc_lo_freq};
+                                    cntrl_spi_data_in <= {cntrl_spi_qduc_lo_dir, cntrl_spi_qduc_lo_freq};
                                 end
                             CNTRL_SPI_REG_AUDIO_I2S_MUX_SEL:
                                 begin
