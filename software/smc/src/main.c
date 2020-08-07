@@ -21,7 +21,6 @@
 #include "adc.h"
 #include "usart.h"
 #include "i2c.h"
-#include "dsp.h"
 #include "fpga.h"
 #include "si5351.h"
 #include "ft6x36.h"
@@ -1117,16 +1116,6 @@ int main()
     fpga_rgb_led_enable(FPGA_LED_RED);
     fpga_rgb_led_enable(FPGA_LED_GREEN);
     fpga_rgb_led_enable(FPGA_LED_BLUE);
-
-    // DSP init
-    if(dsp_init())
-        DBGPRINTLN_CTX("DSP init OK!");
-    else
-        DBGPRINTLN_CTX("DSP init NOK!");
-
-    // DSP info
-    DBGPRINTLN_CTX("DSP firmware ID: 0x%04X", dsp_read_firmware_id());
-    DBGPRINTLN_CTX("DSP firmware version: v%hu", dsp_read_firmware_version());
 
     // I2S Bridge info & configuration
     char pszBridgeVersion[33];
