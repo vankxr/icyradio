@@ -871,12 +871,12 @@ void init_tx_chain()
     ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
-    ad9117_i_offset_config(0, AD9117_REG_AUX_CTLI_RANGE_0V5 | AD9117_REG_AUX_CTLI_TOP_DIRECT);
-    ad9117_i_offset_set_value(0);
+    ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_1V0 | AD9117_REG_AUX_CTLI_TOP_1V0);
+    ad9117_i_offset_set_value(522);
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
-    ad9117_q_offset_config(0, AD9117_REG_AUX_CTLQ_RANGE_0V5 | AD9117_REG_AUX_CTLQ_TOP_DIRECT);
-    ad9117_q_offset_set_value(0);
+    ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_1V0 | AD9117_REG_AUX_CTLQ_TOP_1V0);
+    ad9117_q_offset_set_value(90);
     DBGPRINTLN_CTX("TX DAC Q offset: %hu", ad9117_q_offset_get_value());
 
     ad9117_i_gain_set_value(0);

@@ -19,6 +19,7 @@
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
+#include "trng.h"
 #include "audio_filter.h"
 #include "pre_emphasis_filter.h"
 #include "baseband_filter.h"
@@ -39,8 +40,6 @@
 #define SPI_REG_COUNT                   16
 #define SPI_REG_INIT(i, d, m)           pulSPIRegister[(i)] = (d); pulSPIRegisterWriteMask[(i)] = (m);
 #define SPI_REG_ID                      0x00
-#define SPI_REG_AUDIO_CNTRL             0x00
-#define SPI_REG_AUDIO_THRESH            0x00
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -74,7 +73,7 @@ uint64_t ullProcessingTimeUsed = 0;
 volatile uint8_t *pubSPIRxBuffer = NULL;
 uint32_t pulSPIRegister[SPI_REG_COUNT];
 uint32_t pulSPIRegisterWriteMask[SPI_REG_COUNT];
-volatile uint8_t ubSPIRegisterUpdated = 0;
+volatile uint8_t ubSPIRegisterSynced = 0;
 float fAudioPower = -120.f;
 uint8_t ubAudioMuted = 0;
 uint8_t ubAudioSquelchLevel = 0;
@@ -137,14 +136,14 @@ void ITCM_CODE _spi0_isr()
 
         dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
 
-        ubSPIRegisterUpdated = 0;
+        ubSPIRegisterSynced = 0;
     }
 }
-void fpga_isr()
+void ITCM_CODE fpga_isr()
 {
     DBGPRINTLN_CTX("FPGA ISR");
 }
-void audio_i2s_dma_isr(uint32_t ulFlags)
+void ITCM_CODE audio_i2s_dma_isr(uint32_t ulFlags)
 {
     if(ulFlags & XDMAC_CIS_BIS)
     {
@@ -519,6 +518,7 @@ int init()
 
     pio_init();
     xdmac_init();
+    trng_init();
 
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
@@ -570,7 +570,7 @@ int main()
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
 
-        if(!ubSPIRegisterUpdated && (PIOB->PIO_PDSR & BIT(2))) // Clean register cache if SPI_CS is high
+        if(!ubSPIRegisterSynced && (PIOB->PIO_PDSR & BIT(2))) // Clean register cache if SPI_CS is high
         {
             ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
             {
@@ -580,7 +580,7 @@ int main()
                 xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
                 xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
 
-                ubSPIRegisterUpdated = 1;
+                ubSPIRegisterSynced = 1;
             }
         }
 
@@ -630,13 +630,14 @@ int main()
                 psAudio[i] = (sLeft >> 1) + (sRight >> 1);
             }
 
-            // Calculate audio power value for later processing
+            // Calculate audio power value
             int64_t llAudioPower;
 
             arm_power_q15(psAudio, AUDIO_SAMPLE_BUFFER_SIZE, &llAudioPower);
 
             fAudioPower = 10.f * log10f((float)llAudioPower / ((1ULL << 33) - 1));
 
+            // Squelch
             if(fAudioPower < -25.f && ubAudioSquelchLevel > 0)
                 ubAudioSquelchLevel -= 1;
             else if(fAudioPower > -20.f && ubAudioSquelchLevel < 10)
@@ -671,7 +672,7 @@ int main()
                 fir_filter(pHilbertFilter, psAudio, psHilbertAudio);
 
                 // Delay real (I) component to match the filter delay and stuff the result in the final IQ pair array
-                static int16_t psDelayedAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+                static int16_t psDelayedAudio[HILBERT_DELAY_SAMPLES];
                 iq16_t pAudio[AUDIO_SAMPLE_BUFFER_SIZE];
 
                 for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
