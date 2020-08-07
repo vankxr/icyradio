@@ -19,6 +19,7 @@
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
+#include "trng.h"
 #include "baseband_filter.h"
 #include "pilot_filter.h"
 #include "stereo_pilot_filter.h"
@@ -75,6 +76,7 @@ uint64_t ullProcessingTimeUsed = 0;
 volatile uint8_t *pubSPIRxBuffer = NULL;
 uint32_t pulSPIRegister[SPI_REG_COUNT];
 uint32_t pulSPIRegisterWriteMask[SPI_REG_COUNT];
+volatile uint8_t ubSPIRegisterSynced = 0;
 dsp_fm_demod_ctx_t *pFMDemod = NULL;
 fir_decimator_complex_ctx_t *pBasebandFilter = NULL;
 fir_ctx_t *pPilotFilter = NULL;
@@ -134,13 +136,15 @@ void ITCM_CODE _spi0_isr()
         }
 
         dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
+
+        ubSPIRegisterSynced = 0;
     }
 }
-void fpga_isr()
+void ITCM_CODE fpga_isr()
 {
     DBGPRINTLN_CTX("FPGA ISR");
 }
-void baseband_i2s_dma_isr(uint32_t ulFlags)
+void ITCM_CODE baseband_i2s_dma_isr(uint32_t ulFlags)
 {
     if(ulFlags & XDMAC_CIS_BIS)
     {
@@ -619,6 +623,7 @@ int init()
 
     pio_init();
     xdmac_init();
+    trng_init();
 
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
@@ -669,6 +674,20 @@ int main()
 
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
+
+        if(!ubSPIRegisterSynced && (PIOB->PIO_PDSR & BIT(2))) // Clean register cache if SPI_CS is high
+        {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                dcache_addr_clean(pulSPIRegister, SPI_REG_COUNT * sizeof(uint32_t));
+
+                xdmac_ch_disable(CONTROL_SPI_TX_DMA_CHANNEL);
+                xdmac_ch_load(CONTROL_SPI_TX_DMA_CHANNEL, &pSPITxDMADescriptor, 3, 0);
+                xdmac_ch_enable(CONTROL_SPI_TX_DMA_CHANNEL);
+
+                ubSPIRegisterSynced = 1;
+            }
+        }
 
         if(g_ullSystemTick - ullLastLEDTick > 250)
         {
