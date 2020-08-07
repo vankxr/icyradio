@@ -813,6 +813,9 @@ void init_baseband_chain()
 {
     fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
+
+    DSP_UNRESET();
+    DBGPRINTLN_CTX("DSP processor enabled!");
 }
 void init_rx_chain()
 {
