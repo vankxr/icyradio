@@ -256,6 +256,320 @@ void fir_complex_filter(fir_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOu
     free(psOutput);
 }
 
+fir_sparse_ctx_t* fir_sparse_init(uint16_t usNumTaps, const int16_t *psCoefs, const int32_t *plTapDelay, int16_t *psState, uint32_t ulBlockSize)
+{
+    if(!usNumTaps)
+        return NULL;
+
+    if(!psCoefs)
+        return NULL;
+
+    if(!plTapDelay)
+        return NULL;
+
+    if(!ulBlockSize)
+        return NULL;
+
+    fir_sparse_ctx_t *pNewContext = (fir_sparse_ctx_t *)malloc(sizeof(fir_sparse_ctx_t));
+
+    if(!pNewContext)
+        return NULL;
+
+    memset(pNewContext, 0, sizeof(fir_sparse_ctx_t));
+
+    pNewContext->psScratchIn = (int16_t *)malloc(ulBlockSize * sizeof(int16_t));
+
+    if(!pNewContext->psScratchIn)
+    {
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    pNewContext->plScratchOut = (int32_t *)malloc(ulBlockSize * sizeof(int32_t));
+
+    if(!pNewContext->plScratchOut)
+    {
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    int32_t lMaxTapDelay = 0;
+    uint32_t ulMaxTapDelayIndex = 0;
+
+    arm_max_q31(plTapDelay, usNumTaps, &lMaxTapDelay, &ulMaxTapDelayIndex);
+
+    if(lMaxTapDelay <= 0 || lMaxTapDelay > UINT16_MAX)
+    {
+        free(pNewContext->plScratchOut);
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    int16_t *psFIRState = psState;
+
+    if(!psFIRState)
+    {
+        psFIRState = (int16_t *)malloc((lMaxTapDelay + ulBlockSize) * sizeof(int16_t));
+
+        if(!psFIRState)
+        {
+            free(pNewContext->plScratchOut);
+            free(pNewContext->psScratchIn);
+            free(pNewContext);
+
+            return NULL;
+        }
+
+        pNewContext->ubStateAllocated = 1;
+    }
+
+    pNewContext->pInstance = (arm_fir_sparse_instance_q15 *)malloc(sizeof(arm_fir_sparse_instance_q15));
+
+    if(!pNewContext->pInstance)
+    {
+        if(pNewContext->ubStateAllocated)
+            free(psFIRState);
+
+        free(pNewContext->plScratchOut);
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    arm_fir_sparse_init_q15(pNewContext->pInstance, usNumTaps, psCoefs, psFIRState, (int32_t *)plTapDelay, (uint16_t)lMaxTapDelay, ulBlockSize);
+
+    pNewContext->ulBlockSize = ulBlockSize;
+
+    return pNewContext;
+}
+void fir_sparse_delete(fir_sparse_ctx_t *pContext)
+{
+    if(!pContext)
+        return;
+
+    if(pContext->pInstance)
+    {
+        if(pContext->ubStateAllocated)
+            free(pContext->pInstance->pState);
+
+        free(pContext->pInstance);
+    }
+
+    free(pContext->psScratchIn);
+    free(pContext->plScratchOut);
+
+    free(pContext);
+}
+void fir_sparse_filter(fir_sparse_ctx_t *pContext, int16_t *psInput, int16_t *psOutput)
+{
+    if(!pContext)
+        return;
+
+    if(!psInput)
+        return;
+
+    int16_t *psFIROutput = psOutput;
+    uint8_t ubOutputAllocated = 0;
+
+    if(!psFIROutput)
+    {
+        psFIROutput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
+
+        if(!psFIROutput)
+            return;
+
+        ubOutputAllocated = 1;
+    }
+
+    arm_fir_sparse_q15(pContext->pInstance, psInput, psFIROutput, pContext->psScratchIn, pContext->plScratchOut, pContext->ulBlockSize);
+
+    if(ubOutputAllocated)
+    {
+        arm_copy_q15(psFIROutput, psInput, pContext->ulBlockSize);
+
+        free(psFIROutput);
+    }
+}
+
+fir_sparse_complex_ctx_t* fir_sparse_complex_init(uint16_t usNumTaps, const int16_t *psCoefs, const int32_t *plTapDelay, iq16_t *pState, uint32_t ulBlockSize)
+{
+    if(!usNumTaps)
+        return NULL;
+
+    if(!psCoefs)
+        return NULL;
+
+    if(!plTapDelay)
+        return NULL;
+
+    if(!ulBlockSize)
+        return NULL;
+
+    fir_sparse_complex_ctx_t *pNewContext = (fir_sparse_complex_ctx_t *)malloc(sizeof(fir_sparse_complex_ctx_t));
+
+    if(!pNewContext)
+        return NULL;
+
+    memset(pNewContext, 0, sizeof(fir_sparse_complex_ctx_t));
+
+    pNewContext->psScratchIn = (int16_t *)malloc(ulBlockSize * sizeof(int16_t));
+
+    if(!pNewContext->psScratchIn)
+    {
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    pNewContext->plScratchOut = (int32_t *)malloc(ulBlockSize * sizeof(int32_t));
+
+    if(!pNewContext->plScratchOut)
+    {
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    int32_t lMaxTapDelay = 0;
+    uint32_t ulMaxTapDelayIndex = 0;
+
+    arm_max_q31(plTapDelay, usNumTaps, &lMaxTapDelay, &ulMaxTapDelayIndex);
+
+    if(lMaxTapDelay <= 0 || lMaxTapDelay > UINT16_MAX)
+    {
+        free(pNewContext->plScratchOut);
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    int16_t *psFIRState = (int16_t *)pState;
+
+    if(!psFIRState)
+    {
+        psFIRState = (int16_t *)malloc((lMaxTapDelay + ulBlockSize) * sizeof(iq16_t));
+
+        if(!psFIRState)
+        {
+            free(pNewContext->plScratchOut);
+            free(pNewContext->psScratchIn);
+            free(pNewContext);
+
+            return NULL;
+        }
+
+        pNewContext->ubStateAllocated = 1;
+    }
+
+    pNewContext->pIInstance = (arm_fir_sparse_instance_q15 *)malloc(sizeof(arm_fir_sparse_instance_q15));
+
+    if(!pNewContext->pIInstance)
+    {
+        if(pNewContext->ubStateAllocated)
+            free(psFIRState);
+
+        free(pNewContext->plScratchOut);
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    pNewContext->pQInstance = (arm_fir_sparse_instance_q15 *)malloc(sizeof(arm_fir_sparse_instance_q15));
+
+    if(!pNewContext->pQInstance)
+    {
+        if(pNewContext->ubStateAllocated)
+            free(psFIRState);
+
+        free(pNewContext->pIInstance);
+        free(pNewContext->plScratchOut);
+        free(pNewContext->psScratchIn);
+        free(pNewContext);
+
+        return NULL;
+    }
+
+    arm_fir_sparse_init_q15(pNewContext->pIInstance, usNumTaps, psCoefs, psFIRState, (int32_t *)plTapDelay, (uint16_t)lMaxTapDelay, ulBlockSize);
+    arm_fir_sparse_init_q15(pNewContext->pQInstance, usNumTaps, psCoefs, psFIRState + (lMaxTapDelay + ulBlockSize), (int32_t *)plTapDelay, (uint16_t)lMaxTapDelay, ulBlockSize);
+
+    pNewContext->ulBlockSize = ulBlockSize;
+
+    return pNewContext;
+}
+void fir_sparse_complex_delete(fir_sparse_complex_ctx_t *pContext)
+{
+    if(!pContext)
+        return;
+
+    if(pContext->pIInstance)
+    {
+        if(pContext->ubStateAllocated)
+            free(pContext->pIInstance->pState);
+
+        free(pContext->pIInstance);
+    }
+
+    if(pContext->pQInstance)
+        free(pContext->pQInstance);
+
+    free(pContext->psScratchIn);
+    free(pContext->plScratchOut);
+
+    free(pContext);
+}
+void fir_sparse_complex_filter(fir_sparse_complex_ctx_t *pContext, iq16_t *pInput, iq16_t *pOutput)
+{
+    if(!pContext)
+        return;
+
+    if(!pInput)
+        return;
+
+    int16_t *psInput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
+
+    if(!psInput)
+        return;
+
+    int16_t *psOutput = (int16_t *)malloc(pContext->ulBlockSize * sizeof(int16_t));
+
+    if(!psOutput)
+    {
+        free(psInput);
+
+        return;
+    }
+
+    iq16_t *pFIROutput = pOutput ? pOutput : pInput;
+
+    for(uint32_t i = 0; i < pContext->ulBlockSize; i++)
+        psInput[i] = pInput[i].i;
+
+    arm_fir_sparse_q15(pContext->pIInstance, psInput, psOutput, pContext->psScratchIn, pContext->plScratchOut, pContext->ulBlockSize);
+
+    for(uint32_t i = 0; i < pContext->ulBlockSize; i++)
+    {
+        pFIROutput[i].i = psOutput[i];
+        psInput[i] = pInput[i].q;
+    }
+
+    arm_fir_sparse_q15(pContext->pQInstance, psInput, psOutput, pContext->psScratchIn, pContext->plScratchOut, pContext->ulBlockSize);
+
+    for(uint32_t i = 0; i < pContext->ulBlockSize; i++)
+        pFIROutput[i].q = psOutput[i];
+
+    free(psInput);
+    free(psOutput);
+}
+
 fir_decimator_ctx_t* fir_decimator_init(uint16_t usNumTaps, uint8_t ubDecimationFactor, const int16_t *psCoefs, int16_t *psState, uint32_t ulBlockSize)
 {
     if(!usNumTaps)
