@@ -9,7 +9,7 @@
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/9.2.1",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/9.2.1/backward",
-                "${env:ARM_LIBROOT}/ARM.CMSIS.5.5.1/CMSIS/Include",
+                "${env:ARM_LIBROOT}/ARM.CMSIS.5.7.0/CMSIS/Include",
                 "${env:ARM_LIBROOT}/SiliconLabs.GeckoPlatform_EFM32GG11B_DFP.2.7.0/Device/SiliconLabs/EFM32GG11B/Include"
             ],
             "defines": [

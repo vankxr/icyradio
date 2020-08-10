@@ -9,7 +9,7 @@
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/9.2.1",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/9.2.1/backward",
-                "${env:ARM_LIBROOT}/ARM.CMSIS.5.5.1/CMSIS/Include",
+                "${env:ARM_LIBROOT}/ARM.CMSIS.5.7.0/CMSIS/Include",
                 "${env:ARM_LIBROOT}/Atmel.SAMV71_DFP.2.4.182/samv71b/include"
             ],
             "defines": [
