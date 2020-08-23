@@ -24,7 +24,7 @@ for cf = f1:10:f2
 end
 
 %% Design and analyze Hilbert FIR
-Hd = designfilt('hilbertfir', 'FilterOrder', 200, 'TransitionWidth', 0.02, 'DesignMethod', 'equiripple');
+Hd = designfilt('hilbertfir', 'FilterOrder', 400, 'TransitionWidth', 0.02, 'DesignMethod', 'equiripple');
 hfv = fvtool(Hd, 'Analysis', 'Magnitude', 'MagnitudeDisplay', 'Zero-phase', 'FrequencyRange', '[-pi, pi)');
 hfv.Color = 'white';
 
@@ -48,8 +48,8 @@ b = fir1(500, (f2 + 5000) / fs2);
 mx = filter(b, 1, mx);
 my = filter(b, 1, my);
 
-mx = awgn(mx, 30);
-my = awgn(my, 30);
+mx = awgn(mx, 40);
+my = awgn(my, 40);
 
 m = mx + j * my;
 [Mu, fMu] = fft_spectrum(m(G+1:end), L, fs2);
@@ -97,11 +97,38 @@ plot(fS, S, [(fi + fc), (fi + fc)], [min(S) - 5, max(S) + 5], [fc, fc], [min(S) 
 axis([min(fS), max(fS), min(S) - 5, max(S) + 5]);
 
 %% Dump coefficients
-outfile = fopen('hilbert_filter.h', 'w');
-fprintf(outfile, 'static const uint32_t hilbert_filter_taps_size = %u;\n', length(Hd.Coefficients));
-fprintf(outfile, 'static const int16_t hilbert_filter_taps[] = {');
-for i = 1 : length(Hd.Coefficients) - 1
-    fprintf(outfile, '\n    %hi,', int16(Hd.Coefficients(length(Hd.Coefficients) - i + 1) * 32767));
+i16coeffs = int16(Hd.Coefficients * 32767);
+
+hcoeffs = [];
+hdly = [];
+dly = 0;
+j = 1;
+
+for i = 1 : length(i16coeffs)
+    coeff = i16coeffs(i);
+    
+    if coeff ~= 0
+        hcoeffs(j) = coeff;
+        hdly(j) = dly;
+        
+        j = j + 1;
+    end
+
+    dly = dly + 1;
 end
-fprintf(outfile, '\n    %hi', int16(Hd.Coefficients(1) * 32767));
+
+outfile = fopen('hilbert_filter.h', 'w');
+fprintf(outfile, 'static const uint32_t hilbert_filter_order = %u;\n', length(i16coeffs) - 1);
+fprintf(outfile, 'static const uint32_t hilbert_filter_taps_size = %u;\n', length(hcoeffs));
+fprintf(outfile, 'static const int16_t hilbert_filter_taps[] = {');
+for i = 1 : length(hcoeffs) - 1
+    fprintf(outfile, '\n    %hi,', hcoeffs(i));
+end
+fprintf(outfile, '\n    %hi', hcoeffs(length(hcoeffs)));
+fprintf(outfile, '\n};\n');
+fprintf(outfile, 'static const int32_t hilbert_filter_tap_delay[] = {');
+for i = 1 : length(hdly) - 1
+    fprintf(outfile, '\n    %hi,', hdly(i));
+end
+fprintf(outfile, '\n    %hi', hdly(length(hdly)));
 fprintf(outfile, '\n};');
