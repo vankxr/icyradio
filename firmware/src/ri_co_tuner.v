@@ -1,9 +1,8 @@
-module tuner
+module ri_co_tuner
 (
     input                     clk,      // Clock
     input                     reset,    // Reset
-    input  signed [DSZ - 1:0] in_i,     // In-phase input
-    input  signed [DSZ - 1:0] in_q,     // Quadrature input
+    input  signed [DSZ - 1:0] in,       // Real input
     input         [FSZ - 1:0] lo_freq,  // NCO frequency tuning word
     input                     lo_dir,   // NCO frequency direction
     input                     lo_ns_en, // NCO noise shaping enable
@@ -45,28 +44,19 @@ always @(posedge clk)
     end
 
 
-// I mixer
+// Real quadrature mixer
 wire signed [DSZ - 1:0] out_i;
-
-mixer tuner_i_mixer
-(
-    .clk(clk),
-    .reset(reset),
-    .in(in_i),
-    .lo(lo_i),
-    .out(out_i)
-);
-
-// Q mixer
 wire signed [DSZ - 1:0] out_q;
 
-mixer tuner_q_mixer
+ri_co_mixer tuner_i_mixer
 (
     .clk(clk),
     .reset(reset),
-    .in(in_q),
-    .lo(lo_q),
-    .out(out_q)
+    .in(in),
+    .lo_i(lo_i),
+    .lo_q(lo_q),
+    .out_i(out_i),
+    .out_q(out_q)
 );
 
 endmodule

@@ -128,6 +128,8 @@ wire qduc_clk;
 wire dac_clk;
 wire audio_i2s_clk;
 wire audio_i2s_mclk;
+wire qspi_dpram_rd_clk;
+wire qspi_dpram_wr_clk;
 wire qspi_mem_clk;
 wire irq_clk;
 wire led_clk;
@@ -143,6 +145,8 @@ assign qduc_clk             = clk1; // QDUC clock is CLK1 (same as the DAC)
 assign dac_clk              = clk1; // DAC clock is CLK1
 assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the QDDC)
 assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK3
+assign qspi_dpram_rd_clk    = clk2; // QSPI DP RAM read clock is CLK2 (same as the control SPI interface clock)
+assign qspi_dpram_wr_clk    = clk1; // QSPI DP RAM write clock is CLK1 (same as QSPI)
 assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
 assign irq_clk              = clk2; // IRQ clock is CLK2
 assign led_clk              = clk2; // LED clock is CLK2
@@ -313,7 +317,6 @@ wire        [30:0] qddc_lo_freq; // Controlled by SMC via SPI
 wire               qddc_lo_dir; // Controlled by SMC via SPI
 wire               qddc_lo_ns_en; // Controlled by SMC via SPI
 wire               qddc_iq_swap; // Controlled by SMC via SPI
-wire               qddc_valid;
 
 // Module
 qddc adc_qddc
@@ -325,7 +328,6 @@ qddc adc_qddc
     .lo_dir(qddc_lo_dir),
     .lo_ns_en(qddc_lo_ns_en),
     .iq_swap(qddc_iq_swap),
-    .out_valid(qddc_valid),
     .out_i(qddc_i_out),
     .out_q(qddc_q_out)
 );
@@ -360,7 +362,7 @@ assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
-assign bb_i2s_bclk = bb_i2s_clk_div[1]; // Bit clock = (ADC_CLK / CIC_DEC) * I2S_WS * 2 = ADC_CLK / 4
+assign bb_i2s_bclk = bb_i2s_clk_div[1]; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = ADC_CLK / 4
 
 // Clock divider
 always @(posedge bb_i2s_clk)
@@ -389,11 +391,8 @@ always @(posedge bb_i2s_clk)
             end
         else
             begin
-                if(qddc_valid)
-                    begin
-                        bb_i2s_left_data_in <= qddc_i_out;
-                        bb_i2s_right_data_in <= qddc_q_out;
-                    end
+                bb_i2s_left_data_in <= qddc_i_out;
+                bb_i2s_right_data_in <= qddc_q_out;
             end
     end
 /// Baseband I2S ///
@@ -487,7 +486,7 @@ wire        audio_i2s_lrclk;
 wire        audio_i2s_sdout;
 reg         audio_i2s_sdin;
 
-assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = (ADC_CLK / CIC_DEC / 8) * I2S_WS * 2 = ADC_CLK / 32
+assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = AUDIO_SAMPLE_RATE * I2S_WS * 2 = CLK / 32
 
 // Clock divider
 always @(posedge audio_i2s_clk)
@@ -715,6 +714,34 @@ always @(*)
     end
 /// Audio I2S multiplexer ///
 
+/// QSPI buffer dual-port RAM ///
+// Config
+localparam QSPI_DPRAM_SIZE = 8; // 2 ^ 8 = 256 (256 samples)
+
+// Inputs
+wire [QSPI_DPRAM_SIZE - 1:0] qspi_dpram_rd_addr; // Controlled by SMC via SPI
+reg  [QSPI_DPRAM_SIZE - 1:0] qspi_dpram_wr_addr;
+wire [15:0]                  qspi_dpram_data_in;
+wire [15:0]                  qspi_dpram_data_out; // Used by SMC via SPI
+reg                          qspi_dpram_wr_en;
+
+// Module
+dpram #(
+    .ASZ(QSPI_DPRAM_SIZE),
+    .DSZ(16)
+)
+qspi_dpram
+(
+    .rd_clk(qspi_dpram_rd_clk),
+    .wr_clk(qspi_dpram_wr_clk),
+    .rd_addr(qspi_dpram_rd_addr),
+    .wr_addr(qspi_dpram_wr_addr),
+    .data_in(qspi_dpram_data_in),
+    .data_out(qspi_dpram_data_out),
+    .wr_en(qspi_dpram_wr_en)
+);
+/// QSPI buffer dual-port RAM ///
+
 /// QSPI Memory interface ///
 // Inputs
 wire [21:0] qspi_mem_start_addr; // Controlled by SMC via SPI
@@ -722,6 +749,7 @@ wire [21:0] qspi_mem_end_addr; // Controlled by SMC via SPI
 reg  [21:0] qspi_mem_addr;
 wire [15:0] qspi_mem_data_out; // Used by SMC via SPI
 wire [2:0]  qspi_mem_data_in_sel; // Controlled by SMC via SPI
+reg         qspi_mem_data_in_state;
 reg  [15:0] qspi_mem_data_in;
 wire        qspi_mem_wr_valid;
 reg         qspi_mem_wr_valid_ed;
@@ -731,12 +759,14 @@ wire        qspi_mem_wr_req; // Controlled by SMC via SPI
 wire        qspi_mem_rd_req; // Controlled by SMC via SPI
 reg         qspi_mem_ctrl_wr_req;
 reg         qspi_mem_ctrl_rd_req;
-reg  [6:0]  qspi_mem_clk_div;
-wire        qspi_mem_sck;
+reg  [7:0]  qspi_mem_clk_div;
+reg         qspi_mem_sck;
 wire        qspi_mem_sdata_oe;
 wire [3:0]  qspi_mem_sdata_out;
 wire [3:0]  qspi_mem_sdata_in;
 wire        qspi_mem_ncs;
+
+assign qspi_dpram_data_in = qspi_mem_data_out;
 
 SB_IO #(
     .PIN_TYPE(6'b1010_01),
@@ -753,7 +783,22 @@ qspi_mem_sdata [3:0]
 assign QSPI_MEM_SCK = qspi_mem_sck && !qspi_mem_ncs && !qspi_mem_rst;
 assign QSPI_MEM_CSn = qspi_mem_ncs || qspi_mem_rst;
 
-assign qspi_mem_sck = qspi_mem_clk_div[6]; // Serial clock = ((ADC_CLK / CIC_DEC / FIR_DEC / 4) * I2S_WS * 2) / 4 = ADC_CLK / 128
+// Clock multiplexer
+always @(*)
+    begin
+        case(qspi_mem_data_in_sel)
+            3'b000:
+                qspi_mem_sck <= qspi_mem_clk_div[7];
+            3'b001:
+                qspi_mem_sck <= qspi_mem_clk_div[7];
+            3'b010:
+                qspi_mem_sck <= qspi_mem_clk_div[3];
+            3'b011:
+                qspi_mem_sck <= qspi_mem_clk_div[3];
+            default:
+                qspi_mem_sck <= qspi_mem_clk_div[1];
+        endcase
+    end
 
 // Clock divider
 always @(posedge qspi_mem_clk)
@@ -782,7 +827,11 @@ always @(posedge qspi_mem_clk)
     begin
         if(qspi_mem_rst)
             begin
+                qspi_dpram_wr_addr <= {QSPI_DPRAM_SIZE{1'b0}};
+                qspi_dpram_wr_en <= 1'b0;
+
                 qspi_mem_addr <= 22'h000000;
+                qspi_mem_data_in_state <= 1'b0;
                 qspi_mem_data_in <= 16'h0000;
 
                 qspi_mem_wr_valid_ed <= 1'b0;
@@ -797,7 +846,11 @@ always @(posedge qspi_mem_clk)
 
                 if(!qspi_mem_ctrl_rd_req && !qspi_mem_ctrl_wr_req)
                     begin
+                        qspi_dpram_wr_addr <= {QSPI_DPRAM_SIZE{1'b0}};
+                        qspi_dpram_wr_en <= 1'b0;
+
                         qspi_mem_addr <= qspi_mem_start_addr;
+                        qspi_mem_data_in_state <= 1'b0;
 
                         if(qspi_mem_rd_req && !qspi_mem_wr_req)
                             qspi_mem_ctrl_rd_req <= 1'b1;
@@ -807,7 +860,19 @@ always @(posedge qspi_mem_clk)
                     end
 
                 if((qspi_mem_wr_valid_ed && !qspi_mem_wr_valid) || (!qspi_mem_rd_valid_ed && qspi_mem_rd_valid))
-                    qspi_mem_addr <= qspi_mem_addr + 2;
+                    qspi_mem_addr <= qspi_mem_addr + 1;
+
+                if((!qspi_mem_rd_valid_ed && qspi_mem_rd_valid))
+                    begin
+                        qspi_dpram_wr_en <= 1'b1;
+                    end
+                else
+                    begin
+                        qspi_dpram_wr_en <= 1'b0;
+
+                        if(qspi_dpram_wr_en)
+                            qspi_dpram_wr_addr <= qspi_dpram_wr_addr + 1;
+                    end
 
                 if(!qspi_mem_wr_valid_ed && qspi_mem_wr_valid)
                     begin
@@ -820,6 +885,18 @@ always @(posedge qspi_mem_clk)
                                 begin
                                     qspi_mem_data_in <= audio_i2s_right_data_out;
                                 end
+                            3'b010:
+                                begin
+                                    qspi_mem_data_in_state <= !qspi_mem_data_in_state;
+
+                                    qspi_mem_data_in <= qspi_mem_data_in_state ? qddc_q_out : qddc_i_out;
+                                end
+                            3'b011:
+                                begin
+                                    qspi_mem_data_in_state <= !qspi_mem_data_in_state;
+
+                                    qspi_mem_data_in <= qspi_mem_data_in_state ? qduc_q_in : qduc_i_in;
+                                end
                             default:
                                 begin
                                     qspi_mem_data_in <= 16'hA5A5;
@@ -827,7 +904,7 @@ always @(posedge qspi_mem_clk)
                         endcase
                     end
 
-                if(qspi_mem_addr[21:1] == qspi_mem_end_addr[21:1])
+                if(qspi_mem_addr == qspi_mem_end_addr)
                     begin
                         qspi_mem_ctrl_rd_req <= 1'b0;
                         qspi_mem_ctrl_wr_req <= 1'b0;
@@ -901,18 +978,18 @@ assign DSP_IRQn = !(|(irq_state & irq_mask[1]));
 
 // IRQ lines selection
 assign irq_lines[7] = 1'b0;
-assign irq_lines[6] = 1'b0;
-assign irq_lines[5] = qspi_mem_rd_valid;
-assign irq_lines[4] = qspi_mem_wr_valid;
-assign irq_lines[3] = adc_of;
-assign irq_lines[2] = qddc_valid;
+assign irq_lines[6] = !qspi_mem_ctrl_rd_req;
+assign irq_lines[5] = qspi_mem_ctrl_rd_req;
+assign irq_lines[4] = !qspi_mem_ctrl_wr_req;
+assign irq_lines[3] = qspi_mem_ctrl_wr_req;
+assign irq_lines[2] = adc_of;
 assign irq_lines[1] = !adc_dpram_wr_en;
 assign irq_lines[0] = adc_dpram_wr_en;
 
 // Synchronizer
 synchronizer irq_lines_sync [IRQ_COUNT - 1:0]
 (
-    .in_clk({1'b0, 1'b0, qspi_mem_clk, qspi_mem_clk, adc_clk, qddc_clk, adc_dpram_wr_clk, adc_dpram_wr_clk}),
+    .in_clk({1'b0, qspi_mem_clk, qspi_mem_clk, qspi_mem_clk, qspi_mem_clk, adc_clk, adc_dpram_wr_clk, adc_dpram_wr_clk}),
     .out_clk(irq_clk),
     .in(irq_lines),
     .out(irq_lines_q)
@@ -983,7 +1060,9 @@ localparam CNTRL_SPI_REG_QSPI_MEM_CNTRL         = 7'h50;
 localparam CNTRL_SPI_REG_QSPI_MEM_ADDR          = 7'h51;
 localparam CNTRL_SPI_REG_QSPI_MEM_START_ADDR    = 7'h52;
 localparam CNTRL_SPI_REG_QSPI_MEM_END_ADDR      = 7'h53;
-localparam CNTRL_SPI_REG_QSPI_MEM_DATA          = 7'h54;
+localparam CNTRL_SPI_REG_QSPI_DPRAM_CNTRL       = 7'h54;
+localparam CNTRL_SPI_REG_QSPI_DPRAM_ADDR        = 7'h55;
+localparam CNTRL_SPI_REG_QSPI_DPRAM_DATA        = 7'h56;
 
 // Register parameters
 //// CNTRL_SPI_REG_RST_CNTRL
@@ -1017,9 +1096,9 @@ reg  [2:0]  cntrl_spi_led_en;
 reg  [11:0] cntrl_spi_led_duty [0:2];
 
 //// CNTRL_SPI_REG_ADC_DPRAM_CNTRL
+reg  cntrl_spi_adc_dpram_rd_addr_inc;
 reg  cntrl_spi_adc_dpram_wr_req;
 wire cntrl_spi_adc_dpram_wr_en;
-reg  cntrl_spi_adc_dpram_rd_addr_inc;
 
 //// CNTRL_SPI_REG_ADC_DPRAM_ADDR
 wire [ADC_DPRAM_SIZE - 1:0] cntrl_spi_adc_dpram_wr_addr;
@@ -1070,8 +1149,15 @@ reg  [21:0] cntrl_spi_qspi_mem_start_addr;
 //// CNTRL_SPI_REG_QSPI_MEM_END_ADDR
 reg  [21:0] cntrl_spi_qspi_mem_end_addr;
 
-//// CNTRL_SPI_REG_QSPI_MEM_DATA
-wire [15:0] cntrl_spi_qspi_mem_data_out;
+//// CNTRL_SPI_REG_QSPI_DPRAM_CNTRL
+reg  cntrl_spi_qspi_dpram_rd_addr_inc;
+
+//// CNTRL_SPI_REG_QSPI_DPRAM_ADDR
+wire [QSPI_DPRAM_SIZE - 1:0] cntrl_spi_qspi_dpram_wr_addr;
+reg  [QSPI_DPRAM_SIZE - 1:0] cntrl_spi_qspi_dpram_rd_addr;
+
+//// CNTRL_SPI_REG_QSPI_DPRAM_DATA
+wire [15:0] cntrl_spi_qspi_dpram_data_out;
 
 // Synchronizers
 //// CNTRL_SPI_REG_RST_CNTRL
@@ -1281,14 +1367,20 @@ synchronizer cntrl_spi_qspi_mem_end_addr_sync [21:0]
     .out(qspi_mem_end_addr)
 );
 
-//// CNTRL_SPI_REG_QSPI_MEM_DATA
-synchronizer cntrl_spi_qspi_mem_data_out_sync [15:0]
+//// CNTRL_SPI_REG_QSPI_DPRAM_CNTRL
+
+//// CNTRL_SPI_REG_QSPI_DPRAM_ADDR
+synchronizer cntrl_spi_qspi_dpram_wr_addr_sync [QSPI_DPRAM_SIZE - 1:0]
 (
     .in_clk(qspi_mem_clk),
     .out_clk(cntrl_spi_clk),
-    .in(qspi_mem_data_out),
-    .out(cntrl_spi_qspi_mem_data_out)
+    .in(qspi_dpram_wr_addr),
+    .out(cntrl_spi_qspi_dpram_wr_addr)
 );
+assign qspi_dpram_rd_addr = cntrl_spi_qspi_dpram_rd_addr; // No sync needed since runs on the same clock
+
+//// CNTRL_SPI_REG_QSPI_DPRAM_DATA
+assign cntrl_spi_qspi_dpram_data_out = qspi_dpram_data_out; // No sync needed since runs on the same clock
 
 // Module
 spi_slave cntrl_spi
@@ -1333,8 +1425,8 @@ always @(posedge cntrl_spi_clk)
                 cntrl_spi_led_duty[1] <= 12'h000;
                 cntrl_spi_led_duty[2] <= 12'h000;
 
-                cntrl_spi_adc_dpram_wr_req <= 1'b0;
                 cntrl_spi_adc_dpram_rd_addr_inc <= 1'b0;
+                cntrl_spi_adc_dpram_wr_req <= 1'b0;
 
                 cntrl_spi_adc_dpram_rd_addr <= {ADC_DPRAM_SIZE{1'b0}};
 
@@ -1366,6 +1458,10 @@ always @(posedge cntrl_spi_clk)
                 cntrl_spi_qspi_mem_start_addr <= 22'h000000;
 
                 cntrl_spi_qspi_mem_end_addr <= 22'h000000;
+
+                cntrl_spi_qspi_dpram_rd_addr_inc <= 1'b0;
+
+                cntrl_spi_qspi_dpram_rd_addr <= {QSPI_DPRAM_SIZE{1'b0}};
             end
         else
             begin
@@ -1428,8 +1524,8 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    cntrl_spi_adc_dpram_wr_req <= cntrl_spi_data_out[0];
-                                    cntrl_spi_adc_dpram_rd_addr_inc <= cntrl_spi_data_out[2];
+                                    cntrl_spi_adc_dpram_rd_addr_inc <= cntrl_spi_data_out[0];
+                                    cntrl_spi_adc_dpram_wr_req <= cntrl_spi_data_out[1];
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
@@ -1488,7 +1584,15 @@ always @(posedge cntrl_spi_clk)
                                 begin
                                     cntrl_spi_qspi_mem_end_addr <= cntrl_spi_data_out[21:0];
                                 end
-                            CNTRL_SPI_REG_QSPI_MEM_DATA:
+                            CNTRL_SPI_REG_QSPI_DPRAM_CNTRL:
+                                begin
+                                    cntrl_spi_qspi_dpram_rd_addr_inc <= cntrl_spi_data_out[0];
+                                end
+                            CNTRL_SPI_REG_QSPI_DPRAM_ADDR:
+                                begin
+                                    cntrl_spi_qspi_dpram_rd_addr <= cntrl_spi_data_out[QSPI_DPRAM_SIZE - 1:0];
+                                end
+                            CNTRL_SPI_REG_QSPI_DPRAM_DATA:
                                 begin
                                     // Nothing to do
                                 end
@@ -1539,7 +1643,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {29'd0, cntrl_spi_adc_dpram_rd_addr_inc, cntrl_spi_adc_dpram_wr_en, cntrl_spi_adc_dpram_wr_req};
+                                    cntrl_spi_data_in <= {29'd0, cntrl_spi_adc_dpram_wr_en, cntrl_spi_adc_dpram_wr_req, cntrl_spi_adc_dpram_rd_addr_inc};
                                 end
                             CNTRL_SPI_REG_ADC_DPRAM_ADDR:
                                 begin
@@ -1588,9 +1692,20 @@ always @(posedge cntrl_spi_clk)
                                 begin
                                     cntrl_spi_data_in <= {10'd0, cntrl_spi_qspi_mem_end_addr};
                                 end
-                            CNTRL_SPI_REG_QSPI_MEM_DATA:
+                            CNTRL_SPI_REG_QSPI_DPRAM_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_qspi_mem_data_out};
+                                    cntrl_spi_data_in <= {31'd0, cntrl_spi_qspi_dpram_rd_addr_inc};
+                                end
+                            CNTRL_SPI_REG_QSPI_DPRAM_ADDR:
+                                begin
+                                    cntrl_spi_data_in <= {{(16 - QSPI_DPRAM_SIZE){1'b0}}, cntrl_spi_qspi_dpram_wr_addr, {(16 - QSPI_DPRAM_SIZE){1'b0}}, cntrl_spi_qspi_dpram_rd_addr};
+                                end
+                            CNTRL_SPI_REG_QSPI_DPRAM_DATA:
+                                begin
+                                    cntrl_spi_data_in <= {16'd0, cntrl_spi_qspi_dpram_data_out};
+
+                                    if(cntrl_spi_qspi_dpram_rd_addr_inc)
+                                        cntrl_spi_qspi_dpram_rd_addr <= cntrl_spi_qspi_dpram_rd_addr + 1;
                                 end
                             default:
                                 begin

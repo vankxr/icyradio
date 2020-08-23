@@ -1,4 +1,4 @@
-module mixer
+module ri_ro_mixer
 (
     input                     clk,      // Clock
     input                     reset,    // Reset

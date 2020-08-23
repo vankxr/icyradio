@@ -1,4 +1,4 @@
-module quadrature_tuner
+module ci_co_tuner
 (
     input                     clk,      // Clock
     input                     reset,    // Reset
@@ -44,11 +44,11 @@ always @(posedge clk)
             end
     end
 
-// Quadrature mixer
+// Complex quadrature mixer
 wire signed [DSZ - 1:0] out_i;
 wire signed [DSZ - 1:0] out_q;
 
-quadrature_mixer tuner_mixer
+ci_co_mixer tuner_mixer
 (
     .clk(clk),
     .reset(reset),
