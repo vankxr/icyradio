@@ -1,4 +1,4 @@
-module quadrature_mixer
+module ci_co_mixer
 (
     input                     clk,      // Clock
     input                     reset,    // Reset
@@ -68,6 +68,8 @@ always @(posedge clk)
                 q_in_buf <= {DSZ{1'b0}};
                 i_lo_buf <= {DSZ{1'b0}};
                 q_lo_buf <= {DSZ{1'b0}};
+                mult_op[0] <= {DSZ{1'b0}};
+                mult_op[1] <= {DSZ{1'b0}};
                 mult <= {(DSZ + DSZ){1'b0}};
                 mult_rnd <= {(DSZ + 2){1'b0}};
                 i_out_sum <= {(DSZ + 2){1'b0}};

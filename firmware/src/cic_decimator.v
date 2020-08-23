@@ -6,7 +6,6 @@ module cic_decimator
     input                           out_rate, // Output rate
     input   signed [ISZ - 1:0]      in,       // Input data
     output  signed [OSZ - 1:0]      out,      // Output data
-    output                          out_valid // Output valid
 );
 
 parameter  NUM_STAGES = 3;                        // Stages of int / comb
@@ -88,6 +87,5 @@ endgenerate
 
 // Assign output
 assign out = comb_diff[NUM_STAGES];
-assign out_valid = comb_en[NUM_STAGES];
 
 endmodule

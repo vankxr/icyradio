@@ -7,7 +7,7 @@ module qspi_master
     output [3:0]       qspi_data_out,       // QSPI Data Output
     input  [3:0]       qspi_data_in,        // QSPI Data Input
     output             qspi_ncs,            // QSPI Chip Select (Active low)
-    input  [ASZ - 1:0] addr,                // Address
+    input  [ASZ - 1:0] addr,                // Word address
     output [DSZ - 1:0] data_out,            // Data paralellized
     input  [DSZ - 1:0] data_in,             // Data to serialize
     output             wr_valid,            // Write data being consumed
@@ -144,9 +144,9 @@ always @(negedge qspi_sck)
                                 rd_req_q <= rd_req;
 
                                 if(rd_req)
-                                    qspi_data_out_shift <= {8'hEB, {(24 - ASZ){1'b0}}, addr[ASZ - 1:16]}; // 0xEB - Quad read
+                                    qspi_data_out_shift <= {8'hEB, {(24 - ASZ - 1){1'b0}}, addr[ASZ - 1:15]}; // 0xEB - Quad read
                                 else if(wr_req)
-                                    qspi_data_out_shift <= {8'h38, {(24 - ASZ){1'b0}}, addr[ASZ - 1:16]}; // 0x38 - Quad write
+                                    qspi_data_out_shift <= {8'h38, {(24 - ASZ - 1){1'b0}}, addr[ASZ - 1:15]}; // 0x38 - Quad write
 
                                 qspi_data_out_en_int <= 1'b1;
 
@@ -166,7 +166,7 @@ always @(negedge qspi_sck)
                                 if(!data_phase)
                                     begin
                                         if(cycle_cnt[1:0] == 2'b11)
-                                            qspi_data_out_shift <= addr[15:0];
+                                            qspi_data_out_shift <= {addr[14:0], 1'b0};
                                     end
                                 else
                                     begin
