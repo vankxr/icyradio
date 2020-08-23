@@ -16,9 +16,13 @@ extern uint32_t _sidram0; // DTCM data source
 extern uint32_t _sdram0; // DTCM data destination
 extern uint32_t _edram0;
 
-extern uint32_t _sidram2; // SDRAM data source
-extern uint32_t _sdram2; // SDRAM data destination
+extern uint32_t _sidram2; // BRAM data source
+extern uint32_t _sdram2; // BRAM data destination
 extern uint32_t _edram2;
+
+extern uint32_t _sidram3; // SDRAM data source
+extern uint32_t _sdram3; // SDRAM data destination
+extern uint32_t _edram3;
 
 extern uint32_t _sidata; // Data source
 extern uint32_t _sdata; // Data destination
@@ -70,6 +74,20 @@ void _reset_isr()
 
     while (dst < &_edata) // Copy data
         *(dst++) = *(src++);
+
+    src = &_sidram2;
+    dst = &_sdram2;
+
+    while (dst < &_edram2) // Copy BRAM data
+        *(dst++) = *(src++);
+
+    /* TODO: Init SDRAM before copy
+    src = &_sidram3;
+    dst = &_sdram3;
+
+    while (dst < &_edram3) // Copy SDRAM data
+        *(dst++) = *(src++);
+    */
 
     src = 0;
     dst = &_sbss;
