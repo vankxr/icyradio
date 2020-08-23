@@ -32,14 +32,14 @@ void pmc_init()
         while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINFRDY));
     } while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINF_Msk));
 
-    // Setup and enable PLLA to output 300 MHz, 63 SCLK cycles to lock
-    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((300000000UL / MAINXO_OSC_FREQ) - 1) << CKGR_PLLAR_MULA_Pos) | (63 << CKGR_PLLAR_PLLACOUNT_Pos) | CKGR_PLLAR_DIVA_BYPASS;
+    // Setup and enable PLLA to output 348 MHz, 63 SCLK cycles to lock
+    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((348000000UL / MAINXO_OSC_FREQ) - 1) << CKGR_PLLAR_MULA_Pos) | (63 << CKGR_PLLAR_PLLACOUNT_Pos) | CKGR_PLLAR_DIVA_BYPASS;
 
     // Wait for it to be locked
     while(!(PMC->PMC_SR & PMC_SR_LOCKA));
 
     // Configure flash waitstates
-    eefc_config_waitstates(150000000);
+    eefc_config_waitstates(174000000);
 
     // Setup FCLK and MCK dividers
     PMC->PMC_MCKR = (PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) | PMC_MCKR_UPLLDIV2 | PMC_MCKR_MDIV_PCK_DIV2 | PMC_MCKR_PRES_CLK_1;

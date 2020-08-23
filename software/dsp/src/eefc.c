@@ -22,7 +22,7 @@ void eefc_config_waitstates(uint32_t ulFrequency)
         EFC->EEFC_FMR = (EFC->EEFC_FMR & ~EEFC_FMR_FWS_Msk) | (4 << EEFC_FMR_FWS_Pos);
     else if(ulFrequency <= 138000000UL)
         EFC->EEFC_FMR = (EFC->EEFC_FMR & ~EEFC_FMR_FWS_Msk) | (5 << EEFC_FMR_FWS_Pos);
-    else if(ulFrequency <= 150000000UL)
+    else
         EFC->EEFC_FMR = (EFC->EEFC_FMR & ~EEFC_FMR_FWS_Msk) | (6 << EEFC_FMR_FWS_Pos);
 }
 
