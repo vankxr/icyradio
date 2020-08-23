@@ -12,7 +12,8 @@ MEMORY
     iram0  (rwx)    : ORIGIN = 0x00000000, LENGTH = 0x008000
     dram0  (rw)     : ORIGIN = 0x20000000, LENGTH = 0x008000
     dram1  (rw)     : ORIGIN = 0x20400000, LENGTH = 0x050000
-    dram2  (rw)     : ORIGIN = 0x70000000, LENGTH = 0x000000
+    dram2  (rw)     : ORIGIN = 0x40074000, LENGTH = 0x000400
+    dram3  (rw)     : ORIGIN = 0x70000000, LENGTH = 0x000000
 }
 
 /* Initial stack pointer (must be 8 byte aligned) */
@@ -135,21 +136,6 @@ SECTIONS
         _edram0 = .;
     } > dram0 AT > irom0
 
-    /* SDRAM Data */
-    _sidram2 = LOADADDR(.dram2.data);
-
-    .dram2.data :
-    {
-        . = ALIGN(4);
-        _sdram2 = .;
-
-        *(.dram2.data)           /* .data sections */
-        *(.dram2.data*)          /* .data* sections */
-
-        . = ALIGN(4);
-        _edram2 = .;
-    } > dram2 AT > irom0
-
     /* RAM Data */
     _sidata = LOADADDR(.data);
 
@@ -164,6 +150,36 @@ SECTIONS
         . = ALIGN(4);
         _edata = .;        /* define a global symbol at data end */
     } > dram1 AT > irom0
+
+    /* BRAM Data */
+    _sidram2 = LOADADDR(.dram2.data);
+
+    .dram2.data :
+    {
+        . = ALIGN(4);
+        _sdram2 = .;
+
+        *(.dram2.data)           /* .data sections */
+        *(.dram2.data*)          /* .data* sections */
+
+        . = ALIGN(4);
+        _edram2 = .;
+    } > dram2 AT > irom0
+
+    /* SDRAM Data */
+    _sidram3 = LOADADDR(.dram3.data);
+
+    .dram3.data :
+    {
+        . = ALIGN(4);
+        _sdram3 = .;
+
+        *(.dram3.data)           /* .data sections */
+        *(.dram3.data*)          /* .data* sections */
+
+        . = ALIGN(4);
+        _edram3 = .;
+    } > dram3 AT > irom0
 
     /* QSPI Data */
     .drom0.data :

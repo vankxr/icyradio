@@ -8,12 +8,14 @@
 #define IROM2_TEXT __attribute__ ((section(".irom2.text")))
 #define DRAM0_DATA __attribute__ ((section(".dram0.data")))
 #define DRAM2_DATA __attribute__ ((section(".dram2.data")))
+#define DRAM3_DATA __attribute__ ((section(".dram3.data")))
 #define DROM0_DATA __attribute__ ((section(".drom0.data")))
 
 #define ITCM_CODE   IRAM0_TEXT
 #define QSPI_CODE   IROM2_TEXT
 #define DTCM_DATA   DRAM0_DATA
-#define SDRAM_DATA  DRAM2_DATA
+#define BRAM_DATA   DRAM2_DATA
+#define SDRAM_DATA  DRAM3_DATA
 #define QSPI_DATA   DROM0_DATA
 
 // Macro to make a dummy read
