@@ -342,7 +342,7 @@ void rx_get_psd(float *pfPower)
         float fReal = (float)psFFTBuffer[i * 2 + 0] / INT16_MAX;
         float fImag = (float)psFFTBuffer[i * 2 + 1] / INT16_MAX;
 
-        pfPower[i] = 10 * log10(fReal * fReal + fImag * fImag);
+        pfPower[i] = 10.f * log10(fReal * fReal + fImag * fImag);
     }
 
     free(psFFTBuffer);
@@ -789,8 +789,8 @@ void init_audio_chain()
     DBGPRINTLN_CTX("CODEC left headphone volume: %.3f dB", tscs25xx_hp_get_left_volume());
     DBGPRINTLN_CTX("CODEC right headphone volume: %.3f dB", tscs25xx_hp_get_right_volume());
 
-    tscs25xx_input_set_left_volume(0.f); // 0.000 dB
-    tscs25xx_input_set_right_volume(0.f); // 0.000 dB
+    tscs25xx_input_set_left_volume(9.f); // 9.000 dB
+    tscs25xx_input_set_right_volume(9.f); // 9.000 dB
     DBGPRINTLN_CTX("CODEC left input volume: %.3f dB", tscs25xx_input_get_left_volume());
     DBGPRINTLN_CTX("CODEC right input volume: %.3f dB", tscs25xx_input_get_right_volume());
 
