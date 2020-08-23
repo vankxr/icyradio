@@ -161,7 +161,6 @@ void ITCM_CODE rx_baseband_i2s_dma_isr(uint32_t ulFlags)
     }
 }
 
-
 // Functions
 void reset()
 {
