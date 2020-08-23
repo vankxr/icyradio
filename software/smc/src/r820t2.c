@@ -25,13 +25,13 @@ static const uint8_t ubRegisterInitValues[32] =
     0x75, // R14 - Mixer AGC VTH = 1,04 V, VTL = 0,84 V
     0xF8, // R15 - CLKOUT disabled, AGC clock on
     0x7C, // R16 - VCO div = 1, REF div by 2, XTAL cap 0pF
-    0x83, // R17 - LDO 2,0 V
+    0x83, // R17 - Analog LDO 2,0 V
     0x80, // R18 - TODO: Find documentation for this
     0x00, // R19 - TODO: Find documentation for this
     0x0F, // R20 - PLL related, init value not important
     0x00, // R21 - PLL related, init value not important
     0xC0, // R22 - PLL related, init value not important
-    0x30, // R23 - PLL related, init value not important
+    0x30, // R23 - Digital LDO 1,8V 8mA, Open Drain High-Z
     0x48, // R24 - TODO: Find documentation for this
     0xEC, // R25 - RF Filter on, AGC input 2 selected
     0x40, // R26 - Bypass TF, PLL autotune 128 kHz, RF filter highest band
