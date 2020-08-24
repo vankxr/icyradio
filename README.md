@@ -17,7 +17,7 @@ A **S**oftware **D**efined **R**adio development board.
  - [TSCS25A3X1NDGXZAX](http://temposemi.com/wp-content/uploads/2018/06/TSCS25xx_DS.pdf) - 96 kHz Audio CODEC
  
 ## Simplified block diagram
-![](https://github.com/vankxr/icyradio/blob/master/docs/block-diagram.png)  
+![](https://github.com/vankxr/icyradio/blob/ssb-mod/docs/block-diagram.png)  
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
