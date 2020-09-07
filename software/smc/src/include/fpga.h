@@ -4,12 +4,16 @@
 #include <em_device.h>
 #include <stdlib.h>
 #include "utils.h"
+#include "rle.h"
 #include "systick.h"
 #include "atomic.h"
 #include "gpio.h"
 #include "si5351.h"
 #include "usart.h"
 
+#define FPGA_BITSTREAM_SIZE 135100
+
+// Registers
 #define FPGA_REG_ID                     0x00
 #define FPGA_REG_RST_CNTRL              0x01
 #define FPGA_REG_IRQ_STATE              0x02

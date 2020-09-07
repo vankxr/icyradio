@@ -14825,12 +14825,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <instance part="GND511" gate="G$1" x="193.04" y="327.66" smashed="yes">
 <attribute name="VALUE" x="193.04" y="322.58" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="RFCON501" gate="G$1" x="322.58" y="101.6" smashed="yes" rot="MR0">
-<attribute name="NAME" x="322.834" y="107.442" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="322.834" y="105.156" size="1.778" layer="96" rot="MR0"/>
+<instance part="RFCON501" gate="G$1" x="325.12" y="101.6" smashed="yes" rot="MR0">
+<attribute name="NAME" x="325.374" y="107.442" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="325.374" y="105.156" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="GND519" gate="G$1" x="322.58" y="83.82" smashed="yes">
-<attribute name="VALUE" x="322.58" y="78.74" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND519" gate="G$1" x="325.12" y="83.82" smashed="yes">
+<attribute name="VALUE" x="325.12" y="78.74" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="U503" gate="G$1" x="266.7" y="109.22" smashed="yes">
 <attribute name="NAME" x="236.22" y="112.776" size="1.27" layer="95"/>
@@ -14841,12 +14841,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <attribute name="NAME" x="294.64" y="104.3686" size="1.778" layer="95" ratio="10" rot="SR0"/>
 <attribute name="VOLTAGE" x="294.64" y="96.2914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
-<instance part="RFCON502" gate="G$1" x="322.58" y="66.04" smashed="yes" rot="MR0">
-<attribute name="NAME" x="322.834" y="71.882" size="1.778" layer="95" rot="MR0"/>
-<attribute name="VALUE" x="322.834" y="69.596" size="1.778" layer="96" rot="MR0"/>
+<instance part="RFCON502" gate="G$1" x="325.12" y="66.04" smashed="yes" rot="MR0">
+<attribute name="NAME" x="325.374" y="71.882" size="1.778" layer="95" rot="MR0"/>
+<attribute name="VALUE" x="325.374" y="69.596" size="1.778" layer="96" rot="MR0"/>
 </instance>
-<instance part="GND520" gate="G$1" x="322.58" y="48.26" smashed="yes">
-<attribute name="VALUE" x="322.58" y="43.18" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND520" gate="G$1" x="325.12" y="48.26" smashed="yes">
+<attribute name="VALUE" x="325.12" y="43.18" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="C511" gate="G$1" x="208.28" y="101.6" smashed="yes">
 <attribute name="VALUE" x="208.28" y="98.8314" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
@@ -15172,12 +15172,12 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <segment>
 <pinref part="GND519" gate="G$1" pin="GND"/>
 <pinref part="RFCON501" gate="G$1" pin="GND"/>
-<wire x1="322.58" y1="83.82" x2="322.58" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="325.12" y1="83.82" x2="325.12" y2="96.52" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND520" gate="G$1" pin="GND"/>
 <pinref part="RFCON502" gate="G$1" pin="GND"/>
-<wire x1="322.58" y1="48.26" x2="322.58" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="325.12" y1="48.26" x2="325.12" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND514" gate="G$1" pin="GND"/>
@@ -15615,14 +15615,14 @@ RXTUNER_REFCLK_SEL = 0 &gt; 28.8 MHz</text>
 <net name="N$63" class="0">
 <segment>
 <pinref part="RFCON501" gate="G$1" pin="SIGNAL"/>
-<wire x1="317.5" y1="101.6" x2="302.26" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="101.6" x2="302.26" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="C515" gate="G$1" pin="C2"/>
 </segment>
 </net>
 <net name="TXMIXER_OUT" class="0">
 <segment>
 <pinref part="RFCON502" gate="G$1" pin="SIGNAL"/>
-<wire x1="317.5" y1="66.04" x2="200.66" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="320.04" y1="66.04" x2="200.66" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="R506" gate="G$1" pin="1"/>
 <wire x1="200.66" y1="81.28" x2="200.66" y2="66.04" width="0.1524" layer="91"/>
 </segment>

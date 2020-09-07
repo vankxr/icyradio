@@ -5,6 +5,19 @@ uint8_t fpga_load_bitstream(const uint8_t *pubBitstream, const uint32_t ulBitstr
     if(!pubBitstream || !ulBitstreamSize)
         return 0;
 
+    uint8_t *pubExpandedBitstream = (uint8_t *)malloc(FPGA_BITSTREAM_SIZE);
+
+    if(!pubExpandedBitstream)
+        return 0;
+
+    uint32_t ulExpandedBitstreamSize = 0;
+
+    if(!rle_decode(pubBitstream, ulBitstreamSize, pubExpandedBitstream, FPGA_BITSTREAM_SIZE, &ulExpandedBitstreamSize))
+        return 0;
+
+    if(ulExpandedBitstreamSize != FPGA_BITSTREAM_SIZE)
+        return 0;
+
     FPGA_HARD_RESET(); // Reset
     FPGA_SELECT();
 
@@ -22,9 +35,11 @@ uint8_t fpga_load_bitstream(const uint8_t *pubBitstream, const uint32_t ulBitstr
 
     FPGA_SELECT();
 
-    usart1_spi_write(pubBitstream, ulBitstreamSize, 1); // Send bitstream
+    usart1_spi_write(pubExpandedBitstream, ulExpandedBitstreamSize, 1); // Send bitstream
 
     FPGA_UNSELECT();
+
+    free(pubExpandedBitstream);
 
     uint8_t i = 0;
 

@@ -764,8 +764,8 @@ void init_audio_chain()
     tscs25xx_effects_config(0, 0, 1, 0, 1); // 3D OFF, Treble OFF, Treble non-linear ON, Bass OFF, Bass non-linear ON
     DBGPRINTLN_CTX("CODEC effects configured!");
 
-    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
-    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // LINE input, 0 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_left_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 30 dB gain, not inverted, high-pass enabled
+    tscs25xx_adc_config_right_input(TSCS25XX_ADC_INPUT_2, 0, 0, 1); // MIC input, 30 dB gain, not inverted, high-pass enabled
     tscs25xx_adc_config_mono_mixer(TSCS25XX_MONO_MIX_STEREO);
     DBGPRINTLN_CTX("CODEC ADC input configured!");
 
@@ -887,7 +887,7 @@ void init_tx_chain()
     ad9117_q_gain_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
-    adf4351_pfd_config(32000000, 1, 0, 10, 0);
+    adf4351_pfd_config(32000000, 1, 0, 50, 0);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
@@ -897,7 +897,7 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 425000000); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 425055560); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();

@@ -784,7 +784,7 @@ assign QSPI_MEM_SCK = qspi_mem_sck && !qspi_mem_ncs && !qspi_mem_rst;
 assign QSPI_MEM_CSn = qspi_mem_ncs || qspi_mem_rst;
 
 // Clock multiplexer
-always @(*)
+always @(qspi_mem_clk_div)
     begin
         case(qspi_mem_data_in_sel)
             3'b000:
@@ -852,11 +852,8 @@ always @(posedge qspi_mem_clk)
                         qspi_mem_addr <= qspi_mem_start_addr;
                         qspi_mem_data_in_state <= 1'b0;
 
-                        if(qspi_mem_rd_req && !qspi_mem_wr_req)
-                            qspi_mem_ctrl_rd_req <= 1'b1;
-
-                        if(qspi_mem_wr_req && !qspi_mem_rd_req)
-                            qspi_mem_ctrl_wr_req <= 1'b1;
+                        qspi_mem_ctrl_rd_req <= qspi_mem_rd_req && !qspi_mem_wr_req;
+                        qspi_mem_ctrl_wr_req <= qspi_mem_wr_req && !qspi_mem_rd_req;
                     end
 
                 if((qspi_mem_wr_valid_ed && !qspi_mem_wr_valid) || (!qspi_mem_rd_valid_ed && qspi_mem_rd_valid))
@@ -876,31 +873,19 @@ always @(posedge qspi_mem_clk)
 
                 if(!qspi_mem_wr_valid_ed && qspi_mem_wr_valid)
                     begin
+                        qspi_mem_data_in_state <= !qspi_mem_data_in_state;
+
                         case(qspi_mem_data_in_sel)
                             3'b000:
-                                begin
-                                    qspi_mem_data_in <= audio_i2s_left_data_out;
-                                end
+                                qspi_mem_data_in <= audio_i2s_left_data_out;
                             3'b001:
-                                begin
-                                    qspi_mem_data_in <= audio_i2s_right_data_out;
-                                end
+                                qspi_mem_data_in <= audio_i2s_right_data_out;
                             3'b010:
-                                begin
-                                    qspi_mem_data_in_state <= !qspi_mem_data_in_state;
-
-                                    qspi_mem_data_in <= qspi_mem_data_in_state ? qddc_q_out : qddc_i_out;
-                                end
+                                qspi_mem_data_in <= qspi_mem_data_in_state ? qddc_q_out : qddc_i_out;
                             3'b011:
-                                begin
-                                    qspi_mem_data_in_state <= !qspi_mem_data_in_state;
-
-                                    qspi_mem_data_in <= qspi_mem_data_in_state ? qduc_q_in : qduc_i_in;
-                                end
+                                qspi_mem_data_in <= qspi_mem_data_in_state ? qduc_q_in : qduc_i_in;
                             default:
-                                begin
-                                    qspi_mem_data_in <= 16'hA5A5;
-                                end
+                                qspi_mem_data_in <= 16'hA5F0 | qspi_mem_data_in_state;
                         endcase
                     end
 
@@ -1453,7 +1438,7 @@ always @(posedge cntrl_spi_clk)
 
                 cntrl_spi_qspi_mem_wr_req <= 1'b0;
                 cntrl_spi_qspi_mem_rd_req <= 1'b0;
-                cntrl_spi_qspi_mem_data_in_sel <= 3'b000;
+                cntrl_spi_qspi_mem_data_in_sel <= 3'b111;
 
                 cntrl_spi_qspi_mem_start_addr <= 22'h000000;
 
