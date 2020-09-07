@@ -64,11 +64,17 @@ $(TARGET).bin: $(TARGET).asc
 	@echo Packing bin file...
 	@icepack $< $@
 
-$(TARGET).h: $(TARGET).bin
+$(TARGET).rle.bin: $(TARGET).bin
+	@echo Compressing bin file...
+	@rle_encode $< $@ > /dev/null
+
+$(TARGET).h: $(TARGET).rle.bin
 	@echo Generating C header file...
-	@xxd -i $< $@
+	@xxd -u -i $< $@
+	@sed -i 's/0X/0x/g' $@
 	@sed -i 's/unsigned char $(TARGETDIR)_/static const uint8_t /g' $@
 	@sed -i 's/unsigned int $(TARGETDIR)_/static const uint32_t /g' $@
+	@sed -i 's/rle_bin/bin/g' $@
 
 inc-version: clean
 	@echo $$(($(DESIGN_VERSION) + 1)) > $(TARGETDIR)/.version
