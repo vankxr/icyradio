@@ -9197,7 +9197,7 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="R907" library="Resistor" deviceset="RESISTOR" device="-0603" value="0 Ohms"/>
 <part name="RFCON501" library="RF Connector" deviceset="RFCON" device="-SMA-EDGE"/>
 <part name="GND519" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U503" library="Analog Devices" deviceset="ADL5?" device="" technology="601"/>
+<part name="U503" library="Analog Devices" deviceset="ADL5?" device="" technology="610" value="ADL5610"/>
 <part name="C515" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="RFCON502" library="RF Connector" deviceset="RFCON" device="-U.FL"/>
 <part name="GND520" library="Supply Symbol" deviceset="GND" device=""/>
