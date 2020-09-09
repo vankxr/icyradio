@@ -598,13 +598,13 @@ void init_audio_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
 
-    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
-    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_BRIDGE);
     fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
-    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
-    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
+    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_BRIDGE);
     DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
 
     fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
@@ -897,7 +897,7 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 425055560); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 525055560); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();

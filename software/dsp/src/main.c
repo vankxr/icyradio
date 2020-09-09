@@ -501,7 +501,7 @@ void init_dsp_components()
         DBGPRINTLN_CTX("TX - Failed baseband interpolating FIR intialization!");
 
     //// Audio AGC
-    pTXAudioAGC = dsp_agc_init(1.f, 1.f, 20.f, 0.001f, 0.005f, 0.85f, 0.9f, 32);
+    pTXAudioAGC = dsp_agc_init(1.f, 1.f, 80.f, 0.001f, 0.005f, 0.92f, 0.98f, 32);
 
     if(pTXAudioAGC)
         DBGPRINTLN_CTX("TX - Audio AGC intialized!");
@@ -534,7 +534,7 @@ void init_dsp_components()
         DBGPRINTLN_CTX("TX - Failed baseband decimating FIR intialization!");
 
     //// Audio AGC
-    pRXAudioAGC = dsp_agc_init(1.f, 1.f, 20.f, 0.001f, 0.005f, 0.85f, 0.9f, 32);
+    pRXAudioAGC = dsp_agc_init(1.f, 1.f, 80.f, 0.001f, 0.005f, 0.92f, 0.98f, 32);
 
     if(pRXAudioAGC)
         DBGPRINTLN_CTX("TX - Audio AGC intialized!");
