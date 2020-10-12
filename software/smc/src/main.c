@@ -1181,7 +1181,7 @@ int main()
 
     // TFT Init
     tft_init();
-    tft_bl_init(2000); // Init backlight PWM at 2 kHz
+    tft_bl_init(50000); // Init backlight PWM at 50 kHz
     tft_bl_set(0.f); // Set backlight to 0%
     tft_display_on(); // Turn display on
     tft_set_rotation(ILI9488_ROTATION_HORIZONTAL_FLIP); // Set rotation (horizontal, ribbon to the left)

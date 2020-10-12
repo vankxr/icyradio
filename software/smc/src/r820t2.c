@@ -231,8 +231,6 @@ uint8_t r820t2_init()
     if(r820t2_read_register(0x00) != 0x96)
         return 0;
 
-    RXTUNER_REF_28M8();
-
     for(uint8_t i = 5; i < 32; i++)
         r820t2_write_register(i, ubRegisterInitValues[i]);
 
