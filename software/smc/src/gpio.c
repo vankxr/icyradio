@@ -124,7 +124,7 @@ void gpio_init()
                       | GPIO_P_MODEH_MODE12_PUSHPULL                // TXPLL_LE - USART4 - Location 1
                       | GPIO_P_MODEH_MODE13_PUSHPULL                // TXDAC_SCLK - USART5 - Location 1
                       | GPIO_P_MODEH_MODE14_DISABLED                // NR
-                      | GPIO_P_MODEH_MODE15_PUSHPULL;               // RXTUNER_REFCLK_SEL
+                      | GPIO_P_MODEH_MODE15_DISABLED;               // RXTUNER_REFCLK_SEL - NU
     GPIO->P[3].DOUT   = BIT(2) | BIT(12);
     GPIO->P[3].OVTDIS = BIT(6) | BIT(10);
 
