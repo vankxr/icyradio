@@ -9146,10 +9146,10 @@ Source: http://www.hirose.co.jp/cataloge_hp/e58618038.pdf</description>
 <part name="C604" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="100nF"/>
 <part name="GND607" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C616" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="2.7nF"/>
-<part name="C615" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="39nF"/>
-<part name="R606" library="Resistor" deviceset="RESISTOR" device="-0603" value="360 Ohms"/>
-<part name="C619" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="1.2nF"/>
-<part name="R607" library="Resistor" deviceset="RESISTOR" device="-0603" value="680 Ohms"/>
+<part name="C615" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="68nF"/>
+<part name="R606" library="Resistor" deviceset="RESISTOR" device="-0603" value="866 Ohms"/>
+<part name="C619" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="910pF"/>
+<part name="R607" library="Resistor" deviceset="RESISTOR" device="-0603" value="6.65K Ohms"/>
 <part name="GND618" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND620" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND621" library="Supply Symbol" deviceset="GND" device=""/>
