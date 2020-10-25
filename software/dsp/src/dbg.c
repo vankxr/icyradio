@@ -7,10 +7,7 @@ void _putchar(char ch)
 
 void dbg_init()
 {
-    PMC->PMC_PCK[3] = (0 << PMC_PCK_PRES_Pos) | PMC_PCK_CSS_MCK; // Select debug clock = MCK / (0 + 1)
-    PMC->PMC_SCER = PMC_SCER_PCK3; // Enable debug clock
-
-    while(!(PMC->PMC_SR & PMC_SR_PCKRDY3)); // Wait for it to be enabled
+    pmc_pck_clock_config(PMC_PCK_ETM, 1, PMC_PCK_CSS_MCK, 1); // Enable debug clock = MCK / (0 + 1)
 }
 void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 {
@@ -24,7 +21,7 @@ void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 
     TPI->SPPR = (2 << TPI_SPPR_TXMODE_Pos);
     TPI->FFCR = TPI_FFCR_TrigIn_Msk;
-    TPI->ACPR = (pmc_get_pck_clock_freq(3) / ulFrequency) - 1;
+    TPI->ACPR = (pmc_pck_clock_get_freq(PMC_PCK_ETM) / ulFrequency) - 1;
 }
 void dbg_swo_putc(char c, uint8_t ubChannel)
 {

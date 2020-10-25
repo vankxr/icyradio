@@ -32,14 +32,11 @@ void pmc_init()
         while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINFRDY));
     } while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINF_Msk));
 
-    // Setup and enable PLLA to output 348 MHz, 63 SCLK cycles to lock
-    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((348000000UL / MAINXO_OSC_FREQ) - 1) << CKGR_PLLAR_MULA_Pos) | (63 << CKGR_PLLAR_PLLACOUNT_Pos) | CKGR_PLLAR_DIVA_BYPASS;
-
-    // Wait for it to be locked
-    while(!(PMC->PMC_SR & PMC_SR_LOCKA));
+    // Setup and enable PLLA to output 360 MHz
+    pmc_plla_config(1, 360000000UL / MAINXO_OSC_FREQ, 1);
 
     // Configure flash waitstates
-    eefc_config_waitstates(174000000);
+    eefc_config_waitstates(180000000);
 
     // Setup FCLK and MCK dividers
     PMC->PMC_MCKR = (PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) | PMC_MCKR_UPLLDIV2 | PMC_MCKR_MDIV_PCK_DIV2 | PMC_MCKR_PRES_CLK_1;
@@ -148,7 +145,83 @@ void pmc_update_clocks()
     }
 }
 
-uint32_t pmc_get_pck_clock_freq(uint8_t ubID)
+void pmc_plla_config(uint8_t ubEnable, uint8_t ubMultiplier, uint8_t ubDivider)
+{
+    if(!ubEnable)
+    {
+        PMC->CKGR_PLLAR = CKGR_PLLAR_ONE;
+
+        while(PMC->PMC_SR & PMC_SR_LOCKA);
+
+        return;
+    }
+
+    if(!ubMultiplier || !ubDivider)
+        return;
+
+    if(ubMultiplier > 63)
+        return;
+
+    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((ubMultiplier - 1) << CKGR_PLLAR_MULA_Pos) & CKGR_PLLAR_MULA_Msk) | (0x3F << CKGR_PLLAR_PLLACOUNT_Pos) | ((ubDivider << CKGR_PLLAR_DIVA_Pos) & CKGR_PLLAR_DIVA_Msk);
+
+    while(!(PMC->PMC_SR & PMC_SR_LOCKA));
+}
+
+void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint8_t ubFSClockEnable, uint8_t ubFSClockSource, uint16_t usFSClockPrescaler)
+{
+    if(ubUPLLEnable)
+    {
+        if(ubUPLLClockDivider)
+            PMC->PMC_MCKR |= PMC_MCKR_UPLLDIV2;
+        else
+            PMC->PMC_MCKR &= ~PMC_MCKR_UPLLDIV2;
+
+        PMC->CKGR_UCKR |= CKGR_UCKR_UPLLEN;
+
+        while(!(PMC->PMC_SR & PMC_SR_LOCKU));
+    }
+    else
+    {
+        PMC->CKGR_UCKR &= ~CKGR_UCKR_UPLLEN;
+
+        while(PMC->PMC_SR & PMC_SR_LOCKU);
+    }
+
+    if(ubFSClockEnable)
+    {
+        PMC->PMC_USB = (ubFSClockSource & PMC_USB_USBS_Msk) | (((usFSClockPrescaler - 1) << PMC_USB_USBDIV_Pos) & PMC_USB_USBDIV_Msk);
+        PMC->PMC_SCER = PMC_SCER_USBCLK;
+
+        while(PMC->PMC_SCSR & PMC_SCSR_USBCLK);
+    }
+    else
+    {
+        PMC->PMC_SCDR = PMC_SCDR_USBCLK;
+
+        while(PMC->PMC_SCSR & PMC_SCSR_USBCLK);
+    }
+}
+
+void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler)
+{
+    if(ubID > 7)
+        return;
+
+    if(!ubEnable)
+    {
+        PMC->PMC_SCDR = BIT(ubID + PMC_SCDR_PCK0_Pos);
+
+        while(PMC->PMC_SR & BIT(ubID + PMC_SR_PCKRDY0_Pos));
+
+        return;
+    }
+
+    PMC->PMC_PCK[ubID] = (((usPrescaler - 1) << PMC_PCK_PRES_Pos) & PMC_PCK_PRES_Msk) | (ubSource & PMC_PCK_CSS_Msk);
+    PMC->PMC_SCER = BIT(ubID + PMC_SCER_PCK0_Pos);
+
+    while(!(PMC->PMC_SR & BIT(ubID + PMC_SR_PCKRDY0_Pos)));
+}
+uint32_t pmc_pck_clock_get_freq(uint8_t ubID)
 {
     if(ubID > 7)
         return 0;
@@ -179,12 +252,29 @@ uint32_t pmc_get_pck_clock_freq(uint8_t ubID)
 
     return ulFreq / (((PMC->PMC_PCK[ubID] & PMC_PCK_PRES_Msk) >> PMC_PCK_PRES_Pos) + 1);
 }
-uint32_t pmc_get_generic_clock_freq(uint8_t ubPeripheralID)
+
+void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler)
 {
-    if(ubPeripheralID > 127)
+    if(ubID > 127)
+        return;
+
+    PMC->PMC_PCR = (ubID << PMC_PCR_PID_Pos); // Set peripheral ID first to load current values
+
+    if(!ubEnable)
+    {
+        PMC->PMC_PCR = (PMC->PMC_PCR & ~PMC_PCR_GCLKEN) | PMC_PCR_CMD;
+
+        return;
+    }
+
+    PMC->PMC_PCR = (PMC->PMC_PCR & ~(PMC_PCR_GCLKDIV_Msk | PMC_PCR_GCLKCSS_Msk)) | PMC_PCR_GCLKEN | (ubSource & PMC_PCR_GCLKCSS_Msk) | (((usPrescaler - 1) << PMC_PCR_GCLKDIV_Pos) & PMC_PCR_GCLKDIV_Msk);
+}
+uint32_t pmc_generic_clock_get_freq(uint8_t ubID)
+{
+    if(ubID > 127)
         return 0;
 
-    PMC->PMC_PCR = (ubPeripheralID << PMC_PCR_PID_Pos);
+    PMC->PMC_PCR = (ubID << PMC_PCR_PID_Pos);
 
     if(!(PMC->PMC_PCR & PMC_PCR_GCLKEN))
         return 0;
@@ -211,4 +301,13 @@ uint32_t pmc_get_generic_clock_freq(uint8_t ubPeripheralID)
     }
 
     return ulFreq / (((PMC->PMC_PCR & PMC_PCR_GCLKDIV_Msk) >> PMC_PCR_GCLKDIV_Pos) + 1);
+}
+
+void pmc_peripheral_clock_gate(uint8_t ubID, uint8_t ubEnable)
+{
+    if(ubID > 127)
+        return;
+
+    PMC->PMC_PCR = (ubID << PMC_PCR_PID_Pos); // Set peripheral ID first to load current values
+    PMC->PMC_PCR |= (ubEnable ? PMC_PCR_EN : 0) | PMC_PCR_CMD;
 }
