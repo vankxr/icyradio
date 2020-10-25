@@ -647,7 +647,7 @@ void cmu_hf_clock_config(uint32_t ulSource, uint8_t ubPrescaler)
 }
 void cmu_hfle_clock_config(uint32_t ulPrescaler)
 {
-    CMU->HFPRESC = (CMU->HFPRESC & ~_CMU_HFPRESC_HFCLKLEPRESC_SHIFT) | (ulPrescaler & _CMU_HFPRESC_HFCLKLEPRESC_SHIFT);
+    CMU->HFPRESC = (CMU->HFPRESC & ~_CMU_HFPRESC_HFCLKLEPRESC_MASK) | (ulPrescaler & _CMU_HFPRESC_HFCLKLEPRESC_MASK);
 }
 void cmu_hfbus_clock_config(uint8_t ubPrescaler)
 {
