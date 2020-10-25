@@ -21,7 +21,7 @@
             "swoConfig": {
                 "enabled": true,
                 "swoFrequency": 12000000,
-                "cpuFrequency": 300000000,
+                "cpuFrequency": 360000000,
                 "source": "/dev/ttyUSB1",
                 "decoders": [
                     {
