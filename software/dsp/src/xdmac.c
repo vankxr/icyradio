@@ -4,14 +4,14 @@ static xdmac_ch_isr_t ppfChannelISR[XDMACCHID_NUMBER];
 
 void ITCM_CODE _xdmac_isr()
 {
-    uint32_t ulFlags = XDMAC->XDMAC_GIS;
+    uint32_t ulFlags = XDMAC->XDMAC_GIS & XDMAC->XDMAC_GIM;
 
     for(uint8_t ubChannel = 0; ubChannel < XDMACCHID_NUMBER; ubChannel++)
     {
         if(!(ulFlags & BIT(ubChannel)))
             continue;
 
-        uint32_t ulChannelFlags = XDMAC->XdmacChid[ubChannel].XDMAC_CIS;
+        uint32_t ulChannelFlags = XDMAC->XdmacChid[ubChannel].XDMAC_CIS & XDMAC->XdmacChid[ubChannel].XDMAC_CIM;
 
         if(ppfChannelISR[ubChannel])
             ppfChannelISR[ubChannel](ulChannelFlags);
@@ -20,7 +20,7 @@ void ITCM_CODE _xdmac_isr()
 
 void xdmac_init()
 {
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (XDMAC_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(XDMAC_CLOCK_ID, 1); // Enable peripheral clock
 
     for(uint8_t ubChannel = 0; ubChannel < XDMACCHID_NUMBER; ubChannel++)
     {
