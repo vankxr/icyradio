@@ -162,12 +162,12 @@ void pmc_plla_config(uint8_t ubEnable, uint8_t ubMultiplier, uint8_t ubDivider)
     if(ubMultiplier > 63)
         return;
 
-    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | (((ubMultiplier - 1) << CKGR_PLLAR_MULA_Pos) & CKGR_PLLAR_MULA_Msk) | (0x3F << CKGR_PLLAR_PLLACOUNT_Pos) | ((ubDivider << CKGR_PLLAR_DIVA_Pos) & CKGR_PLLAR_DIVA_Msk);
+    PMC->CKGR_PLLAR = CKGR_PLLAR_ONE | ((((uint32_t)ubMultiplier - 1) << CKGR_PLLAR_MULA_Pos) & CKGR_PLLAR_MULA_Msk) | (0x3F << CKGR_PLLAR_PLLACOUNT_Pos) | (((uint32_t)ubDivider << CKGR_PLLAR_DIVA_Pos) & CKGR_PLLAR_DIVA_Msk);
 
     while(!(PMC->PMC_SR & PMC_SR_LOCKA));
 }
 
-void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint8_t ubFSClockEnable, uint8_t ubFSClockSource, uint16_t usFSClockPrescaler)
+void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint8_t ubFSClockEnable, uint32_t ulFSClockSource, uint16_t usFSClockPrescaler)
 {
     if(ubUPLLEnable)
     {
@@ -175,6 +175,13 @@ void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint
             PMC->PMC_MCKR |= PMC_MCKR_UPLLDIV2;
         else
             PMC->PMC_MCKR &= ~PMC_MCKR_UPLLDIV2;
+
+        if(MAINXO_OSC_FREQ == 12000000UL)
+            UTMI->UTMI_CKTRIM = UTMI_CKTRIM_FREQ_XTAL12;
+        else if(MAINXO_OSC_FREQ == 16000000UL)
+            UTMI->UTMI_CKTRIM = UTMI_CKTRIM_FREQ_XTAL16;
+        else
+            return;
 
         PMC->CKGR_UCKR |= CKGR_UCKR_UPLLEN;
 
@@ -189,10 +196,10 @@ void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint
 
     if(ubFSClockEnable)
     {
-        PMC->PMC_USB = (ubFSClockSource & PMC_USB_USBS_Msk) | (((usFSClockPrescaler - 1) << PMC_USB_USBDIV_Pos) & PMC_USB_USBDIV_Msk);
+        PMC->PMC_USB = (ulFSClockSource & PMC_USB_USBS_Msk) | ((((uint32_t)usFSClockPrescaler - 1) << PMC_USB_USBDIV_Pos) & PMC_USB_USBDIV_Msk);
         PMC->PMC_SCER = PMC_SCER_USBCLK;
 
-        while(PMC->PMC_SCSR & PMC_SCSR_USBCLK);
+        while(!(PMC->PMC_SCSR & PMC_SCSR_USBCLK));
     }
     else
     {
@@ -202,7 +209,7 @@ void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint
     }
 }
 
-void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler)
+void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint32_t ulSource, uint16_t usPrescaler)
 {
     if(ubID > 7)
         return;
@@ -216,7 +223,7 @@ void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint
         return;
     }
 
-    PMC->PMC_PCK[ubID] = (((usPrescaler - 1) << PMC_PCK_PRES_Pos) & PMC_PCK_PRES_Msk) | (ubSource & PMC_PCK_CSS_Msk);
+    PMC->PMC_PCK[ubID] = ((((uint32_t)usPrescaler - 1) << PMC_PCK_PRES_Pos) & PMC_PCK_PRES_Msk) | (ulSource & PMC_PCK_CSS_Msk);
     PMC->PMC_SCER = BIT(ubID + PMC_SCER_PCK0_Pos);
 
     while(!(PMC->PMC_SR & BIT(ubID + PMC_SR_PCKRDY0_Pos)));
@@ -253,7 +260,7 @@ uint32_t pmc_pck_clock_get_freq(uint8_t ubID)
     return ulFreq / (((PMC->PMC_PCK[ubID] & PMC_PCK_PRES_Msk) >> PMC_PCK_PRES_Pos) + 1);
 }
 
-void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler)
+void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint32_t ulSource, uint16_t usPrescaler)
 {
     if(ubID > 127)
         return;
@@ -267,7 +274,7 @@ void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, 
         return;
     }
 
-    PMC->PMC_PCR = (PMC->PMC_PCR & ~(PMC_PCR_GCLKDIV_Msk | PMC_PCR_GCLKCSS_Msk)) | PMC_PCR_GCLKEN | (ubSource & PMC_PCR_GCLKCSS_Msk) | (((usPrescaler - 1) << PMC_PCR_GCLKDIV_Pos) & PMC_PCR_GCLKDIV_Msk);
+    PMC->PMC_PCR = (PMC->PMC_PCR & ~(PMC_PCR_GCLKDIV_Msk | PMC_PCR_GCLKCSS_Msk)) | PMC_PCR_GCLKEN | (ulSource & PMC_PCR_GCLKCSS_Msk) | ((((uint32_t)usPrescaler - 1) << PMC_PCR_GCLKDIV_Pos) & PMC_PCR_GCLKDIV_Msk);
 }
 uint32_t pmc_generic_clock_get_freq(uint8_t ubID)
 {

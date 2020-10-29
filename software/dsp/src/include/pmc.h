@@ -31,12 +31,12 @@ void pmc_update_clocks();
 
 void pmc_plla_config(uint8_t ubEnable, uint8_t ubMultiplier, uint8_t ubDivider);
 
-void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint8_t ubFSClockEnable, uint8_t ubFSClockSource, uint16_t usFSClockPrescaler);
+void pmc_usb_clock_config(uint8_t ubUPLLEnable, uint8_t ubUPLLClockDivider, uint8_t ubFSClockEnable, uint32_t ulFSClockSource, uint16_t usFSClockPrescaler);
 
-void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler);
+void pmc_pck_clock_config(uint8_t ubID, uint8_t ubEnable, uint32_t ulSource, uint16_t usPrescaler);
 uint32_t pmc_pck_clock_get_freq(uint8_t ubID);
 
-void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSource, uint16_t usPrescaler);
+void pmc_generic_clock_config(uint8_t ubID, uint8_t ubEnable, uint32_t ulSource, uint16_t usPrescaler);
 uint32_t pmc_generic_clock_get_freq(uint8_t ubID);
 
 void pmc_peripheral_clock_gate(uint8_t ubID, uint8_t ubEnable);
