@@ -31,8 +31,9 @@ It implements a pre-emphasis filter to allow better SNR at audio high frequencie
 
 ## Errata
  - Microchip DS12x1 has the wrong package in the PCB version that was sent for manufacturing. The package in the datasheet has the pins wrongly named clockwise.
- - The oscillators used have a drift of +-20ppm, this is really high for transmitting narrow band signals above ~300MHz, and can easily be heard. A +-0.5ppm oscillator was deadbugged in place for the ADF4351 reference.
+ - The oscillators used have a drift of +-20ppm, this is really high for transmitting narrow band signals above ~300MHz, and can easily be heard. A +-0.5ppm oscillator was deadbugged in place for the ADF4351 and R820T2 references.
  - The DAC common mode pins were not connected in the PCB version that was sent for manufacturing. Solution was to scrape a bit of the GND plane and solder the pins to it.
+ - Other minor hardware errata such as drop-in component replacement (i.e. filter tuning) is not stated here, view the schematic history.
 
 ## Authors
 
