@@ -41,4 +41,4 @@ It implements a pre-emphasis filter to allow better SNR at audio high frequencie
 
 ## License
 
-This firmware is licensed under the [GNU General Public License v3.0](LICENSE).
+The content of this repository is licensed under the [GNU General Public License v3.0](LICENSE).
