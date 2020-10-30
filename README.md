@@ -40,4 +40,4 @@ The **master** branch is where everything starts. It contains a simple broadcast
 
 ## License
 
-This firmware is licensed under the [GNU General Public License v3.0](LICENSE).
+The content of this repository is licensed under the [GNU General Public License v3.0](LICENSE).
