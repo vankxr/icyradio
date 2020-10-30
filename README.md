@@ -18,6 +18,8 @@ A **S**oftware **D**efined **R**adio development board.
  
 ## Simplified block diagram
 ![](https://github.com/vankxr/icyradio/blob/master/docs/block-diagram.png)  
+#### master
+The **master** branch is where everything starts. It contains a simple broadcast FM demodulator. It is not optimized at all. The stereo is not really good and the RDS data is not demodulated (yet).
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
