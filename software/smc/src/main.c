@@ -67,8 +67,8 @@ static void init_rx_chain();
 static void init_tx_chain();
 
 // Variables
-static uint32_t ulRXHardTunedFrequency = 101000000;
-static uint32_t ulRXSoftTunedFrequency = 104300000;
+static uint32_t ulRXHardTunedFrequency = 524000000;
+static uint32_t ulRXSoftTunedFrequency = 525052000;
 static tft_graph_t *pRXIFPSDGraph = NULL;
 static tft_textbox_t *pRXTunedFreqTextbox = NULL;
 static tft_button_t *pRXTunedFreqButtons[2] = {NULL, NULL};
@@ -598,13 +598,13 @@ void init_audio_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA audio I2S enabled!");
 
-    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_BRIDGE);
+    fpga_i2s_mux_set_codec_master_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_MCLK_SEL_FPGA);
+    fpga_i2s_mux_set_codec_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_DCLK_SEL_FPGA);
     fpga_i2s_mux_set_codec_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_CODEC_SDIN_SEL_DSP);
     DBGPRINTLN_CTX("FPGA codec I2S mux configured!");
 
-    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_BRIDGE);
-    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_BRIDGE);
+    fpga_i2s_mux_set_dsp_data_clock(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_DCLK_SEL_FPGA);
+    fpga_i2s_mux_set_dsp_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_DSP_SDIN_SEL_CODEC);
     DBGPRINTLN_CTX("FPGA DSP I2S mux configured!");
 
     fpga_i2s_mux_set_bridge_sdin(FPGA_REG_AUDIO_I2S_MUX_SEL_BRIDGE_SDIN_SEL_CODEC);
