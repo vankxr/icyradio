@@ -2,28 +2,28 @@
 
 void ITCM_CODE _pioa_isr()
 {
-    uint32_t ulFlags = PIOA->PIO_ISR;
+    uint32_t ulFlags = PIOA->PIO_ISR & PIOA->PIO_IMR;
 }
 void ITCM_CODE _piob_isr()
 {
-    uint32_t ulFlags = PIOB->PIO_ISR;
+    uint32_t ulFlags = PIOB->PIO_ISR & PIOB->PIO_IMR;
 }
 void ITCM_CODE _pioc_isr()
 {
     extern void fpga_isr();
 
-    uint32_t ulFlags = PIOC->PIO_ISR;
+    uint32_t ulFlags = PIOC->PIO_ISR & PIOC->PIO_IMR;
 
     if(ulFlags & BIT(30))
         fpga_isr();
 }
 void ITCM_CODE _piod_isr()
 {
-    uint32_t ulFlags = PIOD->PIO_ISR;
+    uint32_t ulFlags = PIOD->PIO_ISR & PIOD->PIO_IMR;
 }
 void ITCM_CODE _pioe_isr()
 {
-    uint32_t ulFlags = PIOE->PIO_ISR;
+    uint32_t ulFlags = PIOE->PIO_ISR & PIOE->PIO_IMR;
 }
 
 void pio_init()
@@ -33,7 +33,7 @@ void pio_init()
     // NU - Not used (not currently in use)
 
     // Port A
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (PIOA_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(PIOA_CLOCK_ID, 1); // Enable peripheral clock
     //// OUTPUT ////
     ////// Multi-drive (open-drain) enable (ER) or disable (DR)
     PIOA->PIO_MDDR = 0xFFFFFFFF;
@@ -97,7 +97,7 @@ void pio_init()
     PIOA->PIO_IER = 0;
 
     // Port B
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (PIOB_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(PIOB_CLOCK_ID, 1); // Enable peripheral clock
     //// OUTPUT ////
     ////// Multi-drive (open-drain) enable (ER) or disable (DR)
     PIOB->PIO_MDDR = 0xFFFFFFFF;
@@ -156,7 +156,7 @@ void pio_init()
     PIOB->PIO_IER = 0;
 
     // Port C
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (PIOC_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(PIOC_CLOCK_ID, 1); // Enable peripheral clock
     //// OUTPUT ////
     ////// Multi-drive (open-drain) enable (ER) or disable (DR)
     PIOC->PIO_MDDR = 0xFFFFFFFF;
@@ -214,7 +214,7 @@ void pio_init()
     PIOC->PIO_IER = BIT(30);
 
     // Port D
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (PIOD_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(PIOD_CLOCK_ID, 1); // Enable peripheral clock
     //// OUTPUT ////
     ////// Multi-drive (open-drain) enable (ER) or disable (DR)
     PIOD->PIO_MDDR = 0xFFFFFFFF;
@@ -275,7 +275,7 @@ void pio_init()
     PIOD->PIO_IER = 0;
 
     // Port E
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (PIOE_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(PIOE_CLOCK_ID, 1); // Enable peripheral clock
     //// OUTPUT ////
     ////// Multi-drive (open-drain) enable (ER) or disable (DR)
     PIOE->PIO_MDDR = 0xFFFFFFFF;
@@ -334,11 +334,4 @@ void pio_init()
     ////// Interrupt enable (ER) or disable (DR)
     PIOE->PIO_IDR = 0xFFFFFFFF;
     PIOE->PIO_IER = 0;
-
-    // System IOs configuration
-    MATRIX->CCFG_SYSIO |= CCFG_SYSIO_SYSIO12; // Disable ERASE
-    MATRIX->CCFG_SYSIO &= ~CCFG_SYSIO_SYSIO7; // Enable SWCLK
-    MATRIX->CCFG_SYSIO &= ~CCFG_SYSIO_SYSIO6; // Enable SWDIO
-    MATRIX->CCFG_SYSIO &= ~CCFG_SYSIO_SYSIO5; // Enable SWO
-    MATRIX->CCFG_SYSIO |= CCFG_SYSIO_SYSIO4;  // Disable TDI
 }

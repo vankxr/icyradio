@@ -14,12 +14,16 @@
 #include "pmc.h"
 #include "rstc.h"
 #include "eefc.h"
+#include "matrix.h"
 #include "xdmac.h"
 #include "systick.h"
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
 #include "trng.h"
+#include "usb.h"
+#include "usb_impl.h"
+#include "usb_util.h"
 #include "audio_filter.h"
 #include "pre_emphasis_filter.h"
 #include "baseband_filter.h"
@@ -315,7 +319,7 @@ void init_baseband_i2s()
 
     dcache_addr_clean((void *)pulRXBasebandBuffer, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (I2SC1_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(I2SC1_CLOCK_ID, 1); // Enable peripheral clock
 
     I2SC1->I2SC_CR |= I2SC_CR_SWRST; // Reset baseband I2S peripheral
     I2SC1->I2SC_MR = I2SC_MR_DATALENGTH_16_BITS_COMPACT | I2SC_MR_MODE_SLAVE; // Configure baseband I2S peripheral
@@ -402,7 +406,7 @@ void init_audio_i2s()
 
     dcache_addr_clean(pulRXAudioBuffer, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-    PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_CMD | (I2SC0_CLOCK_ID << PMC_PCR_PID_Pos); // Enable peripheral clock
+    pmc_peripheral_clock_gate(I2SC0_CLOCK_ID, 1); // Enable peripheral clock
 
     I2SC0->I2SC_CR |= I2SC_CR_SWRST; // Reset audio I2S peripheral
     I2SC0->I2SC_MR = I2SC_MR_DATALENGTH_16_BITS_COMPACT | I2SC_MR_MODE_SLAVE; // Configure audio I2S peripheral
@@ -551,6 +555,8 @@ int init()
     pmc_init();
     pmc_update_clocks();
 
+    matrix_init(); // Init Bus matrix configuration
+
     eefc_init(); // Init flash controller
 
     dbg_init(); // Init Debug module
@@ -563,6 +569,8 @@ int init()
     pio_init();
     xdmac_init();
     trng_init();
+    usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
+    usb_impl_init();
 
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
@@ -592,6 +600,10 @@ int init()
     DBGPRINTLN_CTX("PMC - UPLLCK Clock: %.1f MHz", (float)UPLLCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - MCK Clock: %.1f MHz", (float)MCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
+
+    delay_ms(1000);
+
+    usb_attach();
 
     return 0;
 }
