@@ -18,6 +18,9 @@ A **S**oftware **D**efined **R**adio development board.
  
 ## Simplified block diagram
 ![](https://github.com/vankxr/icyradio/blob/ssb-mod/docs/block-diagram.png)  
+#### ssb-mod
+This branch implements a **S**ingle **S**ide **B**and audio modulator, optimized for the QO-100 narrowband transponder.
+It implements a pre-emphasis filter to allow better SNR at audio high frequencies and general audio power spectral distribution
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
