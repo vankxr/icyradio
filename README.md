@@ -18,9 +18,10 @@ A **S**oftware **D**efined **R**adio development board.
  
 ## Simplified block diagram
 ![](https://github.com/vankxr/icyradio/blob/ssb-mod/docs/block-diagram.png)  
-#### ssb-mod
-This branch implements a **S**ingle **S**ide **B**and audio modulator, optimized for the QO-100 narrowband transponder.
-It implements a pre-emphasis filter to allow better SNR at audio high frequencies and general audio power spectral distribution
+#### qo100
+This branch implements a SSB audio modulator, optimized for the **QO-100** narrowband transponder.
+It implements a pre-emphasis filter to allow better SNR at audio high frequencies and general audio power spectral distribution.
+It aldo supports receiving and sending baseband samples via USB to a computer that can process them. This feature is used to implement a DVB-S/S2 modulator and demodulator to work on the **QO-100** wideband transponder
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
@@ -28,6 +29,10 @@ It implements a pre-emphasis filter to allow better SNR at audio high frequencie
  - [Device CMSIS](https://www.keil.com/dd2/) - CMSIS headers defining the MCU memories, peripherals, etc...
  - [Core CMSIS](https://github.com/ARM-software/CMSIS_5) - CMSIS headers defining the ARM Cores
  - [armmem](https://github.com/vankxr/armmem) - ELF file analyzer (required for the MCU Makefiles to work)
+ - [libusb](https://libusb.info/) - Used to interact with the board via USB
+ - [ffmpeg](https://ffmpeg.org/) - Used to multiplex and demultiplex MPEG2 Transport Streams for DVB
+ - [leansdr](https://github.com/pabr/leansdr) - Contains leandvb and leandvbtx to demodulate and modulate DVB respectively
+ - [csdr](https://github.com/ha7ilm/csdr) - SDR utilities so that a working signal chain can be built on the command line only
 
 ## Errata
  - Microchip DS12x1 has the wrong package in the PCB version that was sent for manufacturing. The package in the datasheet has the pins wrongly named clockwise.
