@@ -21,6 +21,7 @@
 #include "wdt.h"
 #include "pio.h"
 #include "trng.h"
+#include "afec.h"
 #include "usb.h"
 #include "usb_impl.h"
 #include "usb_util.h"
@@ -569,6 +570,7 @@ int init()
     pio_init();
     xdmac_init();
     trng_init();
+    afec_init();
     usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
     usb_impl_init();
 
@@ -602,6 +604,8 @@ int init()
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
 
     delay_ms(1000);
+
+    afec_trigger_timer_init(5); // Trigger AFEC conversion every 5 seconds
 
     usb_attach();
 
@@ -638,6 +642,7 @@ int main()
 
             DBGPRINTLN_CTX("----------------------------------");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
+            DBGPRINTLN_CTX("Internal Temperature: %.3f C", g_fInternalTemperature);
             DBGPRINTLN_CTX("TX processing time budget: %llu ms", ullTXProcessingTimeBudget);
             DBGPRINTLN_CTX("TX processing time used: %llu ms", ullTXProcessingTimeUsed);
             DBGPRINTLN_CTX("TX budget used: %.2f %%", (float)ullTXProcessingTimeUsed * 100.f / ullTXProcessingTimeBudget);
