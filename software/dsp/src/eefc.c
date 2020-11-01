@@ -131,6 +131,9 @@ void eefc_get_unique_id(uint32_t *pulID)
         EFC->EEFC_FCR = EEFC_FCR_FKEY_PASSWD | EEFC_FCR_FCMD_SPUI;
 
         while(!(EFC->EEFC_FSR & EEFC_FSR_FRDY));
+
+        icache_invalidate();
+        dcache_addr_invalidate((void *)0x00400000, 4 * sizeof(uint32_t));
     }
 }
 
