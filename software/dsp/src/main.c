@@ -21,9 +21,6 @@
 #include "wdt.h"
 #include "pio.h"
 #include "trng.h"
-#include "usb.h"
-#include "usb_impl.h"
-#include "usb_util.h"
 #include "baseband_filter.h"
 #include "pilot_filter.h"
 #include "stereo_pilot_filter.h"
@@ -645,8 +642,6 @@ int init()
     pio_init();
     xdmac_init();
     trng_init();
-    usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
-    usb_impl_init();
 
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
@@ -678,8 +673,6 @@ int init()
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
 
     delay_ms(1000);
-
-    usb_attach();
 
     return 0;
 }
