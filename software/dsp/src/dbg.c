@@ -7,7 +7,7 @@ void _putchar(char ch)
 
 void dbg_init()
 {
-    pmc_pck_clock_config(PMC_PCK_ETM, 1, PMC_PCK_CSS_MCK, 1); // Enable debug clock = MCK / (0 + 1)
+    pmc_pck_clock_config(PMC_PCK_ETM, 1, PMC_PCK_CSS_MCK, 1); // Enable debug clock = MCK / 1
 }
 void dbg_swo_config(uint32_t ulChannelMask, uint32_t ulFrequency)
 {
