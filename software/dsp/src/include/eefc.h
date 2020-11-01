@@ -3,6 +3,7 @@
 
 #include <sam.h>
 #include "atomic.h"
+#include "cache.h"
 #include "utils.h"
 
 void ITCM_CODE eefc_init();
