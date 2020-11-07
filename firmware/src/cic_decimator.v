@@ -48,7 +48,7 @@ always @(posedge clk)
     begin
         if(reset)
             begin
-                comb_en <= {(NUM_STAGES + 2){1'b0}};
+                comb_en <= {(NUM_STAGES + 1){1'b0}};
                 comb_diff[0] <= {OSZ{1'b0}};
                 comb_dly[0] <= {OSZ{1'b0}};
             end
@@ -60,7 +60,7 @@ always @(posedge clk)
                         comb_dly[0] <= comb_diff[0];
                     end
 
-                comb_en <= {comb_en[NUM_STAGES:0], out_rate};
+                comb_en <= {comb_en[(NUM_STAGES - 1):0], out_rate};
             end
     end
 
