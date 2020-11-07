@@ -61,9 +61,12 @@ always @(posedge clk)
                 case(state)
                     1'b0:
                         begin
-                            q_out_sat <= mult_sat;
+                            i_out_sat <= mult_sat;
 
-                            mult_op <= i_lo_buf;
+                            mult_op <= q_lo_buf;
+
+                            out_i <= i_out_sat;
+                            out_q <= q_out_sat;
 
                             in_buf <= in;
                             i_lo_buf <= lo_i;
@@ -71,12 +74,9 @@ always @(posedge clk)
                         end
                     1'b1:
                         begin
-                            i_out_sat <= mult_sat;
+                            q_out_sat <= mult_sat;
 
-                            mult_op <= q_lo_buf;
-
-                            out_i <= i_out_sat;
-                            out_q <= q_out_sat;
+                            mult_op <= i_lo_buf;
                         end
                 endcase
             end
