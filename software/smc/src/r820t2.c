@@ -295,11 +295,16 @@ uint8_t r820t2_wakeup()
     for(uint8_t i = 5; i < 32; i++)
         r820t2_write_register(i, ubRegisterInitValues[i]);
 
+    delay_ms(20);
+
     r820t2_read_register(0x1F); // Force the register cache to load
 
     delay_ms(20);
 
     if(!r820t2_calibrate())
+        return 0;
+
+    if(!r820t2_set_freq(R820T2_FREQ))
         return 0;
 
     return 1;
