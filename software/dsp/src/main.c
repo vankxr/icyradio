@@ -622,9 +622,37 @@ int main()
 
     DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
 
+    //usb_impl_endpoint_buffer_dma_trigger(2, 256);
+
     while(1)
     {
         wdt_feed();
+
+        /*
+        if(usb_impl_endpoint_buffer_get_used_size(1) == 0)
+        {
+            static uint8_t num = 0;
+            uint8_t ubData[8192];
+
+            for(uint32_t i = 0; i < sizeof(ubData); i++)
+                ubData[i] = num++;
+
+            usb_impl_endpoint_buffer_flush(1);
+            usb_impl_endpoint_buffer_write(1, ubData, sizeof(ubData));
+
+            usb_impl_endpoint_buffer_dma_trigger(1, sizeof(ubData));
+        }
+
+        if(usb_impl_endpoint_buffer_get_used_size(2) > 0)
+        {
+            uint8_t ubData[4];
+
+            usb_impl_endpoint_buffer_read(2, ubData, sizeof(ubData));
+            usb_impl_endpoint_buffer_flush(2);
+
+            usb_impl_endpoint_buffer_dma_trigger(2, 256);
+        }
+        */
 
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
@@ -662,6 +690,10 @@ int main()
             ubRXBasebandOverflow = 0;
         }
 
+        // DTCM work buffers
+        static int16_t DTCM_DATA psAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+        static iq16_t DTCM_DATA pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
+
         if(ubTXAudioReady)
         {
             // Start performance counters
@@ -671,8 +703,6 @@ int main()
             volatile uint32_t *pulAudio = pulTXAudioBuffer + (ubTXAudioReady - 1) * AUDIO_SAMPLE_BUFFER_SIZE;
 
             // Process samples
-            int16_t psAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
             for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
             {
                 // Extract left and right channels
@@ -701,8 +731,6 @@ int main()
 
             if(ubAudioMuted)
             {
-                iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
                 // Fill dummy baseband buffer with zeros
                 arm_fill_q15(0, (int16_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t) / sizeof(int16_t));
 
@@ -726,7 +754,7 @@ int main()
                 fir_sparse_filter(pTXHilbertFilter, psAudio, psHilbertAudio);
 
                 // Delay real (I) component to match the filter delay and stuff the result in the final IQ pair array
-                static int16_t psDelayedAudio[HILBERT_DELAY_SAMPLES];
+                static int16_t DTCM_DATA psDelayedAudio[HILBERT_DELAY_SAMPLES];
                 iq16_t pAudio[AUDIO_SAMPLE_BUFFER_SIZE];
 
                 for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
@@ -745,8 +773,6 @@ int main()
                 }
 
                 // Interpolate and upsample to baseband rate
-                iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
                 fir_interpolator_complex_filter(pTXBasebandFilter, pAudio, pBaseband);
 
                 // Load baseband buffer
@@ -769,13 +795,19 @@ int main()
             volatile uint32_t *pulBaseband = pulRXBasebandBuffer + (ubRXBasebandReady - 1) * BASEBAND_SAMPLE_BUFFER_SIZE;
 
             // Process samples
-            iq16_t pBaseband[BASEBAND_SAMPLE_BUFFER_SIZE];
-
             for(uint16_t i = 0; i < BASEBAND_SAMPLE_BUFFER_SIZE; i++)
             {
                 // Build IQ pair from 32-bit I2S word
                 pBaseband[i].i = pulBaseband[i] & 0xFFFF;   // Left I2S channel  -> I
                 pBaseband[i].q = pulBaseband[i] >> 16;      // Right I2S channel -> Q
+            }
+
+            if(usb_impl_endpoint_buffer_get_used_size(1) == 0)
+            {
+                usb_impl_endpoint_buffer_flush(1);
+                usb_impl_endpoint_buffer_write(1, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+
+                usb_impl_endpoint_buffer_dma_trigger(1, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
             }
 
             // Decimate
@@ -797,8 +829,7 @@ int main()
             fir_sparse_filter(pRXHilbertFilter, psImagAudio, psHilbertAudio);
 
             // Delay real (I) component to match the filter delay and combine both of the components to generate a real (dual side-banded) audio signal
-            static int16_t psDelayedAudio[HILBERT_DELAY_SAMPLES];
-            int16_t psAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+            static int16_t DTCM_DATA psDelayedAudio[HILBERT_DELAY_SAMPLES];
 
             for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
             {

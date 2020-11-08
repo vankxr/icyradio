@@ -2,7 +2,7 @@
 
 usb_reset_isr_t pfResetISR = NULL;
 usb_endpoint_isr_t pfEndpointISR[10] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-usb_endpoint_dma_isr_t pfEndpointDMAISR[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+usb_endpoint_dma_isr_t pfEndpointDMAISR[7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 void ITCM_CODE _usbhs_isr()
 {

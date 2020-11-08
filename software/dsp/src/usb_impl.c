@@ -12,7 +12,7 @@ usb_string_descriptor_t *pStringDescriptors = NULL;
 uint32_t ulStringDescriptorsCount = 0;
 uint8_t ubCurrentConfiguration = 0;
 uint16_t usDeviceStatus = 0;
-volatile usb_endpoint_buffer_t *pEndpointBuffer[10] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+usb_endpoint_buffer_t *pEndpointBuffer[10] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 static void usb_impl_config_descriptors();
 static void usb_impl_config_endpoints();
@@ -22,9 +22,50 @@ static uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_pa
 
 static void ITCM_CODE usb_impl_reset_isr(uint8_t ubCurrentSpeed)
 {
-    DBGPRINTLN_CTX("eorst spd%hhu", ubCurrentSpeed);
+    //DBGPRINTLN_CTX("eorst spd%hhu", ubCurrentSpeed);
 
-    usb_impl_config_endpoints();
+    // Configure default control endpoint
+    USBHS->USBHS_DEVIDR = USBHS_DEVIDR_PEP_0; // Disable Global Endpoint interrupt
+
+    // Endpoint #0
+    {
+        USBHS->USBHS_DEVEPT |= USBHS_DEVEPT_EPEN0 | USBHS_DEVEPT_EPRST0; // Enable but keep in Reset state
+        USBHS->USBHS_DEVEPT &= ~USBHS_DEVEPT_EPRST0; // Release endpoint from Reset state
+
+        USBHS->USBHS_DEVEPTCFG[0] = USBHS_DEVEPTCFG_NBTRANS_0_TRANS | USBHS_DEVEPTCFG_EPTYPE_CTRL | USBHS_DEVEPTCFG_EPSIZE_64_BYTE | USBHS_DEVEPTCFG_EPBK_1_BANK | USBHS_DEVEPTCFG_ALLOC;
+
+        while(!(USBHS->USBHS_DEVEPTISR[0] & USBHS_DEVEPTISR_CFGOK)); // Wait for configuration validation
+
+        // Buffer
+        {
+            if(pEndpointBuffer[0])
+            {
+                if(pEndpointBuffer[0]->pubData)
+                    free((void *)pEndpointBuffer[0]->pubData);
+
+                free(pEndpointBuffer[0]);
+            }
+
+            pEndpointBuffer[0] = (usb_endpoint_buffer_t *)malloc(sizeof(usb_endpoint_buffer_t));
+
+            if(!pEndpointBuffer[0])
+                return;
+
+            pEndpointBuffer[0]->usSize = 512;
+            pEndpointBuffer[0]->usUsedSize = 0;
+            pEndpointBuffer[0]->usWritePointer = 0;
+            pEndpointBuffer[0]->usReadPointer = 0;
+            pEndpointBuffer[0]->pubData = (volatile uint8_t *)malloc(pEndpointBuffer[0]->usSize);
+
+            if(!pEndpointBuffer[0]->pubData)
+                return;
+        }
+
+        USBHS->USBHS_DEVEPTICR[0] = USBHS_DEVEPTICR_CTRL_RXSTPIC; // Clear interrupt flags
+        USBHS->USBHS_DEVEPTIER[0] = USBHS_DEVEPTIER_CTRL_RXSTPES; // Enable Endpoint interrupts
+    }
+
+    USBHS->USBHS_DEVIER = USBHS_DEVIER_PEP_0; // Enable Global Endpoint interrupt
 }
 static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
 {
@@ -44,7 +85,7 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
     {
         uint16_t usPacketSize = (USBHS->USBHS_DEVEPTISR[ubEndpoint] & USBHS_DEVEPTISR_BYCT_Msk) >> USBHS_DEVEPTISR_BYCT_Pos;
 
-        DBGPRINTLN_CTX("rx stp ep%hhu sz%hu", ubEndpoint, usPacketSize);
+        //DBGPRINTLN_CTX("rx stp ep%hhu sz%hu", ubEndpoint, usPacketSize);
 
         if(usPacketSize == sizeof(usb_setup_packet_t))
         {
@@ -61,19 +102,19 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
 
             USBHS->USBHS_DEVEPTICR[ubEndpoint] = USBHS_DEVEPTICR_CTRL_RXSTPIC;
 
-            DBGPRINTLN_CTX(
+            /*DBGPRINTLN_CTX(
                 "setup rt%02X, req%02X, val%04X, idx%04X, len%04X",
                 sLastSetupPacket.ubRequestType,
                 sLastSetupPacket.ubRequest,
                 sLastSetupPacket.usValue,
                 sLastSetupPacket.usIndex,
-                sLastSetupPacket.usLength);
+                sLastSetupPacket.usLength);*/
 
             if(sLastSetupPacket.usLength == 0 || (sLastSetupPacket.ubRequestType & USB_SETUP_REQUEST_TYPE_DIR_MASK) == USB_SETUP_REQUEST_TYPE_DIR_D2H)
             {
                 uint8_t ubStall = usb_impl_handle_control_transfer(ubEndpoint, &sLastSetupPacket);
 
-                DBGPRINTLN_CTX("stall%hhu", ubStall);
+                //DBGPRINTLN_CTX("stall%hhu", ubStall);
 
                 if(ubStall)
                 {
@@ -97,22 +138,22 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
     {
         if((sLastSetupPacket.ubRequestType & USB_SETUP_REQUEST_TYPE_DIR_MASK) == USB_SETUP_REQUEST_TYPE_DIR_D2H && usDataStageDoneLength < usDataStageTotalLength)
         {
-            DBGPRINTLN_CTX("tx data ep%hhu max%hu total%hu done%hu", ubEndpoint, sLastSetupPacket.usLength, usDataStageTotalLength, usDataStageDoneLength);
+            //DBGPRINTLN_CTX("tx data ep%hhu max%hu total%hu done%hu", ubEndpoint, sLastSetupPacket.usLength, usDataStageTotalLength, usDataStageDoneLength);
 
             uint16_t usPacketSize = usEndpointSize;
 
-            DBGPRINTLN_CTX("pkt sz%hu", usPacketSize);
+            //DBGPRINTLN_CTX("pkt sz%hu", usPacketSize);
 
             if(usPacketSize > usDataStageTotalLength - usDataStageDoneLength)
                 usPacketSize = usDataStageTotalLength - usDataStageDoneLength;
 
-            DBGPRINTLN_CTX("pkt sz%hu", usPacketSize);
+            //DBGPRINTLN_CTX("pkt sz%hu", usPacketSize);
 
             uint8_t ubBuffer[usEndpointSize];
 
             usPacketSize = usb_impl_endpoint_buffer_read(ubEndpoint, ubBuffer, usPacketSize);
 
-            DBGPRINTLN_CTX("pkt sz%hu rem%hu", usPacketSize, usb_impl_endpoint_buffer_get_used_size(ubEndpoint));
+            //DBGPRINTLN_CTX("pkt sz%hu rem%hu", usPacketSize, usb_impl_endpoint_buffer_get_used_size(ubEndpoint));
 
             usb_fifo_write(ubEndpoint, ubBuffer, usPacketSize);
 
@@ -130,11 +171,11 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
                 {
                     if(!ubZLPState)
                     {
-                        DBGPRINTLN_CTX("rx status started ep%hhu", ubEndpoint);
+                        //DBGPRINTLN_CTX("rx status started ep%hhu", ubEndpoint);
                     }
                     else
                     {
-                        DBGPRINTLN_CTX("rx status done ep%hhu", ubEndpoint);
+                        //DBGPRINTLN_CTX("rx status done ep%hhu", ubEndpoint);
 
                         USBHS->USBHS_DEVCTRL |= USBHS_DEVCTRL_ADDEN;
                     }
@@ -142,15 +183,15 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
                 break;
                 case USB_SETUP_REQUEST_TYPE_DIR_D2H:
                 {
-                    if(ubZLPState)
-                        DBGPRINTLN_CTX("tx data done ep%hhu max%hu total%hu rem%hu", ubEndpoint, sLastSetupPacket.usLength, usDataStageTotalLength, usb_impl_endpoint_buffer_get_used_size(ubEndpoint));
+                    if(ubZLPState);
+                        //DBGPRINTLN_CTX("tx data done ep%hhu max%hu total%hu rem%hu", ubEndpoint, sLastSetupPacket.usLength, usDataStageTotalLength, usb_impl_endpoint_buffer_get_used_size(ubEndpoint));
                 }
                 break;
             }
 
             if(!ubZLPState)
             {
-                DBGPRINTLN_CTX("zlp sent ep%hhu", ubEndpoint);
+                //DBGPRINTLN_CTX("zlp sent ep%hhu", ubEndpoint);
 
                 USBHS->USBHS_DEVEPTICR[ubEndpoint] = USBHS_DEVEPTICR_TXINIC;
 
@@ -169,7 +210,7 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
         {
             uint16_t usPacketSize = (USBHS->USBHS_DEVEPTISR[ubEndpoint] & USBHS_DEVEPTISR_BYCT_Msk) >> USBHS_DEVEPTISR_BYCT_Pos;
 
-            DBGPRINTLN_CTX("rx data ep%hhu sz%hu max%hu total%hu done%hu", ubEndpoint, usPacketSize, sLastSetupPacket.usLength, usDataStageTotalLength, usDataStageDoneLength);
+            //DBGPRINTLN_CTX("rx data ep%hhu sz%hu max%hu total%hu done%hu", ubEndpoint, usPacketSize, sLastSetupPacket.usLength, usDataStageTotalLength, usDataStageDoneLength);
 
             uint8_t ubBuffer[usPacketSize];
 
@@ -192,11 +233,11 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
             {
                 case USB_SETUP_REQUEST_TYPE_DIR_H2D:
                 {
-                    DBGPRINTLN_CTX("rx data done ep%hhu", ubEndpoint);
+                    //DBGPRINTLN_CTX("rx data done ep%hhu", ubEndpoint);
 
                     uint8_t ubStall = usb_impl_handle_control_transfer(ubEndpoint, &sLastSetupPacket);
 
-                    DBGPRINTLN_CTX("stall%hhu", ubStall);
+                    //DBGPRINTLN_CTX("stall%hhu", ubStall);
 
                     if(ubStall)
                         USBHS->USBHS_DEVEPTIER[ubEndpoint] = USBHS_DEVEPTIER_CTRL_STALLRQS;
@@ -210,9 +251,74 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
 }
 static void ITCM_CODE usb_impl_epx_isr(uint8_t ubEndpoint)
 {
-    switch(ubEndpoint)
+    uint16_t usEndpointSize = BIT(3 + ((USBHS->USBHS_DEVEPTCFG[ubEndpoint] & USBHS_DEVEPTCFG_EPSIZE_Msk) >> USBHS_DEVEPTCFG_EPSIZE_Pos));
+    uint16_t usFIFOCount = (USBHS->USBHS_DEVEPTISR[ubEndpoint] & USBHS_DEVEPTISR_BYCT_Msk) >> USBHS_DEVEPTISR_BYCT_Pos;
+
+    uint32_t ulFlags = USBHS->USBHS_DEVEPTISR[ubEndpoint] & USBHS->USBHS_DEVEPTIMR[ubEndpoint];
+
+    if(ulFlags & USBHS_DEVEPTISR_TXINI)
     {
-        //...
+        //DBGPRINTLN_CTX("tx data ep%hhu sz%hu fifo%hu", ubEndpoint, usEndpointSize, usFIFOCount);
+
+        if(usFIFOCount >= usEndpointSize)
+        {
+            //DBGPRINTLN_CTX("tx data ack ep%hhu sz%hu fifo%hu", ubEndpoint, usEndpointSize, usFIFOCount);
+
+            USBHS->USBHS_DEVEPTICR[ubEndpoint] = USBHS_DEVEPTICR_TXINIC;
+            USBHS->USBHS_DEVEPTIDR[ubEndpoint] = USBHS_DEVEPTIDR_FIFOCONC;
+        }
+    }
+
+    if(ulFlags & USBHS_DEVEPTISR_RXOUTI)
+    {
+        //DBGPRINTLN_CTX("rx data ep%hhu sz%hu fifo%hu", ubEndpoint, usEndpointSize, usFIFOCount);
+
+        if(!usFIFOCount)
+        {
+            //DBGPRINTLN_CTX("rx data ack ep%hhu sz%hu fifo%hu", ubEndpoint, usEndpointSize, usFIFOCount);
+
+            USBHS->USBHS_DEVEPTICR[ubEndpoint] = USBHS_DEVEPTICR_RXOUTIC;
+            USBHS->USBHS_DEVEPTIDR[ubEndpoint] = USBHS_DEVEPTIDR_FIFOCONC;
+        }
+    }
+}
+static void ITCM_CODE usb_impl_epx_dma_isr(uint8_t ubEndpoint)
+{
+    //DBGPRINTLN_CTX("dma isr ep%hhu", ubEndpoint);
+
+    while(USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMASTATUS & (USBHS_DEVDMASTATUS_CHANN_ACT | USBHS_DEVDMASTATUS_CHANN_ENB));
+
+    //DBGPRINTLN_CTX("dma ch clr ep%hhu", ubEndpoint);
+
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+
+    if(!pBuffer)
+        return;
+
+    //DBGPRINTLN_CTX("ep buf ok ep%hhu", ubEndpoint);
+
+    uint32_t ulDirection = USBHS->USBHS_DEVEPTCFG[ubEndpoint] & USBHS_DEVEPTCFG_EPDIR_Msk;
+    uint16_t usTransferred = USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMAADDRESS - (uint32_t)pBuffer->pubData;
+
+    //DBGPRINTLN_CTX("dma xfr sz%hu ep%hhu", usTransferred, ubEndpoint);
+
+    if(ulDirection == USBHS_DEVEPTCFG_EPDIR_OUT)
+    {
+        dcache_addr_invalidate((void *)pBuffer->pubData, usTransferred);
+
+        pBuffer->usReadPointer = 0;
+        pBuffer->usWritePointer = usTransferred;
+        pBuffer->usUsedSize = usTransferred;
+
+        USBHS->USBHS_DEVEPTIDR[ubEndpoint] = USBHS_DEVEPTIDR_RXOUTEC;
+    }
+    else
+    {
+        pBuffer->usWritePointer = 0;
+        pBuffer->usReadPointer = 0;
+        pBuffer->usUsedSize = 0;
+
+        USBHS->USBHS_DEVEPTIDR[ubEndpoint] = USBHS_DEVEPTIDR_TXINEC;
     }
 }
 
@@ -356,7 +462,7 @@ void usb_impl_config_descriptors()
                                 pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubEndpointAddress = USB_ENDPOINT_ADDR_IN | 1;
                                 pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubAttributes = USB_ENDPOINT_ATTR_BULK;
                                 pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].usMaxPacketSize = 512;
-                                pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubInterval = 8; // Polling interval in frames (125 us for HS, 1 ms for FS)
+                                pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubInterval = 12000 / 125; // Polling interval in frames (125 us for HS, 1 ms for FS)
 
                                 pHSConfigurationDescriptors[0].usTotalLength += pHSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubLength;
                             }
@@ -391,7 +497,7 @@ void usb_impl_config_descriptors()
                                 pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubEndpointAddress = USB_ENDPOINT_ADDR_OUT | 2;
                                 pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubAttributes = USB_ENDPOINT_ATTR_BULK;
                                 pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].usMaxPacketSize = 512;
-                                pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubInterval = 8; // Polling interval in frames (125 us for HS, 1 ms for FS)
+                                pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubInterval = 12000 / 125; // Polling interval in frames (125 us for HS, 1 ms for FS)
 
                                 pHSConfigurationDescriptors[0].usTotalLength += pHSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubLength;
                             }
@@ -477,7 +583,7 @@ void usb_impl_config_descriptors()
                                 pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubEndpointAddress = USB_ENDPOINT_ADDR_IN | 1;
                                 pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubAttributes = USB_ENDPOINT_ATTR_BULK;
                                 pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].usMaxPacketSize = 64;
-                                pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubInterval = 1; // Polling interval in frames (125 us for HS, 1 ms for FS)
+                                pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubInterval = 12000 / 1000; // Polling interval in frames (125 us for HS, 1 ms for FS)
 
                                 pFSConfigurationDescriptors[0].usTotalLength += pFSConfigurationDescriptors[0].pInterfaces[1].pEndpoints[0].ubLength;
                             }
@@ -512,7 +618,7 @@ void usb_impl_config_descriptors()
                                 pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubEndpointAddress = USB_ENDPOINT_ADDR_OUT | 2;
                                 pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubAttributes = USB_ENDPOINT_ATTR_BULK;
                                 pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].usMaxPacketSize = 64;
-                                pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubInterval = 1; // Polling interval in frames (125 us for HS, 1 ms for FS)
+                                pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubInterval = 12000 / 1000; // Polling interval in frames (125 us for HS, 1 ms for FS)
 
                                 pFSConfigurationDescriptors[0].usTotalLength += pFSConfigurationDescriptors[0].pInterfaces[2].pEndpoints[0].ubLength;
                             }
@@ -618,44 +724,97 @@ void usb_impl_config_descriptors()
 }
 void usb_impl_config_endpoints()
 {
-    // Endpoint #0
+    USBHS->USBHS_DEVIDR = USBHS_DEVIDR_DMA_2 | USBHS_DEVIDR_DMA_1; // Disable Global DMA interrupts
+    USBHS->USBHS_DEVIDR = USBHS_DEVIDR_PEP_2 | USBHS_DEVIDR_PEP_1; // Disable Global Endpoint interrupts
+
+    // Endpoint #0 is configured in the reset ISR
+
+    // Endpoint #1
     {
-        USBHS->USBHS_DEVEPT |= USBHS_DEVEPT_EPEN0 | USBHS_DEVEPT_EPRST0; // Enable but keep in Reset state
-        USBHS->USBHS_DEVEPT &= ~USBHS_DEVEPT_EPRST0; // Release endpoint from Reset state
+        USBHS->USBHS_DEVEPT |= USBHS_DEVEPT_EPEN1 | USBHS_DEVEPT_EPRST1; // Enable but keep in Reset state
+        USBHS->USBHS_DEVEPT &= ~USBHS_DEVEPT_EPRST1; // Release endpoint from Reset state
 
-        USBHS->USBHS_DEVEPTCFG[0] = USBHS_DEVEPTCFG_NBTRANS_0_TRANS | USBHS_DEVEPTCFG_EPTYPE_CTRL | USBHS_DEVEPTCFG_EPDIR_OUT | USBHS_DEVEPTCFG_EPSIZE_64_BYTE | USBHS_DEVEPTCFG_EPBK_1_BANK | USBHS_DEVEPTCFG_ALLOC;
+        USBHS->USBHS_DEVEPTCFG[1] = USBHS_DEVEPTCFG_NBTRANS_0_TRANS | USBHS_DEVEPTCFG_EPTYPE_BLK | USBHS_DEVEPTCFG_EPDIR_IN | USBHS_DEVEPTCFG_EPSIZE_512_BYTE | USBHS_DEVEPTCFG_EPBK_2_BANK | USBHS_DEVEPTCFG_ALLOC;
 
-        while(!(USBHS->USBHS_DEVEPTISR[0] & USBHS_DEVEPTISR_CFGOK)); // Wait for configuration validation
-
-        USBHS->USBHS_DEVEPTICR[0] = USBHS_DEVEPTICR_CTRL_MASK; // Clear all interrupt flags
-        USBHS->USBHS_DEVEPTIER[0] = USBHS_DEVEPTIER_CTRL_RXSTPES; // Enable Endpoint interrupts
-        USBHS->USBHS_DEVIER = USBHS_DEVIER_PEP_0; // Enable Global Endpoint interrupt
+        while(!(USBHS->USBHS_DEVEPTISR[1] & USBHS_DEVEPTISR_CFGOK)); // Wait for configuration validation
 
         // Buffer
         {
-            if(pEndpointBuffer[0])
+            if(pEndpointBuffer[1])
             {
-                if(pEndpointBuffer[0]->pubData)
-                    free(pEndpointBuffer[0]->pubData);
+                if(pEndpointBuffer[1]->pubData)
+                    free((void *)pEndpointBuffer[1]->pubData);
 
-                free((void *)pEndpointBuffer[0]);
+                free(pEndpointBuffer[1]);
             }
 
-            pEndpointBuffer[0] = (volatile usb_endpoint_buffer_t *)malloc(sizeof(usb_endpoint_buffer_t));
+            pEndpointBuffer[1] = (usb_endpoint_buffer_t *)malloc(sizeof(usb_endpoint_buffer_t));
 
-            if(!pEndpointBuffer[0])
+            if(!pEndpointBuffer[1])
                 return;
 
-            pEndpointBuffer[0]->usSize = 512;
-            pEndpointBuffer[0]->usUsedSize = 0;
-            pEndpointBuffer[0]->usWritePointer = 0;
-            pEndpointBuffer[0]->usReadPointer = 0;
-            pEndpointBuffer[0]->pubData = (uint8_t *)malloc(pEndpointBuffer[0]->usSize);
+            pEndpointBuffer[1]->usSize = 16384;
+            pEndpointBuffer[1]->usUsedSize = 0;
+            pEndpointBuffer[1]->usWritePointer = 0;
+            pEndpointBuffer[1]->usReadPointer = 0;
+            pEndpointBuffer[1]->pubData = (volatile uint8_t *)malloc(pEndpointBuffer[1]->usSize);
 
-            if(!pEndpointBuffer[0]->pubData)
+            if(!pEndpointBuffer[1]->pubData)
                 return;
         }
+
+        // DMA
+        {
+            USBHS->UsbhsDevdma[0].USBHS_DEVDMACONTROL = 0x00000000; // Disable DMA channel
+
+            while(USBHS->UsbhsDevdma[0].USBHS_DEVDMASTATUS & (USBHS_DEVDMASTATUS_CHANN_ACT | USBHS_DEVDMASTATUS_CHANN_ENB)); // Wait until disabled
+        }
     }
+
+    // Endpoint #2
+    {
+        USBHS->USBHS_DEVEPT |= USBHS_DEVEPT_EPEN2 | USBHS_DEVEPT_EPRST2; // Enable but keep in Reset state
+        USBHS->USBHS_DEVEPT &= ~USBHS_DEVEPT_EPRST2; // Release endpoint from Reset state
+
+        USBHS->USBHS_DEVEPTCFG[2] = USBHS_DEVEPTCFG_NBTRANS_0_TRANS | USBHS_DEVEPTCFG_EPTYPE_BLK | USBHS_DEVEPTCFG_EPDIR_OUT | USBHS_DEVEPTCFG_EPSIZE_512_BYTE | USBHS_DEVEPTCFG_EPBK_2_BANK | USBHS_DEVEPTCFG_ALLOC;
+
+        while(!(USBHS->USBHS_DEVEPTISR[2] & USBHS_DEVEPTISR_CFGOK)); // Wait for configuration validation
+
+        // Buffer
+        {
+            if(pEndpointBuffer[2])
+            {
+                if(pEndpointBuffer[2]->pubData)
+                    free((void *)pEndpointBuffer[2]->pubData);
+
+                free(pEndpointBuffer[2]);
+            }
+
+            pEndpointBuffer[2] = (usb_endpoint_buffer_t *)malloc(sizeof(usb_endpoint_buffer_t));
+
+            if(!pEndpointBuffer[2])
+                return;
+
+            pEndpointBuffer[2]->usSize = 16384;
+            pEndpointBuffer[2]->usUsedSize = 0;
+            pEndpointBuffer[2]->usWritePointer = 0;
+            pEndpointBuffer[2]->usReadPointer = 0;
+            pEndpointBuffer[2]->pubData = (volatile uint8_t *)malloc(pEndpointBuffer[2]->usSize);
+
+            if(!pEndpointBuffer[2]->pubData)
+                return;
+        }
+
+        // DMA
+        {
+            USBHS->UsbhsDevdma[1].USBHS_DEVDMACONTROL = 0x00000000; // Disable DMA channel
+
+            while(USBHS->UsbhsDevdma[1].USBHS_DEVDMASTATUS & (USBHS_DEVDMASTATUS_CHANN_ACT | USBHS_DEVDMASTATUS_CHANN_ENB)); // Wait until disabled
+        }
+    }
+
+    USBHS->USBHS_DEVIER = USBHS_DEVIER_PEP_2 | USBHS_DEVIER_PEP_1; // Enable Global Endpoint interrupts
+    USBHS->USBHS_DEVIER = USBHS_DEVIER_DMA_2 | USBHS_DEVIER_DMA_1; // Enable Global DMA interrupts
 }
 
 uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t *pSetupPacket)
@@ -787,7 +946,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                         {
                             uint8_t ubAddress = pSetupPacket->usValue & 0x7F;
 
-                            DBGPRINTLN_CTX("req set addr%hhu", ubAddress);
+                            //DBGPRINTLN_CTX("req set addr%hhu", ubAddress);
 
                             USBHS->USBHS_DEVCTRL = (USBHS->USBHS_DEVCTRL & ~(USBHS_DEVCTRL_ADDEN_Msk | USBHS_DEVCTRL_UADD_Msk)) | (ubAddress << USBHS_DEVCTRL_UADD_Pos);
 
@@ -803,7 +962,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                             {
                                 case USB_DESCRIPTOR_TYPE_DEVICE:
                                 {
-                                    DBGPRINTLN_CTX("req dev descr");
+                                    //DBGPRINTLN_CTX("req dev descr");
 
                                     usb_device_descriptor_t *pDescriptor = pFSDeviceDescriptor;
 
@@ -821,7 +980,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_CONFIGURATION:
                                 {
-                                    DBGPRINTLN_CTX("req conf%hhu descr", ubDescriptorIndex);
+                                    //DBGPRINTLN_CTX("req conf%hhu descr", ubDescriptorIndex);
 
                                     usb_device_descriptor_t *pDeviceDescriptor = pFSDeviceDescriptor;
 
@@ -849,7 +1008,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_STRING:
                                 {
-                                    DBGPRINTLN_CTX("req str%hhu descr", ubDescriptorIndex);
+                                    //DBGPRINTLN_CTX("req str%hhu descr", ubDescriptorIndex);
 
                                     usb_string_descriptor_t *pDescriptor = &pStringDescriptors[0];
 
@@ -871,7 +1030,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_DEVICE_QUALIFIER:
                                 {
-                                    DBGPRINTLN_CTX("req dev qual descr");
+                                    //DBGPRINTLN_CTX("req dev qual descr");
 
                                     usb_device_qualifier_descriptor_t *pDescriptor = pHSDeviceQualifierDescriptor;
 
@@ -889,7 +1048,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_OTHER_SPEED_CONFIGURATION:
                                 {
-                                    DBGPRINTLN_CTX("req ospd conf descr");
+                                    //DBGPRINTLN_CTX("req ospd conf descr");
 
                                     usb_configuration_descriptor_t *pDescriptor = pHSConfigurationDescriptors;
 
@@ -909,7 +1068,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_INTERFACE_POWER:
                                 {
-                                    DBGPRINTLN_CTX("req intf pwr descr");
+                                    //DBGPRINTLN_CTX("req intf pwr descr");
 
                                     // Obsolete - Not supported
 
@@ -918,7 +1077,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                                 break;
                                 case USB_DESCRIPTOR_TYPE_DEBUG:
                                 {
-                                    DBGPRINTLN_CTX("req debug descr");
+                                    //DBGPRINTLN_CTX("req debug descr");
 
                                     // Not supported
 
@@ -951,6 +1110,8 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
                             uint8_t ubConfigurationValue = pSetupPacket->usValue & 0xFF;
 
                             ubCurrentConfiguration = ubConfigurationValue;
+
+                            usb_impl_config_endpoints(); // Init endpoints associated with this configuration
 
                             // TODO: Support multiple configurations
 
@@ -1090,7 +1251,7 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
         break;
         case USB_SETUP_REQUEST_TYPE_TYPE_VENDOR:
         {
-            DBGPRINTLN_CTX("vendor req val%hu idx%hu len%hu", pSetupPacket->usValue, pSetupPacket->usIndex, pSetupPacket->usLength);
+            //DBGPRINTLN_CTX("vendor req val%hu idx%hu len%hu", pSetupPacket->usValue, pSetupPacket->usIndex, pSetupPacket->usLength);
 
             uint8_t ubBuf[128];
 
@@ -1131,6 +1292,10 @@ void usb_impl_init()
 
     usb_set_reset_isr(usb_impl_reset_isr);
     usb_set_endpoint_isr(0, usb_impl_ep0_isr);
+    usb_set_endpoint_isr(1, usb_impl_epx_isr);
+    usb_set_endpoint_isr(2, usb_impl_epx_isr);
+    usb_set_endpoint_dma_isr(1, usb_impl_epx_dma_isr);
+    usb_set_endpoint_dma_isr(2, usb_impl_epx_dma_isr);
 }
 
 uint16_t usb_impl_endpoint_buffer_get_size(uint8_t ubEndpoint)
@@ -1138,7 +1303,7 @@ uint16_t usb_impl_endpoint_buffer_get_size(uint8_t ubEndpoint)
     if(ubEndpoint > 9)
         return 0;
 
-    volatile usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
 
     if(!pBuffer)
         return 0;
@@ -1150,12 +1315,29 @@ uint16_t usb_impl_endpoint_buffer_get_used_size(uint8_t ubEndpoint)
     if(ubEndpoint > 9)
         return 0;
 
-    volatile usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
 
     if(!pBuffer)
         return 0;
 
     return pBuffer->usUsedSize;
+}
+void usb_impl_endpoint_buffer_flush(uint8_t ubEndpoint)
+{
+    if(ubEndpoint > 9)
+        return;
+
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+
+    if(!pBuffer)
+        return;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        pBuffer->usWritePointer = 0;
+        pBuffer->usReadPointer = 0;
+        pBuffer->usUsedSize = 0;
+    }
 }
 uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uint16_t usLength)
 {
@@ -1168,7 +1350,7 @@ uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uin
     if(!usLength)
         return 0;
 
-    volatile usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
 
     if(!pBuffer)
         return 0;
@@ -1177,8 +1359,6 @@ uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uin
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        //dcache_addr_invalidate(pBuffer->pubData, pBuffer->usSize); TODO: Only invalidate on DMA ISR, otherwise nightmare bug to fix...
-
         while(usReadBytes < usLength)
         {
             if(!pBuffer->usUsedSize)
@@ -1205,7 +1385,7 @@ uint16_t usb_impl_endpoint_buffer_write(uint8_t ubEndpoint, const uint8_t *pubDa
     if(!usLength)
         return 0;
 
-    volatile usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
 
     if(!pBuffer)
         return 0;
@@ -1227,8 +1407,51 @@ uint16_t usb_impl_endpoint_buffer_write(uint8_t ubEndpoint, const uint8_t *pubDa
         }
 
         if(usWrittenBytes)
-            dcache_addr_clean(pBuffer->pubData, pBuffer->usSize);
+            dcache_addr_clean((void *)pBuffer->pubData, pBuffer->usSize);
     }
 
     return usWrittenBytes;
+}
+uint8_t usb_impl_endpoint_buffer_dma_trigger(uint8_t ubEndpoint, uint16_t usLength)
+{
+    if(ubEndpoint < 1 || ubEndpoint > 7)
+        return 0;
+
+    if(!usLength)
+        return 0;
+
+    usb_endpoint_buffer_t *pBuffer = pEndpointBuffer[ubEndpoint];
+
+    if(!pBuffer)
+        return 0;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        if(usLength > pBuffer->usSize)
+            return 0;
+
+        uint32_t ulDirection = USBHS->USBHS_DEVEPTCFG[ubEndpoint] & USBHS_DEVEPTCFG_EPDIR_Msk;
+
+        if(ulDirection == USBHS_DEVEPTCFG_EPDIR_OUT && (pBuffer->usUsedSize || pBuffer->usWritePointer)) // Fail if we try to receive and there is something in the buffer or the write ptr is not at zero
+            return 0;
+
+        if(ulDirection == USBHS_DEVEPTCFG_EPDIR_IN && (usLength > pBuffer->usUsedSize || pBuffer->usReadPointer)) // Fail if we try to send more than we have in the buffer or the read ptr is not at zero
+            return 0;
+
+        USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMAADDRESS = (uint32_t)pBuffer->pubData;
+
+        if(ulDirection == USBHS_DEVEPTCFG_EPDIR_OUT)
+            USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMACONTROL = ((usLength << USBHS_DEVDMACONTROL_BUFF_LENGTH_Pos) & USBHS_DEVDMACONTROL_BUFF_LENGTH_Msk) | USBHS_DEVDMACONTROL_END_BUFFIT | USBHS_DEVDMACONTROL_END_TR_IT | USBHS_DEVDMACONTROL_END_TR_EN | USBHS_DEVDMACONTROL_CHANN_ENB;
+        else
+            USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMACONTROL = ((usLength << USBHS_DEVDMACONTROL_BUFF_LENGTH_Pos) & USBHS_DEVDMACONTROL_BUFF_LENGTH_Msk) | USBHS_DEVDMACONTROL_END_BUFFIT | USBHS_DEVDMACONTROL_CHANN_ENB;
+
+        while(!(USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMASTATUS & USBHS_DEVDMASTATUS_CHANN_ENB));
+
+        if(ulDirection == USBHS_DEVEPTCFG_EPDIR_OUT)
+            USBHS->USBHS_DEVEPTIER[ubEndpoint] = USBHS_DEVEPTIER_RXOUTES;
+        else
+            USBHS->USBHS_DEVEPTIER[ubEndpoint] = USBHS_DEVEPTIER_TXINES;
+    }
+
+    return 1;
 }
