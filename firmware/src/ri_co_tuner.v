@@ -48,7 +48,7 @@ always @(posedge clk)
 wire signed [DSZ - 1:0] out_i;
 wire signed [DSZ - 1:0] out_q;
 
-ri_co_mixer tuner_i_mixer
+ri_co_mixer tuner_mixer
 (
     .clk(clk),
     .reset(reset),
