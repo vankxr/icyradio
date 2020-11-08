@@ -14,8 +14,6 @@ module qddc
 localparam ISZ = 16;   // Input word size
 localparam FSZ = 31;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
-localparam CICSZ1 = 19; // CIC output word size -> (see CIC localparam OSZ)
-localparam CICSZ2 = 34; // CIC output word size -> (see CIC localparam OSZ)
 
 // CIC clock divider
 reg  [6:0]  cic_rate_div;
@@ -38,12 +36,13 @@ always @(posedge clk)
     end
 
 // CIC stage 1 decimators
-wire signed [CICSZ1 - 1:0] cic1_out;
+wire signed [ISZ - 1:0] cic1_out;
 
 cic_decimator #(
-    .NUM_STAGES(3),
+    .NUM_STAGES(2),
     .STG_GSZ(1),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(ISZ)
 )
 cic1_dec
 (
@@ -55,8 +54,6 @@ cic1_dec
     .out(cic1_out)
 );
 
-wire signed [ISZ - 1:0] cic1_out_trim = cic1_out[(CICSZ1 - 1):(CICSZ1 - ISZ)];
-
 // Tuner
 wire signed [ISZ - 1:0] tuner_out_i;
 wire signed [ISZ - 1:0] tuner_out_q;
@@ -65,7 +62,7 @@ ri_co_tuner in_tuner
 (
     .clk(clk),
     .reset(reset),
-    .in(cic1_out_trim),
+    .in(cic1_out),
     .lo_freq(lo_freq),
     .lo_dir(lo_dir),
     .lo_ns_en(lo_ns_en),
@@ -74,13 +71,14 @@ ri_co_tuner in_tuner
 );
 
 // CIC stage 2 decimators
-wire signed [CICSZ2 - 1:0] cic2_out_i;
-wire signed [CICSZ2 - 1:0] cic2_out_q;
+wire signed [OSZ - 1:0] cic2_out_i;
+wire signed [OSZ - 1:0] cic2_out_q;
 
 cic_decimator #(
-    .NUM_STAGES(3),
+    .NUM_STAGES(4),
     .STG_GSZ(6),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(OSZ)
 )
 cic2_dec_i
 (
@@ -93,9 +91,10 @@ cic2_dec_i
 );
 
 cic_decimator #(
-    .NUM_STAGES(3),
+    .NUM_STAGES(4),
     .STG_GSZ(6),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(OSZ)
 )
 cic2_dec_q
 (
@@ -106,9 +105,6 @@ cic2_dec_q
     .in(tuner_out_q),
     .out(cic2_out_q)
 );
-
-wire signed [OSZ - 1:0] cic2_out_i_trim = cic2_out_i[(CICSZ2 - 1):(CICSZ2 - OSZ)];
-wire signed [OSZ - 1:0] cic2_out_q_trim = cic2_out_q[(CICSZ2 - 1):(CICSZ2 - OSZ)];
 
 // Output
 reg  signed [OSZ - 1:0] out_i;
@@ -123,8 +119,8 @@ always @(posedge clk)
             end
         else
             begin
-                out_i <= iq_swap ? cic2_out_q_trim : cic2_out_i_trim;
-                out_q <= iq_swap ? cic2_out_i_trim : cic2_out_q_trim;
+                out_i <= iq_swap ? cic2_out_q : cic2_out_i;
+                out_q <= iq_swap ? cic2_out_i : cic2_out_q;
             end
     end
 

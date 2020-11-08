@@ -16,8 +16,6 @@ module qduc
 localparam ISZ = 16;    // Input word size
 localparam FSZ = 31;    // NCO tuning word size
 localparam OSZ = 14;    // Output word size
-localparam CICSZ1 = 26; // CIC stage 1 output word size -> (see CIC localparam OSZ)
-localparam CICSZ2 = 20; // CIC stage 2 output word size -> (see CIC localparam OSZ)
 
 // CIC clock divider
 reg  [6:0]  cic_rate_div;
@@ -40,15 +38,16 @@ always @(posedge clk)
     end
 
 // CIC stage 1 interpolators
-wire signed [CICSZ1 - 1:0] cic1_out_i;
-wire signed [CICSZ1 - 1:0] cic1_out_q;
+wire signed [ISZ - 1:0] cic1_out_i;
+wire signed [ISZ - 1:0] cic1_out_q;
 
 cic_interpolator #(
     .NUM_STAGES(3),
     .STG_GSZ(5),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(ISZ)
 )
-cic1_out_int_i
+cic1_int_i
 (
     .clk(clk),
     .reset(reset),
@@ -61,9 +60,10 @@ cic1_out_int_i
 cic_interpolator #(
     .NUM_STAGES(3),
     .STG_GSZ(5),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(ISZ)
 )
-cic1_out_int_q
+cic1_int_q
 (
     .clk(clk),
     .reset(reset),
@@ -73,9 +73,6 @@ cic1_out_int_q
     .out(cic1_out_q)
 );
 
-wire signed [ISZ - 1:0] cic1_out_i_trim = cic1_out_i[(CICSZ1 - 1):(CICSZ1 - ISZ)];
-wire signed [ISZ - 1:0] cic1_out_q_trim = cic1_out_q[(CICSZ1 - 1):(CICSZ1 - ISZ)];
-
 // Tuner
 wire signed [ISZ - 1:0] tuner_out_i;
 wire signed [ISZ - 1:0] tuner_out_q;
@@ -84,8 +81,8 @@ ci_co_tuner out_tuner
 (
     .clk(clk),
     .reset(reset | tuner_byp),
-    .in_i(cic1_out_i_trim),
-    .in_q(cic1_out_q_trim),
+    .in_i(cic1_out_i),
+    .in_q(cic1_out_q),
     .lo_freq(lo_freq),
     .lo_dir(lo_dir),
     .lo_ns_en(lo_ns_en),
@@ -94,17 +91,18 @@ ci_co_tuner out_tuner
 );
 
 // CIC stage 2 interpolators
-wire signed [CICSZ2 - 1:0] cic2_out_i;
-wire signed [CICSZ2 - 1:0] cic2_out_q;
+wire signed [OSZ - 1:0] cic2_out_i;
+wire signed [OSZ - 1:0] cic2_out_q;
 reg  signed [ISZ - 1:0] cic2_in_i;
 reg  signed [ISZ - 1:0] cic2_in_q;
 
 cic_interpolator #(
     .NUM_STAGES(3),
     .STG_GSZ(2),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(OSZ)
 )
-cic2_out_int_i
+cic2_int_i
 (
     .clk(clk),
     .reset(reset),
@@ -117,9 +115,10 @@ cic2_out_int_i
 cic_interpolator #(
     .NUM_STAGES(3),
     .STG_GSZ(2),
-    .ISZ(ISZ)
+    .ISZ(ISZ),
+    .OSZ(OSZ)
 )
-cic2_out_int_q
+cic2_int_q
 (
     .clk(clk),
     .reset(reset),
@@ -128,9 +127,6 @@ cic2_out_int_q
     .in(cic2_in_q),
     .out(cic2_out_q)
 );
-
-wire signed [OSZ - 1:0] cic2_out_i_trim = cic2_out_i[(CICSZ2 - 1):(CICSZ2 - OSZ)];
-wire signed [OSZ - 1:0] cic2_out_q_trim = cic2_out_q[(CICSZ2 - 1):(CICSZ2 - OSZ)];
 
 always @(posedge clk)
     begin
@@ -141,8 +137,8 @@ always @(posedge clk)
             end
         else
             begin
-                cic2_in_i <= tuner_byp ? cic1_out_i_trim : tuner_out_i;
-                cic2_in_q <= tuner_byp ? cic1_out_q_trim : tuner_out_q;
+                cic2_in_i <= tuner_byp ? cic1_out_i : tuner_out_i;
+                cic2_in_q <= tuner_byp ? cic1_out_q : tuner_out_q;
             end
     end
 
@@ -159,8 +155,8 @@ always @(posedge clk)
             end
         else
             begin
-                out_i <= iq_swap ? cic2_out_q_trim : cic2_out_i_trim;
-                out_q <= iq_swap ? cic2_out_i_trim : cic2_out_q_trim;
+                out_i <= iq_swap ? cic2_out_q : cic2_out_i;
+                out_q <= iq_swap ? cic2_out_i : cic2_out_q;
             end
     end
 
