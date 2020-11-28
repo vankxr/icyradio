@@ -18,13 +18,13 @@ localparam FSZ = 31;    // NCO tuning word size
 localparam OSZ = 14;    // Output word size
 
 // CIC clock divider
-reg  [6:0]  cic_rate_div;
+reg  [5:0]  cic_rate_div;
 wire        cic1_in_rate;
 wire        cic1_out_rate;
 wire        cic2_in_rate;
 wire        cic2_out_rate;
 
-assign cic1_in_rate = &cic_rate_div[6:0]; // Clock / 128
+assign cic1_in_rate = &cic_rate_div[5:0]; // Clock / 64
 assign cic1_out_rate = &cic_rate_div[1:0]; // Clock / 4
 assign cic2_in_rate = &cic_rate_div[1:0]; // Clock / 4
 assign cic2_out_rate = 1'b1; // Clock / 1
@@ -32,7 +32,7 @@ assign cic2_out_rate = 1'b1; // Clock / 1
 always @(posedge clk)
     begin
         if(reset)
-            cic_rate_div <= 7'b0000000;
+            cic_rate_div <= 6'b000000;
         else
             cic_rate_div <= cic_rate_div + 1;
     end
@@ -42,8 +42,8 @@ wire signed [ISZ - 1:0] cic1_out_i;
 wire signed [ISZ - 1:0] cic1_out_q;
 
 cic_interpolator #(
-    .NUM_STAGES(3),
-    .STG_GSZ(5),
+    .NUM_STAGES(4),
+    .STG_GSZ(4),
     .ISZ(ISZ),
     .OSZ(ISZ)
 )
@@ -58,8 +58,8 @@ cic1_int_i
 );
 
 cic_interpolator #(
-    .NUM_STAGES(3),
-    .STG_GSZ(5),
+    .NUM_STAGES(4),
+    .STG_GSZ(4),
     .ISZ(ISZ),
     .OSZ(ISZ)
 )
@@ -97,7 +97,7 @@ reg  signed [ISZ - 1:0] cic2_in_i;
 reg  signed [ISZ - 1:0] cic2_in_q;
 
 cic_interpolator #(
-    .NUM_STAGES(3),
+    .NUM_STAGES(4),
     .STG_GSZ(2),
     .ISZ(ISZ),
     .OSZ(OSZ)
@@ -113,7 +113,7 @@ cic2_int_i
 );
 
 cic_interpolator #(
-    .NUM_STAGES(3),
+    .NUM_STAGES(4),
     .STG_GSZ(2),
     .ISZ(ISZ),
     .OSZ(OSZ)

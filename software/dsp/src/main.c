@@ -1,5 +1,6 @@
 #include <sam.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include <string.h>
 #include <math.h>
 #include "arm_math.h"
@@ -38,7 +39,7 @@
 #define TX_AUDIO_I2S_DMA_CHANNEL        2
 #define RX_AUDIO_I2S_DMA_CHANNEL        3
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
-#define AUDIO_SAMPLE_BUFFER_SIZE        512
+#define AUDIO_SAMPLE_BUFFER_SIZE        256
 
 #define HILBERT_DELAY_SAMPLES           200 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
@@ -300,7 +301,7 @@ void init_baseband_i2s()
 {
     free(pulTXBasebandBuffer);
 
-    pulTXBasebandBuffer = (uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXBasebandBuffer = (uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXBasebandBuffer)
         return;
@@ -311,7 +312,7 @@ void init_baseband_i2s()
 
     free((void *)pulRXBasebandBuffer);
 
-    pulRXBasebandBuffer = (volatile uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXBasebandBuffer = (volatile uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXBasebandBuffer)
         return;
@@ -387,7 +388,7 @@ void init_audio_i2s()
 {
     free((void *)pulTXAudioBuffer);
 
-    pulTXAudioBuffer = (volatile uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXAudioBuffer = (volatile uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXAudioBuffer)
         return;
@@ -398,7 +399,7 @@ void init_audio_i2s()
 
     free(pulRXAudioBuffer);
 
-    pulRXAudioBuffer = (uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXAudioBuffer = (uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXAudioBuffer)
         return;
@@ -498,7 +499,7 @@ void init_dsp_components()
         DBGPRINTLN_CTX("TX - Failed hilbert FIR intialization!");
 
     //// Baseband interpolating filter
-    pTXBasebandFilter = fir_interpolator_complex_init(baseband_filter_taps_size, 8, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
+    pTXBasebandFilter = fir_interpolator_complex_init(baseband_filter_taps_size, 16, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
     if(pTXBasebandFilter)
         DBGPRINTLN_CTX("TX - Baseband interpolating FIR intialized!");
@@ -531,7 +532,7 @@ void init_dsp_components()
         DBGPRINTLN_CTX("TX - Failed hilbert FIR intialization!");
 
     //// Baseband decimating filter
-    pRXBasebandFilter = fir_decimator_complex_init(baseband_filter_taps_size, 8, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
+    pRXBasebandFilter = fir_decimator_complex_init(baseband_filter_taps_size, 16, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
     if(pRXBasebandFilter)
         DBGPRINTLN_CTX("TX - Baseband decimating FIR intialized!");
@@ -622,7 +623,9 @@ int main()
 
     DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
 
-    //usb_impl_endpoint_buffer_dma_trigger(2, 256);
+    delay_ms(5000);
+
+    usb_impl_endpoint_buffer_dma_trigger(2, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
 
     while(1)
     {
@@ -650,7 +653,7 @@ int main()
             usb_impl_endpoint_buffer_read(2, ubData, sizeof(ubData));
             usb_impl_endpoint_buffer_flush(2);
 
-            usb_impl_endpoint_buffer_dma_trigger(2, 256);
+            usb_impl_endpoint_buffer_dma_trigger(2, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
         }
         */
 
@@ -733,6 +736,14 @@ int main()
             {
                 // Fill dummy baseband buffer with zeros
                 arm_fill_q15(0, (int16_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t) / sizeof(int16_t));
+
+                if(usb_impl_endpoint_buffer_get_used_size(2) >= BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t))
+                {
+                    usb_impl_endpoint_buffer_read(2, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+
+                    usb_impl_endpoint_buffer_flush(2);
+                    usb_impl_endpoint_buffer_dma_trigger(2, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+                }
 
                 // Load baseband buffer
                 load_tx_baseband_buffer(pBaseband);

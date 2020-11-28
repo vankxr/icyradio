@@ -16,17 +16,17 @@ localparam FSZ = 31;   // NCO tuning word size
 localparam OSZ = 16;   // Output word size
 
 // CIC clock divider
-reg  [6:0]  cic_rate_div;
+reg  [5:0]  cic_rate_div;
 wire        cic1_in_rate;
 wire        cic1_out_rate;
 
 assign cic1_in_rate = &cic_rate_div[0]; // Clock / 2
-assign cic1_out_rate = &cic_rate_div[6:0]; // Clock / 128
+assign cic1_out_rate = &cic_rate_div[5:0]; // Clock / 64
 
 always @(posedge clk)
     begin
         if(reset)
-            cic_rate_div <= 7'b0000000;
+            cic_rate_div <= 6'b000000;
         else
             cic_rate_div <= cic_rate_div + 1;
     end
@@ -53,7 +53,7 @@ wire signed [OSZ - 1:0] cic1_out_q;
 
 cic_decimator #(
     .NUM_STAGES(4),
-    .STG_GSZ(6),
+    .STG_GSZ(5),
     .ISZ(ISZ),
     .OSZ(OSZ)
 )
@@ -69,7 +69,7 @@ cic1_dec_i
 
 cic_decimator #(
     .NUM_STAGES(4),
-    .STG_GSZ(6),
+    .STG_GSZ(5),
     .ISZ(ISZ),
     .OSZ(OSZ)
 )

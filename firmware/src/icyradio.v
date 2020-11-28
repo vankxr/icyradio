@@ -464,7 +464,7 @@ assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
-assign bb_i2s_bclk = clk4; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = ADC_CLK / 4
+assign bb_i2s_bclk = clk5; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = QDDC_CLK / 2 = ADC_CLK
 
 // Clock divider
 //always @(posedge bb_i2s_clk)

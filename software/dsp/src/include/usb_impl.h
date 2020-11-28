@@ -2,6 +2,7 @@
 #define __USB_IMPL_H__
 
 #include <sam.h>
+#include <malloc.h>
 #include "pmc.h"
 #include "atomic.h"
 #include "cache.h"

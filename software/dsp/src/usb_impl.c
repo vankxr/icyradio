@@ -757,7 +757,7 @@ void usb_impl_config_endpoints()
             pEndpointBuffer[1]->usUsedSize = 0;
             pEndpointBuffer[1]->usWritePointer = 0;
             pEndpointBuffer[1]->usReadPointer = 0;
-            pEndpointBuffer[1]->pubData = (volatile uint8_t *)malloc(pEndpointBuffer[1]->usSize);
+            pEndpointBuffer[1]->pubData = (volatile uint8_t *)memalign(32, pEndpointBuffer[1]->usSize);
 
             if(!pEndpointBuffer[1]->pubData)
                 return;
@@ -799,7 +799,7 @@ void usb_impl_config_endpoints()
             pEndpointBuffer[2]->usUsedSize = 0;
             pEndpointBuffer[2]->usWritePointer = 0;
             pEndpointBuffer[2]->usReadPointer = 0;
-            pEndpointBuffer[2]->pubData = (volatile uint8_t *)malloc(pEndpointBuffer[2]->usSize);
+            pEndpointBuffer[2]->pubData = (volatile uint8_t *)memalign(32, pEndpointBuffer[2]->usSize);
 
             if(!pEndpointBuffer[2]->pubData)
                 return;
