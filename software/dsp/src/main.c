@@ -1,5 +1,6 @@
 #include <sam.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include <string.h>
 #include <math.h>
 #include "arm_math.h"
@@ -372,7 +373,7 @@ void init_baseband_i2s()
 {
     free(pulTXBasebandBuffer);
 
-    pulTXBasebandBuffer = (uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXBasebandBuffer = (uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXBasebandBuffer)
         return;
@@ -383,7 +384,7 @@ void init_baseband_i2s()
 
     free((void *)pulRXBasebandBuffer);
 
-    pulRXBasebandBuffer = (volatile uint32_t *)malloc(2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXBasebandBuffer = (volatile uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXBasebandBuffer)
         return;
@@ -459,7 +460,7 @@ void init_audio_i2s()
 {
     free((void *)pulTXAudioBuffer);
 
-    pulTXAudioBuffer = (volatile uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXAudioBuffer = (volatile uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXAudioBuffer)
         return;
@@ -470,7 +471,7 @@ void init_audio_i2s()
 
     free(pulRXAudioBuffer);
 
-    pulRXAudioBuffer = (uint32_t *)malloc(2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXAudioBuffer = (uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXAudioBuffer)
         return;
