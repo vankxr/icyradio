@@ -44,15 +44,24 @@
 #define FPGA_REG_ID_DESIGN_VERSION  0x0000FFFF
 
 // FPGA_REG_RST_CNTRL
-#define FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST   BIT(0)
-#define FPGA_REG_RST_CNTRL_ADC_SOFT_RST         BIT(1)
-#define FPGA_REG_RST_CNTRL_QDDC_SOFT_RST        BIT(2)
-#define FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST      BIT(3)
-#define FPGA_REG_RST_CNTRL_QDUC_SOFT_RST        BIT(4)
-#define FPGA_REG_RST_CNTRL_DAC_SOFT_RST         BIT(5)
-#define FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST   BIT(6)
-#define FPGA_REG_RST_CNTRL_QSPI_SOFT_RST        BIT(7)
-#define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(8)
+#define FPGA_REG_RST_CNTRL_PLL1_SOFT_RST        BIT(0)
+#define FPGA_REG_RST_CNTRL_PLL2_SOFT_RST        BIT(1)
+#define FPGA_REG_RST_CNTRL_ADC_DPRAM_SOFT_RST   BIT(2)
+#define FPGA_REG_RST_CNTRL_ADC_SOFT_RST         BIT(3)
+#define FPGA_REG_RST_CNTRL_QDDC_SOFT_RST        BIT(4)
+#define FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST      BIT(5)
+#define FPGA_REG_RST_CNTRL_QDUC_SOFT_RST        BIT(6)
+#define FPGA_REG_RST_CNTRL_DAC_SOFT_RST         BIT(7)
+#define FPGA_REG_RST_CNTRL_AUDIO_I2S_SOFT_RST   BIT(8)
+#define FPGA_REG_RST_CNTRL_QSPI_SOFT_RST        BIT(9)
+#define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(10)
+#define FPGA_REG_RST_CNTRL_LED_SOFT_RST         BIT(10)
+#define FPGA_REG_RST_CNTRL_PLL1_SLEEP           BIT(16)
+#define FPGA_REG_RST_CNTRL_PLL2_SLEEP           BIT(17)
+#define FPGA_REG_RST_CNTRL_PLL1_BYPASS          BIT(18)
+#define FPGA_REG_RST_CNTRL_PLL2_BYPASS          BIT(19)
+#define FPGA_REG_RST_CNTRL_PLL1_LOCKED          BIT(20)
+#define FPGA_REG_RST_CNTRL_PLL2_LOCKED          BIT(21)
 
 // FPGA_REG_IRQ_STATE
 #define FPGA_REG_IRQ_STATE_CLEAR_ON_READ    BIT(0)
@@ -119,13 +128,40 @@
 #define FPGA_REG_QSPI_DPRAM_CNTRL_RD_ADDR_INC    BIT(0)
 
 
+#define FPGA_CLK1_FREQ  SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
+#define FPGA_CLK2_FREQ  SI5351_CLK_FREQ[SI5351_FPGA_CLK2]
+#define FPGA_CLK3_FREQ  SI5351_CLK_FREQ[SI5351_FPGA_CLK3]
+#define FPGA_CLK4_FREQ  SI5351_CLK_FREQ[SI5351_FPGA_CLK4]
+#define FPGA_CLK5_FREQ  (FPGA_CLK3_FREQ * 2)
+#define FPGA_CLK6_FREQ  (FPGA_CLK3_FREQ * 4)
+#define FPGA_CLK7_FREQ  0 // From PLL2, not implemented
+#define FPGA_CLK8_FREQ  0 // From PLL2, not implemented
+
+#define FPGA_RST_CLK            FPGA_CLK1_FREQ
+#define FPGA_ADC_DPRAM_RD_CLK   FPGA_CLK1_FREQ
+#define FPGA_ADC_DPRAM_WR_CLK   FPGA_CLK5_FREQ
+#define FPGA_ADC_CLK            FPGA_CLK5_FREQ
+#define FPGA_QDDC_CLK           FPGA_CLK6_FREQ
+#define FPGA_BB_I2S_CLK         FPGA_CLK6_FREQ
+#define FPGA_QDUC_CLK           FPGA_CLK6_FREQ
+#define FPGA_DAC_CLK            FPGA_CLK6_FREQ
+#define FPGA_AUDIO_I2S_CLK      FPGA_CLK6_FREQ
+#define FPGA_AUDIO_I2S_MCLK     FPGA_CLK4_FREQ
+#define FPGA_QSPI_DPRAM_RD_CLK  FPGA_CLK1_FREQ
+#define FPGA_QSPI_DPRAM_WR_CLK  FPGA_CLK6_FREQ
+#define FPGA_QSPI_MEM_CLK       FPGA_CLK6_FREQ
+#define FPGA_IRQ_CLK            FPGA_CLK1_FREQ
+#define FPGA_LED_CLK            FPGA_CLK1_FREQ
+#define FPGA_CNTRL_SPI_CLK      FPGA_CLK1_FREQ
+
 #define FPGA_ADC_DPRAM_SIZE     4096 // Words
 #define FPGA_QSPI_DPRAM_SIZE    256 // Words
 #define FPGA_QSPI_RAM_SIZE      4194304 // Words
-#define FPGA_QDDC_LO_CLK_FREQ   SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
 #define FPGA_QDDC_LO_FSZ        31 // Bits
-#define FPGA_QDUC_LO_CLK_FREQ   SI5351_CLK_FREQ[SI5351_FPGA_CLK1]
 #define FPGA_QDUC_LO_FSZ        31 // Bits
+
+#define FPGA_PLL1_ID    0
+#define FPGA_PLL2_ID    1
 
 #define FPGA_IRQ_SMC    0
 #define FPGA_IRQ_DSP    1
@@ -151,6 +187,9 @@ uint16_t fpga_read_design_id();
 uint16_t fpga_read_design_version();
 
 void fpga_reset_module(uint32_t ulModule, uint8_t ubReset);
+
+void fpga_pll_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSleep, uint8_t ubBypass);
+uint8_t fpga_pll_get_lock_state(uint8_t ubID);
 
 void fpga_irq_set_mask(uint8_t ubID, uint8_t ubMask);
 uint8_t fpga_irq_get_state();
