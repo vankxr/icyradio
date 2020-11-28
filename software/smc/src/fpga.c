@@ -112,6 +112,9 @@ uint8_t fpga_init()
     fpga_irq_set_mask(FPGA_IRQ_SMC, 0x00);
     fpga_irq_set_mask(FPGA_IRQ_DSP, 0x00);
 
+    fpga_reset_module(FPGA_REG_RST_CNTRL_PLL1_SOFT_RST, 0);
+    while(!(fpga_read_register(FPGA_REG_RST_CNTRL) & FPGA_REG_RST_CNTRL_PLL1_LOCKED));
+
     return 1;
 }
 void fpga_isr()
@@ -138,6 +141,37 @@ void fpga_reset_module(uint32_t ulModule, uint8_t ubReset)
         ulReg &= ~ulModule;
 
     fpga_write_register(FPGA_REG_RST_CNTRL, ulReg);
+}
+
+void fpga_pll_config(uint8_t ubID, uint8_t ubEnable, uint8_t ubSleep, uint8_t ubBypass)
+{
+    switch(ubID)
+    {
+        case FPGA_PLL1_ID:
+        {
+            fpga_reset_module(FPGA_REG_RST_CNTRL_PLL1_SOFT_RST, !ubEnable);
+            fpga_rmw_register(FPGA_REG_RST_CNTRL, ~(FPGA_REG_RST_CNTRL_PLL1_SLEEP | FPGA_REG_RST_CNTRL_PLL1_BYPASS), (ubSleep ? FPGA_REG_RST_CNTRL_PLL1_SLEEP : 0) | (ubBypass ? FPGA_REG_RST_CNTRL_PLL1_BYPASS : 0));
+        }
+        break;
+        case FPGA_PLL2_ID:
+        {
+            fpga_reset_module(FPGA_REG_RST_CNTRL_PLL2_SOFT_RST, !ubEnable);
+            fpga_rmw_register(FPGA_REG_RST_CNTRL, ~(FPGA_REG_RST_CNTRL_PLL2_SLEEP | FPGA_REG_RST_CNTRL_PLL2_BYPASS), (ubSleep ? FPGA_REG_RST_CNTRL_PLL2_SLEEP : 0) | (ubBypass ? FPGA_REG_RST_CNTRL_PLL2_BYPASS : 0));
+        }
+        break;
+    }
+}
+uint8_t fpga_pll_get_lock_state(uint8_t ubID)
+{
+    switch(ubID)
+    {
+        case FPGA_PLL1_ID:
+            return !!(fpga_read_register(FPGA_REG_RST_CNTRL) & FPGA_REG_RST_CNTRL_PLL1_LOCKED);
+        case FPGA_PLL2_ID:
+            return !!(fpga_read_register(FPGA_REG_RST_CNTRL) & FPGA_REG_RST_CNTRL_PLL2_LOCKED);
+    }
+
+    return 0;
 }
 
 void fpga_irq_set_mask(uint8_t ubID, uint8_t ubMask)
@@ -228,14 +262,14 @@ void fpga_qddc_set_lo_freq(int32_t lFrequency)
     uint32_t ulDirection = lFrequency > 0 ? 0x00000000 : 0x80000000;
 
     uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDDC_LO_FSZ;
-    uint32_t ulValue = ullFrequency / FPGA_QDDC_LO_CLK_FREQ;
+    uint32_t ulValue = ullFrequency / FPGA_QDDC_CLK;
 
     fpga_write_register(FPGA_REG_QDDC_LO_FREQ, ulDirection | ulValue);
 }
 int32_t fpga_qddc_get_lo_freq()
 {
     uint32_t ulValue = fpga_read_register(FPGA_REG_QDDC_LO_FREQ);
-    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDDC_LO_CLK_FREQ;
+    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDDC_CLK;
 
     return (ullFrequency >> FPGA_QDDC_LO_FSZ) * ((ulValue & 0x80000000) ? -1 : 1);
 }
@@ -258,14 +292,14 @@ void fpga_qduc_set_lo_freq(int32_t lFrequency)
     uint32_t ulDirection = lFrequency > 0 ? 0x00000000 : 0x80000000;
 
     uint64_t ullFrequency = (uint64_t)ulFrequency << FPGA_QDUC_LO_FSZ;
-    uint32_t ulValue = ullFrequency / FPGA_QDUC_LO_CLK_FREQ;
+    uint32_t ulValue = ullFrequency / FPGA_QDUC_CLK;
 
     fpga_write_register(FPGA_REG_QDUC_LO_FREQ, ulDirection | ulValue);
 }
 int32_t fpga_qduc_get_lo_freq()
 {
     uint32_t ulValue = fpga_read_register(FPGA_REG_QDUC_LO_FREQ);
-    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDUC_LO_CLK_FREQ;
+    uint64_t ullFrequency = (uint64_t)(ulValue & 0x7FFFFFFF) * FPGA_QDUC_CLK;
 
     return (ullFrequency >> FPGA_QDUC_LO_FSZ) * ((ulValue & 0x80000000) ? -1 : 1);
 }

@@ -2,7 +2,7 @@ module icyradio
 (
     // Clock inputs
     input CLK1,
-    input CLK2,
+    //input CLK2, // Not available since PLL uses this as one of its outputs
     input CLK3,
     input CLK4,
     // Reset
@@ -90,32 +90,130 @@ module icyradio
 
 /// Clocks ///
 // Inputs
-wire clk1; // Fast clock, feeds the ADC, the QDDC and the baseband I2S controller
-wire clk2; // Fast clock, feeds the reset generator, control SPI and IRQ controller
-wire clk3; // Fast clock, feeds the LED PWM controller
-wire clk4;
+wire clk1; // GBIN1 input clock   - 100 MHz         - Feeds the reset generator, control SPI, IRQ controller and LED PWM controller
+wire clk2; // GBIN4 input clock   - Not available   -
+wire clk3; // GBIN5 input clock   - 12.288 MHz      - Feeds PLL1 directly (does not travel through fabric)
+wire clk4; // GBIN0 input clock   - 12.288 MHz      - Feeds the audio I2C MCLK
+wire clk5; // PLL1 output clock A - 24.576 MHz      - Feeds the ADC
+wire clk6; // PLL1 output clock B - 49.152 MHz      - Feeds the the QDDC, the QDUC, the DAC, the baseband I2S controller and the QSPI interface
+wire clk7; // PLL2 output clock A - Not implemented -
+wire clk8; // PLL2 output clock B - Not implemented -
 
 assign CLK1 = clk1;
-assign CLK2 = clk2;
-assign CLK3 = clk3;
+//assign CLK2 = clk2; // Not available since PLL uses this as one of its outputs
+//assign CLK3 = clk3; // Fabric routing disabled, instead the pin is clocking the PLL directly, check the PLL instance below
 assign CLK4 = clk4;
 
-/*
-SB_PLL40_CORE #(
+// PLLs
+wire [1:0] pll_sleep;
+wire [1:0] pll_bypass;
+wire [1:0] pll_lock;
+
+SB_PLL40_2F_PAD #(
     .FEEDBACK_PATH("SIMPLE"),
-    .DIVR(4'b0100),         // DIVR =  4
-    .DIVF(7'b0111111),      // DIVF = 63
-    .DIVQ(3'b100),          // DIVQ =  4
-    .FILTER_RANGE(3'b001)   // FILTER_RANGE = 1
+    //.FEEDBACK_PATH("DELAY"),
+    //.FEEDBACK_PATH("PHASE_AND_DELAY"),
+    //.FEEDBACK_PATH("EXTERNAL"),
+
+    .DELAY_ADJUSTMENT_MODE_FEEDBACK("FIXED"),
+    //.DELAY_ADJUSTMENT_MODE_FEEDBACK("DYNAMIC"),
+    .FDA_FEEDBACK(4'b0000),
+
+    .DELAY_ADJUSTMENT_MODE_RELATIVE("FIXED"),
+    //.DELAY_ADJUSTMENT_MODE_RELATIVE("DYNAMIC"),
+    .FDA_RELATIVE(4'b0000),
+
+    //.PLLOUT_SELECT_PORTA("GENCLK"),
+    .PLLOUT_SELECT_PORTA("GENCLK_HALF"),
+    //.PLLOUT_SELECT_PORTA("SHIFTREG_90deg"),
+    //.PLLOUT_SELECT_PORTA("SHIFTREG_0deg"),
+
+    .PLLOUT_SELECT_PORTB("GENCLK"),
+    //.PLLOUT_SELECT_PORTB("GENCLK_HALF"),
+    //.PLLOUT_SELECT_PORTB("SHIFTREG_90deg"),
+    //.PLLOUT_SELECT_PORTB("SHIFTREG_0deg"),
+
+    .SHIFTREG_DIV_MODE(1'b0),
+    .DIVR(4'b0000),
+    .DIVF(7'b0111111),
+    .DIVQ(3'b100),
+    .FILTER_RANGE(3'b001),
+    .ENABLE_ICEGATE_PORTA(1'b1),
+    .ENABLE_ICEGATE_PORTB(1'b1),
+    .TEST_MODE(1'b0)
 )
-pll_40M
+pll1
 (
-    .LOCK(),
-    .RESETB(1'b1),
-    .BYPASS(1'b0),
-    .REFERENCECLK(clk_50M),
-    .PLLOUTGLOBAL(clk_40M)
-);*/
+    .PACKAGEPIN(CLK3),
+    .PLLOUTCOREA(clk5),
+    .PLLOUTGLOBALA(),
+    .PLLOUTCOREB(clk6),
+    .PLLOUTGLOBALB(),
+    .EXTFEEDBACK(),
+    .DYNAMICDELAY(),
+    .LOCK(pll_lock[0]),
+    .BYPASS(pll_bypass[0]),
+    .RESETB(!pll_rst[0]),
+    .LATCHINPUTVALUE(pll_sleep[0]),
+    .SDO(),
+    .SDI(1'b0),
+    .SCLK(1'b0)
+);
+// PLL2 is not implemented
+// Force lock status to 0
+assign pll_lock[1] = 1'b0;
+/*
+SB_PLL40_2F_CORE #(
+    .FEEDBACK_PATH("SIMPLE"),
+    //.FEEDBACK_PATH("DELAY"),
+    //.FEEDBACK_PATH("PHASE_AND_DELAY"),
+    //.FEEDBACK_PATH("EXTERNAL"),
+
+    .DELAY_ADJUSTMENT_MODE_FEEDBACK("FIXED"),
+    //.DELAY_ADJUSTMENT_MODE_FEEDBACK("DYNAMIC"),
+    .FDA_FEEDBACK(4'b0000),
+
+    .DELAY_ADJUSTMENT_MODE_RELATIVE("FIXED"),
+    //.DELAY_ADJUSTMENT_MODE_RELATIVE("DYNAMIC"),
+    .FDA_RELATIVE(4'b0000),
+
+    .PLLOUT_SELECT_PORTA("GENCLK"),
+    //.PLLOUT_SELECT_PORTA("GENCLK_HALF"),
+    //.PLLOUT_SELECT_PORTA("SHIFTREG_90deg"),
+    //.PLLOUT_SELECT_PORTA("SHIFTREG_0deg"),
+
+    .PLLOUT_SELECT_PORTB("GENCLK"),
+    //.PLLOUT_SELECT_PORTB("GENCLK_HALF"),
+    //.PLLOUT_SELECT_PORTB("SHIFTREG_90deg"),
+    //.PLLOUT_SELECT_PORTB("SHIFTREG_0deg"),
+
+    .SHIFTREG_DIV_MODE(1'b0),
+    .DIVR(4'b0000),
+    .DIVF(7'b0111111),
+    .DIVQ(3'b100),
+    .FILTER_RANGE(3'b001),
+    .ENABLE_ICEGATE_PORTA(1'b1),
+    .ENABLE_ICEGATE_PORTB(1'b1),
+    .TEST_MODE(1'b0)
+)
+pll2
+(
+    .REFERENCECLK(clk1),
+    .PLLOUTCOREA(),
+    .PLLOUTGLOBALA(clk7),
+    .PLLOUTCOREB(),
+    .PLLOUTGLOBALB(clk8),
+    .EXTFEEDBACK(),
+    .DYNAMICDELAY(),
+    .LOCK(pll_lock[1]),
+    .BYPASS(pll_bypass[1]),
+    .RESETB(!pll_rst[1]),
+    .LATCHINPUTVALUE(pll_sleep[1]),
+    .SDO(),
+    .SDI(1'b0),
+    .SCLK(1'b0)
+);
+*/
 
 // Module clocks
 wire rst_clk;
@@ -135,22 +233,22 @@ wire irq_clk;
 wire led_clk;
 wire cntrl_spi_clk;
 
-assign rst_clk              = clk2; // Reset clock is CLK2
-assign adc_dpram_rd_clk     = clk2; // ADC DP RAM read clock is CLK2 (same as the control SPI interface clock)
-assign adc_dpram_wr_clk     = clk1; // ADC DP RAM write clock is CLK1 (same as ADC)
-assign adc_clk              = clk1; // ADC clock is CLK1
-assign qddc_clk             = clk1; // QDDC clock is CLK1 (same as the ADC)
-assign bb_i2s_clk           = clk1; // Baseband I2S clock is CLK1 (same as the QDDC)
-assign qduc_clk             = clk1; // QDUC clock is CLK1 (same as the DAC)
-assign dac_clk              = clk1; // DAC clock is CLK1
-assign audio_i2s_clk        = clk1; // Audio I2S clock is CLK1 (same as the QDDC)
-assign audio_i2s_mclk       = clk3; // Audio I2S master clock is CLK3
-assign qspi_dpram_rd_clk    = clk2; // QSPI DP RAM read clock is CLK2 (same as the control SPI interface clock)
-assign qspi_dpram_wr_clk    = clk1; // QSPI DP RAM write clock is CLK1 (same as QSPI)
-assign qspi_mem_clk         = clk1; // QSPI memory clock is CLK1
-assign irq_clk              = clk2; // IRQ clock is CLK2
-assign led_clk              = clk2; // LED clock is CLK2
-assign cntrl_spi_clk        = clk2; // Control SPI interface clock is CLK2
+assign rst_clk              = clk1; // Reset clock is CLK1
+assign adc_dpram_rd_clk     = clk1; // ADC DP RAM read clock is CLK1
+assign adc_dpram_wr_clk     = clk5; // ADC DP RAM write clock is CLK5
+assign adc_clk              = clk5; // ADC clock is CLK5
+assign qddc_clk             = clk6; // QDDC clock is CLK6
+assign bb_i2s_clk           = clk6; // Baseband I2S clock is CLK6
+assign qduc_clk             = clk6; // QDUC clock is CLK6
+assign dac_clk              = clk6; // DAC clock is CLK6
+assign audio_i2s_clk        = clk6; // Audio I2S clock is CLK6
+assign audio_i2s_mclk       = clk4; // Audio I2S master clock is CLK4
+assign qspi_dpram_rd_clk    = clk1; // QSPI DP RAM read clock is CLK1
+assign qspi_dpram_wr_clk    = clk6; // QSPI DP RAM write clock is CLK6
+assign qspi_mem_clk         = clk6; // QSPI memory clock is CLK6
+assign irq_clk              = clk1; // IRQ clock is CLK1
+assign led_clk              = clk1; // LED clock is CLK1
+assign cntrl_spi_clk        = clk1; // Control SPI interface clock is CLK1
 /// Clocks ///
 
 /// Resets ///
@@ -169,27 +267,31 @@ assign porst  = (|porst_pipe); // Power-on reset
 assign extrst = (|extrst_pipe) | porst; // External pin reset
 
 // Module reset lines
-wire adc_dpram_rst;
-wire adc_dpram_soft_rst; // Controlled by SMC via SPI
-wire adc_rst;
-wire adc_soft_rst; // Controlled by SMC via SPI
-wire qddc_rst;
-wire qddc_soft_rst; // Controlled by SMC via SPI
-wire bb_i2s_rst;
-wire bb_i2s_soft_rst; // Controlled by SMC via SPI
-wire qduc_rst;
-wire qduc_soft_rst; // Controlled by SMC via SPI
-wire dac_rst;
-wire dac_soft_rst; // Controlled by SMC via SPI
-wire audio_i2s_rst;
-wire audio_i2s_soft_rst; // Controlled by SMC via SPI
-wire qspi_mem_rst;
-wire qspi_mem_soft_rst; // Controlled by SMC via SPI
-wire led_rst;
-wire led_soft_rst; // Controlled by SMC via SPI
-wire irq_rst;
-wire cntrl_spi_rst;
+wire [1:0] pll_rst;
+wire [1:0] pll_soft_rst; // Controlled by SMC via SPI
+wire       adc_dpram_rst;
+wire       adc_dpram_soft_rst; // Controlled by SMC via SPI
+wire       adc_rst;
+wire       adc_soft_rst; // Controlled by SMC via SPI
+wire       qddc_rst;
+wire       qddc_soft_rst; // Controlled by SMC via SPI
+wire       bb_i2s_rst;
+wire       bb_i2s_soft_rst; // Controlled by SMC via SPI
+wire       qduc_rst;
+wire       qduc_soft_rst; // Controlled by SMC via SPI
+wire       dac_rst;
+wire       dac_soft_rst; // Controlled by SMC via SPI
+wire       audio_i2s_rst;
+wire       audio_i2s_soft_rst; // Controlled by SMC via SPI
+wire       qspi_mem_rst;
+wire       qspi_mem_soft_rst; // Controlled by SMC via SPI
+wire       led_rst;
+wire       led_soft_rst; // Controlled by SMC via SPI
+wire       irq_rst;
+wire       cntrl_spi_rst;
 
+assign pll_rst[0]    = extrst || pll_soft_rst[0]; // PLL1 is reset by external pin and software
+assign pll_rst[1]    = extrst || pll_soft_rst[1]; // PLL2 is reset by external pin and software
 assign adc_dpram_rst = extrst || adc_dpram_soft_rst; // ADC DP RAM is reset by external pin and software
 assign adc_rst       = extrst || adc_soft_rst; // ADC is reset by external pin and software
 assign qddc_rst      = extrst || qddc_soft_rst; // QDDC is reset by external pin and software
@@ -351,7 +453,7 @@ wire [15:0] bb_i2s_left_data_out;
 wire [15:0] bb_i2s_right_data_out;
 reg  [15:0] bb_i2s_left_data_in;
 reg  [15:0] bb_i2s_right_data_in;
-reg  [1:0]  bb_i2s_clk_div;
+//reg  [1:0]  bb_i2s_clk_div;
 wire        bb_i2s_bclk;
 wire        bb_i2s_lrclk;
 wire        bb_i2s_sdout;
@@ -362,11 +464,11 @@ assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
-assign bb_i2s_bclk = bb_i2s_clk_div[1]; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = ADC_CLK / 4
+assign bb_i2s_bclk = clk4; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = ADC_CLK / 4
 
 // Clock divider
-always @(posedge bb_i2s_clk)
-    bb_i2s_clk_div <= bb_i2s_clk_div + 1;
+//always @(posedge bb_i2s_clk)
+//    bb_i2s_clk_div <= bb_i2s_clk_div + 1;
 
 // Module
 i2s_master bb_i2s
@@ -1051,15 +1153,19 @@ localparam CNTRL_SPI_REG_QSPI_DPRAM_DATA        = 7'h56;
 
 // Register parameters
 //// CNTRL_SPI_REG_RST_CNTRL
-reg  cntrl_spi_adc_dpram_soft_rst;
-reg  cntrl_spi_adc_soft_rst;
-reg  cntrl_spi_qddc_soft_rst;
-reg  cntrl_spi_bb_i2s_soft_rst;
-reg  cntrl_spi_qduc_soft_rst;
-reg  cntrl_spi_dac_soft_rst;
-reg  cntrl_spi_audio_i2s_soft_rst;
-reg  cntrl_spi_qspi_mem_soft_rst;
-reg  cntrl_spi_led_soft_rst;
+reg  [1:0] cntrl_spi_pll_sleep;
+reg  [1:0] cntrl_spi_pll_bypass;
+wire [1:0] cntrl_spi_pll_lock;
+reg  [1:0] cntrl_spi_pll_soft_rst;
+reg        cntrl_spi_adc_dpram_soft_rst;
+reg        cntrl_spi_adc_soft_rst;
+reg        cntrl_spi_qddc_soft_rst;
+reg        cntrl_spi_bb_i2s_soft_rst;
+reg        cntrl_spi_qduc_soft_rst;
+reg        cntrl_spi_dac_soft_rst;
+reg        cntrl_spi_audio_i2s_soft_rst;
+reg        cntrl_spi_qspi_mem_soft_rst;
+reg        cntrl_spi_led_soft_rst;
 
 //// CNTRL_SPI_REG_IRQ_STATE
 wire [IRQ_COUNT - 1:0] cntrl_spi_irq_state;
@@ -1146,15 +1252,19 @@ wire [15:0] cntrl_spi_qspi_dpram_data_out;
 
 // Synchronizers
 //// CNTRL_SPI_REG_RST_CNTRL
-assign adc_dpram_soft_rst = cntrl_spi_adc_dpram_soft_rst; // No sync needed since runs on the same clock
-assign adc_soft_rst = cntrl_spi_adc_soft_rst; // No sync needed since runs on the same clock
-assign qddc_soft_rst = cntrl_spi_qddc_soft_rst; // No sync needed since runs on the same clock
-assign bb_i2s_soft_rst = cntrl_spi_bb_i2s_soft_rst; // No sync needed since runs on the same clock
-assign qduc_soft_rst = cntrl_spi_qduc_soft_rst; // No sync needed since runs on the same clock
-assign dac_soft_rst = cntrl_spi_dac_soft_rst; // No sync needed since runs on the same clock
-assign audio_i2s_soft_rst = cntrl_spi_audio_i2s_soft_rst; // No sync needed since runs on the same clock
-assign qspi_mem_soft_rst = cntrl_spi_qspi_mem_soft_rst; // No sync needed since runs on the same clock
-assign led_soft_rst = cntrl_spi_led_soft_rst; // No sync needed since runs on the same clock
+assign pll_sleep = cntrl_spi_pll_sleep; // No sync needed since PLL signals are asynchronous
+assign pll_bypass = cntrl_spi_pll_bypass; // No sync needed since PLL signals are asynchronous
+assign pll_lock = cntrl_spi_pll_lock; // No sync needed since PLL signals are asynchronous
+assign pll_soft_rst = cntrl_spi_pll_soft_rst; // No sync needed since resets are asynchronous
+assign adc_dpram_soft_rst = cntrl_spi_adc_dpram_soft_rst; // No sync needed since resets are asynchronous
+assign adc_soft_rst = cntrl_spi_adc_soft_rst; // No sync needed since resets are asynchronous
+assign qddc_soft_rst = cntrl_spi_qddc_soft_rst; // No sync needed since resets are asynchronous
+assign bb_i2s_soft_rst = cntrl_spi_bb_i2s_soft_rst; // No sync needed since resets are asynchronous
+assign qduc_soft_rst = cntrl_spi_qduc_soft_rst; // No sync needed since resets are asynchronous
+assign dac_soft_rst = cntrl_spi_dac_soft_rst; // No sync needed since resets are asynchronous
+assign audio_i2s_soft_rst = cntrl_spi_audio_i2s_soft_rst; // No sync needed since resets are asynchronous
+assign qspi_mem_soft_rst = cntrl_spi_qspi_mem_soft_rst; // No sync needed since resets are asynchronous
+assign led_soft_rst = cntrl_spi_led_soft_rst; // No sync needed since resets are asynchronous
 
 //// CNTRL_SPI_REG_IRQ_STATE
 assign cntrl_spi_irq_state = irq_state; // No sync needed since runs on the same clock
@@ -1387,6 +1497,9 @@ always @(posedge cntrl_spi_clk)
     begin
         if(cntrl_spi_rst) // Register reset values
             begin
+                cntrl_spi_pll_sleep <= 2'b00;
+                cntrl_spi_pll_bypass <= 2'b00;
+                cntrl_spi_pll_soft_rst <= 2'b11;
                 cntrl_spi_adc_dpram_soft_rst <= 1'b1;
                 cntrl_spi_adc_soft_rst <= 1'b1;
                 cntrl_spi_qddc_soft_rst <= 1'b1;
@@ -1467,15 +1580,18 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_adc_dpram_soft_rst <= cntrl_spi_data_out[0];
-                                    cntrl_spi_adc_soft_rst <= cntrl_spi_data_out[1];
-                                    cntrl_spi_qddc_soft_rst <= cntrl_spi_data_out[2];
-                                    cntrl_spi_bb_i2s_soft_rst <= cntrl_spi_data_out[3];
-                                    cntrl_spi_qduc_soft_rst <= cntrl_spi_data_out[4];
-                                    cntrl_spi_dac_soft_rst <= cntrl_spi_data_out[5];
-                                    cntrl_spi_audio_i2s_soft_rst <= cntrl_spi_data_out[6];
-                                    cntrl_spi_qspi_mem_soft_rst <= cntrl_spi_data_out[7];
-                                    cntrl_spi_led_soft_rst <= cntrl_spi_data_out[8];
+                                    cntrl_spi_pll_soft_rst[1:0] <= cntrl_spi_data_out[1:0];
+                                    cntrl_spi_adc_dpram_soft_rst <= cntrl_spi_data_out[2];
+                                    cntrl_spi_adc_soft_rst <= cntrl_spi_data_out[3];
+                                    cntrl_spi_qddc_soft_rst <= cntrl_spi_data_out[4];
+                                    cntrl_spi_bb_i2s_soft_rst <= cntrl_spi_data_out[5];
+                                    cntrl_spi_qduc_soft_rst <= cntrl_spi_data_out[6];
+                                    cntrl_spi_dac_soft_rst <= cntrl_spi_data_out[7];
+                                    cntrl_spi_audio_i2s_soft_rst <= cntrl_spi_data_out[8];
+                                    cntrl_spi_qspi_mem_soft_rst <= cntrl_spi_data_out[9];
+                                    cntrl_spi_led_soft_rst <= cntrl_spi_data_out[10];
+                                    cntrl_spi_pll_sleep[1:0] <= cntrl_spi_data_out[17:16];
+                                    cntrl_spi_pll_bypass[1:0] <= cntrl_spi_data_out[19:18];
                                 end
                             CNTRL_SPI_REG_IRQ_STATE:
                                 begin
@@ -1593,7 +1709,7 @@ always @(posedge cntrl_spi_clk)
                                 end
                             CNTRL_SPI_REG_RST_CNTRL:
                                 begin
-                                    cntrl_spi_data_in <= {23'd0, cntrl_spi_led_soft_rst, cntrl_spi_qspi_mem_soft_rst, cntrl_spi_audio_i2s_soft_rst, cntrl_spi_dac_soft_rst, cntrl_spi_qduc_soft_rst, cntrl_spi_bb_i2s_soft_rst, cntrl_spi_qddc_soft_rst, cntrl_spi_adc_soft_rst, cntrl_spi_adc_dpram_soft_rst};
+                                    cntrl_spi_data_in <= {10'd0, cntrl_spi_pll_lock, cntrl_spi_pll_bypass, cntrl_spi_pll_sleep, 5'd0, cntrl_spi_led_soft_rst, cntrl_spi_qspi_mem_soft_rst, cntrl_spi_audio_i2s_soft_rst, cntrl_spi_dac_soft_rst, cntrl_spi_qduc_soft_rst, cntrl_spi_bb_i2s_soft_rst, cntrl_spi_qddc_soft_rst, cntrl_spi_adc_soft_rst, cntrl_spi_adc_dpram_soft_rst, cntrl_spi_pll_soft_rst};
                                 end
                             CNTRL_SPI_REG_IRQ_STATE:
                                 begin

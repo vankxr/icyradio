@@ -362,7 +362,7 @@ void rx_draw_psd(tft_graph_t *pGraph, float *pfPower)
 
     memset(pfFrequency, 0.f, 2048 * sizeof(float));
 
-    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096 / 1000000;
+    float fBinStep = (float)FPGA_ADC_CLK / 4096 / 1000000;
 
     for(uint16_t i = 0; i < 2048; i++)
         pfFrequency[i] = i * fBinStep;
@@ -378,7 +378,7 @@ float rx_get_max_power(float *pfPower, uint32_t *pulFrequency)
     if(!pfPower)
         return 0.f;
 
-    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096;
+    float fBinStep = (float)FPGA_ADC_CLK / 4096;
 
     float fMaxPower = -INFINITY;
     uint32_t ulMaxPowerFrequency = 0.f;
@@ -405,10 +405,10 @@ float rx_get_power(float *pfPower, uint32_t ulFrequency)
     if(!pfPower)
         return 0.f;
 
-    if(ulFrequency >= SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 2) // Nyquist frequency
+    if(ulFrequency >= FPGA_ADC_CLK / 2) // Nyquist frequency
         return 0.f;
 
-    float fBinStep = (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 4096;
+    float fBinStep = (float)FPGA_ADC_CLK / 4096;
     uint16_t usBinIndex = ulFrequency / fBinStep;
 
     if(usBinIndex >= 2048)
@@ -474,8 +474,8 @@ void init_system_clocks()
 
     //// FPGA Clock #1
     si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 49152000);
-    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 120.f);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 100000000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 45.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
@@ -494,8 +494,8 @@ void init_system_clocks()
 
     //// FPGA Clock #2
     si5351_multisynth_set_source(SI5351_FPGA_CLK2, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 100000000);
-    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK2, 45.f);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 0);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK2, 0.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK2] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK2] / 1000000);
@@ -509,8 +509,8 @@ void init_system_clocks()
 
     DBGPRINTLN_CTX("CLKMNGR - CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK2, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK2] / 1000000);
 
-    si5351_clock_power_up(SI5351_FPGA_CLK2); // Power the output stage up
-    si5351_clock_enable(SI5351_FPGA_CLK2); // Software enable the clock output
+    si5351_clock_power_down(SI5351_FPGA_CLK2); // Power the output stage down
+    si5351_clock_disable(SI5351_FPGA_CLK2); // Software disable the clock output
 
     //// FPGA Clock #3
     si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
@@ -534,8 +534,8 @@ void init_system_clocks()
 
     //// FPGA Clock #4
     si5351_multisynth_set_source(SI5351_FPGA_CLK4, SI5351_MS_SRC_PLLA);
-    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 32000000);
-    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK4, 30.f);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK4, 12288000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK4, 180.f);
 
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK4] / 1000000);
     DBGPRINTLN_CTX("CLKMNGR - MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK4, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK4] / 1000000);
@@ -615,22 +615,22 @@ void init_audio_chain()
 
     delay_ms(100);
 
-    if(tscs25xx_timebase_config(SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC timebase configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    if(tscs25xx_timebase_config(FPGA_AUDIO_I2S_MCLK))
+        DBGPRINTLN_CTX("CODEC timebase configured for %.3f MHz!", (float)FPGA_AUDIO_I2S_MCLK / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure timebase!");
 
-    if(tscs25xx_pll_config(1, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC PLL #1 configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    if(tscs25xx_pll_config(1, FPGA_AUDIO_I2S_MCLK))
+        DBGPRINTLN_CTX("CODEC PLL #1 configured for %.3f MHz!", (float)FPGA_AUDIO_I2S_MCLK / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure PLL #1!");
 
-    if(tscs25xx_pll_config(2, SI5351_CLK_FREQ[SI5351_FPGA_CLK3]))
-        DBGPRINTLN_CTX("CODEC PLL #2 configured for %.3f MHz!", (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK3] / 1000000.f);
+    if(tscs25xx_pll_config(2, FPGA_AUDIO_I2S_MCLK))
+        DBGPRINTLN_CTX("CODEC PLL #2 configured for %.3f MHz!", (float)FPGA_AUDIO_I2S_MCLK / 1000000.f);
     else
         DBGPRINTLN_CTX("CODEC failed to configure PLL #2!");
 
-    uint32_t ulAudioSampleRate = SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 32 / 8 / 4;
+    uint32_t ulAudioSampleRate = FPGA_BB_I2S_CLK / 32 / 8 / 4;
 
     if(tscs25xx_sample_rate_config(ulAudioSampleRate))
         DBGPRINTLN_CTX("CODEC sample rate: %.3f kHz", (float)ulAudioSampleRate / 1000.f);
@@ -870,7 +870,7 @@ void init_tx_chain()
     fpga_reset_module(FPGA_REG_RST_CNTRL_DAC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA DAC enabled!");
 
-    ad9117_calibrate(SI5351_CLK_FREQ[SI5351_FPGA_CLK1]);
+    ad9117_calibrate(FPGA_DAC_CLK);
     DBGPRINTLN_CTX("TX DAC calibrated!");
 
     ad9117_i_offset_config(1, AD9117_REG_AUX_CTLI_RANGE_1V0 | AD9117_REG_AUX_CTLI_TOP_1V0);
@@ -1111,6 +1111,36 @@ int main()
     // FPGA design info
     DBGPRINTLN_CTX("FPGA design ID: 0x%04X", fpga_read_design_id());
     DBGPRINTLN_CTX("FPGA design version: v%hu", fpga_read_design_version());
+
+    fpga_pll_config(FPGA_PLL1_ID, 1, 0, 0);
+    while(!fpga_pll_get_lock_state(FPGA_PLL1_ID));
+    DBGPRINTLN_CTX("FPGA PLL1 locked!");
+
+    DBGPRINTLN_CTX("FPGA - CLK1 Clock: %.3f MHz", (float)FPGA_CLK1_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK2 Clock: %.3f MHz", (float)FPGA_CLK2_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK3 Clock: %.3f MHz", (float)FPGA_CLK3_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK4 Clock: %.3f MHz", (float)FPGA_CLK4_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK5 Clock: %.3f MHz", (float)FPGA_CLK5_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK6 Clock: %.3f MHz", (float)FPGA_CLK6_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK7 Clock: %.3f MHz", (float)FPGA_CLK7_FREQ / 1000000);
+    DBGPRINTLN_CTX("FPGA - CLK8 Clock: %.3f MHz", (float)FPGA_CLK8_FREQ / 1000000);
+
+    DBGPRINTLN_CTX("FPGA - Reset module Clock: %.3f MHz", (float)FPGA_RST_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - ADC DPRAM module read Clock: %.3f MHz", (float)FPGA_ADC_DPRAM_RD_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - ADC DPRAM module write Clock: %.3f MHz", (float)FPGA_ADC_DPRAM_WR_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - ADC module Clock: %.3f MHz", (float)FPGA_ADC_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - QDDC module Clock: %.3f MHz", (float)FPGA_QDDC_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - Baseband I2S module Clock: %.3f MHz", (float)FPGA_BB_I2S_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - QDUC module Clock: %.3f MHz", (float)FPGA_QDUC_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - DAC module Clock: %.3f MHz", (float)FPGA_DAC_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - Audio I2S module Clock: %.3f MHz", (float)FPGA_AUDIO_I2S_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - Audio I2S module master Clock: %.3f MHz", (float)FPGA_AUDIO_I2S_MCLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - QSPI DPRAM module read Clock: %.3f MHz", (float)FPGA_QSPI_DPRAM_RD_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - QSPI DPRAM module write Clock: %.3f MHz", (float)FPGA_QSPI_DPRAM_WR_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - QSPI memory module Clock: %.3f MHz", (float)FPGA_QSPI_MEM_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - Interrupt module Clock: %.3f MHz", (float)FPGA_IRQ_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - LED module Clock: %.3f MHz", (float)FPGA_LED_CLK / 1000000);
+    DBGPRINTLN_CTX("FPGA - Control SPI module Clock: %.3f MHz", (float)FPGA_CNTRL_SPI_CLK / 1000000);
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_LED_SOFT_RST, 0);
 
