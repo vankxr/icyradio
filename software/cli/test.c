@@ -88,29 +88,39 @@ int main(int argc, char *argv[])
     struct timeval stop, start;
     gettimeofday(&start, NULL);
     for(int i = 0; i < 100*1024*1024/sizeof(ubBuf); i++)
-	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_RX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+    {
+	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_TX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+
+        if(e < 0)
+            fprintf(stderr, "libusb_bulk_transfer failed with %d\r\n", e);
+    }
     gettimeofday(&stop, NULL);
     long unsigned int len = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     float datarate = 100.f * 1000000.f / len; // MB/s
     float bitrate = datarate * 8;
 
-	fprintf(stderr, "USB Bulk IN 100 MB transfer time: %lu us\r\n", len);
-	fprintf(stderr, "USB Bulk IN data rate: %.3f MB/s\r\n", datarate);
-	fprintf(stderr, "USB Bulk IN data rate: %.3f Mbps\r\n", bitrate);
+	fprintf(stderr, "USB Bulk OUT 100 MB transfer time: %lu us\r\n", len);
+	fprintf(stderr, "USB Bulk OUT data rate: %.3f MB/s\r\n", datarate);
+	fprintf(stderr, "USB Bulk OUT data rate: %.3f Mbps\r\n", bitrate);
 
     memset(ubBuf, 0xA5, sizeof(ubBuf));
 
     gettimeofday(&start, NULL);
     for(int i = 0; i < 100*1024*1024/sizeof(ubBuf); i++)
-	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_TX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+    {
+	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_RX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+
+        if(e < 0)
+            fprintf(stderr, "libusb_bulk_transfer failed with %d\r\n", e);
+    }
     gettimeofday(&stop, NULL);
     len = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
     datarate = 100.f * 1000000.f / len; // MB/s
     bitrate = datarate * 8;
 
-	fprintf(stderr, "USB Bulk OUT 100 MB transfer time: %lu us\r\n", len);
-	fprintf(stderr, "USB Bulk OUT data rate: %.3f MB/s\r\n", datarate);
-	fprintf(stderr, "USB Bulk OUT data rate: %.3f Mbps\r\n", bitrate);
+	fprintf(stderr, "USB Bulk IN 100 MB transfer time: %lu us\r\n", len);
+	fprintf(stderr, "USB Bulk IN data rate: %.3f MB/s\r\n", datarate);
+	fprintf(stderr, "USB Bulk IN data rate: %.3f Mbps\r\n", bitrate);
 
 	libusb_release_interface(pLibUSBDeviceHandle, ICYRADIO_USB_RX_INTERFACE);
 	libusb_close(pLibUSBDeviceHandle);
