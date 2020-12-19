@@ -464,7 +464,7 @@ assign BB_I2S_DSP_LRCLK = bb_i2s_lrclk;
 assign BB_I2S_DSP_SDIN = bb_i2s_sdout;
 assign BB_I2S_DSP_SDOUT = bb_i2s_sdin;
 
-assign bb_i2s_bclk = clk5; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = QDDC_CLK / 2 = ADC_CLK
+assign bb_i2s_bclk = clk5; // Bit clock = BASEBAND_SAMPLE_RATE * I2S_WS * 2 = QDDC_CLK / 2 = QDUC_CLK / 2 = ADC_CLK
 
 // Clock divider
 //always @(posedge bb_i2s_clk)
@@ -588,7 +588,7 @@ wire        audio_i2s_lrclk;
 wire        audio_i2s_sdout;
 reg         audio_i2s_sdin;
 
-assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = AUDIO_SAMPLE_RATE * I2S_WS * 2 = CLK / 32
+assign audio_i2s_bclk = audio_i2s_clk_div[4]; // Bit clock = AUDIO_SAMPLE_RATE * I2S_WS * 2 = QDDC_CLK / 32 = QDUC_CLK / 32 = ADC_CLK / 16
 
 // Clock divider
 always @(posedge audio_i2s_clk)
@@ -894,9 +894,9 @@ always @(qspi_mem_clk_div)
             3'b001:
                 qspi_mem_sck <= qspi_mem_clk_div[7];
             3'b010:
-                qspi_mem_sck <= qspi_mem_clk_div[3];
+                qspi_mem_sck <= qspi_mem_clk_div[2];
             3'b011:
-                qspi_mem_sck <= qspi_mem_clk_div[3];
+                qspi_mem_sck <= qspi_mem_clk_div[2];
             default:
                 qspi_mem_sck <= qspi_mem_clk_div[1];
         endcase
