@@ -15,7 +15,7 @@ static const uint8_t ubRegisterInitValues[32] =
     0x00, 0x00, 0x00, 0x00, 0x00, // Read-only registers do not need initialization
     0x80, // R5 - LT off, LNA AGC on
     0x30, // R6 - PDET1 on, PDET3 off, Filter gain +3 dB, LNA max power
-    0x70, // R7 - Mixer on, normal current, AGC on
+    0x70, // R7 - Mixer lower sideband selected, Mixer on, Mixer normal current, AGC on
     0x80, // R8 - Mixer buffer on, high current, IGA = 0
     0x40, // R9 - IF filter on, low current, IPA = 0
     0x98, // R10 - Filter power on, highest power, mid fine bandwidth
@@ -26,20 +26,20 @@ static const uint8_t ubRegisterInitValues[32] =
     0xF8, // R15 - CLKOUT disabled, AGC clock on
     0x7C, // R16 - VCO div = 1, REF div by 2, XTAL cap 0pF
     0x83, // R17 - Analog LDO 2,0 V
-    0x80, // R18 - TODO: Find documentation for this
-    0x00, // R19 - TODO: Find documentation for this
+    0x80, // R18 - VCO current mid-range, Fractional PLL enabled, Dither enabled
+    0x00, // R19 - VCO controlled by PLL, VCO DAC code = 0
     0x0F, // R20 - PLL related, init value not important
     0x00, // R21 - PLL related, init value not important
     0xC0, // R22 - PLL related, init value not important
     0x30, // R23 - Digital LDO 1,8V 8mA, Open Drain High-Z
-    0x48, // R24 - TODO: Find documentation for this
+    0x48, // R24 - Ring power off, Ring divider = 8
     0xEC, // R25 - RF Filter on, AGC input 2 selected
     0x40, // R26 - Bypass TF, PLL autotune 128 kHz, RF filter highest band
     0x00, // R27 - Highest corner for LPNF and LPF
-    0x54, // R28 - PDET3 TOP = 5
-    0xAE, // R29 - PDET1 TOP = 5, PDET2 TOP = 6
+    0x24, // R28 - PDET3 (Mixer) TOP = 2
+    0xDD, // R29 - PDET1 (LNA) TOP = 3, PDET2 TOP = 5
     0x4E, // R30 - Filter extension enabled, PDET timing = 14
-    0xC0  // R31 - TODO: Find documentation for this
+    0xC0  // R31 - Disable Loop-through attenuation
 };
 static const r820t2_freq_range_t xFrequencyRanges[] =
 {
