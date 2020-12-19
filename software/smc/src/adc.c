@@ -110,7 +110,7 @@ float adc_get_tx_mixer_temperature()
 
     float fMixerTempVoltage = ADC0->SINGLEDATA * 2500.f / 65535.f;
 
-    return 27.15f + (fMixerTempVoltage - 1560.f) / 4.6f;
+    return 27.15f + (fMixerTempVoltage - 1460.f) / 4.6f;
 }
 
 float adc_get_temperature()

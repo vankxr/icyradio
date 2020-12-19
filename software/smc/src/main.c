@@ -630,7 +630,7 @@ void init_audio_chain()
     else
         DBGPRINTLN_CTX("CODEC failed to configure PLL #2!");
 
-    uint32_t ulAudioSampleRate = FPGA_BB_I2S_CLK / 32 / 8 / 4;
+    uint32_t ulAudioSampleRate = FPGA_AUDIO_I2S_CLK / 32 / 16 / 2; // FPGA_AUDIO_I2S_CLK / 32 = AUDIO_I2S_BCLK, AUDIO_I2S_BCLK / 16 bits per word / 2 channels (stereo)
 
     if(tscs25xx_sample_rate_config(ulAudioSampleRate))
         DBGPRINTLN_CTX("CODEC sample rate: %.3f kHz", (float)ulAudioSampleRate / 1000.f);
