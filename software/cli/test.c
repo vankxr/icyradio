@@ -20,27 +20,27 @@
 int main(int argc, char *argv[])
 {
     int e = 0;
-	libusb_context *pLibUSBContext = NULL;
-	libusb_device **ppLibUSBDeviceList = NULL;
-	libusb_device *pLibUSBDevice = NULL;
+    libusb_context *pLibUSBContext = NULL;
+    libusb_device **ppLibUSBDeviceList = NULL;
+    libusb_device *pLibUSBDevice = NULL;
     struct libusb_device_handle *pLibUSBDeviceHandle = NULL;
     uint32_t ulDeviceIndex = 0;
 
-	e = libusb_init(&pLibUSBContext);
+    e = libusb_init(&pLibUSBContext);
 
-	if(e)
-		return e;
+    if(e)
+        return e;
 
-	int iDeviceCount = libusb_get_device_list(pLibUSBContext, &ppLibUSBDeviceList);
+    int iDeviceCount = libusb_get_device_list(pLibUSBContext, &ppLibUSBDeviceList);
     uint32_t ulFoundDeviceCount = 0;
 
-	for(int i = 0; i < iDeviceCount; i++)
+    for(int i = 0; i < iDeviceCount; i++)
     {
-		pLibUSBDevice = ppLibUSBDeviceList[i];
+        pLibUSBDevice = ppLibUSBDeviceList[i];
 
-	    struct libusb_device_descriptor sDeviceDescriptor;
+        struct libusb_device_descriptor sDeviceDescriptor;
 
-		libusb_get_device_descriptor(pLibUSBDevice, &sDeviceDescriptor);
+        libusb_get_device_descriptor(pLibUSBDevice, &sDeviceDescriptor);
 
         if(sDeviceDescriptor.idVendor == ICYRADIO_USB_VENDOR_ID && sDeviceDescriptor.idProduct == ICYRADIO_USB_PRODUCT_ID)
         {
@@ -50,32 +50,32 @@ int main(int argc, char *argv[])
                 break;
         }
 
-		pLibUSBDevice = NULL;
-	}
+        pLibUSBDevice = NULL;
+    }
 
     if(!pLibUSBDevice)
         return -1;
 
-	e = libusb_open(pLibUSBDevice, &pLibUSBDeviceHandle);
+    e = libusb_open(pLibUSBDevice, &pLibUSBDeviceHandle);
 
     libusb_free_device_list(ppLibUSBDeviceList, 1);
 
-	if(e)
+    if(e)
     {
-		if(e == LIBUSB_ERROR_ACCESS)
-			fprintf(stderr, "LIBUSB_ERROR_ACCESS - Are udev rules installed?\r\n");
+        if(e == LIBUSB_ERROR_ACCESS)
+            fprintf(stderr, "LIBUSB_ERROR_ACCESS - Are udev rules installed?\r\n");
 
-		return e;
+        return e;
     }
 
-	e = libusb_claim_interface(pLibUSBDeviceHandle, ICYRADIO_USB_RX_INTERFACE);
+    e = libusb_claim_interface(pLibUSBDeviceHandle, ICYRADIO_USB_RX_INTERFACE);
 
-	if(e)
+    if(e)
     {
-		if(e == LIBUSB_ERROR_BUSY)
-			fprintf(stderr, "LIBUSB_ERROR_BUSY - Is this the only instance?\r\n");
+        if(e == LIBUSB_ERROR_BUSY)
+            fprintf(stderr, "LIBUSB_ERROR_BUSY - Is this the only instance?\r\n");
 
-		return e;
+        return e;
     }
 
     uint8_t ubBuf[1024];
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     gettimeofday(&start, NULL);
     for(int i = 0; i < 100*1024*1024/sizeof(ubBuf); i++)
     {
-	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_TX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+        e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_TX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
 
         if(e < 0)
             fprintf(stderr, "libusb_bulk_transfer failed with %d\r\n", e);
@@ -99,16 +99,16 @@ int main(int argc, char *argv[])
     float datarate = 100.f * 1000000.f / len; // MB/s
     float bitrate = datarate * 8;
 
-	fprintf(stderr, "USB Bulk OUT 100 MB transfer time: %lu us\r\n", len);
-	fprintf(stderr, "USB Bulk OUT data rate: %.3f MB/s\r\n", datarate);
-	fprintf(stderr, "USB Bulk OUT data rate: %.3f Mbps\r\n", bitrate);
+    fprintf(stderr, "USB Bulk OUT 100 MB transfer time: %lu us\r\n", len);
+    fprintf(stderr, "USB Bulk OUT data rate: %.3f MB/s\r\n", datarate);
+    fprintf(stderr, "USB Bulk OUT data rate: %.3f Mbps\r\n", bitrate);
 
     memset(ubBuf, 0xA5, sizeof(ubBuf));
 
     gettimeofday(&start, NULL);
     for(int i = 0; i < 100*1024*1024/sizeof(ubBuf); i++)
     {
-	    e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_RX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
+        e = libusb_bulk_transfer(pLibUSBDeviceHandle, ICYRADIO_USB_RX_ENDPOINT, ubBuf, sizeof(ubBuf), &act_len, 1000);
 
         if(e < 0)
             fprintf(stderr, "libusb_bulk_transfer failed with %d\r\n", e);
@@ -118,13 +118,13 @@ int main(int argc, char *argv[])
     datarate = 100.f * 1000000.f / len; // MB/s
     bitrate = datarate * 8;
 
-	fprintf(stderr, "USB Bulk IN 100 MB transfer time: %lu us\r\n", len);
-	fprintf(stderr, "USB Bulk IN data rate: %.3f MB/s\r\n", datarate);
-	fprintf(stderr, "USB Bulk IN data rate: %.3f Mbps\r\n", bitrate);
+    fprintf(stderr, "USB Bulk IN 100 MB transfer time: %lu us\r\n", len);
+    fprintf(stderr, "USB Bulk IN data rate: %.3f MB/s\r\n", datarate);
+    fprintf(stderr, "USB Bulk IN data rate: %.3f Mbps\r\n", bitrate);
 
-	libusb_release_interface(pLibUSBDeviceHandle, ICYRADIO_USB_RX_INTERFACE);
-	libusb_close(pLibUSBDeviceHandle);
-	libusb_exit(pLibUSBContext);
+    libusb_release_interface(pLibUSBDeviceHandle, ICYRADIO_USB_RX_INTERFACE);
+    libusb_close(pLibUSBDeviceHandle);
+    libusb_exit(pLibUSBContext);
 
     return 0;
 }
