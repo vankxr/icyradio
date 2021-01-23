@@ -246,7 +246,7 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
     }
 
     uint32_t ulP1 = 128 * pMultiplier->ulInt + (uint32_t)(128.f * (double)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
-    uint32_t ulP2 = 128 * pMultiplier->ulNum - pMultiplier->ulDen * (uint32_t)(128.f * (double)pMultiplier->ulNum / pMultiplier->ulDen) - 512;
+    uint32_t ulP2 = 128 * pMultiplier->ulNum - pMultiplier->ulDen * (uint32_t)(128.f * (double)pMultiplier->ulNum / pMultiplier->ulDen);
     uint32_t ulP3 = pMultiplier->ulDen;
 
     if(!pMultiplier->ulNum && !(pMultiplier->ulInt & 1)) // If multiplier is an even integer, turn on integer mode
@@ -375,7 +375,7 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         }
 
         uint32_t ulP1 = 128 * pDivider->ulInt + (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen) - 512;
-        uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen) - 512;
+        uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)(128.f * (double)pDivider->ulNum / pDivider->ulDen);
         uint32_t ulP3 = pDivider->ulDen;
 
         float fPhase = si5351_multisynth_get_phase_offset(ubMS);
