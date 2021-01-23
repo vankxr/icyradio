@@ -459,18 +459,18 @@ void init_system_clocks()
     DBGPRINTLN_CTX("CLKMNGR - CLKIN Divider Clock: %.3f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
 
     //// PLLA
-    si5351_pll_set_source(0, SI5351_PLL_SRC_CLKIN);
-    si5351_pll_set_freq(0, 800000000);
+    si5351_pll_set_source(SI5351_PLLA, SI5351_PLL_SRC_CLKIN);
+    si5351_pll_set_freq(SI5351_PLLA, 800000000);
 
-    DBGPRINTLN_CTX("CLKMNGR - PLLA Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[0] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - PLLA VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[0] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLA Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLA] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLA VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLA] / 1000000);
 
     //// PLLB
-    si5351_pll_set_source(1, SI5351_PLL_SRC_CLKIN);
-    si5351_pll_set_freq(1, 840000000);
+    si5351_pll_set_source(SI5351_PLLB, SI5351_PLL_SRC_CLKIN);
+    si5351_pll_set_freq(SI5351_PLLB, 840000000);
 
-    DBGPRINTLN_CTX("CLKMNGR - PLLB Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[1] / 1000000);
-    DBGPRINTLN_CTX("CLKMNGR - PLLB VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[1] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLB Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLB] / 1000000);
+    DBGPRINTLN_CTX("CLKMNGR - PLLB VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLB] / 1000000);
 
     //// FPGA Clock #1
     si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
