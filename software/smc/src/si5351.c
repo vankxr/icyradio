@@ -168,6 +168,8 @@ uint8_t si5351_pll_reset(uint8_t ubPLL)
 
     si5351_write_register(SI5351_REG_PLL_RST, !ubPLL ? SI5351_REG_PLL_RST_PLLA_RESET : SI5351_REG_PLL_RST_PLLB_RESET);
 
+    while(si5351_read_register(SI5351_REG_PLL_RST) & (!ubPLL ? SI5351_REG_PLL_RST_PLLA_RESET : SI5351_REG_PLL_RST_PLLB_RESET));
+
     return 1;
 }
 uint8_t si5351_pll_set_source(uint8_t ubPLL, uint8_t ubSource)
@@ -254,14 +256,14 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
     else
         si5351_rmw_register(SI5351_REG_CLKn_CFG(6 + ubPLL), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
 
-    si5351_write_register(SI5351_REG_MSNn_P1_LSB(ubPLL), (ulP1 >> 0) & 0xFF);
-    si5351_write_register(SI5351_REG_MSNn_P1_MID(ubPLL), (ulP1 >> 8) & 0xFF);
-    si5351_write_register(SI5351_REG_MSNn_P1_MSB(ubPLL), (ulP1 >> 16) & 0x03);
-    si5351_write_register(SI5351_REG_MSNn_P2_LSB(ubPLL), (ulP2 >> 0) & 0xFF);
-    si5351_write_register(SI5351_REG_MSNn_P2_MID(ubPLL), (ulP2 >> 8) & 0xFF);
-    si5351_write_register(SI5351_REG_MSNn_P3_LSB(ubPLL), (ulP3 >> 0) & 0xFF);
     si5351_write_register(SI5351_REG_MSNn_P3_MID(ubPLL), (ulP3 >> 8) & 0xFF);
+    si5351_write_register(SI5351_REG_MSNn_P3_LSB(ubPLL), (ulP3 >> 0) & 0xFF);
+    si5351_write_register(SI5351_REG_MSNn_P1_MSB(ubPLL), (ulP1 >> 16) & 0x03);
+    si5351_write_register(SI5351_REG_MSNn_P1_MID(ubPLL), (ulP1 >> 8) & 0xFF);
+    si5351_write_register(SI5351_REG_MSNn_P1_LSB(ubPLL), (ulP1 >> 0) & 0xFF);
     si5351_write_register(SI5351_REG_MSNn_P3_2_MSB(ubPLL), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
+    si5351_write_register(SI5351_REG_MSNn_P2_MID(ubPLL), (ulP2 >> 8) & 0xFF);
+    si5351_write_register(SI5351_REG_MSNn_P2_LSB(ubPLL), (ulP2 >> 0) & 0xFF);
 
     si5351_pll_reset(ubPLL);
 
@@ -385,14 +387,14 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         else
             si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
 
-        si5351_write_register(SI5351_REG_MSn_P1_LSB(ubMS), (ulP1 >> 0) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P1_MID(ubMS), (ulP1 >> 8) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((pDivider->ulNum == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
-        si5351_write_register(SI5351_REG_MSn_P2_LSB(ubMS), (ulP2 >> 0) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P2_MID(ubMS), (ulP2 >> 8) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P3_LSB(ubMS), (ulP3 >> 0) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_MID(ubMS), (ulP3 >> 8) & 0xFF);
+        si5351_write_register(SI5351_REG_MSn_P3_LSB(ubMS), (ulP3 >> 0) & 0xFF);
+        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((pDivider->ulNum == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
+        si5351_write_register(SI5351_REG_MSn_P1_MID(ubMS), (ulP1 >> 8) & 0xFF);
+        si5351_write_register(SI5351_REG_MSn_P1_LSB(ubMS), (ulP1 >> 0) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_2_MSB(ubMS), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
+        si5351_write_register(SI5351_REG_MSn_P2_MID(ubMS), (ulP2 >> 8) & 0xFF);
+        si5351_write_register(SI5351_REG_MSn_P2_LSB(ubMS), (ulP2 >> 0) & 0xFF);
 
         si5351_multisynth_set_phase_offset(ubMS, fPhase);
     }
