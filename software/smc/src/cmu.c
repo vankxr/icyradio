@@ -59,9 +59,6 @@ void cmu_init()
     // Calibrate HFRCO for 72MHz
     cmu_hfrco_config(1, HFRCO_CALIB_72M, 72000000); // HFRCO enabled, coarse tuned for 72Mhz
 
-    // Calibrate USHFRCO for 50MHz
-    cmu_ushfrco_config(1, USHFRCO_CALIB_50M, 50000000);
-
     // Calibrate AUXHFRCO for 32MHz
     cmu_auxhfrco_config(1, AUXHFRCO_CALIB_32M, 32000000);
 
@@ -74,7 +71,6 @@ void cmu_init()
     // Disable unused oscillators
     cmu_hfxo_config(0, 0, 0);
     cmu_ushfrco_config(0, 0, 0);
-    cmu_auxhfrco_config(0, 0, 0);
     cmu_lfrco_config(0, 0);
 
     // Update Clocks
