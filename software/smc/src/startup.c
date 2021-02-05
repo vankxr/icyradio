@@ -39,7 +39,7 @@ extern int main();
 
 void _reset_isr()
 {
-    uint32_t *src, *dst;
+    volatile uint32_t *src, *dst;
 
     src = &_siiram0;
     dst = &_siram0;
