@@ -51,7 +51,7 @@ extern int main();
 
 void _reset_isr()
 {
-    uint32_t *src, *dst;
+    volatile uint32_t *src, *dst;
 
     SCB->ITCMCR |= SCB_ITCMCR_EN_Msk; // Enable ITCM
 
