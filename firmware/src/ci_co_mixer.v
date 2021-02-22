@@ -22,10 +22,8 @@ reg  signed [DSZ - 1:0]       mult_op [0:1];
 reg  signed [DSZ + DSZ - 1:0] mult;
 reg  signed [DSZ + 1:0]       mult_rnd;
 wire signed [DSZ - 1:0]       mult_sat;
-reg  signed [DSZ + 1:0]       i_out_sum;
-reg  signed [DSZ + 1:0]       q_out_sum;
-wire signed [DSZ - 1:0]       i_out_sat;
-wire signed [DSZ - 1:0]       q_out_sat;
+reg  signed [DSZ:0]           i_out_sum;
+reg  signed [DSZ:0]           q_out_sum;
 reg  signed [DSZ - 1:0]       out_i;
 reg  signed [DSZ - 1:0]       out_q;
 
@@ -35,28 +33,10 @@ saturator #(
 )
 mult_saturator
 (
+    .clk(clk),
+    .reset(reset),
     .in(mult_rnd[DSZ + 1:1]),
     .out(mult_sat)
-);
-
-saturator #(
-    .ISZ(DSZ + 1),
-    .OSZ(DSZ)
-)
-i_out_saturator
-(
-    .in(i_out_sum[DSZ + 1:1]),
-    .out(i_out_sat)
-);
-
-saturator #(
-    .ISZ(DSZ + 1),
-    .OSZ(DSZ)
-)
-q_out_saturator
-(
-    .in(q_out_sum[DSZ + 1:1]),
-    .out(q_out_sat)
 );
 
 always @(posedge clk)
@@ -72,8 +52,8 @@ always @(posedge clk)
                 mult_op[1] <= {DSZ{1'b0}};
                 mult <= {(DSZ + DSZ){1'b0}};
                 mult_rnd <= {(DSZ + 2){1'b0}};
-                i_out_sum <= {(DSZ + 2){1'b0}};
-                q_out_sum <= {(DSZ + 2){1'b0}};
+                i_out_sum <= {(DSZ + 1){1'b0}};
+                q_out_sum <= {(DSZ + 1){1'b0}};
                 out_i <= {DSZ{1'b0}};
                 out_q <= {DSZ{1'b0}};
             end
@@ -87,34 +67,34 @@ always @(posedge clk)
                 case(state)
                     2'b00:
                         begin
-                            i_out_sum <= i_out_sum - mult_sat;
+                            i_out_sum <= mult_sat;
+
+                            out_i <= i_out_sum[DSZ:1];
+                            out_q <= q_out_sum[DSZ:1];
 
                             mult_op[0] <= i_in_buf;
                             mult_op[1] <= i_lo_buf;
                         end
                     2'b01:
                         begin
-                            q_out_sum <= mult_sat;
+                            i_out_sum <= i_out_sum - mult_sat;
 
                             mult_op[0] <= q_in_buf;
                             mult_op[1] <= q_lo_buf;
                         end
                     2'b10:
                         begin
-                            q_out_sum <= q_out_sum + mult_sat;
+                            q_out_sum <= mult_sat;
 
                             mult_op[0] <= i_in_buf;
                             mult_op[1] <= q_lo_buf;
                         end
                     2'b11:
                         begin
-                            i_out_sum <= mult_sat;
+                            q_out_sum <= q_out_sum + mult_sat;
 
                             mult_op[0] <= q_in_buf;
                             mult_op[1] <= i_lo_buf;
-
-                            out_i <= i_out_sat;
-                            out_q <= q_out_sat;
 
                             i_in_buf <= in_i;
                             q_in_buf <= in_q;
