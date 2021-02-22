@@ -13,6 +13,8 @@ uint32_t ulStringDescriptorsCount = 0;
 uint8_t ubCurrentConfiguration = 0;
 uint16_t usDeviceStatus = 0;
 usb_endpoint_buffer_t *pEndpointBuffer[10] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+usb_endpoint_ready_isr_t pfEndpointReadyISR = NULL;
+usb_vendor_request_handler_t pfVendorRequestHandler = NULL;
 
 static void usb_impl_config_descriptors();
 static void usb_impl_config_endpoints();
@@ -66,6 +68,9 @@ static void ITCM_CODE usb_impl_reset_isr(uint8_t ubCurrentSpeed)
     }
 
     USBHS->USBHS_DEVIER = USBHS_DEVIER_PEP_0; // Enable Global Endpoint interrupt
+
+    if(pfEndpointReadyISR)
+        pfEndpointReadyISR(0);
 }
 static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
 {
@@ -129,6 +134,7 @@ static void ITCM_CODE usb_impl_ep0_isr(uint8_t ubEndpoint)
             }
             else
             {
+                USBHS->USBHS_DEVEPTICR[ubEndpoint] = USBHS_DEVEPTICR_RXOUTIC;
                 USBHS->USBHS_DEVEPTIER[ubEndpoint] = USBHS_DEVEPTIER_RXOUTES;
             }
         }
@@ -815,6 +821,12 @@ void usb_impl_config_endpoints()
 
     USBHS->USBHS_DEVIER = USBHS_DEVIER_PEP_2 | USBHS_DEVIER_PEP_1; // Enable Global Endpoint interrupts
     USBHS->USBHS_DEVIER = USBHS_DEVIER_DMA_2 | USBHS_DEVIER_DMA_1; // Enable Global DMA interrupts
+
+    if(pfEndpointReadyISR)
+    {
+        pfEndpointReadyISR(1);
+        pfEndpointReadyISR(2);
+    }
 }
 
 uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t *pSetupPacket)
@@ -1251,33 +1263,10 @@ uint8_t usb_impl_handle_control_transfer(uint8_t ubEndpoint, usb_setup_packet_t 
         break;
         case USB_SETUP_REQUEST_TYPE_TYPE_VENDOR:
         {
-            //DBGPRINTLN_CTX("vendor req val%hu idx%hu len%hu", pSetupPacket->usValue, pSetupPacket->usIndex, pSetupPacket->usLength);
+            if(pfVendorRequestHandler)
+                return pfVendorRequestHandler(ubEndpoint, pSetupPacket);
 
-            uint8_t ubBuf[128];
-
-            if(pSetupPacket->ubRequestType & USB_SETUP_REQUEST_TYPE_DIR_D2H)
-            {
-                memset(ubBuf, 0x5A, 128);
-
-                if(usb_impl_endpoint_buffer_write(ubEndpoint, ubBuf, pSetupPacket->usLength) != pSetupPacket->usLength)
-                    return 1;
-
-                return 0;
-            }
-            else
-            {
-                if(usb_impl_endpoint_buffer_read(ubEndpoint, ubBuf, pSetupPacket->usLength) != pSetupPacket->usLength)
-                    return 1;
-
-                DBGPRINT_CTX("vendor req data [");
-
-                for(uint16_t i = 0; i < pSetupPacket->usLength; i++)
-                    DBGPRINT("%02X", ubBuf[i]);
-
-                DBGPRINTLN("]");
-
-                return 0;
-            }
+            return 1;
         }
         break;
     }
@@ -1296,6 +1285,16 @@ void usb_impl_init()
     usb_set_endpoint_isr(2, usb_impl_epx_isr);
     usb_set_endpoint_dma_isr(1, usb_impl_epx_dma_isr);
     usb_set_endpoint_dma_isr(2, usb_impl_epx_dma_isr);
+}
+
+void usb_impl_set_endpoint_ready_isr(usb_endpoint_ready_isr_t pfISR)
+{
+    pfEndpointReadyISR = pfISR;
+}
+
+void usb_impl_set_vendor_request_handler(usb_vendor_request_handler_t pfHandler)
+{
+    pfVendorRequestHandler = pfHandler;
 }
 
 uint16_t usb_impl_endpoint_buffer_get_size(uint8_t ubEndpoint)

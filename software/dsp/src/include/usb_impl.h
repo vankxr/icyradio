@@ -13,6 +13,8 @@
 #include "usb_util.h"
 
 typedef struct usb_endpoint_buffer_t usb_endpoint_buffer_t;
+typedef void (* usb_endpoint_ready_isr_t)(uint8_t);
+typedef uint8_t (* usb_vendor_request_handler_t)(uint8_t, usb_setup_packet_t *);
 
 struct usb_endpoint_buffer_t
 {
@@ -24,6 +26,10 @@ struct usb_endpoint_buffer_t
 };
 
 void usb_impl_init();
+
+void usb_impl_set_endpoint_ready_isr(usb_endpoint_ready_isr_t pfISR);
+
+void usb_impl_set_vendor_request_handler(usb_vendor_request_handler_t pfHandler);
 
 uint16_t usb_impl_endpoint_buffer_get_size(uint8_t ubEndpoint);
 uint16_t usb_impl_endpoint_buffer_get_used_size(uint8_t ubEndpoint);

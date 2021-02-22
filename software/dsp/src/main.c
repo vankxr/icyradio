@@ -43,6 +43,26 @@
 
 #define HILBERT_DELAY_SAMPLES           200 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
+#define CTRL_SPI_REGISTER_COUNT             128
+#define CTRL_SPI_REGISTER(t, a)             (*(t *)&ubSPIRegister[(a)])
+#define CTRL_SPI_REGISTER_DEVICE_ID         0x00 // 8-bit
+#define CTRL_SPI_REGISTER_IRQ_STATUS        0x01 // 8-bit
+#define CTRL_SPI_REGISTER_IRQ_MASK          0x02 // 8-bit
+#define CTRL_SPI_REGISTER_USB_REQUEST       0x50 // 8-bit
+#define CTRL_SPI_REGISTER_USB_VALUE         0x51 // 16-bit
+#define CTRL_SPI_REGISTER_USB_INDEX         0x53 // 16-bit
+#define CTRL_SPI_REGISTER_USB_LENGTH        0x55 // 8-bit
+#define CTRL_SPI_REGISTER_USB_DATA          0x56 // 24 * 8-bit
+#define CTRL_SPI_REGISTER_SW_VERSION        0x6E // 16-bit
+#define CTRL_SPI_REGISTER_DEV_UID0          0x70 // 32-bit
+#define CTRL_SPI_REGISTER_DEV_UID1          0x74 // 32-bit
+#define CTRL_SPI_REGISTER_DEV_UID2          0x78 // 32-bit
+#define CTRL_SPI_REGISTER_DEV_UID3          0x7C // 32-bit
+
+#define USB_CTRL_ENDPOINT   0
+#define USB_RX_ENDPOINT     1
+#define USB_TX_ENDPOINT     2
+
 // Forward declarations
 static void reset() __attribute__((noreturn));
 static void sleep();
@@ -52,11 +72,15 @@ static uint32_t get_free_ram();
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint8_t get_device_revision();
 
+static void ITCM_CODE usb_endpoint_ready_isr(uint8_t ubEndpoint);
+static uint8_t ITCM_CODE usb_vendor_request_handler(uint8_t ubEndpoint, usb_setup_packet_t *pSetupPacket);
+
 static void load_tx_baseband_buffer(iq16_t *pSamples);
 static void load_rx_audio_buffer(int16_t *psLeft, int16_t *psRight);
 
 static void init_baseband_i2s();
 static void init_audio_i2s();
+static void init_control_spi();
 static void init_dsp_components();
 
 // Variables
@@ -88,8 +112,62 @@ fir_interpolator_complex_ctx_t *pTXBasebandFilter = NULL;
 fir_decimator_complex_ctx_t *pRXBasebandFilter = NULL;
 dsp_agc_t *pTXAudioAGC = NULL;
 dsp_agc_t *pRXAudioAGC = NULL;
+volatile uint8_t DTCM_DATA ubSPIRegister[CTRL_SPI_REGISTER_COUNT];
+volatile uint8_t DTCM_DATA ubSPIRegisterPointer = 0x00;
+volatile uint8_t DTCM_DATA ubSPIStatus = BIT(0);
 
 // ISRs
+void ITCM_CODE _spi0_isr()
+{
+    uint32_t ulFlags = SPI0->SPI_SR & SPI0->SPI_IMR;
+
+    if(ulFlags & SPI_SR_NSSR)
+    {
+        ubSPIStatus = BIT(0);
+    }
+
+    if(ulFlags & SPI_SR_RDRF)
+    {
+        volatile uint8_t ubData = SPI0->SPI_RDR;
+
+        if(ubSPIStatus & BIT(1))
+        {
+            ubSPIRegister[ubSPIRegisterPointer++] = ubData;
+
+            if(ubSPIRegisterPointer >= CTRL_SPI_REGISTER_COUNT)
+                ubSPIRegisterPointer = 0;
+        }
+
+        if(ubSPIStatus & BIT(0))
+        {
+            if(ubData & BIT(7))
+            {
+                ubSPIStatus |= BIT(1); // Write
+            }
+            else
+            {
+                SPI0->SPI_IDR = SPI_IDR_TDRE;
+                ubSPIStatus &= ~BIT(1); // Read
+            }
+
+            ubSPIStatus &= ~BIT(0);
+            ubSPIRegisterPointer = ubData & 0x7F;
+        }
+
+        if(!ubSPIStatus)
+        {
+            if(ubSPIRegisterPointer == CTRL_SPI_REGISTER_IRQ_STATUS) // Clear on read
+                DSP_IRQ_DEASSERT();
+
+            SPI0->SPI_TDR = ubSPIRegister[ubSPIRegisterPointer++];
+
+            if(ubSPIRegisterPointer >= CTRL_SPI_REGISTER_COUNT)
+                ubSPIRegisterPointer = 0;
+        }
+
+        (void)ubData;
+    }
+}
 void ITCM_CODE fpga_isr()
 {
     DBGPRINTLN_CTX("FPGA ISR");
@@ -247,6 +325,62 @@ void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize)
 uint8_t get_device_revision()
 {
     return (CHIPID->CHIPID_CIDR & CHIPID_CIDR_VERSION_Msk) >> CHIPID_CIDR_VERSION_Pos;
+}
+
+void usb_endpoint_ready_isr(uint8_t ubEndpoint)
+{
+    switch (ubEndpoint)
+    {
+        case USB_CTRL_ENDPOINT:
+        {
+            DBGPRINTLN_CTX("USB Attached!");
+        }
+        break;
+        case USB_RX_ENDPOINT:
+        {
+            DBGPRINTLN_CTX("USB RX Endpoint ready!");
+        }
+        break;
+        case USB_TX_ENDPOINT:
+        {
+            DBGPRINTLN_CTX("USB TX Endpoint ready!");
+
+            usb_impl_endpoint_buffer_dma_trigger(USB_TX_ENDPOINT, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+        }
+        break;
+        default:
+            break;
+    }
+}
+uint8_t usb_vendor_request_handler(uint8_t ubEndpoint, usb_setup_packet_t *pSetupPacket)
+{
+    DBGPRINTLN_CTX("vendor req val%04X idx%04X len%hu avail%hu", pSetupPacket->usValue, pSetupPacket->usIndex, pSetupPacket->usLength, usb_impl_endpoint_buffer_get_used_size(ubEndpoint));
+
+    uint8_t ubBuf[128];
+
+    if(pSetupPacket->ubRequestType & USB_SETUP_REQUEST_TYPE_DIR_D2H)
+    {
+        memset(ubBuf, 0x5A, 128);
+
+        if(usb_impl_endpoint_buffer_write(ubEndpoint, ubBuf, pSetupPacket->usLength) != pSetupPacket->usLength)
+            return 1;
+
+        return 0;
+    }
+    else
+    {
+        if(usb_impl_endpoint_buffer_read(ubEndpoint, ubBuf, pSetupPacket->usLength) != pSetupPacket->usLength)
+            return 1;
+
+        DBGPRINT_CTX("vendor req data [");
+
+        for(uint16_t i = 0; i < pSetupPacket->usLength; i++)
+            DBGPRINT("%02X", ubBuf[i]);
+
+        DBGPRINTLN("]");
+
+        return 0;
+    }
 }
 
 void load_tx_baseband_buffer(iq16_t *pSamples)
@@ -471,6 +605,32 @@ void init_audio_i2s()
 
     I2SC0->I2SC_CR = I2SC_CR_TXEN | I2SC_CR_RXEN; // Enable TX & RX
 }
+void init_control_spi()
+{
+    uint32_t ulUniqueID[4];
+
+    eefc_get_unique_id(ulUniqueID);
+
+    CTRL_SPI_REGISTER(uint8_t, CTRL_SPI_REGISTER_DEVICE_ID)         = 0xD5;
+    CTRL_SPI_REGISTER(uint16_t, CTRL_SPI_REGISTER_SW_VERSION)       = BUILD_VERSION;
+    CTRL_SPI_REGISTER(uint32_t, CTRL_SPI_REGISTER_DEV_UID0)         = ulUniqueID[0];
+    CTRL_SPI_REGISTER(uint32_t, CTRL_SPI_REGISTER_DEV_UID1)         = ulUniqueID[1];
+    CTRL_SPI_REGISTER(uint32_t, CTRL_SPI_REGISTER_DEV_UID2)         = ulUniqueID[2];
+    CTRL_SPI_REGISTER(uint32_t, CTRL_SPI_REGISTER_DEV_UID3)         = ulUniqueID[3];
+
+    pmc_peripheral_clock_gate(SPI0_CLOCK_ID, 1); // Enable peripheral clock
+
+    SPI0->SPI_CR |= SPI_CR_SWRST; // Reset control SPI peripheral
+    SPI0->SPI_MR = SPI_MR_MSTR_SLAVE; // Configure control SPI peripheral
+    SPI0->SPI_CSR[0] = SPI_CSR_BITS_8_BIT | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_CPOL_IDLE_LOW; // Configure control SPI peripheral
+
+    IRQ_CLEAR(SPI0_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(SPI0_IRQn, 3, 0); // Set priority 3,0
+    IRQ_ENABLE(SPI0_IRQn); // Enable vector
+    SPI0->SPI_IER = SPI_IER_NSSR | SPI_IER_RDRF; // Enable interrupts
+
+    SPI0->SPI_CR = SPI_CR_SPIEN; // Enable SPI
+}
 void init_dsp_components()
 {
     // TX Components
@@ -572,8 +732,11 @@ int init()
     xdmac_init();
     trng_init();
     afec_init();
-    usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
+
     usb_impl_init();
+    usb_impl_set_endpoint_ready_isr(usb_endpoint_ready_isr);
+    usb_impl_set_vendor_request_handler(usb_vendor_request_handler);
+    usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
 
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
@@ -604,11 +767,9 @@ int init()
     DBGPRINTLN_CTX("PMC - MCK Clock: %.1f MHz", (float)MCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
 
-    delay_ms(1000);
+    delay_ms(100);
 
     afec_trigger_timer_init(5); // Trigger AFEC conversion every 5 seconds
-
-    usb_attach();
 
     return 0;
 }
@@ -616,6 +777,7 @@ int main()
 {
     init_baseband_i2s();
     init_audio_i2s();
+    init_control_spi();
     DBGPRINTLN_CTX("Interfaces initialized!");
 
     init_dsp_components();
@@ -623,13 +785,16 @@ int main()
 
     DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
 
-    delay_ms(5000);
-
-    usb_impl_endpoint_buffer_dma_trigger(2, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
-
     while(1)
     {
         wdt_feed();
+
+        // Update IRQ line
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            if(CTRL_SPI_REGISTER(uint8_t, CTRL_SPI_REGISTER_IRQ_STATUS) & CTRL_SPI_REGISTER(uint8_t, CTRL_SPI_REGISTER_IRQ_MASK))
+                DSP_IRQ_ASSERT();
+        }
 
         /*
         if(usb_impl_endpoint_buffer_get_used_size(1) == 0)
@@ -737,12 +902,12 @@ int main()
                 // Fill dummy baseband buffer with zeros
                 arm_fill_q15(0, (int16_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t) / sizeof(int16_t));
 
-                if(usb_impl_endpoint_buffer_get_used_size(2) >= BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t))
+                if(usb_impl_endpoint_buffer_get_used_size(USB_TX_ENDPOINT) >= BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t))
                 {
-                    usb_impl_endpoint_buffer_read(2, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+                    usb_impl_endpoint_buffer_read(USB_TX_ENDPOINT, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
 
-                    usb_impl_endpoint_buffer_flush(2);
-                    usb_impl_endpoint_buffer_dma_trigger(2, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+                    usb_impl_endpoint_buffer_flush(USB_TX_ENDPOINT);
+                    usb_impl_endpoint_buffer_dma_trigger(USB_TX_ENDPOINT, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
                 }
 
                 // Load baseband buffer
@@ -813,12 +978,12 @@ int main()
                 pBaseband[i].q = pulBaseband[i] >> 16;      // Right I2S channel -> Q
             }
 
-            if(usb_impl_endpoint_buffer_get_used_size(1) == 0)
+            if(usb_impl_endpoint_buffer_get_used_size(USB_RX_ENDPOINT) == 0)
             {
-                usb_impl_endpoint_buffer_flush(1);
-                usb_impl_endpoint_buffer_write(1, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+                usb_impl_endpoint_buffer_flush(USB_RX_ENDPOINT);
+                usb_impl_endpoint_buffer_write(USB_RX_ENDPOINT, (uint8_t *)pBaseband, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
 
-                usb_impl_endpoint_buffer_dma_trigger(1, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
+                usb_impl_endpoint_buffer_dma_trigger(USB_RX_ENDPOINT, BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(iq16_t));
             }
 
             // Decimate

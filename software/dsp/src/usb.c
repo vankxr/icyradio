@@ -56,10 +56,22 @@ void usb_init(uint32_t ulForceSpeed)
     UTMI->UTMI_OHCIICR = 0x00000000;
 
     USBHS->USBHS_CTRL = USBHS_CTRL_UIMOD_DEVICE | USBHS_CTRL_USBE | USBHS_CTRL_VBUSHWC;
-    USBHS->USBHS_DEVCTRL = (ulForceSpeed & USBHS_DEVCTRL_SPDCONF_Msk) | USBHS_DEVCTRL_DETACH;
+    USBHS->USBHS_DEVCTRL = (ulForceSpeed & USBHS_DEVCTRL_SPDCONF_Msk);
 
     pmc_usb_clock_config(1, 1, 1, PMC_USB_USBS, 5); // Enable UPLL and set divider to 2 (HS Clock = 480 MHz), Set FS clock source to UPLL/2, divide by 5 (FS Clock = 48 MHz)
     pmc_update_clocks();
+
+    while(!(USBHS->USBHS_SR & USBHS_SR_CLKUSABLE)); // Wait for the clock to be usable
+
+    usb_attach();
+}
+
+void usb_attach()
+{
+    USBHS->USBHS_CTRL &= ~USBHS_CTRL_FRZCLK;
+
+    while(USBHS->USBHS_DEVCTRL & USBHS_DEVCTRL_DETACH)
+        USBHS->USBHS_DEVCTRL &= ~USBHS_DEVCTRL_DETACH;
 
     USBHS->USBHS_DEVIER = USBHS_DEVIER_EORSTES | USBHS_DEVIER_SUSPES; // Enable interrupts
 
@@ -68,15 +80,22 @@ void usb_init(uint32_t ulForceSpeed)
     IRQ_CLEAR(USBHS_IRQn); // Clear pending vector
     IRQ_SET_PRIO(USBHS_IRQn, 2, 0); // Set priority 2,0
     IRQ_ENABLE(USBHS_IRQn); // Enable vector
-}
+    USBHS->USBHS_DEVIFR = USBHS_DEVIFR_SUSPS; // Set initial suspend IRQ
+	USBHS->USBHS_DEVICR = USBHS_DEVICR_WAKEUPC;
 
-void usb_attach()
-{
-    USBHS->USBHS_DEVCTRL &= ~USBHS_DEVCTRL_DETACH;
+	USBHS->USBHS_CTRL |= USBHS_CTRL_FRZCLK;
 }
 void usb_detach()
 {
-    USBHS->USBHS_DEVCTRL |= USBHS_DEVCTRL_DETACH;
+    USBHS->USBHS_CTRL &= ~USBHS_CTRL_FRZCLK;
+
+    while(!(USBHS->USBHS_DEVCTRL & USBHS_DEVCTRL_DETACH))
+        USBHS->USBHS_DEVCTRL |= USBHS_DEVCTRL_DETACH;
+
+    USBHS->USBHS_DEVIDR = USBHS_DEVIDR_MASK; // Disable all IRQs
+    IRQ_DISABLE(USBHS_IRQn); // Disable vector
+
+    USBHS->USBHS_CTRL |= USBHS_CTRL_FRZCLK;
 }
 
 void usb_set_reset_isr(usb_reset_isr_t pfISR)

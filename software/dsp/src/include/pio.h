@@ -21,6 +21,9 @@
 #define DSP_IRQ_ASSERT()    PIOA->PIO_CODR = PIO_CODR_P4
 #define DSP_IRQ_DEASSERT()  PIOA->PIO_SODR = PIO_SODR_P4
 
+// CONTROL SPI MACROS
+#define CONTROL_SPI_CS_ACTIVE()     !(PIOB->PIO_PDSR & BIT(2))
+
 void pio_init();
 
 #endif  // __PIO_H__
