@@ -49,10 +49,12 @@ uint8_t ad9117_init()
     ad9117_write_register(AD9117_REG_POWER_DOWN, AD9117_REG_POWER_DOWN_LDO_ON | AD9117_REG_POWER_DOWN_PWR_UP | AD9117_REG_POWER_DOWN_QDAC_ON | AD9117_REG_POWER_DOWN_IDAC_ON | AD9117_REG_POWER_DOWN_QCLK_ON | AD9117_REG_POWER_DOWN_ICLK_ON | AD9117_REG_POWER_DOWN_INT_REF);
     ad9117_write_register(AD9117_REG_DATA_CTL, AD9117_REG_DATA_CTL_TWOS | AD9117_REG_DATA_CTL_IFIRST | AD9117_REG_DATA_CTL_IRISING | AD9117_REG_DATA_CTL_SIMUL_ON | AD9117_REG_DATA_CTL_DCI_ON | AD9117_REG_DATA_CTL_DCO_DOUBLE);
 
-    ad9117_write_register(AD9117_REG_IRSET, AD9117_REG_IRSET_ENABLE | 0x20); // IRset = 1,6 kOhm, IIFS = 20mA
+    // NOTE: With ADL5610 as final gain block, DAC cannot run at max IFS (20 mA)
+    // Instead we back it off to 10 mA to prevent saturation and generate a clean signal
+    ad9117_write_register(AD9117_REG_IRSET, AD9117_REG_IRSET_ENABLE | 0x38); // IRset = 3,2 kOhm, IIFS = 10mA
     ad9117_write_register(AD9117_REG_IRCML, AD9117_REG_IRCML_DISABLE); // Use external common mode resistor
 
-    ad9117_write_register(AD9117_REG_QRSET, AD9117_REG_QRSET_ENABLE | 0x20); // QRset = 1,6 kOhm, IQFS = 20mA
+    ad9117_write_register(AD9117_REG_QRSET, AD9117_REG_QRSET_ENABLE | 0x38); // QRset = 3,2 kOhm, IQFS = 10mA
     ad9117_write_register(AD9117_REG_QRCML, AD9117_REG_QRCML_DISABLE); // Use external common mode resistor
 
     ad9117_i_gain_set_value(0); // Disable I gain

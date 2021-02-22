@@ -21,6 +21,7 @@
 #include "adc.h"
 #include "usart.h"
 #include "i2c.h"
+#include "dsp.h"
 #include "fpga.h"
 #include "si5351.h"
 #include "ft6x36.h"
@@ -67,8 +68,8 @@ static void init_rx_chain();
 static void init_tx_chain();
 
 // Variables
-static uint32_t ulRXHardTunedFrequency = 524000000;
-static uint32_t ulRXSoftTunedFrequency = 525052000;
+static uint32_t ulRXHardTunedFrequency = 525200000;
+static uint32_t ulRXSoftTunedFrequency = 525250000;
 static tft_graph_t *pRXIFPSDGraph = NULL;
 static tft_textbox_t *pRXTunedFreqTextbox = NULL;
 static tft_button_t *pRXTunedFreqButtons[2] = {NULL, NULL};
@@ -813,24 +814,21 @@ void init_baseband_chain()
 {
     fpga_reset_module(FPGA_REG_RST_CNTRL_BB_I2S_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA baseband I2S enabled!");
-
-    DSP_UNRESET();
-    DBGPRINTLN_CTX("DSP processor enabled!");
 }
 void init_rx_chain()
 {
-    r820t2_set_lna_gain(20.f, 0); // +20 dB
+    r820t2_set_lna_gain(2.f, 0); // +2 dB
     DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
-    r820t2_set_mixer_gain(0.f, 1); // Auto
+    r820t2_set_mixer_gain(0.f, 0); // +0 dB
     DBGPRINTLN_CTX("RX Tuner mixer gain: %.1f dB", r820t2_get_mixer_gain());
 
     r820t2_set_vga_gain(30.f); // +30 dB
     DBGPRINTLN_CTX("RX Tuner VGA gain: %.1f dB", r820t2_get_vga_gain());
 
-    r820t2_set_if_bandwidth(0, 15, 13); // IF passband from ~600 kHz to ~11 MHz
+    r820t2_set_if_bandwidth(3, 15, 13); // IF passband from ~500 kHz to ~7.5 MHz
 
-    r820t2_set_if_freq(6000000); // 6 MHz IF
+    r820t2_set_if_freq(4000000); // 4 MHz IF
     DBGPRINTLN_CTX("RX Tuner IF frequency: %.3f MHz", (float)R820T2_IF_FREQ / 1000000);
 
     if(r820t2_set_freq(ulRXHardTunedFrequency))
@@ -850,7 +848,7 @@ void init_rx_chain()
     DBGPRINTLN_CTX("FPGA QDDC tuner LO frequency: %.3f MHz", (float)fpga_qddc_get_lo_freq() / 1000000);
 
     fpga_qddc_set_lo_noise_shaping(1);
-    fpga_qddc_set_iq_swap(1); // Tuner uses high-side LO injection, so invert the spectrum in the QDDC
+    fpga_qddc_set_iq_swap(0); // Tuner uses high-side LO injection, so invert the spectrum in the QDDC
 
     fpga_reset_module(FPGA_REG_RST_CNTRL_QDDC_SOFT_RST, 0);
     DBGPRINTLN_CTX("FPGA QDDC enabled!");
@@ -878,7 +876,7 @@ void init_tx_chain()
     DBGPRINTLN_CTX("TX DAC I offset: %hu", ad9117_i_offset_get_value());
 
     ad9117_q_offset_config(1, AD9117_REG_AUX_CTLQ_RANGE_1V0 | AD9117_REG_AUX_CTLQ_TOP_1V0);
-    ad9117_q_offset_set_value(90);
+    ad9117_q_offset_set_value(190);
     DBGPRINTLN_CTX("TX DAC Q offset: %hu", ad9117_q_offset_get_value());
 
     ad9117_i_gain_set_value(0);
@@ -887,7 +885,7 @@ void init_tx_chain()
     ad9117_q_gain_set_value(0);
     DBGPRINTLN_CTX("TX DAC Q gain: %hu", ad9117_q_gain_get_value());
 
-    adf4351_pfd_config(32000000, 1, 0, 50, 0);
+    adf4351_pfd_config(32000000, 1, 0, 25, 0);
     DBGPRINTLN_CTX("TX PLL Reference frequency: %.3f MHz", (float)ADF4351_REF_FREQ / 1000000);
     DBGPRINTLN_CTX("TX PLL PFD frequency: %.3f MHz", (float)ADF4351_PFD_FREQ / 1000000);
 
@@ -897,7 +895,7 @@ void init_tx_chain()
     adf4351_main_out_config(1, -4); // -4 dBm
     DBGPRINTLN_CTX("TX PLL output power: %i dBm", adf4351_main_out_get_power());
 
-    adf4351_set_frequency(2 * 525055560); // Mixer uses divide-by-2 quadrature generation
+    adf4351_set_frequency(2 * 525000000); // Mixer uses divide-by-2 quadrature generation
     DBGPRINTLN_CTX("TX PLL output frequency: %.3f MHz", (float)ADF4351_FREQ / 1000000);
 
     TXPLL_UNMUTE();
@@ -945,7 +943,7 @@ int init()
 
     usart1_init(12000000, 0, USART_SPI_MSB_FIRST, 4, 4, 4); // Init USART1 at 12 MHz (FPGA)
     usart2_init(4500000, 0, USART_SPI_MSB_FIRST, 2, 2, 2); // Init USART2 at 4.5 MHz (TFT)
-    usart3_init(8000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 8 MHz (DSP)
+    usart3_init(1000000, 0, USART_SPI_MSB_FIRST, 0, 0, 0); // Init USART3 at 1 MHz (DSP)
     usart4_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 1, 1); // Init USART4 at 18 MHz (TXPLL)
     usart5_init(18000000, 0, USART_SPI_MSB_FIRST, -1, 0, 1); // Init USART5 at 18 MHz (TXDAC)
 
@@ -1150,6 +1148,21 @@ int main()
     fpga_rgb_led_enable(FPGA_LED_GREEN);
     fpga_rgb_led_enable(FPGA_LED_BLUE);
 
+    // DSP init
+    if(dsp_init())
+        DBGPRINTLN_CTX("DSP init OK!");
+    else
+        DBGPRINTLN_CTX("DSP init NOK!");
+
+    // DSP info
+    uint32_t ulDSPUniqueID[4];
+
+    dsp_read_unique_id(ulDSPUniqueID);
+
+    DBGPRINTLN_CTX("DSP firmware ID: 0x%02X", dsp_read_device_id());
+    DBGPRINTLN_CTX("DSP firmware version: v%hu", dsp_read_firmware_version());
+    DBGPRINTLN_CTX("DSP Unique ID: %08X-%08X-%08X-%08X", ulDSPUniqueID[0], ulDSPUniqueID[1], ulDSPUniqueID[2], ulDSPUniqueID[3]);
+
     // I2S Bridge info & configuration
     char pszBridgeVersion[33];
 
@@ -1293,9 +1306,25 @@ int main()
 
                 free(pfRXPSD);
             }
+
+            uint8_t ubBuf[18];
+
+            DSP_SELECT();
+
+            usart3_spi_write_byte(0x6E, 0);
+            usart3_spi_read(ubBuf, 18, 0x00);
+
+            DSP_UNSELECT();
+
+            DBGPRINT_CTX("dsp data [");
+
+            for(uint16_t i = 0; i < sizeof(ubBuf); i++)
+                DBGPRINT("%02X", ubBuf[i]);
+
+            DBGPRINTLN("]");
         }
 
-        if(g_ullSystemTick - ullLastDebugPrint > 60000)
+        if(g_ullSystemTick - ullLastDebugPrint > 20000)
         {
             ullLastDebugPrint = g_ullSystemTick;
 
