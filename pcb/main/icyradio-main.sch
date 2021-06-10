@@ -16324,264 +16324,6 @@ Logo</text>
 <label x="48.26" y="149.86" size="1.6764" layer="95" rot="R90" xref="yes"/>
 </segment>
 </net>
-<net name="FIFO_D0" class="0">
-<segment>
-<wire x1="482.6" y1="228.6" x2="487.68" y2="228.6" width="0.1524" layer="91"/>
-<label x="487.68" y="228.6" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D1" class="0">
-<segment>
-<wire x1="482.6" y1="226.06" x2="508" y2="226.06" width="0.1524" layer="91"/>
-<label x="508" y="226.06" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D2" class="0">
-<segment>
-<wire x1="482.6" y1="223.52" x2="487.68" y2="223.52" width="0.1524" layer="91"/>
-<label x="487.68" y="223.52" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D3" class="0">
-<segment>
-<wire x1="482.6" y1="220.98" x2="508" y2="220.98" width="0.1524" layer="91"/>
-<label x="508" y="220.98" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D4" class="0">
-<segment>
-<wire x1="482.6" y1="218.44" x2="487.68" y2="218.44" width="0.1524" layer="91"/>
-<label x="487.68" y="218.44" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D5" class="0">
-<segment>
-<wire x1="482.6" y1="215.9" x2="508" y2="215.9" width="0.1524" layer="91"/>
-<label x="508" y="215.9" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D6" class="0">
-<segment>
-<wire x1="482.6" y1="213.36" x2="487.68" y2="213.36" width="0.1524" layer="91"/>
-<label x="487.68" y="213.36" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D7" class="0">
-<segment>
-<wire x1="482.6" y1="210.82" x2="508" y2="210.82" width="0.1524" layer="91"/>
-<label x="508" y="210.82" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D8" class="0">
-<segment>
-<wire x1="482.6" y1="208.28" x2="487.68" y2="208.28" width="0.1524" layer="91"/>
-<label x="487.68" y="208.28" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D9" class="0">
-<segment>
-<wire x1="482.6" y1="205.74" x2="508" y2="205.74" width="0.1524" layer="91"/>
-<label x="508" y="205.74" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D10" class="0">
-<segment>
-<wire x1="482.6" y1="203.2" x2="487.68" y2="203.2" width="0.1524" layer="91"/>
-<label x="487.68" y="203.2" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D11" class="0">
-<segment>
-<wire x1="482.6" y1="200.66" x2="508" y2="200.66" width="0.1524" layer="91"/>
-<label x="508" y="200.66" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D12" class="0">
-<segment>
-<wire x1="482.6" y1="198.12" x2="487.68" y2="198.12" width="0.1524" layer="91"/>
-<label x="487.68" y="198.12" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D13" class="0">
-<segment>
-<wire x1="482.6" y1="195.58" x2="508" y2="195.58" width="0.1524" layer="91"/>
-<label x="508" y="195.58" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D14" class="0">
-<segment>
-<wire x1="482.6" y1="193.04" x2="487.68" y2="193.04" width="0.1524" layer="91"/>
-<label x="487.68" y="193.04" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D15" class="0">
-<segment>
-<wire x1="482.6" y1="190.5" x2="508" y2="190.5" width="0.1524" layer="91"/>
-<label x="508" y="190.5" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D16" class="0">
-<segment>
-<wire x1="482.6" y1="187.96" x2="487.68" y2="187.96" width="0.1524" layer="91"/>
-<label x="487.68" y="187.96" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D17" class="0">
-<segment>
-<wire x1="482.6" y1="185.42" x2="508" y2="185.42" width="0.1524" layer="91"/>
-<label x="508" y="185.42" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D18" class="0">
-<segment>
-<wire x1="482.6" y1="182.88" x2="487.68" y2="182.88" width="0.1524" layer="91"/>
-<label x="487.68" y="182.88" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D19" class="0">
-<segment>
-<wire x1="482.6" y1="180.34" x2="508" y2="180.34" width="0.1524" layer="91"/>
-<label x="508" y="180.34" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D20" class="0">
-<segment>
-<wire x1="482.6" y1="177.8" x2="487.68" y2="177.8" width="0.1524" layer="91"/>
-<label x="487.68" y="177.8" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D21" class="0">
-<segment>
-<wire x1="482.6" y1="175.26" x2="508" y2="175.26" width="0.1524" layer="91"/>
-<label x="508" y="175.26" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D22" class="0">
-<segment>
-<wire x1="482.6" y1="172.72" x2="487.68" y2="172.72" width="0.1524" layer="91"/>
-<label x="487.68" y="172.72" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D23" class="0">
-<segment>
-<wire x1="482.6" y1="170.18" x2="508" y2="170.18" width="0.1524" layer="91"/>
-<label x="508" y="170.18" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D24" class="0">
-<segment>
-<wire x1="482.6" y1="167.64" x2="487.68" y2="167.64" width="0.1524" layer="91"/>
-<label x="487.68" y="167.64" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D25" class="0">
-<segment>
-<wire x1="482.6" y1="165.1" x2="508" y2="165.1" width="0.1524" layer="91"/>
-<label x="508" y="165.1" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D26" class="0">
-<segment>
-<wire x1="482.6" y1="162.56" x2="487.68" y2="162.56" width="0.1524" layer="91"/>
-<label x="487.68" y="162.56" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D27" class="0">
-<segment>
-<wire x1="482.6" y1="160.02" x2="508" y2="160.02" width="0.1524" layer="91"/>
-<label x="508" y="160.02" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D28" class="0">
-<segment>
-<wire x1="482.6" y1="157.48" x2="487.68" y2="157.48" width="0.1524" layer="91"/>
-<label x="487.68" y="157.48" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D29" class="0">
-<segment>
-<wire x1="482.6" y1="154.94" x2="508" y2="154.94" width="0.1524" layer="91"/>
-<label x="508" y="154.94" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D30" class="0">
-<segment>
-<wire x1="482.6" y1="152.4" x2="487.68" y2="152.4" width="0.1524" layer="91"/>
-<label x="487.68" y="152.4" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_D31" class="0">
-<segment>
-<wire x1="482.6" y1="149.86" x2="508" y2="149.86" width="0.1524" layer="91"/>
-<label x="508" y="149.86" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_CLK" class="0">
-<segment>
-<wire x1="482.6" y1="233.68" x2="487.68" y2="233.68" width="0.1524" layer="91"/>
-<label x="487.68" y="233.68" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_BE0" class="0">
-<segment>
-<wire x1="482.6" y1="246.38" x2="487.68" y2="246.38" width="0.1524" layer="91"/>
-<label x="487.68" y="246.38" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_BE1" class="0">
-<segment>
-<wire x1="482.6" y1="243.84" x2="508" y2="243.84" width="0.1524" layer="91"/>
-<label x="508" y="243.84" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_BE2" class="0">
-<segment>
-<wire x1="482.6" y1="241.3" x2="487.68" y2="241.3" width="0.1524" layer="91"/>
-<label x="487.68" y="241.3" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="FIFO_BE3" class="0">
-<segment>
-<wire x1="482.6" y1="238.76" x2="508" y2="238.76" width="0.1524" layer="91"/>
-<label x="508" y="238.76" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_SIWU" class="0">
-<segment>
-<wire x1="482.6" y1="264.16" x2="487.68" y2="264.16" width="0.1524" layer="91"/>
-<label x="487.68" y="264.16" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_TXE" class="0">
-<segment>
-<wire x1="482.6" y1="261.62" x2="508" y2="261.62" width="0.1524" layer="91"/>
-<label x="508" y="261.62" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_RXF" class="0">
-<segment>
-<wire x1="482.6" y1="259.08" x2="487.68" y2="259.08" width="0.1524" layer="91"/>
-<label x="487.68" y="259.08" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_WR" class="0">
-<segment>
-<wire x1="482.6" y1="256.54" x2="508" y2="256.54" width="0.1524" layer="91"/>
-<label x="508" y="256.54" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_RD" class="0">
-<segment>
-<wire x1="482.6" y1="254" x2="487.68" y2="254" width="0.1524" layer="91"/>
-<label x="487.68" y="254" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="!FIFO_OE" class="0">
-<segment>
-<wire x1="482.6" y1="251.46" x2="508" y2="251.46" width="0.1524" layer="91"/>
-<label x="508" y="251.46" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
 <net name="TRX_P0_D9" class="0">
 <segment>
 <wire x1="330.2" y1="101.6" x2="294.64" y2="101.6" width="0.1524" layer="91"/>
@@ -16867,6 +16609,307 @@ Logo</text>
 <wire x1="373.38" y1="63.5" x2="378.46" y2="63.5" width="0.1524" layer="91"/>
 <label x="378.46" y="63.5" size="1.778" layer="95" xref="yes"/>
 <pinref part="U301" gate=".BANK3" pin="IOL_22A"/>
+</segment>
+</net>
+<net name="FIFO_D0" class="0">
+<segment>
+<wire x1="175.26" y1="154.94" x2="180.34" y2="154.94" width="0.1524" layer="91"/>
+<label x="180.34" y="154.94" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_222"/>
+</segment>
+</net>
+<net name="FIFO_D1" class="0">
+<segment>
+<wire x1="175.26" y1="170.18" x2="200.66" y2="170.18" width="0.1524" layer="91"/>
+<label x="200.66" y="170.18" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_216"/>
+</segment>
+</net>
+<net name="FIFO_D2" class="0">
+<segment>
+<wire x1="175.26" y1="162.56" x2="180.34" y2="162.56" width="0.1524" layer="91"/>
+<label x="180.34" y="162.56" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_219"/>
+</segment>
+</net>
+<net name="FIFO_D3" class="0">
+<segment>
+<wire x1="175.26" y1="157.48" x2="200.66" y2="157.48" width="0.1524" layer="91"/>
+<label x="200.66" y="157.48" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_221"/>
+</segment>
+</net>
+<net name="FIFO_D4" class="0">
+<segment>
+<wire x1="175.26" y1="177.8" x2="180.34" y2="177.8" width="0.1524" layer="91"/>
+<label x="180.34" y="177.8" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_213"/>
+</segment>
+</net>
+<net name="FIFO_D5" class="0">
+<segment>
+<wire x1="175.26" y1="180.34" x2="200.66" y2="180.34" width="0.1524" layer="91"/>
+<label x="200.66" y="180.34" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_212"/>
+</segment>
+</net>
+<net name="FIFO_D6" class="0">
+<segment>
+<wire x1="175.26" y1="187.96" x2="180.34" y2="187.96" width="0.1524" layer="91"/>
+<label x="180.34" y="187.96" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_209"/>
+</segment>
+</net>
+<net name="FIFO_D7" class="0">
+<segment>
+<wire x1="175.26" y1="190.5" x2="200.66" y2="190.5" width="0.1524" layer="91"/>
+<label x="200.66" y="190.5" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_208"/>
+</segment>
+</net>
+<net name="FIFO_D8" class="0">
+<segment>
+<wire x1="175.26" y1="182.88" x2="180.34" y2="182.88" width="0.1524" layer="91"/>
+<label x="180.34" y="182.88" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_211"/>
+</segment>
+</net>
+<net name="FIFO_D9" class="0">
+<segment>
+<wire x1="175.26" y1="185.42" x2="200.66" y2="185.42" width="0.1524" layer="91"/>
+<label x="200.66" y="185.42" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_210"/>
+</segment>
+</net>
+<net name="FIFO_D10" class="0">
+<segment>
+<wire x1="175.26" y1="195.58" x2="180.34" y2="195.58" width="0.1524" layer="91"/>
+<label x="180.34" y="195.58" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_206"/>
+</segment>
+</net>
+<net name="FIFO_D11" class="0">
+<segment>
+<wire x1="175.26" y1="198.12" x2="200.66" y2="198.12" width="0.1524" layer="91"/>
+<label x="200.66" y="198.12" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_205"/>
+</segment>
+</net>
+<net name="FIFO_D12" class="0">
+<segment>
+<wire x1="175.26" y1="193.04" x2="180.34" y2="193.04" width="0.1524" layer="91"/>
+<label x="180.34" y="193.04" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_207"/>
+</segment>
+</net>
+<net name="FIFO_D13" class="0">
+<segment>
+<wire x1="175.26" y1="172.72" x2="200.66" y2="172.72" width="0.1524" layer="91"/>
+<label x="200.66" y="172.72" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_215"/>
+</segment>
+</net>
+<net name="FIFO_D14" class="0">
+<segment>
+<wire x1="175.26" y1="203.2" x2="180.34" y2="203.2" width="0.1524" layer="91"/>
+<label x="180.34" y="203.2" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_203"/>
+</segment>
+</net>
+<net name="FIFO_D15" class="0">
+<segment>
+<wire x1="132.08" y1="149.86" x2="106.68" y2="149.86" width="0.1524" layer="91"/>
+<label x="106.68" y="149.86" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_194"/>
+</segment>
+</net>
+<net name="FIFO_CLK" class="0">
+<segment>
+<wire x1="132.08" y1="142.24" x2="127" y2="142.24" width="0.1524" layer="91"/>
+<label x="127" y="142.24" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_197_GBIN1"/>
+</segment>
+</net>
+<net name="FIFO_D16" class="0">
+<segment>
+<wire x1="175.26" y1="210.82" x2="180.34" y2="210.82" width="0.1524" layer="91"/>
+<label x="180.34" y="210.82" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_200"/>
+</segment>
+</net>
+<net name="FIFO_D17" class="0">
+<segment>
+<wire x1="132.08" y1="152.4" x2="106.68" y2="152.4" width="0.1524" layer="91"/>
+<label x="106.68" y="152.4" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_193"/>
+</segment>
+</net>
+<net name="FIFO_D18" class="0">
+<segment>
+<wire x1="132.08" y1="160.02" x2="127" y2="160.02" width="0.1524" layer="91"/>
+<label x="127" y="160.02" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_190"/>
+</segment>
+</net>
+<net name="FIFO_D19" class="0">
+<segment>
+<wire x1="132.08" y1="172.72" x2="106.68" y2="172.72" width="0.1524" layer="91"/>
+<label x="106.68" y="172.72" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_185"/>
+</segment>
+</net>
+<net name="FIFO_D20" class="0">
+<segment>
+<wire x1="132.08" y1="177.8" x2="127" y2="177.8" width="0.1524" layer="91"/>
+<label x="127" y="177.8" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_183"/>
+</segment>
+</net>
+<net name="FIFO_D21" class="0">
+<segment>
+<wire x1="132.08" y1="167.64" x2="106.68" y2="167.64" width="0.1524" layer="91"/>
+<label x="106.68" y="167.64" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_187"/>
+</segment>
+</net>
+<net name="FIFO_D22" class="0">
+<segment>
+<wire x1="132.08" y1="182.88" x2="127" y2="182.88" width="0.1524" layer="91"/>
+<label x="127" y="182.88" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_181"/>
+</segment>
+</net>
+<net name="FIFO_D23" class="0">
+<segment>
+<wire x1="132.08" y1="185.42" x2="106.68" y2="185.42" width="0.1524" layer="91"/>
+<label x="106.68" y="185.42" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_180"/>
+</segment>
+</net>
+<net name="FIFO_D24" class="0">
+<segment>
+<wire x1="132.08" y1="210.82" x2="127" y2="210.82" width="0.1524" layer="91"/>
+<label x="127" y="210.82" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_170"/>
+</segment>
+</net>
+<net name="FIFO_D25" class="0">
+<segment>
+<wire x1="132.08" y1="205.74" x2="106.68" y2="205.74" width="0.1524" layer="91"/>
+<label x="106.68" y="205.74" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_172"/>
+</segment>
+</net>
+<net name="FIFO_D26" class="0">
+<segment>
+<wire x1="132.08" y1="180.34" x2="127" y2="180.34" width="0.1524" layer="91"/>
+<label x="127" y="180.34" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_182"/>
+</segment>
+</net>
+<net name="FIFO_D27" class="0">
+<segment>
+<wire x1="132.08" y1="190.5" x2="106.68" y2="190.5" width="0.1524" layer="91"/>
+<label x="106.68" y="190.5" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_178"/>
+</segment>
+</net>
+<net name="FIFO_D28" class="0">
+<segment>
+<wire x1="132.08" y1="200.66" x2="127" y2="200.66" width="0.1524" layer="91"/>
+<label x="127" y="200.66" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_174"/>
+</segment>
+</net>
+<net name="FIFO_D29" class="0">
+<segment>
+<wire x1="132.08" y1="208.28" x2="106.68" y2="208.28" width="0.1524" layer="91"/>
+<label x="106.68" y="208.28" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_171"/>
+</segment>
+</net>
+<net name="FIFO_D30" class="0">
+<segment>
+<wire x1="132.08" y1="193.04" x2="127" y2="193.04" width="0.1524" layer="91"/>
+<label x="127" y="193.04" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_177"/>
+</segment>
+</net>
+<net name="FIFO_D31" class="0">
+<segment>
+<wire x1="132.08" y1="195.58" x2="106.68" y2="195.58" width="0.1524" layer="91"/>
+<label x="106.68" y="195.58" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_176"/>
+</segment>
+</net>
+<net name="FIFO_BE3" class="0">
+<segment>
+<wire x1="175.26" y1="45.72" x2="200.66" y2="45.72" width="0.1524" layer="91"/>
+<label x="200.66" y="45.72" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_161"/>
+</segment>
+</net>
+<net name="FIFO_BE1" class="0">
+<segment>
+<wire x1="175.26" y1="35.56" x2="200.66" y2="35.56" width="0.1524" layer="91"/>
+<label x="200.66" y="35.56" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_165"/>
+</segment>
+</net>
+<net name="FIFO_BE0" class="0">
+<segment>
+<wire x1="132.08" y1="213.36" x2="127" y2="213.36" width="0.1524" layer="91"/>
+<label x="127" y="213.36" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_169"/>
+</segment>
+</net>
+<net name="FIFO_BE2" class="0">
+<segment>
+<wire x1="132.08" y1="215.9" x2="127" y2="215.9" width="0.1524" layer="91"/>
+<label x="127" y="215.9" size="1.778" layer="95" rot="R180" xref="yes"/>
+<pinref part="U301" gate=".BANK0" pin="IOT_168"/>
+</segment>
+</net>
+<net name="!FIFO_TXE" class="0">
+<segment>
+<wire x1="175.26" y1="30.48" x2="200.66" y2="30.48" width="0.1524" layer="91"/>
+<label x="200.66" y="30.48" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_167"/>
+</segment>
+</net>
+<net name="!FIFO_RXF" class="0">
+<segment>
+<wire x1="175.26" y1="55.88" x2="180.34" y2="55.88" width="0.1524" layer="91"/>
+<label x="180.34" y="55.88" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_157"/>
+</segment>
+</net>
+<net name="!FIFO_SIWU" class="0">
+<segment>
+<wire x1="175.26" y1="33.02" x2="180.34" y2="33.02" width="0.1524" layer="91"/>
+<label x="180.34" y="33.02" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_166"/>
+</segment>
+</net>
+<net name="!FIFO_WR" class="0">
+<segment>
+<wire x1="175.26" y1="48.26" x2="200.66" y2="48.26" width="0.1524" layer="91"/>
+<label x="200.66" y="48.26" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_160"/>
+</segment>
+</net>
+<net name="!FIFO_RD" class="0">
+<segment>
+<wire x1="175.26" y1="71.12" x2="180.34" y2="71.12" width="0.1524" layer="91"/>
+<label x="180.34" y="71.12" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_151"/>
+</segment>
+</net>
+<net name="!FIFO_OE" class="0">
+<segment>
+<wire x1="175.26" y1="66.04" x2="200.66" y2="66.04" width="0.1524" layer="91"/>
+<label x="200.66" y="66.04" size="1.778" layer="95" xref="yes"/>
+<pinref part="U301" gate=".BANK1" pin="IOR_153"/>
 </segment>
 </net>
 </nets>
