@@ -1,5 +1,5 @@
 # icyradio
-![](https://github.com/vankxr/icyradio/blob/master/pcb/main/icyradio-main.top.png)  
+![](https://github.com/vankxr/icyradio/blob/v1/fm-demod/pcb/main/icyradio-main.top.png)  
 A **S**oftware **D**efined **R**adio development board.
 
 ## Main components
@@ -17,9 +17,9 @@ A **S**oftware **D**efined **R**adio development board.
  - [TSCS25A3X1NDGXZAX](http://temposemi.com/wp-content/uploads/2018/06/TSCS25xx_DS.pdf) - 96 kHz Audio CODEC
  
 ## Simplified block diagram
-![](https://github.com/vankxr/icyradio/blob/master/docs/block-diagram.png)  
-#### master
-The **master** branch is where everything starts. It contains a simple broadcast FM demodulator. It is not optimized at all. The stereo is not really good and the RDS data is not demodulated (yet).
+![](https://github.com/vankxr/icyradio/blob/v1/fm-demod/docs/block-diagram.png)  
+#### v1/fm-demod
+The **v1/fm-demod** branch is where everything starts. It contains a simple broadcast FM demodulator. It is not optimized at all. The stereo is not really good and the RDS data is not demodulated (yet).
 
 ## Dependencies
  - [icestorm](https://github.com/cliffordwolf/icestorm) - FPGA toolchain
