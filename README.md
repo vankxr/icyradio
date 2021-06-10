@@ -1,5 +1,5 @@
 # icyradio
-![](https://github.com/vankxr/icyradio/blob/master/pcb/main/icyradio-main.top.png)  
+![](https://github.com/vankxr/icyradio/blob/v1/ssb-mod/pcb/main/icyradio-main.top.png)  
 A **S**oftware **D**efined **R**adio development board.
 
 ## Main components
@@ -17,8 +17,8 @@ A **S**oftware **D**efined **R**adio development board.
  - [TSCS25A3X1NDGXZAX](http://temposemi.com/wp-content/uploads/2018/06/TSCS25xx_DS.pdf) - 96 kHz Audio CODEC
  
 ## Simplified block diagram
-![](https://github.com/vankxr/icyradio/blob/ssb-mod/docs/block-diagram.png)  
-#### ssb-mod
+![](https://github.com/vankxr/icyradio/blob/v1/ssb-mod/docs/block-diagram.png)  
+#### v1/ssb-mod
 This branch implements a **S**ingle **S**ide **B**and audio modulator, optimized for the QO-100 narrowband transponder.
 It implements a pre-emphasis filter to allow better SNR at audio high frequencies and general audio power spectral distribution
 
