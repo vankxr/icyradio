@@ -63,7 +63,7 @@ icyradio_s03_data_fifo_0_sc::icyradio_s03_data_fifo_0_sc(const sc_core::sc_modul
     xsc::common_cpp::properties model_param_props;
     model_param_props.addLong("C_AXI_PROTOCOL", "0");
     model_param_props.addLong("C_AXI_ID_WIDTH", "1");
-    model_param_props.addLong("C_AXI_ADDR_WIDTH", "31");
+    model_param_props.addLong("C_AXI_ADDR_WIDTH", "32");
     model_param_props.addLong("C_AXI_DATA_WIDTH", "64");
     model_param_props.addLong("C_AXI_SUPPORTS_USER_SIGNALS", "0");
     model_param_props.addLong("C_AXI_AWUSER_WIDTH", "1");

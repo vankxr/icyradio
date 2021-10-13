@@ -1,18 +1,18 @@
-// Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+// Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-// Date        : Sat Sep 25 13:11:32 2021
-// Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
-// Command     : write_verilog -force -mode funcsim {/media/joao/SSD
-//               Data/Development/icyradio/firmware/icyradio/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0_sim_netlist.v}
+// Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+// Date        : Wed Oct 13 13:50:13 2021
+// Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+// Command     : write_verilog -force -mode funcsim
+//               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0_sim_netlist.v
 // Design      : icyradio_axi_quad_spi_1_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7a75tfgg484-2
+// Device      : xc7a100tfgg484-2
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CHECK_LICENSE_TYPE = "icyradio_axi_quad_spi_1_0,axi_quad_spi,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "axi_quad_spi,Vivado 2020.2" *) 
+(* CHECK_LICENSE_TYPE = "icyradio_axi_quad_spi_1_0,axi_quad_spi,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "axi_quad_spi,Vivado 2021.1" *) 
 (* NotValidForBitStream *)
 module icyradio_axi_quad_spi_1_0
    (ext_spi_clk,
@@ -48,10 +48,10 @@ module icyradio_axi_quad_spi_1_0
     ss_o,
     ss_t,
     ip2intc_irpt);
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 spi_clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME spi_clk, ASSOCIATED_BUSIF SPI_0, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input ext_spi_clk;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 lite_clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME lite_clk, ASSOCIATED_BUSIF AXI_LITE, ASSOCIATED_RESET s_axi_aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input s_axi_aclk;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 spi_clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME spi_clk, ASSOCIATED_BUSIF SPI_0, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input ext_spi_clk;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 lite_clk CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME lite_clk, ASSOCIATED_BUSIF AXI_LITE, ASSOCIATED_RESET s_axi_aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input s_axi_aclk;
   (* x_interface_info = "xilinx.com:signal:reset:1.0 lite_reset RST" *) (* x_interface_parameter = "XIL_INTERFACENAME lite_reset, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input s_axi_aresetn;
-  (* x_interface_info = "xilinx.com:interface:aximm:1.0 AXI_LITE AWADDR" *) (* x_interface_parameter = "XIL_INTERFACENAME AXI_LITE, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 2, NUM_WRITE_OUTSTANDING 2, MAX_BURST_LENGTH 1, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *) input [6:0]s_axi_awaddr;
+  (* x_interface_info = "xilinx.com:interface:aximm:1.0 AXI_LITE AWADDR" *) (* x_interface_parameter = "XIL_INTERFACENAME AXI_LITE, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 2, NUM_WRITE_OUTSTANDING 2, MAX_BURST_LENGTH 1, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *) input [6:0]s_axi_awaddr;
   (* x_interface_info = "xilinx.com:interface:aximm:1.0 AXI_LITE AWVALID" *) input s_axi_awvalid;
   (* x_interface_info = "xilinx.com:interface:aximm:1.0 AXI_LITE AWREADY" *) output s_axi_awready;
   (* x_interface_info = "xilinx.com:interface:aximm:1.0 AXI_LITE WDATA" *) input [31:0]s_axi_wdata;
@@ -177,6 +177,7 @@ module icyradio_axi_quad_spi_1_0
   GND GND
        (.G(\<const0> ));
   (* Async_Clk = "0" *) 
+  (* C_BYTE_LEVEL_INTERRUPT_EN = "0" *) 
   (* C_DUAL_QUAD_MODE = "0" *) 
   (* C_FAMILY = "artix7" *) 
   (* C_FIFO_DEPTH = "16" *) 
@@ -2674,17 +2675,17 @@ module icyradio_axi_quad_spi_1_0_axi_lite_ipif_v3_0_4_pselect_f__parameterized9
         .O(ce_expnd_i_22));
 endmodule
 
-(* Async_Clk = "0" *) (* C_DUAL_QUAD_MODE = "0" *) (* C_FAMILY = "artix7" *) 
-(* C_FIFO_DEPTH = "16" *) (* C_INSTANCE = "axi_quad_spi_inst" *) (* C_LSB_STUP = "0" *) 
-(* C_NEW_SEQ_EN = "1" *) (* C_NUM_SS_BITS = "1" *) (* C_NUM_TRANSFER_BITS = "8" *) 
-(* C_SCK_RATIO = "4" *) (* C_SELECT_XPM = "1" *) (* C_SHARED_STARTUP = "0" *) 
-(* C_SPI_MEMORY = "1" *) (* C_SPI_MEM_ADDR_BITS = "24" *) (* C_SPI_MODE = "0" *) 
-(* C_SUB_FAMILY = "artix7" *) (* C_S_AXI4_ADDR_WIDTH = "24" *) (* C_S_AXI4_BASEADDR = "-1" *) 
-(* C_S_AXI4_DATA_WIDTH = "32" *) (* C_S_AXI4_HIGHADDR = "0" *) (* C_S_AXI4_ID_WIDTH = "1" *) 
-(* C_S_AXI_ADDR_WIDTH = "7" *) (* C_S_AXI_DATA_WIDTH = "32" *) (* C_TYPE_OF_AXI4_INTERFACE = "0" *) 
-(* C_UC_FAMILY = "0" *) (* C_USE_STARTUP = "0" *) (* C_USE_STARTUP_EXT = "0" *) 
-(* C_XIP_MODE = "0" *) (* C_XIP_PERF_MODE = "1" *) (* ORIG_REF_NAME = "axi_quad_spi" *) 
-(* downgradeipidentifiedwarnings = "yes" *) 
+(* Async_Clk = "0" *) (* C_BYTE_LEVEL_INTERRUPT_EN = "0" *) (* C_DUAL_QUAD_MODE = "0" *) 
+(* C_FAMILY = "artix7" *) (* C_FIFO_DEPTH = "16" *) (* C_INSTANCE = "axi_quad_spi_inst" *) 
+(* C_LSB_STUP = "0" *) (* C_NEW_SEQ_EN = "1" *) (* C_NUM_SS_BITS = "1" *) 
+(* C_NUM_TRANSFER_BITS = "8" *) (* C_SCK_RATIO = "4" *) (* C_SELECT_XPM = "1" *) 
+(* C_SHARED_STARTUP = "0" *) (* C_SPI_MEMORY = "1" *) (* C_SPI_MEM_ADDR_BITS = "24" *) 
+(* C_SPI_MODE = "0" *) (* C_SUB_FAMILY = "artix7" *) (* C_S_AXI4_ADDR_WIDTH = "24" *) 
+(* C_S_AXI4_BASEADDR = "-1" *) (* C_S_AXI4_DATA_WIDTH = "32" *) (* C_S_AXI4_HIGHADDR = "0" *) 
+(* C_S_AXI4_ID_WIDTH = "1" *) (* C_S_AXI_ADDR_WIDTH = "7" *) (* C_S_AXI_DATA_WIDTH = "32" *) 
+(* C_TYPE_OF_AXI4_INTERFACE = "0" *) (* C_UC_FAMILY = "0" *) (* C_USE_STARTUP = "0" *) 
+(* C_USE_STARTUP_EXT = "0" *) (* C_XIP_MODE = "0" *) (* C_XIP_PERF_MODE = "1" *) 
+(* ORIG_REF_NAME = "axi_quad_spi" *) (* downgradeipidentifiedwarnings = "yes" *) 
 module icyradio_axi_quad_spi_1_0_axi_quad_spi
    (ext_spi_clk,
     s_axi_aclk,
@@ -11047,10 +11048,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1
     src_in_bin,
     Q,
     \grdc.rd_data_count_i_reg[2] ,
-    \count_value_i_reg[0]_1 ,
+    \count_value_i_reg[1]_2 ,
     rd_en,
     ram_empty_i,
-    \count_value_i_reg[0]_2 ,
+    \count_value_i_reg[1]_3 ,
     rd_clk);
   output [0:0]D;
   output \count_value_i_reg[1]_0 ;
@@ -11059,10 +11060,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1
   output [0:0]src_in_bin;
   input [2:0]Q;
   input [2:0]\grdc.rd_data_count_i_reg[2] ;
-  input [1:0]\count_value_i_reg[0]_1 ;
+  input [1:0]\count_value_i_reg[1]_2 ;
   input rd_en;
   input ram_empty_i;
-  input \count_value_i_reg[0]_2 ;
+  input \count_value_i_reg[1]_3 ;
   input rd_clk;
 
   wire [0:0]D;
@@ -11071,10 +11072,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1
   wire \count_value_i[1]_i_1_n_0 ;
   wire \count_value_i[1]_i_2_n_0 ;
   wire \count_value_i_reg[0]_0 ;
-  wire [1:0]\count_value_i_reg[0]_1 ;
-  wire \count_value_i_reg[0]_2 ;
   wire \count_value_i_reg[1]_0 ;
   wire \count_value_i_reg[1]_1 ;
+  wire [1:0]\count_value_i_reg[1]_2 ;
+  wire \count_value_i_reg[1]_3 ;
   wire [2:0]\grdc.rd_data_count_i_reg[2] ;
   wire ram_empty_i;
   wire rd_clk;
@@ -11085,28 +11086,29 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1
     .INIT(64'h000000005A88A655)) 
     \count_value_i[0]_i_1 
        (.I0(\count_value_i_reg[0]_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
+        .I1(\count_value_i_reg[1]_2 [0]),
         .I2(rd_en),
-        .I3(\count_value_i_reg[0]_1 [1]),
+        .I3(\count_value_i_reg[1]_2 [1]),
         .I4(ram_empty_i),
-        .I5(\count_value_i_reg[0]_2 ),
+        .I5(\count_value_i_reg[1]_3 ),
         .O(\count_value_i[0]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h0000A8AA)) 
+  LUT6 #(
+    .INIT(64'h00000000AA88AAAA)) 
     \count_value_i[1]_i_1 
        (.I0(\count_value_i[1]_i_2_n_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
-        .I2(\count_value_i_reg[0]_1 [1]),
-        .I3(ram_empty_i),
-        .I4(\count_value_i_reg[0]_2 ),
+        .I1(\count_value_i_reg[1]_2 [0]),
+        .I2(rd_en),
+        .I3(\count_value_i_reg[1]_2 [1]),
+        .I4(ram_empty_i),
+        .I5(\count_value_i_reg[1]_3 ),
         .O(\count_value_i[1]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFFFF755500008AA)) 
     \count_value_i[1]_i_2 
        (.I0(\count_value_i_reg[0]_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
+        .I1(\count_value_i_reg[1]_2 [0]),
         .I2(rd_en),
-        .I3(\count_value_i_reg[0]_1 [1]),
+        .I3(\count_value_i_reg[1]_2 [1]),
         .I4(ram_empty_i),
         .I5(\count_value_i_reg[1]_1 ),
         .O(\count_value_i[1]_i_2_n_0 ));
@@ -11165,10 +11167,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1_10
     src_in_bin,
     Q,
     \grdc.rd_data_count_i_reg[2] ,
-    \count_value_i_reg[0]_1 ,
+    \count_value_i_reg[1]_2 ,
     rd_en,
     ram_empty_i,
-    \count_value_i_reg[0]_2 ,
+    \count_value_i_reg[1]_3 ,
     rd_clk);
   output [0:0]D;
   output \count_value_i_reg[1]_0 ;
@@ -11177,10 +11179,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1_10
   output [0:0]src_in_bin;
   input [2:0]Q;
   input [2:0]\grdc.rd_data_count_i_reg[2] ;
-  input [1:0]\count_value_i_reg[0]_1 ;
+  input [1:0]\count_value_i_reg[1]_2 ;
   input rd_en;
   input ram_empty_i;
-  input \count_value_i_reg[0]_2 ;
+  input \count_value_i_reg[1]_3 ;
   input rd_clk;
 
   wire [0:0]D;
@@ -11189,10 +11191,10 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1_10
   wire \count_value_i[1]_i_1_n_0 ;
   wire \count_value_i[1]_i_2_n_0 ;
   wire \count_value_i_reg[0]_0 ;
-  wire [1:0]\count_value_i_reg[0]_1 ;
-  wire \count_value_i_reg[0]_2 ;
   wire \count_value_i_reg[1]_0 ;
   wire \count_value_i_reg[1]_1 ;
+  wire [1:0]\count_value_i_reg[1]_2 ;
+  wire \count_value_i_reg[1]_3 ;
   wire [2:0]\grdc.rd_data_count_i_reg[2] ;
   wire ram_empty_i;
   wire rd_clk;
@@ -11203,28 +11205,29 @@ module icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1_10
     .INIT(64'h000000005A88A655)) 
     \count_value_i[0]_i_1 
        (.I0(\count_value_i_reg[0]_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
+        .I1(\count_value_i_reg[1]_2 [0]),
         .I2(rd_en),
-        .I3(\count_value_i_reg[0]_1 [1]),
+        .I3(\count_value_i_reg[1]_2 [1]),
         .I4(ram_empty_i),
-        .I5(\count_value_i_reg[0]_2 ),
+        .I5(\count_value_i_reg[1]_3 ),
         .O(\count_value_i[0]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h0000A8AA)) 
+  LUT6 #(
+    .INIT(64'h00000000AA88AAAA)) 
     \count_value_i[1]_i_1 
        (.I0(\count_value_i[1]_i_2_n_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
-        .I2(\count_value_i_reg[0]_1 [1]),
-        .I3(ram_empty_i),
-        .I4(\count_value_i_reg[0]_2 ),
+        .I1(\count_value_i_reg[1]_2 [0]),
+        .I2(rd_en),
+        .I3(\count_value_i_reg[1]_2 [1]),
+        .I4(ram_empty_i),
+        .I5(\count_value_i_reg[1]_3 ),
         .O(\count_value_i[1]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFFFF755500008AA)) 
     \count_value_i[1]_i_2 
        (.I0(\count_value_i_reg[0]_0 ),
-        .I1(\count_value_i_reg[0]_1 [0]),
+        .I1(\count_value_i_reg[1]_2 [0]),
         .I2(rd_en),
-        .I3(\count_value_i_reg[0]_1 [1]),
+        .I3(\count_value_i_reg[1]_2 [1]),
         .I4(ram_empty_i),
         .I5(\count_value_i_reg[1]_1 ),
         .O(\count_value_i[1]_i_2_n_0 ));
@@ -12988,12 +12991,14 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base
         .I2(curr_fwft_state[1]),
         .I3(ram_empty_i),
         .O(next_fwft_state__0[0]));
-  LUT3 #(
-    .INIT(8'h7C)) 
+  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  LUT4 #(
+    .INIT(16'h3FF0)) 
     \FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1 
-       (.I0(rd_en),
-        .I1(curr_fwft_state[1]),
-        .I2(curr_fwft_state[0]),
+       (.I0(ram_empty_i),
+        .I1(rd_en),
+        .I2(curr_fwft_state[1]),
+        .I3(curr_fwft_state[0]),
         .O(next_fwft_state__0[1]));
   (* FSM_ENCODED_STATES = "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11" *) 
   FDRE #(
@@ -13155,7 +13160,6 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base
         .D(aempty_fwft_i0),
         .Q(almost_empty),
         .S(rd_rst_busy));
-  (* SOFT_HLUTNM = "soft_lutpair47" *) 
   LUT4 #(
     .INIT(16'h3575)) 
     \gen_fwft.gdvld_fwft.data_valid_fwft_i_1 
@@ -13176,10 +13180,10 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base
        (.D(\grdc.diff_wr_rd_pntr_rdc [2]),
         .Q({\gen_cdc_pntr.wpr_gray_reg_dc_n_3 ,\gen_cdc_pntr.wpr_gray_reg_dc_n_4 ,\gen_cdc_pntr.wpr_gray_reg_dc_n_5 }),
         .\count_value_i_reg[0]_0 (\gen_fwft.rdpp1_inst_n_3 ),
-        .\count_value_i_reg[0]_1 (curr_fwft_state),
-        .\count_value_i_reg[0]_2 (rd_rst_busy),
         .\count_value_i_reg[1]_0 (\gen_fwft.rdpp1_inst_n_1 ),
         .\count_value_i_reg[1]_1 (\gen_fwft.rdpp1_inst_n_2 ),
+        .\count_value_i_reg[1]_2 (curr_fwft_state),
+        .\count_value_i_reg[1]_3 (rd_rst_busy),
         .\grdc.rd_data_count_i_reg[2] (rd_pntr_ext[2:0]),
         .ram_empty_i(ram_empty_i),
         .rd_clk(rd_clk),
@@ -13720,12 +13724,14 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base__parameterized0
         .I2(curr_fwft_state[1]),
         .I3(ram_empty_i),
         .O(next_fwft_state__0[0]));
-  LUT3 #(
-    .INIT(8'h7C)) 
+  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  LUT4 #(
+    .INIT(16'h3FF0)) 
     \FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1 
-       (.I0(rd_en),
-        .I1(curr_fwft_state[1]),
-        .I2(curr_fwft_state[0]),
+       (.I0(ram_empty_i),
+        .I1(rd_en),
+        .I2(curr_fwft_state[1]),
+        .I3(curr_fwft_state[0]),
         .O(next_fwft_state__0[1]));
   (* FSM_ENCODED_STATES = "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11" *) 
   FDRE #(
@@ -13888,7 +13894,6 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base__parameterized0
         .D(aempty_fwft_i0),
         .Q(almost_empty),
         .S(rd_rst_busy));
-  (* SOFT_HLUTNM = "soft_lutpair73" *) 
   LUT4 #(
     .INIT(16'h3575)) 
     \gen_fwft.gdvld_fwft.data_valid_fwft_i_1 
@@ -13909,10 +13914,10 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_base__parameterized0
        (.D(\grdc.diff_wr_rd_pntr_rdc [2]),
         .Q({\gen_cdc_pntr.wpr_gray_reg_dc_n_3 ,\gen_cdc_pntr.wpr_gray_reg_dc_n_4 ,\gen_cdc_pntr.wpr_gray_reg_dc_n_5 }),
         .\count_value_i_reg[0]_0 (\gen_fwft.rdpp1_inst_n_3 ),
-        .\count_value_i_reg[0]_1 (curr_fwft_state),
-        .\count_value_i_reg[0]_2 (rd_rst_busy),
         .\count_value_i_reg[1]_0 (\gen_fwft.rdpp1_inst_n_1 ),
         .\count_value_i_reg[1]_1 (\gen_fwft.rdpp1_inst_n_2 ),
+        .\count_value_i_reg[1]_2 (curr_fwft_state),
+        .\count_value_i_reg[1]_3 (rd_rst_busy),
         .\grdc.rd_data_count_i_reg[2] (rd_pntr_ext[2:0]),
         .ram_empty_i(ram_empty_i),
         .rd_clk(rd_clk),
@@ -15423,19 +15428,18 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ;
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3] ;
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4] ;
-  wire \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ;
   wire [1:0]Q;
   wire [0:0]SR;
-  wire \__0/i__n_0 ;
   wire d_out_reg;
   (* RTL_KEEP = "yes" *) wire [1:0]\gen_rst_ic.curr_rrst_state ;
-  wire \gen_rst_ic.fifo_rd_rst_i0 ;
+  wire \gen_rst_ic.fifo_rd_rst_i ;
   wire \gen_rst_ic.fifo_rd_rst_ic_reg_0 ;
   wire \gen_rst_ic.fifo_rd_rst_wr_i ;
   wire \gen_rst_ic.fifo_wr_rst_ic ;
   wire \gen_rst_ic.fifo_wr_rst_ic_i_1_n_0 ;
   wire \gen_rst_ic.fifo_wr_rst_ic_i_3_n_0 ;
   wire \gen_rst_ic.fifo_wr_rst_rd ;
+  wire [1:0]\gen_rst_ic.next_rrst_state ;
   wire \gen_rst_ic.rst_seq_reentered_i_1_n_0 ;
   wire \gen_rst_ic.rst_seq_reentered_i_2_n_0 ;
   wire \gen_rst_ic.rst_seq_reentered_reg_n_0 ;
@@ -15503,13 +15507,15 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst
         .I3(p_0_in),
         .I4(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ),
         .O(\FSM_onehot_gen_rst_ic.curr_wrst_state[2]_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'h0004)) 
+  LUT6 #(
+    .INIT(64'h0000004400000044)) 
     \FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1 
        (.I0(\gen_rst_ic.fifo_rd_rst_wr_i ),
         .I1(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ),
-        .I2(rst),
-        .I3(p_0_in),
+        .I2(\gen_rst_ic.rst_seq_reentered_reg_n_0 ),
+        .I3(rst),
+        .I4(p_0_in),
+        .I5(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3] ),
         .O(\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1_n_0 ));
   LUT1 #(
     .INIT(2'h1)) 
@@ -15579,25 +15585,25 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst
     \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1 
        (.I0(\gen_rst_ic.curr_rrst_state [0]),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
-        .O(\FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ));
-  (* FSM_ENCODED_STATES = "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11" *) 
+        .O(\gen_rst_ic.next_rrst_state [1]));
+  (* FSM_ENCODED_STATES = "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11" *) 
   (* KEEP = "yes" *) 
   FDRE #(
     .INIT(1'b0)) 
     \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0] 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\__0/i__n_0 ),
+        .D(\gen_rst_ic.next_rrst_state [0]),
         .Q(\gen_rst_ic.curr_rrst_state [0]),
         .R(1'b0));
-  (* FSM_ENCODED_STATES = "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11" *) 
+  (* FSM_ENCODED_STATES = "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11" *) 
   (* KEEP = "yes" *) 
   FDRE #(
     .INIT(1'b0)) 
     \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1] 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ),
+        .D(\gen_rst_ic.next_rrst_state [1]),
         .Q(\gen_rst_ic.curr_rrst_state [1]),
         .R(1'b0));
   LUT3 #(
@@ -15606,20 +15612,20 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst
        (.I0(\gen_rst_ic.fifo_wr_rst_rd ),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
         .I2(\gen_rst_ic.curr_rrst_state [0]),
-        .O(\__0/i__n_0 ));
+        .O(\gen_rst_ic.next_rrst_state [0]));
   LUT3 #(
     .INIT(8'h3E)) 
     \gen_rst_ic.fifo_rd_rst_ic_i_1 
        (.I0(\gen_rst_ic.fifo_wr_rst_rd ),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
         .I2(\gen_rst_ic.curr_rrst_state [0]),
-        .O(\gen_rst_ic.fifo_rd_rst_i0 ));
+        .O(\gen_rst_ic.fifo_rd_rst_i ));
   FDRE #(
     .INIT(1'b0)) 
     \gen_rst_ic.fifo_rd_rst_ic_reg 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\gen_rst_ic.fifo_rd_rst_i0 ),
+        .D(\gen_rst_ic.fifo_rd_rst_i ),
         .Q(\gen_rst_ic.fifo_rd_rst_ic_reg_0 ),
         .R(1'b0));
   LUT6 #(
@@ -15839,19 +15845,18 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ;
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3] ;
   (* RTL_KEEP = "yes" *) wire \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4] ;
-  wire \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ;
   wire [1:0]Q;
   wire [0:0]SR;
-  wire \__0/i__n_0 ;
   wire d_out_reg;
   (* RTL_KEEP = "yes" *) wire [1:0]\gen_rst_ic.curr_rrst_state ;
-  wire \gen_rst_ic.fifo_rd_rst_i0 ;
+  wire \gen_rst_ic.fifo_rd_rst_i ;
   wire \gen_rst_ic.fifo_rd_rst_ic_reg_0 ;
   wire \gen_rst_ic.fifo_rd_rst_wr_i ;
   wire \gen_rst_ic.fifo_wr_rst_ic ;
   wire \gen_rst_ic.fifo_wr_rst_ic_i_1_n_0 ;
   wire \gen_rst_ic.fifo_wr_rst_ic_i_3_n_0 ;
   wire \gen_rst_ic.fifo_wr_rst_rd ;
+  wire [1:0]\gen_rst_ic.next_rrst_state ;
   wire \gen_rst_ic.rst_seq_reentered_i_1_n_0 ;
   wire \gen_rst_ic.rst_seq_reentered_i_2_n_0 ;
   wire \gen_rst_ic.rst_seq_reentered_reg_n_0 ;
@@ -15919,13 +15924,15 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1
         .I3(p_0_in),
         .I4(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ),
         .O(\FSM_onehot_gen_rst_ic.curr_wrst_state[2]_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'h0004)) 
+  LUT6 #(
+    .INIT(64'h0000004400000044)) 
     \FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1 
        (.I0(\gen_rst_ic.fifo_rd_rst_wr_i ),
         .I1(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2] ),
-        .I2(rst),
-        .I3(p_0_in),
+        .I2(\gen_rst_ic.rst_seq_reentered_reg_n_0 ),
+        .I3(rst),
+        .I4(p_0_in),
+        .I5(\FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3] ),
         .O(\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1_n_0 ));
   LUT1 #(
     .INIT(2'h1)) 
@@ -15995,25 +16002,25 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1
     \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1 
        (.I0(\gen_rst_ic.curr_rrst_state [0]),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
-        .O(\FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ));
-  (* FSM_ENCODED_STATES = "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11" *) 
+        .O(\gen_rst_ic.next_rrst_state [1]));
+  (* FSM_ENCODED_STATES = "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11" *) 
   (* KEEP = "yes" *) 
   FDRE #(
     .INIT(1'b0)) 
     \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0] 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\__0/i__n_0 ),
+        .D(\gen_rst_ic.next_rrst_state [0]),
         .Q(\gen_rst_ic.curr_rrst_state [0]),
         .R(1'b0));
-  (* FSM_ENCODED_STATES = "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11" *) 
+  (* FSM_ENCODED_STATES = "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11" *) 
   (* KEEP = "yes" *) 
   FDRE #(
     .INIT(1'b0)) 
     \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1] 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0 ),
+        .D(\gen_rst_ic.next_rrst_state [1]),
         .Q(\gen_rst_ic.curr_rrst_state [1]),
         .R(1'b0));
   LUT3 #(
@@ -16022,20 +16029,20 @@ module icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1
        (.I0(\gen_rst_ic.fifo_wr_rst_rd ),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
         .I2(\gen_rst_ic.curr_rrst_state [0]),
-        .O(\__0/i__n_0 ));
+        .O(\gen_rst_ic.next_rrst_state [0]));
   LUT3 #(
     .INIT(8'h3E)) 
     \gen_rst_ic.fifo_rd_rst_ic_i_1 
        (.I0(\gen_rst_ic.fifo_wr_rst_rd ),
         .I1(\gen_rst_ic.curr_rrst_state [1]),
         .I2(\gen_rst_ic.curr_rrst_state [0]),
-        .O(\gen_rst_ic.fifo_rd_rst_i0 ));
+        .O(\gen_rst_ic.fifo_rd_rst_i ));
   FDRE #(
     .INIT(1'b0)) 
     \gen_rst_ic.fifo_rd_rst_ic_reg 
        (.C(rd_clk),
         .CE(1'b1),
-        .D(\gen_rst_ic.fifo_rd_rst_i0 ),
+        .D(\gen_rst_ic.fifo_rd_rst_i ),
         .Q(\gen_rst_ic.fifo_rd_rst_ic_reg_0 ),
         .R(1'b0));
   LUT6 #(
@@ -16304,9 +16311,8 @@ module icyradio_axi_quad_spi_1_0_xpm_memory_base
   wire rstb;
   wire sleep;
   wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_0_5_DOD_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED ;
+  wire \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED ;
+  wire \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED ;
 
   assign dbiterra = \<const0> ;
   assign dbiterrb = \<const0> ;
@@ -16496,24 +16502,49 @@ module icyradio_axi_quad_spi_1_0_xpm_memory_base
   (* ram_offset = "0" *) 
   (* ram_slice_begin = "6" *) 
   (* ram_slice_end = "7" *) 
-  RAM32M #(
-    .INIT_A(64'h0000000000000000),
-    .INIT_B(64'h0000000000000000),
-    .INIT_C(64'h0000000000000000),
-    .INIT_D(64'h0000000000000000)) 
+  RAM32X1D #(
+    .INIT(32'h00000000)) 
     \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7 
-       (.ADDRA({1'b0,addrb}),
-        .ADDRB({1'b0,addrb}),
-        .ADDRC({1'b0,addrb}),
-        .ADDRD({1'b0,addra}),
-        .DIA(dina[7:6]),
-        .DIB({1'b0,1'b0}),
-        .DIC({1'b0,1'b0}),
-        .DID({1'b0,1'b0}),
-        .DOA(\gen_rd_b.doutb_reg0 [7:6]),
-        .DOB(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED [1:0]),
-        .DOC(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED [1:0]),
-        .DOD(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED [1:0]),
+       (.A0(addra[0]),
+        .A1(addra[1]),
+        .A2(addra[2]),
+        .A3(addra[3]),
+        .A4(1'b0),
+        .D(dina[6]),
+        .DPO(\gen_rd_b.doutb_reg0 [6]),
+        .DPRA0(addrb[0]),
+        .DPRA1(addrb[1]),
+        .DPRA2(addrb[2]),
+        .DPRA3(addrb[3]),
+        .DPRA4(1'b0),
+        .SPO(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED ),
+        .WCLK(clka),
+        .WE(ena));
+  (* METHODOLOGY_DRC_VIOS = "" *) 
+  (* RTL_RAM_BITS = "128" *) 
+  (* RTL_RAM_NAME = "gen_wr_a.gen_word_narrow.mem" *) 
+  (* RTL_RAM_TYPE = "RAM_SDP" *) 
+  (* ram_addr_begin = "0" *) 
+  (* ram_addr_end = "15" *) 
+  (* ram_offset = "0" *) 
+  (* ram_slice_begin = "6" *) 
+  (* ram_slice_end = "7" *) 
+  RAM32X1D #(
+    .INIT(32'h00000000)) 
+    \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0 
+       (.A0(addra[0]),
+        .A1(addra[1]),
+        .A2(addra[2]),
+        .A3(addra[3]),
+        .A4(1'b0),
+        .D(dina[7]),
+        .DPO(\gen_rd_b.doutb_reg0 [7]),
+        .DPRA0(addrb[0]),
+        .DPRA1(addrb[1]),
+        .DPRA2(addrb[2]),
+        .DPRA3(addrb[3]),
+        .DPRA4(1'b0),
+        .SPO(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED ),
         .WCLK(clka),
         .WE(ena));
 endmodule
@@ -16616,9 +16647,8 @@ module icyradio_axi_quad_spi_1_0_xpm_memory_base__1
   wire rstb;
   wire sleep;
   wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_0_5_DOD_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED ;
-  wire [1:0]\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED ;
+  wire \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED ;
+  wire \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED ;
 
   assign dbiterra = \<const0> ;
   assign dbiterrb = \<const0> ;
@@ -16808,24 +16838,49 @@ module icyradio_axi_quad_spi_1_0_xpm_memory_base__1
   (* ram_offset = "0" *) 
   (* ram_slice_begin = "6" *) 
   (* ram_slice_end = "7" *) 
-  RAM32M #(
-    .INIT_A(64'h0000000000000000),
-    .INIT_B(64'h0000000000000000),
-    .INIT_C(64'h0000000000000000),
-    .INIT_D(64'h0000000000000000)) 
+  RAM32X1D #(
+    .INIT(32'h00000000)) 
     \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7 
-       (.ADDRA({1'b0,addrb}),
-        .ADDRB({1'b0,addrb}),
-        .ADDRC({1'b0,addrb}),
-        .ADDRD({1'b0,addra}),
-        .DIA(dina[7:6]),
-        .DIB({1'b0,1'b0}),
-        .DIC({1'b0,1'b0}),
-        .DID({1'b0,1'b0}),
-        .DOA(\gen_rd_b.doutb_reg0 [7:6]),
-        .DOB(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED [1:0]),
-        .DOC(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED [1:0]),
-        .DOD(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED [1:0]),
+       (.A0(addra[0]),
+        .A1(addra[1]),
+        .A2(addra[2]),
+        .A3(addra[3]),
+        .A4(1'b0),
+        .D(dina[6]),
+        .DPO(\gen_rd_b.doutb_reg0 [6]),
+        .DPRA0(addrb[0]),
+        .DPRA1(addrb[1]),
+        .DPRA2(addrb[2]),
+        .DPRA3(addrb[3]),
+        .DPRA4(1'b0),
+        .SPO(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED ),
+        .WCLK(clka),
+        .WE(ena));
+  (* METHODOLOGY_DRC_VIOS = "" *) 
+  (* RTL_RAM_BITS = "128" *) 
+  (* RTL_RAM_NAME = "gen_wr_a.gen_word_narrow.mem" *) 
+  (* RTL_RAM_TYPE = "RAM_SDP" *) 
+  (* ram_addr_begin = "0" *) 
+  (* ram_addr_end = "15" *) 
+  (* ram_offset = "0" *) 
+  (* ram_slice_begin = "6" *) 
+  (* ram_slice_end = "7" *) 
+  RAM32X1D #(
+    .INIT(32'h00000000)) 
+    \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0 
+       (.A0(addra[0]),
+        .A1(addra[1]),
+        .A2(addra[2]),
+        .A3(addra[3]),
+        .A4(1'b0),
+        .D(dina[7]),
+        .DPO(\gen_rd_b.doutb_reg0 [7]),
+        .DPRA0(addrb[0]),
+        .DPRA1(addrb[1]),
+        .DPRA2(addrb[2]),
+        .DPRA3(addrb[3]),
+        .DPRA4(1'b0),
+        .SPO(\NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED ),
         .WCLK(clka),
         .WE(ena));
 endmodule

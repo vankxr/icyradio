@@ -18,11 +18,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:34 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:45:47 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:315cacd0</spirit:value>
+            <spirit:value>9:9abf898d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -33,7 +33,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:315cacd0</spirit:value>
+            <spirit:value>9:9abf898d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -49,11 +49,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:34 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:315cacd0</spirit:value>
+            <spirit:value>9:9abf898d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -69,11 +69,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:34 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:45:47 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c86a4591</spirit:value>
+            <spirit:value>9:e5c8da22</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -89,11 +89,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:34 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c86a4591</spirit:value>
+            <spirit:value>9:e5c8da22</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -107,11 +107,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:13:57 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:48:17 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:315cacd0</spirit:value>
+            <spirit:value>9:9abf898d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -186,7 +186,7 @@
       <spirit:modelParameter xsi:type="spirit:nameValueTypeType" spirit:dataType="string">
         <spirit:name>C_OPERATION</spirit:name>
         <spirit:displayName>C Operation</spirit:displayName>
-        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_OPERATION">and</spirit:value>
+        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_OPERATION">or</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_SIZE</spirit:name>
@@ -289,11 +289,11 @@
     <spirit:parameter>
       <spirit:name>C_OPERATION</spirit:name>
       <spirit:displayName>C_OPERATION</spirit:displayName>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.C_OPERATION" spirit:choiceRef="choice_list_e94027ef" spirit:order="4">and</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.C_OPERATION" spirit:choiceRef="choice_list_e94027ef" spirit:order="4">or</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>LOGO_FILE</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.LOGO_FILE" spirit:order="5">data/sym_andgate.png</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.LOGO_FILE" spirit:order="5">data/sym_orgate.png</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -310,11 +310,10 @@
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.C_OPERATION" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.C_SIZE" xilinx:valueSource="user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.LOGO_FILE" xilinx:valueSource="user"/>
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="8ba71b33"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="99e4b00a"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="426d7563"/>

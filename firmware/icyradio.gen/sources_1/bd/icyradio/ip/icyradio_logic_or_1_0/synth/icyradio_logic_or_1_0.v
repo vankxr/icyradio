@@ -50,9 +50,9 @@
 // IP VLNV: xilinx.com:ip:util_vector_logic:2.0
 // IP Revision: 1
 
-(* X_CORE_INFO = "util_vector_logic_v2_0_1_util_vector_logic,Vivado 2020.2" *)
+(* X_CORE_INFO = "util_vector_logic_v2_0_1_util_vector_logic,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_logic_or_1_0,util_vector_logic_v2_0_1_util_vector_logic,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_logic_or_1_0,util_vector_logic_v2_0_1_util_vector_logic,{x_ipProduct=Vivado 2020.2,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=util_vector_logic,x_ipVersion=2.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_OPERATION=and,C_SIZE=1}" *)
+(* CORE_GENERATION_INFO = "icyradio_logic_or_1_0,util_vector_logic_v2_0_1_util_vector_logic,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=util_vector_logic,x_ipVersion=2.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_OPERATION=or,C_SIZE=1}" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_logic_or_1_0 (
   Op1,
@@ -65,7 +65,7 @@ input wire [0 : 0] Op2;
 output wire [0 : 0] Res;
 
   util_vector_logic_v2_0_1_util_vector_logic #(
-    .C_OPERATION("and"),
+    .C_OPERATION("or"),
     .C_SIZE(1)
   ) inst (
     .Op1(Op1),

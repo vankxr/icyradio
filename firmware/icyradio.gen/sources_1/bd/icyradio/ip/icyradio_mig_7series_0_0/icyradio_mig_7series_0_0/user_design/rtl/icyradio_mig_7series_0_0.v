@@ -105,7 +105,7 @@ module icyradio_mig_7series_0_0 (
   output            app_ref_ack,
   output            app_zq_ack,
   // Slave Interface Write Address Ports
-  input [2:0]           s_axi_awid,
+  input [3:0]           s_axi_awid,
   input [29:0]         s_axi_awaddr,
   input [7:0]           s_axi_awlen,
   input [2:0]           s_axi_awsize,
@@ -124,11 +124,11 @@ module icyradio_mig_7series_0_0 (
   output            s_axi_wready,
   // Slave Interface Write Response Ports
   input         s_axi_bready,
-  output [2:0]          s_axi_bid,
+  output [3:0]          s_axi_bid,
   output [1:0]          s_axi_bresp,
   output            s_axi_bvalid,
   // Slave Interface Read Address Ports
-  input [2:0]           s_axi_arid,
+  input [3:0]           s_axi_arid,
   input [29:0]         s_axi_araddr,
   input [7:0]           s_axi_arlen,
   input [2:0]           s_axi_arsize,
@@ -141,7 +141,7 @@ module icyradio_mig_7series_0_0 (
   output            s_axi_arready,
   // Slave Interface Read Data Ports
   input         s_axi_rready,
-  output [2:0]          s_axi_rid,
+  output [3:0]          s_axi_rid,
   output [63:0]            s_axi_rdata,
   output [1:0]          s_axi_rresp,
   output            s_axi_rlast,

@@ -57,7 +57,7 @@
 #include "systemc.h"
 class icyradio_GND_0_0 : public sc_module {
   public:
-xlconstant_v1_1_7<1,1> mod;
+xlconstant_v1_1_7<1,0> mod;
   sc_out< sc_bv<1> > dout;
 icyradio_GND_0_0 (sc_core::sc_module_name name);
   };

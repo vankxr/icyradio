@@ -69,7 +69,7 @@ typedef bit bit_as_bool;
 module icyradio_s03_data_fifo_0 (
   input bit_as_bool aclk,
   input bit_as_bool aresetn,
-  input bit [30 : 0] s_axi_awaddr,
+  input bit [31 : 0] s_axi_awaddr,
   input bit [7 : 0] s_axi_awlen,
   input bit [2 : 0] s_axi_awsize,
   input bit [1 : 0] s_axi_awburst,
@@ -88,7 +88,7 @@ module icyradio_s03_data_fifo_0 (
   output bit [1 : 0] s_axi_bresp,
   output bit_as_bool s_axi_bvalid,
   input bit_as_bool s_axi_bready,
-  output bit [30 : 0] m_axi_awaddr,
+  output bit [31 : 0] m_axi_awaddr,
   output bit [7 : 0] m_axi_awlen,
   output bit [2 : 0] m_axi_awsize,
   output bit [1 : 0] m_axi_awburst,
@@ -118,7 +118,7 @@ module icyradio_s03_data_fifo_0 (aclk,aresetn,s_axi_awaddr,s_axi_awlen,s_axi_aws
 *);
   input bit aclk;
   input bit aresetn;
-  input bit [30 : 0] s_axi_awaddr;
+  input bit [31 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -137,7 +137,7 @@ module icyradio_s03_data_fifo_0 (aclk,aresetn,s_axi_awaddr,s_axi_awlen,s_axi_aws
   output wire [1 : 0] s_axi_bresp;
   output wire s_axi_bvalid;
   input bit s_axi_bready;
-  output wire [30 : 0] m_axi_awaddr;
+  output wire [31 : 0] m_axi_awaddr;
   output wire [7 : 0] m_axi_awlen;
   output wire [2 : 0] m_axi_awsize;
   output wire [1 : 0] m_axi_awburst;
@@ -164,7 +164,7 @@ endmodule
 module icyradio_s03_data_fifo_0 (aclk,aresetn,s_axi_awaddr,s_axi_awlen,s_axi_awsize,s_axi_awburst,s_axi_awlock,s_axi_awcache,s_axi_awprot,s_axi_awregion,s_axi_awqos,s_axi_awvalid,s_axi_awready,s_axi_wdata,s_axi_wstrb,s_axi_wlast,s_axi_wvalid,s_axi_wready,s_axi_bresp,s_axi_bvalid,s_axi_bready,m_axi_awaddr,m_axi_awlen,m_axi_awsize,m_axi_awburst,m_axi_awlock,m_axi_awcache,m_axi_awprot,m_axi_awregion,m_axi_awqos,m_axi_awvalid,m_axi_awready,m_axi_wdata,m_axi_wstrb,m_axi_wlast,m_axi_wvalid,m_axi_wready,m_axi_bresp,m_axi_bvalid,m_axi_bready)
   input bit aclk;
   input bit aresetn;
-  input bit [30 : 0] s_axi_awaddr;
+  input bit [31 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -183,7 +183,7 @@ module icyradio_s03_data_fifo_0 (aclk,aresetn,s_axi_awaddr,s_axi_awlen,s_axi_aws
   output wire [1 : 0] s_axi_bresp;
   output wire s_axi_bvalid;
   input bit s_axi_bready;
-  output wire [30 : 0] m_axi_awaddr;
+  output wire [31 : 0] m_axi_awaddr;
   output wire [7 : 0] m_axi_awlen;
   output wire [2 : 0] m_axi_awsize;
   output wire [1 : 0] m_axi_awburst;

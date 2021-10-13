@@ -82,7 +82,7 @@ set_property IOB true [get_cells -hierarchical -filter {NAME =~*IO*_I_REG}]
 
 ##### End of user provided delay numbers
 ####create_generated_clock -name clk_sck -source [get_pins -hierarchical *axi_quad_spi_1/ext_spi_clk] [get_ports <SCK_IO>] -edges {3 5 7}
-##create_generated_clock -name clk_sck -source [get_pins -filter {REF_PIN_NAME==ext_spi_clk} -of [get_cells -hier -filter {REF_NAME=~axi_quad_spi_1}]] [get_ports <SCK_IO>] -edges {3 5 7}
+##create_generated_clock -name clk_sck -source [get_pins -filter {REF_PIN_NAME==ext_spi_clk} -of [get_cells -hier -filter {REF_NAME=~axi_quad_spi_0}]] [get_ports SCK_IO] -edges {3 5 7}
 
 #### Data is captured into FPGA on the second rising edge of ext_spi_clk after the SCK falling edge
 #### Data is driven by the FPGA on every alternate rising_edge of ext_spi_clk

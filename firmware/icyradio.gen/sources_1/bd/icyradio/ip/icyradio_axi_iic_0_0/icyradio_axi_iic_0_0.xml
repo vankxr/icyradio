@@ -371,7 +371,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>PHASE</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI.PHASE">0.000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI.PHASE">0.0</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -480,7 +480,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>PHASE</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_ACLK.PHASE">0.000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_ACLK.PHASE">0.0</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -1747,11 +1747,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:32 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:21 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:2a4cca8b</spirit:value>
+            <spirit:value>9:54ddc6ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1762,7 +1762,7 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:2a4cca8b</spirit:value>
+            <spirit:value>9:54ddc6ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1778,11 +1778,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:32 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:21 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:2a4cca8b</spirit:value>
+            <spirit:value>9:54ddc6ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1810,11 +1810,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:32 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:21 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f4af00ea</spirit:value>
+            <spirit:value>9:822638eb</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1830,11 +1830,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:32 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:21 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f4af00ea</spirit:value>
+            <spirit:value>9:822638eb</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1848,11 +1848,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:04:32 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:21 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:2a4cca8b</spirit:value>
+            <spirit:value>9:54ddc6ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1866,11 +1866,11 @@ interrupt is set.
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:18:31 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:48:41 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:2a4cca8b</spirit:value>
+            <spirit:value>9:54ddc6ce</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -2415,9 +2415,9 @@ interrupt is set.
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlsynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>../../ipshared/1529/hdl/axi_iic_v2_0_vh_rfs.vhd</spirit:name>
+        <spirit:name>../../ipshared/68d2/hdl/axi_iic_v2_1_vh_rfs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>axi_iic_v2_0_25</spirit:logicalName>
+        <spirit:logicalName>axi_iic_v2_1_0</spirit:logicalName>
       </spirit:file>
       <spirit:file>
         <spirit:name>icyradio_axi_iic_0_0_ooc.xdc</spirit:name>
@@ -2502,10 +2502,10 @@ interrupt is set.
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>../../ipshared/1529/hdl/axi_iic_v2_0_vh_rfs.vhd</spirit:name>
+        <spirit:name>../../ipshared/68d2/hdl/axi_iic_v2_1_vh_rfs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>axi_iic_v2_0_25</spirit:logicalName>
+        <spirit:logicalName>axi_iic_v2_1_0</spirit:logicalName>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -2606,7 +2606,7 @@ interrupt is set.
       <spirit:name>AXI_ACLK_FREQ_MHZ</spirit:name>
       <spirit:displayName>AXI Clock Frequency (in MHz)</spirit:displayName>
       <spirit:description>This parameter specifies (but does not set) the frequency of the AXI4-Lite interface.</spirit:description>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.AXI_ACLK_FREQ_MHZ" spirit:order="1180" spirit:minimum="25.0" spirit:maximum="300.0">125.0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.AXI_ACLK_FREQ_MHZ" spirit:order="1180" spirit:minimum="24.9" spirit:maximum="300.0">125.0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -2719,7 +2719,7 @@ interrupt is set.
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:displayName>AXI IIC</xilinx:displayName>
-      <xilinx:coreRevision>25</xilinx:coreRevision>
+      <xilinx:coreRevision>0</xilinx:coreRevision>
       <xilinx:configElementInfos>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.IIC.BOARD.ASSOCIATED_PARAM" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.INTERRUPT.PortWidth" xilinx:valueSource="default_prop" xilinx:valuePermission="bd"/>
@@ -2765,13 +2765,13 @@ interrupt is set.
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="5da9c974"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="00000000"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="58dba191"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="b6c346c7"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="5a53dfbd"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="de11161a"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="c9668f16"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="33a2949a"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

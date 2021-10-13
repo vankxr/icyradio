@@ -1,13 +1,13 @@
--- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Sat Sep 25 13:15:26 2021
--- Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
--- Command     : write_vhdl -force -mode synth_stub {/media/joao/SSD
---               Data/Development/icyradio/firmware/icyradio/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_0_0/icyradio_axi_quad_spi_0_0_stub.vhdl}
+-- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+-- Date        : Wed Oct 13 13:57:33 2021
+-- Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+-- Command     : write_vhdl -force -mode synth_stub
+--               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_0_0/icyradio_axi_quad_spi_0_0_stub.vhdl
 -- Design      : icyradio_axi_quad_spi_0_0
 -- Purpose     : Stub declaration of top-level module interface
--- Device      : xc7a75tfgg484-2
+-- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -104,6 +104,6 @@ attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
 attribute black_box_pad_pin of stub : architecture is "ext_spi_clk,s_axi_aclk,s_axi_aresetn,s_axi4_aclk,s_axi4_aresetn,s_axi_awaddr[6:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[6:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,s_axi4_awaddr[23:0],s_axi4_awlen[7:0],s_axi4_awsize[2:0],s_axi4_awburst[1:0],s_axi4_awlock,s_axi4_awcache[3:0],s_axi4_awprot[2:0],s_axi4_awvalid,s_axi4_awready,s_axi4_wdata[31:0],s_axi4_wstrb[3:0],s_axi4_wlast,s_axi4_wvalid,s_axi4_wready,s_axi4_bresp[1:0],s_axi4_bvalid,s_axi4_bready,s_axi4_araddr[23:0],s_axi4_arlen[7:0],s_axi4_arsize[2:0],s_axi4_arburst[1:0],s_axi4_arlock,s_axi4_arcache[3:0],s_axi4_arprot[2:0],s_axi4_arvalid,s_axi4_arready,s_axi4_rdata[31:0],s_axi4_rresp[1:0],s_axi4_rlast,s_axi4_rvalid,s_axi4_rready,io0_i,io0_o,io0_t,io1_i,io1_o,io1_t,io2_i,io2_o,io2_t,io3_i,io3_o,io3_t,ss_i[0:0],ss_o[0:0],ss_t,cfgclk,cfgmclk,eos,preq,clk,gsr,gts,keyclearb,usrcclkts,usrdoneo,usrdonets,ip2intc_irpt";
 attribute x_core_info : string;
-attribute x_core_info of stub : architecture is "axi_quad_spi,Vivado 2020.2";
+attribute x_core_info of stub : architecture is "axi_quad_spi,Vivado 2021.1";
 begin
 end;

@@ -1,18 +1,18 @@
-// Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+// Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
-// Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-// Date        : Sat Sep 25 13:12:30 2021
-// Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
-// Command     : write_verilog -force -mode funcsim {/media/joao/SSD
-//               Data/Development/icyradio/firmware/icyradio/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0_sim_netlist.v}
+// Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+// Date        : Wed Oct 13 13:56:03 2021
+// Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+// Command     : write_verilog -force -mode funcsim
+//               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0_sim_netlist.v
 // Design      : icyradio_util_ds_buf_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
-// Device      : xc7a75tfgg484-2
+// Device      : xc7a100tfgg484-2
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
-(* CHECK_LICENSE_TYPE = "icyradio_util_ds_buf_0_0,util_ds_buf,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "util_ds_buf,Vivado 2020.2" *) 
+(* CHECK_LICENSE_TYPE = "icyradio_util_ds_buf_0_0,util_ds_buf,{}" *) (* downgradeipidentifiedwarnings = "yes" *) (* x_core_info = "util_ds_buf,Vivado 2021.1" *) 
 (* NotValidForBitStream *)
 module icyradio_util_ds_buf_0_0
    (IBUF_DS_P,
@@ -21,8 +21,8 @@ module icyradio_util_ds_buf_0_0
     IBUF_DS_ODIV2);
   (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_P" *) (* x_interface_parameter = "XIL_INTERFACENAME CLK_IN_D, BOARD.ASSOCIATED_PARAM DIFF_CLK_IN_BOARD_INTERFACE, CAN_DEBUG false, FREQ_HZ 100000000" *) input [0:0]IBUF_DS_P;
   (* x_interface_info = "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_N" *) input [0:0]IBUF_DS_N;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_OUT CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *) output [0:0]IBUF_OUT;
-  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_DS_ODIV2 CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_DS_ODIV2, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_DS_ODIV2, INSERT_VIP 0" *) output [0:0]IBUF_DS_ODIV2;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_OUT CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *) output [0:0]IBUF_OUT;
+  (* x_interface_info = "xilinx.com:signal:clock:1.0 IBUF_DS_ODIV2 CLK" *) (* x_interface_parameter = "XIL_INTERFACENAME IBUF_DS_ODIV2, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_DS_ODIV2, INSERT_VIP 0" *) output [0:0]IBUF_DS_ODIV2;
 
   (* IBUF_LOW_PWR *) wire [0:0]IBUF_DS_N;
   wire [0:0]IBUF_DS_ODIV2;
@@ -43,6 +43,10 @@ module icyradio_util_ds_buf_0_0
   wire [0:0]NLW_U0_IOBUF_DS_P_UNCONNECTED;
   wire [0:0]NLW_U0_IOBUF_IO_IO_UNCONNECTED;
   wire [0:0]NLW_U0_IOBUF_IO_O_UNCONNECTED;
+  wire [0:0]NLW_U0_MBUFG_GT_O1_UNCONNECTED;
+  wire [0:0]NLW_U0_MBUFG_GT_O2_UNCONNECTED;
+  wire [0:0]NLW_U0_MBUFG_GT_O3_UNCONNECTED;
+  wire [0:0]NLW_U0_MBUFG_GT_O4_UNCONNECTED;
   wire [0:0]NLW_U0_OBUFDS_GTE3_ADV_O_UNCONNECTED;
   wire [0:0]NLW_U0_OBUFDS_GTE3_ADV_OB_UNCONNECTED;
   wire [0:0]NLW_U0_OBUFDS_GTE3_O_UNCONNECTED;
@@ -69,6 +73,7 @@ module icyradio_util_ds_buf_0_0
   (* C_BUFGCE_DIV = "1" *) 
   (* C_BUFG_GT_SYNC = "0" *) 
   (* C_BUF_TYPE = "ibufdsgte2" *) 
+  (* C_MODE = "PERFORMANCE" *) 
   (* C_OBUFDS_GTE5_ADV = "2'b00" *) 
   (* C_REFCLK_ICNTL_TX = "5'b00000" *) 
   (* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) 
@@ -117,6 +122,17 @@ module icyradio_util_ds_buf_0_0
         .IOBUF_IO_IO(NLW_U0_IOBUF_IO_IO_UNCONNECTED[0]),
         .IOBUF_IO_O(NLW_U0_IOBUF_IO_O_UNCONNECTED[0]),
         .IOBUF_IO_T(1'b0),
+        .MBUFG_GT_CE(1'b0),
+        .MBUFG_GT_CEMASK(1'b0),
+        .MBUFG_GT_CLR(1'b0),
+        .MBUFG_GT_CLRB_LEAF(1'b0),
+        .MBUFG_GT_CLRMASK(1'b0),
+        .MBUFG_GT_DIV({1'b0,1'b0,1'b0}),
+        .MBUFG_GT_I(1'b0),
+        .MBUFG_GT_O1(NLW_U0_MBUFG_GT_O1_UNCONNECTED[0]),
+        .MBUFG_GT_O2(NLW_U0_MBUFG_GT_O2_UNCONNECTED[0]),
+        .MBUFG_GT_O3(NLW_U0_MBUFG_GT_O3_UNCONNECTED[0]),
+        .MBUFG_GT_O4(NLW_U0_MBUFG_GT_O4_UNCONNECTED[0]),
         .OBUFDS_GTE3_ADV_CEB(1'b0),
         .OBUFDS_GTE3_ADV_I({1'b0,1'b0,1'b0,1'b0}),
         .OBUFDS_GTE3_ADV_O(NLW_U0_OBUFDS_GTE3_ADV_O_UNCONNECTED[0]),
@@ -167,8 +183,8 @@ module icyradio_util_ds_buf_0_0
 endmodule
 
 (* C_BUFGCE_DIV = "1" *) (* C_BUFG_GT_SYNC = "0" *) (* C_BUF_TYPE = "ibufdsgte2" *) 
-(* C_OBUFDS_GTE5_ADV = "2'b00" *) (* C_REFCLK_ICNTL_TX = "5'b00000" *) (* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) 
-(* C_SIZE = "1" *) (* ORIG_REF_NAME = "util_ds_buf" *) 
+(* C_MODE = "PERFORMANCE" *) (* C_OBUFDS_GTE5_ADV = "2'b00" *) (* C_REFCLK_ICNTL_TX = "5'b00000" *) 
+(* C_SIM_DEVICE = "VERSAL_AI_CORE_ES1" *) (* C_SIZE = "1" *) (* ORIG_REF_NAME = "util_ds_buf" *) 
 module icyradio_util_ds_buf_0_0_util_ds_buf
    (IBUF_DS_P,
     IBUF_DS_N,
@@ -259,7 +275,18 @@ module icyradio_util_ds_buf_0_0_util_ds_buf
     BUFG_GT_DIV,
     BUFG_GT_O,
     BUFG_PS_I,
-    BUFG_PS_O);
+    BUFG_PS_O,
+    MBUFG_GT_I,
+    MBUFG_GT_CE,
+    MBUFG_GT_CEMASK,
+    MBUFG_GT_CLR,
+    MBUFG_GT_CLRB_LEAF,
+    MBUFG_GT_CLRMASK,
+    MBUFG_GT_DIV,
+    MBUFG_GT_O1,
+    MBUFG_GT_O2,
+    MBUFG_GT_O3,
+    MBUFG_GT_O4);
   input [0:0]IBUF_DS_P;
   input [0:0]IBUF_DS_N;
   output [0:0]IBUF_OUT;
@@ -350,6 +377,17 @@ module icyradio_util_ds_buf_0_0_util_ds_buf
   output [0:0]BUFG_GT_O;
   input [0:0]BUFG_PS_I;
   output [0:0]BUFG_PS_O;
+  input [0:0]MBUFG_GT_I;
+  input [0:0]MBUFG_GT_CE;
+  input [0:0]MBUFG_GT_CEMASK;
+  input [0:0]MBUFG_GT_CLR;
+  input [0:0]MBUFG_GT_CLRB_LEAF;
+  input [0:0]MBUFG_GT_CLRMASK;
+  input [2:0]MBUFG_GT_DIV;
+  output [0:0]MBUFG_GT_O1;
+  output [0:0]MBUFG_GT_O2;
+  output [0:0]MBUFG_GT_O3;
+  output [0:0]MBUFG_GT_O4;
 
   wire \<const0> ;
   wire [0:0]IBUF_DS_N;
@@ -371,6 +409,10 @@ module icyradio_util_ds_buf_0_0_util_ds_buf
   assign IBUFDS_GTM_O[0] = IOBUF_DS_P[0];
   assign IBUFDS_GTM_ODIV2[0] = IOBUF_DS_P[0];
   assign IOBUF_IO_O[0] = IOBUF_DS_P[0];
+  assign MBUFG_GT_O1[0] = IOBUF_DS_P[0];
+  assign MBUFG_GT_O2[0] = IOBUF_DS_P[0];
+  assign MBUFG_GT_O3[0] = IOBUF_DS_P[0];
+  assign MBUFG_GT_O4[0] = IOBUF_DS_P[0];
   assign OBUFDS_GTE3_ADV_O[0] = IOBUF_DS_P[0];
   assign OBUFDS_GTE3_ADV_OB[0] = IOBUF_DS_P[0];
   assign OBUFDS_GTE3_O[0] = IOBUF_DS_P[0];

@@ -64,7 +64,7 @@ input wire [0 : 0] Op2;
 output wire [0 : 0] Res;
 
   util_vector_logic_v2_0_1_util_vector_logic #(
-    .C_OPERATION("and"),
+    .C_OPERATION("or"),
     .C_SIZE(1)
   ) inst (
     .Op1(Op1),

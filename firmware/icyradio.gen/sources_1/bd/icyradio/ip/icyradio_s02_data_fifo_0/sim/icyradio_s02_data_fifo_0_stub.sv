@@ -69,7 +69,7 @@ typedef bit bit_as_bool;
 module icyradio_s02_data_fifo_0 (
   input bit_as_bool aclk,
   input bit_as_bool aresetn,
-  input bit [30 : 0] s_axi_araddr,
+  input bit [31 : 0] s_axi_araddr,
   input bit [7 : 0] s_axi_arlen,
   input bit [2 : 0] s_axi_arsize,
   input bit [1 : 0] s_axi_arburst,
@@ -85,7 +85,7 @@ module icyradio_s02_data_fifo_0 (
   output bit_as_bool s_axi_rlast,
   output bit_as_bool s_axi_rvalid,
   input bit_as_bool s_axi_rready,
-  output bit [30 : 0] m_axi_araddr,
+  output bit [31 : 0] m_axi_araddr,
   output bit [7 : 0] m_axi_arlen,
   output bit [2 : 0] m_axi_arsize,
   output bit [1 : 0] m_axi_arburst,
@@ -112,7 +112,7 @@ module icyradio_s02_data_fifo_0 (aclk,aresetn,s_axi_araddr,s_axi_arlen,s_axi_ars
 *);
   input bit aclk;
   input bit aresetn;
-  input bit [30 : 0] s_axi_araddr;
+  input bit [31 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -128,7 +128,7 @@ module icyradio_s02_data_fifo_0 (aclk,aresetn,s_axi_araddr,s_axi_arlen,s_axi_ars
   output wire s_axi_rlast;
   output wire s_axi_rvalid;
   input bit s_axi_rready;
-  output wire [30 : 0] m_axi_araddr;
+  output wire [31 : 0] m_axi_araddr;
   output wire [7 : 0] m_axi_arlen;
   output wire [2 : 0] m_axi_arsize;
   output wire [1 : 0] m_axi_arburst;
@@ -152,7 +152,7 @@ endmodule
 module icyradio_s02_data_fifo_0 (aclk,aresetn,s_axi_araddr,s_axi_arlen,s_axi_arsize,s_axi_arburst,s_axi_arlock,s_axi_arcache,s_axi_arprot,s_axi_arregion,s_axi_arqos,s_axi_arvalid,s_axi_arready,s_axi_rdata,s_axi_rresp,s_axi_rlast,s_axi_rvalid,s_axi_rready,m_axi_araddr,m_axi_arlen,m_axi_arsize,m_axi_arburst,m_axi_arlock,m_axi_arcache,m_axi_arprot,m_axi_arregion,m_axi_arqos,m_axi_arvalid,m_axi_arready,m_axi_rdata,m_axi_rresp,m_axi_rlast,m_axi_rvalid,m_axi_rready)
   input bit aclk;
   input bit aresetn;
-  input bit [30 : 0] s_axi_araddr;
+  input bit [31 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -168,7 +168,7 @@ module icyradio_s02_data_fifo_0 (aclk,aresetn,s_axi_araddr,s_axi_arlen,s_axi_ars
   output wire s_axi_rlast;
   output wire s_axi_rvalid;
   input bit s_axi_rready;
-  output wire [30 : 0] m_axi_araddr;
+  output wire [31 : 0] m_axi_araddr;
   output wire [7 : 0] m_axi_arlen;
   output wire [2 : 0] m_axi_arsize;
   output wire [1 : 0] m_axi_arburst;

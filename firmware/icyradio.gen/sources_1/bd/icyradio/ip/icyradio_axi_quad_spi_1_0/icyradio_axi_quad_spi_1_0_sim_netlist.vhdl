@@ -1,14 +1,14 @@
--- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Sat Sep 25 13:11:32 2021
--- Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
--- Command     : write_vhdl -force -mode funcsim {/media/joao/SSD
---               Data/Development/icyradio/firmware/icyradio/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0_sim_netlist.vhdl}
+-- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+-- Date        : Wed Oct 13 13:50:13 2021
+-- Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+-- Command     : write_vhdl -force -mode funcsim
+--               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0_sim_netlist.vhdl
 -- Design      : icyradio_axi_quad_spi_1_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
--- Device      : xc7a75tfgg484-2
+-- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -7494,10 +7494,10 @@ entity \icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1\ is
     src_in_bin : out STD_LOGIC_VECTOR ( 0 to 0 );
     Q : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \grdc.rd_data_count_i_reg[2]\ : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    \count_value_i_reg[0]_1\ : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    \count_value_i_reg[1]_2\ : in STD_LOGIC_VECTOR ( 1 downto 0 );
     rd_en : in STD_LOGIC;
     ram_empty_i : in STD_LOGIC;
-    \count_value_i_reg[0]_2\ : in STD_LOGIC;
+    \count_value_i_reg[1]_3\ : in STD_LOGIC;
     rd_clk : in STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
@@ -7521,23 +7521,24 @@ begin
     )
         port map (
       I0 => \^count_value_i_reg[0]_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
+      I1 => \count_value_i_reg[1]_2\(0),
       I2 => rd_en,
-      I3 => \count_value_i_reg[0]_1\(1),
+      I3 => \count_value_i_reg[1]_2\(1),
       I4 => ram_empty_i,
-      I5 => \count_value_i_reg[0]_2\,
+      I5 => \count_value_i_reg[1]_3\,
       O => \count_value_i[0]_i_1_n_0\
     );
-\count_value_i[1]_i_1\: unisim.vcomponents.LUT5
+\count_value_i[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000A8AA"
+      INIT => X"00000000AA88AAAA"
     )
         port map (
       I0 => \count_value_i[1]_i_2_n_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
-      I2 => \count_value_i_reg[0]_1\(1),
-      I3 => ram_empty_i,
-      I4 => \count_value_i_reg[0]_2\,
+      I1 => \count_value_i_reg[1]_2\(0),
+      I2 => rd_en,
+      I3 => \count_value_i_reg[1]_2\(1),
+      I4 => ram_empty_i,
+      I5 => \count_value_i_reg[1]_3\,
       O => \count_value_i[1]_i_1_n_0\
     );
 \count_value_i[1]_i_2\: unisim.vcomponents.LUT6
@@ -7546,9 +7547,9 @@ begin
     )
         port map (
       I0 => \^count_value_i_reg[0]_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
+      I1 => \count_value_i_reg[1]_2\(0),
       I2 => rd_en,
-      I3 => \count_value_i_reg[0]_1\(1),
+      I3 => \count_value_i_reg[1]_2\(1),
       I4 => ram_empty_i,
       I5 => \^count_value_i_reg[1]_1\,
       O => \count_value_i[1]_i_2_n_0\
@@ -7626,10 +7627,10 @@ entity \icyradio_axi_quad_spi_1_0_xpm_counter_updn__parameterized1_10\ is
     src_in_bin : out STD_LOGIC_VECTOR ( 0 to 0 );
     Q : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \grdc.rd_data_count_i_reg[2]\ : in STD_LOGIC_VECTOR ( 2 downto 0 );
-    \count_value_i_reg[0]_1\ : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    \count_value_i_reg[1]_2\ : in STD_LOGIC_VECTOR ( 1 downto 0 );
     rd_en : in STD_LOGIC;
     ram_empty_i : in STD_LOGIC;
-    \count_value_i_reg[0]_2\ : in STD_LOGIC;
+    \count_value_i_reg[1]_3\ : in STD_LOGIC;
     rd_clk : in STD_LOGIC
   );
   attribute ORIG_REF_NAME : string;
@@ -7653,23 +7654,24 @@ begin
     )
         port map (
       I0 => \^count_value_i_reg[0]_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
+      I1 => \count_value_i_reg[1]_2\(0),
       I2 => rd_en,
-      I3 => \count_value_i_reg[0]_1\(1),
+      I3 => \count_value_i_reg[1]_2\(1),
       I4 => ram_empty_i,
-      I5 => \count_value_i_reg[0]_2\,
+      I5 => \count_value_i_reg[1]_3\,
       O => \count_value_i[0]_i_1_n_0\
     );
-\count_value_i[1]_i_1\: unisim.vcomponents.LUT5
+\count_value_i[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000A8AA"
+      INIT => X"00000000AA88AAAA"
     )
         port map (
       I0 => \count_value_i[1]_i_2_n_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
-      I2 => \count_value_i_reg[0]_1\(1),
-      I3 => ram_empty_i,
-      I4 => \count_value_i_reg[0]_2\,
+      I1 => \count_value_i_reg[1]_2\(0),
+      I2 => rd_en,
+      I3 => \count_value_i_reg[1]_2\(1),
+      I4 => ram_empty_i,
+      I5 => \count_value_i_reg[1]_3\,
       O => \count_value_i[1]_i_1_n_0\
     );
 \count_value_i[1]_i_2\: unisim.vcomponents.LUT6
@@ -7678,9 +7680,9 @@ begin
     )
         port map (
       I0 => \^count_value_i_reg[0]_0\,
-      I1 => \count_value_i_reg[0]_1\(0),
+      I1 => \count_value_i_reg[1]_2\(0),
       I2 => rd_en,
-      I3 => \count_value_i_reg[0]_1\(1),
+      I3 => \count_value_i_reg[1]_2\(1),
       I4 => ram_empty_i,
       I5 => \^count_value_i_reg[1]_1\,
       O => \count_value_i[1]_i_2_n_0\
@@ -10605,9 +10607,8 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_memory_base is
   signal \gen_rd_b.doutb_reg_reg_n_0_[6]\ : STD_LOGIC;
   signal \gen_rd_b.doutb_reg_reg_n_0_[7]\ : STD_LOGIC;
   signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_0_5_DOD_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED\ : STD_LOGIC;
+  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED\ : STD_LOGIC;
   attribute dram_emb_xdc : string;
   attribute dram_emb_xdc of \gen_rd_b.doutb_reg_reg[0]\ : label is "no";
   attribute dram_emb_xdc of \gen_rd_b.doutb_reg_reg[1]\ : label is "no";
@@ -10644,6 +10645,15 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_memory_base is
   attribute ram_offset of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 0;
   attribute ram_slice_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 6;
   attribute ram_slice_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 7;
+  attribute METHODOLOGY_DRC_VIOS of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "";
+  attribute RTL_RAM_BITS of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 128;
+  attribute RTL_RAM_NAME of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "gen_wr_a.gen_word_narrow.mem";
+  attribute RTL_RAM_TYPE of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "RAM_SDP";
+  attribute ram_addr_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 0;
+  attribute ram_addr_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 15;
+  attribute ram_offset of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 0;
+  attribute ram_slice_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 6;
+  attribute ram_slice_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 7;
 begin
   dbiterra <= \<const0>\;
   dbiterrb <= \<const0>\;
@@ -10864,30 +10874,45 @@ GND: unisim.vcomponents.GND
       WCLK => clka,
       WE => ena
     );
-\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\: unisim.vcomponents.RAM32M
+\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\: unisim.vcomponents.RAM32X1D
     generic map(
-      INIT_A => X"0000000000000000",
-      INIT_B => X"0000000000000000",
-      INIT_C => X"0000000000000000",
-      INIT_D => X"0000000000000000"
+      INIT => X"00000000"
     )
         port map (
-      ADDRA(4) => '0',
-      ADDRA(3 downto 0) => addrb(3 downto 0),
-      ADDRB(4) => '0',
-      ADDRB(3 downto 0) => addrb(3 downto 0),
-      ADDRC(4) => '0',
-      ADDRC(3 downto 0) => addrb(3 downto 0),
-      ADDRD(4) => '0',
-      ADDRD(3 downto 0) => addra(3 downto 0),
-      DIA(1 downto 0) => dina(7 downto 6),
-      DIB(1 downto 0) => B"00",
-      DIC(1 downto 0) => B"00",
-      DID(1 downto 0) => B"00",
-      DOA(1 downto 0) => \gen_rd_b.doutb_reg0\(7 downto 6),
-      DOB(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED\(1 downto 0),
-      DOC(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED\(1 downto 0),
-      DOD(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED\(1 downto 0),
+      A0 => addra(0),
+      A1 => addra(1),
+      A2 => addra(2),
+      A3 => addra(3),
+      A4 => '0',
+      D => dina(6),
+      DPO => \gen_rd_b.doutb_reg0\(6),
+      DPRA0 => addrb(0),
+      DPRA1 => addrb(1),
+      DPRA2 => addrb(2),
+      DPRA3 => addrb(3),
+      DPRA4 => '0',
+      SPO => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED\,
+      WCLK => clka,
+      WE => ena
+    );
+\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\: unisim.vcomponents.RAM32X1D
+    generic map(
+      INIT => X"00000000"
+    )
+        port map (
+      A0 => addra(0),
+      A1 => addra(1),
+      A2 => addra(2),
+      A3 => addra(3),
+      A4 => '0',
+      D => dina(7),
+      DPO => \gen_rd_b.doutb_reg0\(7),
+      DPRA0 => addrb(0),
+      DPRA1 => addrb(1),
+      DPRA2 => addrb(2),
+      DPRA3 => addrb(3),
+      DPRA4 => '0',
+      SPO => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED\,
       WCLK => clka,
       WE => ena
     );
@@ -11078,9 +11103,8 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_memory_base__1\ is
   signal \gen_rd_b.doutb_reg_reg_n_0_[6]\ : STD_LOGIC;
   signal \gen_rd_b.doutb_reg_reg_n_0_[7]\ : STD_LOGIC;
   signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_0_5_DOD_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED\ : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED\ : STD_LOGIC;
+  signal \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED\ : STD_LOGIC;
   attribute dram_emb_xdc : string;
   attribute dram_emb_xdc of \gen_rd_b.doutb_reg_reg[0]\ : label is "no";
   attribute dram_emb_xdc of \gen_rd_b.doutb_reg_reg[1]\ : label is "no";
@@ -11117,6 +11141,15 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_memory_base__1\ is
   attribute ram_offset of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 0;
   attribute ram_slice_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 6;
   attribute ram_slice_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\ : label is 7;
+  attribute METHODOLOGY_DRC_VIOS of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "";
+  attribute RTL_RAM_BITS of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 128;
+  attribute RTL_RAM_NAME of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "gen_wr_a.gen_word_narrow.mem";
+  attribute RTL_RAM_TYPE of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is "RAM_SDP";
+  attribute ram_addr_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 0;
+  attribute ram_addr_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 15;
+  attribute ram_offset of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 0;
+  attribute ram_slice_begin of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 6;
+  attribute ram_slice_end of \gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\ : label is 7;
 begin
   dbiterra <= \<const0>\;
   dbiterrb <= \<const0>\;
@@ -11337,30 +11370,45 @@ GND: unisim.vcomponents.GND
       WCLK => clka,
       WE => ena
     );
-\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\: unisim.vcomponents.RAM32M
+\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7\: unisim.vcomponents.RAM32X1D
     generic map(
-      INIT_A => X"0000000000000000",
-      INIT_B => X"0000000000000000",
-      INIT_C => X"0000000000000000",
-      INIT_D => X"0000000000000000"
+      INIT => X"00000000"
     )
         port map (
-      ADDRA(4) => '0',
-      ADDRA(3 downto 0) => addrb(3 downto 0),
-      ADDRB(4) => '0',
-      ADDRB(3 downto 0) => addrb(3 downto 0),
-      ADDRC(4) => '0',
-      ADDRC(3 downto 0) => addrb(3 downto 0),
-      ADDRD(4) => '0',
-      ADDRD(3 downto 0) => addra(3 downto 0),
-      DIA(1 downto 0) => dina(7 downto 6),
-      DIB(1 downto 0) => B"00",
-      DIC(1 downto 0) => B"00",
-      DID(1 downto 0) => B"00",
-      DOA(1 downto 0) => \gen_rd_b.doutb_reg0\(7 downto 6),
-      DOB(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOB_UNCONNECTED\(1 downto 0),
-      DOC(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOC_UNCONNECTED\(1 downto 0),
-      DOD(1 downto 0) => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_DOD_UNCONNECTED\(1 downto 0),
+      A0 => addra(0),
+      A1 => addra(1),
+      A2 => addra(2),
+      A3 => addra(3),
+      A4 => '0',
+      D => dina(6),
+      DPO => \gen_rd_b.doutb_reg0\(6),
+      DPRA0 => addrb(0),
+      DPRA1 => addrb(1),
+      DPRA2 => addrb(2),
+      DPRA3 => addrb(3),
+      DPRA4 => '0',
+      SPO => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7_SPO_UNCONNECTED\,
+      WCLK => clka,
+      WE => ena
+    );
+\gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0\: unisim.vcomponents.RAM32X1D
+    generic map(
+      INIT => X"00000000"
+    )
+        port map (
+      A0 => addra(0),
+      A1 => addra(1),
+      A2 => addra(2),
+      A3 => addra(3),
+      A4 => '0',
+      D => dina(7),
+      DPO => \gen_rd_b.doutb_reg0\(7),
+      DPRA0 => addrb(0),
+      DPRA1 => addrb(1),
+      DPRA2 => addrb(2),
+      DPRA3 => addrb(3),
+      DPRA4 => '0',
+      SPO => \NLW_gen_wr_a.gen_word_narrow.mem_reg_0_15_6_7__0_SPO_UNCONNECTED\,
       WCLK => clka,
       WE => ena
     );
@@ -12867,17 +12915,16 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_rst is
   attribute RTL_KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3]\ : signal is "yes";
   signal \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4]\ : STD_LOGIC;
   attribute RTL_KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4]\ : signal is "yes";
-  signal \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\ : STD_LOGIC;
-  signal \__0/i__n_0\ : STD_LOGIC;
   signal \gen_rst_ic.curr_rrst_state\ : STD_LOGIC_VECTOR ( 1 downto 0 );
   attribute RTL_KEEP of \gen_rst_ic.curr_rrst_state\ : signal is "yes";
-  signal \gen_rst_ic.fifo_rd_rst_i0\ : STD_LOGIC;
+  signal \gen_rst_ic.fifo_rd_rst_i\ : STD_LOGIC;
   signal \^gen_rst_ic.fifo_rd_rst_ic_reg_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_rd_rst_wr_i\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic_i_1_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic_i_3_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_rd\ : STD_LOGIC;
+  signal \gen_rst_ic.next_rrst_state\ : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal \gen_rst_ic.rst_seq_reentered_i_1_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.rst_seq_reentered_i_2_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.rst_seq_reentered_reg_n_0\ : STD_LOGIC;
@@ -12899,9 +12946,9 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_rst is
   attribute KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[3]\ : label is "yes";
   attribute FSM_ENCODED_STATES of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[4]\ : label is "WRST_OUT:00100,WRST_IN:00010,WRST_GO2IDLE:10000,WRST_EXIT:01000,WRST_IDLE:00001";
   attribute KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[4]\ : label is "yes";
-  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11";
+  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11";
   attribute KEEP of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "yes";
-  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11";
+  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11";
   attribute KEEP of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "yes";
   attribute SOFT_HLUTNM : string;
   attribute SOFT_HLUTNM of \gen_rst_ic.fifo_wr_rst_ic_i_2\ : label is "soft_lutpair70";
@@ -12997,15 +13044,17 @@ begin
       I4 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2]\,
       O => \FSM_onehot_gen_rst_ic.curr_wrst_state[2]_i_1_n_0\
     );
-\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1\: unisim.vcomponents.LUT4
+\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0004"
+      INIT => X"0000004400000044"
     )
         port map (
       I0 => \gen_rst_ic.fifo_rd_rst_wr_i\,
       I1 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2]\,
-      I2 => rst,
-      I3 => p_0_in,
+      I2 => \gen_rst_ic.rst_seq_reentered_reg_n_0\,
+      I3 => rst,
+      I4 => p_0_in,
+      I5 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3]\,
       O => \FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1_n_0\
     );
 \FSM_onehot_gen_rst_ic.curr_wrst_state[4]_i_1\: unisim.vcomponents.LUT1
@@ -13089,7 +13138,7 @@ begin
         port map (
       I0 => \gen_rst_ic.curr_rrst_state\(0),
       I1 => \gen_rst_ic.curr_rrst_state\(1),
-      O => \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\
+      O => \gen_rst_ic.next_rrst_state\(1)
     );
 \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\: unisim.vcomponents.FDRE
     generic map(
@@ -13098,7 +13147,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \__0/i__n_0\,
+      D => \gen_rst_ic.next_rrst_state\(0),
       Q => \gen_rst_ic.curr_rrst_state\(0),
       R => '0'
     );
@@ -13109,7 +13158,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\,
+      D => \gen_rst_ic.next_rrst_state\(1),
       Q => \gen_rst_ic.curr_rrst_state\(1),
       R => '0'
     );
@@ -13121,7 +13170,7 @@ begin
       I0 => \gen_rst_ic.fifo_wr_rst_rd\,
       I1 => \gen_rst_ic.curr_rrst_state\(1),
       I2 => \gen_rst_ic.curr_rrst_state\(0),
-      O => \__0/i__n_0\
+      O => \gen_rst_ic.next_rrst_state\(0)
     );
 \gen_rst_ic.fifo_rd_rst_ic_i_1\: unisim.vcomponents.LUT3
     generic map(
@@ -13131,7 +13180,7 @@ begin
       I0 => \gen_rst_ic.fifo_wr_rst_rd\,
       I1 => \gen_rst_ic.curr_rrst_state\(1),
       I2 => \gen_rst_ic.curr_rrst_state\(0),
-      O => \gen_rst_ic.fifo_rd_rst_i0\
+      O => \gen_rst_ic.fifo_rd_rst_i\
     );
 \gen_rst_ic.fifo_rd_rst_ic_reg\: unisim.vcomponents.FDRE
     generic map(
@@ -13140,7 +13189,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \gen_rst_ic.fifo_rd_rst_i0\,
+      D => \gen_rst_ic.fifo_rd_rst_i\,
       Q => \^gen_rst_ic.fifo_rd_rst_ic_reg_0\,
       R => '0'
     );
@@ -13393,17 +13442,16 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1\ is
   attribute RTL_KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3]\ : signal is "yes";
   signal \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4]\ : STD_LOGIC;
   attribute RTL_KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[4]\ : signal is "yes";
-  signal \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\ : STD_LOGIC;
-  signal \__0/i__n_0\ : STD_LOGIC;
   signal \gen_rst_ic.curr_rrst_state\ : STD_LOGIC_VECTOR ( 1 downto 0 );
   attribute RTL_KEEP of \gen_rst_ic.curr_rrst_state\ : signal is "yes";
-  signal \gen_rst_ic.fifo_rd_rst_i0\ : STD_LOGIC;
+  signal \gen_rst_ic.fifo_rd_rst_i\ : STD_LOGIC;
   signal \^gen_rst_ic.fifo_rd_rst_ic_reg_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_rd_rst_wr_i\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic_i_1_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_ic_i_3_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.fifo_wr_rst_rd\ : STD_LOGIC;
+  signal \gen_rst_ic.next_rrst_state\ : STD_LOGIC_VECTOR ( 1 downto 0 );
   signal \gen_rst_ic.rst_seq_reentered_i_1_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.rst_seq_reentered_i_2_n_0\ : STD_LOGIC;
   signal \gen_rst_ic.rst_seq_reentered_reg_n_0\ : STD_LOGIC;
@@ -13425,9 +13473,9 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_fifo_rst__xdcDup__1\ is
   attribute KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[3]\ : label is "yes";
   attribute FSM_ENCODED_STATES of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[4]\ : label is "WRST_OUT:00100,WRST_IN:00010,WRST_GO2IDLE:10000,WRST_EXIT:01000,WRST_IDLE:00001";
   attribute KEEP of \FSM_onehot_gen_rst_ic.curr_wrst_state_reg[4]\ : label is "yes";
-  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11";
+  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11";
   attribute KEEP of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\ : label is "yes";
-  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "iSTATE:00,iSTATE0:01,iSTATE1:10,iSTATE2:11";
+  attribute FSM_ENCODED_STATES of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "RRST_IDLE:00,RRST_IN:01,RRST_OUT:10,RRST_EXIT:11";
   attribute KEEP of \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[1]\ : label is "yes";
   attribute SOFT_HLUTNM : string;
   attribute SOFT_HLUTNM of \gen_rst_ic.fifo_wr_rst_ic_i_2\ : label is "soft_lutpair44";
@@ -13523,15 +13571,17 @@ begin
       I4 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2]\,
       O => \FSM_onehot_gen_rst_ic.curr_wrst_state[2]_i_1_n_0\
     );
-\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1\: unisim.vcomponents.LUT4
+\FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0004"
+      INIT => X"0000004400000044"
     )
         port map (
       I0 => \gen_rst_ic.fifo_rd_rst_wr_i\,
       I1 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[2]\,
-      I2 => rst,
-      I3 => p_0_in,
+      I2 => \gen_rst_ic.rst_seq_reentered_reg_n_0\,
+      I3 => rst,
+      I4 => p_0_in,
+      I5 => \FSM_onehot_gen_rst_ic.curr_wrst_state_reg_n_0_[3]\,
       O => \FSM_onehot_gen_rst_ic.curr_wrst_state[3]_i_1_n_0\
     );
 \FSM_onehot_gen_rst_ic.curr_wrst_state[4]_i_1\: unisim.vcomponents.LUT1
@@ -13615,7 +13665,7 @@ begin
         port map (
       I0 => \gen_rst_ic.curr_rrst_state\(0),
       I1 => \gen_rst_ic.curr_rrst_state\(1),
-      O => \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\
+      O => \gen_rst_ic.next_rrst_state\(1)
     );
 \FSM_sequential_gen_rst_ic.curr_rrst_state_reg[0]\: unisim.vcomponents.FDRE
     generic map(
@@ -13624,7 +13674,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \__0/i__n_0\,
+      D => \gen_rst_ic.next_rrst_state\(0),
       Q => \gen_rst_ic.curr_rrst_state\(0),
       R => '0'
     );
@@ -13635,7 +13685,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \FSM_sequential_gen_rst_ic.curr_rrst_state[1]_i_1_n_0\,
+      D => \gen_rst_ic.next_rrst_state\(1),
       Q => \gen_rst_ic.curr_rrst_state\(1),
       R => '0'
     );
@@ -13647,7 +13697,7 @@ begin
       I0 => \gen_rst_ic.fifo_wr_rst_rd\,
       I1 => \gen_rst_ic.curr_rrst_state\(1),
       I2 => \gen_rst_ic.curr_rrst_state\(0),
-      O => \__0/i__n_0\
+      O => \gen_rst_ic.next_rrst_state\(0)
     );
 \gen_rst_ic.fifo_rd_rst_ic_i_1\: unisim.vcomponents.LUT3
     generic map(
@@ -13657,7 +13707,7 @@ begin
       I0 => \gen_rst_ic.fifo_wr_rst_rd\,
       I1 => \gen_rst_ic.curr_rrst_state\(1),
       I2 => \gen_rst_ic.curr_rrst_state\(0),
-      O => \gen_rst_ic.fifo_rd_rst_i0\
+      O => \gen_rst_ic.fifo_rd_rst_i\
     );
 \gen_rst_ic.fifo_rd_rst_ic_reg\: unisim.vcomponents.FDRE
     generic map(
@@ -13666,7 +13716,7 @@ begin
         port map (
       C => rd_clk,
       CE => '1',
-      D => \gen_rst_ic.fifo_rd_rst_i0\,
+      D => \gen_rst_ic.fifo_rd_rst_i\,
       Q => \^gen_rst_ic.fifo_rd_rst_ic_reg_0\,
       R => '0'
     );
@@ -15108,6 +15158,7 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_base is
   signal \NLW_gen_sdpram.xpm_memory_base_inst_douta_UNCONNECTED\ : STD_LOGIC_VECTOR ( 7 downto 0 );
   attribute SOFT_HLUTNM : string;
   attribute SOFT_HLUTNM of \FSM_sequential_gen_fwft.curr_fwft_state[0]_i_1\ : label is "soft_lutpair47";
+  attribute SOFT_HLUTNM of \FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\ : label is "soft_lutpair47";
   attribute FSM_ENCODED_STATES : string;
   attribute FSM_ENCODED_STATES of \FSM_sequential_gen_fwft.curr_fwft_state_reg[0]\ : label is "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11";
   attribute FSM_ENCODED_STATES of \FSM_sequential_gen_fwft.curr_fwft_state_reg[1]\ : label is "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11";
@@ -15154,7 +15205,6 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_base is
   attribute XPM_CDC of \gen_cdc_pntr.wr_pntr_cdc_inst\ : label is "GRAY";
   attribute XPM_MODULE of \gen_cdc_pntr.wr_pntr_cdc_inst\ : label is "TRUE";
   attribute SOFT_HLUTNM of \gen_fwft.gae_fwft.aempty_fwft_i_i_1\ : label is "soft_lutpair46";
-  attribute SOFT_HLUTNM of \gen_fwft.gdvld_fwft.data_valid_fwft_i_1\ : label is "soft_lutpair47";
   attribute ADDR_WIDTH_A : integer;
   attribute ADDR_WIDTH_A of \gen_sdpram.xpm_memory_base_inst\ : label is 4;
   attribute ADDR_WIDTH_B : integer;
@@ -15309,14 +15359,15 @@ begin
       I3 => ram_empty_i,
       O => \next_fwft_state__0\(0)
     );
-\FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\: unisim.vcomponents.LUT3
+\FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7C"
+      INIT => X"3FF0"
     )
         port map (
-      I0 => rd_en,
-      I1 => curr_fwft_state(1),
-      I2 => curr_fwft_state(0),
+      I0 => ram_empty_i,
+      I1 => rd_en,
+      I2 => curr_fwft_state(1),
+      I3 => curr_fwft_state(0),
       O => \next_fwft_state__0\(1)
     );
 \FSM_sequential_gen_fwft.curr_fwft_state_reg[0]\: unisim.vcomponents.FDRE
@@ -15527,10 +15578,10 @@ GND: unisim.vcomponents.GND
       Q(1) => \gen_cdc_pntr.wpr_gray_reg_dc_n_4\,
       Q(0) => \gen_cdc_pntr.wpr_gray_reg_dc_n_5\,
       \count_value_i_reg[0]_0\ => \gen_fwft.rdpp1_inst_n_3\,
-      \count_value_i_reg[0]_1\(1 downto 0) => curr_fwft_state(1 downto 0),
-      \count_value_i_reg[0]_2\ => \^rd_rst_busy\,
       \count_value_i_reg[1]_0\ => \gen_fwft.rdpp1_inst_n_1\,
       \count_value_i_reg[1]_1\ => \gen_fwft.rdpp1_inst_n_2\,
+      \count_value_i_reg[1]_2\(1 downto 0) => curr_fwft_state(1 downto 0),
+      \count_value_i_reg[1]_3\ => \^rd_rst_busy\,
       \grdc.rd_data_count_i_reg[2]\(2 downto 0) => rd_pntr_ext(2 downto 0),
       ram_empty_i => ram_empty_i,
       rd_clk => rd_clk,
@@ -16162,6 +16213,7 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_fifo_base__parameterize
   signal \NLW_gen_sdpram.xpm_memory_base_inst_douta_UNCONNECTED\ : STD_LOGIC_VECTOR ( 7 downto 0 );
   attribute SOFT_HLUTNM : string;
   attribute SOFT_HLUTNM of \FSM_sequential_gen_fwft.curr_fwft_state[0]_i_1\ : label is "soft_lutpair73";
+  attribute SOFT_HLUTNM of \FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\ : label is "soft_lutpair73";
   attribute FSM_ENCODED_STATES : string;
   attribute FSM_ENCODED_STATES of \FSM_sequential_gen_fwft.curr_fwft_state_reg[0]\ : label is "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11";
   attribute FSM_ENCODED_STATES of \FSM_sequential_gen_fwft.curr_fwft_state_reg[1]\ : label is "invalid:00,stage1_valid:01,both_stages_valid:10,stage2_valid:11";
@@ -16208,7 +16260,6 @@ architecture STRUCTURE of \icyradio_axi_quad_spi_1_0_xpm_fifo_base__parameterize
   attribute XPM_CDC of \gen_cdc_pntr.wr_pntr_cdc_inst\ : label is "GRAY";
   attribute XPM_MODULE of \gen_cdc_pntr.wr_pntr_cdc_inst\ : label is "TRUE";
   attribute SOFT_HLUTNM of \gen_fwft.gae_fwft.aempty_fwft_i_i_1\ : label is "soft_lutpair72";
-  attribute SOFT_HLUTNM of \gen_fwft.gdvld_fwft.data_valid_fwft_i_1\ : label is "soft_lutpair73";
   attribute ADDR_WIDTH_A : integer;
   attribute ADDR_WIDTH_A of \gen_sdpram.xpm_memory_base_inst\ : label is 4;
   attribute ADDR_WIDTH_B : integer;
@@ -16363,14 +16414,15 @@ begin
       I3 => ram_empty_i,
       O => \next_fwft_state__0\(0)
     );
-\FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\: unisim.vcomponents.LUT3
+\FSM_sequential_gen_fwft.curr_fwft_state[1]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7C"
+      INIT => X"3FF0"
     )
         port map (
-      I0 => rd_en,
-      I1 => curr_fwft_state(1),
-      I2 => curr_fwft_state(0),
+      I0 => ram_empty_i,
+      I1 => rd_en,
+      I2 => curr_fwft_state(1),
+      I3 => curr_fwft_state(0),
       O => \next_fwft_state__0\(1)
     );
 \FSM_sequential_gen_fwft.curr_fwft_state_reg[0]\: unisim.vcomponents.FDRE
@@ -16582,10 +16634,10 @@ GND: unisim.vcomponents.GND
       Q(1) => \gen_cdc_pntr.wpr_gray_reg_dc_n_4\,
       Q(0) => \gen_cdc_pntr.wpr_gray_reg_dc_n_5\,
       \count_value_i_reg[0]_0\ => \gen_fwft.rdpp1_inst_n_3\,
-      \count_value_i_reg[0]_1\(1 downto 0) => curr_fwft_state(1 downto 0),
-      \count_value_i_reg[0]_2\ => \^rd_rst_busy\,
       \count_value_i_reg[1]_0\ => \gen_fwft.rdpp1_inst_n_1\,
       \count_value_i_reg[1]_1\ => \gen_fwft.rdpp1_inst_n_2\,
+      \count_value_i_reg[1]_2\(1 downto 0) => curr_fwft_state(1 downto 0),
+      \count_value_i_reg[1]_3\ => \^rd_rst_busy\,
       \grdc.rd_data_count_i_reg[2]\(2 downto 0) => rd_pntr_ext(2 downto 0),
       ram_empty_i => ram_empty_i,
       rd_clk => rd_clk,
@@ -19622,6 +19674,8 @@ entity icyradio_axi_quad_spi_1_0_axi_quad_spi is
   );
   attribute Async_Clk : integer;
   attribute Async_Clk of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is 0;
+  attribute C_BYTE_LEVEL_INTERRUPT_EN : integer;
+  attribute C_BYTE_LEVEL_INTERRUPT_EN of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is 0;
   attribute C_DUAL_QUAD_MODE : integer;
   attribute C_DUAL_QUAD_MODE of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is 0;
   attribute C_FAMILY : string;
@@ -19874,7 +19928,7 @@ entity icyradio_axi_quad_spi_1_0 is
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_axi_quad_spi_1_0 : entity is "yes";
   attribute x_core_info : string;
-  attribute x_core_info of icyradio_axi_quad_spi_1_0 : entity is "axi_quad_spi,Vivado 2020.2";
+  attribute x_core_info of icyradio_axi_quad_spi_1_0 : entity is "axi_quad_spi,Vivado 2021.1";
 end icyradio_axi_quad_spi_1_0;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0 is
@@ -19916,6 +19970,8 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0 is
   signal NLW_U0_s_axi_rresp_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   attribute Async_Clk : integer;
   attribute Async_Clk of U0 : label is 0;
+  attribute C_BYTE_LEVEL_INTERRUPT_EN : integer;
+  attribute C_BYTE_LEVEL_INTERRUPT_EN of U0 : label is 0;
   attribute C_DUAL_QUAD_MODE : integer;
   attribute C_DUAL_QUAD_MODE of U0 : label is 0;
   attribute C_FAMILY : string;
@@ -19976,7 +20032,7 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0 is
   attribute x_interface_info : string;
   attribute x_interface_info of ext_spi_clk : signal is "xilinx.com:signal:clock:1.0 spi_clk CLK";
   attribute x_interface_parameter : string;
-  attribute x_interface_parameter of ext_spi_clk : signal is "XIL_INTERFACENAME spi_clk, ASSOCIATED_BUSIF SPI_0, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0";
+  attribute x_interface_parameter of ext_spi_clk : signal is "XIL_INTERFACENAME spi_clk, ASSOCIATED_BUSIF SPI_0, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0";
   attribute x_interface_info of io0_i : signal is "xilinx.com:interface:spi:1.0 SPI_0 IO0_I";
   attribute x_interface_parameter of io0_i : signal is "XIL_INTERFACENAME SPI_0, BOARD.ASSOCIATED_PARAM QSPI_BOARD_INTERFACE";
   attribute x_interface_info of io0_o : signal is "xilinx.com:interface:spi:1.0 SPI_0 IO0_O";
@@ -19987,7 +20043,7 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0 is
   attribute x_interface_info of ip2intc_irpt : signal is "xilinx.com:signal:interrupt:1.0 interrupt INTERRUPT";
   attribute x_interface_parameter of ip2intc_irpt : signal is "XIL_INTERFACENAME interrupt, SENSITIVITY EDGE_RISING, PortWidth 1";
   attribute x_interface_info of s_axi_aclk : signal is "xilinx.com:signal:clock:1.0 lite_clk CLK";
-  attribute x_interface_parameter of s_axi_aclk : signal is "XIL_INTERFACENAME lite_clk, ASSOCIATED_BUSIF AXI_LITE, ASSOCIATED_RESET s_axi_aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0";
+  attribute x_interface_parameter of s_axi_aclk : signal is "XIL_INTERFACENAME lite_clk, ASSOCIATED_BUSIF AXI_LITE, ASSOCIATED_RESET s_axi_aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0";
   attribute x_interface_info of s_axi_aresetn : signal is "xilinx.com:signal:reset:1.0 lite_reset RST";
   attribute x_interface_parameter of s_axi_aresetn : signal is "XIL_INTERFACENAME lite_reset, POLARITY ACTIVE_LOW, INSERT_VIP 0";
   attribute x_interface_info of s_axi_arready : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE ARREADY";
@@ -20006,7 +20062,7 @@ architecture STRUCTURE of icyradio_axi_quad_spi_1_0 is
   attribute x_interface_info of ss_t : signal is "xilinx.com:interface:spi:1.0 SPI_0 SS_T";
   attribute x_interface_info of s_axi_araddr : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE ARADDR";
   attribute x_interface_info of s_axi_awaddr : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE AWADDR";
-  attribute x_interface_parameter of s_axi_awaddr : signal is "XIL_INTERFACENAME AXI_LITE, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 2, NUM_WRITE_OUTSTANDING 2, MAX_BURST_LENGTH 1, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0";
+  attribute x_interface_parameter of s_axi_awaddr : signal is "XIL_INTERFACENAME AXI_LITE, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 2, NUM_WRITE_OUTSTANDING 2, MAX_BURST_LENGTH 1, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0";
   attribute x_interface_info of s_axi_bresp : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE BRESP";
   attribute x_interface_info of s_axi_rdata : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE RDATA";
   attribute x_interface_info of s_axi_rresp : signal is "xilinx.com:interface:aximm:1.0 AXI_LITE RRESP";

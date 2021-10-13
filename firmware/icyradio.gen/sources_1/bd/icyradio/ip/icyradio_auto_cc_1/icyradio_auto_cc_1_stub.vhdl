@@ -1,13 +1,13 @@
--- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Sat Sep 25 13:35:11 2021
--- Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
--- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_auto_cc_1 -prefix
---               icyradio_auto_cc_1_ icyradio_auto_cc_1_stub.vhdl
+-- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+-- Date        : Wed Oct 13 13:50:14 2021
+-- Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+-- Command     : write_vhdl -force -mode synth_stub
+--               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_auto_cc_1/icyradio_auto_cc_1_stub.vhdl
 -- Design      : icyradio_auto_cc_1
 -- Purpose     : Stub declaration of top-level module interface
--- Device      : xc7a75tfgg484-2
+-- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -66,6 +66,6 @@ attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
 attribute black_box_pad_pin of stub : architecture is "s_axi_aclk,s_axi_aresetn,s_axi_awaddr[31:0],s_axi_awprot[2:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[31:0],s_axi_arprot[2:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,m_axi_aclk,m_axi_aresetn,m_axi_awaddr[31:0],m_axi_awprot[2:0],m_axi_awvalid,m_axi_awready,m_axi_wdata[31:0],m_axi_wstrb[3:0],m_axi_wvalid,m_axi_wready,m_axi_bresp[1:0],m_axi_bvalid,m_axi_bready,m_axi_araddr[31:0],m_axi_arprot[2:0],m_axi_arvalid,m_axi_arready,m_axi_rdata[31:0],m_axi_rresp[1:0],m_axi_rvalid,m_axi_rready";
 attribute X_CORE_INFO : string;
-attribute X_CORE_INFO of stub : architecture is "axi_clock_converter_v2_1_21_axi_clock_converter,Vivado 2020.2";
+attribute X_CORE_INFO of stub : architecture is "axi_clock_converter_v2_1_23_axi_clock_converter,Vivado 2021.1";
 begin
 end;

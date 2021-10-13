@@ -76,6 +76,7 @@ entity util_ds_buf is
          C_BUFGCE_DIV        : integer := 2;
          C_BUFG_GT_SYNC      : integer := 0;
          C_SIM_DEVICE        : string  := "VERSAL_AI_CORE_ES1";
+         C_MODE              : string  := "PERFORMANCE";
          C_OBUFDS_GTE5_ADV   : std_logic_vector(1 downto 0) := "00";
          C_REFCLK_ICNTL_TX   : std_logic_vector(4 downto 0) := "00000"   
       );
@@ -216,7 +217,23 @@ entity util_ds_buf is
 
   -- port for BUFG_PS 
            BUFG_PS_I             : in    std_logic_vector(C_SIZE-1 downto 0);
-           BUFG_PS_O             : out   std_logic_vector(C_SIZE-1 downto 0)
+           BUFG_PS_O             : out   std_logic_vector(C_SIZE-1 downto 0) ;
+
+
+
+  -- ports for MBUFG_GT
+           MBUFG_GT_I              : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_CE             : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_CEMASK         : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_CLR            : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_CLRB_LEAF      : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_CLRMASK        : in    std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_DIV            : in    std_logic_vector((3 * C_SIZE) - 1 downto 0);
+           MBUFG_GT_O1              : out   std_logic_vector(C_SIZE-1 downto 0);
+           MBUFG_GT_O2              : out   std_logic_vector(C_SIZE-1 downto 0) ;
+           MBUFG_GT_O3              : out   std_logic_vector(C_SIZE-1 downto 0) ;
+           MBUFG_GT_O4              : out   std_logic_vector(C_SIZE-1 downto 0)
+
 
      );
 
@@ -296,6 +313,14 @@ begin
       GEN_IBUFDS_GTE3 : for i in 0 to C_SIZE-1 generate
 
          IBUFDS_GTE3_I : IBUFDS_GTE3
+
+
+          generic map (
+          REFCLK_EN_TX_PATH  => BIT1, --'0',
+          REFCLK_ICNTL_RX     => BIT2, ---'00'
+          REFCLK_HROW_CK_SEL => BIT2
+        )
+
          port map (O => IBUF_OUT(i), ODIV2 => IBUF_DS_ODIV2(i), I => IBUF_DS_P(i), IB => IBUF_DS_N(i), CEB => '0');
 
       end generate GEN_IBUFDS_GTE3;
@@ -315,6 +340,12 @@ begin
       GEN_IBUFDS_GTE4 : for i in 0 to C_SIZE-1 generate
 
          IBUFDS_GTE4_I : IBUFDS_GTE4
+
+         generic map (
+          REFCLK_EN_TX_PATH  => BIT1, --'0',
+          REFCLK_ICNTL_RX     => BIT2, ---'00'
+          REFCLK_HROW_CK_SEL => BIT2
+        )
          port map (O => IBUF_OUT(i), ODIV2 => IBUF_DS_ODIV2(i), I => IBUF_DS_P(i), IB => IBUF_DS_N(i), CEB => '0');
 
       end generate GEN_IBUFDS_GTE4;
@@ -534,6 +565,7 @@ begin
 
 
 
+
   -- OBUFDS_GTE3: Gigabit Transceiver Buffer
   -- UltraScale
   
@@ -706,7 +738,9 @@ begin
          OBUFDS_GTM_U :  OBUFDS_GTM
 
         generic map (
-          REFCLK_EN_TX_PATH  => BIT1_1 --'0'
+          REFCLK_EN_TX_PATH  => BIT1_1, 
+          REFCLK_ICNTL_TX    => 0
+
                  )
         port map (
           O            => OBUFDS_GTM_O(i), 

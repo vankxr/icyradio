@@ -48,7 +48,7 @@
 
 
 // IP VLNV: xilinx.com:ip:axi_pcie:2.9
-// IP Revision: 4
+// IP Revision: 5
 
 `timescale 1ns/1ps
 
@@ -155,10 +155,10 @@ module icyradio_axi_pcie_0_0 (
 (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.axi_aresetn RST" *)
 input wire axi_aresetn;
 output wire user_link_up;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.axi_aclk_out, ASSOCIATED_BUSIF M_AXI:S_AXI, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.axi_aclk_out, ASSOCIATED_BUSIF M_AXI:S_AXI, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.axi_aclk_out CLK" *)
 output wire axi_aclk_out;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.axi_ctl_aclk_out, ASSOCIATED_BUSIF S_AXI_CTL, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.axi_ctl_aclk_out, ASSOCIATED_BUSIF S_AXI_CTL, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.axi_ctl_aclk_out CLK" *)
 output wire axi_ctl_aclk_out;
 output wire mmcm_lock;
@@ -171,7 +171,7 @@ output wire MSI_enable;
 input wire [4 : 0] MSI_Vector_Num;
 output wire [2 : 0] MSI_Vector_Width;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI AWID" *)
-input wire [1 : 0] s_axi_awid;
+input wire [2 : 0] s_axi_awid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI AWADDR" *)
 input wire [31 : 0] s_axi_awaddr;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI AWREGION" *)
@@ -197,7 +197,7 @@ input wire s_axi_wvalid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI WREADY" *)
 output wire s_axi_wready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI BID" *)
-output wire [1 : 0] s_axi_bid;
+output wire [2 : 0] s_axi_bid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI BRESP" *)
 output wire [1 : 0] s_axi_bresp;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI BVALID" *)
@@ -205,7 +205,7 @@ output wire s_axi_bvalid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI BREADY" *)
 input wire s_axi_bready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI ARID" *)
-input wire [1 : 0] s_axi_arid;
+input wire [2 : 0] s_axi_arid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI ARADDR" *)
 input wire [31 : 0] s_axi_araddr;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI ARREGION" *)
@@ -221,7 +221,7 @@ input wire s_axi_arvalid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI ARREADY" *)
 output wire s_axi_arready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI RID" *)
-output wire [1 : 0] s_axi_rid;
+output wire [2 : 0] s_axi_rid;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI RDATA" *)
 output wire [63 : 0] s_axi_rdata;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI RRESP" *)
@@ -230,8 +230,8 @@ output wire [1 : 0] s_axi_rresp;
 output wire s_axi_rlast;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI RVALID" *)
 output wire s_axi_rvalid;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME S_AXI, NUM_READ_OUTSTANDING 8, NUM_WRITE_OUTSTANDING 2, SUPPORTS_NARROW_BURST 0, DATA_WIDTH 64, PROTOCOL AXI4, FREQ_HZ 125000000, ID_WIDTH 2, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 1, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 1, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, MAX_BURST_LENGTH 16, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_W\
-RITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME S_AXI, NUM_READ_OUTSTANDING 8, NUM_WRITE_OUTSTANDING 2, SUPPORTS_NARROW_BURST 0, DATA_WIDTH 64, PROTOCOL AXI4, FREQ_HZ 125000000, ID_WIDTH 3, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 1, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 1, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, MAX_BURST_LENGTH 16, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRI\
+TE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI RREADY" *)
 input wire s_axi_rready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI AWADDR" *)
@@ -294,8 +294,8 @@ input wire [1 : 0] m_axi_rresp;
 input wire m_axi_rlast;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI RVALID" *)
 input wire m_axi_rvalid;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME M_AXI, NUM_READ_OUTSTANDING 4, NUM_WRITE_OUTSTANDING 4, HAS_BURST 0, HAS_BURST.VALUE_SRC CONSTANT, DATA_WIDTH 64, PROTOCOL AXI4, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_LOCK 1, HAS_PROT 1, HAS_CACHE 1, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 1, MAX_BURST_LENGTH 256, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk\
-_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME M_AXI, NUM_READ_OUTSTANDING 4, NUM_WRITE_OUTSTANDING 4, HAS_BURST 0, HAS_BURST.VALUE_SRC CONSTANT, DATA_WIDTH 64, PROTOCOL AXI4, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_LOCK 1, HAS_PROT 1, HAS_CACHE 1, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 1, MAX_BURST_LENGTH 256, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_o\
+ut, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI RREADY" *)
 output wire m_axi_rready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt txp" *)
@@ -306,7 +306,7 @@ output wire [1 : 0] pci_exp_txn;
 input wire [1 : 0] pci_exp_rxp;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt rxn" *)
 input wire [1 : 0] pci_exp_rxn;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.REFCLK, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.REFCLK, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.REFCLK CLK" *)
 input wire REFCLK;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_CTL AWADDR" *)
@@ -341,15 +341,15 @@ output wire [31 : 0] s_axi_ctl_rdata;
 output wire [1 : 0] s_axi_ctl_rresp;
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_CTL RVALID" *)
 output wire s_axi_ctl_rvalid;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME S_AXI_CTL, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 2, NUM_WRITE_OUTSTANDING 2, MAX_BURST_LENGTH 1, PHASE 0.000, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1\
-, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME S_AXI_CTL, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 32, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 0, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 1, NUM_WRITE_OUTSTANDING 1, MAX_BURST_LENGTH 1, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, \
+NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 S_AXI_CTL RREADY" *)
 input wire s_axi_ctl_rready;
 
   axi_pcie #(
     .C_FAMILY("artix7"),
     .C_INSTANCE("icyradio_axi_pcie_0_0"),
-    .C_S_AXI_ID_WIDTH(2),
+    .C_S_AXI_ID_WIDTH(3),
     .C_S_AXI_ADDR_WIDTH(32),
     .C_S_AXI_DATA_WIDTH(64),
     .C_M_AXI_ADDR_WIDTH(32),
@@ -420,7 +420,7 @@ input wire s_axi_ctl_rready;
     .SHARED_LOGIC_IN_CORE("FALSE"),
     .TRANSCEIVER_CTRL_STATUS_PORTS("FALSE"),
     .EXT_PIPE_INTERFACE("FALSE"),
-    .C_DEVICE("xc7a75t"),
+    .C_DEVICE("xc7a100t"),
     .C_SPEED("-2"),
     .AXI_ACLK_LOOPBACK("FALSE"),
     .NO_SLV_ERR("FALSE"),

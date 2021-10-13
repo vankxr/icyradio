@@ -1,8 +1,8 @@
-//Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+//Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
-//Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
-//Date        : Sat Sep 25 20:22:10 2021
-//Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
+//Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+//Date        : Wed Oct 13 13:45:46 2021
+//Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist

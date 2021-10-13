@@ -116,7 +116,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -214,7 +214,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "0");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4LITE");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -317,7 +317,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -415,7 +415,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "0");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4LITE");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -518,7 +518,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -616,7 +616,7 @@ void icyradio_axi_protocol_convert_0_2::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "0");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4LITE");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -708,7 +708,7 @@ icyradio_axi_protocol_convert_0_2::icyradio_axi_protocol_convert_0_2(const sc_co
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -787,7 +787,7 @@ icyradio_axi_protocol_convert_0_2::icyradio_axi_protocol_convert_0_2(const sc_co
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "0");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4LITE");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -909,7 +909,7 @@ icyradio_axi_protocol_convert_0_2::icyradio_axi_protocol_convert_0_2(const sc_co
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
@@ -988,7 +988,7 @@ icyradio_axi_protocol_convert_0_2::icyradio_axi_protocol_convert_0_2(const sc_co
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "0");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4LITE");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "READ_WRITE");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");

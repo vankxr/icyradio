@@ -1,7 +1,7 @@
 
 
 Vivado Project Options:
-   Target Device                   : xc7a75t-fgg484
+   Target Device                   : xc7a100t-fgg484
    Speed Grade                     : -2
    HDL                             : verilog
    Synthesis Tool                  : VIVADO
@@ -9,7 +9,7 @@ Vivado Project Options:
 MIG Output Options:
    Module Name                     : icyradio_mig_7series_0_0
    No of Controllers               : 1
-   Selected Compatible Device(s)   : xc7a50t-fgg484, xc7a35t-fgg484, xc7a100t-fgg484
+   Selected Compatible Device(s)   : xc7a75t-fgg484, xc7a50t-fgg484, xc7a35t-fgg484
 
 FPGA Options:
    System Clock Type               : Differential
@@ -47,7 +47,7 @@ AXI Parameters :
    Data Width                    : 64
    Arbitration Scheme            : RD_PRI_REG
    Narrow Burst Support          : 1
-   ID Width                      : 3
+   ID Width                      : 4
 
 Memory Options:
    Burst Length (MR0[1:0])          : 8 - Fixed

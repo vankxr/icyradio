@@ -1,14 +1,14 @@
--- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+-- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
--- Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
--- Date        : Sat Sep 25 13:12:30 2021
--- Host        : jsilva-kubuntu running 64-bit Ubuntu 20.04.3 LTS
--- Command     : write_vhdl -force -mode funcsim {/media/joao/SSD
---               Data/Development/icyradio/firmware/icyradio/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0_sim_netlist.vhdl}
+-- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
+-- Date        : Wed Oct 13 13:56:03 2021
+-- Host        : jsilva-kde running 64-bit KDE neon User Edition 5.22
+-- Command     : write_vhdl -force -mode funcsim
+--               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0_sim_netlist.vhdl
 -- Design      : icyradio_util_ds_buf_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
--- Device      : xc7a75tfgg484-2
+-- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -105,7 +105,18 @@ entity icyradio_util_ds_buf_0_0_util_ds_buf is
     BUFG_GT_DIV : in STD_LOGIC_VECTOR ( 2 downto 0 );
     BUFG_GT_O : out STD_LOGIC_VECTOR ( 0 to 0 );
     BUFG_PS_I : in STD_LOGIC_VECTOR ( 0 to 0 );
-    BUFG_PS_O : out STD_LOGIC_VECTOR ( 0 to 0 )
+    BUFG_PS_O : out STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_I : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_CE : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_CEMASK : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_CLR : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_CLRB_LEAF : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_CLRMASK : in STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_DIV : in STD_LOGIC_VECTOR ( 2 downto 0 );
+    MBUFG_GT_O1 : out STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_O2 : out STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_O3 : out STD_LOGIC_VECTOR ( 0 to 0 );
+    MBUFG_GT_O4 : out STD_LOGIC_VECTOR ( 0 to 0 )
   );
   attribute C_BUFGCE_DIV : integer;
   attribute C_BUFGCE_DIV of icyradio_util_ds_buf_0_0_util_ds_buf : entity is 1;
@@ -113,6 +124,8 @@ entity icyradio_util_ds_buf_0_0_util_ds_buf is
   attribute C_BUFG_GT_SYNC of icyradio_util_ds_buf_0_0_util_ds_buf : entity is 0;
   attribute C_BUF_TYPE : string;
   attribute C_BUF_TYPE of icyradio_util_ds_buf_0_0_util_ds_buf : entity is "ibufdsgte2";
+  attribute C_MODE : string;
+  attribute C_MODE of icyradio_util_ds_buf_0_0_util_ds_buf : entity is "PERFORMANCE";
   attribute C_OBUFDS_GTE5_ADV : string;
   attribute C_OBUFDS_GTE5_ADV of icyradio_util_ds_buf_0_0_util_ds_buf : entity is "2'b00";
   attribute C_REFCLK_ICNTL_TX : string;
@@ -157,6 +170,10 @@ begin
   IOBUF_DS_N(0) <= \<const0>\;
   IOBUF_DS_P(0) <= \<const0>\;
   IOBUF_IO_O(0) <= \<const0>\;
+  MBUFG_GT_O1(0) <= \<const0>\;
+  MBUFG_GT_O2(0) <= \<const0>\;
+  MBUFG_GT_O3(0) <= \<const0>\;
+  MBUFG_GT_O4(0) <= \<const0>\;
   OBUFDS_GTE3_ADV_O(0) <= \<const0>\;
   OBUFDS_GTE3_ADV_OB(0) <= \<const0>\;
   OBUFDS_GTE3_O(0) <= \<const0>\;
@@ -231,7 +248,7 @@ entity icyradio_util_ds_buf_0_0 is
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_util_ds_buf_0_0 : entity is "yes";
   attribute x_core_info : string;
-  attribute x_core_info of icyradio_util_ds_buf_0_0 : entity is "util_ds_buf,Vivado 2020.2";
+  attribute x_core_info of icyradio_util_ds_buf_0_0 : entity is "util_ds_buf,Vivado 2021.1";
 end icyradio_util_ds_buf_0_0;
 
 architecture STRUCTURE of icyradio_util_ds_buf_0_0 is
@@ -250,6 +267,10 @@ architecture STRUCTURE of icyradio_util_ds_buf_0_0 is
   signal NLW_U0_IOBUF_DS_P_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_U0_IOBUF_IO_IO_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_U0_IOBUF_IO_O_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_U0_MBUFG_GT_O1_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_U0_MBUFG_GT_O2_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_U0_MBUFG_GT_O3_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal NLW_U0_MBUFG_GT_O4_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_U0_OBUFDS_GTE3_ADV_O_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_U0_OBUFDS_GTE3_ADV_OB_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
   signal NLW_U0_OBUFDS_GTE3_O_UNCONNECTED : STD_LOGIC_VECTOR ( 0 to 0 );
@@ -278,6 +299,8 @@ architecture STRUCTURE of icyradio_util_ds_buf_0_0 is
   attribute C_BUFG_GT_SYNC of U0 : label is 0;
   attribute C_BUF_TYPE : string;
   attribute C_BUF_TYPE of U0 : label is "ibufdsgte2";
+  attribute C_MODE : string;
+  attribute C_MODE of U0 : label is "PERFORMANCE";
   attribute C_OBUFDS_GTE5_ADV : string;
   attribute C_OBUFDS_GTE5_ADV of U0 : label is "2'b00";
   attribute C_REFCLK_ICNTL_TX : string;
@@ -290,11 +313,11 @@ architecture STRUCTURE of icyradio_util_ds_buf_0_0 is
   attribute x_interface_info of IBUF_DS_N : signal is "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_N";
   attribute x_interface_info of IBUF_DS_ODIV2 : signal is "xilinx.com:signal:clock:1.0 IBUF_DS_ODIV2 CLK";
   attribute x_interface_parameter : string;
-  attribute x_interface_parameter of IBUF_DS_ODIV2 : signal is "XIL_INTERFACENAME IBUF_DS_ODIV2, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_DS_ODIV2, INSERT_VIP 0";
+  attribute x_interface_parameter of IBUF_DS_ODIV2 : signal is "XIL_INTERFACENAME IBUF_DS_ODIV2, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_DS_ODIV2, INSERT_VIP 0";
   attribute x_interface_info of IBUF_DS_P : signal is "xilinx.com:interface:diff_clock:1.0 CLK_IN_D CLK_P";
   attribute x_interface_parameter of IBUF_DS_P : signal is "XIL_INTERFACENAME CLK_IN_D, BOARD.ASSOCIATED_PARAM DIFF_CLK_IN_BOARD_INTERFACE, CAN_DEBUG false, FREQ_HZ 100000000";
   attribute x_interface_info of IBUF_OUT : signal is "xilinx.com:signal:clock:1.0 IBUF_OUT CLK";
-  attribute x_interface_parameter of IBUF_OUT : signal is "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.000, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0";
+  attribute x_interface_parameter of IBUF_OUT : signal is "XIL_INTERFACENAME IBUF_OUT, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0";
 begin
 U0: entity work.icyradio_util_ds_buf_0_0_util_ds_buf
      port map (
@@ -341,6 +364,17 @@ U0: entity work.icyradio_util_ds_buf_0_0_util_ds_buf
       IOBUF_IO_IO(0) => NLW_U0_IOBUF_IO_IO_UNCONNECTED(0),
       IOBUF_IO_O(0) => NLW_U0_IOBUF_IO_O_UNCONNECTED(0),
       IOBUF_IO_T(0) => '0',
+      MBUFG_GT_CE(0) => '0',
+      MBUFG_GT_CEMASK(0) => '0',
+      MBUFG_GT_CLR(0) => '0',
+      MBUFG_GT_CLRB_LEAF(0) => '0',
+      MBUFG_GT_CLRMASK(0) => '0',
+      MBUFG_GT_DIV(2 downto 0) => B"000",
+      MBUFG_GT_I(0) => '0',
+      MBUFG_GT_O1(0) => NLW_U0_MBUFG_GT_O1_UNCONNECTED(0),
+      MBUFG_GT_O2(0) => NLW_U0_MBUFG_GT_O2_UNCONNECTED(0),
+      MBUFG_GT_O3(0) => NLW_U0_MBUFG_GT_O3_UNCONNECTED(0),
+      MBUFG_GT_O4(0) => NLW_U0_MBUFG_GT_O4_UNCONNECTED(0),
       OBUFDS_GTE3_ADV_CEB(0) => '0',
       OBUFDS_GTE3_ADV_I(3 downto 0) => B"0000",
       OBUFDS_GTE3_ADV_O(0) => NLW_U0_OBUFDS_GTE3_ADV_O_UNCONNECTED(0),

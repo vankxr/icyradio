@@ -43,7 +43,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>PHASE</spirit:name>
-          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CLOCK.PHASE">0.000</spirit:value>
+          <spirit:value spirit:format="float" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.CLOCK.PHASE">0.0</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -394,11 +394,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:58596171</spirit:value>
+            <spirit:value>9:b46ad472</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -412,11 +412,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:58596171</spirit:value>
+            <spirit:value>9:b46ad472</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -432,11 +432,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:58596171</spirit:value>
+            <spirit:value>9:b46ad472</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -455,11 +455,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3a626ebf</spirit:value>
+            <spirit:value>9:e61a40fa</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -475,11 +475,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3a626ebf</spirit:value>
+            <spirit:value>9:e61a40fa</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -493,11 +493,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:05:02 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:46:16 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:58596171</spirit:value>
+            <spirit:value>9:b46ad472</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -511,11 +511,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Sep 25 12:16:25 UTC 2021</spirit:value>
+            <spirit:value>Wed Oct 13 12:52:40 UTC 2021</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:58596171</spirit:value>
+            <spirit:value>9:b46ad472</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -957,7 +957,7 @@
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2020.2</xilinx:xilinxVersion>
+      <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="26169568"/>
       <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="af82d8e6"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="f2ac9635"/>

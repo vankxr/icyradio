@@ -94,7 +94,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     S_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     S_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     S_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -119,12 +119,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,31,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
+    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,32,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
 
     // S_AXI' transactor ports
 
@@ -174,7 +174,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     M_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     M_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     M_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -199,12 +199,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,31,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
+    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,32,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
 
     // M_AXI' transactor ports
 
@@ -283,7 +283,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     S_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     S_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     S_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -308,12 +308,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,31,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
+    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,32,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
 
     // S_AXI' transactor ports
 
@@ -363,7 +363,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     M_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     M_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     M_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -388,12 +388,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,31,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
+    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,32,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
 
     // M_AXI' transactor ports
 
@@ -472,7 +472,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     S_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     S_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     S_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -497,12 +497,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,31,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
+    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,32,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
 
     // S_AXI' transactor ports
 
@@ -552,7 +552,7 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     M_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     M_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     M_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -577,12 +577,12 @@ void icyradio_s03_data_fifo_0::before_end_of_elaboration()
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,31,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
+    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,32,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
 
     // M_AXI' transactor ports
 
@@ -649,7 +649,7 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     S_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     S_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     S_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     S_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -674,12 +674,12 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,31,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
+    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,32,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
   mp_S_AXI_transactor->AWADDR(s_axi_awaddr);
   mp_S_AXI_transactor->AWLEN(s_axi_awlen);
   mp_S_AXI_transactor->AWSIZE(s_axi_awsize);
@@ -709,7 +709,7 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     M_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     M_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     M_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     M_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -734,12 +734,12 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,31,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
+    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,32,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
   mp_M_AXI_transactor->AWADDR(m_axi_awaddr);
   mp_M_AXI_transactor->AWLEN(m_axi_awlen);
   mp_M_AXI_transactor->AWSIZE(m_axi_awsize);
@@ -832,7 +832,7 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     S_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     S_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     S_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    S_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     S_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     S_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -857,12 +857,12 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     S_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     S_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     S_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    S_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    S_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     S_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     S_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     S_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,31,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
+    mp_S_AXI_transactor = new xtlm::xaximm_pin2xtlm_t<64,32,1,1,1,1,1,1>("S_AXI_transactor", S_AXI_transactor_param_props);
   mp_S_AXI_transactor->AWADDR(s_axi_awaddr);
   mp_S_AXI_transactor->AWLEN(s_axi_awlen);
   mp_S_AXI_transactor->AWSIZE(s_axi_awsize);
@@ -892,7 +892,7 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     M_AXI_transactor_param_props.addLong("DATA_WIDTH", "64");
     M_AXI_transactor_param_props.addLong("FREQ_HZ", "125000000");
     M_AXI_transactor_param_props.addLong("ID_WIDTH", "0");
-    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "31");
+    M_AXI_transactor_param_props.addLong("ADDR_WIDTH", "32");
     M_AXI_transactor_param_props.addLong("AWUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("ARUSER_WIDTH", "0");
     M_AXI_transactor_param_props.addLong("WUSER_WIDTH", "0");
@@ -917,12 +917,12 @@ icyradio_s03_data_fifo_0::icyradio_s03_data_fifo_0(const sc_core::sc_module_name
     M_AXI_transactor_param_props.addLong("WUSER_BITS_PER_BYTE", "0");
     M_AXI_transactor_param_props.addLong("HAS_SIZE", "1");
     M_AXI_transactor_param_props.addLong("HAS_RESET", "1");
-    M_AXI_transactor_param_props.addFloat("PHASE", "0.000");
+    M_AXI_transactor_param_props.addFloat("PHASE", "0.0");
     M_AXI_transactor_param_props.addString("PROTOCOL", "AXI4");
     M_AXI_transactor_param_props.addString("READ_WRITE_MODE", "WRITE_ONLY");
     M_AXI_transactor_param_props.addString("CLK_DOMAIN", "icyradio_axi_pcie_0_0_axi_aclk_out");
 
-    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,31,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
+    mp_M_AXI_transactor = new xtlm::xaximm_xtlm2pin_t<64,32,1,1,1,1,1,1>("M_AXI_transactor", M_AXI_transactor_param_props);
   mp_M_AXI_transactor->AWADDR(m_axi_awaddr);
   mp_M_AXI_transactor->AWLEN(m_axi_awlen);
   mp_M_AXI_transactor->AWSIZE(m_axi_awsize);

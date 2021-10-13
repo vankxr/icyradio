@@ -174,7 +174,7 @@ module sim_tb_top;
    //***************************************************************************
    // AXI4 Shim parameters
    //***************************************************************************
-   parameter C_S_AXI_ID_WIDTH              = 3;
+   parameter C_S_AXI_ID_WIDTH              = 4;
                                              // Width of all master and slave ID signals.
                                              // # = >= 1.
    parameter C_S_AXI_ADDR_WIDTH            = 30;

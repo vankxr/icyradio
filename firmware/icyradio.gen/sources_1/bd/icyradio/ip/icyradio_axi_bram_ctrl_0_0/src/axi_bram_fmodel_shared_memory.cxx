@@ -1,11 +1,10 @@
-// 67d7842dbbe25473c3c32b93c0da8047785f30d78e8a024de1b57352245f9689
-// (c) Copyright(C) 2013 - 2018 by Xilinx, Inc. All rights reserved.
-//
+// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
+// 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
 // international copyright and other intellectual property
 // laws.
-//
+// 
 // DISCLAIMER
 // This disclaimer is not a license and does not grant any
 // rights to the materials distributed herewith. Except as
@@ -27,7 +26,7 @@
 // by a third party) even if such damage or loss was
 // reasonably foreseeable or Xilinx had been advised of the
 // possibility of the same.
-//
+// 
 // CRITICAL APPLICATIONS
 // Xilinx products are not designed or intended to be fail-
 // safe, or for use in any application requiring fail-safe
@@ -41,9 +40,11 @@
 // liability of any use of Xilinx products in Critical
 // Applications, subject only to applicable laws and
 // regulations governing limitations on product liability.
-//
+// 
 // THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 // PART OF THIS FILE AT ALL TIMES.
+// 
+// DO NOT MODIFY THIS FILE.
 
 #include "axi_bram_fmodel_shared_memory.h"
 #include <sys/stat.h>

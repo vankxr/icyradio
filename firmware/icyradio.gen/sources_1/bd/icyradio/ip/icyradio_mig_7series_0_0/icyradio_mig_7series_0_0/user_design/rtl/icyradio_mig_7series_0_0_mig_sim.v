@@ -502,7 +502,7 @@ module icyradio_mig_7series_0_0_mig #
                                      // 1/2, 1/4 and 1/8 of fabrick clock.
                                      // Valid for DDR2/DDR3 AXI interfaces
                                      // based on GUI selection
-   parameter C_S_AXI_ID_WIDTH              = 3,
+   parameter C_S_AXI_ID_WIDTH              = 4,
                                              // Width of all master and slave ID signals.
                                              // # = >= 1.
    parameter C_S_AXI_MEM_SIZE              = "1073741824",
