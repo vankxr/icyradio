@@ -29,9 +29,17 @@ The goal of this project is to develop a flexible and feature rich SDR platform 
  - [Core CMSIS](https://github.com/ARM-software/CMSIS_5) - CMSIS headers defining the ARM Cores
  - [armmem](https://github.com/vankxr/armmem) - ELF file analyzer (required for the MCU Makefiles to work)
  - [libusb](https://libusb.info/) - Used to interact with the board via USB
+ - [SoapySDR](https://github.com/pothosware/SoapySDR) - Vendor and platform neutral SDR support library
  - TODO: Remove from here [ffmpeg](https://ffmpeg.org/) - Used to multiplex and demultiplex MPEG2 Transport Streams for DVB
  - TODO: Remove from here [leansdr](https://github.com/pabr/leansdr) - Contains leandvb and leandvbtx to demodulate and modulate DVB respectively
- - TODO: Remove from here [csdr](https://github.com/ha7ilm/csdr) - SDR utilities so that a working signal chain can be built on the command line only
+ - TODO: Remove from here [csdr](https://github.com/ha7ilm/csdr) - SDR utilities to create signal chains the command line
+
+## Software build instructions
+TODO
+### Kernel driver
+TODO
+### SoapySDR device driver
+TODO
 
 ## Errata
  - Still WIP, hope no errata makes it here...
