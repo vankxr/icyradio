@@ -7,16 +7,12 @@
       "name": "icyradio",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2021.1",
-      "validated": "true"
+      "tool_version": "2021.1"
     },
     "design_tree": {
-      "VCC_0": "",
       "axi_bram_ctrl_0_bram": "",
       "axi_i2s_adi_0": "",
-      "logic_and_2": "",
       "logic_and_0": "",
-      "logic_and_1": "",
       "mig_7series_0": "",
       "rst_mig_7series_0_166M": "",
       "rst_axi_pcie_0_125M": "",
@@ -105,23 +101,16 @@
       "axi_quad_spi_0": "",
       "axi_quad_spi_1": "",
       "util_ds_buf_0": "",
-      "axi_dmac_i2s_rx": ""
+      "axi_dmac_i2s_rx": "",
+      "VCC_0": "",
+      "logic_and_2": "",
+      "logic_and_1": ""
     },
     "interface_ports": {
       "PCIe_REFCLK": {
         "mode": "Slave",
         "vlnv_bus_definition": "xilinx.com:interface:diff_clock:1.0",
-        "vlnv": "xilinx.com:interface:diff_clock_rtl:1.0",
-        "parameters": {
-          "CAN_DEBUG": {
-            "value": "false",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "default"
-          }
-        }
+        "vlnv": "xilinx.com:interface:diff_clock_rtl:1.0"
       },
       "PCIe": {
         "mode": "Master",
@@ -156,57 +145,7 @@
       "DDR3": {
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:ddrx:1.0",
-        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0",
-        "parameters": {
-          "AXI_ARBITRATION_SCHEME": {
-            "value": "TDM",
-            "value_src": "default"
-          },
-          "BURST_LENGTH": {
-            "value": "8",
-            "value_src": "default"
-          },
-          "CAN_DEBUG": {
-            "value": "false",
-            "value_src": "default"
-          },
-          "CAS_LATENCY": {
-            "value": "11",
-            "value_src": "default"
-          },
-          "CAS_WRITE_LATENCY": {
-            "value": "11",
-            "value_src": "default"
-          },
-          "CS_ENABLED": {
-            "value": "true",
-            "value_src": "default"
-          },
-          "DATA_MASK_ENABLED": {
-            "value": "true",
-            "value_src": "default"
-          },
-          "DATA_WIDTH": {
-            "value": "8",
-            "value_src": "default"
-          },
-          "MEMORY_TYPE": {
-            "value": "COMPONENTS",
-            "value_src": "default"
-          },
-          "MEM_ADDR_MAP": {
-            "value": "ROW_COLUMN_BANK",
-            "value_src": "default"
-          },
-          "SLOT": {
-            "value": "Single",
-            "value_src": "default"
-          },
-          "TIMEPERIOD_PS": {
-            "value": "1250",
-            "value_src": "default"
-          }
-        }
+        "vlnv": "xilinx.com:interface:ddrx_rtl:1.0"
       },
       "ADCIN_MAIN": {
         "mode": "Slave",
@@ -223,10 +162,6 @@
         "vlnv_bus_definition": "xilinx.com:interface:diff_clock:1.0",
         "vlnv": "xilinx.com:interface:diff_clock_rtl:1.0",
         "parameters": {
-          "CAN_DEBUG": {
-            "value": "false",
-            "value_src": "default"
-          },
           "FREQ_HZ": {
             "value": "33333333"
           }
@@ -236,88 +171,32 @@
     "ports": {
       "RESETn": {
         "type": "rst",
-        "direction": "I",
-        "parameters": {
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "POLARITY": {
-            "value": "ACTIVE_LOW",
-            "value_src": "default"
-          }
-        }
+        "direction": "I"
       },
       "TRX_P1_RXDATA": {
         "type": "data",
         "direction": "I",
         "left": "11",
-        "right": "0",
-        "parameters": {
-          "LAYERED_METADATA": {
-            "value": "undef",
-            "value_src": "default"
-          }
-        }
+        "right": "0"
       },
       "TRX_P0_TXDATA": {
         "type": "data",
         "direction": "O",
         "left": "11",
-        "right": "0",
-        "parameters": {
-          "LAYERED_METADATA": {
-            "value": "undef",
-            "value_src": "default"
-          }
-        }
+        "right": "0"
       },
       "TRX_DATA_CLK": {
         "type": "clk",
         "direction": "I",
         "parameters": {
-          "CLK_DOMAIN": {
-            "value": "icyradio_TRX_DATA_CLK",
-            "value_src": "default"
-          },
           "FREQ_HZ": {
             "value": "61440000"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
           }
         }
       },
       "TRX_FBCLK": {
         "type": "clk",
-        "direction": "O",
-        "parameters": {
-          "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "default"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
-          }
-        }
+        "direction": "O"
       },
       "TRX_TXFRAME": {
         "direction": "O"
@@ -333,17 +212,7 @@
       },
       "PCIe_RESETn": {
         "type": "rst",
-        "direction": "I",
-        "parameters": {
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "POLARITY": {
-            "value": "ACTIVE_LOW",
-            "value_src": "default"
-          }
-        }
+        "direction": "I"
       },
       "PCIe_CLKREQn": {
         "direction": "O",
@@ -354,20 +223,8 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
-          "CLK_DOMAIN": {
-            "value": "icyradio_I2S_BCLK_IN",
-            "value_src": "default"
-          },
           "FREQ_HZ": {
             "value": "49152000"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
           },
           "PHASE": {
             "value": "0.0"
@@ -378,24 +235,8 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
-          "CLK_DOMAIN": {
-            "value": "icyradio_TRX_CLK_OUT",
-            "value_src": "default"
-          },
           "FREQ_HZ": {
             "value": "100000000"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
           }
         }
       },
@@ -418,31 +259,10 @@
         "type": "rst",
         "direction": "O",
         "left": "0",
-        "right": "0",
-        "parameters": {
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "POLARITY": {
-            "value": "ACTIVE_LOW",
-            "value_src": "const_prop"
-          }
-        }
+        "right": "0"
       }
     },
     "components": {
-      "VCC_0": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "xci_name": "icyradio_GND_0_0",
-        "xci_path": "ip/icyradio_GND_0_0/icyradio_GND_0_0.xci",
-        "inst_hier_path": "VCC_0",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          }
-        }
-      },
       "axi_bram_ctrl_0_bram": {
         "vlnv": "xilinx.com:ip:blk_mem_gen:8.4",
         "xci_name": "icyradio_axi_bram_ctrl_0_bram_0",
@@ -480,20 +300,6 @@
           }
         }
       },
-      "logic_and_2": {
-        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
-        "xci_name": "icyradio_logic_and_1_0",
-        "xci_path": "ip/icyradio_logic_and_1_0/icyradio_logic_and_1_0.xci",
-        "inst_hier_path": "logic_and_2",
-        "parameters": {
-          "C_OPERATION": {
-            "value": "and"
-          },
-          "C_SIZE": {
-            "value": "1"
-          }
-        }
-      },
       "logic_and_0": {
         "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
         "xci_name": "icyradio_logic_and_0_2",
@@ -502,20 +308,6 @@
         "parameters": {
           "C_OPERATION": {
             "value": "and"
-          },
-          "C_SIZE": {
-            "value": "1"
-          }
-        }
-      },
-      "logic_and_1": {
-        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
-        "xci_name": "icyradio_logic_or_1_0",
-        "xci_path": "ip/icyradio_logic_or_1_0/icyradio_logic_or_1_0.xci",
-        "inst_hier_path": "logic_and_1",
-        "parameters": {
-          "C_OPERATION": {
-            "value": "or"
           },
           "C_SIZE": {
             "value": "1"
@@ -4835,6 +4627,45 @@
             }
           }
         }
+      },
+      "VCC_0": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "icyradio_GND_0_0",
+        "xci_path": "ip/icyradio_GND_0_0/icyradio_GND_0_0.xci",
+        "inst_hier_path": "VCC_0",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "1"
+          }
+        }
+      },
+      "logic_and_2": {
+        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
+        "xci_name": "icyradio_logic_and_1_0",
+        "xci_path": "ip/icyradio_logic_and_1_0/icyradio_logic_and_1_0.xci",
+        "inst_hier_path": "logic_and_2",
+        "parameters": {
+          "C_OPERATION": {
+            "value": "and"
+          },
+          "C_SIZE": {
+            "value": "1"
+          }
+        }
+      },
+      "logic_and_1": {
+        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
+        "xci_name": "icyradio_logic_or_1_0",
+        "xci_path": "ip/icyradio_logic_or_1_0/icyradio_logic_or_1_0.xci",
+        "inst_hier_path": "logic_and_1",
+        "parameters": {
+          "C_OPERATION": {
+            "value": "and"
+          },
+          "C_SIZE": {
+            "value": "1"
+          }
+        }
       }
     },
     "interface_nets": {
@@ -5158,10 +4989,10 @@
       "VCC_0_dout": {
         "ports": [
           "VCC_0/dout",
-          "logic_and_2/Op1",
           "logic_and_0/Op1",
-          "logic_and_1/Op1",
-          "axi_quad_spi_0/usrdoneo"
+          "axi_quad_spi_0/usrdoneo",
+          "logic_and_2/Op1",
+          "logic_and_1/Op1"
         ]
       },
       "ad9361_adc_packer_fifo_wr_overflow": {

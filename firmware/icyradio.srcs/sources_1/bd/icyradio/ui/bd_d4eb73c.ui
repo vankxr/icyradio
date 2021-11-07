@@ -7,8 +7,8 @@
    "Color Coded_ScaleFactor":"1.9655",
    "Color Coded_TopLeft":"813,955",
    "Default View_Layers":"/RESETn_1:true|/clk_wiz_0_i2s_data_clk:true|/mig_7series_0_ui_clk:true|/axi_dmac_rf_rx_irq:true|/xadc_wiz_0_ip2intc_irpt:true|/axi_dmac_i2s_tx_irq:true|/clk_wiz_0_ddr3_clk:true|/axi_pcie_0_axi_ctl_aclk_out:true|/rst_axi_pcie_0_125M_interconnect_aresetn:true|/clk_wiz_0_delay_ref_clk:true|/axi_ad9361_0_gps_pps_irq:true|/util_ds_buf_0_IBUF_OUT:true|/rst_axi_pcie_0_125M_peripheral_aresetn:true|/axi_ad9361_0_l_clk:true|/RXCLK_1:true|/PCIe_RESETn_1:true|/axi_ad9361_0_rst:true|/mig_7series_0_ui_clk_sync_rst:true|/axi_dmac_i2s_rx_irq:true|/axi_quad_spi_0_ip2intc_irpt:true|/axi_dmac_rf_tx_irq:true|/axi_iic_0_iic2intc_irpt:true|/RXDATA_1:true|/axi_pcie_0_axi_aclk_out:true|/clk_wiz_0_qspi_ext_clk:true|/data_clk_i_0_1:true|/rst_mig_7series_0_166M_peripheral_aresetn:true|/DDR3_CLK_IN_1:true|/rst_mig_7series_0_166M_interconnect_aresetn:true|/axi_quad_spi_1_ip2intc_irpt:true|",
-   "Default View_ScaleFactor":"1.69818",
-   "Default View_TopLeft":"392,2918",
+   "Default View_ScaleFactor":"0.150099",
+   "Default View_TopLeft":"-959,1965",
    "Display-PortTypeClock":"true",
    "Display-PortTypeData":"true",
    "Display-PortTypeInterrupt":"true",
@@ -34,39 +34,36 @@
    "guistr":"# # String gsaved with Nlview 7.0r4  2019-12-20 bk=1.5203 VDI=41 GEI=36 GUI=JA:10.0 TLS
 #  -string -flagsOSRD
 preplace port PCIe_REFCLK -pg 1 -lvl 0 -x -110 -y 3020 -defaultsOSRD
-preplace port PCIe -pg 1 -lvl 15 -x 5680 -y 2740 -defaultsOSRD
-preplace port GPIO0 -pg 1 -lvl 15 -x 5680 -y 2650 -defaultsOSRD
-preplace port GPIO1 -pg 1 -lvl 15 -x 5680 -y 2680 -defaultsOSRD
-preplace port I2C -pg 1 -lvl 15 -x 5680 -y 2810 -defaultsOSRD
-preplace port FLASH_QSPI -pg 1 -lvl 15 -x 5680 -y 2110 -defaultsOSRD
-preplace port I2S -pg 1 -lvl 15 -x 5680 -y 2460 -defaultsOSRD
-preplace port DDR3 -pg 1 -lvl 15 -x 5680 -y 1390 -defaultsOSRD
+preplace port PCIe -pg 1 -lvl 15 -x 5690 -y 2740 -defaultsOSRD
+preplace port GPIO0 -pg 1 -lvl 15 -x 5690 -y 2650 -defaultsOSRD
+preplace port GPIO1 -pg 1 -lvl 15 -x 5690 -y 2680 -defaultsOSRD
+preplace port I2C -pg 1 -lvl 15 -x 5690 -y 2810 -defaultsOSRD
+preplace port FLASH_QSPI -pg 1 -lvl 15 -x 5690 -y 2110 -defaultsOSRD
+preplace port I2S -pg 1 -lvl 15 -x 5690 -y 2460 -defaultsOSRD
+preplace port DDR3 -pg 1 -lvl 15 -x 5690 -y 1390 -defaultsOSRD
 preplace port ADCIN_MAIN -pg 1 -lvl 0 -x -110 -y 2960 -defaultsOSRD
-preplace port TRX_SPI -pg 1 -lvl 15 -x 5680 -y 2990 -defaultsOSRD
+preplace port TRX_SPI -pg 1 -lvl 15 -x 5690 -y 2990 -defaultsOSRD
 preplace port DDR3_CLK_IN -pg 1 -lvl 0 -x -110 -y 1410 -defaultsOSRD
 preplace port port-id_RESETn -pg 1 -lvl 0 -x -110 -y 3240 -defaultsOSRD
 preplace port port-id_TRX_DATA_CLK -pg 1 -lvl 0 -x -110 -y 220 -defaultsOSRD
-preplace port port-id_TRX_FBCLK -pg 1 -lvl 15 -x 5680 -y 40 -defaultsOSRD
-preplace port port-id_TRX_TXFRAME -pg 1 -lvl 15 -x 5680 -y 70 -defaultsOSRD
+preplace port port-id_TRX_FBCLK -pg 1 -lvl 15 -x 5690 -y 40 -defaultsOSRD
+preplace port port-id_TRX_TXFRAME -pg 1 -lvl 15 -x 5690 -y 70 -defaultsOSRD
 preplace port port-id_TRX_RXFRAME -pg 1 -lvl 0 -x -110 -y 250 -defaultsOSRD
-preplace port port-id_TRX_EN -pg 1 -lvl 15 -x 5680 -y 130 -defaultsOSRD
-preplace port port-id_TRX_TXNRX -pg 1 -lvl 15 -x 5680 -y 160 -defaultsOSRD
+preplace port port-id_TRX_EN -pg 1 -lvl 15 -x 5690 -y 130 -defaultsOSRD
+preplace port port-id_TRX_TXNRX -pg 1 -lvl 15 -x 5690 -y 160 -defaultsOSRD
 preplace port port-id_PCIe_RESETn -pg 1 -lvl 0 -x -110 -y 3270 -defaultsOSRD
 preplace port port-id_I2S_BCLK_IN -pg 1 -lvl 0 -x -110 -y 2470 -defaultsOSRD
 preplace port port-id_TRX_CLK_OUT -pg 1 -lvl 0 -x -110 -y 20 -defaultsOSRD
 preplace portBus TRX_P1_RXDATA -pg 1 -lvl 0 -x -110 -y 280 -defaultsOSRD
-preplace portBus TRX_P0_TXDATA -pg 1 -lvl 15 -x 5680 -y 100 -defaultsOSRD
-preplace portBus PCIe_CLKREQn -pg 1 -lvl 15 -x 5680 -y 2140 -defaultsOSRD
+preplace portBus TRX_P0_TXDATA -pg 1 -lvl 15 -x 5690 -y 100 -defaultsOSRD
+preplace portBus PCIe_CLKREQn -pg 1 -lvl 15 -x 5690 -y 2140 -defaultsOSRD
 preplace portBus TRX_CTRL_OUT -pg 1 -lvl 0 -x -110 -y 50 -defaultsOSRD
-preplace portBus TRX_CTRL_IN -pg 1 -lvl 15 -x 5680 -y 3150 -defaultsOSRD
-preplace portBus TRX_EN_AGC -pg 1 -lvl 15 -x 5680 -y 2170 -defaultsOSRD
-preplace portBus TRX_RESETn -pg 1 -lvl 15 -x 5680 -y 2910 -defaultsOSRD
-preplace inst VCC_0 -pg 1 -lvl 1 -x 70 -y 1220 -defaultsOSRD
+preplace portBus TRX_CTRL_IN -pg 1 -lvl 15 -x 5690 -y 3150 -defaultsOSRD
+preplace portBus TRX_EN_AGC -pg 1 -lvl 15 -x 5690 -y 2170 -defaultsOSRD
+preplace portBus TRX_RESETn -pg 1 -lvl 15 -x 5690 -y 2910 -defaultsOSRD
 preplace inst axi_bram_ctrl_0_bram -pg 1 -lvl 11 -x 4380 -y 2280 -defaultsOSRD
 preplace inst axi_i2s_adi_0 -pg 1 -lvl 14 -x 5450 -y 2450 -defaultsOSRD
-preplace inst logic_and_2 -pg 1 -lvl 4 -x 1310 -y 1120 -defaultsOSRD
 preplace inst logic_and_0 -pg 1 -lvl 2 -x 480 -y 1110 -defaultsOSRD
-preplace inst logic_and_1 -pg 1 -lvl 5 -x 1800 -y 1330 -defaultsOSRD
 preplace inst mig_7series_0 -pg 1 -lvl 14 -x 5450 -y 1440 -defaultsOSRD
 preplace inst rst_mig_7series_0_166M -pg 1 -lvl 6 -x 2190 -y 1520 -defaultsOSRD
 preplace inst rst_axi_pcie_0_125M -pg 1 -lvl 13 -x 5030 -y 2770 -swap {0 4 2 3 1 7 9 8 5 6} -defaultsOSRD
@@ -99,6 +96,9 @@ preplace inst axi_quad_spi_0 -pg 1 -lvl 14 -x 5450 -y 2180 -defaultsOSRD
 preplace inst axi_quad_spi_1 -pg 1 -lvl 14 -x 5450 -y 3000 -defaultsOSRD
 preplace inst util_ds_buf_0 -pg 1 -lvl 5 -x 1800 -y 3020 -swap {0 1 2 4 3} -defaultsOSRD
 preplace inst axi_dmac_i2s_rx -pg 1 -lvl 4 -x 1310 -y 2480 -defaultsOSRD
+preplace inst VCC_0 -pg 1 -lvl 1 -x 70 -y 1220 -defaultsOSRD
+preplace inst logic_and_2 -pg 1 -lvl 4 -x 1310 -y 1120 -defaultsOSRD
+preplace inst logic_and_1 -pg 1 -lvl 5 -x 1800 -y 1330 -defaultsOSRD
 preplace netloc GND_0_dout 1 1 14 270 2350 NJ 2350 NJ 2350 NJ 2350 1960 2520 NJ 2520 NJ 2520 NJ 2520 3580 2170 NJ 2170 NJ 2170 NJ 2170 5270J 2310 5660
 preplace netloc GND_1_dout 1 14 1 NJ 3150
 preplace netloc GND_2_dout 1 2 1 NJ 3090
@@ -136,6 +136,7 @@ preplace netloc axi_ad9361_0_tx_clk_out 1 10 5 4190J 40 NJ 40 NJ 40 NJ 40 NJ
 preplace netloc axi_ad9361_0_tx_data_out 1 10 5 4220J 100 NJ 100 NJ 100 NJ 100 NJ
 preplace netloc axi_ad9361_0_tx_frame_out 1 10 5 4210J 70 NJ 70 NJ 70 NJ 70 NJ
 preplace netloc axi_ad9361_0_txnrx 1 10 5 NJ 160 NJ 160 NJ 160 NJ 160 NJ
+preplace netloc axi_dmac_i2s_rx_irq 1 1 4 320 2950 NJ 2950 1090J 2980 1470
 preplace netloc axi_dmac_i2s_tx_irq 1 1 4 330 2980 700J 2940 1120J 2960 1460
 preplace netloc axi_dmac_rf_rx_irq 1 1 4 240 3270 NJ 3270 NJ 3270 1480
 preplace netloc axi_dmac_rf_tx_irq 1 1 4 260 3000 NJ 3000 NJ 3000 1490
@@ -155,10 +156,12 @@ preplace netloc logic_and_1_Res 1 4 2 1510 1260 1960
 preplace netloc logic_and_2_Res 1 4 1 1500 1030n
 preplace netloc logic_or_0_Res 1 1 1 330 1110n
 preplace netloc mig_7series_0_mmcm_locked 1 5 10 1990 1620 2390 1560 N 1560 N 1560 N 1560 N 1560 N 1560 N 1560 N 1560 5610
+preplace netloc mig_7series_0_ui_clk 1 5 10 1970 1860 2440 1970 2790 1720 N 1720 N 1720 N 1720 N 1720 N 1720 N 1720 5630
 preplace netloc mig_7series_0_ui_clk_sync_rst 1 5 10 1980 1630 2380 1550 N 1550 N 1550 N 1550 N 1550 N 1550 N 1550 5280 1570 5640
 preplace netloc rst_axi_pcie_0_125M_interconnect_aresetn 1 3 11 1130 1980 1590 1980 1980 1980 2460 1980 2830 1780 3170 2590 NJ 2590 NJ 2590 NJ 2590 NJ 2590 5210
 preplace netloc rst_axi_pcie_0_125M_peripheral_aresetn 1 3 12 1120 2800 NJ 2800 NJ 2800 NJ 2800 NJ 2800 NJ 2800 3610 2200 NJ 2200 NJ 2200 NJ 2200 5260 2750 5650J
 preplace netloc rst_mig_7series_0_166M_interconnect_aresetn 1 6 1 2450 1540n
+preplace netloc rst_mig_7series_0_166M_peripheral_aresetn 1 6 8 2370 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ
 preplace netloc util_ds_buf_0_IBUF_OUT 1 5 1 1970J 2420n
 preplace netloc util_upack2_1_fifo_rd_data_0 1 5 5 1950 410 NJ 410 NJ 410 NJ 410 NJ
 preplace netloc util_upack2_1_fifo_rd_data_1 1 5 5 1960 430 NJ 430 NJ 430 NJ 430 NJ
@@ -168,15 +171,13 @@ preplace netloc util_vector_logic_0_Res 1 4 1 1510 890n
 preplace netloc util_vector_logic_2_Res 1 12 2 4850 1450 N
 preplace netloc xadc_wiz_0_ip2intc_irpt 1 1 10 300 3030 NJ 3030 1030J 3040 1590J 2950 NJ 2950 NJ 2950 NJ 2950 NJ 2950 NJ 2950 4060
 preplace netloc xadc_wiz_0_temp_out 1 10 4 4220J 1470 N 1470 4830 1440 5290
-preplace netloc mig_7series_0_ui_clk 1 5 10 1970 1860 2440 1970 2790 1720 N 1720 N 1720 N 1720 N 1720 N 1720 N 1720 5630
-preplace netloc rst_mig_7series_0_166M_peripheral_aresetn 1 6 8 2370 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ 1490 NJ
-preplace netloc axi_dmac_i2s_rx_irq 1 1 4 320 2950 NJ 2950 1090J 2980 1470
 preplace netloc PCIe_REFCLK_1 1 0 5 -80J 2960 NJ 2960 NJ 2960 1070J 3020 NJ
 preplace netloc S00_AXI_1 1 4 1 1540 1250n
 preplace netloc S01_AXI_1 1 4 1 1510 1490n
 preplace netloc SYS_CLK_0_1 1 0 14 NJ 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N 1410 N
 preplace netloc Vp_Vn_0_1 1 0 10 -90J 2970 NJ 2970 NJ 2970 NJ 2970 1550J 2730 NJ 2730 NJ 2730 NJ 2730 NJ 2730 NJ
 preplace netloc axi_bram_ctrl_0_BRAM_PORTA 1 10 1 NJ 2280
+preplace netloc axi_dmac_i2s_rx_m_dest_axi 1 4 1 1530 1530n
 preplace netloc axi_dmac_i2s_tx_m_axis 1 4 10 1550 2530 NJ 2530 NJ 2530 NJ 2530 NJ 2530 3630J 2400 NJ 2400 NJ 2400 NJ 2400 NJ
 preplace netloc axi_dmac_i2s_tx_m_src_axi 1 4 1 1520 1510n
 preplace netloc axi_dmac_rf_tx_m_axis 1 4 1 1490 990n
@@ -199,6 +200,7 @@ preplace netloc axi_pcie_0_M_AXI 1 6 1 2410 1640n
 preplace netloc axi_pcie_0_pcie_7x_mgt 1 6 9 2380J 2390 NJ 2390 3160J 2580 NJ 2580 NJ 2580 NJ 2580 NJ 2580 NJ 2580 5650J
 preplace netloc axi_pcie_interconnect_M00_AXI 1 5 2 1950 1640 2400J
 preplace netloc axi_pcie_interconnect_M02_AXI 1 7 7 2760J 1400 N 1400 N 1400 N 1400 N 1400 N 1400 5290
+preplace netloc axi_peripheral_interconnect_M07_AXI 1 3 7 1160 2210 NJ 2210 NJ 2210 2400J 2370 NJ 2370 3190J 2500 3530
 preplace netloc axi_peripheral_interconnect_M08_AXI 1 3 7 1150 2360 NJ 2360 1950J 2550 NJ 2550 NJ 2550 NJ 2550 3540
 preplace netloc axi_peripheral_interconnect_M09_AXI 1 9 5 3560 2180 NJ 2180 NJ 2180 NJ 2180 5250J
 preplace netloc axi_peripheral_interconnect_M10_AXI 1 9 1 3560 2220n
@@ -210,20 +212,18 @@ preplace netloc axi_quad_spi_1_SPI_0 1 14 1 NJ 2990
 preplace netloc mig_7series_0_DDR3 1 14 1 NJ 1390
 preplace netloc picorv32_0_M_AXI 1 4 1 1540 1550n
 preplace netloc util_cpack2_0_packed_fifo_wr 1 3 1 1040 800n
-preplace netloc axi_peripheral_interconnect_M07_AXI 1 3 7 1160 2210 NJ 2210 NJ 2210 2400J 2370 NJ 2370 3190J 2500 3530
-preplace netloc axi_dmac_i2s_rx_m_dest_axi 1 4 1 1530 1530n
 preplace cgraphic comment_0 place top 824 -208 textcolor 4 linecolor 3 linewidth 2
-levelinfo -pg 1 -110 70 480 870 1310 1800 2190 2610 3000 3380 3890 4380 4680 5030 5450 5680
-pagesize -pg 1 -db -bbox -sgen -310 -180 5880 3520
+levelinfo -pg 1 -110 70 480 870 1310 1800 2190 2610 3000 3380 3890 4380 4680 5030 5450 5690
+pagesize -pg 1 -db -bbox -sgen -310 -180 5890 3520
 ",
    "linecolor_comment_0":"",
    "textcolor_comment_0":""
 }
 {
-   """""""""""""""""""da_axi4_cnt""""""""""""""""""":"1",
-   """""""""""""""""""da_board_cnt""""""""""""""""""":"6",
-   """""""""""""""""""da_bram_cntlr_cnt""""""""""""""""""":"1",
-   """""""""""""""""""da_clkrst_cnt""""""""""""""""""":"23"
+   """"""""""""""""""""da_axi4_cnt"""""""""""""""""""":"1",
+   """"""""""""""""""""da_board_cnt"""""""""""""""""""":"6",
+   """"""""""""""""""""da_bram_cntlr_cnt"""""""""""""""""""":"1",
+   """"""""""""""""""""da_clkrst_cnt"""""""""""""""""""":"23"
 }
 {
    "/comment_0":"comment_0"
