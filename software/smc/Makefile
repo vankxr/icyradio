@@ -1,7 +1,7 @@
 # App Config
 ARM_LIBROOT ?= /mnt/e/Projetos/ARM/ARMdev/lib/
 DEVICEDIR = $(ARM_LIBROOT)/SiliconLabs.EFM32GG11B_DFP.5.8.10/Device/SiliconLabs/EFM32GG11B
-COREDIR = $(ARM_LIBROOT)/ARM.CMSIS.5.7.0/CMSIS
+COREDIR = $(ARM_LIBROOT)/ARM.CMSIS.5.8.0/CMSIS
 MCU_TYPE = EFM32GG11B420F2048GL112
 APP_ADDRESS = 0x00000000
 APP_NAME = icyradio-smc
@@ -18,7 +18,7 @@ INCLUDEDIR = include
 STRUCT := $(shell find $(SOURCEDIR) -type d)
 
 SOURCEDIRSTRUCT := $(filter-out %/include, $(STRUCT))
-INCLUDEDIRSTRUCT := $(filter %/include, $(STRUCT)) $(DEVICEDIR)/Include $(COREDIR)/Include
+INCLUDEDIRSTRUCT := $(filter %/include, $(STRUCT)) $(DEVICEDIR)/Include $(COREDIR)/DSP/Include $(COREDIR)/Core/Include
 OBJECTDIRSTRUCT := $(subst $(SOURCEDIR), $(OBJECTDIR), $(SOURCEDIRSTRUCT))
 
 # Build type
@@ -55,8 +55,8 @@ GDB = arm-none-eabi-gdb
 
 # Compillers & Linker flags
 ASFLAGS = -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16
-CFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -O3 -std=gnu99 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
-CXXFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -fno-rtti -fno-exceptions -O3 -std=c++17 -Wpointer-arith -Wundef -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
+CFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -O3 -std=gnu99 -Wpointer-arith -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
+CXXFLAGS = $(addprefix -I,$(INCLUDEDIRSTRUCT)) -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -fno-rtti -fno-exceptions -O3 -std=c++17 -Wpointer-arith -Werror -D$(MCU_TYPE) -DBUILD_VERSION=$(BUILD_VERSION)
 LDFLAGS = -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 --specs=nano.specs --specs=nosys.specs -nostdlib -nostartfiles -ffunction-sections -fdata-sections -ffreestanding -Wl,--gc-sections
 LDLIBS = -lm -lc -lgcc -lnosys -larm_cortexM4lf_math
 LDLIBSPATH = -L$(COREDIR)/DSP/Lib/GCC
