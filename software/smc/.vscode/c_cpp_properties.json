@@ -9,7 +9,8 @@
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/10.2.1",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include/c++/10.2.1/backward",
-                "${env:ARM_LIBROOT}/ARM.CMSIS.5.7.0/CMSIS/Include",
+                "${env:ARM_LIBROOT}/ARM.CMSIS.5.8.0/CMSIS/Core/Include",
+                "${env:ARM_LIBROOT}/ARM.CMSIS.5.8.0/CMSIS/DSP/Include",
                 "${env:ARM_LIBROOT}/SiliconLabs.EFM32GG11B_DFP.5.8.10/Device/SiliconLabs/EFM32GG11B/Include"
             ],
             "defines": [
