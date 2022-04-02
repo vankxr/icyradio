@@ -9,7 +9,7 @@ Vivado Project Options:
 MIG Output Options:
    Module Name                     : icyradio_mig_7series_0_0
    No of Controllers               : 1
-   Selected Compatible Device(s)   : xc7a75t-fgg484, xc7a50t-fgg484, xc7a35t-fgg484
+   Selected Compatible Device(s)   : xc7a50t-fgg484, xc7a35t-fgg484, xc7a75t-fgg484
 
 FPGA Options:
    System Clock Type               : Differential

@@ -36,9 +36,9 @@
   <dci_cascade>0</dci_cascade>
 
   <FPGADevice>
-    <selected>7a/xc7a75t-fgg484</selected>
     <selected>7a/xc7a50t-fgg484</selected>
     <selected>7a/xc7a35t-fgg484</selected>
+    <selected>7a/xc7a75t-fgg484</selected>
   </FPGADevice>
 
   <Controller number="0">
@@ -50,8 +50,8 @@
     <UIExtraClocks>1</UIExtraClocks>
     <MMCM_VCO>666</MMCM_VCO>
     <MMCMClkOut0> 3.250</MMCMClkOut0>
-    <MMCMClkOut1>1</MMCMClkOut1>
-    <MMCMClkOut2>1</MMCMClkOut2>
+    <MMCMClkOut1>26</MMCMClkOut1>
+    <MMCMClkOut2>66</MMCMClkOut2>
     <MMCMClkOut3>1</MMCMClkOut3>
     <MMCMClkOut4>1</MMCMClkOut4>
     <DataWidth>32</DataWidth>
