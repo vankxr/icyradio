@@ -1,0 +1,6 @@
+[submodule "software/dsp/deps/liquid-dsp"]
+	path = software/dsp/deps/liquid-dsp
+	url = https://github.com/vankxr/liquid-dsp.git
+[submodule "software/dsp/deps/libfec"]
+	path = software/dsp/deps/libfec
+	url = https://github.com/vankxr/libfec.git

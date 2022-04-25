@@ -10,6 +10,8 @@ APP_NAME = icyradio-dsp
 MAX_PARALLEL =
 
 # Directories
+LIBDIR = lib
+DEPSDIR = deps
 TARGETDIR = bin
 SOURCEDIR = src
 OBJECTDIR = bin/obj
@@ -113,7 +115,7 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJECTS)
 	@echo ---------------------------------------------------------------------------
 	@echo Creating ELF file \'$@\'...
-	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) $(LDLIBSPATH) $(LDLIBS) -Wl,-Map=$(TARGET).map
+	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) -L./$(LIBDIR) $(LDLIBSPATH) -lfec -lliquid $(LDLIBS) -Wl,-Map=$(TARGET).map
 ifeq ($(BUILD_TYPE), release)
 	@$(STRIP) -g $@
 endif
@@ -124,11 +126,11 @@ $(OBJECTDIR)/%.o: $(SOURCEDIR)/%.s
 
 $(OBJECTDIR)/%.o: $(SOURCEDIR)/%.c
 	@echo Compilling C file \'$<\' \> \'$@\'...
-	@$(CC) $(CFLAGS) -MD -c -o $@ $<
+	@$(CC) -I./$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -MD -c -o $@ $<
 
 $(OBJECTDIR)/%.o: $(SOURCEDIR)/%.cpp
 	@echo Compilling C++ file \'$<\' \> \'$@\'...
-	@$(CXX) $(CXXFLAGS) -MD -c -o $@ $<
+	@$(CXX) -I./$(LIBDIR)/$(INCLUDEDIR) $(CXXFLAGS) -MD -c -o $@ $<
 
 debug: $(TARGET).elf
 	$(GDB) $(TARGET).elf
@@ -161,6 +163,26 @@ clean-bin:
 
 clean: clean-bin
 	@rm -rf $(OBJECTDIR)/*
+
+deps: deps-dir libfec libliquid
+
+deps-dir:
+	@mkdir -p $(LIBDIR)/$(INCLUDEDIR)
+
+libfec:
+	@cd $(DEPSDIR)/libfec && ./configure --host=arm-none-eabi CFLAGS=" -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error" LDFLAGS="$(LDFLAGS) $(LDLIBSPATH) -L../../$(LIBDIR)" LIBS="$(LDLIBS)" CPP="$(CC) -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error -E"
+	@cd $(DEPSDIR)/libfec && make
+	@ln -fs ../$(DEPSDIR)/libfec/libfec.a $(LIBDIR)/libfec.a
+	@ln -fs ../../$(DEPSDIR)/libfec/fec.h $(LIBDIR)/$(INCLUDEDIR)/fec.h
+
+libliquid:
+	@cd $(DEPSDIR)/liquid-dsp && ./bootstrap.sh
+	@cd $(DEPSDIR)/liquid-dsp && ./configure --host=arm-none-eabi CFLAGS="-I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error" LDFLAGS="$(LDFLAGS) $(LDLIBSPATH) -L../../$(LIBDIR)" LIBS="$(LDLIBS)" CPP="$(CC) -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error -E"
+	@sed -i 's/#define malloc rpl_malloc/\/\* #undef malloc \*\//g' $(DEPSDIR)/liquid-dsp/config.h
+	@sed -i 's/#define realloc rpl_realloc/\/\* #undef realloc \*\//g' $(DEPSDIR)/liquid-dsp/config.h
+	@cd $(DEPSDIR)/liquid-dsp && make
+	@ln -fs ../$(DEPSDIR)/liquid-dsp/libliquid.a $(LIBDIR)/libliquid.a
+	@ln -fs ../../$(DEPSDIR)/liquid-dsp/include/liquid.h $(LIBDIR)/$(INCLUDEDIR)/liquid.h
 
 -include $(OBJECTS:.o=.d)
 
