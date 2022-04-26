@@ -115,7 +115,7 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJECTS)
 	@echo ---------------------------------------------------------------------------
 	@echo Creating ELF file \'$@\'...
-	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) -L./$(LIBDIR) $(LDLIBSPATH) -lfec -lliquid $(LDLIBS) -Wl,-Map=$(TARGET).map
+	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) -L./$(LIBDIR) $(LDLIBSPATH) -lopus -lfec -lliquid $(LDLIBS) -Wl,-Map=$(TARGET).map
 ifeq ($(BUILD_TYPE), release)
 	@$(STRIP) -g $@
 endif
@@ -164,10 +164,22 @@ clean-bin:
 clean: clean-bin
 	@rm -rf $(OBJECTDIR)/*
 
-deps: deps-dir libfec libliquid
+deps: deps-dir libopus libfec libliquid
 
 deps-dir:
 	@mkdir -p $(LIBDIR)/$(INCLUDEDIR)
+
+libopus:
+	@cd $(DEPSDIR) && wget https://archive.mozilla.org/pub/opus/opus-1.3.1.tar.gz
+	@cd $(DEPSDIR) && tar xzf opus-1.3.1.tar.gz
+	@cd $(DEPSDIR)/opus-1.3.1 && ./configure --disable-shared --enable-static --disable-dependency-tracking --disable-maintainer-mode --disable-doc --disable-extra-programs --host=arm-none-eabi CFLAGS=" -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error" LDFLAGS="$(LDFLAGS) $(LDLIBSPATH) -L../../$(LIBDIR)" LIBS="$(LDLIBS)" CPP="$(CC) -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error -E"
+	@cd $(DEPSDIR)/opus-1.3.1 && make
+	@ln -fs ../$(DEPSDIR)/opus-1.3.1/.libs/libopus.a $(LIBDIR)/libopus.a
+	@ln -fs ../../$(DEPSDIR)/opus-1.3.1/include/opus.h $(LIBDIR)/$(INCLUDEDIR)/opus.h
+	@ln -fs ../../$(DEPSDIR)/opus-1.3.1/include/opus_types.h $(LIBDIR)/$(INCLUDEDIR)/opus_types.h
+	@ln -fs ../../$(DEPSDIR)/opus-1.3.1/include/opus_projection.h $(LIBDIR)/$(INCLUDEDIR)/opus_projection.h
+	@ln -fs ../../$(DEPSDIR)/opus-1.3.1/include/opus_multistream.h $(LIBDIR)/$(INCLUDEDIR)/opus_multistream.h
+	@ln -fs ../../$(DEPSDIR)/opus-1.3.1/include/opus_defines.h $(LIBDIR)/$(INCLUDEDIR)/opus_defines.h
 
 libfec:
 	@cd $(DEPSDIR)/libfec && ./configure --host=arm-none-eabi CFLAGS=" -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error" LDFLAGS="$(LDFLAGS) $(LDLIBSPATH) -L../../$(LIBDIR)" LIBS="$(LDLIBS)" CPP="$(CC) -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error -E"
