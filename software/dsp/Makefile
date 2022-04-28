@@ -115,7 +115,7 @@ $(TARGET).hex: $(TARGET).elf
 $(TARGET).elf: $(OBJECTS)
 	@echo ---------------------------------------------------------------------------
 	@echo Creating ELF file \'$@\'...
-	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) -L./$(LIBDIR) $(LDLIBSPATH) -lopus -lfec -lliquid $(LDLIBS) -Wl,-Map=$(TARGET).map
+	@$(LD) $(LDFLAGS) -o $@ $^ -T $(LDSCRIPT) -L./$(LIBDIR) $(LDLIBSPATH) -lopus -lliquid -lfec $(LDLIBS) -Wl,-Map=$(TARGET).map
 ifeq ($(BUILD_TYPE), release)
 	@$(STRIP) -g $@
 endif
@@ -188,6 +188,7 @@ libfec:
 	@ln -fs ../../$(DEPSDIR)/libfec/fec.h $(LIBDIR)/$(INCLUDEDIR)/fec.h
 
 libliquid:
+	@cd $(DEPSDIR)/liquid-dsp && git apply ../patches/liquid-dsp.patch
 	@cd $(DEPSDIR)/liquid-dsp && ./bootstrap.sh
 	@cd $(DEPSDIR)/liquid-dsp && ./configure --host=arm-none-eabi CFLAGS="-I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error" LDFLAGS="$(LDFLAGS) $(LDLIBSPATH) -L../../$(LIBDIR)" LIBS="$(LDLIBS)" CPP="$(CC) -I../../$(LIBDIR)/$(INCLUDEDIR) $(CFLAGS) -Wno-error -E"
 	@sed -i 's/#define malloc rpl_malloc/\/\* #undef malloc \*\//g' $(DEPSDIR)/liquid-dsp/config.h
