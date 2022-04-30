@@ -5,11 +5,11 @@ clc          % Clean the command window
 %echo off    % Inhibits the code view in the command window during its execution
 
 %% Config
-FsADC = 49152000;
+FsADC = 49.152e6 / 2;
 FsCIC = FsADC;
-CICDec = 128;
+CICDec = 32;
 FsFIR = FsCIC / CICDec;
-FIRDec = 2;
+FIRDec = 16;
 FsOut = FsFIR / FIRDec;
 
 Fres = 1000;
@@ -17,7 +17,7 @@ Fres = 1000;
 f = 0 : (Fres/FsCIC) : (CICDec / 2);
 
 %% CIC
-CICOrder = 3;
+CICOrder = 4;
 CICZeroGain = 20 * log10(2 ^ (CICOrder * log2(CICDec))); % Gain due to bit growth
 CICResp = 20 .* log10(abs(sin(pi .* f) ./ sin(pi .* (f ./ CICDec))) .^ CICOrder) - CICZeroGain;
 
@@ -45,13 +45,13 @@ title('Up to FsOut / 2');
 
 %% FIR
 h = fdesign.ciccomp;
-set(h, 'NumberOfSections', 3, 'DifferentialDelay', 1);
+set(h, 'NumberOfSections', CICOrder, 'DifferentialDelay', 1);
 FIR = design(h, 'equiripple', 'SystemObject', true);
 FIR = coeffs(FIR);
 FIR = FIR.Numerator;
 
 FIRResp = freqz(FIR, 1, (FsCIC/Fres) / 2);
-FIRResp = 20 .* log10(FIRResp .');
+FIRResp = 20 .* log10(abs(FIRResp) .');
 
 FIRPlusCICResp = CICResp(1:length(FIRResp)) + FIRResp;
 
