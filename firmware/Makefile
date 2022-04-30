@@ -58,7 +58,7 @@ $(TARGET).json: $(VSOURCES)
 
 $(TARGET).asc: $(TARGET).json
 	@echo Runing place and route...
-	@nextpnr-ice40 -q --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE) --asc $@
+	@nextpnr-ice40 -q --threads $(shell nproc) --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE) --asc $@
 
 $(TARGET).bin: $(TARGET).asc
 	@echo Packing bin file...
@@ -103,7 +103,7 @@ timing: $(TARGET).asc
 	@icetime -p $(PCFILE) -P $(PACKAGE) -t -d $(DEVICE) -r $(TARGET)-timing.txt $< | grep "Timing estimate"
 
 pnr-gui: $(TARGET).json
-	@nextpnr-ice40 --gui -q --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE)
+	@nextpnr-ice40 --gui -q --threads $(shell nproc) --$(DEVICE) --package $(PACKAGE) --json $(TARGET).json --pcf $(PCFILE)
 
 make-dir:
 	@mkdir -p $(TARGETDIR)
