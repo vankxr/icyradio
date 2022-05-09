@@ -1,4 +1,6 @@
 #include <sam.h>
+#include "FreeRTOS.h"
+#include "task.h"
 
 extern void _estack(); // Not really a function, just to be compatible with array later
 
@@ -98,14 +100,26 @@ void _reset_isr()
     __libc_init_array();
 
     SCB->VTOR = (uint32_t)&_svect; // ISR Vectors offset
-    SCB->AIRCR = 0x05FA0000 | (5 << 8); // Interrupt priority - 2 bits Group, 1 bit Sub-group
+    SCB->AIRCR = 0x05FA0000 | (4 << 8); // Interrupt priority - 3 bits Group, 0 bit Sub-group
     SCB->SHCSR = SCB_SHCSR_USGFAULTENA_Msk | SCB_SHCSR_BUSFAULTENA_Msk | SCB_SHCSR_MEMFAULTENA_Msk; // Enable separate fault handlers
     SCB->SCR |= SCB_SCR_SEVONPEND_Msk; // Pending disabled interrupt generates event
     SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk; // Enable division by zero faults
     SCB->CPACR |= 0xF << 20; // Enable CP10 & CP11 (FPU) in priv. and non priv. mode
 
+    const HeapRegion_t xHeapRegions[] =
+    {
+      //{ (uint8_t *)&_edram0,  0x20000000 + 0x008000 - (uint32_t)&_edram0 }, // dram0 - DTCM - Do not use, only accessible by the core
+        { (uint8_t *)&_end,     0x20400000 + 0x050000 - (uint32_t)&_end }, // dram1 - SRAM
+      //{ (uint8_t *)&_edram2,  0x40074000 + 0x000400 - (uint32_t)&_edram2 }, // dram2 - Backup RAM - Do not use, only allows 32-bit accesses
+      //{ (uint8_t *)&_edram3,  0x70000000 + 0x000000 - (uint32_t)&_edram3 }, // dram3 - SDRAM - Do not use, not present
+        { NULL, 0 }
+    };
+
+    vPortDefineHeapRegions(xHeapRegions);
+
     init();
-    main();
+
+    vTaskStartScheduler();
 
     __disable_irq();
     while(1);

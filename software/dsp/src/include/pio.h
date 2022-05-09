@@ -3,7 +3,6 @@
 
 #include <sam.h>
 #include "pmc.h"
-#include "systick.h"
 #include "utils.h"
 #include "nvic.h"
 

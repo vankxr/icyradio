@@ -47,7 +47,7 @@ void afec_init()
     // Interrupts
     REG_DISCARD(&AFEC0->AFEC_ISR); // Clear pending IRQs
     IRQ_CLEAR(AFEC0_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(AFEC0_IRQn, 2, 1); // Set priority 2,1
+    IRQ_SET_PRIO(AFEC0_IRQn, 5, 0); // Set priority 5.0
     IRQ_ENABLE(AFEC0_IRQn); // Enable vector
     AFEC0->AFEC_IER = BIT(AFEC_TEMP_SENSOR_CHANNEL);
 

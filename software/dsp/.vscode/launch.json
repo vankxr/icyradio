@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Debug",
             "cwd": "${workspaceRoot}",
@@ -21,14 +22,16 @@
             "swoConfig": {
                 "enabled": true,
                 "swoFrequency": 12000000,
-                "cpuFrequency": 360000000,
-                "source": "/dev/ttyUSB1",
+                "cpuFrequency": 300000000,
+                "source": "serial",
+                "swoPath": "/dev/ttyUSB1",
                 "decoders": [
                     {
                         "port": 0,
                         "label": "Console",
                         "type": "console",
-                        "showOnStartup": true
+                        "showOnStartup": true,
+                        "logfile": "/home/joao/xyz.txt"
                     },
                 ]
             }

@@ -28,7 +28,7 @@ void xdmac_init()
     }
 
     IRQ_CLEAR(XDMAC_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(XDMAC_IRQn, 2, 1); // Set priority 2,1
+    IRQ_SET_PRIO(XDMAC_IRQn, 4, 0); // Set priority 4,0
     IRQ_ENABLE(XDMAC_IRQn); // Enable vector
 }
 

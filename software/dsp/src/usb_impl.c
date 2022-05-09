@@ -749,7 +749,7 @@ void usb_impl_config_endpoints()
             if(pEndpointBuffer[1])
             {
                 if(pEndpointBuffer[1]->pubData)
-                    free((void *)pEndpointBuffer[1]->pubData);
+                    vPortFreeAligned((void *)pEndpointBuffer[1]->pubData);
 
                 free(pEndpointBuffer[1]);
             }
@@ -763,7 +763,7 @@ void usb_impl_config_endpoints()
             pEndpointBuffer[1]->usUsedSize = 0;
             pEndpointBuffer[1]->usWritePointer = 0;
             pEndpointBuffer[1]->usReadPointer = 0;
-            pEndpointBuffer[1]->pubData = (volatile uint8_t *)memalign(32, pEndpointBuffer[1]->usSize);
+            pEndpointBuffer[1]->pubData = (volatile uint8_t *)pvPortMallocAligned(32, pEndpointBuffer[1]->usSize);
 
             if(!pEndpointBuffer[1]->pubData)
                 return;
@@ -791,7 +791,7 @@ void usb_impl_config_endpoints()
             if(pEndpointBuffer[2])
             {
                 if(pEndpointBuffer[2]->pubData)
-                    free((void *)pEndpointBuffer[2]->pubData);
+                    vPortFreeAligned((void *)pEndpointBuffer[2]->pubData);
 
                 free(pEndpointBuffer[2]);
             }
@@ -805,7 +805,7 @@ void usb_impl_config_endpoints()
             pEndpointBuffer[2]->usUsedSize = 0;
             pEndpointBuffer[2]->usWritePointer = 0;
             pEndpointBuffer[2]->usReadPointer = 0;
-            pEndpointBuffer[2]->pubData = (volatile uint8_t *)memalign(32, pEndpointBuffer[2]->usSize);
+            pEndpointBuffer[2]->pubData = (volatile uint8_t *)pvPortMallocAligned(32, pEndpointBuffer[2]->usSize);
 
             if(!pEndpointBuffer[2]->pubData)
                 return;
@@ -1331,12 +1331,13 @@ void usb_impl_endpoint_buffer_flush(uint8_t ubEndpoint)
     if(!pBuffer)
         return;
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    taskENTER_CRITICAL();
     {
         pBuffer->usWritePointer = 0;
         pBuffer->usReadPointer = 0;
         pBuffer->usUsedSize = 0;
     }
+    taskEXIT_CRITICAL();
 }
 uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uint16_t usLength)
 {
@@ -1356,7 +1357,7 @@ uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uin
 
     uint16_t usReadBytes = 0;
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    taskENTER_CRITICAL();
     {
         while(usReadBytes < usLength)
         {
@@ -1370,6 +1371,7 @@ uint16_t usb_impl_endpoint_buffer_read(uint8_t ubEndpoint, uint8_t *pubData, uin
                 pBuffer->usReadPointer = 0;
         }
     }
+    taskEXIT_CRITICAL();
 
     return usReadBytes;
 }
@@ -1391,7 +1393,7 @@ uint16_t usb_impl_endpoint_buffer_write(uint8_t ubEndpoint, const uint8_t *pubDa
 
     uint16_t usWrittenBytes = 0;
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    taskENTER_CRITICAL();
     {
         while(usWrittenBytes < usLength)
         {
@@ -1408,6 +1410,7 @@ uint16_t usb_impl_endpoint_buffer_write(uint8_t ubEndpoint, const uint8_t *pubDa
         if(usWrittenBytes)
             dcache_addr_clean((void *)pBuffer->pubData, pBuffer->usSize);
     }
+    taskEXIT_CRITICAL();
 
     return usWrittenBytes;
 }
@@ -1424,18 +1427,30 @@ uint8_t usb_impl_endpoint_buffer_dma_trigger(uint8_t ubEndpoint, uint16_t usLeng
     if(!pBuffer)
         return 0;
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    taskENTER_CRITICAL();
     {
         if(usLength > pBuffer->usSize)
+        {
+            taskEXIT_CRITICAL();
+
             return 0;
+        }
 
         uint32_t ulDirection = USBHS->USBHS_DEVEPTCFG[ubEndpoint] & USBHS_DEVEPTCFG_EPDIR_Msk;
 
         if(ulDirection == USBHS_DEVEPTCFG_EPDIR_OUT && (pBuffer->usUsedSize || pBuffer->usWritePointer)) // Fail if we try to receive and there is something in the buffer or the write ptr is not at zero
+        {
+            taskEXIT_CRITICAL();
+
             return 0;
+        }
 
         if(ulDirection == USBHS_DEVEPTCFG_EPDIR_IN && (usLength > pBuffer->usUsedSize || pBuffer->usReadPointer)) // Fail if we try to send more than we have in the buffer or the read ptr is not at zero
+        {
+            taskEXIT_CRITICAL();
+
             return 0;
+        }
 
         USBHS->UsbhsDevdma[ubEndpoint - 1].USBHS_DEVDMAADDRESS = (uint32_t)pBuffer->pubData;
 
@@ -1451,6 +1466,7 @@ uint8_t usb_impl_endpoint_buffer_dma_trigger(uint8_t ubEndpoint, uint16_t usLeng
         else
             USBHS->USBHS_DEVEPTIER[ubEndpoint] = USBHS_DEVEPTIER_TXINES;
     }
+    taskEXIT_CRITICAL();
 
     return 1;
 }

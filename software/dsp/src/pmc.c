@@ -33,10 +33,10 @@ void pmc_init()
     } while(!(PMC->CKGR_MCFR & CKGR_MCFR_MAINF_Msk));
 
     // Setup and enable PLLA to output 360 MHz
-    pmc_plla_config(1, 360000000UL / MAINXO_OSC_FREQ, 1);
+    pmc_plla_config(1, 300000000UL / MAINXO_OSC_FREQ, 1);
 
     // Configure flash waitstates
-    eefc_config_waitstates(180000000);
+    eefc_config_waitstates(150000000);
 
     // Setup FCLK and MCK dividers
     PMC->PMC_MCKR = (PMC->PMC_MCKR & PMC_MCKR_CSS_Msk) | PMC_MCKR_UPLLDIV2 | PMC_MCKR_MDIV_PCK_DIV2 | PMC_MCKR_PRES_CLK_1;

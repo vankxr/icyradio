@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <string.h>
 #include <math.h>
+#include "FreeRTOS.h"
 #include "arm_math.h"
 #include "arm_const_structs.h"
 #include "dsp.h"
@@ -11,25 +12,21 @@
 #include "utils.h"
 #include "cache.h"
 #include "nvic.h"
-#include "atomic.h"
 #include "pmc.h"
 #include "rstc.h"
 #include "eefc.h"
 #include "matrix.h"
 #include "xdmac.h"
-#include "systick.h"
 #include "dbg.h"
 #include "wdt.h"
 #include "pio.h"
 #include "trng.h"
 #include "afec.h"
+#include "liquid.h"
 #include "usb.h"
 #include "usb_impl.h"
 #include "usb_util.h"
-#include "audio_filter.h"
-#include "pre_emphasis_filter.h"
 #include "baseband_filter.h"
-#include "hilbert_filter.h"
 
 // Structs
 
@@ -40,8 +37,6 @@
 #define RX_AUDIO_I2S_DMA_CHANNEL        3
 #define BASEBAND_SAMPLE_BUFFER_SIZE     4096
 #define AUDIO_SAMPLE_BUFFER_SIZE        256
-
-#define HILBERT_DELAY_SAMPLES           200 // In theory should be Hilbert filter order / 2, fine tunned to remove unwanted sideband leakage
 
 #define CTRL_SPI_REGISTER_COUNT             128
 #define CTRL_SPI_REGISTER(t, a)             (*(t *)&ubSPIRegister[(a)])
@@ -69,6 +64,7 @@ static void sleep();
 
 static uint32_t get_free_ram();
 
+static void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize);
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint8_t get_device_revision();
 
@@ -103,15 +99,11 @@ uint64_t ullRXProcessingTimeUsed = 0;
 float fAudioPower = -120.f;
 uint8_t ubAudioMuted = 0;
 uint8_t ubAudioSquelchLevel = 0;
-fir_ctx_t *pTXAudioFilter = NULL;
-fir_ctx_t *pRXAudioFilter = NULL;
-fir_ctx_t *pTXPreEmphasisFilter = NULL;
-fir_sparse_ctx_t *pTXHilbertFilter = NULL;
-fir_sparse_ctx_t *pRXHilbertFilter = NULL;
 fir_interpolator_complex_ctx_t *pTXBasebandFilter = NULL;
 fir_decimator_complex_ctx_t *pRXBasebandFilter = NULL;
 dsp_agc_t *pTXAudioAGC = NULL;
 dsp_agc_t *pRXAudioAGC = NULL;
+flexframegen xFrameGen;
 volatile uint8_t DTCM_DATA ubSPIRegister[CTRL_SPI_REGISTER_COUNT];
 volatile uint8_t DTCM_DATA ubSPIRegisterPointer = 0x00;
 volatile uint8_t DTCM_DATA ubSPIStatus = BIT(0);
@@ -178,9 +170,9 @@ void ITCM_CODE tx_audio_i2s_dma_isr(uint32_t ulFlags)
     {
         static uint64_t ullLastTick = 0;
 
-        ullTXProcessingTimeBudget = g_ullSystemTick - ullLastTick;
+        ullTXProcessingTimeBudget = (xTaskGetTickCountFromISR() * portTICK_PERIOD_MS) - ullLastTick;
 
-        ullLastTick = g_ullSystemTick;
+        ullLastTick = (xTaskGetTickCountFromISR() * portTICK_PERIOD_MS);
 
         if(ubTXAudioReady) // Overflow - processing not complete
         {
@@ -214,9 +206,9 @@ void ITCM_CODE rx_baseband_i2s_dma_isr(uint32_t ulFlags)
     {
         static uint64_t ullLastTick = 0;
 
-        ullRXProcessingTimeBudget = g_ullSystemTick - ullLastTick;
+        ullRXProcessingTimeBudget = (xTaskGetTickCountFromISR() * portTICK_PERIOD_MS) - ullLastTick;
 
-        ullLastTick = g_ullSystemTick;
+        ullLastTick = (xTaskGetTickCountFromISR() * portTICK_PERIOD_MS);
 
         if(ubRXBasebandReady) // Overflow - processing not complete
         {
@@ -245,6 +237,52 @@ void ITCM_CODE rx_baseband_i2s_dma_isr(uint32_t ulFlags)
     }
 }
 
+// RTOS Hooks
+void vAssertCalled(const char *pszFile, uint32_t ulLine)
+{
+    DBGPRINTLN_CTX("Assertion failed in %s at line %lu", pszFile, ulLine);
+
+    while(1);
+}
+void vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName)
+{
+	( void ) pcTaskName;
+	( void ) pxTask;
+
+	/* Run time stack overflow checking is performed if
+	configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
+	function is called if a stack overflow is detected. */
+
+	/* Force an assert. */
+	configASSERT( ( volatile void * ) NULL );
+}
+void vApplicationMallocFailedHook()
+{
+	/* Called if a call to pvPortMalloc() fails because there is insufficient
+	free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+	internally by FreeRTOS API functions that create tasks, queues, software
+	timers, and semaphores.  The size of the FreeRTOS heap is set by the
+	configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h. */
+
+	/* Force an assert. */
+	configASSERT( ( volatile void * ) NULL );
+}
+void vApplicationIdleHook()
+{
+
+}
+
+// Newlib replacement hooks
+// For external libraries that call assert()
+void __assert_func(const char *pszFile, uint32_t ulLine, const char *pszFunction, const char *pszExpression)
+{
+    DBGPRINTLN_CTX("Assertion failed in %s at line %lu", pszFile, ulLine);
+    DBGPRINTLN_CTX("Function: %s", pszFunction);
+    DBGPRINTLN_CTX("Expression: %s", pszExpression);
+
+    while(1);
+}
+
 // Functions
 void reset()
 {
@@ -252,41 +290,42 @@ void reset()
 
     while(1);
 }
-void sleep()
-{
-    SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk; // Configure Deep Sleep (EM2/3)
-
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    {
-        __DMB(); // Wait for all memory transactions to finish before memory access
-        __DSB(); // Wait for all memory transactions to finish before executing instructions
-        __ISB(); // Wait for all memory transactions to finish before fetching instructions
-        __SEV(); // Set the event flag to ensure the next WFE will be a NOP
-        __WFE(); // NOP and clear the event flag
-        __WFE(); // Wait for event
-        __NOP(); // Prevent debugger crashes
-    }
-}
 
 uint32_t get_free_ram()
 {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    {
-        extern void *_sbrk(int);
-
-        void *pCurrentHeap = _sbrk(1);
-
-        if(!pCurrentHeap)
-            return 0;
-
-        uint32_t ulFreeRAM = (uint32_t)__get_MSP() - (uint32_t)pCurrentHeap;
-
-        _sbrk(-1);
-
-        return ulFreeRAM;
-    }
+    return 0;
 }
 
+void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize)
+{
+    uint8_t ubImplementer = (SCB->CPUID & SCB_CPUID_IMPLEMENTER_Msk) >> SCB_CPUID_IMPLEMENTER_Pos;
+    const char* szImplementer = "?";
+
+    switch(ubImplementer)
+    {
+        case 0x41: szImplementer = "ARM"; break;
+    }
+
+    uint16_t usPartNo = (SCB->CPUID & SCB_CPUID_PARTNO_Msk) >> SCB_CPUID_PARTNO_Pos;
+    const char* szPartNo = "?";
+
+    switch(usPartNo)
+    {
+        case 0xC20: szPartNo = "Cortex-M0"; break;
+        case 0xC60: szPartNo = "Cortex-M0+"; break;
+        case 0xC21: szPartNo = "Cortex-M1"; break;
+        case 0xD20: szPartNo = "Cortex-M23"; break;
+        case 0xC23: szPartNo = "Cortex-M3"; break;
+        case 0xD21: szPartNo = "Cortex-M33"; break;
+        case 0xC24: szPartNo = "Cortex-M4"; break;
+        case 0xC27: szPartNo = "Cortex-M7"; break;
+    }
+
+    uint8_t ubVariant = (SCB->CPUID & SCB_CPUID_VARIANT_Msk) >> SCB_CPUID_VARIANT_Pos;
+    uint8_t ubRevision = (SCB->CPUID & SCB_CPUID_REVISION_Msk) >> SCB_CPUID_REVISION_Pos;
+
+    snprintf(pszDeviceCoreName, ulDeviceCoreNameSize, "%s %s r%hhup%hhu", szImplementer, szPartNo, ubVariant, ubRevision);
+}
 void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize)
 {
     uint8_t ubFamily = (CHIPID->CHIPID_CIDR & CHIPID_CIDR_ARCH_Msk) >> CHIPID_CIDR_ARCH_Pos;
@@ -433,9 +472,9 @@ void load_rx_audio_buffer(int16_t *psLeft, int16_t *psRight)
 
 void init_baseband_i2s()
 {
-    free(pulTXBasebandBuffer);
+    vPortFreeAligned(pulTXBasebandBuffer);
 
-    pulTXBasebandBuffer = (uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXBasebandBuffer = (uint32_t *)pvPortMallocAligned(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXBasebandBuffer)
         return;
@@ -444,9 +483,9 @@ void init_baseband_i2s()
 
     dcache_addr_clean(pulTXBasebandBuffer, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-    free((void *)pulRXBasebandBuffer);
+    vPortFreeAligned((void *)pulRXBasebandBuffer);
 
-    pulRXBasebandBuffer = (volatile uint32_t *)memalign(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXBasebandBuffer = (volatile uint32_t *)pvPortMallocAligned(32, 2 * BASEBAND_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXBasebandBuffer)
         return;
@@ -520,9 +559,9 @@ void init_baseband_i2s()
 }
 void init_audio_i2s()
 {
-    free((void *)pulTXAudioBuffer);
+    vPortFreeAligned((void *)pulTXAudioBuffer);
 
-    pulTXAudioBuffer = (volatile uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulTXAudioBuffer = (volatile uint32_t *)pvPortMallocAligned(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulTXAudioBuffer)
         return;
@@ -531,9 +570,9 @@ void init_audio_i2s()
 
     dcache_addr_clean((void *)pulTXAudioBuffer, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
-    free(pulRXAudioBuffer);
+    vPortFreeAligned(pulRXAudioBuffer);
 
-    pulRXAudioBuffer = (uint32_t *)memalign(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
+    pulRXAudioBuffer = (uint32_t *)pvPortMallocAligned(32, 2 * AUDIO_SAMPLE_BUFFER_SIZE * sizeof(uint32_t));
 
     if(!pulRXAudioBuffer)
         return;
@@ -625,7 +664,7 @@ void init_control_spi()
     SPI0->SPI_CSR[0] = SPI_CSR_BITS_8_BIT | SPI_CSR_NCPHA_VALID_LEADING_EDGE | SPI_CSR_CPOL_IDLE_LOW; // Configure control SPI peripheral
 
     IRQ_CLEAR(SPI0_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(SPI0_IRQn, 3, 0); // Set priority 3,0
+    IRQ_SET_PRIO(SPI0_IRQn, 6, 0); // Set priority 6,0
     IRQ_ENABLE(SPI0_IRQn); // Enable vector
     SPI0->SPI_IER = SPI_IER_NSSR | SPI_IER_RDRF; // Enable interrupts
 
@@ -634,83 +673,68 @@ void init_control_spi()
 void init_dsp_components()
 {
     // TX Components
-    //// Audio filter
-    pTXAudioFilter = fir_init(audio_filter_taps_size, audio_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
-
-    if(pTXAudioFilter)
-        DBGPRINTLN_CTX("TX - Audio FIR intialized!");
-    else
-        DBGPRINTLN_CTX("TX - Failed audio FIR intialization!");
-
-    //// Pre-emphasis filter
-    pTXPreEmphasisFilter = fir_init(pre_emphasis_filter_taps_size, pre_emphasis_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
-
-    if(pTXPreEmphasisFilter)
-        DBGPRINTLN_CTX("TX - Pre-emphasis FIR intialized!");
-    else
-        DBGPRINTLN_CTX("TX - Failed pre-emphasis FIR intialization!");
-
-    //// Hilbert filter
-    pTXHilbertFilter = fir_sparse_init(hilbert_filter_taps_size, hilbert_filter_taps, hilbert_filter_tap_delay, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
-
-    if(pTXHilbertFilter)
-        DBGPRINTLN_CTX("TX - Hilbert FIR intialized!");
-    else
-        DBGPRINTLN_CTX("TX - Failed hilbert FIR intialization!");
-
     //// Baseband interpolating filter
     pTXBasebandFilter = fir_interpolator_complex_init(baseband_filter_taps_size, 16, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
     if(pTXBasebandFilter)
-        DBGPRINTLN_CTX("TX - Baseband interpolating FIR intialized!");
+        DBGPRINTLN_CTX("TX - Baseband interpolating FIR initialized!");
     else
-        DBGPRINTLN_CTX("TX - Failed baseband interpolating FIR intialization!");
+        DBGPRINTLN_CTX("TX - Failed baseband interpolating FIR initialization!");
 
     //// Audio AGC
     pTXAudioAGC = dsp_agc_init(1.f, 1.f, 80.f, 0.001f, 0.005f, 0.92f, 0.98f, 32);
 
     if(pTXAudioAGC)
-        DBGPRINTLN_CTX("TX - Audio AGC intialized!");
+        DBGPRINTLN_CTX("TX - Audio AGC initialized!");
     else
-        DBGPRINTLN_CTX("TX - Failed audio AGC intialization!");
+        DBGPRINTLN_CTX("TX - Failed audio AGC initialization!");
+
+    flexframegenprops_s xFrameHeaderProps = {
+        .check = LIQUID_CRC_32,
+        .fec0 = LIQUID_FEC_SECDED7264,
+        .fec1 = LIQUID_FEC_HAMMING84,
+        .mod_scheme = LIQUID_MODEM_BPSK,
+    };
+    flexframegenprops_s xFramePayloadProps = {
+        .check = LIQUID_CRC_32,
+        .fec0 = LIQUID_FEC_CONV_V29P34,
+        .fec1 = LIQUID_FEC_RS_M8,
+        .mod_scheme = LIQUID_MODEM_BPSK,
+    };
+
+    flexframegen xFrameGen = flexframegen_create(NULL);
+
+    if(xFrameGen)
+        DBGPRINTLN_CTX("TX - Frame gemerator initialized!");
+    else
+        DBGPRINTLN_CTX("TX - Failed frame gemerator initialization!");
+
+    flexframegen_set_header_props(xFrameGen, &xFrameHeaderProps);
+    flexframegen_setprops(xFrameGen, &xFramePayloadProps);
+
+    DBGPRINTLN_CTX("Coded payload length: %u bytes", fec_get_enc_msg_length(LIQUID_FEC_CONV_V29P34, fec_get_enc_msg_length(LIQUID_FEC_RS_M8, 219 + 4)));
 
     // RX Components
-    //// Audio filter
-    pRXAudioFilter = fir_init(audio_filter_taps_size, audio_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
-
-    if(pRXAudioFilter)
-        DBGPRINTLN_CTX("TX - Audio FIR intialized!");
-    else
-        DBGPRINTLN_CTX("TX - Failed audio FIR intialization!");
-
-    //// Hilbert filter
-    pRXHilbertFilter = fir_sparse_init(hilbert_filter_taps_size, hilbert_filter_taps, hilbert_filter_tap_delay, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
-
-    if(pRXHilbertFilter)
-        DBGPRINTLN_CTX("TX - Hilbert FIR intialized!");
-    else
-        DBGPRINTLN_CTX("TX - Failed hilbert FIR intialization!");
-
     //// Baseband decimating filter
     pRXBasebandFilter = fir_decimator_complex_init(baseband_filter_taps_size, 16, baseband_filter_taps, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
     if(pRXBasebandFilter)
-        DBGPRINTLN_CTX("TX - Baseband decimating FIR intialized!");
+        DBGPRINTLN_CTX("TX - Baseband decimating FIR initialized!");
     else
-        DBGPRINTLN_CTX("TX - Failed baseband decimating FIR intialization!");
+        DBGPRINTLN_CTX("TX - Failed baseband decimating FIR initialization!");
 
     //// Audio AGC
     pRXAudioAGC = dsp_agc_init(1.f, 1.f, 80.f, 0.001f, 0.005f, 0.92f, 0.98f, 32);
 
     if(pRXAudioAGC)
-        DBGPRINTLN_CTX("TX - Audio AGC intialized!");
+        DBGPRINTLN_CTX("TX - Audio AGC initialized!");
     else
-        DBGPRINTLN_CTX("TX - Failed audio AGC intialization!");
+        DBGPRINTLN_CTX("TX - Failed audio AGC initialization!");
 }
 int init()
 {
-    icache_enable();
-    dcache_enable();
+    //icache_enable();
+    //dcache_enable();
 
     rstc_init(1, 0, 0);
 
@@ -724,9 +748,8 @@ int init()
     dbg_init(); // Init Debug module
     dbg_swo_config(BIT(0) | BIT(1), 12000000); // Init SWO channels 0 and 1 at 12 MHz
 
-    systick_init(); // Init system tick
-
-    wdt_init(10000); // Init the watchdog timer, 10 s timeout
+    //wdt_init(10000); // Init the watchdog timer, 10 s timeout
+    WDT->WDT_MR &= ~(WDT_MR_WDRSTEN);
 
     pio_init();
     xdmac_init();
@@ -738,13 +761,16 @@ int init()
     usb_impl_set_vendor_request_handler(usb_vendor_request_handler);
     usb_init(USBHS_DEVCTRL_SPDCONF_NORMAL);
 
+    char szDeviceCoreName[32];
     char szDeviceName[32];
     uint32_t ulUniqueID[4];
 
+    get_device_core_name(szDeviceCoreName, 32);
     get_device_name(szDeviceName, 32);
     eefc_get_unique_id(ulUniqueID);
 
     DBGPRINTLN_CTX("IcyRadio DSP v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
+    DBGPRINTLN_CTX("Core: %s", szDeviceCoreName);
     DBGPRINTLN_CTX("Device: %s", szDeviceName);
     DBGPRINTLN_CTX("Device Revision: %hhu", get_device_revision());
     DBGPRINTLN_CTX("Flash Size: %hu KiB", eefc_get_flash_size() >> 10);
@@ -767,34 +793,37 @@ int init()
     DBGPRINTLN_CTX("PMC - MCK Clock: %.1f MHz", (float)MCK_CLOCK_FREQ / 1000000);
     DBGPRINTLN_CTX("PMC - FCLK Clock: %.1f MHz", (float)FCLK_CLOCK_FREQ / 1000000);
 
-    delay_ms(100);
-
     afec_trigger_timer_init(5); // Trigger AFEC conversion every 5 seconds
+
+    // RTOS
+    extern void main(void * );
+    xTaskCreate(main, "main", 4096, NULL, tskIDLE_PRIORITY + 1, NULL);
 
     return 0;
 }
-int main()
+void main(void *pvParameters)
 {
     init_baseband_i2s();
     init_audio_i2s();
     init_control_spi();
     DBGPRINTLN_CTX("Interfaces initialized!");
 
-    init_dsp_components();
+    //init_dsp_components();
     DBGPRINTLN_CTX("DSP components initialized!");
 
-    DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
+    DBGPRINTLN_CTX("Free RAM: %lu KiB", xPortGetFreeHeapSize() >> 10);
 
     while(1)
     {
         wdt_feed();
 
         // Update IRQ line
-        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        taskENTER_CRITICAL();
         {
             if(CTRL_SPI_REGISTER(uint8_t, CTRL_SPI_REGISTER_IRQ_STATUS) & CTRL_SPI_REGISTER(uint8_t, CTRL_SPI_REGISTER_IRQ_MASK))
                 DSP_IRQ_ASSERT();
         }
+        taskEXIT_CRITICAL();
 
         /*
         if(usb_impl_endpoint_buffer_get_used_size(1) == 0)
@@ -825,16 +854,16 @@ int main()
         static uint64_t ullLastLEDTick = 0;
         static uint64_t ullLastDiagnosticTick = 0;
 
-        if(g_ullSystemTick - ullLastLEDTick > 250)
+        if((xTaskGetTickCount() * portTICK_PERIOD_MS) - ullLastLEDTick > 250)
         {
-            ullLastLEDTick = g_ullSystemTick;
+            ullLastLEDTick = (xTaskGetTickCount() * portTICK_PERIOD_MS);
 
             LED_TOGGLE();
         }
 
-        if(g_ullSystemTick - ullLastDiagnosticTick > 2000)
+        if((xTaskGetTickCount() * portTICK_PERIOD_MS) - ullLastDiagnosticTick > 2000)
         {
-            ullLastDiagnosticTick = g_ullSystemTick;
+            ullLastDiagnosticTick = (xTaskGetTickCount() * portTICK_PERIOD_MS);
 
             DBGPRINTLN_CTX("----------------------------------");
             DBGPRINTLN_CTX("Free RAM: %lu KiB", get_free_ram() >> 10);
@@ -865,7 +894,7 @@ int main()
         if(ubTXAudioReady)
         {
             // Start performance counters
-            uint64_t ullProcessingStart = g_ullSystemTick;
+            uint64_t ullProcessingStart = (xTaskGetTickCount() * portTICK_PERIOD_MS);
 
             // Figure out which audio buffer has new samples
             volatile uint32_t *pulAudio = pulTXAudioBuffer + (ubTXAudioReady - 1) * AUDIO_SAMPLE_BUFFER_SIZE;
@@ -895,7 +924,7 @@ int main()
                 ubAudioSquelchLevel += 3;
 
             ubAudioMuted = ubAudioSquelchLevel < 1;
-            //ubAudioMuted = 0;
+            ubAudioMuted = 0; // Force locally generated samples, aka disable USB
 
             if(ubAudioMuted)
             {
@@ -915,41 +944,37 @@ int main()
             }
             else
             {
-                // Apply pre-emphasis to the audio
-                fir_filter(pTXPreEmphasisFilter, psAudio, NULL);
-
-                // Filter the audio
-                fir_filter(pTXAudioFilter, psAudio, NULL);
-
-                // Pass through AGC
+                // Pass audio through AGC
                 dsp_agc_process(pTXAudioAGC, psAudio, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
-                // Generate quadrature with the hilbert transform
-                int16_t psHilbertAudio[AUDIO_SAMPLE_BUFFER_SIZE];
+                static uint8_t pubHeader[14];
+                static uint8_t pubPayload[219];
 
-                fir_sparse_filter(pTXHilbertFilter, psAudio, psHilbertAudio);
+                static uint8_t do_once = 0;
 
-                // Delay real (I) component to match the filter delay and stuff the result in the final IQ pair array
-                static int16_t DTCM_DATA psDelayedAudio[HILBERT_DELAY_SAMPLES];
-                iq16_t pAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
-                for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
+                if(!do_once)
                 {
-                    if(i < HILBERT_DELAY_SAMPLES)
-                    {
-                        pAudio[i].i = psDelayedAudio[i];
-                        psDelayedAudio[i] = psAudio[AUDIO_SAMPLE_BUFFER_SIZE - HILBERT_DELAY_SAMPLES + i];
-                    }
-                    else
-                    {
-                        pAudio[i].i = psAudio[i - HILBERT_DELAY_SAMPLES];
-                    }
+                    do_once = 1;
 
-                    pAudio[i].q = psHilbertAudio[i];
+                    for(uint32_t i = 0; i < sizeof(pubHeader); i++)
+                        pubHeader[i] = trng_pop_random() & 0xFF;
+
+                    for(uint32_t i = 0; i < sizeof(pubPayload); i++)
+                        pubPayload[i] = trng_pop_random() & 0xFF;
                 }
 
+                if(!flexframegen_is_assembled(xFrameGen))
+                    flexframegen_assemble(xFrameGen, pubHeader, pubPayload, 219);
+
+                static liquid_float_complex pcfBasebandPre[AUDIO_SAMPLE_BUFFER_SIZE];
+                static iq16_t pBasebandPre[AUDIO_SAMPLE_BUFFER_SIZE];
+
+                flexframegen_write_samples(xFrameGen, pcfBasebandPre, AUDIO_SAMPLE_BUFFER_SIZE);
+
+                arm_float_to_q15((float *)pcfBasebandPre, (int16_t *)pBasebandPre, AUDIO_SAMPLE_BUFFER_SIZE * 2);
+
                 // Interpolate and upsample to baseband rate
-                fir_interpolator_complex_filter(pTXBasebandFilter, pAudio, pBaseband);
+                fir_interpolator_complex_filter(pTXBasebandFilter, pBasebandPre, pBaseband);
 
                 // Load baseband buffer
                 load_tx_baseband_buffer(pBaseband);
@@ -959,13 +984,13 @@ int main()
             ubTXAudioReady = 0;
 
             // Stop performance counters
-            ullTXProcessingTimeUsed = g_ullSystemTick - ullProcessingStart;
+            ullTXProcessingTimeUsed = (xTaskGetTickCount() * portTICK_PERIOD_MS) - ullProcessingStart;
         }
 
         if(ubRXBasebandReady)
         {
             // Start performance counters
-            uint64_t ullProcessingStart = g_ullSystemTick;
+            uint64_t ullProcessingStart = (xTaskGetTickCount() * portTICK_PERIOD_MS);
 
             // Figure out which baseband buffer has new samples
             volatile uint32_t *pulBaseband = pulRXBasebandBuffer + (ubRXBasebandReady - 1) * BASEBAND_SAMPLE_BUFFER_SIZE;
@@ -989,57 +1014,17 @@ int main()
             // Decimate
             fir_decimator_complex_filter(pRXBasebandFilter, pBaseband, NULL);
 
-            int16_t psRealAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-            int16_t psImagAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
-            for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-            {
-                // Separate IQ components into different buffers
-                psRealAudio[i] = pBaseband[i].i;
-                psImagAudio[i] = pBaseband[i].q;
-            }
-
-            // Apply Hilbert transform to the imaginary (Q) component to generate two opposing (180 degree) signals
-            int16_t psHilbertAudio[AUDIO_SAMPLE_BUFFER_SIZE];
-
-            fir_sparse_filter(pRXHilbertFilter, psImagAudio, psHilbertAudio);
-
-            // Delay real (I) component to match the filter delay and combine both of the components to generate a real (dual side-banded) audio signal
-            static int16_t DTCM_DATA psDelayedAudio[HILBERT_DELAY_SAMPLES];
-
-            for(uint16_t i = 0; i < AUDIO_SAMPLE_BUFFER_SIZE; i++)
-            {
-                if(i < HILBERT_DELAY_SAMPLES)
-                {
-                    psAudio[i] = psDelayedAudio[i];
-                    psDelayedAudio[i] = psRealAudio[AUDIO_SAMPLE_BUFFER_SIZE - HILBERT_DELAY_SAMPLES + i];
-                }
-                else
-                {
-                    psAudio[i] = psRealAudio[i - HILBERT_DELAY_SAMPLES];
-                }
-
-                int32_t lAudio = psAudio[i] + psHilbertAudio[i]; // Sum yields USB, subtraction yields LSB
-
-                psAudio[i] = lAudio >> 1;
-            }
-
-            // Filter the audio
-            //fir_filter(pRXAudioFilter, psAudio, NULL);
-
             // Pass through AGC
             //dsp_agc_process(pRXAudioAGC, psAudio, NULL, AUDIO_SAMPLE_BUFFER_SIZE);
 
             // Load audio buffer
-            load_rx_audio_buffer(psAudio, psAudio);
+            //load_rx_audio_buffer(psAudio, psAudio);
 
             // Declare done processing baseband buffer
             ubRXBasebandReady = 0;
 
             // Stop performance counters
-            ullRXProcessingTimeUsed = g_ullSystemTick - ullProcessingStart;
+            ullRXProcessingTimeUsed = (xTaskGetTickCount() * portTICK_PERIOD_MS) - ullProcessingStart;
         }
     }
-
-    return 0;
 }

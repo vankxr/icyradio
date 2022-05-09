@@ -708,3 +708,40 @@ int fctprintf(void (*out)(char character, void* arg), void* arg, const char* for
   va_end(va);
   return ret;
 }
+
+int fiprintf(int * stream, const char * format, ...)
+{
+  (void)stream;
+
+  va_list va;
+  va_start(va, format);
+  char buffer[1];
+  const int ret = _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
+  va_end(va);
+  return ret;
+}
+int vfiprintf(int * stream, const char * format, va_list arg)
+{
+  (void)stream;
+
+  char buffer[1];
+  return _vsnprintf(_out_char, buffer, (size_t)-1, format, arg);
+}
+int fprintf(int * stream, const char * format, ...)
+{
+  (void)stream;
+
+  va_list va;
+  va_start(va, format);
+  char buffer[1];
+  const int ret = _vsnprintf(_out_char, buffer, (size_t)-1, format, va);
+  va_end(va);
+  return ret;
+}
+int vfprintf(int * stream, const char * format, va_list arg)
+{
+  (void)stream;
+
+  char buffer[1];
+  return _vsnprintf(_out_char, buffer, (size_t)-1, format, arg);
+}

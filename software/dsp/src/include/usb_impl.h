@@ -3,8 +3,9 @@
 
 #include <sam.h>
 #include <malloc.h>
+#include "FreeRTOS.h"
+#include "task.h"
 #include "pmc.h"
-#include "atomic.h"
 #include "cache.h"
 #include "nvic.h"
 #include "utils.h"

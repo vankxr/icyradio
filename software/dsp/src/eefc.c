@@ -2,11 +2,12 @@
 
 void eefc_init()
 {
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    taskENTER_CRITICAL();
     {
         EFC->EEFC_FMR |= EEFC_FMR_CLOE;
         EFC->EEFC_FMR &= ~EEFC_FMR_SCOD;
     }
+    taskEXIT_CRITICAL();
 }
 void eefc_config_waitstates(uint32_t ulFrequency)
 {
@@ -117,7 +118,10 @@ void eefc_get_unique_id(uint32_t *pulID)
     if(!pulID)
         return;
 
-    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    // RTOS critital section cannot be used here because it does not really turn ALL interrupts off
+    // Since we are de-mapping the flash address space, there is no way to fetch code from flash
+    __disable_fault_irq();
+    __disable_irq();
     {
         EFC->EEFC_FCR = EEFC_FCR_FKEY_PASSWD | EEFC_FCR_FCMD_STUI;
 
@@ -135,5 +139,7 @@ void eefc_get_unique_id(uint32_t *pulID)
         icache_invalidate();
         dcache_addr_invalidate((void *)0x00400000, 4 * sizeof(uint32_t));
     }
+    __enable_irq();
+    __enable_fault_irq();
 }
 

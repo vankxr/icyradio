@@ -55,7 +55,11 @@ void _putchar(char character);
  * \param format A string that specifies the format of the output
  * \return The number of characters that are written into the array, not counting the terminating null character
  */
-int printf(const char* format, ...);
+int    printf(const char* format, ...);
+int   fprintf(int * stream, const char * format, ...);
+int  vfprintf(int * stream, const char * format, va_list arg);
+int  fiprintf(int * stream, const char * format, ...);
+int vfiprintf(int * stream, const char * format, va_list arg);
 
 
 /**

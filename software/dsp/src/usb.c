@@ -10,9 +10,14 @@ void ITCM_CODE _usbhs_isr()
 
     if(ubGlobalFlags & USBHS_DEVISR_SUSP)
     {
+        // Make sure clock is unfrozen in order for the flags to clear
+        USBHS->USBHS_CTRL &= ~USBHS_CTRL_FRZCLK;
+
         USBHS->USBHS_DEVIDR = USBHS_DEVIDR_SUSPEC;
         USBHS->USBHS_DEVIER = USBHS_DEVIER_WAKEUPES;
         USBHS->USBHS_DEVICR = USBHS_DEVICR_SUSPC;
+
+        while(USBHS->USBHS_DEVISR & USBHS->USBHS_DEVIMR & USBHS_DEVISR_SUSP);
 
         USBHS->USBHS_CTRL |= USBHS_CTRL_FRZCLK;
     }
@@ -78,12 +83,12 @@ void usb_attach()
     USBHS->USBHS_SCR = USBHS_SCR_MASK; // Clear pending IRQs
     USBHS->USBHS_DEVICR = USBHS_DEVICR_MASK; // Clear pending IRQs
     IRQ_CLEAR(USBHS_IRQn); // Clear pending vector
-    IRQ_SET_PRIO(USBHS_IRQn, 2, 0); // Set priority 2,0
+    IRQ_SET_PRIO(USBHS_IRQn, 4, 0); // Set priority 4,0
     IRQ_ENABLE(USBHS_IRQn); // Enable vector
     USBHS->USBHS_DEVIFR = USBHS_DEVIFR_SUSPS; // Set initial suspend IRQ
 	USBHS->USBHS_DEVICR = USBHS_DEVICR_WAKEUPC;
 
-	USBHS->USBHS_CTRL |= USBHS_CTRL_FRZCLK;
+    USBHS->USBHS_CTRL |= USBHS_CTRL_FRZCLK;
 }
 void usb_detach()
 {

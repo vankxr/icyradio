@@ -2,7 +2,8 @@
 #define __EEFC_H__
 
 #include <sam.h>
-#include "atomic.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "cache.h"
 #include "utils.h"
 
