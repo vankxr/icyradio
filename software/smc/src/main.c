@@ -50,6 +50,7 @@ static void sleep();
 
 static uint32_t get_free_ram();
 
+static void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize);
 static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
 static uint16_t get_device_revision();
 
@@ -125,6 +126,36 @@ uint32_t get_free_ram()
     }
 }
 
+void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize)
+{
+    uint8_t ubImplementer = (SCB->CPUID & SCB_CPUID_IMPLEMENTER_Msk) >> SCB_CPUID_IMPLEMENTER_Pos;
+    const char* szImplementer = "?";
+
+    switch(ubImplementer)
+    {
+        case 0x41: szImplementer = "ARM"; break;
+    }
+
+    uint16_t usPartNo = (SCB->CPUID & SCB_CPUID_PARTNO_Msk) >> SCB_CPUID_PARTNO_Pos;
+    const char* szPartNo = "?";
+
+    switch(usPartNo)
+    {
+        case 0xC20: szPartNo = "Cortex-M0"; break;
+        case 0xC60: szPartNo = "Cortex-M0+"; break;
+        case 0xC21: szPartNo = "Cortex-M1"; break;
+        case 0xD20: szPartNo = "Cortex-M23"; break;
+        case 0xC23: szPartNo = "Cortex-M3"; break;
+        case 0xD21: szPartNo = "Cortex-M33"; break;
+        case 0xC24: szPartNo = "Cortex-M4"; break;
+        case 0xC27: szPartNo = "Cortex-M7"; break;
+    }
+
+    uint8_t ubVariant = (SCB->CPUID & SCB_CPUID_VARIANT_Msk) >> SCB_CPUID_VARIANT_Pos;
+    uint8_t ubRevision = (SCB->CPUID & SCB_CPUID_REVISION_Msk) >> SCB_CPUID_REVISION_Pos;
+
+    snprintf(pszDeviceCoreName, ulDeviceCoreNameSize, "%s %s r%hhup%hhu", szImplementer, szPartNo, ubVariant, ubRevision);
+}
 void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize)
 {
     uint8_t ubFamily = (DEVINFO->PART & _DEVINFO_PART_DEVICE_FAMILY_MASK) >> _DEVINFO_PART_DEVICE_FAMILY_SHIFT;
@@ -951,11 +982,14 @@ int init()
     i2c1_init(I2C_FAST, 0, 0); // Init I2C1 at 400 kHz (RX Tuner)
     i2c2_init(I2C_NORMAL, 2, 2); // Init I2C2 at 100 kHz (Audio)
 
+    char szDeviceCoreName[32];
     char szDeviceName[32];
 
+    get_device_core_name(szDeviceCoreName, 32);
     get_device_name(szDeviceName, 32);
 
     DBGPRINTLN_CTX("IcyRadio SMC v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
+    DBGPRINTLN_CTX("Core: %s", szDeviceCoreName);
     DBGPRINTLN_CTX("Device: %s", szDeviceName);
     DBGPRINTLN_CTX("Device Revision: 0x%04X", get_device_revision());
     DBGPRINTLN_CTX("Calibration temperature: %hhu C", (DEVINFO->CAL & _DEVINFO_CAL_TEMP_MASK) >> _DEVINFO_CAL_TEMP_SHIFT);
