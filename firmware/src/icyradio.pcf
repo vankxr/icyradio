@@ -1,5 +1,5 @@
 set_io CLK1             C8      # IN    # Clock input 1
-set_io CLK2             K9      # IN    # Clock input 2
+#set_io CLK2             K9      # IN    # Clock input 2
 set_io CLK3             R9      # IN    # Clock input 3
 set_io CLK4             F7      # IN    # Clock input 4
 set_io RESETn           H16     # IN    # Global reset
