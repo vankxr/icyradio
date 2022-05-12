@@ -10,6 +10,9 @@ void ITCM_CODE _usbhs_isr()
 
     if(ubGlobalFlags & USBHS_DEVISR_SUSP)
     {
+        // Make sure clock is unfrozen in order for the flags to clear
+        USBHS->USBHS_CTRL &= ~USBHS_CTRL_FRZCLK;
+
         USBHS->USBHS_DEVIDR = USBHS_DEVIDR_SUSPEC;
         USBHS->USBHS_DEVIER = USBHS_DEVIER_WAKEUPES;
         USBHS->USBHS_DEVICR = USBHS_DEVICR_SUSPC;
