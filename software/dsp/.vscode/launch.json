@@ -22,7 +22,8 @@
                 "enabled": true,
                 "swoFrequency": 12000000,
                 "cpuFrequency": 360000000,
-                "source": "/dev/ttyUSB1",
+                "source": "serial",
+                "swoPath": "/dev/ttyUSB1",
                 "decoders": [
                     {
                         "port": 0,
