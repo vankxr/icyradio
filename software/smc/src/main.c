@@ -69,8 +69,8 @@ static void init_rx_chain();
 static void init_tx_chain();
 
 // Variables
-static uint32_t ulRXHardTunedFrequency = 525200000;
-static uint32_t ulRXSoftTunedFrequency = 525250000;
+static uint32_t ulRXHardTunedFrequency = 524800000;
+static uint32_t ulRXSoftTunedFrequency = 525000000;
 static tft_graph_t *pRXIFPSDGraph = NULL;
 static tft_textbox_t *pRXTunedFreqTextbox = NULL;
 static tft_button_t *pRXTunedFreqButtons[2] = {NULL, NULL};
@@ -848,7 +848,7 @@ void init_baseband_chain()
 }
 void init_rx_chain()
 {
-    r820t2_set_lna_gain(2.f, 0); // +2 dB
+    r820t2_set_lna_gain(22.f, 0); // +2 dB
     DBGPRINTLN_CTX("RX Tuner LNA gain: %.1f dB", r820t2_get_lna_gain());
 
     r820t2_set_mixer_gain(0.f, 0); // +0 dB
