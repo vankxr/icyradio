@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Mon Jan 31 13:35:55 2022
-//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.3 LTS
+//Date        : Tue Sep 27 00:20:24 2022
+//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist
@@ -67,6 +67,7 @@ module icyradio_wrapper
     TRX_SPI_io1_io,
     TRX_SPI_sck_io,
     TRX_SPI_ss_io,
+    TRX_SYNC_IN,
     TRX_TXFRAME,
     TRX_TXNRX);
   input ADCIN_MAIN_v_n;
@@ -126,6 +127,7 @@ module icyradio_wrapper
   inout TRX_SPI_io1_io;
   inout TRX_SPI_sck_io;
   inout [0:0]TRX_SPI_ss_io;
+  output [0:0]TRX_SYNC_IN;
   output TRX_TXFRAME;
   output TRX_TXNRX;
 
@@ -233,6 +235,7 @@ module icyradio_wrapper
   wire [0:0]TRX_SPI_ss_io_0;
   wire [0:0]TRX_SPI_ss_o_0;
   wire TRX_SPI_ss_t;
+  wire [0:0]TRX_SYNC_IN;
   wire TRX_TXFRAME;
   wire TRX_TXNRX;
 
@@ -395,6 +398,7 @@ module icyradio_wrapper
         .TRX_SPI_ss_i(TRX_SPI_ss_i_0),
         .TRX_SPI_ss_o(TRX_SPI_ss_o_0),
         .TRX_SPI_ss_t(TRX_SPI_ss_t),
+        .TRX_SYNC_IN(TRX_SYNC_IN),
         .TRX_TXFRAME(TRX_TXFRAME),
         .TRX_TXNRX(TRX_TXNRX));
 endmodule

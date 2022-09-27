@@ -3,8 +3,8 @@
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
 // Date        : Mon Jan 31 13:37:32 2022
 // Host        : xubuntu-dev running 64-bit Ubuntu 20.04.3 LTS
-// Command     : write_verilog -force -mode synth_stub
-//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_auto_pc_0/icyradio_auto_pc_0_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top icyradio_auto_pc_0 -prefix
+//               icyradio_auto_pc_0_ icyradio_auto_pc_0_stub.v
 // Design      : icyradio_auto_pc_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2

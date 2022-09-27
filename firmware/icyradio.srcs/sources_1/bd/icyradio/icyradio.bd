@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x19E2F6EDD6EF72B4",
+      "boundary_crc": "0x3D7ED4CA2F21A9E7",
       "device": "xc7a100tfgg484-2",
       "gen_directory": "../../../../icyradio.gen/sources_1/bd/icyradio",
       "name": "icyradio",
@@ -464,6 +464,29 @@
           },
           "POLARITY": {
             "value": "ACTIVE_LOW",
+            "value_src": "const_prop"
+          }
+        }
+      },
+      "TRX_SYNC_IN": {
+        "direction": "O",
+        "left": "0",
+        "right": "0",
+        "parameters": {
+          "PortType": {
+            "value": "intr",
+            "value_src": "ip_prop"
+          },
+          "PortType.PROP_SRC": {
+            "value": "false",
+            "value_src": "ip_prop"
+          },
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default_prop"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
             "value_src": "const_prop"
           }
         }
@@ -1335,8 +1358,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_39",
-                "xci_path": "ip/icyradio_s00_data_fifo_39/icyradio_s00_data_fifo_39.xci",
+                "xci_name": "icyradio_s00_data_fifo_42",
+                "xci_path": "ip/icyradio_s00_data_fifo_42/icyradio_s00_data_fifo_42.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1428,8 +1451,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_26",
-                "xci_path": "ip/icyradio_s01_data_fifo_26/icyradio_s01_data_fifo_26.xci",
+                "xci_name": "icyradio_s01_data_fifo_28",
+                "xci_path": "ip/icyradio_s01_data_fifo_28/icyradio_s01_data_fifo_28.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2276,8 +2299,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_40",
-                "xci_path": "ip/icyradio_s00_data_fifo_40/icyradio_s00_data_fifo_40.xci",
+                "xci_name": "icyradio_s00_data_fifo_43",
+                "xci_path": "ip/icyradio_s00_data_fifo_43/icyradio_s00_data_fifo_43.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2369,8 +2392,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_27",
-                "xci_path": "ip/icyradio_s01_data_fifo_27/icyradio_s01_data_fifo_27.xci",
+                "xci_name": "icyradio_s01_data_fifo_29",
+                "xci_path": "ip/icyradio_s01_data_fifo_29/icyradio_s01_data_fifo_29.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3304,8 +3327,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_41",
-                "xci_path": "ip/icyradio_s00_data_fifo_41/icyradio_s00_data_fifo_41.xci",
+                "xci_name": "icyradio_s00_data_fifo_44",
+                "xci_path": "ip/icyradio_s00_data_fifo_44/icyradio_s00_data_fifo_44.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -5191,7 +5214,8 @@
           "irq_concat_0/In9",
           "irq_concat_1/In0",
           "irq_concat_1/In1",
-          "irq_concat_1/In2"
+          "irq_concat_1/In2",
+          "TRX_SYNC_IN"
         ]
       },
       "GND_1_dout": {

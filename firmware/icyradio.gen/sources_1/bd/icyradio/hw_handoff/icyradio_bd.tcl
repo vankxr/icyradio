@@ -317,6 +317,7 @@ proc create_root_design { parentCell } {
   set TRX_P1_RXDATA [ create_bd_port -dir I -from 11 -to 0 -type data TRX_P1_RXDATA ]
   set TRX_RESETn [ create_bd_port -dir O -from 0 -to 0 -type rst TRX_RESETn ]
   set TRX_RXFRAME [ create_bd_port -dir I TRX_RXFRAME ]
+  set TRX_SYNC_IN [ create_bd_port -dir O -from 0 -to 0 TRX_SYNC_IN ]
   set TRX_TXFRAME [ create_bd_port -dir O TRX_TXFRAME ]
   set TRX_TXNRX [ create_bd_port -dir O TRX_TXNRX ]
 
@@ -746,7 +747,7 @@ proc create_root_design { parentCell } {
 
   # Create port connections
   connect_bd_net -net CORTEXM3_AXI_0_SYSRESETREQ [get_bd_pins SOFT_RESET/dout] [get_bd_pins int_reset_combiner/Op2] [get_bd_pins rst_axi_pcie_0_125M/aux_reset_in]
-  connect_bd_net -net GND_0_dout [get_bd_ports PCIe_CLKREQn] [get_bd_ports TRX_EN_AGC] [get_bd_pins GND_0/dout] [get_bd_pins axi_ad9361/up_enable] [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins axi_quad_spi_0/gsr] [get_bd_pins axi_quad_spi_0/gts] [get_bd_pins axi_quad_spi_0/usrcclkts] [get_bd_pins axi_quad_spi_0/usrdonets] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In12] [get_bd_pins irq_concat_0/In13] [get_bd_pins irq_concat_0/In14] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
+  connect_bd_net -net GND_0_dout [get_bd_ports PCIe_CLKREQn] [get_bd_ports TRX_EN_AGC] [get_bd_ports TRX_SYNC_IN] [get_bd_pins GND_0/dout] [get_bd_pins axi_ad9361/up_enable] [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins axi_quad_spi_0/gsr] [get_bd_pins axi_quad_spi_0/gts] [get_bd_pins axi_quad_spi_0/usrcclkts] [get_bd_pins axi_quad_spi_0/usrdonets] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In12] [get_bd_pins irq_concat_0/In13] [get_bd_pins irq_concat_0/In14] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
   connect_bd_net -net GND_1_dout [get_bd_ports TRX_CTRL_IN] [get_bd_pins GND_1/dout]
   connect_bd_net -net GND_2_dout [get_bd_pins GND_2/dout] [get_bd_pins irq_concat_1/In4]
   connect_bd_net -net PCIe_RESETn_1 [get_bd_ports PCIe_RESETn] [get_bd_pins ext_reset_combiner/Op2]

@@ -101,59 +101,77 @@
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xadc_wiz_0_0/icyradio_xadc_wiz_0_0.xci">
-          <Proxy FileSetName="icyradio_xadc_wiz_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_reset_combiner_2/icyradio_reset_combiner_2.xci">
-          <Proxy FileSetName="icyradio_reset_combiner_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_or_0_2/icyradio_logic_or_0_2.xci">
-          <Proxy FileSetName="icyradio_logic_or_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_or_1_2/icyradio_logic_or_1_2.xci">
-          <Proxy FileSetName="icyradio_logic_or_1_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_ad9361_dac_unpacker_2/icyradio_ad9361_dac_unpacker_2.xci">
-          <Proxy FileSetName="icyradio_ad9361_dac_unpacker_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_ad9361_adc_packer_2/icyradio_ad9361_adc_packer_2.xci">
-          <Proxy FileSetName="icyradio_ad9361_adc_packer_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_rst_axi_pcie_0_125M_0/icyradio_rst_axi_pcie_0_125M_0.xci">
-          <Proxy FileSetName="icyradio_rst_axi_pcie_0_125M_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_rst_mig_7series_0_166M_2/icyradio_rst_mig_7series_0_166M_2.xci">
-          <Proxy FileSetName="icyradio_rst_mig_7series_0_166M_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_mig_7series_0_0/icyradio_mig_7series_0_0.xci">
-          <Proxy FileSetName="icyradio_mig_7series_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_and_0_2/icyradio_logic_and_0_2.xci">
-          <Proxy FileSetName="icyradio_logic_and_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_i2s_adi_0_1_1/icyradio_axi_i2s_adi_0_1.xci">
-          <Proxy FileSetName="icyradio_axi_i2s_adi_0_1"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_bram_ctrl_0_bram_0/icyradio_axi_bram_ctrl_0_bram_0.xci">
-          <Proxy FileSetName="icyradio_axi_bram_ctrl_0_bram_0"/>
-        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_ad9361_2/icyradio_axi_ad9361_2.xci">
           <Proxy FileSetName="icyradio_axi_ad9361_2"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_bram_ctrl_0_0/icyradio_axi_bram_ctrl_0_0.xci">
           <Proxy FileSetName="icyradio_axi_bram_ctrl_0_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_rf_rx_2/icyradio_axi_dmac_rf_rx_2.xci">
-          <Proxy FileSetName="icyradio_axi_dmac_rf_rx_2"/>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_i2s_tx_1/icyradio_axi_dmac_i2s_tx_1.xci">
+          <Proxy FileSetName="icyradio_axi_dmac_i2s_tx_1"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_rf_tx_2/icyradio_axi_dmac_rf_tx_2.xci">
-          <Proxy FileSetName="icyradio_axi_dmac_rf_tx_2"/>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0.xci">
+          <Proxy FileSetName="icyradio_util_ds_buf_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0.xci">
+          <Proxy FileSetName="icyradio_axi_quad_spi_1_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_quad_spi_0_0/icyradio_axi_quad_spi_0_0.xci">
+          <Proxy FileSetName="icyradio_axi_quad_spi_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_protocol_convert_0_2_1/icyradio_axi_protocol_convert_0_2.xci">
+          <Proxy FileSetName="icyradio_axi_protocol_convert_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_pcie_0_0/icyradio_axi_pcie_0_0.xci">
+          <Proxy FileSetName="icyradio_axi_pcie_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xbar_8/icyradio_xbar_8.xci">
+          <Proxy FileSetName="icyradio_xbar_8"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_bram_ctrl_0_bram_0/icyradio_axi_bram_ctrl_0_bram_0.xci">
+          <Proxy FileSetName="icyradio_axi_bram_ctrl_0_bram_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_i2s_adi_0_1_1/icyradio_axi_i2s_adi_0_1.xci">
+          <Proxy FileSetName="icyradio_axi_i2s_adi_0_1"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_and_0_2/icyradio_logic_and_0_2.xci">
+          <Proxy FileSetName="icyradio_logic_and_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_rst_mig_7series_0_166M_2/icyradio_rst_mig_7series_0_166M_2.xci">
+          <Proxy FileSetName="icyradio_rst_mig_7series_0_166M_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_rst_axi_pcie_0_125M_0/icyradio_rst_axi_pcie_0_125M_0.xci">
+          <Proxy FileSetName="icyradio_rst_axi_pcie_0_125M_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_ad9361_adc_packer_2/icyradio_ad9361_adc_packer_2.xci">
+          <Proxy FileSetName="icyradio_ad9361_adc_packer_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_ad9361_dac_unpacker_2/icyradio_ad9361_dac_unpacker_2.xci">
+          <Proxy FileSetName="icyradio_ad9361_dac_unpacker_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_or_1_2/icyradio_logic_or_1_2.xci">
+          <Proxy FileSetName="icyradio_logic_or_1_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_or_0_2/icyradio_logic_or_0_2.xci">
+          <Proxy FileSetName="icyradio_logic_or_0_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_reset_combiner_2/icyradio_reset_combiner_2.xci">
+          <Proxy FileSetName="icyradio_reset_combiner_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xadc_wiz_0_0/icyradio_xadc_wiz_0_0.xci">
+          <Proxy FileSetName="icyradio_xadc_wiz_0_0"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_gpio_0_0/icyradio_axi_gpio_0_0.xci">
+          <Proxy FileSetName="icyradio_axi_gpio_0_0"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_rf_tx_0/icyradio_axi_dmac_rf_tx_0.xci">
           <Proxy FileSetName="icyradio_axi_dmac_rf_tx_0"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_gpio_0_0/icyradio_axi_gpio_0_0.xci">
-          <Proxy FileSetName="icyradio_axi_gpio_0_0"/>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_rf_tx_2/icyradio_axi_dmac_rf_tx_2.xci">
+          <Proxy FileSetName="icyradio_axi_dmac_rf_tx_2"/>
+        </CompFileExtendedInfo>
+        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_rf_rx_2/icyradio_axi_dmac_rf_rx_2.xci">
+          <Proxy FileSetName="icyradio_axi_dmac_rf_rx_2"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_iic_0_0/icyradio_axi_iic_0_0.xci">
           <Proxy FileSetName="icyradio_axi_iic_0_0"/>
@@ -161,35 +179,8 @@
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xbar_6/icyradio_xbar_6.xci">
           <Proxy FileSetName="icyradio_xbar_6"/>
         </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_auto_pc_0/icyradio_auto_pc_0.xci">
-          <Proxy FileSetName="icyradio_auto_pc_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_auto_us_df_0/icyradio_auto_us_df_0.xci">
-          <Proxy FileSetName="icyradio_auto_us_df_0"/>
-        </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xbar_7/icyradio_xbar_7.xci">
           <Proxy FileSetName="icyradio_xbar_7"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_xbar_8/icyradio_xbar_8.xci">
-          <Proxy FileSetName="icyradio_xbar_8"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_pcie_0_0/icyradio_axi_pcie_0_0.xci">
-          <Proxy FileSetName="icyradio_axi_pcie_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_protocol_convert_0_2_1/icyradio_axi_protocol_convert_0_2.xci">
-          <Proxy FileSetName="icyradio_axi_protocol_convert_0_2"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_quad_spi_0_0/icyradio_axi_quad_spi_0_0.xci">
-          <Proxy FileSetName="icyradio_axi_quad_spi_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0.xci">
-          <Proxy FileSetName="icyradio_axi_quad_spi_1_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_util_ds_buf_0_0/icyradio_util_ds_buf_0_0.xci">
-          <Proxy FileSetName="icyradio_util_ds_buf_0_0"/>
-        </CompFileExtendedInfo>
-        <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_axi_dmac_i2s_tx_1/icyradio_axi_dmac_i2s_tx_1.xci">
-          <Proxy FileSetName="icyradio_axi_dmac_i2s_tx_1"/>
         </CompFileExtendedInfo>
         <CompFileExtendedInfo CompFileName="icyradio.bd" FileRelPathName="ip/icyradio_logic_and_1_0/icyradio_logic_and_1_0.xci">
           <Proxy FileSetName="icyradio_logic_and_1_0"/>
@@ -220,6 +211,12 @@
           <Attr Name="ScopedToCell" Val="icyradio_mig_7series_0_0"/>
         </FileInfo>
       </File>
+      <File Path="$PSRCDIR/sources_1/bd/icyradio/ip/icyradio_mig_7series_0_0/mig_a.prj">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="ScopedToCell" Val="icyradio_mig_7series_0_0"/>
+        </FileInfo>
+      </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
         <Option Name="TopModule" Val="icyradio_wrapper"/>
@@ -235,6 +232,7 @@
         </FileInfo>
       </File>
       <Config>
+        <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/new/icyradio.xdc"/>
         <Option Name="ConstrsType" Val="XDC"/>
       </Config>
     </FileSet>
@@ -276,12 +274,6 @@
     <FileSet Name="icyradio_logic_and_0_2" Type="BlockSrcs" RelSrcDir="$PSRCDIR/icyradio_logic_and_0_2" RelGenDir="$PGENDIR/icyradio_logic_and_0_2">
       <Config>
         <Option Name="TopModule" Val="icyradio_logic_and_0_2"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
-    <FileSet Name="icyradio_mig_7series_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/icyradio_mig_7series_0_0" RelGenDir="$PGENDIR/icyradio_mig_7series_0_0">
-      <Config>
-        <Option Name="TopModule" Val="icyradio_mig_7series_0_0"/>
         <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
@@ -453,18 +445,6 @@
         <Option Name="UseBlackboxStub" Val="1"/>
       </Config>
     </FileSet>
-    <FileSet Name="icyradio_auto_us_df_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/icyradio_auto_us_df_0" RelGenDir="$PGENDIR/icyradio_auto_us_df_0">
-      <Config>
-        <Option Name="TopModule" Val="icyradio_auto_us_df_0"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
-    <FileSet Name="icyradio_auto_pc_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/icyradio_auto_pc_0" RelGenDir="$PGENDIR/icyradio_auto_pc_0">
-      <Config>
-        <Option Name="TopModule" Val="icyradio_auto_pc_0"/>
-        <Option Name="UseBlackboxStub" Val="1"/>
-      </Config>
-    </FileSet>
     <FileSet Name="icyradio_picorv32_0_0" Type="BlockSrcs" RelSrcDir="$PSRCDIR/icyradio_picorv32_0_0" RelGenDir="$PGENDIR/icyradio_picorv32_0_0">
       <Config>
         <Option Name="TopModule" Val="icyradio_picorv32_0_0"/>
@@ -531,16 +511,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="icyradio_logic_and_0_2_synth_1" Type="Ft3:Synth" SrcSet="icyradio_logic_and_0_2" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_logic_and_0_2" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/icyradio_logic_and_0_2_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_logic_and_0_2_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="icyradio_mig_7series_0_0_synth_1" Type="Ft3:Synth" SrcSet="icyradio_mig_7series_0_0" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_mig_7series_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/icyradio_mig_7series_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_mig_7series_0_0_synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
         <Step Id="synth_design"/>
@@ -830,26 +800,6 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
-    <Run Id="icyradio_auto_us_df_0_synth_1" Type="Ft3:Synth" SrcSet="icyradio_auto_us_df_0" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_auto_us_df_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/icyradio_auto_us_df_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_auto_us_df_0_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="icyradio_auto_pc_0_synth_1" Type="Ft3:Synth" SrcSet="icyradio_auto_pc_0" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_auto_pc_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/icyradio_auto_pc_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_auto_pc_0_synth_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
-        <Step Id="synth_design"/>
-      </Strategy>
-      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
-      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
     <Run Id="icyradio_picorv32_0_0_synth_1" Type="Ft3:Synth" SrcSet="icyradio_picorv32_0_0" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_picorv32_0_0" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" Dir="$PRUNDIR/icyradio_picorv32_0_0_synth_1" IncludeInArchive="true" IsChild="false" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_picorv32_0_0_synth_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2021"/>
@@ -919,23 +869,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="icyradio_logic_and_0_2_impl_1" Type="Ft2:EntireDesign" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_logic_and_0_2" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="icyradio_logic_and_0_2_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_logic_and_0_2_impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="icyradio_mig_7series_0_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_mig_7series_0_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="icyradio_mig_7series_0_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_mig_7series_0_0_impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>
@@ -1412,40 +1345,6 @@
       <RQSFiles/>
     </Run>
     <Run Id="icyradio_ext_reset_combiner_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_ext_reset_combiner_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="icyradio_ext_reset_combiner_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_ext_reset_combiner_0_impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="icyradio_auto_us_df_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_auto_us_df_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="icyradio_auto_us_df_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_auto_us_df_0_impl_1">
-      <Strategy Version="1" Minor="2">
-        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
-        <Step Id="init_design"/>
-        <Step Id="opt_design"/>
-        <Step Id="power_opt_design"/>
-        <Step Id="place_design"/>
-        <Step Id="post_place_power_opt_design"/>
-        <Step Id="phys_opt_design"/>
-        <Step Id="route_design"/>
-        <Step Id="post_route_phys_opt_design"/>
-        <Step Id="write_bitstream"/>
-      </Strategy>
-      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2021"/>
-      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
-      <RQSFiles/>
-    </Run>
-    <Run Id="icyradio_auto_pc_0_impl_1" Type="Ft2:EntireDesign" Part="xc7a100tfgg484-2" ConstrsSet="icyradio_auto_pc_0" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" SynthRun="icyradio_auto_pc_0_synth_1" IncludeInArchive="false" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PSRCDIR/utils_1/imports/icyradio_auto_pc_0_impl_1">
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2021"/>
         <Step Id="init_design"/>

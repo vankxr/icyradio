@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Mon Jan 31 13:35:55 2022
-//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.3 LTS
+//Date        : Tue Sep 27 00:20:24 2022
+//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio.bd
 //Design      : icyradio
 //Purpose     : IP block netlist
@@ -10,7 +10,7 @@
 `timescale 1 ps / 1 ps
 
 /* Build Timestamping IP and connect to 3 and ports that are currently masked with VCC to apply backpressure to DMA and ADC */
-(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=82,numReposBlks=53,numNonXlnxBlks=9,numHierBlks=29,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"da_clkrst_cnt\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
+(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=82,numReposBlks=53,numNonXlnxBlks=9,numHierBlks=29,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"da_clkrst_cnt\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
 module icyradio
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
@@ -95,6 +95,7 @@ module icyradio
     TRX_SPI_ss_i,
     TRX_SPI_ss_o,
     TRX_SPI_ss_t,
+    TRX_SYNC_IN,
     TRX_TXFRAME,
     TRX_TXNRX);
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_analog_io:1.0 ADCIN_MAIN V_N" *) input ADCIN_MAIN_v_n;
@@ -180,6 +181,7 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 TRX_SPI SS_I" *) input [0:0]TRX_SPI_ss_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 TRX_SPI SS_O" *) output [0:0]TRX_SPI_ss_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 TRX_SPI SS_T" *) output TRX_SPI_ss_t;
+  output [0:0]TRX_SYNC_IN;
   output TRX_TXFRAME;
   output TRX_TXNRX;
 
@@ -941,6 +943,7 @@ module icyradio
   assign TRX_SPI_sck_t = axi_quad_spi_1_SPI_0_SCK_T;
   assign TRX_SPI_ss_o[0] = axi_quad_spi_1_SPI_0_SS_O;
   assign TRX_SPI_ss_t = axi_quad_spi_1_SPI_0_SS_T;
+  assign TRX_SYNC_IN[0] = GND_0_dout;
   assign TRX_TXFRAME = axi_ad9361_0_tx_frame_out;
   assign TRX_TXNRX = axi_ad9361_0_txnrx;
   assign Vp_Vn_0_1_V_N = ADCIN_MAIN_v_n;
@@ -10802,7 +10805,7 @@ module s00_couplers_imp_12AR84V
   assign s00_data_fifo_to_s00_couplers_RLAST = M_AXI_rlast;
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
-  icyradio_s00_data_fifo_39 s00_data_fifo
+  icyradio_s00_data_fifo_42 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -11157,7 +11160,7 @@ module s00_couplers_imp_1OK54OW
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_40 s00_data_fifo
+  icyradio_s00_data_fifo_43 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -11405,7 +11408,7 @@ module s00_couplers_imp_YVWGWH
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_41 s00_data_fifo
+  icyradio_s00_data_fifo_44 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -11719,7 +11722,7 @@ module s01_couplers_imp_EQ149T
   assign s01_data_fifo_to_s01_couplers_RRESP = M_AXI_rresp[1:0];
   assign s01_data_fifo_to_s01_couplers_RVALID = M_AXI_rvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_27 s01_data_fifo
+  icyradio_s01_data_fifo_29 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s01_data_fifo_to_s01_couplers_ARADDR),
@@ -11943,7 +11946,7 @@ module s01_couplers_imp_S4EEJ2
   assign s01_data_fifo_to_s01_couplers_BRESP = M_AXI_bresp[1:0];
   assign s01_data_fifo_to_s01_couplers_BVALID = M_AXI_bvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_26 s01_data_fifo
+  icyradio_s01_data_fifo_28 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_awaddr(s01_data_fifo_to_s01_couplers_AWADDR),
