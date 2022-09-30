@@ -1,9 +1,7 @@
-/*
-/*/
+*
 
 !.gitignore
 !c_cpp_properties.json
 !launch.json
-!README.txt
 !tasks.json
-!/openocd-scripts/
+!get_gcc_defines.sh
