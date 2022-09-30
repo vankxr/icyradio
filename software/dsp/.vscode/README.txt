@@ -1,2 +1,0 @@
-Use this command to get compiller defines "arm-none-eabi-gcc -mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16 -E -dM - < /dev/null | sort" (replace opts)
-Use this regex to replace compiller defines output /#define\s(\S+).([^\n]+)/g "$1=$2",
