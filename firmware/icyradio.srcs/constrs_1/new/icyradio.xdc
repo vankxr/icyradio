@@ -110,13 +110,7 @@ set_property IOSTANDARD LVCMOS33 [get_ports {GPIO0_tri_io[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {GPIO0_tri_io[1]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {GPIO1_tri_io[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports {GPIO1_tri_io[1]}]
-set_property IOSTANDARD LVCMOS33 [get_ports I2C_scl_io]
-set_property IOSTANDARD LVCMOS33 [get_ports I2C_sda_io]
-set_property IOSTANDARD LVCMOS33 [get_ports {I2S_bclk[0]}]
 set_property IOSTANDARD LVCMOS33 [get_ports I2S_BCLK_IN]
-set_property IOSTANDARD LVCMOS33 [get_ports {I2S_lrclk[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {I2S_sdata_in[0]}]
-set_property IOSTANDARD LVCMOS33 [get_ports {I2S_sdata_out[0]}]
 set_property DRIVE 12 [get_ports FLASH_QSPI_io0_io]
 set_property DRIVE 12 [get_ports FLASH_QSPI_io1_io]
 set_property DRIVE 12 [get_ports FLASH_QSPI_io2_io]
@@ -126,11 +120,6 @@ set_property DRIVE 12 [get_ports {GPIO0_tri_io[0]}]
 set_property DRIVE 12 [get_ports {GPIO0_tri_io[1]}]
 set_property DRIVE 12 [get_ports {GPIO1_tri_io[0]}]
 set_property DRIVE 12 [get_ports {GPIO1_tri_io[1]}]
-set_property DRIVE 12 [get_ports I2C_scl_io]
-set_property DRIVE 12 [get_ports I2C_sda_io]
-set_property DRIVE 12 [get_ports {I2S_bclk[0]}]
-set_property DRIVE 12 [get_ports {I2S_lrclk[0]}]
-set_property DRIVE 12 [get_ports {I2S_sdata_out[0]}]
 set_property SLEW SLOW [get_ports FLASH_QSPI_io0_io]
 set_property SLEW SLOW [get_ports FLASH_QSPI_io1_io]
 set_property SLEW SLOW [get_ports FLASH_QSPI_io2_io]
@@ -140,15 +129,7 @@ set_property SLEW SLOW [get_ports {GPIO0_tri_io[0]}]
 set_property SLEW SLOW [get_ports {GPIO0_tri_io[1]}]
 set_property SLEW SLOW [get_ports {GPIO1_tri_io[0]}]
 set_property SLEW SLOW [get_ports {GPIO1_tri_io[1]}]
-set_property SLEW SLOW [get_ports I2C_scl_io]
-set_property SLEW SLOW [get_ports I2C_sda_io]
-set_property SLEW SLOW [get_ports {I2S_bclk[0]}]
-set_property SLEW SLOW [get_ports {I2S_lrclk[0]}]
-set_property SLEW SLOW [get_ports {I2S_sdata_out[0]}]
 set_property PACKAGE_PIN M9 [get_ports ADCIN_MAIN_v_n]
-set_property PULLDOWN true [get_ports {I2S_sdata_in[0]}]
-set_property PULLUP true [get_ports I2C_sda_io]
-set_property PULLUP true [get_ports I2C_scl_io]
 
 set_property PACKAGE_PIN T19 [get_ports {FLASH_QSPI_ss_io[0]}]
 set_property PACKAGE_PIN P22 [get_ports FLASH_QSPI_io0_io]
@@ -208,3 +189,26 @@ set_property PACKAGE_PIN D22 [get_ports {TRX_CTRL_OUT[1]}]
 set_property PACKAGE_PIN F18 [get_ports {TRX_SYNC_IN[0]}]
 
 set_property IOSTANDARD DIFF_SSTL135 [get_ports DDR3_CLK_IN_clk_p]
+
+create_power_rail 1V0 -members { Vccint Vccbram MGTAVcc }
+create_power_rail 1V2 -members { Vcco12 MGTAVtt }
+create_power_rail 1V35 -members { Vcco135 }
+create_power_rail 1V8 -members { Vccaux Vccaux_io Vcco18 Vccadc }
+create_power_rail 2V5 -members { Vcco25 }
+create_power_rail 3V3 -members { Vcco33 }
+create_power_rail 5V0 -members { 3V3 2V5 1V8 1V35 1V2 }
+create_power_rail PCIE_12V0 -members { 5V0 1V0 }
+create_power_rail USB_VBUS
+create_power_rail VEXT
+set_operating_conditions -board_layers 4to7
+set_operating_conditions -heatsink none
+set_operating_conditions -voltage {1V0 1.000} -supply_current_budget {1V0 6.000}
+set_operating_conditions -voltage {1V35 1.350} -supply_current_budget {1V35 2.000}
+set_operating_conditions -voltage {1V2 1.200} -supply_current_budget {1V2 2.000}
+set_operating_conditions -voltage {1V8 1.800} -supply_current_budget {1V8 2.000}
+set_operating_conditions -voltage {2V5 2.500} -supply_current_budget {2V5 2.000}
+set_operating_conditions -voltage {3V3 3.300} -supply_current_budget {3V3 2.000}
+set_operating_conditions -voltage {5V0 5.200} -supply_current_budget {5V0 6.000}
+set_operating_conditions -voltage {PCIE_12V0 12.000} -supply_current_budget {PCIE_12V0 5.500}
+set_operating_conditions -voltage {USB_VBUS 15.000} -supply_current_budget {USB_VBUS 3.000}
+set_operating_conditions -voltage {VEXT 12.000} -supply_current_budget {VEXT 3.000}

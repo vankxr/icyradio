@@ -61,12 +61,12 @@ icyradio_axi_bram_ctrl_0_0_sc::icyradio_axi_bram_ctrl_0_0_sc(const sc_core::sc_m
 
   // initialize module
     xsc::common_cpp::properties model_param_props;
-    model_param_props.addLong("C_MEMORY_DEPTH", "2048");
-    model_param_props.addLong("C_BRAM_ADDR_WIDTH", "11");
+    model_param_props.addLong("C_MEMORY_DEPTH", "1024");
+    model_param_props.addLong("C_BRAM_ADDR_WIDTH", "10");
     model_param_props.addLong("C_S_AXI_ADDR_WIDTH", "13");
-    model_param_props.addLong("C_S_AXI_DATA_WIDTH", "32");
-    model_param_props.addLong("C_S_AXI_ID_WIDTH", "1");
-    model_param_props.addLong("C_S_AXI_SUPPORTS_NARROW_BURST", "0");
+    model_param_props.addLong("C_S_AXI_DATA_WIDTH", "64");
+    model_param_props.addLong("C_S_AXI_ID_WIDTH", "4");
+    model_param_props.addLong("C_S_AXI_SUPPORTS_NARROW_BURST", "1");
     model_param_props.addLong("C_SINGLE_PORT_BRAM", "1");
     model_param_props.addLong("C_READ_LATENCY", "1");
     model_param_props.addLong("C_RD_CMD_OPTIMIZATION", "0");
@@ -77,7 +77,7 @@ icyradio_axi_bram_ctrl_0_0_sc::icyradio_axi_bram_ctrl_0_0_sc(const sc_core::sc_m
     model_param_props.addLong("C_FAULT_INJECT", "0");
     model_param_props.addLong("C_ECC_ONOFF_RESET_VALUE", "0");
     model_param_props.addString("C_BRAM_INST_MODE", "EXTERNAL");
-    model_param_props.addString("C_S_AXI_PROTOCOL", "AXI4LITE");
+    model_param_props.addString("C_S_AXI_PROTOCOL", "AXI4");
     model_param_props.addString("C_FAMILY", "artix7");
 
   mp_impl = new axi_bram_ctrl("inst", model_param_props);

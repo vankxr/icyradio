@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Tue Sep 27 00:20:24 2022
-//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+//Date        : Sat Oct  1 23:34:37 2022
+//Host        : jsilva-kde running 64-bit KDE neon User - 5.25
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist
@@ -12,6 +12,13 @@
 module icyradio_wrapper
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
+    AUDIO_I2C_scl_io,
+    AUDIO_I2C_sda_io,
+    CODEC_I2S_bclk,
+    CODEC_I2S_lrclk,
+    CODEC_I2S_sdata_in,
+    CODEC_I2S_sdata_out,
+    CODEC_RESETn,
     DDR3_CLK_IN_clk_n,
     DDR3_CLK_IN_clk_p,
     DDR3_addr,
@@ -36,13 +43,7 @@ module icyradio_wrapper
     FLASH_QSPI_ss_io,
     GPIO0_tri_io,
     GPIO1_tri_io,
-    I2C_scl_io,
-    I2C_sda_io,
     I2S_BCLK_IN,
-    I2S_bclk,
-    I2S_lrclk,
-    I2S_sdata_in,
-    I2S_sdata_out,
     PCIe_CLKREQn,
     PCIe_REFCLK_clk_n,
     PCIe_REFCLK_clk_p,
@@ -51,7 +52,14 @@ module icyradio_wrapper
     PCIe_rxp,
     PCIe_txn,
     PCIe_txp,
+    PM_I2C_EN,
     RESETn,
+    SYNTH_SPI_io0_io,
+    SYNTH_SPI_io1_io,
+    SYNTH_SPI_sck_io,
+    SYNTH_SPI_ss_io,
+    SYS_I2C_scl_io,
+    SYS_I2C_sda_io,
     TRX_CLK_OUT,
     TRX_CTRL_IN,
     TRX_CTRL_OUT,
@@ -72,6 +80,13 @@ module icyradio_wrapper
     TRX_TXNRX);
   input ADCIN_MAIN_v_n;
   input ADCIN_MAIN_v_p;
+  inout AUDIO_I2C_scl_io;
+  inout AUDIO_I2C_sda_io;
+  output [0:0]CODEC_I2S_bclk;
+  output [0:0]CODEC_I2S_lrclk;
+  input [0:0]CODEC_I2S_sdata_in;
+  output [0:0]CODEC_I2S_sdata_out;
+  output [0:0]CODEC_RESETn;
   input DDR3_CLK_IN_clk_n;
   input DDR3_CLK_IN_clk_p;
   output [14:0]DDR3_addr;
@@ -96,13 +111,7 @@ module icyradio_wrapper
   inout [0:0]FLASH_QSPI_ss_io;
   inout [1:0]GPIO0_tri_io;
   inout [1:0]GPIO1_tri_io;
-  inout I2C_scl_io;
-  inout I2C_sda_io;
   input I2S_BCLK_IN;
-  output [0:0]I2S_bclk;
-  output [0:0]I2S_lrclk;
-  input [0:0]I2S_sdata_in;
-  output [0:0]I2S_sdata_out;
   output [0:0]PCIe_CLKREQn;
   input [0:0]PCIe_REFCLK_clk_n;
   input [0:0]PCIe_REFCLK_clk_p;
@@ -111,7 +120,14 @@ module icyradio_wrapper
   input [1:0]PCIe_rxp;
   output [1:0]PCIe_txn;
   output [1:0]PCIe_txp;
+  output [0:0]PM_I2C_EN;
   input RESETn;
+  inout SYNTH_SPI_io0_io;
+  inout SYNTH_SPI_io1_io;
+  inout SYNTH_SPI_sck_io;
+  inout [0:0]SYNTH_SPI_ss_io;
+  inout SYS_I2C_scl_io;
+  inout SYS_I2C_sda_io;
   input TRX_CLK_OUT;
   output [3:0]TRX_CTRL_IN;
   input [7:0]TRX_CTRL_OUT;
@@ -133,6 +149,19 @@ module icyradio_wrapper
 
   wire ADCIN_MAIN_v_n;
   wire ADCIN_MAIN_v_p;
+  wire AUDIO_I2C_scl_i;
+  wire AUDIO_I2C_scl_io;
+  wire AUDIO_I2C_scl_o;
+  wire AUDIO_I2C_scl_t;
+  wire AUDIO_I2C_sda_i;
+  wire AUDIO_I2C_sda_io;
+  wire AUDIO_I2C_sda_o;
+  wire AUDIO_I2C_sda_t;
+  wire [0:0]CODEC_I2S_bclk;
+  wire [0:0]CODEC_I2S_lrclk;
+  wire [0:0]CODEC_I2S_sdata_in;
+  wire [0:0]CODEC_I2S_sdata_out;
+  wire [0:0]CODEC_RESETn;
   wire DDR3_CLK_IN_clk_n;
   wire DDR3_CLK_IN_clk_p;
   wire [14:0]DDR3_addr;
@@ -186,19 +215,7 @@ module icyradio_wrapper
   wire [1:1]GPIO1_tri_o_1;
   wire [0:0]GPIO1_tri_t_0;
   wire [1:1]GPIO1_tri_t_1;
-  wire I2C_scl_i;
-  wire I2C_scl_io;
-  wire I2C_scl_o;
-  wire I2C_scl_t;
-  wire I2C_sda_i;
-  wire I2C_sda_io;
-  wire I2C_sda_o;
-  wire I2C_sda_t;
   wire I2S_BCLK_IN;
-  wire [0:0]I2S_bclk;
-  wire [0:0]I2S_lrclk;
-  wire [0:0]I2S_sdata_in;
-  wire [0:0]I2S_sdata_out;
   wire [0:0]PCIe_CLKREQn;
   wire [0:0]PCIe_REFCLK_clk_n;
   wire [0:0]PCIe_REFCLK_clk_p;
@@ -207,7 +224,32 @@ module icyradio_wrapper
   wire [1:0]PCIe_rxp;
   wire [1:0]PCIe_txn;
   wire [1:0]PCIe_txp;
+  wire [0:0]PM_I2C_EN;
   wire RESETn;
+  wire SYNTH_SPI_io0_i;
+  wire SYNTH_SPI_io0_io;
+  wire SYNTH_SPI_io0_o;
+  wire SYNTH_SPI_io0_t;
+  wire SYNTH_SPI_io1_i;
+  wire SYNTH_SPI_io1_io;
+  wire SYNTH_SPI_io1_o;
+  wire SYNTH_SPI_io1_t;
+  wire SYNTH_SPI_sck_i;
+  wire SYNTH_SPI_sck_io;
+  wire SYNTH_SPI_sck_o;
+  wire SYNTH_SPI_sck_t;
+  wire [0:0]SYNTH_SPI_ss_i_0;
+  wire [0:0]SYNTH_SPI_ss_io_0;
+  wire [0:0]SYNTH_SPI_ss_o_0;
+  wire SYNTH_SPI_ss_t;
+  wire SYS_I2C_scl_i;
+  wire SYS_I2C_scl_io;
+  wire SYS_I2C_scl_o;
+  wire SYS_I2C_scl_t;
+  wire SYS_I2C_sda_i;
+  wire SYS_I2C_sda_io;
+  wire SYS_I2C_sda_o;
+  wire SYS_I2C_sda_t;
   wire TRX_CLK_OUT;
   wire [3:0]TRX_CTRL_IN;
   wire [7:0]TRX_CTRL_OUT;
@@ -239,6 +281,16 @@ module icyradio_wrapper
   wire TRX_TXFRAME;
   wire TRX_TXNRX;
 
+  IOBUF AUDIO_I2C_scl_iobuf
+       (.I(AUDIO_I2C_scl_o),
+        .IO(AUDIO_I2C_scl_io),
+        .O(AUDIO_I2C_scl_i),
+        .T(AUDIO_I2C_scl_t));
+  IOBUF AUDIO_I2C_sda_iobuf
+       (.I(AUDIO_I2C_sda_o),
+        .IO(AUDIO_I2C_sda_io),
+        .O(AUDIO_I2C_sda_i),
+        .T(AUDIO_I2C_sda_t));
   IOBUF FLASH_QSPI_io0_iobuf
        (.I(FLASH_QSPI_io0_o),
         .IO(FLASH_QSPI_io0_io),
@@ -284,16 +336,36 @@ module icyradio_wrapper
         .IO(GPIO1_tri_io[1]),
         .O(GPIO1_tri_i_1),
         .T(GPIO1_tri_t_1));
-  IOBUF I2C_scl_iobuf
-       (.I(I2C_scl_o),
-        .IO(I2C_scl_io),
-        .O(I2C_scl_i),
-        .T(I2C_scl_t));
-  IOBUF I2C_sda_iobuf
-       (.I(I2C_sda_o),
-        .IO(I2C_sda_io),
-        .O(I2C_sda_i),
-        .T(I2C_sda_t));
+  IOBUF SYNTH_SPI_io0_iobuf
+       (.I(SYNTH_SPI_io0_o),
+        .IO(SYNTH_SPI_io0_io),
+        .O(SYNTH_SPI_io0_i),
+        .T(SYNTH_SPI_io0_t));
+  IOBUF SYNTH_SPI_io1_iobuf
+       (.I(SYNTH_SPI_io1_o),
+        .IO(SYNTH_SPI_io1_io),
+        .O(SYNTH_SPI_io1_i),
+        .T(SYNTH_SPI_io1_t));
+  IOBUF SYNTH_SPI_sck_iobuf
+       (.I(SYNTH_SPI_sck_o),
+        .IO(SYNTH_SPI_sck_io),
+        .O(SYNTH_SPI_sck_i),
+        .T(SYNTH_SPI_sck_t));
+  IOBUF SYNTH_SPI_ss_iobuf_0
+       (.I(SYNTH_SPI_ss_o_0),
+        .IO(SYNTH_SPI_ss_io[0]),
+        .O(SYNTH_SPI_ss_i_0),
+        .T(SYNTH_SPI_ss_t));
+  IOBUF SYS_I2C_scl_iobuf
+       (.I(SYS_I2C_scl_o),
+        .IO(SYS_I2C_scl_io),
+        .O(SYS_I2C_scl_i),
+        .T(SYS_I2C_scl_t));
+  IOBUF SYS_I2C_sda_iobuf
+       (.I(SYS_I2C_sda_o),
+        .IO(SYS_I2C_sda_io),
+        .O(SYS_I2C_sda_i),
+        .T(SYS_I2C_sda_t));
   IOBUF TRX_SPI_io0_iobuf
        (.I(TRX_SPI_io0_o),
         .IO(TRX_SPI_io0_io),
@@ -317,6 +389,17 @@ module icyradio_wrapper
   icyradio icyradio_i
        (.ADCIN_MAIN_v_n(ADCIN_MAIN_v_n),
         .ADCIN_MAIN_v_p(ADCIN_MAIN_v_p),
+        .AUDIO_I2C_scl_i(AUDIO_I2C_scl_i),
+        .AUDIO_I2C_scl_o(AUDIO_I2C_scl_o),
+        .AUDIO_I2C_scl_t(AUDIO_I2C_scl_t),
+        .AUDIO_I2C_sda_i(AUDIO_I2C_sda_i),
+        .AUDIO_I2C_sda_o(AUDIO_I2C_sda_o),
+        .AUDIO_I2C_sda_t(AUDIO_I2C_sda_t),
+        .CODEC_I2S_bclk(CODEC_I2S_bclk),
+        .CODEC_I2S_lrclk(CODEC_I2S_lrclk),
+        .CODEC_I2S_sdata_in(CODEC_I2S_sdata_in),
+        .CODEC_I2S_sdata_out(CODEC_I2S_sdata_out),
+        .CODEC_RESETn(CODEC_RESETn),
         .DDR3_CLK_IN_clk_n(DDR3_CLK_IN_clk_n),
         .DDR3_CLK_IN_clk_p(DDR3_CLK_IN_clk_p),
         .DDR3_addr(DDR3_addr),
@@ -355,17 +438,7 @@ module icyradio_wrapper
         .GPIO1_tri_i({GPIO1_tri_i_1,GPIO1_tri_i_0}),
         .GPIO1_tri_o({GPIO1_tri_o_1,GPIO1_tri_o_0}),
         .GPIO1_tri_t({GPIO1_tri_t_1,GPIO1_tri_t_0}),
-        .I2C_scl_i(I2C_scl_i),
-        .I2C_scl_o(I2C_scl_o),
-        .I2C_scl_t(I2C_scl_t),
-        .I2C_sda_i(I2C_sda_i),
-        .I2C_sda_o(I2C_sda_o),
-        .I2C_sda_t(I2C_sda_t),
         .I2S_BCLK_IN(I2S_BCLK_IN),
-        .I2S_bclk(I2S_bclk),
-        .I2S_lrclk(I2S_lrclk),
-        .I2S_sdata_in(I2S_sdata_in),
-        .I2S_sdata_out(I2S_sdata_out),
         .PCIe_CLKREQn(PCIe_CLKREQn),
         .PCIe_REFCLK_clk_n(PCIe_REFCLK_clk_n),
         .PCIe_REFCLK_clk_p(PCIe_REFCLK_clk_p),
@@ -374,7 +447,26 @@ module icyradio_wrapper
         .PCIe_rxp(PCIe_rxp),
         .PCIe_txn(PCIe_txn),
         .PCIe_txp(PCIe_txp),
+        .PM_I2C_EN(PM_I2C_EN),
         .RESETn(RESETn),
+        .SYNTH_SPI_io0_i(SYNTH_SPI_io0_i),
+        .SYNTH_SPI_io0_o(SYNTH_SPI_io0_o),
+        .SYNTH_SPI_io0_t(SYNTH_SPI_io0_t),
+        .SYNTH_SPI_io1_i(SYNTH_SPI_io1_i),
+        .SYNTH_SPI_io1_o(SYNTH_SPI_io1_o),
+        .SYNTH_SPI_io1_t(SYNTH_SPI_io1_t),
+        .SYNTH_SPI_sck_i(SYNTH_SPI_sck_i),
+        .SYNTH_SPI_sck_o(SYNTH_SPI_sck_o),
+        .SYNTH_SPI_sck_t(SYNTH_SPI_sck_t),
+        .SYNTH_SPI_ss_i(SYNTH_SPI_ss_i_0),
+        .SYNTH_SPI_ss_o(SYNTH_SPI_ss_o_0),
+        .SYNTH_SPI_ss_t(SYNTH_SPI_ss_t),
+        .SYS_I2C_scl_i(SYS_I2C_scl_i),
+        .SYS_I2C_scl_o(SYS_I2C_scl_o),
+        .SYS_I2C_scl_t(SYS_I2C_scl_t),
+        .SYS_I2C_sda_i(SYS_I2C_sda_i),
+        .SYS_I2C_sda_o(SYS_I2C_sda_o),
+        .SYS_I2C_sda_t(SYS_I2C_sda_t),
         .TRX_CLK_OUT(TRX_CLK_OUT),
         .TRX_CTRL_IN(TRX_CTRL_IN),
         .TRX_CTRL_OUT(TRX_CTRL_OUT),

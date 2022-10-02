@@ -9,7 +9,7 @@ Vivado Project Options:
 MIG Output Options:
    Module Name                     : icyradio_mig_7series_0_0
    No of Controllers               : 1
-   Selected Compatible Device(s)   : xc7a50t-fgg484, xc7a35t-fgg484, xc7a75t-fgg484
+   Selected Compatible Device(s)   : xc7a35t-fgg484, xc7a50t-fgg484, xc7a75t-fgg484, xc7a15t-fgg484
 
 FPGA Options:
    System Clock Type               : Differential
@@ -30,7 +30,7 @@ Controller Options :
    Memory                        : DDR3_SDRAM
    Interface                     : AXI
    Design Clock Frequency        : 3000 ps (  0.00 MHz)
-   Phy to Controller Clock Ratio : 2:1
+   Phy to Controller Clock Ratio : 4:1
    Input Clock Period            : 3000 ps
    CLKFBOUT_MULT (PLL)           : 4
    DIVCLK_DIVIDE (PLL)           : 1
@@ -53,7 +53,7 @@ Memory Options:
    Burst Length (MR0[1:0])          : 8 - Fixed
    Read Burst Type (MR0[3])         : Sequential
    CAS Latency (MR0[6:4])           : 5
-   Output Drive Strength (MR1[5,1]) : RZQ/7
+   Output Drive Strength (MR1[5,1]) : RZQ/6
    Controller CS option             : Enable
    Rtt_NOM - ODT (MR1[9,6,2])       : RZQ/6
    Rtt_WR - Dynamic ODT (MR2[10:9]) : Dynamic ODT off

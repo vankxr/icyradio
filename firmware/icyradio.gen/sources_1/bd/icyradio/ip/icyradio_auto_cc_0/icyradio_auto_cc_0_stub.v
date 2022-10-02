@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Mon Jan 31 13:08:54 2022
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.3 LTS
+// Date        : Sat Oct  1 21:30:13 2022
+// Host        : jsilva-kde running 64-bit KDE neon User - 5.25
 // Command     : write_verilog -force -mode synth_stub -rename_top icyradio_auto_cc_0 -prefix
 //               icyradio_auto_cc_0_ icyradio_auto_cc_0_stub.v
 // Design      : icyradio_auto_cc_0

@@ -167,7 +167,7 @@ module sim_tb_top;
    parameter tCK                   = 3000;
                                      // memory tCK paramter.
                      // # = Clock Period in pS.
-   parameter nCK_PER_CLK           = 2;
+   parameter nCK_PER_CLK           = 4;
                                      // # of memory CKs per fabric CLK
 
    

@@ -157,11 +157,11 @@ module example_top #
                                      // VCO output divisor for PLL output clock (CLKOUT1)
    parameter CLKOUT2_DIVIDE        = 64,
                                      // VCO output divisor for PLL output clock (CLKOUT2)
-   parameter CLKOUT3_DIVIDE        = 8,
+   parameter CLKOUT3_DIVIDE        = 16,
                                      // VCO output divisor for PLL output clock (CLKOUT3)
    parameter MMCM_VCO              = 666,
                                      // Max Freq (MHz) of MMCM VCO
-   parameter MMCM_MULT_F           = 4,
+   parameter MMCM_MULT_F           = 8,
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
@@ -210,7 +210,7 @@ module example_top #
    //***************************************************************************
    // System clock frequency parameters
    //***************************************************************************
-   parameter nCK_PER_CLK           = 2,
+   parameter nCK_PER_CLK           = 4,
                                      // # of memory CKs per fabric CLK
 
    

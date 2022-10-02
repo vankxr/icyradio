@@ -90,7 +90,7 @@ module icyradio_mig_7series_0_0_mig #
                                      // # of unique CS outputs per rank for phy
    parameter CKE_WIDTH             = 1,
                                      // # of CKE outputs to memory.
-   parameter DATA_BUF_ADDR_WIDTH   = 4,
+   parameter DATA_BUF_ADDR_WIDTH   = 5,
    parameter DQ_CNT_WIDTH          = 5,
                                      // = ceil(log2(DQ_WIDTH))
    parameter DQ_PER_DM             = 8,
@@ -197,7 +197,7 @@ module icyradio_mig_7series_0_0_mig #
                                      // in number of clock cycles
                                      // DDR3 SDRAM: CAS Write Latency (Mode Register 2).
                                      // DDR2 SDRAM: Can be ignored
-   parameter OUTPUT_DRV            = "HIGH",
+   parameter OUTPUT_DRV            = "LOW",
                                      // Output Driver Impedance Control (Mode Register 1).
                                      // # = "HIGH" - RZQ/7,
                                      //   = "LOW" - RZQ/6.
@@ -242,11 +242,11 @@ module icyradio_mig_7series_0_0_mig #
                                      // VCO output divisor for PLL output clock (CLKOUT1)
    parameter CLKOUT2_DIVIDE        = 64,
                                      // VCO output divisor for PLL output clock (CLKOUT2)
-   parameter CLKOUT3_DIVIDE        = 8,
+   parameter CLKOUT3_DIVIDE        = 16,
                                      // VCO output divisor for PLL output clock (CLKOUT3)
    parameter MMCM_VCO              = 666,
                                      // Max Freq (MHz) of MMCM VCO
-   parameter MMCM_MULT_F           = 4,
+   parameter MMCM_MULT_F           = 8,
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
@@ -484,7 +484,7 @@ module icyradio_mig_7series_0_0_mig #
    parameter tCK                   = 3000,
                                      // memory tCK paramter.
                                      // # = Clock Period in pS.
-   parameter nCK_PER_CLK           = 2,
+   parameter nCK_PER_CLK           = 4,
    // # of memory CKs per fabric CLK
    
    parameter DIFF_TERM_SYSCLK      = "FALSE",
@@ -515,7 +515,7 @@ module icyradio_mig_7series_0_0_mig #
                                              // Width of WDATA and RDATA on SI slot.
                                              // Must be <= APP_DATA_WIDTH.
                                              // # = 32, 64, 128, 256.
-   parameter C_MC_nCK_PER_CLK              = 2,
+   parameter C_MC_nCK_PER_CLK              = 4,
                                              // Indicates whether to instatiate upsizer
                                              // Range: 0, 1
    parameter C_S_AXI_SUPPORTS_NARROW_BURST = 1,

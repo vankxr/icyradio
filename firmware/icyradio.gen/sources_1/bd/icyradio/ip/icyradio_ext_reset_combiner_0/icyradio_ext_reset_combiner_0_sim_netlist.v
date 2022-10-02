@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Mon Jan 31 13:08:40 2022
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.3 LTS
+// Date        : Sat Oct  1 21:24:26 2022
+// Host        : jsilva-kde running 64-bit KDE neon User - 5.25
 // Command     : write_verilog -force -mode funcsim -rename_top icyradio_ext_reset_combiner_0 -prefix
 //               icyradio_ext_reset_combiner_0_ icyradio_logic_or_1_2_sim_netlist.v
 // Design      : icyradio_logic_or_1_2
