@@ -92,12 +92,12 @@ module sim_tb_top;
                                      // # of memory Column Address bits.
    parameter CS_WIDTH              = 1;
                                      // # of unique CS outputs to memory.
-   parameter DM_WIDTH              = 4;
+   parameter DM_WIDTH              = 2;
                                      // # of DM (data mask)
-   parameter DQ_WIDTH              = 32;
+   parameter DQ_WIDTH              = 16;
                                      // # of DQ (data)
-   parameter DQS_WIDTH             = 4;
-   parameter DQS_CNT_WIDTH         = 2;
+   parameter DQS_WIDTH             = 2;
+   parameter DQS_CNT_WIDTH         = 1;
                                      // = ceil(log2(DQS_WIDTH))
    parameter DRAM_WIDTH            = 8;
                                      // # of DQ per DQS
@@ -167,7 +167,7 @@ module sim_tb_top;
    parameter tCK                   = 3000;
                                      // memory tCK paramter.
                      // # = Clock Period in pS.
-   parameter nCK_PER_CLK           = 4;
+   parameter nCK_PER_CLK           = 2;
                                      // # of memory CKs per fabric CLK
 
    
@@ -177,7 +177,7 @@ module sim_tb_top;
    parameter C_S_AXI_ID_WIDTH              = 4;
                                              // Width of all master and slave ID signals.
                                              // # = >= 1.
-   parameter C_S_AXI_ADDR_WIDTH            = 30;
+   parameter C_S_AXI_ADDR_WIDTH            = 29;
                                              // Width of S_AXI_AWADDR, S_AXI_ARADDR, M_AXI_AWADDR and
                                              // M_AXI_ARADDR for all SI/MI slots.
                                              // # = 32.
@@ -261,15 +261,13 @@ module sim_tb_top;
   
   wire                               init_calib_complete;
   wire                               tg_compare_error;
-  wire [(CS_WIDTH*1)-1:0] ddr3_cs_n_fpga;
-    
+  
   wire [DM_WIDTH-1:0]                ddr3_dm_fpga;
     
   wire [ODT_WIDTH-1:0]               ddr3_odt_fpga;
     
   
-  reg [(CS_WIDTH*1)-1:0] ddr3_cs_n_sdram_tmp;
-    
+  
   reg [DM_WIDTH-1:0]                 ddr3_dm_sdram_tmp;
     
   reg [ODT_WIDTH-1:0]                ddr3_odt_sdram_tmp;
@@ -350,9 +348,7 @@ module sim_tb_top;
   end
     
 
-  always @( * )
-    ddr3_cs_n_sdram_tmp   <=  #(TPROP_PCB_CTRL) ddr3_cs_n_fpga;
-  assign ddr3_cs_n_sdram =  ddr3_cs_n_sdram_tmp;
+  assign ddr3_cs_n_sdram =  {(CS_WIDTH*1){1'b0}};
     
 
   always @( * )
@@ -493,8 +489,6 @@ module sim_tb_top;
      .ddr3_ck_p            (ddr3_ck_p_fpga),
      .ddr3_ck_n            (ddr3_ck_n_fpga),
      .ddr3_cke             (ddr3_cke_fpga),
-     .ddr3_cs_n            (ddr3_cs_n_fpga),
-    
      .ddr3_dm              (ddr3_dm_fpga),
     
      .ddr3_odt             (ddr3_odt_fpga),

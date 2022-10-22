@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xA60AD02DFC9609AE",
+      "boundary_crc": "0x264FC1F0F4224952",
       "device": "xc7a100tfgg484-2",
       "gen_directory": "../../../../icyradio.gen/sources_1/bd/icyradio",
       "name": "icyradio",
@@ -580,7 +580,7 @@
             "value": "Custom"
           },
           "XML_INPUT_FILE": {
-            "value": "mig_b.prj"
+            "value": "mig_a.prj"
           }
         }
       },
@@ -1390,8 +1390,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_59",
-                "xci_path": "ip/icyradio_s00_data_fifo_59/icyradio_s00_data_fifo_59.xci",
+                "xci_name": "icyradio_s00_data_fifo_62",
+                "xci_path": "ip/icyradio_s00_data_fifo_62/icyradio_s00_data_fifo_62.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1483,8 +1483,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_38",
-                "xci_path": "ip/icyradio_s01_data_fifo_38/icyradio_s01_data_fifo_38.xci",
+                "xci_name": "icyradio_s01_data_fifo_40",
+                "xci_path": "ip/icyradio_s01_data_fifo_40/icyradio_s01_data_fifo_40.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2354,8 +2354,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_60",
-                "xci_path": "ip/icyradio_s00_data_fifo_60/icyradio_s00_data_fifo_60.xci",
+                "xci_name": "icyradio_s00_data_fifo_63",
+                "xci_path": "ip/icyradio_s00_data_fifo_63/icyradio_s00_data_fifo_63.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2447,8 +2447,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_39",
-                "xci_path": "ip/icyradio_s01_data_fifo_39/icyradio_s01_data_fifo_39.xci",
+                "xci_name": "icyradio_s01_data_fifo_41",
+                "xci_path": "ip/icyradio_s01_data_fifo_41/icyradio_s01_data_fifo_41.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3486,8 +3486,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_61",
-                "xci_path": "ip/icyradio_s00_data_fifo_61/icyradio_s00_data_fifo_61.xci",
+                "xci_name": "icyradio_s00_data_fifo_64",
+                "xci_path": "ip/icyradio_s00_data_fifo_64/icyradio_s00_data_fifo_64.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {

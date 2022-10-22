@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Oct  2 20:53:31 2022" VIVADOVERSION="2021.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sat Oct 22 18:37:56 2022" VIVADOVERSION="2021.1">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="icyradio" PACKAGE="fgg484" SPEEDGRADE="-2"/>
 
@@ -451,17 +451,17 @@
         <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_t"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="IO" LEFT="31" NAME="DDR3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
+    <PORT DIR="IO" LEFT="15" NAME="DDR3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_dq"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="IO" LEFT="3" NAME="DDR3_dqs_p" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_p">
+    <PORT DIR="IO" LEFT="1" NAME="DDR3_dqs_p" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_p">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_dqs_p"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="IO" LEFT="3" NAME="DDR3_dqs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_n">
+    <PORT DIR="IO" LEFT="1" NAME="DDR3_dqs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_n">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_dqs_n"/>
       </CONNECTIONS>
@@ -511,12 +511,8 @@
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_cke"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="0" NAME="DDR3_cs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_cs_n">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_cs_n"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="3" NAME="DDR3_dm" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dm">
+    <PORT DIR="O" NAME="DDR3_cs_n" SIGIS="undef"/>
+    <PORT DIR="O" LEFT="1" NAME="DDR3_dm" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dm">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_dm"/>
       </CONNECTIONS>
@@ -20888,7 +20884,7 @@
             <CONNECTION INSTANCE="mig_7series_0" PORT="s_axi_awid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="29" NAME="M02_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_awaddr">
+        <PORT DIR="O" LEFT="28" NAME="M02_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_awaddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="mig_7series_0" PORT="s_axi_awaddr"/>
           </CONNECTIONS>
@@ -20989,7 +20985,7 @@
             <CONNECTION INSTANCE="mig_7series_0" PORT="s_axi_arid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="29" NAME="M02_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_araddr">
+        <PORT DIR="O" LEFT="28" NAME="M02_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_araddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="mig_7series_0" PORT="s_axi_araddr"/>
           </CONNECTIONS>
@@ -37752,16 +37748,16 @@
     <MODULE COREREVISION="1" FULLNAME="/mig_7series_0" HWVERSION="4.2" INSTANCE="mig_7series_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="MEMORY_CNTLR" MODTYPE="mig_7series" VLNV="xilinx.com:ip:mig_7series:4.2">
       <DOCUMENTS/>
       <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="1073741824" USAGE="memory"/>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="536870912" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="1073741824" USAGE="memory"/>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="536870912" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="1073741824" USAGE="memory"/>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="536870912" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="1073741824" USAGE="memory"/>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="memmap" NAME="memaddr" RANGE="536870912" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <PARAMETERS>
         <PARAMETER NAME="NoOfControllers" VALUE="1"/>
@@ -37774,21 +37770,21 @@
         <PARAMETER NAME="SYSCLK_TYPE" VALUE="DIFF"/>
         <PARAMETER NAME="USE_AXI" VALUE="1"/>
         <PARAMETER NAME="ECC" VALUE="OFF"/>
-        <PARAMETER NAME="DDR3_DQ_WIDTH" VALUE="32"/>
-        <PARAMETER NAME="DDR3_DQS_WIDTH" VALUE="4"/>
+        <PARAMETER NAME="DDR3_DQ_WIDTH" VALUE="16"/>
+        <PARAMETER NAME="DDR3_DQS_WIDTH" VALUE="2"/>
         <PARAMETER NAME="DDR3_ROW_WIDTH" VALUE="15"/>
         <PARAMETER NAME="DDR3_BANK_WIDTH" VALUE="3"/>
         <PARAMETER NAME="DDR3_CK_WIDTH" VALUE="1"/>
         <PARAMETER NAME="DDR3_CKE_WIDTH" VALUE="1"/>
         <PARAMETER NAME="DDR3_CS_WIDTH" VALUE="1"/>
         <PARAMETER NAME="DDR3_nCS_PER_RANK" VALUE="1"/>
-        <PARAMETER NAME="DDR3_DM_WIDTH" VALUE="4"/>
+        <PARAMETER NAME="DDR3_DM_WIDTH" VALUE="2"/>
         <PARAMETER NAME="DDR3_ODT_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="DDR3_USE_CS_PORT" VALUE="1"/>
+        <PARAMETER NAME="DDR3_USE_CS_PORT" VALUE="0"/>
         <PARAMETER NAME="DDR3_USE_DM_PORT" VALUE="1"/>
         <PARAMETER NAME="DDR3_USE_ODT_PORT" VALUE="1"/>
         <PARAMETER NAME="DDR3_REG_CTRL" VALUE="OFF"/>
-        <PARAMETER NAME="DDR3_DQS_CNT_WIDTH" VALUE="2"/>
+        <PARAMETER NAME="DDR3_DQS_CNT_WIDTH" VALUE="1"/>
         <PARAMETER NAME="DDR3_DEBUG_PORT" VALUE="OFF"/>
         <PARAMETER NAME="DDR2_DQ_WIDTH" VALUE="8"/>
         <PARAMETER NAME="DDR2_DQS_WIDTH" VALUE="1"/>
@@ -37827,15 +37823,15 @@
         <PARAMETER NAME="DDRX_nCK_PER_CLK" VALUE="2"/>
         <PARAMETER NAME="DDRX_DATA_WIDTH" VALUE="8"/>
         <PARAMETER NAME="DDR3_ADDR_WIDTH" VALUE="29"/>
-        <PARAMETER NAME="DDR3_nCK_PER_CLK" VALUE="4"/>
-        <PARAMETER NAME="DDR3_DATA_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DDR3_nCK_PER_CLK" VALUE="2"/>
+        <PARAMETER NAME="DDR3_DATA_WIDTH" VALUE="16"/>
         <PARAMETER NAME="DDR2_ADDR_WIDTH" VALUE="8"/>
         <PARAMETER NAME="DDR2_nCK_PER_CLK" VALUE="2"/>
         <PARAMETER NAME="DDR2_DATA_WIDTH" VALUE="8"/>
         <PARAMETER NAME="LPDDR2_ADDR_WIDTH" VALUE="8"/>
         <PARAMETER NAME="LPDDR2_nCK_PER_CLK" VALUE="2"/>
         <PARAMETER NAME="LPDDR2_DATA_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="FREQ_HZ" VALUE="83333333"/>
+        <PARAMETER NAME="FREQ_HZ" VALUE="166666667"/>
         <PARAMETER NAME="PHASE" VALUE="0.000"/>
         <PARAMETER NAME="UI_EXTRA_CLOCKS" VALUE="TRUE"/>
         <PARAMETER NAME="MMCM_VCO" VALUE="666"/>
@@ -37855,8 +37851,8 @@
         <PARAMETER NAME="C_S_AXI_CTRL_MEM_SIZE" VALUE="1048576"/>
         <PARAMETER NAME="C_S_AXI_ID_WIDTH" VALUE="4"/>
         <PARAMETER NAME="C_S_AXI_DATA_WIDTH" VALUE="64"/>
-        <PARAMETER NAME="C_S_AXI_ADDR_WIDTH" VALUE="30"/>
-        <PARAMETER NAME="C_S_AXI_MEM_SIZE" VALUE="1073741824"/>
+        <PARAMETER NAME="C_S_AXI_ADDR_WIDTH" VALUE="29"/>
+        <PARAMETER NAME="C_S_AXI_MEM_SIZE" VALUE="536870912"/>
         <PARAMETER NAME="QDRIIP_NUM_DEVICES" VALUE="1"/>
         <PARAMETER NAME="QDRIIP_DATA_WIDTH" VALUE="18"/>
         <PARAMETER NAME="QDRIIP_ADDR_WIDTH" VALUE="29"/>
@@ -38911,7 +38907,7 @@
         <PARAMETER NAME="C7_RLDIII_ADDR_WIDTH" VALUE="29"/>
         <PARAMETER NAME="C7_RLDIII_nCK_PER_CLK" VALUE="1"/>
         <PARAMETER NAME="C7_POLARITY" VALUE="ACTIVE_LOW"/>
-        <PARAMETER NAME="XML_INPUT_FILE" VALUE="mig_b.prj"/>
+        <PARAMETER NAME="XML_INPUT_FILE" VALUE="mig_a.prj"/>
         <PARAMETER NAME="RESET_BOARD_INTERFACE" VALUE="Custom"/>
         <PARAMETER NAME="MIG_DONT_TOUCH_PARAM" VALUE="Custom"/>
         <PARAMETER NAME="BOARD_MIG_PARAM" VALUE="Custom"/>
@@ -38937,17 +38933,17 @@
             <CONNECTION INSTANCE="mig_7series_0" PORT="ui_addn_clk_0"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="IO" LEFT="31" NAME="ddr3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
+        <PORT DIR="IO" LEFT="15" NAME="ddr3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_dq"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="IO" LEFT="3" NAME="ddr3_dqs_p" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_p">
+        <PORT DIR="IO" LEFT="1" NAME="ddr3_dqs_p" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_p">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_dqs_p"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="IO" LEFT="3" NAME="ddr3_dqs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_n">
+        <PORT DIR="IO" LEFT="1" NAME="ddr3_dqs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dqs_n">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_dqs_n"/>
           </CONNECTIONS>
@@ -38997,12 +38993,7 @@
             <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_cke"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="ddr3_cs_n" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_cs_n">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_cs_n"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="3" NAME="ddr3_dm" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dm">
+        <PORT DIR="O" LEFT="1" NAME="ddr3_dm" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dm">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="DDR3_dm"/>
           </CONNECTIONS>
@@ -39017,7 +39008,7 @@
             <CONNECTION INSTANCE="int_reset_combiner" PORT="Op1"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="83333333" DIR="O" NAME="ui_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_clk">
+        <PORT CLKFREQUENCY="166666667" DIR="O" NAME="ui_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_clk">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_ACLK"/>
@@ -39040,7 +39031,7 @@
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_AXI_awid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="29" NAME="s_axi_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_awaddr">
+        <PORT DIR="I" LEFT="28" NAME="s_axi_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_awaddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_AXI_awaddr"/>
           </CONNECTIONS>
@@ -39140,7 +39131,7 @@
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_AXI_arid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="29" NAME="s_axi_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_araddr">
+        <PORT DIR="I" LEFT="28" NAME="s_axi_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_araddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_AXI_araddr"/>
           </CONNECTIONS>
@@ -39272,17 +39263,16 @@
             <PORTMAP LOGICAL="CK_P" PHYSICAL="ddr3_ck_p"/>
             <PORTMAP LOGICAL="CK_N" PHYSICAL="ddr3_ck_n"/>
             <PORTMAP LOGICAL="CKE" PHYSICAL="ddr3_cke"/>
-            <PORTMAP LOGICAL="CS_N" PHYSICAL="ddr3_cs_n"/>
             <PORTMAP LOGICAL="DM" PHYSICAL="ddr3_dm"/>
             <PORTMAP LOGICAL="ODT" PHYSICAL="ddr3_odt"/>
           </PORTMAPS>
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="axi_pcie_interconnect_M02_AXI" DATAWIDTH="64" NAME="S_AXI" TYPE="SLAVE" VLNV="xilinx.com:interface:aximm:1.0">
-          <PARAMETER NAME="FREQ_HZ" VALUE="83333333"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="166666667"/>
           <PARAMETER NAME="DATA_WIDTH" VALUE="64"/>
           <PARAMETER NAME="PROTOCOL" VALUE="AXI4"/>
           <PARAMETER NAME="ID_WIDTH" VALUE="4"/>
-          <PARAMETER NAME="ADDR_WIDTH" VALUE="30"/>
+          <PARAMETER NAME="ADDR_WIDTH" VALUE="29"/>
           <PARAMETER NAME="AWUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="ARUSER_WIDTH" VALUE="0"/>
           <PARAMETER NAME="WUSER_WIDTH" VALUE="0"/>
@@ -39765,7 +39755,7 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="83333333" DIR="I" NAME="slowest_sync_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_clk">
+        <PORT CLKFREQUENCY="166666667" DIR="I" NAME="slowest_sync_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_clk">
           <CONNECTIONS>
             <CONNECTION INSTANCE="mig_7series_0" PORT="ui_clk"/>
           </CONNECTIONS>

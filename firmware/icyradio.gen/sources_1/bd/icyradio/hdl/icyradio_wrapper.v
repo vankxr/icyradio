@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sun Oct  2 20:52:53 2022
-//Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+//Date        : Sat Oct 22 18:37:23 2022
+//Host        : jsilva-kde running 64-bit KDE neon User - 5.26
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist
@@ -27,7 +27,6 @@ module icyradio_wrapper
     DDR3_ck_n,
     DDR3_ck_p,
     DDR3_cke,
-    DDR3_cs_n,
     DDR3_dm,
     DDR3_dq,
     DDR3_dqs_n,
@@ -95,11 +94,10 @@ module icyradio_wrapper
   output [0:0]DDR3_ck_n;
   output [0:0]DDR3_ck_p;
   output [0:0]DDR3_cke;
-  output [0:0]DDR3_cs_n;
-  output [3:0]DDR3_dm;
-  inout [31:0]DDR3_dq;
-  inout [3:0]DDR3_dqs_n;
-  inout [3:0]DDR3_dqs_p;
+  output [1:0]DDR3_dm;
+  inout [15:0]DDR3_dq;
+  inout [1:0]DDR3_dqs_n;
+  inout [1:0]DDR3_dqs_p;
   output [0:0]DDR3_odt;
   output DDR3_ras_n;
   output DDR3_reset_n;
@@ -170,11 +168,10 @@ module icyradio_wrapper
   wire [0:0]DDR3_ck_n;
   wire [0:0]DDR3_ck_p;
   wire [0:0]DDR3_cke;
-  wire [0:0]DDR3_cs_n;
-  wire [3:0]DDR3_dm;
-  wire [31:0]DDR3_dq;
-  wire [3:0]DDR3_dqs_n;
-  wire [3:0]DDR3_dqs_p;
+  wire [1:0]DDR3_dm;
+  wire [15:0]DDR3_dq;
+  wire [1:0]DDR3_dqs_n;
+  wire [1:0]DDR3_dqs_p;
   wire [0:0]DDR3_odt;
   wire DDR3_ras_n;
   wire DDR3_reset_n;
@@ -408,7 +405,6 @@ module icyradio_wrapper
         .DDR3_ck_n(DDR3_ck_n),
         .DDR3_ck_p(DDR3_ck_p),
         .DDR3_cke(DDR3_cke),
-        .DDR3_cs_n(DDR3_cs_n),
         .DDR3_dm(DDR3_dm),
         .DDR3_dq(DDR3_dq),
         .DDR3_dqs_n(DDR3_dqs_n),

@@ -90,21 +90,21 @@ module icyradio_mig_7series_0_0_mig #
                                      // # of unique CS outputs per rank for phy
    parameter CKE_WIDTH             = 1,
                                      // # of CKE outputs to memory.
-   parameter DATA_BUF_ADDR_WIDTH   = 5,
-   parameter DQ_CNT_WIDTH          = 5,
+   parameter DATA_BUF_ADDR_WIDTH   = 4,
+   parameter DQ_CNT_WIDTH          = 4,
                                      // = ceil(log2(DQ_WIDTH))
    parameter DQ_PER_DM             = 8,
-   parameter DM_WIDTH              = 4,
+   parameter DM_WIDTH              = 2,
                                      // # of DM (data mask)
-   parameter DQ_WIDTH              = 32,
+   parameter DQ_WIDTH              = 16,
                                      // # of DQ (data)
-   parameter DQS_WIDTH             = 4,
-   parameter DQS_CNT_WIDTH         = 2,
+   parameter DQS_WIDTH             = 2,
+   parameter DQS_CNT_WIDTH         = 1,
                                      // = ceil(log2(DQS_WIDTH))
    parameter DRAM_WIDTH            = 8,
                                      // # of DQ per DQS
    parameter ECC                   = "OFF",
-   parameter DATA_WIDTH            = 32,
+   parameter DATA_WIDTH            = 16,
    parameter ECC_TEST              = "OFF",
    parameter PAYLOAD_WIDTH         = (ECC_TEST == "OFF") ? DATA_WIDTH : DQ_WIDTH,
    parameter MEM_ADDR_ORDER        = "BANK_ROW_COLUMN",
@@ -129,7 +129,7 @@ module icyradio_mig_7series_0_0_mig #
                                      //     + ROW_WIDTH + COL_WIDTH;
                                      // Chip Select is always tied to low for
                                      // single rank devices
-   parameter USE_CS_PORT          = 1,
+   parameter USE_CS_PORT          = 0,
                                      // # = 1, When Chip Select (CS#) output is enabled
                                      //   = 0, When Chip Select (CS#) output is disabled
                                      // If CS_N disabled, user must connect
@@ -242,11 +242,11 @@ module icyradio_mig_7series_0_0_mig #
                                      // VCO output divisor for PLL output clock (CLKOUT1)
    parameter CLKOUT2_DIVIDE        = 64,
                                      // VCO output divisor for PLL output clock (CLKOUT2)
-   parameter CLKOUT3_DIVIDE        = 16,
+   parameter CLKOUT3_DIVIDE        = 8,
                                      // VCO output divisor for PLL output clock (CLKOUT3)
    parameter MMCM_VCO              = 666,
                                      // Max Freq (MHz) of MMCM VCO
-   parameter MMCM_MULT_F           = 8,
+   parameter MMCM_MULT_F           = 4,
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
@@ -327,7 +327,7 @@ module icyradio_mig_7series_0_0_mig #
    // Do not change any of these parameters directly by editing the RTL.
    // Any changes required should be done through GUI and the design regenerated.
    //***************************************************************************
-   parameter BYTE_LANES_B0         = 4'b0111,
+   parameter BYTE_LANES_B0         = 4'b0001,
                                      // Byte lanes used in an IO column.
    parameter BYTE_LANES_B1         = 4'b1111,
                                      // Byte lanes used in an IO column.
@@ -337,7 +337,7 @@ module icyradio_mig_7series_0_0_mig #
                                      // Byte lanes used in an IO column.
    parameter BYTE_LANES_B4         = 4'b0000,
                                      // Byte lanes used in an IO column.
-   parameter DATA_CTL_B0           = 4'b0111,
+   parameter DATA_CTL_B0           = 4'b0001,
                                      // Indicates Byte lane is data byte lane
                                      // or control Byte lane. '1' in a bit
                                      // position indicates a data byte lane and
@@ -362,8 +362,8 @@ module icyradio_mig_7series_0_0_mig #
                                      // or control Byte lane. '1' in a bit
                                      // position indicates a data byte lane and
                                      // a '0' indicates a control byte lane
-   parameter PHY_0_BITLANES        = 48'h000_3FE_3FE_2FF,
-   parameter PHY_1_BITLANES        = 48'h3FE_FFF_CFF_280,
+   parameter PHY_0_BITLANES        = 48'h000_000_000_2FF,
+   parameter PHY_1_BITLANES        = 48'h3FE_FFF_CFF_200,
    parameter PHY_2_BITLANES        = 48'h000_000_000_000,
 
    // control/address/data pin mapping parameters
@@ -374,18 +374,18 @@ module icyradio_mig_7series_0_0_mig #
    parameter BANK_MAP   = 36'h11A_115_114,
    parameter CAS_MAP    = 12'h112,
    parameter CKE_ODT_BYTE_MAP = 8'h00,
-   parameter CKE_MAP    = 96'h000_000_000_000_000_000_000_109,
-   parameter ODT_MAP    = 96'h000_000_000_000_000_000_000_107,
-   parameter CS_MAP     = 120'h000_000_000_000_000_000_000_000_000_110,
+   parameter CKE_MAP    = 96'h000_000_000_000_000_000_000_110,
+   parameter ODT_MAP    = 96'h000_000_000_000_000_000_000_109,
+   parameter CS_MAP     = 120'h000_000_000_000_000_000_000_000_000_000,
    parameter PARITY_MAP = 12'h000,
    parameter RAS_MAP    = 12'h113,
    parameter WE_MAP     = 12'h111,
    parameter DQS_BYTE_MAP
-     = 144'h00_00_00_00_00_00_00_00_00_00_00_00_00_00_13_00_01_02,
-   parameter DATA0_MAP  = 96'h021_022_023_024_025_026_027_028,
-   parameter DATA1_MAP  = 96'h011_012_013_014_016_017_018_019,
-   parameter DATA2_MAP  = 96'h000_001_002_003_004_005_006_007,
-   parameter DATA3_MAP  = 96'h131_132_133_134_135_136_137_138,
+     = 144'h00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_00_13_00,
+   parameter DATA0_MAP  = 96'h000_001_002_003_004_005_006_007,
+   parameter DATA1_MAP  = 96'h131_132_133_134_135_136_137_138,
+   parameter DATA2_MAP  = 96'h000_000_000_000_000_000_000_000,
+   parameter DATA3_MAP  = 96'h000_000_000_000_000_000_000_000,
    parameter DATA4_MAP  = 96'h000_000_000_000_000_000_000_000,
    parameter DATA5_MAP  = 96'h000_000_000_000_000_000_000_000,
    parameter DATA6_MAP  = 96'h000_000_000_000_000_000_000_000,
@@ -400,7 +400,7 @@ module icyradio_mig_7series_0_0_mig #
    parameter DATA15_MAP = 96'h000_000_000_000_000_000_000_000,
    parameter DATA16_MAP = 96'h000_000_000_000_000_000_000_000,
    parameter DATA17_MAP = 96'h000_000_000_000_000_000_000_000,
-   parameter MASK0_MAP  = 108'h000_000_000_000_000_139_009_015_029,
+   parameter MASK0_MAP  = 108'h000_000_000_000_000_000_000_139_009,
    parameter MASK1_MAP  = 108'h000_000_000_000_000_000_000_000_000,
 
    parameter SLOT_0_CONFIG         = 8'b0000_0001,
@@ -424,7 +424,7 @@ module icyradio_mig_7series_0_0_mig #
    parameter WRLVL                 = "ON",
                                      // # = "ON" - DDR3 SDRAM
                                      //   = "OFF" - DDR2 SDRAM.
-   parameter ORDERING              = "STRICT",
+   parameter ORDERING              = "NORM",
                                      // # = "NORM", "STRICT", "RELAXED".
    parameter CALIB_ROW_ADD         = 16'h0000,
                                      // Calibration row address will be used for
@@ -484,7 +484,7 @@ module icyradio_mig_7series_0_0_mig #
    parameter tCK                   = 3000,
                                      // memory tCK paramter.
                                      // # = Clock Period in pS.
-   parameter nCK_PER_CLK           = 4,
+   parameter nCK_PER_CLK           = 2,
    // # of memory CKs per fabric CLK
    
    parameter DIFF_TERM_SYSCLK      = "FALSE",
@@ -505,9 +505,9 @@ module icyradio_mig_7series_0_0_mig #
    parameter C_S_AXI_ID_WIDTH              = 4,
                                              // Width of all master and slave ID signals.
                                              // # = >= 1.
-   parameter C_S_AXI_MEM_SIZE              = "1073741824",
+   parameter C_S_AXI_MEM_SIZE              = "536870912",
                                      // Address Space required for this component
-   parameter C_S_AXI_ADDR_WIDTH            = 30,
+   parameter C_S_AXI_ADDR_WIDTH            = 29,
                                              // Width of S_AXI_AWADDR, S_AXI_ARADDR, M_AXI_AWADDR and
                                              // M_AXI_ARADDR for all SI/MI slots.
                                              // # = 32.
@@ -515,7 +515,7 @@ module icyradio_mig_7series_0_0_mig #
                                              // Width of WDATA and RDATA on SI slot.
                                              // Must be <= APP_DATA_WIDTH.
                                              // # = 32, 64, 128, 256.
-   parameter C_MC_nCK_PER_CLK              = 4,
+   parameter C_MC_nCK_PER_CLK              = 2,
                                              // Indicates whether to instatiate upsizer
                                              // Range: 0, 1
    parameter C_S_AXI_SUPPORTS_NARROW_BURST = 1,
@@ -612,7 +612,6 @@ module icyradio_mig_7series_0_0_mig #
    output [CK_WIDTH-1:0]                        ddr3_ck_n,
    output [CKE_WIDTH-1:0]                       ddr3_cke,
    
-   output [(CS_WIDTH*nCS_PER_RANK)-1:0]           ddr3_cs_n,
    
    output [DM_WIDTH-1:0]                        ddr3_dm,
    
@@ -1222,7 +1221,7 @@ module icyradio_mig_7series_0_0_mig #
        .ddr_ck_n                         (ddr3_ck_n),
        .ddr_ck                           (ddr3_ck_p),
        .ddr_cke                          (ddr3_cke),
-       .ddr_cs_n                         (ddr3_cs_n),
+       .ddr_cs_n                         (),
        .ddr_dm                           (ddr3_dm),
        .ddr_odt                          (ddr3_odt),
        .ddr_ras_n                        (ddr3_ras_n),

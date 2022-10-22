@@ -162,7 +162,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <MemoryDevice>DDR3_SDRAM/Components/MT41K256M16XX-125</MemoryDevice>}
    puts $mig_prj_file {    <TimePeriod>3000</TimePeriod>}
    puts $mig_prj_file {    <VccAuxIO>1.8V</VccAuxIO>}
-   puts $mig_prj_file {    <PHYRatio>4:1</PHYRatio>}
+   puts $mig_prj_file {    <PHYRatio>2:1</PHYRatio>}
    puts $mig_prj_file {    <InputClkFreq>333.333</InputClkFreq>}
    puts $mig_prj_file {    <UIExtraClocks>1</UIExtraClocks>}
    puts $mig_prj_file {    <MMCM_VCO>666</MMCM_VCO>}
@@ -171,11 +171,11 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <MMCMClkOut2>66</MMCMClkOut2>}
    puts $mig_prj_file {    <MMCMClkOut3>1</MMCMClkOut3>}
    puts $mig_prj_file {    <MMCMClkOut4>1</MMCMClkOut4>}
-   puts $mig_prj_file {    <DataWidth>32</DataWidth>}
+   puts $mig_prj_file {    <DataWidth>16</DataWidth>}
    puts $mig_prj_file {    <DeepMemory>1</DeepMemory>}
    puts $mig_prj_file {    <DataMask>1</DataMask>}
    puts $mig_prj_file {    <ECC>Disabled</ECC>}
-   puts $mig_prj_file {    <Ordering>Strict</Ordering>}
+   puts $mig_prj_file {    <Ordering>Normal</Ordering>}
    puts $mig_prj_file {    <BankMachineCnt>4</BankMachineCnt>}
    puts $mig_prj_file {    <CustomPart>FALSE</CustomPart>}
    puts $mig_prj_file {    <NewPartName/>}
@@ -183,14 +183,14 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <ColAddress>10</ColAddress>}
    puts $mig_prj_file {    <BankAddress>3</BankAddress>}
    puts $mig_prj_file {    <MemoryVoltage>1.35V</MemoryVoltage>}
-   puts $mig_prj_file {    <C0_MEM_SIZE>1073741824</C0_MEM_SIZE>}
+   puts $mig_prj_file {    <C0_MEM_SIZE>536870912</C0_MEM_SIZE>}
    puts $mig_prj_file {    <UserMemoryAddressMap>BANK_ROW_COLUMN</UserMemoryAddressMap>}
    puts $mig_prj_file {    <BankSelection>}
-   puts $mig_prj_file {      <Bank T1="DQ[0-7]" T2="DQ[8-15]" T3="DQ[16-23]" name="35"/>}
-   puts $mig_prj_file {      <Bank T0="DQ[24-31]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>}
+   puts $mig_prj_file {      <Bank T3="DQ[0-7]" name="35"/>}
+   puts $mig_prj_file {      <Bank T0="DQ[8-15]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>}
    puts $mig_prj_file {    </BankSelection>}
    puts $mig_prj_file {    <System_Clock>}
-   puts $mig_prj_file {      <Pin Bank="34" PADName="R4/T4(CC_P/N)" name="sys_clk_p/n"/>}
+   puts $mig_prj_file {      <Pin Bank="35" PADName="H4/G4(CC_P/N)" name="sys_clk_p/n"/>}
    puts $mig_prj_file {    </System_Clock>}
    puts $mig_prj_file {    <System_Control>}
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>}
@@ -209,7 +209,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <emrDllEnable name="DLL Enable">Enable</emrDllEnable>}
    puts $mig_prj_file {    <emrOutputDriveStrength name="Output Driver Impedance Control">RZQ/6</emrOutputDriveStrength>}
    puts $mig_prj_file {    <emrMirrorSelection name="Address Mirroring">Disable</emrMirrorSelection>}
-   puts $mig_prj_file {    <emrCSSelection name="Controller Chip Select Pin">Enable</emrCSSelection>}
+   puts $mig_prj_file {    <emrCSSelection name="Controller Chip Select Pin">Disable</emrCSSelection>}
    puts $mig_prj_file {    <emrRTT name="RTT (nominal) - On Die Termination (ODT)">RZQ/6</emrRTT>}
    puts $mig_prj_file {    <emrPosted name="Additive Latency (AL)">0</emrPosted>}
    puts $mig_prj_file {    <emrOCD name="Write Leveling Enable">Disabled</emrOCD>}
@@ -223,7 +223,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <PortInterface>AXI</PortInterface>}
    puts $mig_prj_file {    <AXIParameters>}
    puts $mig_prj_file {      <C0_C_RD_WR_ARB_ALGORITHM>RD_PRI_REG</C0_C_RD_WR_ARB_ALGORITHM>}
-   puts $mig_prj_file {      <C0_S_AXI_ADDR_WIDTH>30</C0_S_AXI_ADDR_WIDTH>}
+   puts $mig_prj_file {      <C0_S_AXI_ADDR_WIDTH>29</C0_S_AXI_ADDR_WIDTH>}
    puts $mig_prj_file {      <C0_S_AXI_DATA_WIDTH>64</C0_S_AXI_DATA_WIDTH>}
    puts $mig_prj_file {      <C0_S_AXI_ID_WIDTH>4</C0_S_AXI_ID_WIDTH>}
    puts $mig_prj_file {      <C0_S_AXI_SUPPORTS_NARROW_BURST>1</C0_S_AXI_SUPPORTS_NARROW_BURST>}
@@ -629,7 +629,7 @@ proc create_root_design { parentCell } {
 
   # Generate the PRJ File for MIG
   set str_mig_folder [get_property IP_DIR [ get_ips [ get_property CONFIG.Component_Name $mig_7series_0 ] ] ]
-  set str_mig_file_name mig_b.prj
+  set str_mig_file_name mig_a.prj
   set str_mig_file_path ${str_mig_folder}/${str_mig_file_name}
 
   write_mig_file_icyradio_mig_7series_0_0 $str_mig_file_path
@@ -637,7 +637,7 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.BOARD_MIG_PARAM {Custom} \
    CONFIG.RESET_BOARD_INTERFACE {Custom} \
-   CONFIG.XML_INPUT_FILE {mig_b.prj} \
+   CONFIG.XML_INPUT_FILE {mig_a.prj} \
  ] $mig_7series_0
 
   # Create instance: picorv32_0, and set properties

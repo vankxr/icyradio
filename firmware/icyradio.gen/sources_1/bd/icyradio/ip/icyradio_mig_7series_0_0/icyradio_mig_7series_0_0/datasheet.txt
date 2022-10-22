@@ -30,7 +30,7 @@ Controller Options :
    Memory                        : DDR3_SDRAM
    Interface                     : AXI
    Design Clock Frequency        : 3000 ps (  0.00 MHz)
-   Phy to Controller Clock Ratio : 4:1
+   Phy to Controller Clock Ratio : 2:1
    Input Clock Period            : 3000 ps
    CLKFBOUT_MULT (PLL)           : 4
    DIVCLK_DIVIDE (PLL)           : 1
@@ -38,10 +38,10 @@ Controller Options :
    Memory Type                   : Components
    Memory Part                   : MT41K256M16XX-125
    Equivalent Part(s)            : MT41K256M16RE-125
-   Data Width                    : 32
+   Data Width                    : 16
    ECC                           : Disabled
    Data Mask                     : enabled
-   ORDERING                      : Strict
+   ORDERING                      : Normal
 
 AXI Parameters :
    Data Width                    : 64
@@ -54,7 +54,7 @@ Memory Options:
    Read Burst Type (MR0[3])         : Sequential
    CAS Latency (MR0[6:4])           : 5
    Output Drive Strength (MR1[5,1]) : RZQ/6
-   Controller CS option             : Enable
+   Controller CS option             : Disable
    Rtt_NOM - ODT (MR1[9,6,2])       : RZQ/6
    Rtt_WR - Dynamic ODT (MR2[10:9]) : Dynamic ODT off
    Memory Address Mapping           : BANK_ROW_COLUMN
@@ -62,18 +62,16 @@ Memory Options:
 
 Bank Selections:
 	Bank: 34
-		Byte Group T0:	DQ[24-31]
+		Byte Group T0:	DQ[8-15]
 		Byte Group T1:	Address/Ctrl-0
 		Byte Group T2:	Address/Ctrl-1
 		Byte Group T3:	Address/Ctrl-2
 	Bank: 35
-		Byte Group T1:	DQ[0-7]
-		Byte Group T2:	DQ[8-15]
-		Byte Group T3:	DQ[16-23]
+		Byte Group T3:	DQ[0-7]
 
 System_Clock: 
 	SignalName: sys_clk_p/n
-		PadLocation: R4/T4(CC_P/N)  Bank: 34
+		PadLocation: H4/G4(CC_P/N)  Bank: 35
 
 System_Control: 
 	SignalName: sys_rst

@@ -1,8 +1,8 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  1 21:22:30 2022
--- Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+-- Date        : Sat Oct 22 18:39:11 2022
+-- Host        : jsilva-kde running 64-bit KDE neon User - 5.26
 -- Command     : write_vhdl -force -mode synth_stub
 --               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_rst_mig_7series_0_166M_2/icyradio_rst_mig_7series_0_166M_2_stub.vhdl
 -- Design      : icyradio_rst_mig_7series_0_166M_2

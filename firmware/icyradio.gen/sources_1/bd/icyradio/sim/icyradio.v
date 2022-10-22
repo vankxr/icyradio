@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sun Oct  2 20:52:53 2022
-//Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+//Date        : Sat Oct 22 18:37:22 2022
+//Host        : jsilva-kde running 64-bit KDE neon User - 5.26
 //Command     : generate_target icyradio.bd
 //Design      : icyradio
 //Purpose     : IP block netlist
@@ -13,7 +13,7 @@
 For TX, we apply back-pressure by telling the Unpacker that the data from the DMA is not ready.
 Since the Unpacker copies the valid signal into the ready signal, there is no need to signal the DMA that the Unpacker is not ready.
 For RX, we apply back-pressure by masking the wr_en from the ADC. This way, the ADC keeps spitting out samples that get ignored by the Packer. */
-(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=85,numReposBlks=54,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
+(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=85,numReposBlks=54,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
 module icyradio
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
@@ -36,7 +36,6 @@ module icyradio
     DDR3_ck_n,
     DDR3_ck_p,
     DDR3_cke,
-    DDR3_cs_n,
     DDR3_dm,
     DDR3_dq,
     DDR3_dqs_n,
@@ -142,11 +141,10 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CK_N" *) output [0:0]DDR3_ck_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CK_P" *) output [0:0]DDR3_ck_p;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CKE" *) output [0:0]DDR3_cke;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CS_N" *) output [0:0]DDR3_cs_n;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DM" *) output [3:0]DDR3_dm;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQ" *) inout [31:0]DDR3_dq;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQS_N" *) inout [3:0]DDR3_dqs_n;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQS_P" *) inout [3:0]DDR3_dqs_p;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DM" *) output [1:0]DDR3_dm;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQ" *) inout [15:0]DDR3_dq;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQS_N" *) inout [1:0]DDR3_dqs_n;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 DQS_P" *) inout [1:0]DDR3_dqs_p;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 ODT" *) output [0:0]DDR3_odt;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 RAS_N" *) output DDR3_ras_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 RESET_N" *) output DDR3_reset_n;
@@ -695,7 +693,7 @@ module icyradio
   wire axi_pcie_interconnect_M00_AXI_WREADY;
   wire [7:0]axi_pcie_interconnect_M00_AXI_WSTRB;
   wire axi_pcie_interconnect_M00_AXI_WVALID;
-  wire [29:0]axi_pcie_interconnect_M02_AXI_ARADDR;
+  wire [28:0]axi_pcie_interconnect_M02_AXI_ARADDR;
   wire [1:0]axi_pcie_interconnect_M02_AXI_ARBURST;
   wire [3:0]axi_pcie_interconnect_M02_AXI_ARCACHE;
   wire [3:0]axi_pcie_interconnect_M02_AXI_ARID;
@@ -706,7 +704,7 @@ module icyradio
   wire axi_pcie_interconnect_M02_AXI_ARREADY;
   wire [2:0]axi_pcie_interconnect_M02_AXI_ARSIZE;
   wire axi_pcie_interconnect_M02_AXI_ARVALID;
-  wire [29:0]axi_pcie_interconnect_M02_AXI_AWADDR;
+  wire [28:0]axi_pcie_interconnect_M02_AXI_AWADDR;
   wire [1:0]axi_pcie_interconnect_M02_AXI_AWBURST;
   wire [3:0]axi_pcie_interconnect_M02_AXI_AWCACHE;
   wire [3:0]axi_pcie_interconnect_M02_AXI_AWID;
@@ -967,11 +965,10 @@ module icyradio
   wire [0:0]mig_7series_0_DDR3_CKE;
   wire [0:0]mig_7series_0_DDR3_CK_N;
   wire [0:0]mig_7series_0_DDR3_CK_P;
-  wire [0:0]mig_7series_0_DDR3_CS_N;
-  wire [3:0]mig_7series_0_DDR3_DM;
-  wire [31:0]mig_7series_0_DDR3_DQ;
-  wire [3:0]mig_7series_0_DDR3_DQS_N;
-  wire [3:0]mig_7series_0_DDR3_DQS_P;
+  wire [1:0]mig_7series_0_DDR3_DM;
+  wire [15:0]mig_7series_0_DDR3_DQ;
+  wire [1:0]mig_7series_0_DDR3_DQS_N;
+  wire [1:0]mig_7series_0_DDR3_DQS_P;
   wire [0:0]mig_7series_0_DDR3_ODT;
   wire mig_7series_0_DDR3_RAS_N;
   wire mig_7series_0_DDR3_RESET_N;
@@ -1012,8 +1009,7 @@ module icyradio
   assign DDR3_ck_n[0] = mig_7series_0_DDR3_CK_N;
   assign DDR3_ck_p[0] = mig_7series_0_DDR3_CK_P;
   assign DDR3_cke[0] = mig_7series_0_DDR3_CKE;
-  assign DDR3_cs_n[0] = mig_7series_0_DDR3_CS_N;
-  assign DDR3_dm[3:0] = mig_7series_0_DDR3_DM;
+  assign DDR3_dm[1:0] = mig_7series_0_DDR3_DM;
   assign DDR3_odt[0] = mig_7series_0_DDR3_ODT;
   assign DDR3_ras_n = mig_7series_0_DDR3_RAS_N;
   assign DDR3_reset_n = mig_7series_0_DDR3_RESET_N;
@@ -2602,11 +2598,10 @@ module icyradio
         .ddr3_ck_n(mig_7series_0_DDR3_CK_N),
         .ddr3_ck_p(mig_7series_0_DDR3_CK_P),
         .ddr3_cke(mig_7series_0_DDR3_CKE),
-        .ddr3_cs_n(mig_7series_0_DDR3_CS_N),
         .ddr3_dm(mig_7series_0_DDR3_DM),
-        .ddr3_dq(DDR3_dq[31:0]),
-        .ddr3_dqs_n(DDR3_dqs_n[3:0]),
-        .ddr3_dqs_p(DDR3_dqs_p[3:0]),
+        .ddr3_dq(DDR3_dq[15:0]),
+        .ddr3_dqs_n(DDR3_dqs_n[1:0]),
+        .ddr3_dqs_p(DDR3_dqs_p[1:0]),
         .ddr3_odt(mig_7series_0_DDR3_ODT),
         .ddr3_ras_n(mig_7series_0_DDR3_RAS_N),
         .ddr3_reset_n(mig_7series_0_DDR3_RESET_N),
@@ -4252,7 +4247,7 @@ module icyradio_axi_pcie_interconnect_2
   output M01_AXI_wvalid;
   input M02_ACLK;
   input M02_ARESETN;
-  output [29:0]M02_AXI_araddr;
+  output [28:0]M02_AXI_araddr;
   output [1:0]M02_AXI_arburst;
   output [3:0]M02_AXI_arcache;
   output [3:0]M02_AXI_arid;
@@ -4263,7 +4258,7 @@ module icyradio_axi_pcie_interconnect_2
   input M02_AXI_arready;
   output [2:0]M02_AXI_arsize;
   output M02_AXI_arvalid;
-  output [29:0]M02_AXI_awaddr;
+  output [28:0]M02_AXI_awaddr;
   output [1:0]M02_AXI_awburst;
   output [3:0]M02_AXI_awcache;
   output [3:0]M02_AXI_awid;
@@ -4551,7 +4546,7 @@ module icyradio_axi_pcie_interconnect_2
   wire m01_couplers_to_axi_pcie_interconnect_WREADY;
   wire [3:0]m01_couplers_to_axi_pcie_interconnect_WSTRB;
   wire m01_couplers_to_axi_pcie_interconnect_WVALID;
-  wire [29:0]m02_couplers_to_axi_pcie_interconnect_ARADDR;
+  wire [28:0]m02_couplers_to_axi_pcie_interconnect_ARADDR;
   wire [1:0]m02_couplers_to_axi_pcie_interconnect_ARBURST;
   wire [3:0]m02_couplers_to_axi_pcie_interconnect_ARCACHE;
   wire [3:0]m02_couplers_to_axi_pcie_interconnect_ARID;
@@ -4562,7 +4557,7 @@ module icyradio_axi_pcie_interconnect_2
   wire m02_couplers_to_axi_pcie_interconnect_ARREADY;
   wire [2:0]m02_couplers_to_axi_pcie_interconnect_ARSIZE;
   wire m02_couplers_to_axi_pcie_interconnect_ARVALID;
-  wire [29:0]m02_couplers_to_axi_pcie_interconnect_AWADDR;
+  wire [28:0]m02_couplers_to_axi_pcie_interconnect_AWADDR;
   wire [1:0]m02_couplers_to_axi_pcie_interconnect_AWBURST;
   wire [3:0]m02_couplers_to_axi_pcie_interconnect_AWCACHE;
   wire [3:0]m02_couplers_to_axi_pcie_interconnect_AWID;
@@ -4900,7 +4895,7 @@ module icyradio_axi_pcie_interconnect_2
   assign M01_AXI_wvalid = m01_couplers_to_axi_pcie_interconnect_WVALID;
   assign M02_ACLK_1 = M02_ACLK;
   assign M02_ARESETN_1 = M02_ARESETN;
-  assign M02_AXI_araddr[29:0] = m02_couplers_to_axi_pcie_interconnect_ARADDR;
+  assign M02_AXI_araddr[28:0] = m02_couplers_to_axi_pcie_interconnect_ARADDR;
   assign M02_AXI_arburst[1:0] = m02_couplers_to_axi_pcie_interconnect_ARBURST;
   assign M02_AXI_arcache[3:0] = m02_couplers_to_axi_pcie_interconnect_ARCACHE;
   assign M02_AXI_arid[3:0] = m02_couplers_to_axi_pcie_interconnect_ARID;
@@ -4910,7 +4905,7 @@ module icyradio_axi_pcie_interconnect_2
   assign M02_AXI_arqos[3:0] = m02_couplers_to_axi_pcie_interconnect_ARQOS;
   assign M02_AXI_arsize[2:0] = m02_couplers_to_axi_pcie_interconnect_ARSIZE;
   assign M02_AXI_arvalid = m02_couplers_to_axi_pcie_interconnect_ARVALID;
-  assign M02_AXI_awaddr[29:0] = m02_couplers_to_axi_pcie_interconnect_AWADDR;
+  assign M02_AXI_awaddr[28:0] = m02_couplers_to_axi_pcie_interconnect_AWADDR;
   assign M02_AXI_awburst[1:0] = m02_couplers_to_axi_pcie_interconnect_AWBURST;
   assign M02_AXI_awcache[3:0] = m02_couplers_to_axi_pcie_interconnect_AWCACHE;
   assign M02_AXI_awid[3:0] = m02_couplers_to_axi_pcie_interconnect_AWID;
@@ -9398,7 +9393,7 @@ module m02_couplers_imp_AQ4QF5
     S_AXI_wvalid);
   input M_ACLK;
   input M_ARESETN;
-  output [29:0]M_AXI_araddr;
+  output [28:0]M_AXI_araddr;
   output [1:0]M_AXI_arburst;
   output [3:0]M_AXI_arcache;
   output [3:0]M_AXI_arid;
@@ -9409,7 +9404,7 @@ module m02_couplers_imp_AQ4QF5
   input M_AXI_arready;
   output [2:0]M_AXI_arsize;
   output M_AXI_arvalid;
-  output [29:0]M_AXI_awaddr;
+  output [28:0]M_AXI_awaddr;
   output [1:0]M_AXI_awburst;
   output [3:0]M_AXI_awcache;
   output [3:0]M_AXI_awid;
@@ -9481,7 +9476,7 @@ module m02_couplers_imp_AQ4QF5
   wire M_ARESETN_1;
   wire S_ACLK_1;
   wire S_ARESETN_1;
-  wire [29:0]auto_cc_to_m02_couplers_ARADDR;
+  wire [28:0]auto_cc_to_m02_couplers_ARADDR;
   wire [1:0]auto_cc_to_m02_couplers_ARBURST;
   wire [3:0]auto_cc_to_m02_couplers_ARCACHE;
   wire [3:0]auto_cc_to_m02_couplers_ARID;
@@ -9492,7 +9487,7 @@ module m02_couplers_imp_AQ4QF5
   wire auto_cc_to_m02_couplers_ARREADY;
   wire [2:0]auto_cc_to_m02_couplers_ARSIZE;
   wire auto_cc_to_m02_couplers_ARVALID;
-  wire [29:0]auto_cc_to_m02_couplers_AWADDR;
+  wire [28:0]auto_cc_to_m02_couplers_AWADDR;
   wire [1:0]auto_cc_to_m02_couplers_AWBURST;
   wire [3:0]auto_cc_to_m02_couplers_AWCACHE;
   wire [3:0]auto_cc_to_m02_couplers_AWID;
@@ -9560,7 +9555,7 @@ module m02_couplers_imp_AQ4QF5
 
   assign M_ACLK_1 = M_ACLK;
   assign M_ARESETN_1 = M_ARESETN;
-  assign M_AXI_araddr[29:0] = auto_cc_to_m02_couplers_ARADDR;
+  assign M_AXI_araddr[28:0] = auto_cc_to_m02_couplers_ARADDR;
   assign M_AXI_arburst[1:0] = auto_cc_to_m02_couplers_ARBURST;
   assign M_AXI_arcache[3:0] = auto_cc_to_m02_couplers_ARCACHE;
   assign M_AXI_arid[3:0] = auto_cc_to_m02_couplers_ARID;
@@ -9570,7 +9565,7 @@ module m02_couplers_imp_AQ4QF5
   assign M_AXI_arqos[3:0] = auto_cc_to_m02_couplers_ARQOS;
   assign M_AXI_arsize[2:0] = auto_cc_to_m02_couplers_ARSIZE;
   assign M_AXI_arvalid = auto_cc_to_m02_couplers_ARVALID;
-  assign M_AXI_awaddr[29:0] = auto_cc_to_m02_couplers_AWADDR;
+  assign M_AXI_awaddr[28:0] = auto_cc_to_m02_couplers_AWADDR;
   assign M_AXI_awburst[1:0] = auto_cc_to_m02_couplers_AWBURST;
   assign M_AXI_awcache[3:0] = auto_cc_to_m02_couplers_AWCACHE;
   assign M_AXI_awid[3:0] = auto_cc_to_m02_couplers_AWID;
@@ -9679,7 +9674,7 @@ module m02_couplers_imp_AQ4QF5
         .m_axi_wstrb(auto_cc_to_m02_couplers_WSTRB),
         .m_axi_wvalid(auto_cc_to_m02_couplers_WVALID),
         .s_axi_aclk(S_ACLK_1),
-        .s_axi_araddr(m02_couplers_to_auto_cc_ARADDR[29:0]),
+        .s_axi_araddr(m02_couplers_to_auto_cc_ARADDR[28:0]),
         .s_axi_arburst(m02_couplers_to_auto_cc_ARBURST),
         .s_axi_arcache(m02_couplers_to_auto_cc_ARCACHE),
         .s_axi_aresetn(S_ARESETN_1),
@@ -9692,7 +9687,7 @@ module m02_couplers_imp_AQ4QF5
         .s_axi_arregion(m02_couplers_to_auto_cc_ARREGION),
         .s_axi_arsize(m02_couplers_to_auto_cc_ARSIZE),
         .s_axi_arvalid(m02_couplers_to_auto_cc_ARVALID),
-        .s_axi_awaddr(m02_couplers_to_auto_cc_AWADDR[29:0]),
+        .s_axi_awaddr(m02_couplers_to_auto_cc_AWADDR[28:0]),
         .s_axi_awburst(m02_couplers_to_auto_cc_AWBURST),
         .s_axi_awcache(m02_couplers_to_auto_cc_AWCACHE),
         .s_axi_awid(m02_couplers_to_auto_cc_AWID),
@@ -11820,7 +11815,7 @@ module s00_couplers_imp_12AR84V
   assign s00_data_fifo_to_s00_couplers_RLAST = M_AXI_rlast;
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
-  icyradio_s00_data_fifo_59 s00_data_fifo
+  icyradio_s00_data_fifo_62 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12175,7 +12170,7 @@ module s00_couplers_imp_1OK54OW
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_60 s00_data_fifo
+  icyradio_s00_data_fifo_63 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12423,7 +12418,7 @@ module s00_couplers_imp_YVWGWH
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_61 s00_data_fifo
+  icyradio_s00_data_fifo_64 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12737,7 +12732,7 @@ module s01_couplers_imp_EQ149T
   assign s01_data_fifo_to_s01_couplers_RRESP = M_AXI_rresp[1:0];
   assign s01_data_fifo_to_s01_couplers_RVALID = M_AXI_rvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_39 s01_data_fifo
+  icyradio_s01_data_fifo_41 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s01_data_fifo_to_s01_couplers_ARADDR),
@@ -12961,7 +12956,7 @@ module s01_couplers_imp_S4EEJ2
   assign s01_data_fifo_to_s01_couplers_BRESP = M_AXI_bresp[1:0];
   assign s01_data_fifo_to_s01_couplers_BVALID = M_AXI_bvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_38 s01_data_fifo
+  icyradio_s01_data_fifo_40 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_awaddr(s01_data_fifo_to_s01_couplers_AWADDR),

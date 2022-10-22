@@ -15,7 +15,7 @@ SET_PREFERENCE flowvendor Other
 SET_PREFERENCE tool vivado
 SET_PREFERENCE compnamestatus 0
 SET_PARAMETER component_name icyradio_mig_7series_0_0
-SET_PARAMETER xml_input_file /media/joao/SSD/Development/icyradio/firmware/icyradio.srcs/sources_1/bd/icyradio/ip/icyradio_mig_7series_0_0/mig_b.prj
+SET_PARAMETER xml_input_file /media/joao/SSD/Development/icyradio/firmware/icyradio.srcs/sources_1/bd/icyradio/ip/icyradio_mig_7series_0_0/mig_a.prj
 SET_PARAMETER data_dir_path /opt/Xilinx/Vivado/2021.1/data/ip/xilinx/mig_7series_v4_2
 SET_CORE_NAME Memory Interface Generator (MIG 7 Series)
 SET_CORE_VERSION 4.2

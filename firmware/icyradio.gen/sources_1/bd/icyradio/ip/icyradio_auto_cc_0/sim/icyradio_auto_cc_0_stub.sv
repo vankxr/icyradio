@@ -70,7 +70,7 @@ module icyradio_auto_cc_0 (
   input bit_as_bool s_axi_aclk,
   input bit_as_bool s_axi_aresetn,
   input bit [3 : 0] s_axi_awid,
-  input bit [29 : 0] s_axi_awaddr,
+  input bit [28 : 0] s_axi_awaddr,
   input bit [7 : 0] s_axi_awlen,
   input bit [2 : 0] s_axi_awsize,
   input bit [1 : 0] s_axi_awburst,
@@ -91,7 +91,7 @@ module icyradio_auto_cc_0 (
   output bit_as_bool s_axi_bvalid,
   input bit_as_bool s_axi_bready,
   input bit [3 : 0] s_axi_arid,
-  input bit [29 : 0] s_axi_araddr,
+  input bit [28 : 0] s_axi_araddr,
   input bit [7 : 0] s_axi_arlen,
   input bit [2 : 0] s_axi_arsize,
   input bit [1 : 0] s_axi_arburst,
@@ -111,7 +111,7 @@ module icyradio_auto_cc_0 (
   input bit_as_bool m_axi_aclk,
   input bit_as_bool m_axi_aresetn,
   output bit [3 : 0] m_axi_awid,
-  output bit [29 : 0] m_axi_awaddr,
+  output bit [28 : 0] m_axi_awaddr,
   output bit [7 : 0] m_axi_awlen,
   output bit [2 : 0] m_axi_awsize,
   output bit [1 : 0] m_axi_awburst,
@@ -132,7 +132,7 @@ module icyradio_auto_cc_0 (
   input bit_as_bool m_axi_bvalid,
   output bit_as_bool m_axi_bready,
   output bit [3 : 0] m_axi_arid,
-  output bit [29 : 0] m_axi_araddr,
+  output bit [28 : 0] m_axi_araddr,
   output bit [7 : 0] m_axi_arlen,
   output bit [2 : 0] m_axi_arsize,
   output bit [1 : 0] m_axi_arburst,
@@ -161,7 +161,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit s_axi_aclk;
   input bit s_axi_aresetn;
   input bit [3 : 0] s_axi_awid;
-  input bit [29 : 0] s_axi_awaddr;
+  input bit [28 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -182,7 +182,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   output wire s_axi_bvalid;
   input bit s_axi_bready;
   input bit [3 : 0] s_axi_arid;
-  input bit [29 : 0] s_axi_araddr;
+  input bit [28 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -202,7 +202,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit m_axi_aclk;
   input bit m_axi_aresetn;
   output wire [3 : 0] m_axi_awid;
-  output wire [29 : 0] m_axi_awaddr;
+  output wire [28 : 0] m_axi_awaddr;
   output wire [7 : 0] m_axi_awlen;
   output wire [2 : 0] m_axi_awsize;
   output wire [1 : 0] m_axi_awburst;
@@ -223,7 +223,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit m_axi_bvalid;
   output wire m_axi_bready;
   output wire [3 : 0] m_axi_arid;
-  output wire [29 : 0] m_axi_araddr;
+  output wire [28 : 0] m_axi_araddr;
   output wire [7 : 0] m_axi_arlen;
   output wire [2 : 0] m_axi_arsize;
   output wire [1 : 0] m_axi_arburst;
@@ -249,7 +249,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit s_axi_aclk;
   input bit s_axi_aresetn;
   input bit [3 : 0] s_axi_awid;
-  input bit [29 : 0] s_axi_awaddr;
+  input bit [28 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -270,7 +270,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   output wire s_axi_bvalid;
   input bit s_axi_bready;
   input bit [3 : 0] s_axi_arid;
-  input bit [29 : 0] s_axi_araddr;
+  input bit [28 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -290,7 +290,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit m_axi_aclk;
   input bit m_axi_aresetn;
   output wire [3 : 0] m_axi_awid;
-  output wire [29 : 0] m_axi_awaddr;
+  output wire [28 : 0] m_axi_awaddr;
   output wire [7 : 0] m_axi_awlen;
   output wire [2 : 0] m_axi_awsize;
   output wire [1 : 0] m_axi_awburst;
@@ -311,7 +311,7 @@ module icyradio_auto_cc_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awaddr,s_ax
   input bit m_axi_bvalid;
   output wire m_axi_bready;
   output wire [3 : 0] m_axi_arid;
-  output wire [29 : 0] m_axi_araddr;
+  output wire [28 : 0] m_axi_araddr;
   output wire [7 : 0] m_axi_arlen;
   output wire [2 : 0] m_axi_arsize;
   output wire [1 : 0] m_axi_arburst;

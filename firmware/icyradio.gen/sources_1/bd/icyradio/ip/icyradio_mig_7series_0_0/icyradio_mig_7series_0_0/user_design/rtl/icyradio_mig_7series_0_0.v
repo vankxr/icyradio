@@ -69,9 +69,9 @@
 
 module icyradio_mig_7series_0_0 (
   // Inouts
-  inout [31:0]       ddr3_dq,
-  inout [3:0]        ddr3_dqs_n,
-  inout [3:0]        ddr3_dqs_p,
+  inout [15:0]       ddr3_dq,
+  inout [1:0]        ddr3_dqs_n,
+  inout [1:0]        ddr3_dqs_p,
   // Outputs
   output [14:0]     ddr3_addr,
   output [2:0]        ddr3_ba,
@@ -82,8 +82,7 @@ module icyradio_mig_7series_0_0 (
   output [0:0]       ddr3_ck_p,
   output [0:0]       ddr3_ck_n,
   output [0:0]       ddr3_cke,
-  output [0:0]        ddr3_cs_n,
-  output [3:0]     ddr3_dm,
+  output [1:0]     ddr3_dm,
   output [0:0]       ddr3_odt,
   // Inputs
   // Differential system clocks
@@ -106,7 +105,7 @@ module icyradio_mig_7series_0_0 (
   output            app_zq_ack,
   // Slave Interface Write Address Ports
   input [3:0]           s_axi_awid,
-  input [29:0]         s_axi_awaddr,
+  input [28:0]         s_axi_awaddr,
   input [7:0]           s_axi_awlen,
   input [2:0]           s_axi_awsize,
   input [1:0]           s_axi_awburst,
@@ -129,7 +128,7 @@ module icyradio_mig_7series_0_0 (
   output            s_axi_bvalid,
   // Slave Interface Read Address Ports
   input [3:0]           s_axi_arid,
-  input [29:0]         s_axi_araddr,
+  input [28:0]         s_axi_araddr,
   input [7:0]           s_axi_arlen,
   input [2:0]           s_axi_arsize,
   input [1:0]           s_axi_arburst,
@@ -181,7 +180,6 @@ module icyradio_mig_7series_0_0 (
     .ddr3_dqs_p                     (ddr3_dqs_p),
     .init_calib_complete            (init_calib_complete),
       
-    .ddr3_cs_n                      (ddr3_cs_n),
     .ddr3_dm                        (ddr3_dm),
     .ddr3_odt                       (ddr3_odt),
     // Application interface ports

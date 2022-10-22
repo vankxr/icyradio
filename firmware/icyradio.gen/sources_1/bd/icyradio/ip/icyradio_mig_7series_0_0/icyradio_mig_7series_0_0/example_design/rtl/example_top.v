@@ -96,7 +96,7 @@ module example_top #
                                      // # of unique CS outputs per rank for phy
    parameter CKE_WIDTH             = 1,
                                      // # of CKE outputs to memory.
-   parameter DM_WIDTH              = 4,
+   parameter DM_WIDTH              = 2,
                                      // # of DM (data mask)
    parameter ODT_WIDTH             = 1,
                                      // # of ODT outputs to memory.
@@ -106,10 +106,10 @@ module example_top #
                                      // # of memory Column Address bits.
    parameter CS_WIDTH              = 1,
                                      // # of unique CS outputs to memory.
-   parameter DQ_WIDTH              = 32,
+   parameter DQ_WIDTH              = 16,
                                      // # of DQ (data)
-   parameter DQS_WIDTH             = 4,
-   parameter DQS_CNT_WIDTH         = 2,
+   parameter DQS_WIDTH             = 2,
+   parameter DQS_CNT_WIDTH         = 1,
                                      // = ceil(log2(DQS_WIDTH))
    parameter DRAM_WIDTH            = 8,
                                      // # of DQ per DQS
@@ -157,11 +157,11 @@ module example_top #
                                      // VCO output divisor for PLL output clock (CLKOUT1)
    parameter CLKOUT2_DIVIDE        = 64,
                                      // VCO output divisor for PLL output clock (CLKOUT2)
-   parameter CLKOUT3_DIVIDE        = 16,
+   parameter CLKOUT3_DIVIDE        = 8,
                                      // VCO output divisor for PLL output clock (CLKOUT3)
    parameter MMCM_VCO              = 666,
                                      // Max Freq (MHz) of MMCM VCO
-   parameter MMCM_MULT_F           = 8,
+   parameter MMCM_MULT_F           = 4,
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
@@ -210,7 +210,7 @@ module example_top #
    //***************************************************************************
    // System clock frequency parameters
    //***************************************************************************
-   parameter nCK_PER_CLK           = 4,
+   parameter nCK_PER_CLK           = 2,
                                      // # of memory CKs per fabric CLK
 
    
@@ -220,7 +220,7 @@ module example_top #
    parameter C_S_AXI_ID_WIDTH              = 4,
                                              // Width of all master and slave ID signals.
                                              // # = >= 1.
-   parameter C_S_AXI_ADDR_WIDTH            = 30,
+   parameter C_S_AXI_ADDR_WIDTH            = 29,
                                              // Width of S_AXI_AWADDR, S_AXI_ARADDR, M_AXI_AWADDR and
                                              // M_AXI_ARADDR for all SI/MI slots.
                                              // # = 32.
@@ -247,9 +247,9 @@ module example_top #
   (
 
    // Inouts
-   inout [31:0]                         ddr3_dq,
-   inout [3:0]                        ddr3_dqs_n,
-   inout [3:0]                        ddr3_dqs_p,
+   inout [15:0]                         ddr3_dq,
+   inout [1:0]                        ddr3_dqs_n,
+   inout [1:0]                        ddr3_dqs_p,
 
    // Outputs
    output [14:0]                       ddr3_addr,
@@ -262,9 +262,8 @@ module example_top #
    output [0:0]                        ddr3_ck_n,
    output [0:0]                       ddr3_cke,
    
-   output [0:0]           ddr3_cs_n,
    
-   output [3:0]                        ddr3_dm,
+   output [1:0]                        ddr3_dm,
    
    output [0:0]                       ddr3_odt,
    
@@ -313,7 +312,7 @@ function integer clogb2 (input integer size);
   endfunction
 
 
-  localparam DATA_WIDTH            = 32;
+  localparam DATA_WIDTH            = 16;
   localparam RANK_WIDTH = clogb2(RANKS);
   localparam PAYLOAD_WIDTH         = (ECC_TEST == "OFF") ? DATA_WIDTH : DQ_WIDTH;
   localparam BURST_LENGTH          = STR_TO_INT(BURST_MODE);
@@ -457,7 +456,7 @@ function integer clogb2 (input integer size);
        .ddr3_reset_n                   (ddr3_reset_n),
        .init_calib_complete            (init_calib_complete),
       
-       .ddr3_cs_n                      (ddr3_cs_n),
+       
        .ddr3_dm                        (ddr3_dm),
        .ddr3_odt                       (ddr3_odt),
 // Application interface ports

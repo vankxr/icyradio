@@ -46,7 +46,7 @@
     <MemoryDevice>DDR3_SDRAM/Components/MT41K256M16XX-125</MemoryDevice>
     <TimePeriod>3000</TimePeriod>
     <VccAuxIO>1.8V</VccAuxIO>
-    <PHYRatio>4:1</PHYRatio>
+    <PHYRatio>2:1</PHYRatio>
     <InputClkFreq>333.333</InputClkFreq>
     <UIExtraClocks>1</UIExtraClocks>
     <MMCM_VCO>666</MMCM_VCO>
@@ -55,11 +55,11 @@
     <MMCMClkOut2>66</MMCMClkOut2>
     <MMCMClkOut3>1</MMCMClkOut3>
     <MMCMClkOut4>1</MMCMClkOut4>
-    <DataWidth>32</DataWidth>
+    <DataWidth>16</DataWidth>
     <DeepMemory>1</DeepMemory>
     <DataMask>1</DataMask>
     <ECC>Disabled</ECC>
-    <Ordering>Strict</Ordering>
+    <Ordering>Normal</Ordering>
     <BankMachineCnt>4</BankMachineCnt>
     <CustomPart>FALSE</CustomPart>
     <NewPartName></NewPartName>
@@ -67,14 +67,14 @@
     <ColAddress>10</ColAddress>
     <BankAddress>3</BankAddress>
     <MemoryVoltage>1.35V</MemoryVoltage>
-    <C0_MEM_SIZE>1073741824</C0_MEM_SIZE>
+    <C0_MEM_SIZE>536870912</C0_MEM_SIZE>
     <UserMemoryAddressMap>BANK_ROW_COLUMN</UserMemoryAddressMap>
     <BankSelection>
-      <Bank T1="DQ[0-7]" T2="DQ[8-15]" T3="DQ[16-23]" name="35"/>
-      <Bank T0="DQ[24-31]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>
+      <Bank T3="DQ[0-7]" name="35"/>
+      <Bank T0="DQ[8-15]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>
     </BankSelection>
     <System_Clock>
-      <Pin Bank="34" PADName="R4/T4(CC_P/N)" name="sys_clk_p/n"/>
+      <Pin Bank="35" PADName="H4/G4(CC_P/N)" name="sys_clk_p/n"/>
     </System_Clock>
     <System_Control>
       <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>
@@ -93,7 +93,7 @@
     <emrDllEnable name="DLL Enable">Enable</emrDllEnable>
     <emrOutputDriveStrength name="Output Driver Impedance Control">RZQ/6</emrOutputDriveStrength>
     <emrMirrorSelection name="Address Mirroring">Disable</emrMirrorSelection>
-    <emrCSSelection name="Controller Chip Select Pin">Enable</emrCSSelection>
+    <emrCSSelection name="Controller Chip Select Pin">Disable</emrCSSelection>
     <emrRTT name="RTT (nominal) - On Die Termination (ODT)">RZQ/6</emrRTT>
     <emrPosted name="Additive Latency (AL)">0</emrPosted>
     <emrOCD name="Write Leveling Enable">Disabled</emrOCD>
@@ -107,7 +107,7 @@
     <PortInterface>AXI</PortInterface>
     <AXIParameters>
       <C0_C_RD_WR_ARB_ALGORITHM>RD_PRI_REG</C0_C_RD_WR_ARB_ALGORITHM>
-      <C0_S_AXI_ADDR_WIDTH>30</C0_S_AXI_ADDR_WIDTH>
+      <C0_S_AXI_ADDR_WIDTH>29</C0_S_AXI_ADDR_WIDTH>
       <C0_S_AXI_DATA_WIDTH>64</C0_S_AXI_DATA_WIDTH>
       <C0_S_AXI_ID_WIDTH>4</C0_S_AXI_ID_WIDTH>
       <C0_S_AXI_SUPPORTS_NARROW_BURST>1</C0_S_AXI_SUPPORTS_NARROW_BURST>
