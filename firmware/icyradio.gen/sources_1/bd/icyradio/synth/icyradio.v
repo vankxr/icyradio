@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sat Oct  1 23:34:36 2022
+//Date        : Sun Oct  2 20:52:52 2022
 //Host        : jsilva-kde running 64-bit KDE neon User - 5.25
 //Command     : generate_target icyradio.bd
 //Design      : icyradio
@@ -13,7 +13,7 @@
 For TX, we apply back-pressure by telling the Unpacker that the data from the DMA is not ready.
 Since the Unpacker copies the valid signal into the ready signal, there is no need to signal the DMA that the Unpacker is not ready.
 For RX, we apply back-pressure by masking the wr_en from the ADC. This way, the ADC keeps spitting out samples that get ignored by the Packer. */
-(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=85,numReposBlks=54,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"da_clkrst_cnt\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
+(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=85,numReposBlks=54,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
 module icyradio
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
@@ -123,16 +123,16 @@ module icyradio
     TRX_TXNRX);
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_analog_io:1.0 ADCIN_MAIN V_N" *) input ADCIN_MAIN_v_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_analog_io:1.0 ADCIN_MAIN V_P" *) input ADCIN_MAIN_v_p;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) input AUDIO_I2C_scl_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) output AUDIO_I2C_scl_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) output AUDIO_I2C_scl_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) input AUDIO_I2C_sda_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) output AUDIO_I2C_sda_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C " *) output AUDIO_I2C_sda_t;
-  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S " *) output [0:0]CODEC_I2S_bclk;
-  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S " *) output [0:0]CODEC_I2S_lrclk;
-  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S " *) input [0:0]CODEC_I2S_sdata_in;
-  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S " *) output [0:0]CODEC_I2S_sdata_out;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SCL_I" *) input AUDIO_I2C_scl_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SCL_O" *) output AUDIO_I2C_scl_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SCL_T" *) output AUDIO_I2C_scl_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SDA_I" *) input AUDIO_I2C_sda_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SDA_O" *) output AUDIO_I2C_sda_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 AUDIO_I2C SDA_T" *) output AUDIO_I2C_sda_t;
+  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S BCLK" *) output [0:0]CODEC_I2S_bclk;
+  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S LRCLK" *) output [0:0]CODEC_I2S_lrclk;
+  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_IN" *) input [0:0]CODEC_I2S_sdata_in;
+  (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_OUT" *) output [0:0]CODEC_I2S_sdata_out;
   output [0:0]CODEC_RESETn;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 DDR3_CLK_IN CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME DDR3_CLK_IN, CAN_DEBUG false, FREQ_HZ 33333333" *) input DDR3_CLK_IN_clk_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 DDR3_CLK_IN CLK_P" *) input DDR3_CLK_IN_clk_p;
@@ -183,24 +183,24 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 PCIe txp" *) output [1:0]PCIe_txp;
   output [0:0]PM_I2C_EN;
   (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.RESETN RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME RST.RESETN, INSERT_VIP 0, POLARITY ACTIVE_LOW" *) input RESETn;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) input SYNTH_SPI_io0_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_io0_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_io0_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) input SYNTH_SPI_io1_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_io1_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_io1_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) input SYNTH_SPI_sck_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_sck_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_sck_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) input [0:0]SYNTH_SPI_ss_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output [0:0]SYNTH_SPI_ss_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI " *) output SYNTH_SPI_ss_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) input SYS_I2C_scl_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) output SYS_I2C_scl_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) output SYS_I2C_scl_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) input SYS_I2C_sda_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) output SYS_I2C_sda_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C " *) output SYS_I2C_sda_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_I" *) input SYNTH_SPI_io0_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_O" *) output SYNTH_SPI_io0_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_T" *) output SYNTH_SPI_io0_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO1_I" *) input SYNTH_SPI_io1_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO1_O" *) output SYNTH_SPI_io1_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO1_T" *) output SYNTH_SPI_io1_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SCK_I" *) input SYNTH_SPI_sck_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SCK_O" *) output SYNTH_SPI_sck_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SCK_T" *) output SYNTH_SPI_sck_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SS_I" *) input [0:0]SYNTH_SPI_ss_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SS_O" *) output [0:0]SYNTH_SPI_ss_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI SS_T" *) output SYNTH_SPI_ss_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SCL_I" *) input SYS_I2C_scl_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SCL_O" *) output SYS_I2C_scl_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SCL_T" *) output SYS_I2C_scl_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SDA_I" *) input SYS_I2C_sda_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SDA_O" *) output SYS_I2C_sda_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 SYS_I2C SDA_T" *) output SYS_I2C_sda_t;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.TRX_CLK_OUT CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.TRX_CLK_OUT, CLK_DOMAIN icyradio_TRX_CLK_OUT, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, INSERT_VIP 0, PHASE 0.0" *) input TRX_CLK_OUT;
   output [3:0]TRX_CTRL_IN;
   input [7:0]TRX_CTRL_OUT;
@@ -860,21 +860,21 @@ module icyradio
   wire axi_peripheral_interconnect_M11_AXI_WVALID;
   wire [31:0]axi_peripheral_interconnect_M12_AXI_ARADDR;
   wire axi_peripheral_interconnect_M12_AXI_ARREADY;
-  wire [0:0]axi_peripheral_interconnect_M12_AXI_ARVALID;
+  wire axi_peripheral_interconnect_M12_AXI_ARVALID;
   wire [31:0]axi_peripheral_interconnect_M12_AXI_AWADDR;
   wire axi_peripheral_interconnect_M12_AXI_AWREADY;
-  wire [0:0]axi_peripheral_interconnect_M12_AXI_AWVALID;
-  wire [0:0]axi_peripheral_interconnect_M12_AXI_BREADY;
+  wire axi_peripheral_interconnect_M12_AXI_AWVALID;
+  wire axi_peripheral_interconnect_M12_AXI_BREADY;
   wire [1:0]axi_peripheral_interconnect_M12_AXI_BRESP;
   wire axi_peripheral_interconnect_M12_AXI_BVALID;
   wire [31:0]axi_peripheral_interconnect_M12_AXI_RDATA;
-  wire [0:0]axi_peripheral_interconnect_M12_AXI_RREADY;
+  wire axi_peripheral_interconnect_M12_AXI_RREADY;
   wire [1:0]axi_peripheral_interconnect_M12_AXI_RRESP;
   wire axi_peripheral_interconnect_M12_AXI_RVALID;
   wire [31:0]axi_peripheral_interconnect_M12_AXI_WDATA;
   wire axi_peripheral_interconnect_M12_AXI_WREADY;
   wire [3:0]axi_peripheral_interconnect_M12_AXI_WSTRB;
-  wire [0:0]axi_peripheral_interconnect_M12_AXI_WVALID;
+  wire axi_peripheral_interconnect_M12_AXI_WVALID;
   wire [31:0]axi_peripheral_interconnect_M13_AXI_ARADDR;
   wire axi_peripheral_interconnect_M13_AXI_ARREADY;
   wire axi_peripheral_interconnect_M13_AXI_ARVALID;
@@ -6156,22 +6156,22 @@ module icyradio_axi_peripheral_interconnect_2
   input M12_ACLK;
   input M12_ARESETN;
   output [31:0]M12_AXI_araddr;
-  input [0:0]M12_AXI_arready;
-  output [0:0]M12_AXI_arvalid;
+  input M12_AXI_arready;
+  output M12_AXI_arvalid;
   output [31:0]M12_AXI_awaddr;
-  input [0:0]M12_AXI_awready;
-  output [0:0]M12_AXI_awvalid;
-  output [0:0]M12_AXI_bready;
+  input M12_AXI_awready;
+  output M12_AXI_awvalid;
+  output M12_AXI_bready;
   input [1:0]M12_AXI_bresp;
-  input [0:0]M12_AXI_bvalid;
+  input M12_AXI_bvalid;
   input [31:0]M12_AXI_rdata;
-  output [0:0]M12_AXI_rready;
+  output M12_AXI_rready;
   input [1:0]M12_AXI_rresp;
-  input [0:0]M12_AXI_rvalid;
+  input M12_AXI_rvalid;
   output [31:0]M12_AXI_wdata;
-  input [0:0]M12_AXI_wready;
+  input M12_AXI_wready;
   output [3:0]M12_AXI_wstrb;
-  output [0:0]M12_AXI_wvalid;
+  output M12_AXI_wvalid;
   input M13_ACLK;
   input M13_ARESETN;
   output [31:0]M13_AXI_araddr;
@@ -6481,20 +6481,20 @@ module icyradio_axi_peripheral_interconnect_2
   wire [3:0]m11_couplers_to_axi_peripheral_interconnect_WSTRB;
   wire m11_couplers_to_axi_peripheral_interconnect_WVALID;
   wire [31:0]m12_couplers_to_axi_peripheral_interconnect_ARADDR;
-  wire [0:0]m12_couplers_to_axi_peripheral_interconnect_ARREADY;
+  wire m12_couplers_to_axi_peripheral_interconnect_ARREADY;
   wire m12_couplers_to_axi_peripheral_interconnect_ARVALID;
   wire [31:0]m12_couplers_to_axi_peripheral_interconnect_AWADDR;
-  wire [0:0]m12_couplers_to_axi_peripheral_interconnect_AWREADY;
+  wire m12_couplers_to_axi_peripheral_interconnect_AWREADY;
   wire m12_couplers_to_axi_peripheral_interconnect_AWVALID;
   wire m12_couplers_to_axi_peripheral_interconnect_BREADY;
   wire [1:0]m12_couplers_to_axi_peripheral_interconnect_BRESP;
-  wire [0:0]m12_couplers_to_axi_peripheral_interconnect_BVALID;
+  wire m12_couplers_to_axi_peripheral_interconnect_BVALID;
   wire [31:0]m12_couplers_to_axi_peripheral_interconnect_RDATA;
   wire m12_couplers_to_axi_peripheral_interconnect_RREADY;
   wire [1:0]m12_couplers_to_axi_peripheral_interconnect_RRESP;
-  wire [0:0]m12_couplers_to_axi_peripheral_interconnect_RVALID;
+  wire m12_couplers_to_axi_peripheral_interconnect_RVALID;
   wire [31:0]m12_couplers_to_axi_peripheral_interconnect_WDATA;
-  wire [0:0]m12_couplers_to_axi_peripheral_interconnect_WREADY;
+  wire m12_couplers_to_axi_peripheral_interconnect_WREADY;
   wire [3:0]m12_couplers_to_axi_peripheral_interconnect_WSTRB;
   wire m12_couplers_to_axi_peripheral_interconnect_WVALID;
   wire [31:0]m13_couplers_to_axi_peripheral_interconnect_ARADDR;
@@ -6935,14 +6935,14 @@ module icyradio_axi_peripheral_interconnect_2
   assign M12_ACLK_1 = M12_ACLK;
   assign M12_ARESETN_1 = M12_ARESETN;
   assign M12_AXI_araddr[31:0] = m12_couplers_to_axi_peripheral_interconnect_ARADDR;
-  assign M12_AXI_arvalid[0] = m12_couplers_to_axi_peripheral_interconnect_ARVALID;
+  assign M12_AXI_arvalid = m12_couplers_to_axi_peripheral_interconnect_ARVALID;
   assign M12_AXI_awaddr[31:0] = m12_couplers_to_axi_peripheral_interconnect_AWADDR;
-  assign M12_AXI_awvalid[0] = m12_couplers_to_axi_peripheral_interconnect_AWVALID;
-  assign M12_AXI_bready[0] = m12_couplers_to_axi_peripheral_interconnect_BREADY;
-  assign M12_AXI_rready[0] = m12_couplers_to_axi_peripheral_interconnect_RREADY;
+  assign M12_AXI_awvalid = m12_couplers_to_axi_peripheral_interconnect_AWVALID;
+  assign M12_AXI_bready = m12_couplers_to_axi_peripheral_interconnect_BREADY;
+  assign M12_AXI_rready = m12_couplers_to_axi_peripheral_interconnect_RREADY;
   assign M12_AXI_wdata[31:0] = m12_couplers_to_axi_peripheral_interconnect_WDATA;
   assign M12_AXI_wstrb[3:0] = m12_couplers_to_axi_peripheral_interconnect_WSTRB;
-  assign M12_AXI_wvalid[0] = m12_couplers_to_axi_peripheral_interconnect_WVALID;
+  assign M12_AXI_wvalid = m12_couplers_to_axi_peripheral_interconnect_WVALID;
   assign M13_ACLK_1 = M13_ACLK;
   assign M13_ARESETN_1 = M13_ARESETN;
   assign M13_AXI_araddr[31:0] = m13_couplers_to_axi_peripheral_interconnect_ARADDR;
@@ -7073,14 +7073,14 @@ module icyradio_axi_peripheral_interconnect_2
   assign m11_couplers_to_axi_peripheral_interconnect_RRESP = M11_AXI_rresp[1:0];
   assign m11_couplers_to_axi_peripheral_interconnect_RVALID = M11_AXI_rvalid;
   assign m11_couplers_to_axi_peripheral_interconnect_WREADY = M11_AXI_wready;
-  assign m12_couplers_to_axi_peripheral_interconnect_ARREADY = M12_AXI_arready[0];
-  assign m12_couplers_to_axi_peripheral_interconnect_AWREADY = M12_AXI_awready[0];
+  assign m12_couplers_to_axi_peripheral_interconnect_ARREADY = M12_AXI_arready;
+  assign m12_couplers_to_axi_peripheral_interconnect_AWREADY = M12_AXI_awready;
   assign m12_couplers_to_axi_peripheral_interconnect_BRESP = M12_AXI_bresp[1:0];
-  assign m12_couplers_to_axi_peripheral_interconnect_BVALID = M12_AXI_bvalid[0];
+  assign m12_couplers_to_axi_peripheral_interconnect_BVALID = M12_AXI_bvalid;
   assign m12_couplers_to_axi_peripheral_interconnect_RDATA = M12_AXI_rdata[31:0];
   assign m12_couplers_to_axi_peripheral_interconnect_RRESP = M12_AXI_rresp[1:0];
-  assign m12_couplers_to_axi_peripheral_interconnect_RVALID = M12_AXI_rvalid[0];
-  assign m12_couplers_to_axi_peripheral_interconnect_WREADY = M12_AXI_wready[0];
+  assign m12_couplers_to_axi_peripheral_interconnect_RVALID = M12_AXI_rvalid;
+  assign m12_couplers_to_axi_peripheral_interconnect_WREADY = M12_AXI_wready;
   assign m13_couplers_to_axi_peripheral_interconnect_ARREADY = M13_AXI_arready;
   assign m13_couplers_to_axi_peripheral_interconnect_AWREADY = M13_AXI_awready;
   assign m13_couplers_to_axi_peripheral_interconnect_BRESP = M13_AXI_bresp[1:0];
@@ -11820,7 +11820,7 @@ module s00_couplers_imp_12AR84V
   assign s00_data_fifo_to_s00_couplers_RLAST = M_AXI_rlast;
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
-  icyradio_s00_data_fifo_56 s00_data_fifo
+  icyradio_s00_data_fifo_59 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12175,7 +12175,7 @@ module s00_couplers_imp_1OK54OW
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_57 s00_data_fifo
+  icyradio_s00_data_fifo_60 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12423,7 +12423,7 @@ module s00_couplers_imp_YVWGWH
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_58 s00_data_fifo
+  icyradio_s00_data_fifo_61 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12737,7 +12737,7 @@ module s01_couplers_imp_EQ149T
   assign s01_data_fifo_to_s01_couplers_RRESP = M_AXI_rresp[1:0];
   assign s01_data_fifo_to_s01_couplers_RVALID = M_AXI_rvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_37 s01_data_fifo
+  icyradio_s01_data_fifo_39 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s01_data_fifo_to_s01_couplers_ARADDR),
@@ -12961,7 +12961,7 @@ module s01_couplers_imp_S4EEJ2
   assign s01_data_fifo_to_s01_couplers_BRESP = M_AXI_bresp[1:0];
   assign s01_data_fifo_to_s01_couplers_BVALID = M_AXI_bvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_36 s01_data_fifo
+  icyradio_s01_data_fifo_38 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_awaddr(s01_data_fifo_to_s01_couplers_AWADDR),

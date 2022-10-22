@@ -12,7 +12,7 @@ package icyradio_axi_dmac_rf_rx_2_pkg;
   parameter icyradio_axi_dmac_rf_rx_2_ID                      = 0;
   parameter icyradio_axi_dmac_rf_rx_2_DMA_DATA_WIDTH_SRC      = 64;
   parameter icyradio_axi_dmac_rf_rx_2_DMA_DATA_WIDTH_DEST     = 64;
-  parameter icyradio_axi_dmac_rf_rx_2_DMA_LENGTH_WIDTH        = 16;
+  parameter icyradio_axi_dmac_rf_rx_2_DMA_LENGTH_WIDTH        = 24;
   parameter icyradio_axi_dmac_rf_rx_2_DMA_2D_TRANSFER         = 0;
   parameter icyradio_axi_dmac_rf_rx_2_ASYNC_CLK_REQ_SRC       = 1;
   parameter icyradio_axi_dmac_rf_rx_2_ASYNC_CLK_SRC_DEST      = 1;

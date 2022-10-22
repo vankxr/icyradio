@@ -9,10 +9,10 @@ package icyradio_axi_dmac_rf_tx_0_pkg;
 // These parameters are named after the component for use in your verification
 // environment.
 ///////////////////////////////////////////////////////////////////////////
-  parameter icyradio_axi_dmac_rf_tx_0_ID                      = 0;
+  parameter icyradio_axi_dmac_rf_tx_0_ID                      = 3;
   parameter icyradio_axi_dmac_rf_tx_0_DMA_DATA_WIDTH_SRC      = 64;
   parameter icyradio_axi_dmac_rf_tx_0_DMA_DATA_WIDTH_DEST     = 32;
-  parameter icyradio_axi_dmac_rf_tx_0_DMA_LENGTH_WIDTH        = 16;
+  parameter icyradio_axi_dmac_rf_tx_0_DMA_LENGTH_WIDTH        = 24;
   parameter icyradio_axi_dmac_rf_tx_0_DMA_2D_TRANSFER         = 0;
   parameter icyradio_axi_dmac_rf_tx_0_ASYNC_CLK_REQ_SRC       = 0;
   parameter icyradio_axi_dmac_rf_tx_0_ASYNC_CLK_SRC_DEST      = 0;

@@ -904,7 +904,7 @@
             "value": "false"
           },
           "DMA_LENGTH_WIDTH": {
-            "value": "16"
+            "value": "24"
           },
           "SYNC_TRANSFER_START": {
             "value": "true"
@@ -944,13 +944,16 @@
             "value": "false"
           },
           "DMA_LENGTH_WIDTH": {
-            "value": "16"
+            "value": "24"
           },
           "DMA_TYPE_DEST": {
             "value": "1"
           },
           "DMA_TYPE_SRC": {
             "value": "0"
+          },
+          "ID": {
+            "value": "1"
           }
         },
         "interface_ports": {
@@ -993,13 +996,16 @@
             "value": "32"
           },
           "DMA_LENGTH_WIDTH": {
-            "value": "16"
+            "value": "24"
           },
           "DMA_TYPE_DEST": {
             "value": "1"
           },
           "DMA_TYPE_SRC": {
             "value": "0"
+          },
+          "ID": {
+            "value": "3"
           }
         },
         "interface_ports": {
@@ -1384,8 +1390,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_56",
-                "xci_path": "ip/icyradio_s00_data_fifo_56/icyradio_s00_data_fifo_56.xci",
+                "xci_name": "icyradio_s00_data_fifo_59",
+                "xci_path": "ip/icyradio_s00_data_fifo_59/icyradio_s00_data_fifo_59.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1477,8 +1483,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_36",
-                "xci_path": "ip/icyradio_s01_data_fifo_36/icyradio_s01_data_fifo_36.xci",
+                "xci_name": "icyradio_s01_data_fifo_38",
+                "xci_path": "ip/icyradio_s01_data_fifo_38/icyradio_s01_data_fifo_38.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2348,8 +2354,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_57",
-                "xci_path": "ip/icyradio_s00_data_fifo_57/icyradio_s00_data_fifo_57.xci",
+                "xci_name": "icyradio_s00_data_fifo_60",
+                "xci_path": "ip/icyradio_s00_data_fifo_60/icyradio_s00_data_fifo_60.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2441,8 +2447,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_37",
-                "xci_path": "ip/icyradio_s01_data_fifo_37/icyradio_s01_data_fifo_37.xci",
+                "xci_name": "icyradio_s01_data_fifo_39",
+                "xci_path": "ip/icyradio_s01_data_fifo_39/icyradio_s01_data_fifo_39.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3480,8 +3486,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_58",
-                "xci_path": "ip/icyradio_s00_data_fifo_58/icyradio_s00_data_fifo_58.xci",
+                "xci_name": "icyradio_s00_data_fifo_61",
+                "xci_path": "ip/icyradio_s00_data_fifo_61/icyradio_s00_data_fifo_61.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -4987,13 +4993,16 @@
             "value": "32"
           },
           "DMA_LENGTH_WIDTH": {
-            "value": "16"
+            "value": "24"
           },
           "DMA_TYPE_DEST": {
             "value": "0"
           },
           "DMA_TYPE_SRC": {
             "value": "1"
+          },
+          "ID": {
+            "value": "2"
           }
         },
         "interface_ports": {

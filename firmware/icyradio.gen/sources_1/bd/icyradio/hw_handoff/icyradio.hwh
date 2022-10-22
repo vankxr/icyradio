@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sat Oct  1 23:35:14 2022" VIVADOVERSION="2021.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Oct  2 20:53:31 2022" VIVADOVERSION="2021.1">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="icyradio" PACKAGE="fgg484" SPEEDGRADE="-2"/>
 
@@ -84,6 +84,16 @@
     <PORT DIR="O" LEFT="0" NAME="TRX_SYNC_IN" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
       <CONNECTIONS>
         <CONNECTION INSTANCE="GND_0" PORT="dout"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="CODEC_RESETn" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_0_gpo">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_0" PORT="gpo"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="PM_I2C_EN" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_gpo">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="gpo"/>
       </CONNECTIONS>
     </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" LEFT="0" NAME="PCIe_REFCLK_clk_p" RIGHT="0" SIGIS="clk" SIGNAME="util_ds_buf_0_IBUF_DS_P">
@@ -194,6 +204,36 @@
     <PORT DIR="O" NAME="AUDIO_I2C_sda_t" SIGIS="undef" SIGNAME="axi_iic_0_sda_t">
       <CONNECTIONS>
         <CONNECTION INSTANCE="axi_iic_0" PORT="sda_t"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="SYS_I2C_scl_i" SIGIS="undef" SIGNAME="axi_iic_1_scl_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYS_I2C_scl_o" SIGIS="undef" SIGNAME="axi_iic_1_scl_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYS_I2C_scl_t" SIGIS="undef" SIGNAME="axi_iic_1_scl_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_t"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="SYS_I2C_sda_i" SIGIS="undef" SIGNAME="axi_iic_1_sda_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYS_I2C_sda_o" SIGIS="undef" SIGNAME="axi_iic_1_sda_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYS_I2C_sda_t" SIGIS="undef" SIGNAME="axi_iic_1_sda_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_t"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="I" LEFT="1" NAME="PCIe_rxn" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_0_pci_exp_rxn">
@@ -351,6 +391,66 @@
         <CONNECTION INSTANCE="axi_quad_spi_1" PORT="ss_t"/>
       </CONNECTIONS>
     </PORT>
+    <PORT DIR="I" NAME="SYNTH_SPI_io0_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_io0_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_io0_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_t"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="SYNTH_SPI_io1_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_io1_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_io1_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_t"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="SYNTH_SPI_sck_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_sck_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_sck_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_t"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" LEFT="0" NAME="SYNTH_SPI_ss_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="SYNTH_SPI_ss_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="SYNTH_SPI_ss_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_t"/>
+      </CONNECTIONS>
+    </PORT>
     <PORT DIR="IO" LEFT="31" NAME="DDR3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_dq"/>
@@ -424,106 +524,6 @@
     <PORT DIR="O" LEFT="0" NAME="DDR3_odt" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_odt">
       <CONNECTIONS>
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_odt"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" NAME="SYS_I2C_scl_i" SIGIS="undef" SIGNAME="axi_iic_1_scl_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYS_I2C_scl_o" SIGIS="undef" SIGNAME="axi_iic_1_scl_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYS_I2C_scl_t" SIGIS="undef" SIGNAME="axi_iic_1_scl_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="scl_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" NAME="SYS_I2C_sda_i" SIGIS="undef" SIGNAME="axi_iic_1_sda_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYS_I2C_sda_o" SIGIS="undef" SIGNAME="axi_iic_1_sda_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYS_I2C_sda_t" SIGIS="undef" SIGNAME="axi_iic_1_sda_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="sda_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="CODEC_RESETn" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_0_gpo">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_0" PORT="gpo"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="PM_I2C_EN" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_gpo">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="gpo"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" NAME="SYNTH_SPI_io0_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_io0_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_io0_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_io0_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io0_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" NAME="SYNTH_SPI_io1_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_io1_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_io1_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_io1_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="io1_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" NAME="SYNTH_SPI_sck_i" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_sck_o" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_sck_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_sck_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="sck_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" LEFT="0" NAME="SYNTH_SPI_ss_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="SYNTH_SPI_ss_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" NAME="SYNTH_SPI_ss_t" SIGIS="undef" SIGNAME="axi_quad_spi_2_ss_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ss_t"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>
@@ -4577,10 +4577,10 @@
         <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi" NAME="axi_lite" RANGE="2048" USAGE=""/>
       </ADDRESSBLOCKS>
       <PARAMETERS>
-        <PARAMETER NAME="ID" VALUE="0"/>
+        <PARAMETER NAME="ID" VALUE="2"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_SRC" VALUE="32"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_DEST" VALUE="64"/>
-        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="16"/>
+        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="24"/>
         <PARAMETER NAME="DMA_2D_TRANSFER" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_REQ_SRC" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_SRC_DEST" VALUE="false"/>
@@ -5032,10 +5032,10 @@
         <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi" NAME="axi_lite" RANGE="2048" USAGE=""/>
       </ADDRESSBLOCKS>
       <PARAMETERS>
-        <PARAMETER NAME="ID" VALUE="0"/>
+        <PARAMETER NAME="ID" VALUE="3"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_SRC" VALUE="64"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_DEST" VALUE="32"/>
-        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="16"/>
+        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="24"/>
         <PARAMETER NAME="DMA_2D_TRANSFER" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_REQ_SRC" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_SRC_DEST" VALUE="false"/>
@@ -5468,7 +5468,7 @@
         <PARAMETER NAME="ID" VALUE="0"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_SRC" VALUE="64"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_DEST" VALUE="64"/>
-        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="16"/>
+        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="24"/>
         <PARAMETER NAME="DMA_2D_TRANSFER" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_REQ_SRC" VALUE="true"/>
         <PARAMETER NAME="ASYNC_CLK_SRC_DEST" VALUE="true"/>
@@ -5894,10 +5894,10 @@
         <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi" NAME="axi_lite" RANGE="2048" USAGE=""/>
       </ADDRESSBLOCKS>
       <PARAMETERS>
-        <PARAMETER NAME="ID" VALUE="0"/>
+        <PARAMETER NAME="ID" VALUE="1"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_SRC" VALUE="64"/>
         <PARAMETER NAME="DMA_DATA_WIDTH_DEST" VALUE="64"/>
-        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="16"/>
+        <PARAMETER NAME="DMA_LENGTH_WIDTH" VALUE="24"/>
         <PARAMETER NAME="DMA_2D_TRANSFER" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_REQ_SRC" VALUE="false"/>
         <PARAMETER NAME="ASYNC_CLK_SRC_DEST" VALUE="true"/>
@@ -20185,6 +20185,16 @@
             <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="interconnect_aresetn"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="I" NAME="M03_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M03_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="I" LEFT="2" NAME="S00_AXI_awid" RIGHT="0" SIGIS="undef" SIGNAME="axi_cpu_dma_interconnect_M00_AXI_awid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_cpu_dma_interconnect" PORT="M00_AXI_awid"/>
@@ -21058,16 +21068,6 @@
         <PORT DIR="O" NAME="M02_AXI_rready" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="mig_7series_0" PORT="s_axi_rready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M03_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M03_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="3" NAME="M03_AXI_awid" RIGHT="0" SIGIS="undef" SIGNAME="axi_bram_ctrl_0_s_axi_awid">
@@ -21968,6 +21968,16 @@
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="M12_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M13_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M13_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
           </CONNECTIONS>
@@ -23164,13 +23174,13 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_awaddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="2" NAME="M12_AXI_awprot" RIGHT="0" SIGIS="undef"/>
-        <PORT DIR="O" LEFT="0" NAME="M12_AXI_awvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_awvalid">
+        <PORT DIR="O" NAME="M12_AXI_awprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M12_AXI_awvalid" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M12_AXI_awready" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_awready">
+        <PORT DIR="I" NAME="M12_AXI_awready" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_awready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_awready"/>
           </CONNECTIONS>
@@ -23185,12 +23195,12 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M12_AXI_wvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_wvalid">
+        <PORT DIR="O" NAME="M12_AXI_wvalid" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M12_AXI_wready" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_wready">
+        <PORT DIR="I" NAME="M12_AXI_wready" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_wready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_wready"/>
           </CONNECTIONS>
@@ -23200,12 +23210,12 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M12_AXI_bvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_bvalid">
+        <PORT DIR="I" NAME="M12_AXI_bvalid" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_bvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M12_AXI_bready" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_bready">
+        <PORT DIR="O" NAME="M12_AXI_bready" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_bready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_bready"/>
           </CONNECTIONS>
@@ -23215,13 +23225,13 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_araddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="2" NAME="M12_AXI_arprot" RIGHT="0" SIGIS="undef"/>
-        <PORT DIR="O" LEFT="0" NAME="M12_AXI_arvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_arvalid">
+        <PORT DIR="O" NAME="M12_AXI_arprot" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M12_AXI_arvalid" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M12_AXI_arready" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_arready">
+        <PORT DIR="I" NAME="M12_AXI_arready" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_arready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_arready"/>
           </CONNECTIONS>
@@ -23236,24 +23246,14 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M12_AXI_rvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_rvalid">
+        <PORT DIR="I" NAME="M12_AXI_rvalid" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M12_AXI_rready" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_rready">
+        <PORT DIR="O" NAME="M12_AXI_rready" SIGIS="undef" SIGNAME="axi_iic_1_s_axi_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_rready"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M13_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M13_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="31" NAME="M13_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_peripheral_interconnect_M13_AXI_awaddr">

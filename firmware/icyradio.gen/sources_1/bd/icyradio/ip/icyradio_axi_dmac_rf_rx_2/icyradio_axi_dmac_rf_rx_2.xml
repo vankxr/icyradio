@@ -3136,11 +3136,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:25 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 02 00:17:11 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:11e38871</spirit:value>
+            <spirit:value>9:cf0ece80</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3151,7 +3151,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:11e38871</spirit:value>
+            <spirit:value>9:cf0ece80</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3167,11 +3167,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:25 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 02 19:53:27 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:11e38871</spirit:value>
+            <spirit:value>9:cf0ece80</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3192,11 +3192,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:25 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 02 00:17:11 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3011dec1</spirit:value>
+            <spirit:value>9:8c2143a1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3212,11 +3212,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:25 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 02 19:53:27 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:3011dec1</spirit:value>
+            <spirit:value>9:8c2143a1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3230,11 +3230,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Oct 01 20:26:54 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 02 19:54:57 UTC 2022</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:11e38871</spirit:value>
+            <spirit:value>9:cf0ece80</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -6417,7 +6417,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>DMA_LENGTH_WIDTH</spirit:name>
         <spirit:displayName>Dma Length Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.DMA_LENGTH_WIDTH">16</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.DMA_LENGTH_WIDTH">24</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>DMA_2D_TRANSFER</spirit:name>
@@ -7005,7 +7005,7 @@
     <spirit:parameter>
       <spirit:name>DMA_LENGTH_WIDTH</spirit:name>
       <spirit:displayName>DMA Transfer Length Register Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.DMA_LENGTH_WIDTH" spirit:minimum="8" spirit:maximum="32" spirit:rangeType="long">16</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.DMA_LENGTH_WIDTH" spirit:minimum="8" spirit:maximum="32" spirit:rangeType="long">24</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>DMA_2D_TRANSFER</spirit:name>

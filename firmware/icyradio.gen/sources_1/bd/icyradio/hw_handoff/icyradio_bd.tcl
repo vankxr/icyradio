@@ -423,9 +423,10 @@ proc create_root_design { parentCell } {
    CONFIG.CYCLIC {false} \
    CONFIG.DMA_DATA_WIDTH_DEST {64} \
    CONFIG.DMA_DATA_WIDTH_SRC {32} \
-   CONFIG.DMA_LENGTH_WIDTH {16} \
+   CONFIG.DMA_LENGTH_WIDTH {24} \
    CONFIG.DMA_TYPE_DEST {0} \
    CONFIG.DMA_TYPE_SRC {1} \
+   CONFIG.ID {2} \
  ] $axi_dmac_i2s_rx
 
   # Create instance: axi_dmac_i2s_tx, and set properties
@@ -435,9 +436,10 @@ proc create_root_design { parentCell } {
    CONFIG.AXI_SLICE_DEST {false} \
    CONFIG.CYCLIC {false} \
    CONFIG.DMA_DATA_WIDTH_DEST {32} \
-   CONFIG.DMA_LENGTH_WIDTH {16} \
+   CONFIG.DMA_LENGTH_WIDTH {24} \
    CONFIG.DMA_TYPE_DEST {1} \
    CONFIG.DMA_TYPE_SRC {0} \
+   CONFIG.ID {3} \
  ] $axi_dmac_i2s_tx
 
   # Create instance: axi_dmac_rf_rx, and set properties
@@ -445,7 +447,7 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.ALLOW_ASYM_MEM {1} \
    CONFIG.CYCLIC {false} \
-   CONFIG.DMA_LENGTH_WIDTH {16} \
+   CONFIG.DMA_LENGTH_WIDTH {24} \
    CONFIG.SYNC_TRANSFER_START {true} \
  ] $axi_dmac_rf_rx
 
@@ -454,9 +456,10 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.ALLOW_ASYM_MEM {1} \
    CONFIG.CYCLIC {false} \
-   CONFIG.DMA_LENGTH_WIDTH {16} \
+   CONFIG.DMA_LENGTH_WIDTH {24} \
    CONFIG.DMA_TYPE_DEST {1} \
    CONFIG.DMA_TYPE_SRC {0} \
+   CONFIG.ID {1} \
  ] $axi_dmac_rf_tx
 
   # Create instance: axi_gpio_0, and set properties

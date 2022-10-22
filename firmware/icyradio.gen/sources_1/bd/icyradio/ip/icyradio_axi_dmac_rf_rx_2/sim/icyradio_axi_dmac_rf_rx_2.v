@@ -210,7 +210,7 @@ output wire fifo_wr_xfer_req;
     .ID(0),
     .DMA_DATA_WIDTH_SRC(64),
     .DMA_DATA_WIDTH_DEST(64),
-    .DMA_LENGTH_WIDTH(16),
+    .DMA_LENGTH_WIDTH(24),
     .DMA_2D_TRANSFER(1'B0),
     .ASYNC_CLK_REQ_SRC(1'B1),
     .ASYNC_CLK_SRC_DEST(1'B1),

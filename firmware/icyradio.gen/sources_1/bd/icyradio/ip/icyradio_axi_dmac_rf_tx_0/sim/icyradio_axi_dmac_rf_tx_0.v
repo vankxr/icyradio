@@ -213,10 +213,10 @@ output wire m_axis_last;
 output wire m_axis_xfer_req;
 
   axi_dmac #(
-    .ID(0),
+    .ID(3),
     .DMA_DATA_WIDTH_SRC(64),
     .DMA_DATA_WIDTH_DEST(32),
-    .DMA_LENGTH_WIDTH(16),
+    .DMA_LENGTH_WIDTH(24),
     .DMA_2D_TRANSFER(1'B0),
     .ASYNC_CLK_REQ_SRC(1'B0),
     .ASYNC_CLK_SRC_DEST(1'B0),

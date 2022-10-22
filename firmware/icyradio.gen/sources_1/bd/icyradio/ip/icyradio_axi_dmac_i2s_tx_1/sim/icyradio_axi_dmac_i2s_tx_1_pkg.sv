@@ -9,10 +9,10 @@ package icyradio_axi_dmac_i2s_tx_1_pkg;
 // These parameters are named after the component for use in your verification
 // environment.
 ///////////////////////////////////////////////////////////////////////////
-  parameter icyradio_axi_dmac_i2s_tx_1_ID                      = 0;
+  parameter icyradio_axi_dmac_i2s_tx_1_ID                      = 2;
   parameter icyradio_axi_dmac_i2s_tx_1_DMA_DATA_WIDTH_SRC      = 32;
   parameter icyradio_axi_dmac_i2s_tx_1_DMA_DATA_WIDTH_DEST     = 64;
-  parameter icyradio_axi_dmac_i2s_tx_1_DMA_LENGTH_WIDTH        = 16;
+  parameter icyradio_axi_dmac_i2s_tx_1_DMA_LENGTH_WIDTH        = 24;
   parameter icyradio_axi_dmac_i2s_tx_1_DMA_2D_TRANSFER         = 0;
   parameter icyradio_axi_dmac_i2s_tx_1_ASYNC_CLK_REQ_SRC       = 0;
   parameter icyradio_axi_dmac_i2s_tx_1_ASYNC_CLK_SRC_DEST      = 0;
