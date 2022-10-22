@@ -3970,18 +3970,6 @@
 <pin name="SENSE" x="5.08" y="-7.62" length="middle" rot="R180"/>
 <pin name="SS" x="-27.94" y="-15.24" length="middle"/>
 </symbol>
-<symbol name="ADP150">
-<pin name="OUT" x="5.08" y="-2.54" length="middle" rot="R180"/>
-<pin name="GND" x="-22.86" y="-12.7" length="middle"/>
-<pin name="VIN" x="-22.86" y="-2.54" length="middle"/>
-<wire x1="-17.78" y1="-15.24" x2="-17.78" y2="0" width="0.254" layer="94"/>
-<wire x1="-17.78" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
-<wire x1="0" y1="0" x2="0" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="0" y1="-15.24" x2="-17.78" y2="-15.24" width="0.254" layer="94"/>
-<text x="-17.78" y="3.556" size="1.27" layer="95">&gt;NAME</text>
-<text x="-17.78" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
-<pin name="EN" x="-22.86" y="-7.62" length="middle"/>
-</symbol>
 <symbol name="GAIN_BLOCK">
 <wire x1="-30.48" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
 <wire x1="0" y1="0" x2="0" y2="-20.32" width="0.254" layer="94"/>
@@ -4325,30 +4313,6 @@
 <technology name="-3.3"/>
 <technology name="-4.2"/>
 <technology name="-5.0"/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="ADP150UJZ*" prefix="U">
-<gates>
-<gate name="G$1" symbol="ADP150" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="SOT23-5">
-<connects>
-<connect gate="G$1" pin="EN" pad="3"/>
-<connect gate="G$1" pin="GND" pad="2"/>
-<connect gate="G$1" pin="OUT" pad="5"/>
-<connect gate="G$1" pin="VIN" pad="1"/>
-</connects>
-<technologies>
-<technology name="-1.8"/>
-<technology name="-2.0"/>
-<technology name="-2.5"/>
-<technology name="-2.65"/>
-<technology name="-2.8"/>
-<technology name="-3.0"/>
-<technology name="-3.3"/>
 </technologies>
 </device>
 </devices>
@@ -14072,18 +14036,25 @@ Logo</text>
 <classes>
 <class number="0" name="default" width="0" drill="0">
 </class>
-<class number="1" name="50 Ohm Single-Ended" width="0.003871875" drill="0">
+<class number="1" name="CPWG 50 Ohm Single-Ended" width="0.2" drill="0">
+<clearance class="0" value="0.127"/>
+<clearance class="1" value="0.127"/>
 </class>
-<class number="2" name="90 Ohm Differential" width="0.1524" drill="0">
+<class number="2" name="CPWG 90 Ohm Differential" width="0.1524" drill="0">
 <clearance class="0" value="0.2"/>
 <clearance class="1" value="0.2"/>
-<clearance class="2" value="0.12"/>
+<clearance class="2" value="0.127"/>
 </class>
-<class number="3" name="100 Ohm Differential" width="0.1524" drill="0">
+<class number="3" name="CPWG 100 Ohm Differential" width="0.1524" drill="0">
 <clearance class="0" value="0.2"/>
 <clearance class="1" value="0.2"/>
 <clearance class="2" value="0.2"/>
 <clearance class="3" value="0.2"/>
+</class>
+<class number="4" name="Stripline 50 Ohm Single-Ended" width="0.127" drill="0">
+</class>
+<class number="5" name="Stripline 100 Ohm Differential" width="0.127" drill="0">
+<clearance class="5" value="0.127"/>
 </class>
 </classes>
 <parts>
@@ -14379,11 +14350,9 @@ Logo</text>
 <part name="GND79" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="L1204" library="Coilcraft" deviceset="XGL3515-" device="" technology="222" value="2.2uH">
 <attribute name="CURRENT" value="3.8A"/>
-<attribute name="REF_COILCRAFT" value="XGL3515-222ME"/>
 </part>
 <part name="L1203" library="Coilcraft" deviceset="XGL3515-" device="" technology="222" value="2.2uH">
 <attribute name="CURRENT" value="3.8A"/>
-<attribute name="REF_COILCRAFT" value="XGL3515-222ME"/>
 </part>
 <part name="C405" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="C410" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10uF"/>
@@ -14515,7 +14484,6 @@ Logo</text>
 <part name="GND181" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C1101" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND182" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U1211" library="Analog Devices" deviceset="ADP150UJZ*" device="" technology="-1.8"/>
 <part name="FRAME11" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
 <part name="FRAME12" library="Frame" deviceset="A2-LANDSCAPE" device=""/>
 <part name="T504" library="Coilcraft" deviceset="UWB1-" device="" technology="85E"/>
@@ -14715,11 +14683,9 @@ Logo</text>
 <part name="GND201" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="L1202" library="Coilcraft" deviceset="XGL3515-" device="" technology="222" value="2.2uH">
 <attribute name="CURRENT" value="3.8A"/>
-<attribute name="REF_COILCRAFT" value="XGL3515-222ME"/>
 </part>
 <part name="L1201" library="Coilcraft" deviceset="XGL3515-" device="" technology="222" value="2.2uH">
 <attribute name="CURRENT" value="3.8A"/>
-<attribute name="REF_COILCRAFT" value="XGL3515-222ME"/>
 </part>
 <part name="2V12" library="Supply Symbol" deviceset="2V5" device=""/>
 <part name="2V13" library="Supply Symbol" deviceset="2V5" device=""/>
@@ -14801,7 +14767,6 @@ Logo</text>
 <part name="GND178" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="L1205" library="Coilcraft" deviceset="XGL3515-" device="" technology="222" value="2.2uH">
 <attribute name="CURRENT" value="3.8A"/>
-<attribute name="REF_COILCRAFT" value="XGL3515-222ME"/>
 </part>
 <part name="C1259" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10uF"/>
 <part name="C1257" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
@@ -15619,6 +15584,7 @@ Logo</text>
 <part name="GND465" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R13" library="Resistor" deviceset="RESISTOR" device="-0402" value="49.9 Ohms"/>
 <part name="GND466" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="U2" library="Analog Devices" deviceset="ADP7142AUJZ*" device="" technology="-1.8" value="ADP7142AUJZ-1.8"/>
 </parts>
 <sheets>
 <sheet>
@@ -15652,10 +15618,6 @@ of these pins. To be tested in hardware.</text>
 <instance part="U102" gate=".SD" x="162.56" y="111.76" smashed="yes">
 <attribute name="NAME" x="129.54" y="115.316" size="1.27" layer="95"/>
 <attribute name="VALUE" x="129.54" y="113.03" size="1.27" layer="96"/>
-</instance>
-<instance part="U102" gate=".USB" x="58.42" y="127" smashed="yes">
-<attribute name="NAME" x="40.64" y="130.556" size="1.27" layer="95"/>
-<attribute name="VALUE" x="40.64" y="128.27" size="1.27" layer="96"/>
 </instance>
 <instance part="U102" gate=".ETH" x="317.5" y="60.96" smashed="yes">
 <attribute name="NAME" x="284.48" y="64.516" size="1.27" layer="95"/>
@@ -16679,20 +16641,6 @@ of these pins. To be tested in hardware.</text>
 <pinref part="R113" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="USB_D_N" class="2">
-<segment>
-<label x="93.98" y="121.92" size="1.778" layer="95" xref="yes"/>
-<wire x1="93.98" y1="121.92" x2="63.5" y2="121.92" width="0.1524" layer="91"/>
-<pinref part="U102" gate=".USB" pin="USB_DN"/>
-</segment>
-</net>
-<net name="USB_D_P" class="2">
-<segment>
-<label x="68.58" y="124.46" size="1.778" layer="95" xref="yes"/>
-<wire x1="68.58" y1="124.46" x2="63.5" y2="124.46" width="0.1524" layer="91"/>
-<pinref part="U102" gate=".USB" pin="USB_DP"/>
-</segment>
-</net>
 <net name="N$116" class="0">
 <segment>
 <pinref part="U102" gate=".ETH" pin="ETH_SYNC_OUT"/>
@@ -16719,13 +16667,6 @@ of these pins. To be tested in hardware.</text>
 <wire x1="274.32" y1="81.28" x2="279.4" y2="81.28" width="0.1524" layer="91"/>
 <junction x="274.32" y="81.28"/>
 <label x="279.4" y="81.28" size="1.778" layer="95" xref="yes"/>
-</segment>
-</net>
-<net name="CM4_USB_OTG" class="0">
-<segment>
-<pinref part="U102" gate=".USB" pin="USB_OTG_ID"/>
-<wire x1="63.5" y1="116.84" x2="68.58" y2="116.84" width="0.1524" layer="91"/>
-<label x="68.58" y="116.84" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="N$118" class="0">
@@ -16931,6 +16872,27 @@ of these pins. To be tested in hardware.</text>
 <wire x1="381" y1="327.66" x2="381" y2="322.58" width="0.1524" layer="91"/>
 <label x="381" y="322.58" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="R12" gate="G$1" pin="1"/>
+</segment>
+</net>
+<net name="CM4_WAKE" class="0">
+<segment>
+<pinref part="U102" gate=".GPIO" pin="GPIO3"/>
+<wire x1="109.22" y1="266.7" x2="104.14" y2="266.7" width="0.1524" layer="91"/>
+<label x="104.14" y="266.7" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="CM4_UART_TXD" class="0">
+<segment>
+<pinref part="U102" gate=".GPIO" pin="GPIO14"/>
+<wire x1="109.22" y1="238.76" x2="104.14" y2="238.76" width="0.1524" layer="91"/>
+<label x="104.14" y="238.76" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
+<net name="CM4_UART_RXD" class="0">
+<segment>
+<pinref part="U102" gate=".GPIO" pin="GPIO15"/>
+<wire x1="144.78" y1="274.32" x2="149.86" y2="274.32" width="0.1524" layer="91"/>
+<label x="149.86" y="274.32" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 </nets>
@@ -20027,6 +19989,12 @@ to be used in the design at full speed.</text>
 <label x="-114.3" y="48.26" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
+<net name="CM4_WAKE" class="0">
+<segment>
+<wire x1="-15.24" y1="190.5" x2="-20.32" y2="190.5" width="0.1524" layer="91"/>
+<label x="-20.32" y="190.5" size="1.778" layer="95" rot="R180" xref="yes"/>
+</segment>
+</net>
 </nets>
 </sheet>
 <sheet>
@@ -20825,7 +20793,7 @@ to be used in the design at full speed.</text>
 <busses>
 </busses>
 <nets>
-<net name="DDR3_A0" class="0">
+<net name="DDR3_A0" class="4">
 <segment>
 <pinref part="U301" gate="G$1" pin="A0"/>
 <wire x1="78.74" y1="132.08" x2="73.66" y2="132.08" width="0.1524" layer="91"/>
@@ -20847,7 +20815,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L15P/T2_DQS"/>
 </segment>
 </net>
-<net name="DDR3_A1" class="0">
+<net name="DDR3_A1" class="4">
 <segment>
 <pinref part="U301" gate="G$1" pin="A1"/>
 <wire x1="78.74" y1="129.54" x2="48.26" y2="129.54" width="0.1524" layer="91"/>
@@ -20869,7 +20837,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L14N/T2/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_A2" class="0">
+<net name="DDR3_A2" class="4">
 <segment>
 <wire x1="78.74" y1="127" x2="73.66" y2="127" width="0.1524" layer="91"/>
 <label x="73.66" y="127" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -20891,7 +20859,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L14P/T2/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_A3" class="0">
+<net name="DDR3_A3" class="4">
 <segment>
 <wire x1="78.74" y1="124.46" x2="48.26" y2="124.46" width="0.1524" layer="91"/>
 <label x="48.26" y="124.46" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -20913,7 +20881,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L12N/T1/MRCC"/>
 </segment>
 </net>
-<net name="DDR3_A4" class="0">
+<net name="DDR3_A4" class="4">
 <segment>
 <wire x1="78.74" y1="121.92" x2="73.66" y2="121.92" width="0.1524" layer="91"/>
 <label x="73.66" y="121.92" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -20935,7 +20903,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L12P/T1/MRCC"/>
 </segment>
 </net>
-<net name="DDR3_A5" class="0">
+<net name="DDR3_A5" class="4">
 <segment>
 <wire x1="78.74" y1="119.38" x2="48.26" y2="119.38" width="0.1524" layer="91"/>
 <label x="48.26" y="119.38" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -20957,7 +20925,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L11N/T1/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_A6" class="0">
+<net name="DDR3_A6" class="4">
 <segment>
 <wire x1="78.74" y1="116.84" x2="73.66" y2="116.84" width="0.1524" layer="91"/>
 <label x="73.66" y="116.84" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -20979,7 +20947,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L11P/T1/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_A7" class="0">
+<net name="DDR3_A7" class="4">
 <segment>
 <wire x1="78.74" y1="114.3" x2="48.26" y2="114.3" width="0.1524" layer="91"/>
 <label x="48.26" y="114.3" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21001,7 +20969,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L10N/T1"/>
 </segment>
 </net>
-<net name="DDR3_A8" class="0">
+<net name="DDR3_A8" class="4">
 <segment>
 <wire x1="78.74" y1="111.76" x2="73.66" y2="111.76" width="0.1524" layer="91"/>
 <label x="73.66" y="111.76" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21023,7 +20991,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L10P/T1"/>
 </segment>
 </net>
-<net name="DDR3_A9" class="0">
+<net name="DDR3_A9" class="4">
 <segment>
 <wire x1="78.74" y1="109.22" x2="48.26" y2="109.22" width="0.1524" layer="91"/>
 <label x="48.26" y="109.22" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21045,7 +21013,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L9N/T1_DQS"/>
 </segment>
 </net>
-<net name="DDR3_A10" class="0">
+<net name="DDR3_A10" class="4">
 <segment>
 <wire x1="78.74" y1="106.68" x2="73.66" y2="106.68" width="0.1524" layer="91"/>
 <label x="73.66" y="106.68" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21067,7 +21035,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L9P/T1_DQS"/>
 </segment>
 </net>
-<net name="DDR3_A11" class="0">
+<net name="DDR3_A11" class="4">
 <segment>
 <wire x1="78.74" y1="104.14" x2="48.26" y2="104.14" width="0.1524" layer="91"/>
 <label x="48.26" y="104.14" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21089,7 +21057,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L8N/T1"/>
 </segment>
 </net>
-<net name="DDR3_A12" class="0">
+<net name="DDR3_A12" class="4">
 <segment>
 <wire x1="78.74" y1="101.6" x2="73.66" y2="101.6" width="0.1524" layer="91"/>
 <label x="73.66" y="101.6" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21111,7 +21079,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L8P/T1"/>
 </segment>
 </net>
-<net name="DDR3_A13" class="0">
+<net name="DDR3_A13" class="4">
 <segment>
 <wire x1="78.74" y1="99.06" x2="48.26" y2="99.06" width="0.1524" layer="91"/>
 <label x="48.26" y="99.06" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21133,7 +21101,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L7N/T1"/>
 </segment>
 </net>
-<net name="DDR3_A14" class="0">
+<net name="DDR3_A14" class="4">
 <segment>
 <wire x1="78.74" y1="96.52" x2="73.66" y2="96.52" width="0.1524" layer="91"/>
 <label x="73.66" y="96.52" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21155,7 +21123,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L7P/T1"/>
 </segment>
 </net>
-<net name="DDR3_BA0" class="0">
+<net name="DDR3_BA0" class="4">
 <segment>
 <wire x1="78.74" y1="91.44" x2="73.66" y2="91.44" width="0.1524" layer="91"/>
 <label x="73.66" y="91.44" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21177,7 +21145,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L16N/T2"/>
 </segment>
 </net>
-<net name="DDR3_BA1" class="0">
+<net name="DDR3_BA1" class="4">
 <segment>
 <wire x1="78.74" y1="88.9" x2="48.26" y2="88.9" width="0.1524" layer="91"/>
 <label x="48.26" y="88.9" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21199,7 +21167,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L16P/T2"/>
 </segment>
 </net>
-<net name="DDR3_BA2" class="0">
+<net name="DDR3_BA2" class="4">
 <segment>
 <wire x1="78.74" y1="86.36" x2="73.66" y2="86.36" width="0.1524" layer="91"/>
 <label x="73.66" y="86.36" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21221,7 +21189,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L15N/T2_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DM0" class="0">
+<net name="DDR3_DM0" class="4">
 <segment>
 <wire x1="114.3" y1="88.9" x2="119.38" y2="88.9" width="0.1524" layer="91"/>
 <label x="119.38" y="88.9" size="1.778" layer="95" xref="yes"/>
@@ -21233,7 +21201,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L7P/T1/AD6P"/>
 </segment>
 </net>
-<net name="DDR3_DQS0_P" class="0">
+<net name="DDR3_DQS0_P" class="5">
 <segment>
 <wire x1="114.3" y1="86.36" x2="144.78" y2="86.36" width="0.1524" layer="91"/>
 <label x="144.78" y="86.36" size="1.778" layer="95" xref="yes"/>
@@ -21245,7 +21213,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L9P/T1_DQS/AD7P"/>
 </segment>
 </net>
-<net name="DDR3_DQS0_N" class="0">
+<net name="DDR3_DQS0_N" class="5">
 <segment>
 <wire x1="114.3" y1="83.82" x2="119.38" y2="83.82" width="0.1524" layer="91"/>
 <label x="119.38" y="83.82" size="1.778" layer="95" xref="yes"/>
@@ -21257,7 +21225,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L9N/T1_DQS/AD7N"/>
 </segment>
 </net>
-<net name="DDR3_DM1" class="0">
+<net name="DDR3_DM1" class="4">
 <segment>
 <wire x1="114.3" y1="78.74" x2="119.38" y2="78.74" width="0.1524" layer="91"/>
 <label x="119.38" y="78.74" size="1.778" layer="95" xref="yes"/>
@@ -21269,7 +21237,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L16P/T2"/>
 </segment>
 </net>
-<net name="DDR3_DQS1_P" class="0">
+<net name="DDR3_DQS1_P" class="5">
 <segment>
 <wire x1="114.3" y1="76.2" x2="144.78" y2="76.2" width="0.1524" layer="91"/>
 <label x="144.78" y="76.2" size="1.778" layer="95" xref="yes"/>
@@ -21281,7 +21249,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L15P/T2_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DQS1_N" class="0">
+<net name="DDR3_DQS1_N" class="5">
 <segment>
 <wire x1="114.3" y1="73.66" x2="119.38" y2="73.66" width="0.1524" layer="91"/>
 <label x="119.38" y="73.66" size="1.778" layer="95" xref="yes"/>
@@ -21293,7 +21261,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L15N/T2_DQS"/>
 </segment>
 </net>
-<net name="DDR3_CLK_P" class="0">
+<net name="DDR3_CLK_P" class="5">
 <segment>
 <wire x1="78.74" y1="81.28" x2="73.66" y2="81.28" width="0.1524" layer="91"/>
 <label x="73.66" y="81.28" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21315,7 +21283,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L21P/T3_DQS"/>
 </segment>
 </net>
-<net name="DDR3_CLK_N" class="0">
+<net name="DDR3_CLK_N" class="5">
 <segment>
 <wire x1="78.74" y1="78.74" x2="48.26" y2="78.74" width="0.1524" layer="91"/>
 <label x="48.26" y="78.74" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21337,7 +21305,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L21N/T3_DQS"/>
 </segment>
 </net>
-<net name="DDR3_CLK_EN" class="0">
+<net name="DDR3_CLK_EN" class="4">
 <segment>
 <wire x1="78.74" y1="76.2" x2="73.66" y2="76.2" width="0.1524" layer="91"/>
 <label x="73.66" y="76.2" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21359,7 +21327,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L19P/T3"/>
 </segment>
 </net>
-<net name="!DDR3_CS" class="0">
+<net name="!DDR3_CS" class="4">
 <segment>
 <wire x1="78.74" y1="73.66" x2="48.26" y2="73.66" width="0.1524" layer="91"/>
 <label x="48.26" y="73.66" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21381,7 +21349,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L18N/T2"/>
 </segment>
 </net>
-<net name="!DDR3_RAS" class="0">
+<net name="!DDR3_RAS" class="4">
 <segment>
 <wire x1="78.74" y1="71.12" x2="73.66" y2="71.12" width="0.1524" layer="91"/>
 <label x="73.66" y="71.12" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21403,7 +21371,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L17P/T2"/>
 </segment>
 </net>
-<net name="!DDR3_CAS" class="0">
+<net name="!DDR3_CAS" class="4">
 <segment>
 <wire x1="78.74" y1="68.58" x2="48.26" y2="68.58" width="0.1524" layer="91"/>
 <label x="48.26" y="68.58" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21425,7 +21393,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L17N/T2"/>
 </segment>
 </net>
-<net name="!DDR3_WE" class="0">
+<net name="!DDR3_WE" class="4">
 <segment>
 <wire x1="78.74" y1="66.04" x2="73.66" y2="66.04" width="0.1524" layer="91"/>
 <label x="73.66" y="66.04" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21447,7 +21415,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L18P/T2"/>
 </segment>
 </net>
-<net name="!DDR3_RESET" class="0">
+<net name="!DDR3_RESET" class="4">
 <segment>
 <wire x1="78.74" y1="60.96" x2="73.66" y2="60.96" width="0.1524" layer="91"/>
 <label x="73.66" y="60.96" size="1.778" layer="95" rot="R180" xref="yes"/>
@@ -21767,7 +21735,7 @@ to be used in the design at full speed.</text>
 <pinref part="GND409" gate="G$1" pin="GND"/>
 </segment>
 </net>
-<net name="DDR3_ODT" class="0">
+<net name="DDR3_ODT" class="4">
 <segment>
 <wire x1="114.3" y1="60.96" x2="119.38" y2="60.96" width="0.1524" layer="91"/>
 <label x="119.38" y="60.96" size="1.778" layer="95" xref="yes"/>
@@ -21789,7 +21757,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L20P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ0" class="0">
+<net name="DDR3_DQ0" class="4">
 <segment>
 <wire x1="114.3" y1="132.08" x2="119.38" y2="132.08" width="0.1524" layer="91"/>
 <label x="119.38" y="132.08" size="1.778" layer="95" xref="yes"/>
@@ -21801,7 +21769,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L7N/T1/AD6N"/>
 </segment>
 </net>
-<net name="DDR3_DQ1" class="0">
+<net name="DDR3_DQ1" class="4">
 <segment>
 <wire x1="114.3" y1="129.54" x2="144.78" y2="129.54" width="0.1524" layer="91"/>
 <label x="144.78" y="129.54" size="1.778" layer="95" xref="yes"/>
@@ -21813,7 +21781,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L8P/T1/AD14P"/>
 </segment>
 </net>
-<net name="DDR3_DQ2" class="0">
+<net name="DDR3_DQ2" class="4">
 <segment>
 <wire x1="114.3" y1="127" x2="119.38" y2="127" width="0.1524" layer="91"/>
 <label x="119.38" y="127" size="1.778" layer="95" xref="yes"/>
@@ -21825,7 +21793,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L8N/T1/AD14N"/>
 </segment>
 </net>
-<net name="DDR3_DQ3" class="0">
+<net name="DDR3_DQ3" class="4">
 <segment>
 <wire x1="114.3" y1="124.46" x2="144.78" y2="124.46" width="0.1524" layer="91"/>
 <label x="144.78" y="124.46" size="1.778" layer="95" xref="yes"/>
@@ -21837,7 +21805,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L10P/T1/AD15P"/>
 </segment>
 </net>
-<net name="DDR3_DQ4" class="0">
+<net name="DDR3_DQ4" class="4">
 <segment>
 <wire x1="114.3" y1="121.92" x2="119.38" y2="121.92" width="0.1524" layer="91"/>
 <label x="119.38" y="121.92" size="1.778" layer="95" xref="yes"/>
@@ -21849,7 +21817,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L10N/T1/AD15N"/>
 </segment>
 </net>
-<net name="DDR3_DQ5" class="0">
+<net name="DDR3_DQ5" class="4">
 <segment>
 <wire x1="114.3" y1="119.38" x2="144.78" y2="119.38" width="0.1524" layer="91"/>
 <label x="144.78" y="119.38" size="1.778" layer="95" xref="yes"/>
@@ -21861,7 +21829,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L11P/T1/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ6" class="0">
+<net name="DDR3_DQ6" class="4">
 <segment>
 <wire x1="114.3" y1="116.84" x2="119.38" y2="116.84" width="0.1524" layer="91"/>
 <label x="119.38" y="116.84" size="1.778" layer="95" xref="yes"/>
@@ -21873,7 +21841,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L11N/T1/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ7" class="0">
+<net name="DDR3_DQ7" class="4">
 <segment>
 <wire x1="114.3" y1="114.3" x2="144.78" y2="114.3" width="0.1524" layer="91"/>
 <label x="144.78" y="114.3" size="1.778" layer="95" xref="yes"/>
@@ -21885,7 +21853,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L12P/T1/MRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ8" class="0">
+<net name="DDR3_DQ8" class="4">
 <segment>
 <wire x1="114.3" y1="111.76" x2="119.38" y2="111.76" width="0.1524" layer="91"/>
 <label x="119.38" y="111.76" size="1.778" layer="95" xref="yes"/>
@@ -21897,7 +21865,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L13P/T2/MRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ9" class="0">
+<net name="DDR3_DQ9" class="4">
 <segment>
 <wire x1="114.3" y1="109.22" x2="144.78" y2="109.22" width="0.1524" layer="91"/>
 <label x="144.78" y="109.22" size="1.778" layer="95" xref="yes"/>
@@ -21909,7 +21877,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L13N/T2/MRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ10" class="0">
+<net name="DDR3_DQ10" class="4">
 <segment>
 <wire x1="114.3" y1="106.68" x2="119.38" y2="106.68" width="0.1524" layer="91"/>
 <label x="119.38" y="106.68" size="1.778" layer="95" xref="yes"/>
@@ -21921,7 +21889,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L14P/T2/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ11" class="0">
+<net name="DDR3_DQ11" class="4">
 <segment>
 <wire x1="114.3" y1="104.14" x2="144.78" y2="104.14" width="0.1524" layer="91"/>
 <label x="144.78" y="104.14" size="1.778" layer="95" xref="yes"/>
@@ -21933,7 +21901,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L14N/T2/SRCC"/>
 </segment>
 </net>
-<net name="DDR3_DQ12" class="0">
+<net name="DDR3_DQ12" class="4">
 <segment>
 <wire x1="114.3" y1="101.6" x2="119.38" y2="101.6" width="0.1524" layer="91"/>
 <label x="119.38" y="101.6" size="1.778" layer="95" xref="yes"/>
@@ -21945,7 +21913,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L16N/T2"/>
 </segment>
 </net>
-<net name="DDR3_DQ13" class="0">
+<net name="DDR3_DQ13" class="4">
 <segment>
 <wire x1="114.3" y1="99.06" x2="144.78" y2="99.06" width="0.1524" layer="91"/>
 <label x="144.78" y="99.06" size="1.778" layer="95" xref="yes"/>
@@ -21957,7 +21925,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L17P/T2"/>
 </segment>
 </net>
-<net name="DDR3_DQ14" class="0">
+<net name="DDR3_DQ14" class="4">
 <segment>
 <wire x1="114.3" y1="96.52" x2="119.38" y2="96.52" width="0.1524" layer="91"/>
 <label x="119.38" y="96.52" size="1.778" layer="95" xref="yes"/>
@@ -21969,7 +21937,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L17N/T2"/>
 </segment>
 </net>
-<net name="DDR3_DQ15" class="0">
+<net name="DDR3_DQ15" class="4">
 <segment>
 <wire x1="114.3" y1="93.98" x2="144.78" y2="93.98" width="0.1524" layer="91"/>
 <label x="144.78" y="93.98" size="1.778" layer="95" xref="yes"/>
@@ -21981,7 +21949,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L18P/T2"/>
 </segment>
 </net>
-<net name="DDR3_DM2" class="0">
+<net name="DDR3_DM2" class="4">
 <segment>
 <wire x1="292.1" y1="88.9" x2="297.18" y2="88.9" width="0.1524" layer="91"/>
 <label x="297.18" y="88.9" size="1.778" layer="95" xref="yes"/>
@@ -21993,7 +21961,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L19P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQS2_P" class="0">
+<net name="DDR3_DQS2_P" class="5">
 <segment>
 <wire x1="292.1" y1="86.36" x2="322.58" y2="86.36" width="0.1524" layer="91"/>
 <label x="322.58" y="86.36" size="1.778" layer="95" xref="yes"/>
@@ -22005,7 +21973,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L21P/T3_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DQS2_N" class="0">
+<net name="DDR3_DQS2_N" class="5">
 <segment>
 <wire x1="292.1" y1="83.82" x2="297.18" y2="83.82" width="0.1524" layer="91"/>
 <label x="297.18" y="83.82" size="1.778" layer="95" xref="yes"/>
@@ -22017,7 +21985,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L21N/T3_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DM3" class="0">
+<net name="DDR3_DM3" class="4">
 <segment>
 <wire x1="292.1" y1="78.74" x2="297.18" y2="78.74" width="0.1524" layer="91"/>
 <label x="297.18" y="78.74" size="1.778" layer="95" xref="yes"/>
@@ -22029,7 +21997,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L1P/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQS3_P" class="0">
+<net name="DDR3_DQS3_P" class="5">
 <segment>
 <wire x1="292.1" y1="76.2" x2="322.58" y2="76.2" width="0.1524" layer="91"/>
 <label x="322.58" y="76.2" size="1.778" layer="95" xref="yes"/>
@@ -22041,7 +22009,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L3P/T0_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DQS3_N" class="0">
+<net name="DDR3_DQS3_N" class="5">
 <segment>
 <wire x1="292.1" y1="73.66" x2="297.18" y2="73.66" width="0.1524" layer="91"/>
 <label x="297.18" y="73.66" size="1.778" layer="95" xref="yes"/>
@@ -22053,7 +22021,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L3N/T0_DQS"/>
 </segment>
 </net>
-<net name="DDR3_DQ16" class="0">
+<net name="DDR3_DQ16" class="4">
 <segment>
 <wire x1="292.1" y1="132.08" x2="297.18" y2="132.08" width="0.1524" layer="91"/>
 <label x="297.18" y="132.08" size="1.778" layer="95" xref="yes"/>
@@ -22065,7 +22033,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L20P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ17" class="0">
+<net name="DDR3_DQ17" class="4">
 <segment>
 <wire x1="292.1" y1="129.54" x2="322.58" y2="129.54" width="0.1524" layer="91"/>
 <label x="322.58" y="129.54" size="1.778" layer="95" xref="yes"/>
@@ -22077,7 +22045,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L20N/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ18" class="0">
+<net name="DDR3_DQ18" class="4">
 <segment>
 <wire x1="292.1" y1="127" x2="297.18" y2="127" width="0.1524" layer="91"/>
 <label x="297.18" y="127" size="1.778" layer="95" xref="yes"/>
@@ -22089,7 +22057,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L22P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ19" class="0">
+<net name="DDR3_DQ19" class="4">
 <segment>
 <wire x1="292.1" y1="124.46" x2="322.58" y2="124.46" width="0.1524" layer="91"/>
 <label x="322.58" y="124.46" size="1.778" layer="95" xref="yes"/>
@@ -22101,7 +22069,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L22N/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ20" class="0">
+<net name="DDR3_DQ20" class="4">
 <segment>
 <wire x1="292.1" y1="121.92" x2="297.18" y2="121.92" width="0.1524" layer="91"/>
 <label x="297.18" y="121.92" size="1.778" layer="95" xref="yes"/>
@@ -22113,7 +22081,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L23P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ21" class="0">
+<net name="DDR3_DQ21" class="4">
 <segment>
 <wire x1="292.1" y1="119.38" x2="322.58" y2="119.38" width="0.1524" layer="91"/>
 <label x="322.58" y="119.38" size="1.778" layer="95" xref="yes"/>
@@ -22125,7 +22093,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L23N/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ22" class="0">
+<net name="DDR3_DQ22" class="4">
 <segment>
 <wire x1="292.1" y1="116.84" x2="297.18" y2="116.84" width="0.1524" layer="91"/>
 <label x="297.18" y="116.84" size="1.778" layer="95" xref="yes"/>
@@ -22137,7 +22105,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L24P/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ23" class="0">
+<net name="DDR3_DQ23" class="4">
 <segment>
 <wire x1="292.1" y1="114.3" x2="322.58" y2="114.3" width="0.1524" layer="91"/>
 <label x="322.58" y="114.3" size="1.778" layer="95" xref="yes"/>
@@ -22149,7 +22117,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L24N/T3"/>
 </segment>
 </net>
-<net name="DDR3_DQ24" class="0">
+<net name="DDR3_DQ24" class="4">
 <segment>
 <wire x1="292.1" y1="111.76" x2="297.18" y2="111.76" width="0.1524" layer="91"/>
 <label x="297.18" y="111.76" size="1.778" layer="95" xref="yes"/>
@@ -22161,7 +22129,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L1N/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ25" class="0">
+<net name="DDR3_DQ25" class="4">
 <segment>
 <wire x1="292.1" y1="109.22" x2="322.58" y2="109.22" width="0.1524" layer="91"/>
 <label x="322.58" y="109.22" size="1.778" layer="95" xref="yes"/>
@@ -22173,7 +22141,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L2P/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ26" class="0">
+<net name="DDR3_DQ26" class="4">
 <segment>
 <wire x1="292.1" y1="106.68" x2="297.18" y2="106.68" width="0.1524" layer="91"/>
 <label x="297.18" y="106.68" size="1.778" layer="95" xref="yes"/>
@@ -22185,7 +22153,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L2N/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ27" class="0">
+<net name="DDR3_DQ27" class="4">
 <segment>
 <wire x1="292.1" y1="104.14" x2="322.58" y2="104.14" width="0.1524" layer="91"/>
 <label x="322.58" y="104.14" size="1.778" layer="95" xref="yes"/>
@@ -22197,7 +22165,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L4P/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ28" class="0">
+<net name="DDR3_DQ28" class="4">
 <segment>
 <wire x1="292.1" y1="101.6" x2="297.18" y2="101.6" width="0.1524" layer="91"/>
 <label x="297.18" y="101.6" size="1.778" layer="95" xref="yes"/>
@@ -22209,7 +22177,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L4N/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ29" class="0">
+<net name="DDR3_DQ29" class="4">
 <segment>
 <wire x1="292.1" y1="99.06" x2="322.58" y2="99.06" width="0.1524" layer="91"/>
 <label x="322.58" y="99.06" size="1.778" layer="95" xref="yes"/>
@@ -22221,7 +22189,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L5P/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ30" class="0">
+<net name="DDR3_DQ30" class="4">
 <segment>
 <wire x1="292.1" y1="96.52" x2="297.18" y2="96.52" width="0.1524" layer="91"/>
 <label x="297.18" y="96.52" size="1.778" layer="95" xref="yes"/>
@@ -22233,7 +22201,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK34" pin="IO_L5N/T0"/>
 </segment>
 </net>
-<net name="DDR3_DQ31" class="0">
+<net name="DDR3_DQ31" class="4">
 <segment>
 <wire x1="292.1" y1="93.98" x2="322.58" y2="93.98" width="0.1524" layer="91"/>
 <label x="322.58" y="93.98" size="1.778" layer="95" xref="yes"/>
@@ -22361,7 +22329,7 @@ to be used in the design at full speed.</text>
 <junction x="495.3" y="81.28"/>
 </segment>
 </net>
-<net name="DDR3_CLK_IN_P" class="0">
+<net name="DDR3_CLK_IN_P" class="5">
 <segment>
 <pinref part="U201" gate=".BANK34" pin="IO_L13P/T2/MRCC"/>
 <wire x1="482.6" y1="360.68" x2="487.68" y2="360.68" width="0.1524" layer="91"/>
@@ -22454,7 +22422,7 @@ to be used in the design at full speed.</text>
 <pinref part="U201" gate=".BANK35" pin="IO_L6N/T0/VREF"/>
 </segment>
 </net>
-<net name="DDR3_CLK_IN_N" class="0">
+<net name="DDR3_CLK_IN_N" class="5">
 <segment>
 <wire x1="482.6" y1="358.14" x2="520.7" y2="358.14" width="0.1524" layer="91"/>
 <label x="520.7" y="358.14" size="1.778" layer="95" xref="yes"/>
@@ -29484,6 +29452,10 @@ This should free a pin up.</text>
 <instance part="GND458" gate="G$1" x="441.96" y="172.72" smashed="yes">
 <attribute name="VALUE" x="441.96" y="167.64" size="1.778" layer="96" align="bottom-center"/>
 </instance>
+<instance part="U102" gate=".USB" x="45.72" y="287.02" smashed="yes">
+<attribute name="NAME" x="27.94" y="290.576" size="1.27" layer="95"/>
+<attribute name="VALUE" x="27.94" y="288.29" size="1.27" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -29649,12 +29621,22 @@ This should free a pin up.</text>
 <wire x1="182.88" y1="350.52" x2="177.8" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="L1001" gate="G$1" pin="2"/>
 </segment>
+<segment>
+<label x="71.12" y="281.94" size="1.778" layer="95" xref="yes"/>
+<wire x1="71.12" y1="281.94" x2="50.8" y2="281.94" width="0.1524" layer="91"/>
+<pinref part="U102" gate=".USB" pin="USB_DN"/>
+</segment>
 </net>
 <net name="USB_D_P" class="2">
 <segment>
 <label x="182.88" y="345.44" size="1.778" layer="95" xref="yes"/>
 <wire x1="182.88" y1="345.44" x2="177.8" y2="345.44" width="0.1524" layer="91"/>
 <pinref part="L1001" gate="G$1" pin="3"/>
+</segment>
+<segment>
+<label x="55.88" y="284.48" size="1.778" layer="95" xref="yes"/>
+<wire x1="55.88" y1="284.48" x2="50.8" y2="284.48" width="0.1524" layer="91"/>
+<pinref part="U102" gate=".USB" pin="USB_DP"/>
 </segment>
 </net>
 <net name="USB_VBUS_DET" class="0">
@@ -30087,6 +30069,11 @@ This should free a pin up.</text>
 <segment>
 <wire x1="58.42" y1="180.34" x2="63.5" y2="180.34" width="0.1524" layer="91"/>
 <label x="63.5" y="180.34" size="1.778" layer="95" xref="yes"/>
+</segment>
+<segment>
+<pinref part="U102" gate=".USB" pin="USB_OTG_ID"/>
+<wire x1="50.8" y1="276.86" x2="55.88" y2="276.86" width="0.1524" layer="91"/>
+<label x="55.88" y="276.86" size="1.778" layer="95" xref="yes"/>
 </segment>
 </net>
 <net name="!CM4_BTLDR" class="0">
@@ -31911,19 +31898,19 @@ FCM</text>
 <instance part="GND21" gate="G$1" x="513.08" y="53.34" smashed="yes">
 <attribute name="VALUE" x="513.08" y="48.26" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C1249" gate="G$1" x="419.1" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="416.3314" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="421.8686" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="VOLTAGE" x="413.7914" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="C1249" gate="G$1" x="408.94" y="71.12" smashed="yes" rot="R270">
+<attribute name="VALUE" x="406.1714" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="411.7086" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="403.6314" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="GND22" gate="G$1" x="419.1" y="53.34" smashed="yes">
-<attribute name="VALUE" x="419.1" y="48.26" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND22" gate="G$1" x="408.94" y="53.34" smashed="yes">
+<attribute name="VALUE" x="408.94" y="48.26" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="GND23" gate="G$1" x="472.44" y="53.34" smashed="yes">
-<attribute name="VALUE" x="472.44" y="48.26" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND23" gate="G$1" x="462.28" y="53.34" smashed="yes">
+<attribute name="VALUE" x="462.28" y="48.26" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="2V4" gate="G$1" x="419.1" y="88.9" smashed="yes">
-<attribute name="VALUE" x="416.56" y="86.36" size="1.778" layer="96" rot="R90"/>
+<instance part="2V4" gate="G$1" x="408.94" y="88.9" smashed="yes">
+<attribute name="VALUE" x="406.4" y="86.36" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="U1202" gate="G$1" x="91.44" y="147.32" smashed="yes">
 <attribute name="NAME" x="68.58" y="150.876" size="1.27" layer="95"/>
@@ -32041,18 +32028,14 @@ FCM</text>
 <instance part="GND37" gate="G$1" x="337.82" y="114.3" smashed="yes">
 <attribute name="VALUE" x="337.82" y="109.22" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="R1211" gate="G$1" x="462.28" y="71.12" smashed="yes" rot="R270">
-<attribute name="VALUE" x="459.5114" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="465.0486" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="456.9714" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="POWER" x="454.4314" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R1211" gate="G$1" x="452.12" y="71.12" smashed="yes" rot="R270">
+<attribute name="VALUE" x="449.3514" y="71.12" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="454.8886" y="71.12" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="446.8114" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="POWER" x="444.2714" y="71.12" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="GND38" gate="G$1" x="462.28" y="53.34" smashed="yes">
-<attribute name="VALUE" x="462.28" y="48.26" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="U1211" gate="G$1" x="500.38" y="83.82" smashed="yes">
-<attribute name="NAME" x="482.6" y="87.376" size="1.27" layer="95"/>
-<attribute name="VALUE" x="482.6" y="85.09" size="1.27" layer="96"/>
+<instance part="GND38" gate="G$1" x="452.12" y="53.34" smashed="yes">
+<attribute name="VALUE" x="452.12" y="48.26" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="GND234" gate="G$1" x="55.88" y="185.42" smashed="yes">
 <attribute name="VALUE" x="55.88" y="180.34" size="1.778" layer="96" align="bottom-center"/>
@@ -32238,14 +32221,12 @@ FCM</text>
 <attribute name="VALUE" x="213.36" y="266.7" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="L1202" gate="G$1" x="160.02" y="320.04" smashed="yes">
-<attribute name="REF_COILCRAFT" x="160.02" y="320.04" size="1.778" layer="96" align="center" display="off"/>
 <attribute name="REF" x="160.02" y="321.9196" size="1.778" layer="97"/>
 <attribute name="VALUE" x="160.02" y="318.1604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="160.02" y="315.6204" size="1.778" layer="97" align="top-left"/>
 <attribute name="NAME" x="160.02" y="324.4596" size="1.778" layer="95"/>
 </instance>
 <instance part="L1201" gate="G$1" x="93.98" y="320.04" smashed="yes">
-<attribute name="REF_COILCRAFT" x="93.98" y="320.04" size="1.778" layer="96" align="center" display="off"/>
 <attribute name="REF" x="93.98" y="321.9196" size="1.778" layer="97"/>
 <attribute name="VALUE" x="93.98" y="318.1604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="93.98" y="315.6204" size="1.778" layer="97" align="top-left"/>
@@ -32298,7 +32279,6 @@ FCM</text>
 <attribute name="VALUE" x="426.72" y="167.64" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="L1205" gate="G$1" x="480.06" y="220.98" smashed="yes">
-<attribute name="REF_COILCRAFT" x="480.06" y="220.98" size="1.778" layer="96" align="center" display="off"/>
 <attribute name="REF" x="480.06" y="222.8596" size="1.778" layer="97"/>
 <attribute name="VALUE" x="480.06" y="219.1004" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="480.06" y="216.5604" size="1.778" layer="97" align="top-left"/>
@@ -32550,14 +32530,12 @@ FCM</text>
 <attribute name="VALUE" x="500.38" y="266.7" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="L1204" gate="G$1" x="447.04" y="320.04" smashed="yes">
-<attribute name="REF_COILCRAFT" x="447.04" y="320.04" size="1.778" layer="96" align="center" display="off"/>
 <attribute name="REF" x="447.04" y="321.9196" size="1.778" layer="97"/>
 <attribute name="VALUE" x="447.04" y="318.1604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="447.04" y="315.6204" size="1.778" layer="97" align="top-left"/>
 <attribute name="NAME" x="447.04" y="324.4596" size="1.778" layer="95"/>
 </instance>
 <instance part="L1203" gate="G$1" x="381" y="320.04" smashed="yes">
-<attribute name="REF_COILCRAFT" x="381" y="320.04" size="1.778" layer="96" align="center" display="off"/>
 <attribute name="REF" x="381" y="321.9196" size="1.778" layer="97"/>
 <attribute name="VALUE" x="381" y="318.1604" size="1.778" layer="96" align="top-left"/>
 <attribute name="CURRENT" x="381" y="315.6204" size="1.778" layer="97" align="top-left"/>
@@ -32662,6 +32640,10 @@ FCM</text>
 <instance part="5V00017" gate="G$1" x="220.98" y="81.28" smashed="yes">
 <attribute name="VALUE" x="218.44" y="78.74" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="U2" gate="G$1" x="495.3" y="83.82" smashed="yes">
+<attribute name="NAME" x="472.44" y="87.376" size="1.27" layer="95"/>
+<attribute name="VALUE" x="472.44" y="85.09" size="1.27" layer="96"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -32691,13 +32673,13 @@ FCM</text>
 <segment>
 <pinref part="GND22" gate="G$1" pin="GND"/>
 <pinref part="C1249" gate="G$1" pin="C2"/>
-<wire x1="419.1" y1="53.34" x2="419.1" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="408.94" y1="53.34" x2="408.94" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND23" gate="G$1" pin="GND"/>
-<wire x1="472.44" y1="53.34" x2="472.44" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="472.44" y1="71.12" x2="477.52" y2="71.12" width="0.1524" layer="91"/>
-<pinref part="U1211" gate="G$1" pin="GND"/>
+<wire x1="462.28" y1="53.34" x2="462.28" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="462.28" y1="71.12" x2="467.36" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="U2" gate="G$1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="GND24" gate="G$1" pin="GND"/>
@@ -32774,7 +32756,7 @@ FCM</text>
 <segment>
 <pinref part="GND38" gate="G$1" pin="GND"/>
 <pinref part="R1211" gate="G$1" pin="1"/>
-<wire x1="462.28" y1="53.34" x2="462.28" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="452.12" y1="53.34" x2="452.12" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND234" gate="G$1" pin="GND"/>
@@ -33340,12 +33322,12 @@ FCM</text>
 <net name="2V5" class="0">
 <segment>
 <pinref part="C1249" gate="G$1" pin="C1"/>
-<wire x1="419.1" y1="81.28" x2="419.1" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="477.52" y1="81.28" x2="419.1" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="419.1" y1="88.9" x2="419.1" y2="81.28" width="0.1524" layer="91"/>
-<junction x="419.1" y="81.28"/>
+<wire x1="408.94" y1="81.28" x2="408.94" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="467.36" y1="81.28" x2="408.94" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="408.94" y1="88.9" x2="408.94" y2="81.28" width="0.1524" layer="91"/>
+<junction x="408.94" y="81.28"/>
 <pinref part="2V4" gate="G$1" pin="2V5"/>
-<pinref part="U1211" gate="G$1" pin="VIN"/>
+<pinref part="U2" gate="G$1" pin="VIN"/>
 </segment>
 <segment>
 <pinref part="C1203" gate="G$1" pin="C1"/>
@@ -33418,12 +33400,17 @@ FCM</text>
 <net name="1V8_TRX_REF" class="0">
 <segment>
 <pinref part="C1255" gate="G$1" pin="C1"/>
+<wire x1="500.38" y1="81.28" x2="505.46" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="505.46" y1="81.28" x2="513.08" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="513.08" y1="81.28" x2="513.08" y2="71.12" width="0.1524" layer="91"/>
 <junction x="513.08" y="81.28"/>
 <wire x1="520.7" y1="81.28" x2="513.08" y2="81.28" width="0.1524" layer="91"/>
 <label x="520.7" y="81.28" size="1.778" layer="95" xref="yes"/>
-<pinref part="U1211" gate="G$1" pin="OUT"/>
+<pinref part="U2" gate="G$1" pin="VOUT"/>
+<pinref part="U2" gate="G$1" pin="SENSE/ADJ"/>
+<wire x1="500.38" y1="71.12" x2="505.46" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="505.46" y1="71.12" x2="505.46" y2="81.28" width="0.1524" layer="91"/>
+<junction x="505.46" y="81.28"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -33500,13 +33487,13 @@ FCM</text>
 </net>
 <net name="TRX_REF_EN" class="0">
 <segment>
-<wire x1="477.52" y1="76.2" x2="462.28" y2="76.2" width="0.1524" layer="91"/>
-<label x="457.2" y="76.2" size="1.778" layer="95" rot="R180" xref="yes"/>
+<wire x1="467.36" y1="76.2" x2="452.12" y2="76.2" width="0.1524" layer="91"/>
+<label x="447.04" y="76.2" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="R1211" gate="G$1" pin="2"/>
-<wire x1="462.28" y1="76.2" x2="457.2" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="462.28" y1="71.12" x2="462.28" y2="76.2" width="0.1524" layer="91"/>
-<junction x="462.28" y="76.2"/>
-<pinref part="U1211" gate="G$1" pin="EN"/>
+<wire x1="452.12" y1="76.2" x2="447.04" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="452.12" y1="71.12" x2="452.12" y2="76.2" width="0.1524" layer="91"/>
+<junction x="452.12" y="76.2"/>
+<pinref part="U2" gate="G$1" pin="EN"/>
 </segment>
 </net>
 <net name="N$3" class="0">
