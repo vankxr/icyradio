@@ -16895,9 +16895,6 @@ of these pins. To be tested in hardware.</text>
 <sheet>
 <description>FPGA</description>
 <plain>
-<text x="340.36" y="411.48" size="6.4516" layer="98">TODO:
-- Connect IOs
-- Find IOs scattered around</text>
 <text x="119.38" y="142.24" size="6.4516" layer="97" rot="R90" align="center">2V5</text>
 <text x="119.38" y="58.42" size="6.4516" layer="97" rot="R90" align="center">2V5</text>
 <text x="325.12" y="129.54" size="6.4516" layer="97" rot="R180" align="center">3V3</text>
@@ -17121,37 +17118,37 @@ to be used in the design at full speed.</text>
 <instance part="1V60" gate="G$1" x="350.52" y="368.3" smashed="yes">
 <attribute name="VALUE" x="347.98" y="365.76" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R206" gate="G$1" x="-76.2" y="210.82" smashed="yes" rot="R270">
-<attribute name="VALUE" x="-78.9686" y="210.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="-73.4314" y="210.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="-81.5086" y="210.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R206" gate="G$1" x="281.94" y="292.1" smashed="yes" rot="R270">
+<attribute name="VALUE" x="279.1714" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="284.7086" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="276.6314" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="3V3116" gate="G$1" x="-76.2" y="215.9" smashed="yes">
-<attribute name="VALUE" x="-78.74" y="213.36" size="1.778" layer="96" rot="R90"/>
+<instance part="3V3116" gate="G$1" x="281.94" y="297.18" smashed="yes">
+<attribute name="VALUE" x="279.4" y="294.64" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R203" gate="G$1" x="-88.9" y="210.82" smashed="yes" rot="R270">
-<attribute name="VALUE" x="-91.6686" y="210.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="-86.1314" y="210.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="-94.2086" y="210.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R203" gate="G$1" x="269.24" y="292.1" smashed="yes" rot="R270">
+<attribute name="VALUE" x="266.4714" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="272.0086" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="263.9314" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="3V3115" gate="G$1" x="-88.9" y="215.9" smashed="yes">
-<attribute name="VALUE" x="-91.44" y="213.36" size="1.778" layer="96" rot="R90"/>
+<instance part="3V3115" gate="G$1" x="269.24" y="297.18" smashed="yes">
+<attribute name="VALUE" x="266.7" y="294.64" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R202" gate="G$1" x="-111.76" y="210.82" smashed="yes" rot="R270">
-<attribute name="VALUE" x="-114.5286" y="210.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="-108.9914" y="210.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="-117.0686" y="210.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R202" gate="G$1" x="246.38" y="292.1" smashed="yes" rot="R270">
+<attribute name="VALUE" x="243.6114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="249.1486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="241.0714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="3V3113" gate="G$1" x="-111.76" y="215.9" smashed="yes">
-<attribute name="VALUE" x="-114.3" y="213.36" size="1.778" layer="96" rot="R90"/>
+<instance part="3V3113" gate="G$1" x="246.38" y="297.18" smashed="yes">
+<attribute name="VALUE" x="243.84" y="294.64" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R201" gate="G$1" x="-124.46" y="210.82" smashed="yes" rot="R270">
-<attribute name="VALUE" x="-127.2286" y="210.82" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="-121.6914" y="210.82" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="-129.7686" y="210.82" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R201" gate="G$1" x="233.68" y="292.1" smashed="yes" rot="R270">
+<attribute name="VALUE" x="230.9114" y="292.1" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="236.4486" y="292.1" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="228.3714" y="292.1" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="3V3112" gate="G$1" x="-124.46" y="215.9" smashed="yes">
-<attribute name="VALUE" x="-127" y="213.36" size="1.778" layer="96" rot="R90"/>
+<instance part="3V3112" gate="G$1" x="233.68" y="297.18" smashed="yes">
+<attribute name="VALUE" x="231.14" y="294.64" size="1.778" layer="96" rot="R90"/>
 </instance>
 <instance part="D201" gate="R" x="-88.9" y="60.96" smashed="yes">
 <attribute name="NAME" x="-85.344" y="56.388" size="1.778" layer="95" rot="R90"/>
@@ -18170,22 +18167,22 @@ to be used in the design at full speed.</text>
 <segment>
 <pinref part="R206" gate="G$1" pin="2"/>
 <pinref part="3V3116" gate="G$1" pin="3V3"/>
-<wire x1="-76.2" y1="210.82" x2="-76.2" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="281.94" y1="292.1" x2="281.94" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R203" gate="G$1" pin="2"/>
 <pinref part="3V3115" gate="G$1" pin="3V3"/>
-<wire x1="-88.9" y1="210.82" x2="-88.9" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="292.1" x2="269.24" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R202" gate="G$1" pin="2"/>
 <pinref part="3V3113" gate="G$1" pin="3V3"/>
-<wire x1="-111.76" y1="210.82" x2="-111.76" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="292.1" x2="246.38" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R201" gate="G$1" pin="2"/>
 <pinref part="3V3112" gate="G$1" pin="3V3"/>
-<wire x1="-124.46" y1="210.82" x2="-124.46" y2="215.9" width="0.1524" layer="91"/>
+<wire x1="233.68" y1="292.1" x2="233.68" y2="297.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C266" gate="G$1" pin="C1"/>
@@ -19495,8 +19492,8 @@ to be used in the design at full speed.</text>
 </net>
 <net name="SYS_I2C_SDA" class="0">
 <segment>
-<label x="-124.46" y="193.04" size="1.778" layer="95" rot="R270" xref="yes"/>
-<wire x1="-124.46" y1="198.12" x2="-124.46" y2="193.04" width="0.1524" layer="91"/>
+<label x="233.68" y="274.32" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="233.68" y1="279.4" x2="233.68" y2="274.32" width="0.1524" layer="91"/>
 <pinref part="R201" gate="G$1" pin="1"/>
 </segment>
 <segment>
@@ -19506,8 +19503,8 @@ to be used in the design at full speed.</text>
 </net>
 <net name="SYS_I2C_SCL" class="0">
 <segment>
-<label x="-111.76" y="193.04" size="1.778" layer="95" rot="R270" xref="yes"/>
-<wire x1="-111.76" y1="198.12" x2="-111.76" y2="193.04" width="0.1524" layer="91"/>
+<label x="246.38" y="274.32" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="246.38" y1="279.4" x2="246.38" y2="274.32" width="0.1524" layer="91"/>
 <pinref part="R202" gate="G$1" pin="1"/>
 </segment>
 <segment>
@@ -19521,8 +19518,8 @@ to be used in the design at full speed.</text>
 <label x="-66.04" y="116.84" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<wire x1="-88.9" y1="198.12" x2="-88.9" y2="193.04" width="0.1524" layer="91"/>
-<label x="-88.9" y="193.04" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="269.24" y1="279.4" x2="269.24" y2="274.32" width="0.1524" layer="91"/>
+<label x="269.24" y="274.32" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="R203" gate="G$1" pin="1"/>
 </segment>
 </net>
@@ -19532,8 +19529,8 @@ to be used in the design at full speed.</text>
 <label x="-109.22" y="114.3" size="1.778" layer="95" rot="R180" xref="yes"/>
 </segment>
 <segment>
-<wire x1="-76.2" y1="198.12" x2="-76.2" y2="193.04" width="0.1524" layer="91"/>
-<label x="-76.2" y="193.04" size="1.778" layer="95" rot="R270" xref="yes"/>
+<wire x1="281.94" y1="279.4" x2="281.94" y2="274.32" width="0.1524" layer="91"/>
+<label x="281.94" y="274.32" size="1.778" layer="95" rot="R270" xref="yes"/>
 <pinref part="R206" gate="G$1" pin="1"/>
 </segment>
 </net>
@@ -33608,7 +33605,7 @@ FPGA Core, FPGA GTP VCC</text>
 <wire x1="195.58" y1="266.7" x2="195.58" y2="276.86" width="0.1524" layer="97"/>
 <text x="124.46" y="30.48" size="1.778" layer="97" align="center">3.3V</text>
 <text x="124.46" y="38.1" size="1.778" layer="97" align="center">2.5V</text>
-<text x="170.18" y="45.72" size="1.778" layer="97" align="center">0.625V</text>
+<text x="170.18" y="45.72" size="1.778" layer="97" align="center">0.675V</text>
 <wire x1="38.1" y1="43.18" x2="48.26" y2="43.18" width="0.1524" layer="97"/>
 <wire x1="38.1" y1="48.26" x2="38.1" y2="43.18" width="0.1524" layer="97"/>
 <wire x1="38.1" y1="48.26" x2="48.26" y2="48.26" width="0.1524" layer="97"/>
