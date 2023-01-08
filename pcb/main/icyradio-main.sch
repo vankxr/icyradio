@@ -15980,6 +15980,12 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C2" library="Capacitor" deviceset="CAPACITOR" device="-0805" value="100uF"/>
 <part name="FB1" library="Inductor" deviceset="FERRITE" device="-0603" value="1uH"/>
 <part name="3V28" library="Supply Symbol" deviceset="3V3" device=""/>
+<part name="C3" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
+<part name="GND321" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="5V00023" library="Supply Symbol" deviceset="5V0" device=""/>
+<part name="C4" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
+<part name="GND322" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="2V26" library="Supply Symbol" deviceset="2V5" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -17487,8 +17493,8 @@ of these pins. To be tested in hardware.</text>
 <wire x1="195.58" y1="307.34" x2="195.58" y2="312.42" width="0.1524" layer="97"/>
 <text x="177.8" y="304.8" size="1.778" layer="97" align="center">MGTAVCC</text>
 <text x="466.344" y="261.62" size="1.27" layer="98" align="center-right">CFGBVS = 1 -&gt; Bank 0 at 3V3</text>
-<text x="397.764" y="241.3" size="1.27" layer="98" align="center-left">M[2:0} = 0b001 -&gt; Boot from SPI Flash
-M[2:0} = 0b101 -&gt; Boot from JTAG</text>
+<text x="397.764" y="241.3" size="1.27" layer="98" align="center-left">M[2:0] = 0b001 -&gt; Boot from SPI Flash
+M[2:0] = 0b101 -&gt; Boot from JTAG</text>
 <text x="501.904" y="271.78" size="1.27" layer="98" align="center">INIT LED should light up
 after FPGA housekeeping
 (during configuration)</text>
@@ -22338,10 +22344,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <text x="388.62" y="180.34" size="6.4516" layer="98">TODO:
 - AUXDAC
 - AUXADC
-- GPO
-- Add keepout on RF components
-- GPO at 2.5V
-- Caps 0201 below IC</text>
+- Add keepout on RF components</text>
 <text x="128.778" y="131.318" size="1.27" layer="98">XTALN typical swing is 1.3 Vpp.</text>
 <text x="367.538" y="95.758" size="1.27" layer="98" align="center">GPOs are used to control the power switches
 to the Bias-Ts and PAs.
@@ -26620,10 +26623,6 @@ enabled on transceiver reset!</text>
 <sheet>
 <description>Audio CODEC</description>
 <plain>
-<text x="53.34" y="325.12" size="6.4516" layer="98">TODO:
-- Figure out a smart way to connect this
-no easily available drivers for RPi yet...
-Or replace with a supported CODEC</text>
 </plain>
 <instances>
 <instance part="J701" gate="G$1" x="520.7" y="208.28" smashed="yes" rot="R180">
@@ -28388,13 +28387,6 @@ Or replace with a supported CODEC</text>
 <sheet>
 <description>Clock generator</description>
 <plain>
-<text x="157.48" y="294.64" size="6.4516" layer="98">TODO:
-- Discuss external reference clock connection method
-(two inputs, one for RF, one for digital)
-- Does this part degrade the clock provided to it? (adds jitter, phase noise?)
-- Can a clock output from this IC be used as the
-transceiver reference?
-- Would be nice to have only a single external clock input...</text>
 </plain>
 <instances>
 <instance part="U902" gate="G$1" x="340.36" y="198.12" smashed="yes">
@@ -30076,10 +30068,6 @@ ensure a worst case sourced VBUS of about
 <description>Power</description>
 <plain>
 <text x="362.458" y="51.562" size="1.27" layer="98" rot="R270" align="center">Power</text>
-<text x="185.42" y="200.66" size="6.4516" layer="98">TODO:
-- Check all power supplies
-- Implement everything
-in the power tree</text>
 <text x="454.66" y="120.904" size="1.27" layer="98" rot="R90" align="center-right">VOUT1 = 1.0V</text>
 <text x="467.36" y="120.904" size="1.27" layer="98" rot="R90" align="center-right">VOUT0 = 5.0V</text>
 <text x="480.06" y="120.904" size="1.27" layer="98" rot="R90" align="center-right">VOUT0 = 0 deg
@@ -32572,6 +32560,28 @@ FCM</text>
 <instance part="1V7" gate="G$1" x="81.28" y="360.68" smashed="yes">
 <attribute name="VALUE" x="78.74" y="358.14" size="1.778" layer="96" rot="R90"/>
 </instance>
+<instance part="C3" gate="G$1" x="177.8" y="55.88" smashed="yes" rot="R270">
+<attribute name="VALUE" x="175.0314" y="55.88" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="180.5686" y="55.88" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="172.4914" y="55.88" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+</instance>
+<instance part="GND321" gate="G$1" x="177.8" y="43.18" smashed="yes">
+<attribute name="VALUE" x="177.8" y="38.1" size="1.778" layer="96" align="bottom-center"/>
+</instance>
+<instance part="5V00023" gate="G$1" x="177.8" y="60.96" smashed="yes">
+<attribute name="VALUE" x="175.26" y="58.42" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="C4" gate="G$1" x="177.8" y="127" smashed="yes" rot="R270">
+<attribute name="VALUE" x="175.0314" y="127" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="180.5686" y="127" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="172.4914" y="127" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+</instance>
+<instance part="GND322" gate="G$1" x="177.8" y="114.3" smashed="yes">
+<attribute name="VALUE" x="177.8" y="109.22" size="1.778" layer="96" align="bottom-center"/>
+</instance>
+<instance part="2V26" gate="G$1" x="177.8" y="132.08" smashed="yes">
+<attribute name="VALUE" x="175.26" y="129.54" size="1.778" layer="96" rot="R90"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -32997,6 +33007,16 @@ FCM</text>
 <pinref part="C1239" gate="G$1" pin="C2"/>
 <wire x1="314.96" y1="43.18" x2="314.96" y2="55.88" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="GND321" gate="G$1" pin="GND"/>
+<wire x1="177.8" y1="43.18" x2="177.8" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="C3" gate="G$1" pin="C2"/>
+</segment>
+<segment>
+<pinref part="GND322" gate="G$1" pin="GND"/>
+<wire x1="177.8" y1="114.3" x2="177.8" y2="119.38" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="C2"/>
+</segment>
 </net>
 <net name="5V0" class="0">
 <segment>
@@ -33141,6 +33161,11 @@ FCM</text>
 <pinref part="U1207" gate="G$1" pin="VIN"/>
 <pinref part="5V00017" gate="G$1" pin="5V0"/>
 </segment>
+<segment>
+<wire x1="177.8" y1="60.96" x2="177.8" y2="55.88" width="0.1524" layer="91"/>
+<pinref part="5V00023" gate="G$1" pin="5V0"/>
+<pinref part="C3" gate="G$1" pin="C1"/>
+</segment>
 </net>
 <net name="3V3" class="0">
 <segment>
@@ -33271,6 +33296,11 @@ FCM</text>
 <pinref part="R1207" gate="G$1" pin="2"/>
 <wire x1="368.3" y1="360.68" x2="368.3" y2="355.6" width="0.1524" layer="91"/>
 <pinref part="2V13" gate="G$1" pin="2V5"/>
+</segment>
+<segment>
+<wire x1="177.8" y1="132.08" x2="177.8" y2="127" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="C1"/>
+<pinref part="2V26" gate="G$1" pin="2V5"/>
 </segment>
 </net>
 <net name="2V5_PGOOD" class="0">
