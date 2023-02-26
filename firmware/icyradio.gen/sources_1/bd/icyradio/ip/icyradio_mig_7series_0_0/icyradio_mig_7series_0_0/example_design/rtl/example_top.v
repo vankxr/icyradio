@@ -143,11 +143,11 @@ module example_top #
    // The following parameters are multiplier and divisor factors for PLLE2.
    // Based on the selected design frequency these parameters vary.
    //***************************************************************************
-   parameter CLKIN_PERIOD          = 3000,
+   parameter CLKIN_PERIOD          = 4000,
                                      // Input Clock Period
-   parameter CLKFBOUT_MULT         = 4,
+   parameter CLKFBOUT_MULT         = 16,
                                      // write PLL VCO multiplier
-   parameter DIVCLK_DIVIDE         = 1,
+   parameter DIVCLK_DIVIDE         = 3,
                                      // write PLL VCO divisor
    parameter CLKOUT0_PHASE         = 0.0,
                                      // Phase for PLL output clock (CLKOUT0)
@@ -270,9 +270,8 @@ module example_top #
 
    // Inputs
    
-   // Differential system clocks
-   input                                        sys_clk_p,
-   input                                        sys_clk_n,
+   // Single-ended system clock
+   input                                        sys_clk_i,
    
    // Single-ended iodelayctrl clk (reference clock)
    input                                        clk_ref_i,
@@ -520,8 +519,7 @@ function integer clogb2 (input integer size);
       
        
 // System Clock Ports
-       .sys_clk_p                       (sys_clk_p),
-       .sys_clk_n                       (sys_clk_n),
+       .sys_clk_i                       (sys_clk_i),
 // Reference Clock Ports
        .clk_ref_i                      (clk_ref_i),
        .device_temp_i                  (device_temp_i),

@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  1 21:24:27 2022
--- Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+-- Date        : Wed Jan 11 17:26:59 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode funcsim
---               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_logic_or_1_2/icyradio_logic_or_1_2_sim_netlist.vhdl
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_logic_or_1_2/icyradio_logic_or_1_2_sim_netlist.vhdl
 -- Design      : icyradio_logic_or_1_2
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.

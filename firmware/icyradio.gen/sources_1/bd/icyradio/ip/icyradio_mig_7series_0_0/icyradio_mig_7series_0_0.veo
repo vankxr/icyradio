@@ -144,8 +144,7 @@
     .s_axi_rvalid                   (s_axi_rvalid),  // output			s_axi_rvalid
     .s_axi_rready                   (s_axi_rready),  // input			s_axi_rready
     // System Clock Ports
-    .sys_clk_p                       (sys_clk_p),  // input				sys_clk_p
-    .sys_clk_n                       (sys_clk_n),  // input				sys_clk_n
+    .sys_clk_i                       (sys_clk_i),
     // Reference Clock Ports
     .clk_ref_i                      (clk_ref_i),
     .device_temp_i                  (device_temp_i),  // input [11:0]			device_temp_i

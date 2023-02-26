@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x264FC1F0F4224952",
+      "boundary_crc": "0xFA9EADEEFA5BA02C",
       "device": "xc7a100tfgg484-2",
       "gen_directory": "../../../../icyradio.gen/sources_1/bd/icyradio",
       "name": "icyradio",
@@ -110,7 +110,8 @@
       "GND_2": "",
       "rst_mig_7series_0_10M": "",
       "axi_iic_1": "",
-      "axi_quad_spi_2": ""
+      "axi_quad_spi_2": "",
+      "clk_wiz_0": ""
     },
     "interface_ports": {
       "PCIe_REFCLK": {
@@ -222,20 +223,6 @@
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:spi:1.0",
         "vlnv": "xilinx.com:interface:spi_rtl:1.0"
-      },
-      "DDR3_CLK_IN": {
-        "mode": "Slave",
-        "vlnv_bus_definition": "xilinx.com:interface:diff_clock:1.0",
-        "vlnv": "xilinx.com:interface:diff_clock_rtl:1.0",
-        "parameters": {
-          "CAN_DEBUG": {
-            "value": "false",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "33333333"
-          }
-        }
       },
       "SYS_I2C": {
         "mode": "Master",
@@ -513,6 +500,31 @@
         "direction": "O",
         "left": "0",
         "right": "0"
+      },
+      "FPGA_CLK0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "icyradio_FPGA_CLK0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "50000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       }
     },
     "components": {
@@ -580,7 +592,7 @@
             "value": "Custom"
           },
           "XML_INPUT_FILE": {
-            "value": "mig_a.prj"
+            "value": "mig_b.prj"
           }
         }
       },
@@ -1390,8 +1402,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_62",
-                "xci_path": "ip/icyradio_s00_data_fifo_62/icyradio_s00_data_fifo_62.xci",
+                "xci_name": "icyradio_s00_data_fifo_68",
+                "xci_path": "ip/icyradio_s00_data_fifo_68/icyradio_s00_data_fifo_68.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1483,8 +1495,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_40",
-                "xci_path": "ip/icyradio_s01_data_fifo_40/icyradio_s01_data_fifo_40.xci",
+                "xci_name": "icyradio_s01_data_fifo_44",
+                "xci_path": "ip/icyradio_s01_data_fifo_44/icyradio_s01_data_fifo_44.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2354,8 +2366,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_63",
-                "xci_path": "ip/icyradio_s00_data_fifo_63/icyradio_s00_data_fifo_63.xci",
+                "xci_name": "icyradio_s00_data_fifo_69",
+                "xci_path": "ip/icyradio_s00_data_fifo_69/icyradio_s00_data_fifo_69.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2447,8 +2459,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_41",
-                "xci_path": "ip/icyradio_s01_data_fifo_41/icyradio_s01_data_fifo_41.xci",
+                "xci_name": "icyradio_s01_data_fifo_45",
+                "xci_path": "ip/icyradio_s01_data_fifo_45/icyradio_s01_data_fifo_45.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3486,8 +3498,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_64",
-                "xci_path": "ip/icyradio_s00_data_fifo_64/icyradio_s00_data_fifo_64.xci",
+                "xci_name": "icyradio_s00_data_fifo_70",
+                "xci_path": "ip/icyradio_s00_data_fifo_70/icyradio_s00_data_fifo_70.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -5190,6 +5202,29 @@
             "value": "0"
           }
         }
+      },
+      "clk_wiz_0": {
+        "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+        "xci_name": "icyradio_clk_wiz_0_0",
+        "xci_path": "ip/icyradio_clk_wiz_0_0/icyradio_clk_wiz_0_0.xci",
+        "inst_hier_path": "clk_wiz_0",
+        "parameters": {
+          "CLKOUT1_JITTER": {
+            "value": "136.987"
+          },
+          "CLKOUT1_REQUESTED_OUT_FREQ": {
+            "value": "250"
+          },
+          "MMCM_CLKOUT0_DIVIDE_F": {
+            "value": "4.000"
+          },
+          "RESET_PORT": {
+            "value": "resetn"
+          },
+          "RESET_TYPE": {
+            "value": "ACTIVE_LOW"
+          }
+        }
       }
     },
     "interface_nets": {
@@ -5215,12 +5250,6 @@
         "interface_ports": [
           "axi_cpu_dma_interconnect/S04_AXI",
           "picorv32_0/M_AXI"
-        ]
-      },
-      "SYS_CLK_0_1": {
-        "interface_ports": [
-          "DDR3_CLK_IN",
-          "mig_7series_0/SYS_CLK"
         ]
       },
       "Vp_Vn_0_1": {
@@ -5470,6 +5499,12 @@
           "SOFT_RESET/dout",
           "rst_axi_pcie_0_125M/aux_reset_in",
           "int_reset_combiner/Op2"
+        ]
+      },
+      "FPGA_CLK0_1": {
+        "ports": [
+          "FPGA_CLK0",
+          "clk_wiz_0/clk_in1"
         ]
       },
       "GND_0_dout": {
@@ -5863,6 +5898,12 @@
           "irq_concat_0/In13"
         ]
       },
+      "clk_wiz_0_clk_out1": {
+        "ports": [
+          "clk_wiz_0/clk_out1",
+          "mig_7series_0/sys_clk_i"
+        ]
+      },
       "clk_wiz_0_delay_ref_clk": {
         "ports": [
           "mig_7series_0/ui_addn_clk_0",
@@ -6057,7 +6098,8 @@
           "mig_7series_0/sys_rst",
           "rst_axi_pcie_0_125M/ext_reset_in",
           "rst_mig_7series_0_166M/ext_reset_in",
-          "rst_mig_7series_0_10M/ext_reset_in"
+          "rst_mig_7series_0_10M/ext_reset_in",
+          "clk_wiz_0/resetn"
         ]
       },
       "xadc_wiz_0_ip2intc_irpt": {

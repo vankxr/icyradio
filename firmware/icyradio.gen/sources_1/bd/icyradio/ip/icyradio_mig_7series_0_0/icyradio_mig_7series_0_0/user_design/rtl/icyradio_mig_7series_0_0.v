@@ -85,9 +85,8 @@ module icyradio_mig_7series_0_0 (
   output [1:0]     ddr3_dm,
   output [0:0]       ddr3_odt,
   // Inputs
-  // Differential system clocks
-  input             sys_clk_p,
-  input             sys_clk_n,
+  // Single-ended system clock
+  input             sys_clk_i,
   // Single-ended iodelayctrl clk (reference clock)
   input             clk_ref_i,
   // user interface signals
@@ -238,8 +237,7 @@ module icyradio_mig_7series_0_0 (
     .s_axi_rvalid                   (s_axi_rvalid),
     .s_axi_rready                   (s_axi_rready),
     // System Clock Ports
-    .sys_clk_p                       (sys_clk_p),
-    .sys_clk_n                       (sys_clk_n),
+    .sys_clk_i                       (sys_clk_i),
     // Reference Clock Ports
     .clk_ref_i                      (clk_ref_i),
     .device_temp_i                  (device_temp_i),

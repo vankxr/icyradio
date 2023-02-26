@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sat Oct  1 21:20:21 2022
-// Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+// Date        : Wed Jan 11 17:27:04 2023
+// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 // Command     : write_verilog -force -mode funcsim
-//               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_adi_0_1/icyradio_axi_i2s_adi_0_1_sim_netlist.v
+//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_adi_0_1/icyradio_axi_i2s_adi_0_1_sim_netlist.v
 // Design      : icyradio_axi_i2s_adi_0_1
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.

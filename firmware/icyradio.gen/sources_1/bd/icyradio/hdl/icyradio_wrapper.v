@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sat Oct 22 18:37:23 2022
-//Host        : jsilva-kde running 64-bit KDE neon User - 5.26
+//Date        : Sun Feb 26 17:44:59 2023
+//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist
@@ -19,8 +19,6 @@ module icyradio_wrapper
     CODEC_I2S_sdata_in,
     CODEC_I2S_sdata_out,
     CODEC_RESETn,
-    DDR3_CLK_IN_clk_n,
-    DDR3_CLK_IN_clk_p,
     DDR3_addr,
     DDR3_ba,
     DDR3_cas_n,
@@ -40,6 +38,7 @@ module icyradio_wrapper
     FLASH_QSPI_io2_io,
     FLASH_QSPI_io3_io,
     FLASH_QSPI_ss_io,
+    FPGA_CLK0,
     GPIO0_tri_io,
     GPIO1_tri_io,
     I2S_BCLK_IN,
@@ -86,8 +85,6 @@ module icyradio_wrapper
   input [0:0]CODEC_I2S_sdata_in;
   output [0:0]CODEC_I2S_sdata_out;
   output [0:0]CODEC_RESETn;
-  input DDR3_CLK_IN_clk_n;
-  input DDR3_CLK_IN_clk_p;
   output [14:0]DDR3_addr;
   output [2:0]DDR3_ba;
   output DDR3_cas_n;
@@ -107,6 +104,7 @@ module icyradio_wrapper
   inout FLASH_QSPI_io2_io;
   inout FLASH_QSPI_io3_io;
   inout [0:0]FLASH_QSPI_ss_io;
+  input FPGA_CLK0;
   inout [1:0]GPIO0_tri_io;
   inout [1:0]GPIO1_tri_io;
   input I2S_BCLK_IN;
@@ -160,8 +158,6 @@ module icyradio_wrapper
   wire [0:0]CODEC_I2S_sdata_in;
   wire [0:0]CODEC_I2S_sdata_out;
   wire [0:0]CODEC_RESETn;
-  wire DDR3_CLK_IN_clk_n;
-  wire DDR3_CLK_IN_clk_p;
   wire [14:0]DDR3_addr;
   wire [2:0]DDR3_ba;
   wire DDR3_cas_n;
@@ -196,6 +192,7 @@ module icyradio_wrapper
   wire [0:0]FLASH_QSPI_ss_io_0;
   wire [0:0]FLASH_QSPI_ss_o_0;
   wire FLASH_QSPI_ss_t;
+  wire FPGA_CLK0;
   wire [0:0]GPIO0_tri_i_0;
   wire [1:1]GPIO0_tri_i_1;
   wire [0:0]GPIO0_tri_io_0;
@@ -397,8 +394,6 @@ module icyradio_wrapper
         .CODEC_I2S_sdata_in(CODEC_I2S_sdata_in),
         .CODEC_I2S_sdata_out(CODEC_I2S_sdata_out),
         .CODEC_RESETn(CODEC_RESETn),
-        .DDR3_CLK_IN_clk_n(DDR3_CLK_IN_clk_n),
-        .DDR3_CLK_IN_clk_p(DDR3_CLK_IN_clk_p),
         .DDR3_addr(DDR3_addr),
         .DDR3_ba(DDR3_ba),
         .DDR3_cas_n(DDR3_cas_n),
@@ -428,6 +423,7 @@ module icyradio_wrapper
         .FLASH_QSPI_ss_i(FLASH_QSPI_ss_i_0),
         .FLASH_QSPI_ss_o(FLASH_QSPI_ss_o_0),
         .FLASH_QSPI_ss_t(FLASH_QSPI_ss_t),
+        .FPGA_CLK0(FPGA_CLK0),
         .GPIO0_tri_i({GPIO0_tri_i_1,GPIO0_tri_i_0}),
         .GPIO0_tri_o({GPIO0_tri_o_1,GPIO0_tri_o_0}),
         .GPIO0_tri_t({GPIO0_tri_t_1,GPIO0_tri_t_0}),

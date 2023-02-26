@@ -145,7 +145,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {  <XADC_En>Disabled</XADC_En>}
    puts $mig_prj_file {  <TargetFPGA>xc7a100t-fgg484/-2</TargetFPGA>}
    puts $mig_prj_file {  <Version>4.2</Version>}
-   puts $mig_prj_file {  <SystemClock>Differential</SystemClock>}
+   puts $mig_prj_file {  <SystemClock>No Buffer</SystemClock>}
    puts $mig_prj_file {  <ReferenceClock>No Buffer</ReferenceClock>}
    puts $mig_prj_file {  <SysResetPolarity>ACTIVE LOW</SysResetPolarity>}
    puts $mig_prj_file {  <BankSelectionFlag>TRUE</BankSelectionFlag>}
@@ -163,7 +163,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <TimePeriod>3000</TimePeriod>}
    puts $mig_prj_file {    <VccAuxIO>1.8V</VccAuxIO>}
    puts $mig_prj_file {    <PHYRatio>2:1</PHYRatio>}
-   puts $mig_prj_file {    <InputClkFreq>333.333</InputClkFreq>}
+   puts $mig_prj_file {    <InputClkFreq>250</InputClkFreq>}
    puts $mig_prj_file {    <UIExtraClocks>1</UIExtraClocks>}
    puts $mig_prj_file {    <MMCM_VCO>666</MMCM_VCO>}
    puts $mig_prj_file {    <MMCMClkOut0> 3.250</MMCMClkOut0>}
@@ -189,9 +189,6 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {      <Bank T3="DQ[0-7]" name="35"/>}
    puts $mig_prj_file {      <Bank T0="DQ[8-15]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>}
    puts $mig_prj_file {    </BankSelection>}
-   puts $mig_prj_file {    <System_Clock>}
-   puts $mig_prj_file {      <Pin Bank="35" PADName="H4/G4(CC_P/N)" name="sys_clk_p/n"/>}
-   puts $mig_prj_file {    </System_Clock>}
    puts $mig_prj_file {    <System_Control>}
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>}
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="init_calib_complete"/>}
@@ -284,11 +281,6 @@ proc create_root_design { parentCell } {
 
   set DDR3 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddrx_rtl:1.0 DDR3 ]
 
-  set DDR3_CLK_IN [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 DDR3_CLK_IN ]
-  set_property -dict [ list \
-   CONFIG.FREQ_HZ {33333333} \
-   ] $DDR3_CLK_IN
-
   set FLASH_QSPI [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:spi_rtl:1.0 FLASH_QSPI ]
 
   set GPIO0 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 GPIO0 ]
@@ -308,6 +300,7 @@ proc create_root_design { parentCell } {
 
   # Create ports
   set CODEC_RESETn [ create_bd_port -dir O -from 0 -to 0 CODEC_RESETn ]
+  set FPGA_CLK0 [ create_bd_port -dir I -type clk -freq_hz 50000000 FPGA_CLK0 ]
   set I2S_BCLK_IN [ create_bd_port -dir I -type clk -freq_hz 49152000 I2S_BCLK_IN ]
   set_property -dict [ list \
    CONFIG.PHASE {0.0} \
@@ -565,6 +558,16 @@ proc create_root_design { parentCell } {
    CONFIG.C_USE_STARTUP {0} \
  ] $axi_quad_spi_2
 
+  # Create instance: clk_wiz_0, and set properties
+  set clk_wiz_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:clk_wiz:6.0 clk_wiz_0 ]
+  set_property -dict [ list \
+   CONFIG.CLKOUT1_JITTER {136.987} \
+   CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {250} \
+   CONFIG.MMCM_CLKOUT0_DIVIDE_F {4.000} \
+   CONFIG.RESET_PORT {resetn} \
+   CONFIG.RESET_TYPE {ACTIVE_LOW} \
+ ] $clk_wiz_0
+
   # Create instance: ext_reset_combiner, and set properties
   set ext_reset_combiner [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 ext_reset_combiner ]
   set_property -dict [ list \
@@ -629,7 +632,7 @@ proc create_root_design { parentCell } {
 
   # Generate the PRJ File for MIG
   set str_mig_folder [get_property IP_DIR [ get_ips [ get_property CONFIG.Component_Name $mig_7series_0 ] ] ]
-  set str_mig_file_name mig_a.prj
+  set str_mig_file_name mig_b.prj
   set str_mig_file_path ${str_mig_folder}/${str_mig_file_name}
 
   write_mig_file_icyradio_mig_7series_0_0 $str_mig_file_path
@@ -637,7 +640,7 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.BOARD_MIG_PARAM {Custom} \
    CONFIG.RESET_BOARD_INTERFACE {Custom} \
-   CONFIG.XML_INPUT_FILE {mig_a.prj} \
+   CONFIG.XML_INPUT_FILE {mig_b.prj} \
  ] $mig_7series_0
 
   # Create instance: picorv32_0, and set properties
@@ -724,7 +727,6 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net S00_AXI_1 [get_bd_intf_pins axi_cpu_dma_interconnect/S00_AXI] [get_bd_intf_pins axi_dmac_rf_tx/m_src_axi]
   connect_bd_intf_net -intf_net S01_AXI_1 [get_bd_intf_pins axi_cpu_dma_interconnect/S01_AXI] [get_bd_intf_pins axi_dmac_rf_rx/m_dest_axi]
   connect_bd_intf_net -intf_net S04_AXI_1 [get_bd_intf_pins axi_cpu_dma_interconnect/S04_AXI] [get_bd_intf_pins picorv32_0/M_AXI]
-  connect_bd_intf_net -intf_net SYS_CLK_0_1 [get_bd_intf_ports DDR3_CLK_IN] [get_bd_intf_pins mig_7series_0/SYS_CLK]
   connect_bd_intf_net -intf_net Vp_Vn_0_1 [get_bd_intf_ports ADCIN_MAIN] [get_bd_intf_pins xadc_wiz_0/Vp_Vn]
   connect_bd_intf_net -intf_net axi_bram_ctrl_0_BRAM_PORTA [get_bd_intf_pins axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins axi_bram_ctrl_0_bram/BRAM_PORTA]
   connect_bd_intf_net -intf_net axi_dmac_i2s_rx_m_dest_axi [get_bd_intf_pins axi_cpu_dma_interconnect/S03_AXI] [get_bd_intf_pins axi_dmac_i2s_rx/m_dest_axi]
@@ -768,6 +770,7 @@ proc create_root_design { parentCell } {
 
   # Create port connections
   connect_bd_net -net CORTEXM3_AXI_0_SYSRESETREQ [get_bd_pins SOFT_RESET/dout] [get_bd_pins int_reset_combiner/Op2] [get_bd_pins rst_axi_pcie_0_125M/aux_reset_in]
+  connect_bd_net -net FPGA_CLK0_1 [get_bd_ports FPGA_CLK0] [get_bd_pins clk_wiz_0/clk_in1]
   connect_bd_net -net GND_0_dout [get_bd_ports PCIe_CLKREQn] [get_bd_ports TRX_EN_AGC] [get_bd_ports TRX_SYNC_IN] [get_bd_pins GND_0/dout] [get_bd_pins axi_ad9361/up_enable] [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins axi_quad_spi_0/gsr] [get_bd_pins axi_quad_spi_0/gts] [get_bd_pins axi_quad_spi_0/usrcclkts] [get_bd_pins axi_quad_spi_0/usrdonets] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In14] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
   connect_bd_net -net GND_1_dout [get_bd_ports TRX_CTRL_IN] [get_bd_pins GND_1/dout]
   connect_bd_net -net GND_2_dout [get_bd_pins GND_2/dout] [get_bd_pins irq_concat_1/In4]
@@ -820,6 +823,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net axi_quad_spi_0_ip2intc_irpt [get_bd_pins axi_quad_spi_0/ip2intc_irpt] [get_bd_pins irq_concat_0/In5]
   connect_bd_net -net axi_quad_spi_1_ip2intc_irpt [get_bd_pins axi_quad_spi_1/ip2intc_irpt] [get_bd_pins irq_concat_0/In11]
   connect_bd_net -net axi_quad_spi_2_ip2intc_irpt [get_bd_pins axi_quad_spi_2/ip2intc_irpt] [get_bd_pins irq_concat_0/In13]
+  connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins mig_7series_0/sys_clk_i]
   connect_bd_net -net clk_wiz_0_delay_ref_clk [get_bd_pins axi_ad9361/delay_clk] [get_bd_pins mig_7series_0/clk_ref_i] [get_bd_pins mig_7series_0/ui_addn_clk_0]
   connect_bd_net -net data_clk_i_0_1 [get_bd_ports I2S_BCLK_IN] [get_bd_pins axi_i2s_adi_0/data_clk_i]
   connect_bd_net -net int_reset_combiner_Res [get_bd_pins int_reset_combiner/Res] [get_bd_pins rst_mig_7series_0_10M/aux_reset_in] [get_bd_pins rst_mig_7series_0_166M/aux_reset_in]
@@ -842,7 +846,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net util_upack2_1_fifo_rd_data_2 [get_bd_pins ad9361_dac_unpacker/fifo_rd_data_2] [get_bd_pins axi_ad9361/dac_data_i1]
   connect_bd_net -net util_upack2_1_fifo_rd_data_3 [get_bd_pins ad9361_dac_unpacker/fifo_rd_data_3] [get_bd_pins axi_ad9361/dac_data_q1]
   connect_bd_net -net util_vector_logic_0_Res [get_bd_pins ad9361_dac_unpacker/fifo_rd_en] [get_bd_pins logic_or_1/Res]
-  connect_bd_net -net util_vector_logic_2_Res [get_bd_pins ext_reset_combiner/Res] [get_bd_pins mig_7series_0/sys_rst] [get_bd_pins rst_axi_pcie_0_125M/ext_reset_in] [get_bd_pins rst_mig_7series_0_10M/ext_reset_in] [get_bd_pins rst_mig_7series_0_166M/ext_reset_in]
+  connect_bd_net -net util_vector_logic_2_Res [get_bd_pins clk_wiz_0/resetn] [get_bd_pins ext_reset_combiner/Res] [get_bd_pins mig_7series_0/sys_rst] [get_bd_pins rst_axi_pcie_0_125M/ext_reset_in] [get_bd_pins rst_mig_7series_0_10M/ext_reset_in] [get_bd_pins rst_mig_7series_0_166M/ext_reset_in]
   connect_bd_net -net xadc_wiz_0_ip2intc_irpt [get_bd_pins irq_concat_0/In10] [get_bd_pins xadc_wiz_0/ip2intc_irpt]
   connect_bd_net -net xadc_wiz_0_temp_out [get_bd_pins mig_7series_0/device_temp_i] [get_bd_pins xadc_wiz_0/temp_out]
 

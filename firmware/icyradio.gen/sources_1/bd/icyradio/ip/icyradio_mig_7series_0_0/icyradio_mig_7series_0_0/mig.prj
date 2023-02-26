@@ -21,7 +21,7 @@
 
   <Version>4.2</Version>
 
-  <SystemClock>Differential</SystemClock>
+  <SystemClock>No Buffer</SystemClock>
 
   <ReferenceClock>No Buffer</ReferenceClock>
 
@@ -47,7 +47,7 @@
     <TimePeriod>3000</TimePeriod>
     <VccAuxIO>1.8V</VccAuxIO>
     <PHYRatio>2:1</PHYRatio>
-    <InputClkFreq>333.333</InputClkFreq>
+    <InputClkFreq>250</InputClkFreq>
     <UIExtraClocks>1</UIExtraClocks>
     <MMCM_VCO>666</MMCM_VCO>
     <MMCMClkOut0> 3.250</MMCMClkOut0>
@@ -73,9 +73,6 @@
       <Bank T3="DQ[0-7]" name="35"/>
       <Bank T0="DQ[8-15]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>
     </BankSelection>
-    <System_Clock>
-      <Pin Bank="35" PADName="H4/G4(CC_P/N)" name="sys_clk_p/n"/>
-    </System_Clock>
     <System_Control>
       <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>
       <Pin Bank="Select Bank" PADName="No connect" name="init_calib_complete"/>

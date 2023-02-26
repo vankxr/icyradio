@@ -12,7 +12,7 @@ MIG Output Options:
    Selected Compatible Device(s)   : xc7a35t-fgg484, xc7a50t-fgg484, xc7a75t-fgg484, xc7a15t-fgg484
 
 FPGA Options:
-   System Clock Type               : Differential
+   System Clock Type               : No Buffer
    Reference Clock Type            : No Buffer
    Debug Port                      : OFF
    Internal Vref                   : disabled
@@ -31,9 +31,9 @@ Controller Options :
    Interface                     : AXI
    Design Clock Frequency        : 3000 ps (  0.00 MHz)
    Phy to Controller Clock Ratio : 2:1
-   Input Clock Period            : 3000 ps
-   CLKFBOUT_MULT (PLL)           : 4
-   DIVCLK_DIVIDE (PLL)           : 1
+   Input Clock Period            : 4000 ps
+   CLKFBOUT_MULT (PLL)           : 16
+   DIVCLK_DIVIDE (PLL)           : 3
    VCC_AUX IO                    : 1.8V
    Memory Type                   : Components
    Memory Part                   : MT41K256M16XX-125
@@ -68,10 +68,6 @@ Bank Selections:
 		Byte Group T3:	Address/Ctrl-2
 	Bank: 35
 		Byte Group T3:	DQ[0-7]
-
-System_Clock: 
-	SignalName: sys_clk_p/n
-		PadLocation: H4/G4(CC_P/N)  Bank: 35
 
 System_Control: 
 	SignalName: sys_rst

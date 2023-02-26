@@ -228,11 +228,11 @@ module icyradio_mig_7series_0_0_mig #
    // The following parameters are multiplier and divisor factors for PLLE2.
    // Based on the selected design frequency these parameters vary.
    //***************************************************************************
-   parameter CLKIN_PERIOD          = 3000,
+   parameter CLKIN_PERIOD          = 4000,
                                      // Input Clock Period
-   parameter CLKFBOUT_MULT         = 4,
+   parameter CLKFBOUT_MULT         = 16,
                                      // write PLL VCO multiplier
-   parameter DIVCLK_DIVIDE         = 1,
+   parameter DIVCLK_DIVIDE         = 3,
                                      // write PLL VCO divisor
    parameter CLKOUT0_PHASE         = 0.0,
                                      // Phase for PLL output clock (CLKOUT0)
@@ -448,7 +448,7 @@ module icyradio_mig_7series_0_0_mig #
                                      // It is associated to a set of IODELAYs with
                                      // an IDELAYCTRL that have same IODELAY CONTROLLER
                                      // clock frequency (300MHz/400MHz).
-   parameter SYSCLK_TYPE           = "DIFFERENTIAL",
+   parameter SYSCLK_TYPE           = "NO_BUFFER",
                                      // System clock type DIFFERENTIAL, SINGLE_ENDED,
                                      // NO_BUFFER
    parameter REFCLK_TYPE           = "NO_BUFFER",
@@ -487,7 +487,7 @@ module icyradio_mig_7series_0_0_mig #
    parameter nCK_PER_CLK           = 2,
    // # of memory CKs per fabric CLK
    
-   parameter DIFF_TERM_SYSCLK      = "FALSE",
+   parameter DIFF_TERM_SYSCLK      = "TRUE",
                                      // Differential Termination for System
                                      // clock input pins
       
@@ -620,9 +620,8 @@ module icyradio_mig_7series_0_0_mig #
 
    // Inputs
    
-   // Differential system clocks
-   input                                        sys_clk_p,
-   input                                        sys_clk_n,
+   // Single-ended system clock
+   input                                        sys_clk_i,
    
    // Single-ended iodelayctrl clk (reference clock)
    input                                        clk_ref_i,
@@ -806,7 +805,8 @@ module icyradio_mig_7series_0_0_mig #
   // Interrupt output
   wire                              interrupt;
 
-  wire                              sys_clk_i;
+  wire                              sys_clk_p;
+  wire                              sys_clk_n;
   wire                              mmcm_clk;
   wire                              clk_ref_p;
   wire                              clk_ref_n;
@@ -897,7 +897,8 @@ module icyradio_mig_7series_0_0_mig #
   assign ui_clk = clk;
   assign ui_clk_sync_rst = rst;
   
-  assign sys_clk_i = 1'b0;
+  assign sys_clk_p = 1'b0;
+  assign sys_clk_n = 1'b0;
   assign clk_ref_p = 1'b0;
   assign clk_ref_n = 1'b0;
   assign device_temp = device_temp_s;

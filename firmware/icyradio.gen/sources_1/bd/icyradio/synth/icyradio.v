@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sat Oct 22 18:37:21 2022
-//Host        : jsilva-kde running 64-bit KDE neon User - 5.26
+//Date        : Sun Feb 26 17:44:58 2023
+//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio.bd
 //Design      : icyradio
 //Purpose     : IP block netlist
@@ -13,7 +13,7 @@
 For TX, we apply back-pressure by telling the Unpacker that the data from the DMA is not ready.
 Since the Unpacker copies the valid signal into the ready signal, there is no need to signal the DMA that the Unpacker is not ready.
 For RX, we apply back-pressure by masking the wr_en from the ADC. This way, the ADC keeps spitting out samples that get ignored by the Packer. */
-(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=85,numReposBlks=54,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
+(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=86,numReposBlks=55,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
 module icyradio
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
@@ -28,8 +28,6 @@ module icyradio
     CODEC_I2S_sdata_in,
     CODEC_I2S_sdata_out,
     CODEC_RESETn,
-    DDR3_CLK_IN_clk_n,
-    DDR3_CLK_IN_clk_p,
     DDR3_addr,
     DDR3_ba,
     DDR3_cas_n,
@@ -59,6 +57,7 @@ module icyradio
     FLASH_QSPI_ss_i,
     FLASH_QSPI_ss_o,
     FLASH_QSPI_ss_t,
+    FPGA_CLK0,
     GPIO0_tri_i,
     GPIO0_tri_o,
     GPIO0_tri_t,
@@ -133,8 +132,6 @@ module icyradio
   (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_IN" *) input [0:0]CODEC_I2S_sdata_in;
   (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_OUT" *) output [0:0]CODEC_I2S_sdata_out;
   output [0:0]CODEC_RESETn;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 DDR3_CLK_IN CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME DDR3_CLK_IN, CAN_DEBUG false, FREQ_HZ 33333333" *) input DDR3_CLK_IN_clk_n;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 DDR3_CLK_IN CLK_P" *) input DDR3_CLK_IN_clk_p;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 ADDR" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME DDR3, AXI_ARBITRATION_SCHEME TDM, BURST_LENGTH 8, CAN_DEBUG false, CAS_LATENCY 11, CAS_WRITE_LATENCY 11, CS_ENABLED true, DATA_MASK_ENABLED true, DATA_WIDTH 8, MEMORY_TYPE COMPONENTS, MEM_ADDR_MAP ROW_COLUMN_BANK, SLOT Single, TIMEPERIOD_PS 1250" *) output [14:0]DDR3_addr;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 BA" *) output [2:0]DDR3_ba;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CAS_N" *) output DDR3_cas_n;
@@ -164,6 +161,7 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_I" *) input [0:0]FLASH_QSPI_ss_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_O" *) output [0:0]FLASH_QSPI_ss_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_T" *) output FLASH_QSPI_ss_t;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.FPGA_CLK0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.FPGA_CLK0, CLK_DOMAIN icyradio_FPGA_CLK0, FREQ_HZ 50000000, FREQ_TOLERANCE_HZ 0, INSERT_VIP 0, PHASE 0.0" *) input FPGA_CLK0;
   (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_I" *) input [1:0]GPIO0_tri_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_O" *) output [1:0]GPIO0_tri_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_T" *) output [1:0]GPIO0_tri_t;
@@ -227,6 +225,7 @@ module icyradio
   output TRX_TXNRX;
 
   wire [0:0]CORTEXM3_AXI_0_SYSRESETREQ;
+  wire FPGA_CLK0_1;
   wire [0:0]GND_0_dout;
   wire [3:0]GND_1_dout;
   wire [12:0]GND_2_dout;
@@ -283,8 +282,6 @@ module icyradio
   wire S04_AXI_1_WREADY;
   wire [3:0]S04_AXI_1_WSTRB;
   wire S04_AXI_1_WVALID;
-  wire SYS_CLK_0_1_CLK_N;
-  wire SYS_CLK_0_1_CLK_P;
   wire [0:0]VCC_0_dout;
   wire Vp_Vn_0_1_V_N;
   wire Vp_Vn_0_1_V_P;
@@ -951,6 +948,7 @@ module icyradio
   wire [0:0]axi_quad_spi_2_SPI_0_SS_O;
   wire axi_quad_spi_2_SPI_0_SS_T;
   wire axi_quad_spi_2_ip2intc_irpt;
+  wire clk_wiz_0_clk_out1;
   wire clk_wiz_0_delay_ref_clk;
   wire data_clk_i_0_1;
   wire [0:0]int_reset_combiner_Res;
@@ -1024,6 +1022,7 @@ module icyradio
   assign FLASH_QSPI_io3_t = axi_quad_spi_0_SPI_0_IO3_T;
   assign FLASH_QSPI_ss_o[0] = axi_quad_spi_0_SPI_0_SS_O;
   assign FLASH_QSPI_ss_t = axi_quad_spi_0_SPI_0_SS_T;
+  assign FPGA_CLK0_1 = FPGA_CLK0;
   assign GPIO0_tri_o[1:0] = axi_gpio_0_GPIO_TRI_O;
   assign GPIO0_tri_t[1:0] = axi_gpio_0_GPIO_TRI_T;
   assign GPIO1_tri_o[1:0] = axi_gpio_0_GPIO2_TRI_O;
@@ -1047,8 +1046,6 @@ module icyradio
   assign SYNTH_SPI_sck_t = axi_quad_spi_2_SPI_0_SCK_T;
   assign SYNTH_SPI_ss_o[0] = axi_quad_spi_2_SPI_0_SS_O;
   assign SYNTH_SPI_ss_t = axi_quad_spi_2_SPI_0_SS_T;
-  assign SYS_CLK_0_1_CLK_N = DDR3_CLK_IN_clk_n;
-  assign SYS_CLK_0_1_CLK_P = DDR3_CLK_IN_clk_p;
   assign SYS_I2C_scl_o = axi_iic_1_IIC_SCL_O;
   assign SYS_I2C_scl_t = axi_iic_1_IIC_SCL_T;
   assign SYS_I2C_sda_o = axi_iic_1_IIC_SDA_O;
@@ -2540,6 +2537,10 @@ module icyradio
         .ss_i(axi_quad_spi_2_SPI_0_SS_I),
         .ss_o(axi_quad_spi_2_SPI_0_SS_O),
         .ss_t(axi_quad_spi_2_SPI_0_SS_T));
+  icyradio_clk_wiz_0_0 clk_wiz_0
+       (.clk_in1(FPGA_CLK0_1),
+        .clk_out1(clk_wiz_0_clk_out1),
+        .resetn(util_vector_logic_2_Res));
   icyradio_reset_combiner_2 ext_reset_combiner
        (.Op1(RESETn_1),
         .Op2(PCIe_RESETn_1),
@@ -2645,8 +2646,7 @@ module icyradio
         .s_axi_wready(axi_pcie_interconnect_M02_AXI_WREADY),
         .s_axi_wstrb(axi_pcie_interconnect_M02_AXI_WSTRB),
         .s_axi_wvalid(axi_pcie_interconnect_M02_AXI_WVALID),
-        .sys_clk_n(SYS_CLK_0_1_CLK_N),
-        .sys_clk_p(SYS_CLK_0_1_CLK_P),
+        .sys_clk_i(clk_wiz_0_clk_out1),
         .sys_rst(util_vector_logic_2_Res),
         .ui_addn_clk_0(clk_wiz_0_delay_ref_clk),
         .ui_addn_clk_2(mig_7series_0_ui_addn_clk_2),
@@ -11815,7 +11815,7 @@ module s00_couplers_imp_12AR84V
   assign s00_data_fifo_to_s00_couplers_RLAST = M_AXI_rlast;
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
-  icyradio_s00_data_fifo_62 s00_data_fifo
+  icyradio_s00_data_fifo_68 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12170,7 +12170,7 @@ module s00_couplers_imp_1OK54OW
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_63 s00_data_fifo
+  icyradio_s00_data_fifo_69 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12418,7 +12418,7 @@ module s00_couplers_imp_YVWGWH
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_64 s00_data_fifo
+  icyradio_s00_data_fifo_70 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12732,7 +12732,7 @@ module s01_couplers_imp_EQ149T
   assign s01_data_fifo_to_s01_couplers_RRESP = M_AXI_rresp[1:0];
   assign s01_data_fifo_to_s01_couplers_RVALID = M_AXI_rvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_41 s01_data_fifo
+  icyradio_s01_data_fifo_45 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s01_data_fifo_to_s01_couplers_ARADDR),
@@ -12956,7 +12956,7 @@ module s01_couplers_imp_S4EEJ2
   assign s01_data_fifo_to_s01_couplers_BRESP = M_AXI_bresp[1:0];
   assign s01_data_fifo_to_s01_couplers_BVALID = M_AXI_bvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_40 s01_data_fifo
+  icyradio_s01_data_fifo_44 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_awaddr(s01_data_fifo_to_s01_couplers_AWADDR),

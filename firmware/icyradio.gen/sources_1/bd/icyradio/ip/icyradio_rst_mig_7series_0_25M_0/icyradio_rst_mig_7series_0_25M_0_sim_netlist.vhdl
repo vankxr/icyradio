@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  1 21:49:30 2022
--- Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+-- Date        : Wed Jan 11 17:29:26 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode funcsim
---               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_rst_mig_7series_0_25M_0/icyradio_rst_mig_7series_0_25M_0_sim_netlist.vhdl
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_rst_mig_7series_0_25M_0/icyradio_rst_mig_7series_0_25M_0_sim_netlist.vhdl
 -- Design      : icyradio_rst_mig_7series_0_25M_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.

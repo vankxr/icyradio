@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  1 21:20:21 2022
--- Host        : jsilva-kde running 64-bit KDE neon User - 5.25
+-- Date        : Wed Jan 11 17:27:04 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode synth_stub
---               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_adi_0_1/icyradio_axi_i2s_adi_0_1_stub.vhdl
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_adi_0_1/icyradio_axi_i2s_adi_0_1_stub.vhdl
 -- Design      : icyradio_axi_i2s_adi_0_1
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2

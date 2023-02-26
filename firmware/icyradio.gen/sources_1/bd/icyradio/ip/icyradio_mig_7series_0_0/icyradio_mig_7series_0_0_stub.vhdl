@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct 22 18:42:58 2022
--- Host        : jsilva-kde running 64-bit KDE neon User - 5.26
+-- Date        : Sun Feb 26 17:49:04 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode synth_stub
---               /media/joao/SSD/Development/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_mig_7series_0_0/icyradio_mig_7series_0_0_stub.vhdl
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_mig_7series_0_0/icyradio_mig_7series_0_0_stub.vhdl
 -- Design      : icyradio_mig_7series_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2
@@ -28,8 +28,7 @@ entity icyradio_mig_7series_0_0 is
     ddr3_cke : out STD_LOGIC_VECTOR ( 0 to 0 );
     ddr3_dm : out STD_LOGIC_VECTOR ( 1 downto 0 );
     ddr3_odt : out STD_LOGIC_VECTOR ( 0 to 0 );
-    sys_clk_p : in STD_LOGIC;
-    sys_clk_n : in STD_LOGIC;
+    sys_clk_i : in STD_LOGIC;
     clk_ref_i : in STD_LOGIC;
     ui_clk : out STD_LOGIC;
     ui_clk_sync_rst : out STD_LOGIC;
@@ -92,6 +91,6 @@ architecture stub of icyradio_mig_7series_0_0 is
 attribute syn_black_box : boolean;
 attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
-attribute black_box_pad_pin of stub : architecture is "ddr3_dq[15:0],ddr3_dqs_n[1:0],ddr3_dqs_p[1:0],ddr3_addr[14:0],ddr3_ba[2:0],ddr3_ras_n,ddr3_cas_n,ddr3_we_n,ddr3_reset_n,ddr3_ck_p[0:0],ddr3_ck_n[0:0],ddr3_cke[0:0],ddr3_dm[1:0],ddr3_odt[0:0],sys_clk_p,sys_clk_n,clk_ref_i,ui_clk,ui_clk_sync_rst,ui_addn_clk_0,ui_addn_clk_1,ui_addn_clk_2,ui_addn_clk_3,ui_addn_clk_4,mmcm_locked,aresetn,app_sr_active,app_ref_ack,app_zq_ack,s_axi_awid[3:0],s_axi_awaddr[28:0],s_axi_awlen[7:0],s_axi_awsize[2:0],s_axi_awburst[1:0],s_axi_awlock[0:0],s_axi_awcache[3:0],s_axi_awprot[2:0],s_axi_awqos[3:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[63:0],s_axi_wstrb[7:0],s_axi_wlast,s_axi_wvalid,s_axi_wready,s_axi_bready,s_axi_bid[3:0],s_axi_bresp[1:0],s_axi_bvalid,s_axi_arid[3:0],s_axi_araddr[28:0],s_axi_arlen[7:0],s_axi_arsize[2:0],s_axi_arburst[1:0],s_axi_arlock[0:0],s_axi_arcache[3:0],s_axi_arprot[2:0],s_axi_arqos[3:0],s_axi_arvalid,s_axi_arready,s_axi_rready,s_axi_rid[3:0],s_axi_rdata[63:0],s_axi_rresp[1:0],s_axi_rlast,s_axi_rvalid,init_calib_complete,device_temp_i[11:0],device_temp[11:0],sys_rst";
+attribute black_box_pad_pin of stub : architecture is "ddr3_dq[15:0],ddr3_dqs_n[1:0],ddr3_dqs_p[1:0],ddr3_addr[14:0],ddr3_ba[2:0],ddr3_ras_n,ddr3_cas_n,ddr3_we_n,ddr3_reset_n,ddr3_ck_p[0:0],ddr3_ck_n[0:0],ddr3_cke[0:0],ddr3_dm[1:0],ddr3_odt[0:0],sys_clk_i,clk_ref_i,ui_clk,ui_clk_sync_rst,ui_addn_clk_0,ui_addn_clk_1,ui_addn_clk_2,ui_addn_clk_3,ui_addn_clk_4,mmcm_locked,aresetn,app_sr_active,app_ref_ack,app_zq_ack,s_axi_awid[3:0],s_axi_awaddr[28:0],s_axi_awlen[7:0],s_axi_awsize[2:0],s_axi_awburst[1:0],s_axi_awlock[0:0],s_axi_awcache[3:0],s_axi_awprot[2:0],s_axi_awqos[3:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[63:0],s_axi_wstrb[7:0],s_axi_wlast,s_axi_wvalid,s_axi_wready,s_axi_bready,s_axi_bid[3:0],s_axi_bresp[1:0],s_axi_bvalid,s_axi_arid[3:0],s_axi_araddr[28:0],s_axi_arlen[7:0],s_axi_arsize[2:0],s_axi_arburst[1:0],s_axi_arlock[0:0],s_axi_arcache[3:0],s_axi_arprot[2:0],s_axi_arqos[3:0],s_axi_arvalid,s_axi_arready,s_axi_rready,s_axi_rid[3:0],s_axi_rdata[63:0],s_axi_rresp[1:0],s_axi_rlast,s_axi_rvalid,init_calib_complete,device_temp_i[11:0],device_temp[11:0],sys_rst";
 begin
 end;
