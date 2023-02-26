@@ -2504,22 +2504,6 @@
 <rectangle x1="-0.7" y1="0.1" x2="-0.1" y2="1.1" layer="31"/>
 <rectangle x1="0.1" y1="0.1" x2="0.7" y2="1.1" layer="31"/>
 </package>
-<package name="VDFN6">
-<smd name="6" x="-0.83" y="0.725" dx="0.65" dy="0.85" layer="1"/>
-<text x="-1.148" y="1.448" size="0.8128" layer="25">&gt;NAME</text>
-<circle x="-1.614" y="-1.383" radius="0.2" width="0" layer="21"/>
-<wire x1="-1.25" y1="1" x2="1.25" y2="1" width="0.127" layer="51"/>
-<wire x1="1.25" y1="1" x2="1.25" y2="-1" width="0.127" layer="51"/>
-<wire x1="1.25" y1="-1" x2="-1.25" y2="-1" width="0.127" layer="51"/>
-<wire x1="-1.25" y1="-1" x2="-1.25" y2="1" width="0.127" layer="51"/>
-<smd name="5" x="0" y="0.725" dx="0.25" dy="0.85" layer="1"/>
-<smd name="4" x="0.83" y="0.725" dx="0.65" dy="0.85" layer="1"/>
-<smd name="3" x="0.83" y="-0.725" dx="0.65" dy="0.85" layer="1" rot="R180"/>
-<smd name="2" x="0" y="-0.725" dx="0.25" dy="0.85" layer="1" rot="R180"/>
-<smd name="1" x="-0.83" y="-0.725" dx="0.65" dy="0.85" layer="1" rot="R180"/>
-<wire x1="-1.25" y1="0.1" x2="-1.25" y2="-0.1" width="0.127" layer="21"/>
-<wire x1="1.25" y1="0.1" x2="1.25" y2="-0.1" width="0.127" layer="21"/>
-</package>
 <package name="VQFN40">
 <wire x1="3" y1="-3" x2="3" y2="3" width="0.127" layer="51"/>
 <wire x1="3" y1="-3" x2="-3" y2="-3" width="0.127" layer="51"/>
@@ -2697,19 +2681,6 @@
 <pin name="BIAS" x="-25.4" y="-2.54" length="middle"/>
 <pin name="SNS" x="5.08" y="-12.7" length="middle" rot="R180"/>
 <pin name="VTT" x="5.08" y="-2.54" length="middle" rot="R180"/>
-</symbol>
-<symbol name="DSC12X2/3/4-STDBY">
-<wire x1="-15.24" y1="0" x2="0" y2="0" width="0.254" layer="94"/>
-<wire x1="0" y1="0" x2="0" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="0" y1="-15.24" x2="-15.24" y2="-15.24" width="0.254" layer="94"/>
-<wire x1="-15.24" y1="-15.24" x2="-15.24" y2="0" width="0.254" layer="94"/>
-<pin name="CLK" x="5.08" y="-2.54" length="middle" direction="out" rot="R180"/>
-<pin name="!STDBY" x="-20.32" y="-7.62" length="middle" direction="in"/>
-<pin name="GND" x="-20.32" y="-12.7" length="middle" direction="pwr"/>
-<pin name="VDD" x="-20.32" y="-2.54" length="middle" direction="pwr"/>
-<text x="-15.24" y="3.556" size="1.27" layer="95">&gt;NAME</text>
-<text x="-15.24" y="1.27" size="1.27" layer="96">&gt;VALUE</text>
-<pin name="!CLK" x="5.08" y="-12.7" length="middle" direction="out" rot="R180"/>
 </symbol>
 <symbol name="UPD301B/C">
 <pin name="PA00" x="-48.26" y="-2.54" length="middle"/>
@@ -2899,25 +2870,6 @@
 </connects>
 <technologies>
 <technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="DSC120*" prefix="U">
-<gates>
-<gate name="G$1" symbol="DSC12X2/3/4-STDBY" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="VDFN6">
-<connects>
-<connect gate="G$1" pin="!CLK" pad="5"/>
-<connect gate="G$1" pin="!STDBY" pad="1"/>
-<connect gate="G$1" pin="CLK" pad="4"/>
-<connect gate="G$1" pin="GND" pad="3"/>
-<connect gate="G$1" pin="VDD" pad="6"/>
-</connects>
-<technologies>
-<technology name="3DA3-333M3333"/>
 </technologies>
 </device>
 </devices>
@@ -14655,7 +14607,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="GND4" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND5" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND6" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C708" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C708" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="GND7" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="3V3" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="C709" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10uF"/>
@@ -15195,9 +15147,6 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="5V00008" library="Supply Symbol" deviceset="5V0" device=""/>
 <part name="C1225" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="GND184" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="U302" library="Microchip" deviceset="DSC120*" device="" technology="3DA3-333M3333"/>
-<part name="R303" library="Resistor" deviceset="RESISTOR" device="-0402" value="100 Ohms"/>
-<part name="GND273" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U1102" library="Analog Devices" deviceset="LT7182S" device=""/>
 <part name="GND12" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="VIN5" library="Supply Symbol" deviceset="VIN" device=""/>
@@ -15688,8 +15637,6 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C332" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="4.7uF"/>
 <part name="C334" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="GND408" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C325" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10nF"/>
-<part name="GND409" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U1203" library="Analog Devices" deviceset="ADM7171ACPZ" device="" technology="-3.3" value="ADM7171ACPZ-3.3"/>
 <part name="GND410" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C1204" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
@@ -15978,8 +15925,6 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="GND315" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C715" library="Capacitor" deviceset="CAPACITOR" device="-0805" value="100uF"/>
 <part name="C712" library="Capacitor" deviceset="CAPACITOR" device="-0805" value="100uF"/>
-<part name="FB301" library="Inductor" deviceset="FERRITE" device="-0603" value="1uH"/>
-<part name="3V28" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="C1223" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="GND321" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="5V00023" library="Supply Symbol" deviceset="5V0" device=""/>
@@ -15988,10 +15933,6 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="2V26" library="Supply Symbol" deviceset="2V5" device=""/>
 <part name="C903" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="GND323" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C324" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
-<part name="GND324" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C323" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
-<part name="GND325" library="Supply Symbol" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -20581,19 +20522,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND148" gate="G$1" x="416.56" y="81.28" smashed="yes">
 <attribute name="VALUE" x="416.56" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="U302" gate="G$1" x="292.1" y="353.06" smashed="yes">
-<attribute name="NAME" x="276.86" y="356.616" size="1.27" layer="95"/>
-<attribute name="VALUE" x="276.86" y="354.33" size="1.27" layer="96"/>
-</instance>
-<instance part="R303" gate="G$1" x="279.4" y="314.96" smashed="yes">
-<attribute name="VALUE" x="279.4" y="312.1914" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="NAME" x="279.4" y="317.7286" size="1.778" layer="95" ratio="10" rot="SR0"/>
-<attribute name="TOLERANCE" x="279.4" y="309.6514" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="POWER" x="279.4" y="307.1114" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
-</instance>
-<instance part="GND273" gate="G$1" x="266.7" y="335.28" smashed="yes">
-<attribute name="VALUE" x="266.7" y="330.2" size="1.778" layer="96" align="bottom-center"/>
-</instance>
 <instance part="R319" gate="G$1" x="335.28" y="83.82" smashed="yes">
 <attribute name="VALUE" x="335.28" y="81.0514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="335.28" y="86.5886" size="1.778" layer="95" ratio="10" rot="SR0"/>
@@ -20984,14 +20912,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND408" gate="G$1" x="436.88" y="81.28" smashed="yes">
 <attribute name="VALUE" x="436.88" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C325" gate="G$1" x="256.54" y="347.98" smashed="yes" rot="R270">
-<attribute name="VALUE" x="253.7714" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="259.3086" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="VOLTAGE" x="251.2314" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
-</instance>
-<instance part="GND409" gate="G$1" x="256.54" y="335.28" smashed="yes">
-<attribute name="VALUE" x="256.54" y="330.2" size="1.778" layer="96" align="bottom-center"/>
-</instance>
 <instance part="GND140" gate="G$1" x="78.74" y="68.58" smashed="yes">
 <attribute name="VALUE" x="78.74" y="63.5" size="1.778" layer="96" align="bottom-center"/>
 </instance>
@@ -21040,30 +20960,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 </instance>
 <instance part="GND330" gate="G$1" x="396.24" y="81.28" smashed="yes">
 <attribute name="VALUE" x="396.24" y="76.2" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="FB301" gate="G$1" x="220.98" y="350.52" smashed="yes">
-<attribute name="NAME" x="220.98" y="353.2886" size="1.778" layer="95" ratio="10" rot="SR0"/>
-<attribute name="VALUE" x="220.98" y="349.5294" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="CURRENT" x="220.98" y="346.9894" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
-</instance>
-<instance part="3V28" gate="G$1" x="213.36" y="355.6" smashed="yes">
-<attribute name="VALUE" x="210.82" y="353.06" size="1.778" layer="96" rot="R90"/>
-</instance>
-<instance part="C324" gate="G$1" x="243.84" y="347.98" smashed="yes" rot="R270">
-<attribute name="VALUE" x="241.0714" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="246.6086" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="VOLTAGE" x="238.5314" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
-</instance>
-<instance part="GND324" gate="G$1" x="243.84" y="335.28" smashed="yes">
-<attribute name="VALUE" x="243.84" y="330.2" size="1.778" layer="96" align="bottom-center"/>
-</instance>
-<instance part="C323" gate="G$1" x="213.36" y="347.98" smashed="yes" rot="R270">
-<attribute name="VALUE" x="210.5914" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="216.1286" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="VOLTAGE" x="208.0514" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
-</instance>
-<instance part="GND325" gate="G$1" x="213.36" y="335.28" smashed="yes">
-<attribute name="VALUE" x="213.36" y="330.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 </instances>
 <busses>
@@ -21603,12 +21499,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <pinref part="C332" gate="G$1" pin="C2"/>
 </segment>
 <segment>
-<pinref part="GND273" gate="G$1" pin="GND"/>
-<wire x1="266.7" y1="335.28" x2="266.7" y2="340.36" width="0.1524" layer="91"/>
-<wire x1="271.78" y1="340.36" x2="266.7" y2="340.36" width="0.1524" layer="91"/>
-<pinref part="U302" gate="G$1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="GND137" gate="G$1" pin="GND"/>
 <wire x1="96.52" y1="309.88" x2="96.52" y2="314.96" width="0.1524" layer="91"/>
 <pinref part="C305" gate="G$1" pin="C2"/>
@@ -21724,11 +21614,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <pinref part="C334" gate="G$1" pin="C2"/>
 </segment>
 <segment>
-<wire x1="256.54" y1="335.28" x2="256.54" y2="340.36" width="0.1524" layer="91"/>
-<pinref part="C325" gate="G$1" pin="C2"/>
-<pinref part="GND409" gate="G$1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="GND140" gate="G$1" pin="GND"/>
 <wire x1="78.74" y1="68.58" x2="78.74" y2="111.76" width="0.1524" layer="91"/>
 <pinref part="U301" gate="G$1" pin="!CS"/>
@@ -21758,16 +21643,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <pinref part="GND330" gate="G$1" pin="GND"/>
 <wire x1="396.24" y1="81.28" x2="396.24" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="C330" gate="G$1" pin="C2"/>
-</segment>
-<segment>
-<wire x1="243.84" y1="335.28" x2="243.84" y2="340.36" width="0.1524" layer="91"/>
-<pinref part="GND324" gate="G$1" pin="GND"/>
-<pinref part="C324" gate="G$1" pin="C2"/>
-</segment>
-<segment>
-<wire x1="213.36" y1="335.28" x2="213.36" y2="340.36" width="0.1524" layer="91"/>
-<pinref part="GND325" gate="G$1" pin="GND"/>
-<pinref part="C323" gate="G$1" pin="C2"/>
 </segment>
 </net>
 <net name="DDR3_ODT" class="4">
@@ -22103,23 +21978,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <junction x="426.72" y="99.06"/>
 </segment>
 </net>
-<net name="DDR3_CLK_IN_P" class="5">
-<segment>
-<wire x1="297.18" y1="350.52" x2="302.26" y2="350.52" width="0.1524" layer="91"/>
-<label x="302.26" y="350.52" size="1.778" layer="95" xref="yes"/>
-<pinref part="U302" gate="G$1" pin="CLK"/>
-</segment>
-<segment>
-<wire x1="279.4" y1="314.96" x2="274.32" y2="314.96" width="0.1524" layer="91"/>
-<label x="274.32" y="314.96" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="R303" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<wire x1="414.02" y1="228.6" x2="408.94" y2="228.6" width="0.1524" layer="91"/>
-<label x="408.94" y="228.6" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="U201" gate=".BANK35" pin="IO_L12P/T1/MRCC"/>
-</segment>
-</net>
 <net name="0V675_DDR3_VREF" class="0">
 <segment>
 <wire x1="170.18" y1="177.8" x2="175.26" y2="177.8" width="0.1524" layer="91"/>
@@ -22176,23 +22034,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <label x="408.94" y="256.54" size="1.778" layer="95" rot="R180" xref="yes"/>
 <wire x1="414.02" y1="256.54" x2="408.94" y2="256.54" width="0.1524" layer="91"/>
 <pinref part="U201" gate=".BANK35" pin="IO_L6N/T0/VREF"/>
-</segment>
-</net>
-<net name="DDR3_CLK_IN_N" class="5">
-<segment>
-<wire x1="297.18" y1="340.36" x2="302.26" y2="340.36" width="0.1524" layer="91"/>
-<label x="302.26" y="340.36" size="1.778" layer="95" xref="yes"/>
-<pinref part="U302" gate="G$1" pin="!CLK"/>
-</segment>
-<segment>
-<wire x1="292.1" y1="314.96" x2="297.18" y2="314.96" width="0.1524" layer="91"/>
-<label x="297.18" y="314.96" size="1.778" layer="95" xref="yes"/>
-<pinref part="R303" gate="G$1" pin="1"/>
-</segment>
-<segment>
-<wire x1="414.02" y1="226.06" x2="375.92" y2="226.06" width="0.1524" layer="91"/>
-<label x="375.92" y="226.06" size="1.778" layer="95" rot="R180" xref="yes"/>
-<pinref part="U201" gate=".BANK35" pin="IO_L12N/T1/MRCC"/>
 </segment>
 </net>
 <net name="N$87" class="0">
@@ -22310,37 +22151,6 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <wire x1="414.02" y1="281.94" x2="373.38" y2="281.94" width="0.1524" layer="91"/>
 <label x="373.38" y="281.94" size="1.778" layer="95" rot="R180" xref="yes"/>
 <pinref part="U201" gate=".BANK35" pin="IO_L1N/T0/AD4N"/>
-</segment>
-</net>
-<net name="3V3_DDR3_CLK" class="0">
-<segment>
-<pinref part="U302" gate="G$1" pin="VDD"/>
-<wire x1="271.78" y1="350.52" x2="266.7" y2="350.52" width="0.1524" layer="91"/>
-<pinref part="C325" gate="G$1" pin="C1"/>
-<wire x1="266.7" y1="350.52" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
-<wire x1="256.54" y1="347.98" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
-<pinref part="U302" gate="G$1" pin="!STDBY"/>
-<wire x1="271.78" y1="345.44" x2="266.7" y2="345.44" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="345.44" x2="266.7" y2="350.52" width="0.1524" layer="91"/>
-<junction x="266.7" y="350.52"/>
-<pinref part="FB301" gate="G$1" pin="2"/>
-<wire x1="236.22" y1="350.52" x2="243.84" y2="350.52" width="0.1524" layer="91"/>
-<junction x="256.54" y="350.52"/>
-<pinref part="C324" gate="G$1" pin="C1"/>
-<wire x1="243.84" y1="350.52" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
-<wire x1="243.84" y1="347.98" x2="243.84" y2="350.52" width="0.1524" layer="91"/>
-<junction x="243.84" y="350.52"/>
-</segment>
-</net>
-<net name="3V3" class="0">
-<segment>
-<pinref part="3V28" gate="G$1" pin="3V3"/>
-<wire x1="213.36" y1="350.52" x2="213.36" y2="355.6" width="0.1524" layer="91"/>
-<pinref part="FB301" gate="G$1" pin="1"/>
-<wire x1="220.98" y1="350.52" x2="213.36" y2="350.52" width="0.1524" layer="91"/>
-<pinref part="C323" gate="G$1" pin="C1"/>
-<wire x1="213.36" y1="347.98" x2="213.36" y2="350.52" width="0.1524" layer="91"/>
-<junction x="213.36" y="350.52"/>
 </segment>
 </net>
 </nets>
