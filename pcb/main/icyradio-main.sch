@@ -14602,13 +14602,13 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="3V3903" library="Supply Symbol" deviceset="3V3" device=""/>
 <part name="R905" library="Resistor" deviceset="RESISTOR" device="-0402" value="10K Ohms"/>
 <part name="3V3905" library="Supply Symbol" deviceset="3V3" device=""/>
-<part name="C907" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="GND910" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C904" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="GND908" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C903" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="GND906" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C908" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="GND910" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="C905" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="GND908" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="C904" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="GND906" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="C909" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND904" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R911" library="Resistor" deviceset="RESISTOR" device="-0402" value="0 Ohms"/>
 <part name="R907" library="Resistor" deviceset="RESISTOR" device="-0402" value="0 Ohms"/>
@@ -14831,11 +14831,11 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C901" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND87" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND88" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C905" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
+<part name="C906" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
 <part name="GND89" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R903" library="Resistor" deviceset="RESISTOR" device="-0402" value="10K Ohms"/>
 <part name="GND90" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C906" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
+<part name="C907" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
 <part name="RFCON901" library="RF Connector" deviceset="RFCON" device="-U.FL"/>
 <part name="GND91" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R912" library="Resistor" deviceset="RESISTOR" device="-0402" value="100nF"/>
@@ -15727,16 +15727,16 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="GND425" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND426" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="FB601" library="Inductor" deviceset="FERRITE" device="-0603" value="1uH"/>
-<part name="C615" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C615" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="GND427" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C626" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="C624" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C626" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="20pF"/>
+<part name="C624" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="20pF"/>
 <part name="R615" library="Resistor" deviceset="RESISTOR" device="-0402" value="49.9 Ohms"/>
 <part name="GND428" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C625" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C625" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="20pF"/>
 <part name="R614" library="Resistor" deviceset="RESISTOR" device="-0402" value="49.9 Ohms"/>
 <part name="GND429" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C623" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C623" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="20pF"/>
 <part name="R610" library="Resistor" deviceset="RESISTOR" device="-0402" value="49.9 Ohms"/>
 <part name="R612" library="Resistor" deviceset="RESISTOR" device="-0402" value="49.9 Ohms"/>
 <part name="L601" library="Inductor" deviceset="INDUCTOR" device="-0402" value="18nH"/>
@@ -15907,9 +15907,9 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="D601" library="TVS" deviceset="PGB1010402" device=""/>
 <part name="CON701" library="JST" deviceset="4P" device="-SH-TOP"/>
 <part name="GND153" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C621" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10nF"/>
+<part name="C621" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
 <part name="GND473" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C622" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10nF"/>
+<part name="C622" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10pF"/>
 <part name="GND474" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="1V3" library="Supply Symbol" deviceset="1V35" device=""/>
 <part name="1V1" library="Supply Symbol" deviceset="1V8" device=""/>
@@ -15986,6 +15986,8 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C1222" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="GND322" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="2V26" library="Supply Symbol" deviceset="2V5" device=""/>
+<part name="C903" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
+<part name="GND323" library="Supply Symbol" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -28412,7 +28414,7 @@ enabled on transceiver reset!</text>
 <instance part="3V3905" gate="G$1" x="297.18" y="205.74" smashed="yes">
 <attribute name="VALUE" x="294.64" y="203.2" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C907" gate="G$1" x="284.48" y="233.68" smashed="yes" rot="R270">
+<instance part="C908" gate="G$1" x="284.48" y="233.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="281.7114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="287.2486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="279.1714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -28420,7 +28422,7 @@ enabled on transceiver reset!</text>
 <instance part="GND910" gate="G$1" x="284.48" y="220.98" smashed="yes">
 <attribute name="VALUE" x="284.48" y="215.9" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C904" gate="G$1" x="271.78" y="233.68" smashed="yes" rot="R270">
+<instance part="C905" gate="G$1" x="271.78" y="233.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="269.0114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="274.5486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="266.4714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -28428,7 +28430,7 @@ enabled on transceiver reset!</text>
 <instance part="GND908" gate="G$1" x="271.78" y="220.98" smashed="yes">
 <attribute name="VALUE" x="271.78" y="215.9" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C903" gate="G$1" x="259.08" y="233.68" smashed="yes" rot="R270">
+<instance part="C904" gate="G$1" x="259.08" y="233.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="256.3114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="261.8486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="253.7714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -28436,7 +28438,7 @@ enabled on transceiver reset!</text>
 <instance part="GND906" gate="G$1" x="259.08" y="220.98" smashed="yes">
 <attribute name="VALUE" x="259.08" y="215.9" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C908" gate="G$1" x="297.18" y="233.68" smashed="yes" rot="R270">
+<instance part="C909" gate="G$1" x="297.18" y="233.68" smashed="yes" rot="R270">
 <attribute name="VALUE" x="294.4114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="299.9486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="291.8714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -28498,7 +28500,7 @@ enabled on transceiver reset!</text>
 <instance part="GND88" gate="G$1" x="223.52" y="116.84" smashed="yes">
 <attribute name="VALUE" x="223.52" y="111.76" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C905" gate="G$1" x="274.32" y="132.08" smashed="yes" rot="R270">
+<instance part="C906" gate="G$1" x="274.32" y="132.08" smashed="yes" rot="R270">
 <attribute name="VALUE" x="271.5514" y="132.08" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="277.0886" y="132.08" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="269.0114" y="132.08" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -28514,7 +28516,7 @@ enabled on transceiver reset!</text>
 <instance part="GND90" gate="G$1" x="261.62" y="116.84" smashed="yes">
 <attribute name="VALUE" x="261.62" y="111.76" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C906" gate="G$1" x="281.94" y="142.24" smashed="yes">
+<instance part="C907" gate="G$1" x="281.94" y="142.24" smashed="yes">
 <attribute name="VALUE" x="281.94" y="139.4714" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="NAME" x="281.94" y="145.0086" size="1.778" layer="95" ratio="10" rot="SR0"/>
 <attribute name="VOLTAGE" x="281.94" y="136.9314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
@@ -28543,21 +28545,21 @@ enabled on transceiver reset!</text>
 <instance part="GND93" gate="G$1" x="502.92" y="50.8" smashed="yes">
 <attribute name="VALUE" x="502.92" y="45.72" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="FB901" gate="G$1" x="238.76" y="238.76" smashed="yes">
-<attribute name="NAME" x="238.76" y="241.5286" size="1.778" layer="95" ratio="10" rot="SR0"/>
-<attribute name="VALUE" x="238.76" y="237.7694" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="CURRENT" x="238.76" y="235.2294" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
+<instance part="FB901" gate="G$1" x="226.06" y="238.76" smashed="yes">
+<attribute name="NAME" x="226.06" y="241.5286" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VALUE" x="226.06" y="237.7694" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
+<attribute name="CURRENT" x="226.06" y="235.2294" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
-<instance part="3V44" gate="G$1" x="233.68" y="248.92" smashed="yes">
-<attribute name="VALUE" x="231.14" y="246.38" size="1.778" layer="96" rot="R90"/>
+<instance part="3V44" gate="G$1" x="220.98" y="248.92" smashed="yes">
+<attribute name="VALUE" x="218.44" y="246.38" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="C902" gate="G$1" x="233.68" y="233.68" smashed="yes" rot="R270">
-<attribute name="VALUE" x="230.9114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="236.4486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="VOLTAGE" x="228.3714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="C902" gate="G$1" x="220.98" y="233.68" smashed="yes" rot="R270">
+<attribute name="VALUE" x="218.2114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="223.7486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="215.6714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="GND464" gate="G$1" x="233.68" y="220.98" smashed="yes">
-<attribute name="VALUE" x="233.68" y="215.9" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND464" gate="G$1" x="220.98" y="220.98" smashed="yes">
+<attribute name="VALUE" x="220.98" y="215.9" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="R902" gate="G$1" x="246.38" y="160.02" smashed="yes">
 <attribute name="VALUE" x="246.38" y="157.2514" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
@@ -28572,6 +28574,14 @@ enabled on transceiver reset!</text>
 <instance part="GND142" gate="G$1" x="172.72" y="116.84" smashed="yes">
 <attribute name="VALUE" x="172.72" y="111.76" size="1.778" layer="96" align="bottom-center"/>
 </instance>
+<instance part="C903" gate="G$1" x="246.38" y="233.68" smashed="yes" rot="R270">
+<attribute name="VALUE" x="243.6114" y="233.68" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="249.1486" y="233.68" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="241.0714" y="233.68" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+</instance>
+<instance part="GND323" gate="G$1" x="246.38" y="220.98" smashed="yes">
+<attribute name="VALUE" x="246.38" y="215.9" size="1.778" layer="96" align="bottom-center"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -28585,22 +28595,22 @@ enabled on transceiver reset!</text>
 </segment>
 <segment>
 <pinref part="GND910" gate="G$1" pin="GND"/>
-<pinref part="C907" gate="G$1" pin="C2"/>
+<pinref part="C908" gate="G$1" pin="C2"/>
 <wire x1="284.48" y1="220.98" x2="284.48" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND908" gate="G$1" pin="GND"/>
-<pinref part="C904" gate="G$1" pin="C2"/>
+<pinref part="C905" gate="G$1" pin="C2"/>
 <wire x1="271.78" y1="220.98" x2="271.78" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND906" gate="G$1" pin="GND"/>
-<pinref part="C903" gate="G$1" pin="C2"/>
+<pinref part="C904" gate="G$1" pin="C2"/>
 <wire x1="259.08" y1="220.98" x2="259.08" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND904" gate="G$1" pin="GND"/>
-<pinref part="C908" gate="G$1" pin="C2"/>
+<pinref part="C909" gate="G$1" pin="C2"/>
 <wire x1="297.18" y1="220.98" x2="297.18" y2="226.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -28616,7 +28626,7 @@ enabled on transceiver reset!</text>
 </segment>
 <segment>
 <pinref part="GND89" gate="G$1" pin="GND"/>
-<pinref part="C905" gate="G$1" pin="C2"/>
+<pinref part="C906" gate="G$1" pin="C2"/>
 <wire x1="274.32" y1="116.84" x2="274.32" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 <segment>
@@ -28636,13 +28646,18 @@ enabled on transceiver reset!</text>
 </segment>
 <segment>
 <pinref part="GND464" gate="G$1" pin="GND"/>
-<wire x1="233.68" y1="220.98" x2="233.68" y2="226.06" width="0.1524" layer="91"/>
+<wire x1="220.98" y1="220.98" x2="220.98" y2="226.06" width="0.1524" layer="91"/>
 <pinref part="C902" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <wire x1="172.72" y1="116.84" x2="172.72" y2="134.62" width="0.1524" layer="91"/>
 <pinref part="GND142" gate="G$1" pin="GND"/>
 <pinref part="R901" gate="G$1" pin="1"/>
+</segment>
+<segment>
+<pinref part="GND323" gate="G$1" pin="GND"/>
+<wire x1="246.38" y1="220.98" x2="246.38" y2="226.06" width="0.1524" layer="91"/>
+<pinref part="C903" gate="G$1" pin="C2"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -28658,12 +28673,12 @@ enabled on transceiver reset!</text>
 </segment>
 <segment>
 <pinref part="3V44" gate="G$1" pin="3V3"/>
-<wire x1="233.68" y1="238.76" x2="233.68" y2="248.92" width="0.1524" layer="91"/>
-<wire x1="238.76" y1="238.76" x2="233.68" y2="238.76" width="0.1524" layer="91"/>
+<wire x1="220.98" y1="238.76" x2="220.98" y2="248.92" width="0.1524" layer="91"/>
+<wire x1="226.06" y1="238.76" x2="220.98" y2="238.76" width="0.1524" layer="91"/>
 <pinref part="FB901" gate="G$1" pin="1"/>
 <pinref part="C902" gate="G$1" pin="C1"/>
-<wire x1="233.68" y1="233.68" x2="233.68" y2="238.76" width="0.1524" layer="91"/>
-<junction x="233.68" y="238.76"/>
+<wire x1="220.98" y1="233.68" x2="220.98" y2="238.76" width="0.1524" layer="91"/>
+<junction x="220.98" y="238.76"/>
 </segment>
 </net>
 <net name="!CLK_MNGR_OE" class="0">
@@ -28753,15 +28768,15 @@ enabled on transceiver reset!</text>
 <wire x1="274.32" y1="142.24" x2="281.94" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="134.62" x2="261.62" y2="142.24" width="0.1524" layer="91"/>
 <junction x="261.62" y="142.24"/>
-<pinref part="C905" gate="G$1" pin="C1"/>
+<pinref part="C906" gate="G$1" pin="C1"/>
 <wire x1="274.32" y1="132.08" x2="274.32" y2="142.24" width="0.1524" layer="91"/>
 <junction x="274.32" y="142.24"/>
-<pinref part="C906" gate="G$1" pin="C1"/>
+<pinref part="C907" gate="G$1" pin="C1"/>
 </segment>
 </net>
 <net name="CLK_MNGR_REF_ACC" class="0">
 <segment>
-<pinref part="C906" gate="G$1" pin="C2"/>
+<pinref part="C907" gate="G$1" pin="C2"/>
 <wire x1="289.56" y1="142.24" x2="297.18" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="297.18" y1="142.24" x2="297.18" y2="154.94" width="0.1524" layer="91"/>
 <pinref part="U902" gate="G$1" pin="XA"/>
@@ -28829,14 +28844,15 @@ enabled on transceiver reset!</text>
 <net name="3V3_CLK_MNGR" class="0">
 <segment>
 <pinref part="FB901" gate="G$1" pin="2"/>
-<pinref part="C903" gate="G$1" pin="C1"/>
-<wire x1="254" y1="238.76" x2="259.08" y2="238.76" width="0.1524" layer="91"/>
-<wire x1="259.08" y1="238.76" x2="259.08" y2="233.68" width="0.1524" layer="91"/>
 <pinref part="C904" gate="G$1" pin="C1"/>
+<wire x1="241.3" y1="238.76" x2="246.38" y2="238.76" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="238.76" x2="259.08" y2="238.76" width="0.1524" layer="91"/>
+<wire x1="259.08" y1="238.76" x2="259.08" y2="233.68" width="0.1524" layer="91"/>
+<pinref part="C905" gate="G$1" pin="C1"/>
 <wire x1="259.08" y1="238.76" x2="271.78" y2="238.76" width="0.1524" layer="91"/>
 <wire x1="271.78" y1="238.76" x2="271.78" y2="233.68" width="0.1524" layer="91"/>
 <junction x="259.08" y="238.76"/>
-<pinref part="C907" gate="G$1" pin="C1"/>
+<pinref part="C908" gate="G$1" pin="C1"/>
 <wire x1="271.78" y1="238.76" x2="284.48" y2="238.76" width="0.1524" layer="91"/>
 <wire x1="284.48" y1="238.76" x2="284.48" y2="233.68" width="0.1524" layer="91"/>
 <junction x="271.78" y="238.76"/>
@@ -28859,15 +28875,18 @@ enabled on transceiver reset!</text>
 <wire x1="312.42" y1="185.42" x2="307.34" y2="185.42" width="0.1524" layer="91"/>
 <wire x1="307.34" y1="185.42" x2="307.34" y2="187.96" width="0.1524" layer="91"/>
 <junction x="307.34" y="187.96"/>
-<label x="264.16" y="243.84" size="1.778" layer="95" xref="yes"/>
-<wire x1="259.08" y1="238.76" x2="259.08" y2="243.84" width="0.1524" layer="91"/>
-<wire x1="259.08" y1="243.84" x2="264.16" y2="243.84" width="0.1524" layer="91"/>
-<pinref part="C908" gate="G$1" pin="C1"/>
+<label x="251.46" y="243.84" size="1.778" layer="95" xref="yes"/>
+<pinref part="C909" gate="G$1" pin="C1"/>
 <wire x1="297.18" y1="233.68" x2="297.18" y2="238.76" width="0.1524" layer="91"/>
 <junction x="297.18" y="238.76"/>
 <pinref part="U902" gate="G$1" pin="VDD"/>
 <wire x1="312.42" y1="195.58" x2="307.34" y2="195.58" width="0.1524" layer="91"/>
 <junction x="307.34" y="195.58"/>
+<pinref part="C903" gate="G$1" pin="C1"/>
+<wire x1="246.38" y1="233.68" x2="246.38" y2="238.76" width="0.1524" layer="91"/>
+<junction x="246.38" y="238.76"/>
+<wire x1="246.38" y1="238.76" x2="246.38" y2="243.84" width="0.1524" layer="91"/>
+<wire x1="246.38" y1="243.84" x2="251.46" y2="243.84" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <label x="208.28" y="142.24" size="1.778" layer="95" rot="R180" xref="yes"/>

@@ -3,7 +3,7 @@
 <eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
 <grid distance="0.1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.05" altunitdist="mm" altunit="mm"/>
@@ -5165,19 +5165,19 @@ design rules under a new name.</description>
 <attribute name="NAME" x="160.35" y="92.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="110.45" y="226.32" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C908" library="Capacitor" package="CAP0402" value="100nF" x="63.3" y="12.2" smashed="yes" rot="R270">
+<element name="C909" library="Capacitor" package="CAP0402" value="100nF" x="63.3" y="12.2" smashed="yes" rot="R270">
 <attribute name="NAME" x="63.3" y="11.2" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="-71.32" y="-79.24" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C903" library="Capacitor" package="CAP0402" value="100nF" x="61.3" y="12.2" smashed="yes" rot="R270">
+<element name="C904" library="Capacitor" package="CAP0402" value="100nF" x="61.3" y="12.2" smashed="yes" rot="R270">
 <attribute name="NAME" x="61.3" y="11.2" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="-73.32" y="-84.32" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C904" library="Capacitor" package="CAP0402" value="100nF" x="57.1" y="15.5" smashed="yes" rot="R180">
+<element name="C905" library="Capacitor" package="CAP0402" value="100nF" x="57.1" y="15.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="53.6" y="15.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="-44.5" y="150.12" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C907" library="Capacitor" package="CAP0402" value="100nF" x="59.8" y="20.6" smashed="yes" rot="R90">
+<element name="C908" library="Capacitor" package="CAP0402" value="100nF" x="59.8" y="20.6" smashed="yes" rot="R90">
 <attribute name="NAME" x="59.8" y="21.6" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="194.42" y="127.28" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
@@ -5185,11 +5185,11 @@ design rules under a new name.</description>
 <attribute name="NAME" x="74" y="13.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="207.62" y="126.66" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C905" library="Capacitor" package="CAP0402" value="10pF" x="67" y="14.9" smashed="yes" rot="R90">
+<element name="C906" library="Capacitor" package="CAP0402" value="10pF" x="67" y="14.9" smashed="yes" rot="R90">
 <attribute name="NAME" x="67" y="13.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="201.62" y="131.74" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C906" library="Capacitor" package="CAP0402" value="10pF" x="65" y="14.9" smashed="yes" rot="R90">
+<element name="C907" library="Capacitor" package="CAP0402" value="10pF" x="65" y="14.9" smashed="yes" rot="R90">
 <attribute name="NAME" x="65" y="13.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="199.62" y="136.82" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
@@ -7261,15 +7261,15 @@ design rules under a new name.</description>
 <attribute name="CURRENT" value="" x="44.8" y="1446" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="NAME" x="46.5456" y="82.316" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 </element>
-<element name="C615" library="Capacitor" package="CAP0402" value="100nF" x="44.4" y="85.2" smashed="yes">
+<element name="C615" library="Capacitor" package="CAP0402" value="1uF" x="44.4" y="85.2" smashed="yes">
 <attribute name="NAME" x="46.5" y="83.3" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="43.9" y="-1279.3" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C626" library="Capacitor" package="CAP0402" value="100nF" x="29.2" y="85" smashed="yes" rot="R180">
+<element name="C626" library="Capacitor" package="CAP0402" value="20pF" x="29.2" y="85" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.3" y="84" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="29.7" y="1452" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C624" library="Capacitor" package="CAP0402" value="100nF" x="29.2" y="84" smashed="yes" rot="R180">
+<element name="C624" library="Capacitor" package="CAP0402" value="20pF" x="29.2" y="84" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.3" y="83" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="29.7" y="1453.5" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
@@ -7278,7 +7278,7 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="1400.7" y="82" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="TOLERANCE" value="" x="1400.7" y="82" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C625" library="Capacitor" package="CAP0402" value="100nF" x="29.2" y="88" smashed="yes" rot="R180">
+<element name="C625" library="Capacitor" package="CAP0402" value="20pF" x="29.2" y="88" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.5" y="89.1" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="29.7" y="1462.5" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
@@ -7287,7 +7287,7 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="-1350.3" y="91" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="TOLERANCE" value="" x="-1350.3" y="91" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C623" library="Capacitor" package="CAP0402" value="100nF" x="29.2" y="89" smashed="yes" rot="R180">
+<element name="C623" library="Capacitor" package="CAP0402" value="20pF" x="29.2" y="89" smashed="yes" rot="R180">
 <attribute name="NAME" x="25.5" y="90" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="29.7" y="1468.5" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
@@ -7557,7 +7557,7 @@ design rules under a new name.</description>
 </element>
 <element name="FB901" library="Inductor" package="IND0603" value="1uH" x="57.4" y="21.8" smashed="yes" rot="R270">
 <attribute name="CURRENT" value="" x="57.7" y="21.8" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="54.7456" y="20.016" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="NAME" x="58.484" y="20.5456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 </element>
 <element name="C902" library="Capacitor" package="CAP0402" value="1uF" x="56.2" y="21.8" smashed="yes" rot="R270">
 <attribute name="NAME" x="56.1" y="22.8" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
@@ -7632,11 +7632,11 @@ design rules under a new name.</description>
 <attribute name="NAME" x="132.9288" y="47.4562" size="0.8" layer="25" font="vector" ratio="10" rot="R270" align="center-left"/>
 <attribute name="VALUE" x="135.975" y="40.42" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="C621" library="Capacitor" package="CAP0402" value="10nF" x="32.2" y="87" smashed="yes">
+<element name="C621" library="Capacitor" package="CAP0402" value="10pF" x="32.2" y="87" smashed="yes">
 <attribute name="NAME" x="31.6" y="88.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="32" y="87.3" size="0.8" layer="27" font="vector" ratio="10" display="off"/>
 </element>
-<element name="C622" library="Capacitor" package="CAP0402" value="10nF" x="32.2" y="86" smashed="yes">
+<element name="C622" library="Capacitor" package="CAP0402" value="10pF" x="32.2" y="86" smashed="yes">
 <attribute name="NAME" x="31.6" y="87.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="32" y="86.3" size="0.8" layer="27" font="vector" ratio="10" display="off"/>
 </element>
@@ -7811,6 +7811,10 @@ design rules under a new name.</description>
 <element name="C1222" library="Capacitor" package="CAP0603" value="47uF" x="27.3" y="75.1" smashed="yes" rot="R90">
 <attribute name="NAME" x="28.1456" y="75.916" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="27" y="75.1" size="1.778" layer="27" rot="R90" display="off"/>
+</element>
+<element name="C903" library="Capacitor" package="CAP0402" value="1uF" x="57.1" y="19.4" smashed="yes" rot="R180">
+<attribute name="NAME" x="53.5" y="19.4" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="VOLTAGE" value="" x="57.3" y="19.2" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 </elements>
 <signals>
@@ -8194,14 +8198,14 @@ design rules under a new name.</description>
 <contactref element="R1001" pad="1"/>
 <contactref element="R1006" pad="1"/>
 <contactref element="U902" pad="21"/>
-<contactref element="C907" pad="2"/>
-<contactref element="C904" pad="2"/>
-<contactref element="C903" pad="2"/>
 <contactref element="C908" pad="2"/>
+<contactref element="C905" pad="2"/>
+<contactref element="C904" pad="2"/>
+<contactref element="C909" pad="2"/>
 <contactref element="C901" pad="2"/>
 <contactref element="U901" pad="1"/>
 <contactref element="U901" pad="2"/>
-<contactref element="C905" pad="2"/>
+<contactref element="C906" pad="2"/>
 <contactref element="R903" pad="1"/>
 <contactref element="RFCON901" pad="P$1"/>
 <contactref element="RFCON901" pad="P$2"/>
@@ -10836,6 +10840,8 @@ design rules under a new name.</description>
 <via x="23.4" y="91.3" extent="1-16" drill="0.2"/>
 <via x="22.2" y="92.4" extent="1-16" drill="0.2"/>
 <via x="20.5" y="93.2" extent="1-16" drill="0.2"/>
+<contactref element="C903" pad="2"/>
+<via x="56.1" y="19.9" extent="1-16" drill="0.2"/>
 <wire x1="78.65" y1="-9.25" x2="77.65" y2="-9.25" width="0" layer="19" extent="1-16"/>
 <wire x1="78.4" y1="-5.4" x2="78.65" y2="-6.2" width="0" layer="19" extent="1-1"/>
 <wire x1="74.65" y1="-6.2" x2="74.5" y2="-5.4" width="0" layer="19" extent="16-16"/>
@@ -13532,8 +13538,8 @@ design rules under a new name.</description>
 <signal name="CLK_MNGR_REF_DCC">
 <contactref element="U901" pad="3"/>
 <contactref element="R903" pad="2"/>
-<contactref element="C905" pad="1"/>
 <contactref element="C906" pad="1"/>
+<contactref element="C907" pad="1"/>
 <wire x1="65" y1="14.4" x2="66" y2="14.4" width="0.2" layer="1"/>
 <wire x1="66" y1="14.4" x2="66.9" y2="14.4" width="0.2" layer="1"/>
 <wire x1="66.9" y1="14.4" x2="67" y2="14.4" width="0.2" layer="1"/>
@@ -13541,7 +13547,7 @@ design rules under a new name.</description>
 <wire x1="68.4" y1="14.4" x2="67" y2="14.4" width="0.2" layer="1"/>
 </signal>
 <signal name="CLK_MNGR_REF_ACC">
-<contactref element="C906" pad="2"/>
+<contactref element="C907" pad="2"/>
 <contactref element="U902" pad="1"/>
 <wire x1="63.3" y1="15.4" x2="65" y2="15.4" width="0.2" layer="1"/>
 </signal>
@@ -24301,16 +24307,16 @@ design rules under a new name.</description>
 </signal>
 <signal name="3V3_CLK_MNGR">
 <contactref element="FB901" pad="2"/>
-<contactref element="C903" pad="1"/>
 <contactref element="C904" pad="1"/>
-<contactref element="C907" pad="1"/>
+<contactref element="C905" pad="1"/>
+<contactref element="C908" pad="1"/>
 <contactref element="U902" pad="11"/>
 <contactref element="U902" pad="10"/>
 <contactref element="U902" pad="18"/>
 <contactref element="U902" pad="14"/>
 <contactref element="C901" pad="1"/>
 <contactref element="U901" pad="4"/>
-<contactref element="C908" pad="1"/>
+<contactref element="C909" pad="1"/>
 <contactref element="U902" pad="20"/>
 <polygon width="0.127" layer="14">
 <vertex x="57" y="15.3"/>
@@ -24352,6 +24358,15 @@ design rules under a new name.</description>
 <via x="64" y="13.3" extent="1-16" drill="0.2"/>
 <wire x1="70.7" y1="14.2" x2="69.2" y2="12.7" width="0.3048" layer="1"/>
 <wire x1="69.2" y1="12.7" x2="64.6" y2="12.7" width="0.3048" layer="1"/>
+<contactref element="C903" pad="1"/>
+<wire x1="57.6" y1="19.4" x2="57.6" y2="20" width="0.508" layer="1"/>
+<wire x1="57.6" y1="20" x2="57.4" y2="20.2" width="0.508" layer="1"/>
+<wire x1="59.3" y1="17.4" x2="60.3" y2="18.4" width="0" layer="19" extent="1-1"/>
+<wire x1="59.3" y1="15.9" x2="59.3" y2="17.4" width="0" layer="19" extent="1-1"/>
+<wire x1="58.3" y1="21" x2="59.8" y2="20.1" width="0" layer="19" extent="1-1"/>
+<wire x1="61.3" y1="14.4" x2="59.3" y2="15.9" width="0" layer="19" extent="1-1"/>
+<wire x1="62.3" y1="14.4" x2="61.3" y2="14.4" width="0" layer="19" extent="1-1"/>
+<wire x1="64" y1="13.3" x2="63.2" y2="13.3" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="USB_D_UNFILT_N" class="2">
 <contactref element="USB1001" pad="A7"/>
