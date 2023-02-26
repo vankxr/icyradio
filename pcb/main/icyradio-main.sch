@@ -15136,8 +15136,8 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="R301" library="Resistor" deviceset="RESISTOR" device="-0402" value="240 Ohms"/>
 <part name="GND145" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R311" library="Resistor" deviceset="RESISTOR" device="-0402" value="40.2 Ohms"/>
-<part name="C325" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="C326" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C327" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C328" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND146" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND147" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND148" library="Supply Symbol" deviceset="GND" device=""/>
@@ -15288,7 +15288,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="R321" library="Resistor" deviceset="RESISTOR" device="-0402" value="40.2 Ohms"/>
 <part name="R320" library="Resistor" deviceset="RESISTOR" device="-0402" value="40.2 Ohms"/>
 <part name="R312" library="Resistor" deviceset="RESISTOR" device="-0402" value="40.2 Ohms"/>
-<part name="C324" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C326" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="L1101" library="Coilcraft" deviceset="XGL6030-" device="" technology="472" value="4.7uH"/>
 <part name="L1102" library="Coilcraft" deviceset="XGL6030-" device="" technology="222" value="2.2uH"/>
 <part name="U1002" library="Microchip" deviceset="UPD301*" device="" technology="C"/>
@@ -15685,10 +15685,10 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C232" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="1V53" library="Supply Symbol" deviceset="1V8" device=""/>
 <part name="GND314" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C330" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="4.7uF"/>
-<part name="C332" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
+<part name="C332" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="4.7uF"/>
+<part name="C334" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="GND408" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C323" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
+<part name="C325" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10nF"/>
 <part name="GND409" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U1203" library="Analog Devices" deviceset="ADM7171ACPZ" device="" technology="-3.3" value="ADM7171ACPZ-3.3"/>
 <part name="GND410" library="Supply Symbol" deviceset="GND" device=""/>
@@ -15933,14 +15933,14 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="JP202" library="Pin Header" deviceset="PINHD-2X3" device="/SMD">
 <attribute name="OCLCSC" value="C5160777"/>
 </part>
-<part name="R325" library="Resistor" deviceset="RESISTOR" device="-0402" value="40.2 Ohms"/>
+<part name="R325" library="Resistor" deviceset="RESISTOR" device="-0402" value="DNP"/>
 <part name="GND327" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C329" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="4.7uF"/>
-<part name="C331" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
+<part name="C331" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="4.7uF"/>
+<part name="C333" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="47uF"/>
 <part name="GND328" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C327" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C329" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND329" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="C328" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
+<part name="C330" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND330" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="R404" library="Resistor" deviceset="RESISTOR" device="-0402" value="1 Ohms"/>
 <part name="R405" library="Resistor" deviceset="RESISTOR" device="-0402" value="1 Ohms"/>
@@ -15988,6 +15988,10 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="2V26" library="Supply Symbol" deviceset="2V5" device=""/>
 <part name="C903" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="GND323" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="C324" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
+<part name="GND324" library="Supply Symbol" deviceset="GND" device=""/>
+<part name="C323" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
+<part name="GND325" library="Supply Symbol" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -20558,12 +20562,12 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <attribute name="TOLERANCE" x="317.5" y="73.4314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="POWER" x="317.5" y="70.8914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
-<instance part="C325" gate="G$1" x="365.76" y="93.98" smashed="yes" rot="R270">
+<instance part="C327" gate="G$1" x="365.76" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="362.9914" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="368.5286" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="360.4514" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="C326" gate="G$1" x="375.92" y="93.98" smashed="yes" rot="R270">
+<instance part="C328" gate="G$1" x="375.92" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="373.1514" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="378.6886" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="370.6114" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -20734,7 +20738,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <attribute name="TOLERANCE" x="335.28" y="162.3314" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 <attribute name="POWER" x="335.28" y="159.7914" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
-<instance part="C324" gate="G$1" x="353.06" y="162.56" smashed="yes" rot="R270">
+<instance part="C326" gate="G$1" x="353.06" y="162.56" smashed="yes" rot="R270">
 <attribute name="VALUE" x="350.2914" y="162.56" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="355.8286" y="162.56" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="347.7514" y="162.56" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -20915,14 +20919,14 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="1V24" gate="G$1" x="134.62" y="251.46" smashed="yes">
 <attribute name="VALUE" x="132.08" y="248.92" size="1.778" layer="96" rot="R90"/>
 </instance>
-<instance part="R302" gate="G$1" x="208.28" y="345.44" smashed="yes" rot="R270">
-<attribute name="VALUE" x="205.5114" y="345.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="NAME" x="211.0486" y="345.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
-<attribute name="TOLERANCE" x="202.9714" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
-<attribute name="POWER" x="200.4314" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<instance part="R302" gate="G$1" x="187.96" y="345.44" smashed="yes" rot="R270">
+<attribute name="VALUE" x="185.1914" y="345.44" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="190.7286" y="345.44" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="TOLERANCE" x="182.6514" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="POWER" x="180.1114" y="345.44" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="GND345" gate="G$1" x="208.28" y="327.66" smashed="yes">
-<attribute name="VALUE" x="208.28" y="322.58" size="1.778" layer="96" align="bottom-center"/>
+<instance part="GND345" gate="G$1" x="187.96" y="327.66" smashed="yes">
+<attribute name="VALUE" x="187.96" y="322.58" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 <instance part="C322" gate="G$1" x="187.96" y="276.86" smashed="yes" rot="R270">
 <attribute name="VALUE" x="185.1914" y="276.86" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
@@ -20967,12 +20971,12 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND351" gate="G$1" x="165.1" y="309.88" smashed="yes">
 <attribute name="VALUE" x="165.1" y="304.8" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C330" gate="G$1" x="416.56" y="93.98" smashed="yes" rot="R270">
+<instance part="C332" gate="G$1" x="416.56" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="413.7914" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="419.3286" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="411.2514" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="C332" gate="G$1" x="436.88" y="93.98" smashed="yes" rot="R270">
+<instance part="C334" gate="G$1" x="436.88" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="434.1114" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="439.6486" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="431.5714" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -20980,7 +20984,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND408" gate="G$1" x="436.88" y="81.28" smashed="yes">
 <attribute name="VALUE" x="436.88" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C323" gate="G$1" x="256.54" y="347.98" smashed="yes" rot="R270">
+<instance part="C325" gate="G$1" x="256.54" y="347.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="253.7714" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="259.3086" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="251.2314" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -21008,12 +21012,12 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND327" gate="G$1" x="406.4" y="81.28" smashed="yes">
 <attribute name="VALUE" x="406.4" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C329" gate="G$1" x="406.4" y="93.98" smashed="yes" rot="R270">
+<instance part="C331" gate="G$1" x="406.4" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="403.6314" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="409.1686" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="401.0914" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
 </instance>
-<instance part="C331" gate="G$1" x="426.72" y="93.98" smashed="yes" rot="R270">
+<instance part="C333" gate="G$1" x="426.72" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="423.9514" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="429.4886" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="421.4114" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -21021,7 +21025,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND328" gate="G$1" x="426.72" y="81.28" smashed="yes">
 <attribute name="VALUE" x="426.72" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C327" gate="G$1" x="386.08" y="93.98" smashed="yes" rot="R270">
+<instance part="C329" gate="G$1" x="386.08" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="383.3114" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="388.8486" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="380.7714" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -21029,7 +21033,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND329" gate="G$1" x="386.08" y="81.28" smashed="yes">
 <attribute name="VALUE" x="386.08" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="C328" gate="G$1" x="396.24" y="93.98" smashed="yes" rot="R270">
+<instance part="C330" gate="G$1" x="396.24" y="93.98" smashed="yes" rot="R270">
 <attribute name="VALUE" x="393.4714" y="93.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
 <attribute name="NAME" x="399.0086" y="93.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
 <attribute name="VOLTAGE" x="390.9314" y="93.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
@@ -21037,13 +21041,29 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <instance part="GND330" gate="G$1" x="396.24" y="81.28" smashed="yes">
 <attribute name="VALUE" x="396.24" y="76.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
-<instance part="FB301" gate="G$1" x="236.22" y="350.52" smashed="yes">
-<attribute name="NAME" x="236.22" y="353.2886" size="1.778" layer="95" ratio="10" rot="SR0"/>
-<attribute name="VALUE" x="236.22" y="349.5294" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
-<attribute name="CURRENT" x="236.22" y="346.9894" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
+<instance part="FB301" gate="G$1" x="220.98" y="350.52" smashed="yes">
+<attribute name="NAME" x="220.98" y="353.2886" size="1.778" layer="95" ratio="10" rot="SR0"/>
+<attribute name="VALUE" x="220.98" y="349.5294" size="1.778" layer="96" ratio="10" rot="SR0" align="top-left"/>
+<attribute name="CURRENT" x="220.98" y="346.9894" size="1.778" layer="97" ratio="10" rot="SR0" align="top-left"/>
 </instance>
-<instance part="3V28" gate="G$1" x="231.14" y="355.6" smashed="yes">
-<attribute name="VALUE" x="228.6" y="353.06" size="1.778" layer="96" rot="R90"/>
+<instance part="3V28" gate="G$1" x="213.36" y="355.6" smashed="yes">
+<attribute name="VALUE" x="210.82" y="353.06" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="C324" gate="G$1" x="243.84" y="347.98" smashed="yes" rot="R270">
+<attribute name="VALUE" x="241.0714" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="246.6086" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="238.5314" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+</instance>
+<instance part="GND324" gate="G$1" x="243.84" y="335.28" smashed="yes">
+<attribute name="VALUE" x="243.84" y="330.2" size="1.778" layer="96" align="bottom-center"/>
+</instance>
+<instance part="C323" gate="G$1" x="213.36" y="347.98" smashed="yes" rot="R270">
+<attribute name="VALUE" x="210.5914" y="347.98" size="1.778" layer="96" ratio="10" rot="SR270" align="top-left"/>
+<attribute name="NAME" x="216.1286" y="347.98" size="1.778" layer="95" ratio="10" rot="SR270"/>
+<attribute name="VOLTAGE" x="208.0514" y="347.98" size="1.778" layer="97" ratio="10" rot="SR270" align="top-left"/>
+</instance>
+<instance part="GND325" gate="G$1" x="213.36" y="335.28" smashed="yes">
+<attribute name="VALUE" x="213.36" y="330.2" size="1.778" layer="96" align="bottom-center"/>
 </instance>
 </instances>
 <busses>
@@ -21536,8 +21556,8 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <pinref part="U301" gate="G$1" pin="!RESET"/>
 </segment>
 <segment>
-<wire x1="208.28" y1="345.44" x2="208.28" y2="350.52" width="0.1524" layer="91"/>
-<label x="208.28" y="350.52" size="1.778" layer="95" rot="R90" xref="yes"/>
+<wire x1="187.96" y1="345.44" x2="187.96" y2="350.52" width="0.1524" layer="91"/>
+<label x="187.96" y="350.52" size="1.778" layer="95" rot="R90" xref="yes"/>
 <pinref part="R302" gate="G$1" pin="2"/>
 </segment>
 <segment>
@@ -21570,17 +21590,17 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <segment>
 <pinref part="GND146" gate="G$1" pin="GND"/>
 <wire x1="365.76" y1="81.28" x2="365.76" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C325" gate="G$1" pin="C2"/>
+<pinref part="C327" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND147" gate="G$1" pin="GND"/>
 <wire x1="375.92" y1="81.28" x2="375.92" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C326" gate="G$1" pin="C2"/>
+<pinref part="C328" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND148" gate="G$1" pin="GND"/>
 <wire x1="416.56" y1="81.28" x2="416.56" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C330" gate="G$1" pin="C2"/>
+<pinref part="C332" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND273" gate="G$1" pin="GND"/>
@@ -21670,7 +21690,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 </segment>
 <segment>
 <pinref part="GND345" gate="G$1" pin="GND"/>
-<wire x1="208.28" y1="327.66" x2="208.28" y2="332.74" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="327.66" x2="187.96" y2="332.74" width="0.1524" layer="91"/>
 <pinref part="R302" gate="G$1" pin="1"/>
 </segment>
 <segment>
@@ -21701,11 +21721,11 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <segment>
 <pinref part="GND408" gate="G$1" pin="GND"/>
 <wire x1="436.88" y1="81.28" x2="436.88" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C332" gate="G$1" pin="C2"/>
+<pinref part="C334" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <wire x1="256.54" y1="335.28" x2="256.54" y2="340.36" width="0.1524" layer="91"/>
-<pinref part="C323" gate="G$1" pin="C2"/>
+<pinref part="C325" gate="G$1" pin="C2"/>
 <pinref part="GND409" gate="G$1" pin="GND"/>
 </segment>
 <segment>
@@ -21722,22 +21742,32 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <segment>
 <pinref part="GND327" gate="G$1" pin="GND"/>
 <wire x1="406.4" y1="81.28" x2="406.4" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C329" gate="G$1" pin="C2"/>
+<pinref part="C331" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND328" gate="G$1" pin="GND"/>
 <wire x1="426.72" y1="81.28" x2="426.72" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C331" gate="G$1" pin="C2"/>
+<pinref part="C333" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND329" gate="G$1" pin="GND"/>
 <wire x1="386.08" y1="81.28" x2="386.08" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C327" gate="G$1" pin="C2"/>
+<pinref part="C329" gate="G$1" pin="C2"/>
 </segment>
 <segment>
 <pinref part="GND330" gate="G$1" pin="GND"/>
 <wire x1="396.24" y1="81.28" x2="396.24" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="C328" gate="G$1" pin="C2"/>
+<pinref part="C330" gate="G$1" pin="C2"/>
+</segment>
+<segment>
+<wire x1="243.84" y1="335.28" x2="243.84" y2="340.36" width="0.1524" layer="91"/>
+<pinref part="GND324" gate="G$1" pin="GND"/>
+<pinref part="C324" gate="G$1" pin="C2"/>
+</segment>
+<segment>
+<wire x1="213.36" y1="335.28" x2="213.36" y2="340.36" width="0.1524" layer="91"/>
+<pinref part="GND325" gate="G$1" pin="GND"/>
+<pinref part="C323" gate="G$1" pin="C2"/>
 </segment>
 </net>
 <net name="DDR3_ODT" class="4">
@@ -22012,7 +22042,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <wire x1="368.3" y1="149.86" x2="353.06" y2="149.86" width="0.1524" layer="91"/>
 <junction x="353.06" y="149.86"/>
 <label x="444.5" y="99.06" size="1.778" layer="95" xref="yes"/>
-<pinref part="C325" gate="G$1" pin="C1"/>
+<pinref part="C327" gate="G$1" pin="C1"/>
 <wire x1="365.76" y1="99.06" x2="375.92" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="375.92" y1="99.06" x2="386.08" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="386.08" y1="99.06" x2="396.24" y2="99.06" width="0.1524" layer="91"/>
@@ -22023,7 +22053,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <wire x1="436.88" y1="99.06" x2="444.5" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="365.76" y1="93.98" x2="365.76" y2="99.06" width="0.1524" layer="91"/>
 <junction x="365.76" y="99.06"/>
-<pinref part="C326" gate="G$1" pin="C1"/>
+<pinref part="C328" gate="G$1" pin="C1"/>
 <wire x1="375.92" y1="93.98" x2="375.92" y2="99.06" width="0.1524" layer="91"/>
 <junction x="375.92" y="99.06"/>
 <wire x1="416.56" y1="93.98" x2="416.56" y2="99.06" width="0.1524" layer="91"/>
@@ -22050,25 +22080,25 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <pinref part="R318" gate="G$1" pin="1"/>
 <pinref part="R304" gate="G$1" pin="1"/>
 <pinref part="R321" gate="G$1" pin="2"/>
-<pinref part="C324" gate="G$1" pin="C2"/>
+<pinref part="C326" gate="G$1" pin="C2"/>
 <wire x1="353.06" y1="154.94" x2="353.06" y2="149.86" width="0.1524" layer="91"/>
-<pinref part="C330" gate="G$1" pin="C1"/>
 <pinref part="C332" gate="G$1" pin="C1"/>
+<pinref part="C334" gate="G$1" pin="C1"/>
 <wire x1="436.88" y1="93.98" x2="436.88" y2="99.06" width="0.1524" layer="91"/>
 <junction x="436.88" y="99.06"/>
 <wire x1="353.06" y1="99.06" x2="365.76" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="R325" gate="G$1" pin="2"/>
 <wire x1="353.06" y1="109.22" x2="368.3" y2="109.22" width="0.1524" layer="91"/>
-<pinref part="C327" gate="G$1" pin="C1"/>
+<pinref part="C329" gate="G$1" pin="C1"/>
 <wire x1="386.08" y1="93.98" x2="386.08" y2="99.06" width="0.1524" layer="91"/>
 <junction x="386.08" y="99.06"/>
-<pinref part="C328" gate="G$1" pin="C1"/>
+<pinref part="C330" gate="G$1" pin="C1"/>
 <wire x1="396.24" y1="93.98" x2="396.24" y2="99.06" width="0.1524" layer="91"/>
 <junction x="396.24" y="99.06"/>
-<pinref part="C329" gate="G$1" pin="C1"/>
+<pinref part="C331" gate="G$1" pin="C1"/>
 <wire x1="406.4" y1="93.98" x2="406.4" y2="99.06" width="0.1524" layer="91"/>
 <junction x="406.4" y="99.06"/>
-<pinref part="C331" gate="G$1" pin="C1"/>
+<pinref part="C333" gate="G$1" pin="C1"/>
 <wire x1="426.72" y1="93.98" x2="426.72" y2="99.06" width="0.1524" layer="91"/>
 <junction x="426.72" y="99.06"/>
 </segment>
@@ -22167,7 +22197,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 </net>
 <net name="N$87" class="0">
 <segment>
-<pinref part="C324" gate="G$1" pin="C1"/>
+<pinref part="C326" gate="G$1" pin="C1"/>
 <pinref part="R312" gate="G$1" pin="1"/>
 <wire x1="353.06" y1="162.56" x2="353.06" y2="167.64" width="0.1524" layer="91"/>
 <wire x1="353.06" y1="167.64" x2="347.98" y2="167.64" width="0.1524" layer="91"/>
@@ -22286,7 +22316,7 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <segment>
 <pinref part="U302" gate="G$1" pin="VDD"/>
 <wire x1="271.78" y1="350.52" x2="266.7" y2="350.52" width="0.1524" layer="91"/>
-<pinref part="C323" gate="G$1" pin="C1"/>
+<pinref part="C325" gate="G$1" pin="C1"/>
 <wire x1="266.7" y1="350.52" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
 <wire x1="256.54" y1="347.98" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
 <pinref part="U302" gate="G$1" pin="!STDBY"/>
@@ -22294,16 +22324,23 @@ a 1.8 V logic 1 into the 1.35 V input buffer.</text>
 <wire x1="266.7" y1="345.44" x2="266.7" y2="350.52" width="0.1524" layer="91"/>
 <junction x="266.7" y="350.52"/>
 <pinref part="FB301" gate="G$1" pin="2"/>
-<wire x1="251.46" y1="350.52" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="236.22" y1="350.52" x2="243.84" y2="350.52" width="0.1524" layer="91"/>
 <junction x="256.54" y="350.52"/>
+<pinref part="C324" gate="G$1" pin="C1"/>
+<wire x1="243.84" y1="350.52" x2="256.54" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="243.84" y1="347.98" x2="243.84" y2="350.52" width="0.1524" layer="91"/>
+<junction x="243.84" y="350.52"/>
 </segment>
 </net>
 <net name="3V3" class="0">
 <segment>
 <pinref part="3V28" gate="G$1" pin="3V3"/>
-<wire x1="231.14" y1="350.52" x2="231.14" y2="355.6" width="0.1524" layer="91"/>
+<wire x1="213.36" y1="350.52" x2="213.36" y2="355.6" width="0.1524" layer="91"/>
 <pinref part="FB301" gate="G$1" pin="1"/>
-<wire x1="236.22" y1="350.52" x2="231.14" y2="350.52" width="0.1524" layer="91"/>
+<wire x1="220.98" y1="350.52" x2="213.36" y2="350.52" width="0.1524" layer="91"/>
+<pinref part="C323" gate="G$1" pin="C1"/>
+<wire x1="213.36" y1="347.98" x2="213.36" y2="350.52" width="0.1524" layer="91"/>
+<junction x="213.36" y="350.52"/>
 </segment>
 </net>
 </nets>

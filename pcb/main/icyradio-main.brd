@@ -51,7 +51,7 @@
 <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
@@ -6207,11 +6207,11 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="82.1" y="76.9" size="2" layer="27" rot="R270" display="off"/>
 <attribute name="TOLERANCE" value="" x="82.1" y="76.9" size="2" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C325" library="Capacitor" package="CAP0402" value="100nF" x="74.6" y="71.3" smashed="yes" rot="R180">
+<element name="C327" library="Capacitor" package="CAP0402" value="100nF" x="74.6" y="71.3" smashed="yes" rot="R180">
 <attribute name="NAME" x="71.1" y="71.3" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="74.6" y="71.3" size="2" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C326" library="Capacitor" package="CAP0402" value="100nF" x="83.1" y="78.7" smashed="yes" rot="R180">
+<element name="C328" library="Capacitor" package="CAP0402" value="100nF" x="83.1" y="78.7" smashed="yes" rot="R180">
 <attribute name="NAME" x="79.5" y="78.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="83.1" y="78.7" size="2" layer="27" rot="R180" display="off"/>
 </element>
@@ -6576,7 +6576,7 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="68.4" y="66.4" size="1.778" layer="27" display="off"/>
 <attribute name="TOLERANCE" value="" x="68.4" y="66.4" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C324" library="Capacitor" package="CAP0402" value="100nF" x="68" y="68.6" smashed="yes" rot="R90">
+<element name="C326" library="Capacitor" package="CAP0402" value="100nF" x="68" y="68.6" smashed="yes" rot="R90">
 <attribute name="NAME" x="68.7" y="68.6" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="67.7" y="68.5" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
@@ -7177,15 +7177,15 @@ design rules under a new name.</description>
 <attribute name="NAME" x="86.684" y="25.8456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="1387.5" y="27.1" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C330" library="Capacitor" package="CAP0402" value="4.7uF" x="85.1" y="78.7" smashed="yes">
+<element name="C332" library="Capacitor" package="CAP0402" value="4.7uF" x="85.1" y="78.7" smashed="yes">
 <attribute name="NAME" x="86.1" y="78.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="84.6" y="-1225.8" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C332" library="Capacitor" package="CAP0603" value="47uF" x="68.8" y="70.3" smashed="yes">
+<element name="C334" library="Capacitor" package="CAP0603" value="47uF" x="68.8" y="70.3" smashed="yes">
 <attribute name="NAME" x="70.2456" y="70.316" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="68.8" y="-1236.7" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C323" library="Capacitor" package="CAP0402" value="1uF" x="83.9" y="32.2" smashed="yes">
+<element name="C325" library="Capacitor" package="CAP0402" value="10nF" x="83.9" y="32.2" smashed="yes">
 <attribute name="NAME" x="85" y="31.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="83.4" y="-1277.3" size="1.778" layer="27" display="off"/>
 </element>
@@ -7364,15 +7364,15 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="1580.2" y="84.25" size="0.8" layer="27" font="vector" ratio="10" rot="R90" display="off"/>
 <attribute name="TOLERANCE" value="" x="1580.2" y="84.25" size="0.8" layer="27" font="vector" ratio="10" rot="R90" display="off"/>
 </element>
-<element name="R111" library="Resistor" package="RES0402" value="0 Ohms" x="83.9" y="30.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="80.3" y="30.8" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
-<attribute name="POWER" value="" x="83.9" y="1472.3" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
-<attribute name="TOLERANCE" value="" x="83.9" y="1472.3" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
+<element name="R111" library="Resistor" package="RES0402" value="0 Ohms" x="83.9" y="30.2" smashed="yes" rot="R180">
+<attribute name="NAME" x="80.3" y="30.2" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="POWER" value="" x="83.9" y="1471.7" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
+<attribute name="TOLERANCE" value="" x="83.9" y="1471.7" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
 </element>
-<element name="R110" library="Resistor" package="RES0402" value="1K Ohms" x="83.9" y="29.8" smashed="yes" rot="R180">
-<attribute name="NAME" x="80.3" y="29.8" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
-<attribute name="POWER" value="" x="83.9" y="1473.8" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
-<attribute name="TOLERANCE" value="" x="83.9" y="1473.8" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
+<element name="R110" library="Resistor" package="RES0402" value="1K Ohms" x="83.9" y="29.2" smashed="yes" rot="R180">
+<attribute name="NAME" x="80.3" y="29.2" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="POWER" value="" x="83.9" y="1473.2" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
+<attribute name="TOLERANCE" value="" x="83.9" y="1473.2" size="0.8" layer="27" font="vector" ratio="10" rot="R180" display="off"/>
 </element>
 <element name="R107" library="Resistor" package="RES0402" value="0 Ohms" x="130.5" y="40" smashed="yes" rot="R180">
 <attribute name="NAME" x="124.9" y="42.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
@@ -7666,24 +7666,24 @@ design rules under a new name.</description>
 <attribute name="OCLCSC" value="C5160777" x="71.3" y="59.5" size="1.778" layer="27" rot="R90" display="off"/>
 <attribute name="VALUE" x="75.745" y="55.69" size="1.27" layer="27" rot="R90"/>
 </element>
-<element name="R325" library="Resistor" package="RES0402" value="40.2 Ohms" x="90.5" y="74.4" smashed="yes">
+<element name="R325" library="Resistor" package="RES0402" value="DNP" x="90.5" y="74.4" smashed="yes">
 <attribute name="NAME" x="91.5" y="74.4" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="POWER" value="" x="90.3" y="74.6" size="1.778" layer="27" display="off"/>
 <attribute name="TOLERANCE" value="" x="90.3" y="74.6" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C329" library="Capacitor" package="CAP0402" value="4.7uF" x="92.7" y="70.4" smashed="yes">
+<element name="C331" library="Capacitor" package="CAP0402" value="4.7uF" x="92.7" y="70.4" smashed="yes">
 <attribute name="NAME" x="98.2" y="68.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="92.5" y="72.7" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C331" library="Capacitor" package="CAP0603" value="47uF" x="74.7" y="77.4" smashed="yes" rot="R180">
+<element name="C333" library="Capacitor" package="CAP0603" value="47uF" x="74.7" y="77.4" smashed="yes" rot="R180">
 <attribute name="NAME" x="73.4456" y="76.316" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="74.8" y="79" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C327" library="Capacitor" package="CAP0402" value="100nF" x="92.7" y="69.4" smashed="yes">
+<element name="C329" library="Capacitor" package="CAP0402" value="100nF" x="92.7" y="69.4" smashed="yes">
 <attribute name="NAME" x="98.2" y="67.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="92.5" y="69.7" size="1.778" layer="27" display="off"/>
 </element>
-<element name="C328" library="Capacitor" package="CAP0402" value="100nF" x="92.7" y="68.4" smashed="yes">
+<element name="C330" library="Capacitor" package="CAP0402" value="100nF" x="92.7" y="68.4" smashed="yes">
 <attribute name="NAME" x="98.2" y="66.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="92.5" y="68.7" size="1.778" layer="27" display="off"/>
 </element>
@@ -7815,6 +7815,14 @@ design rules under a new name.</description>
 <element name="C903" library="Capacitor" package="CAP0402" value="1uF" x="57.1" y="19.4" smashed="yes" rot="R180">
 <attribute name="NAME" x="53.5" y="19.4" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="57.3" y="19.2" size="1.778" layer="27" rot="R180" display="off"/>
+</element>
+<element name="C324" library="Capacitor" package="CAP0402" value="1uF" x="83.9" y="31.2" smashed="yes">
+<attribute name="NAME" x="85" y="30.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
+<attribute name="VOLTAGE" value="" x="83.7" y="31.4" size="1.778" layer="27" display="off"/>
+</element>
+<element name="C323" library="Capacitor" package="CAP0603" value="10uF" x="87" y="34.1" smashed="yes" rot="R270">
+<attribute name="NAME" x="87" y="35.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
+<attribute name="VOLTAGE" value="" x="87.3" y="34.3" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 </elements>
 <signals>
@@ -7986,9 +7994,10 @@ design rules under a new name.</description>
 <wire x1="52.3" y1="26.9" x2="52.3" y2="43.8" width="0.508" layer="14"/>
 <via x="71.56" y="92.565" extent="1-16" drill="0.2"/>
 <via x="80.7" y="33.1" extent="1-16" drill="0.3"/>
-<wire x1="95" y1="44.3" x2="83.8" y2="33.1" width="0.6096" layer="3"/>
-<wire x1="83.8" y1="33.1" x2="80.7" y2="33.1" width="0.6096" layer="3"/>
-<wire x1="95" y1="44.3" x2="95" y2="58.8" width="0.6096" layer="3"/>
+<wire x1="95" y1="44.5" x2="87" y2="36.5" width="0.6096" layer="3"/>
+<wire x1="87" y1="36.5" x2="83.6" y2="33.1" width="0.6096" layer="3"/>
+<wire x1="83.6" y1="33.1" x2="80.7" y2="33.1" width="0.6096" layer="3"/>
+<wire x1="95" y1="44.5" x2="95" y2="58.8" width="0.6096" layer="3"/>
 <via x="95" y="58.8" extent="1-16" drill="0.3"/>
 <wire x1="95" y1="58.8" x2="95" y2="73.3" width="0.6096" layer="16"/>
 <via x="95" y="73.3" extent="1-16" drill="0.3"/>
@@ -8058,6 +8067,44 @@ design rules under a new name.</description>
 <wire x1="135.2" y1="38.2" x2="137.7" y2="38.2" width="0.254" layer="14"/>
 <contactref element="FB301" pad="1"/>
 <wire x1="80.7" y1="32.2" x2="80.7" y2="33.1" width="0.6096" layer="1"/>
+<contactref element="C323" pad="1"/>
+<via x="87" y="36.5" extent="1-16" drill="0.3"/>
+<wire x1="87" y1="36.5" x2="87" y2="34.9" width="0.6096" layer="1"/>
+<wire x1="99.5" y1="86.7" x2="99.5" y2="87.5" width="0" layer="19" extent="1-1"/>
+<wire x1="99.5" y1="85.9" x2="99.5" y2="86.7" width="0" layer="19" extent="1-1"/>
+<wire x1="99.5" y1="85.1" x2="99.5" y2="85.9" width="0" layer="19" extent="1-1"/>
+<wire x1="98.7" y1="87.5" x2="99.5" y2="87.5" width="0" layer="19" extent="1-1"/>
+<wire x1="98.7" y1="86.7" x2="99.5" y2="86.7" width="0" layer="19" extent="1-1"/>
+<wire x1="97.9" y1="86.7" x2="98.7" y2="86.7" width="0" layer="19" extent="1-1"/>
+<wire x1="97.9" y1="87.5" x2="98.7" y2="87.5" width="0" layer="19" extent="1-1"/>
+<wire x1="98.7" y1="85.1" x2="99.5" y2="85.1" width="0" layer="19" extent="1-1"/>
+<wire x1="97.9" y1="85.1" x2="98.7" y2="85.1" width="0" layer="19" extent="1-1"/>
+<wire x1="98.7" y1="85.9" x2="99.5" y2="85.9" width="0" layer="19" extent="1-1"/>
+<wire x1="97.9" y1="85.9" x2="97.9" y2="86.7" width="0" layer="19" extent="1-1"/>
+<wire x1="98.1" y1="88.4" x2="97.9" y2="87.5" width="0" layer="19" extent="1-1"/>
+<wire x1="96.65" y1="86.95" x2="97.9" y2="86.7" width="0" layer="19" extent="1-1"/>
+<wire x1="98.25" y1="83.55" x2="97.9" y2="85.1" width="0" layer="19" extent="1-1"/>
+<wire x1="92.4" y1="78" x2="98.25" y2="83.55" width="0" layer="19" extent="1-15"/>
+<wire x1="83.54" y1="81.81" x2="92.4" y2="78" width="0" layer="19" extent="1-15"/>
+<wire x1="72" y1="82.7" x2="83.54" y2="81.81" width="0" layer="19" extent="1-1"/>
+<wire x1="68.4" y1="79.6" x2="68.1" y2="82.7" width="0" layer="19" extent="1-1"/>
+<wire x1="60.35" y1="77.8" x2="68.4" y2="79.6" width="0" layer="19" extent="1-1"/>
+<wire x1="61.35" y1="70.6" x2="60.35" y2="69.6" width="0" layer="19" extent="1-1"/>
+<wire x1="59" y1="65.9" x2="59.75" y2="69.6" width="0" layer="19" extent="1-1"/>
+<wire x1="67.1" y1="33.5" x2="80.7" y2="33.1" width="0" layer="19" extent="1-1"/>
+<wire x1="70.6" y1="44" x2="68.1" y2="44.5" width="0" layer="19" extent="1-1"/>
+<wire x1="66.1" y1="46.5" x2="67.546446875" y2="44.34644375" width="0" layer="19" extent="1-16"/>
+<wire x1="65.746446875" y1="48.853553125" x2="65.45355625" y2="47.14644375" width="0" layer="19" extent="16-16"/>
+<wire x1="63.746446875" y1="44.853553125" x2="65.6" y2="47" width="0" layer="19" extent="16-16"/>
+<wire x1="64.1" y1="42.5" x2="63.746446875" y2="44.853553125" width="0" layer="19" extent="1-16"/>
+<wire x1="61.746446875" y1="42.14644375" x2="63.45355625" y2="41.853553125" width="0" layer="19" extent="16-16"/>
+<wire x1="64.45355625" y1="40.14644375" x2="63.45355625" y2="41.853553125" width="0" layer="19" extent="16-16"/>
+<wire x1="59.6" y1="44" x2="61.746446875" y2="42.14644375" width="0" layer="19" extent="16-16"/>
+<wire x1="57.6" y1="44" x2="59.45355625" y2="44.14644375" width="0" layer="19" extent="16-16"/>
+<wire x1="56.1" y1="45.5" x2="57.45355625" y2="44.14644375" width="0" layer="19" extent="16-16"/>
+<wire x1="58.45355625" y1="47.14644375" x2="56.1" y2="45.5" width="0" layer="19" extent="16-16"/>
+<wire x1="61.45355625" y1="48.14644375" x2="59.1" y2="47.5" width="0" layer="19" extent="1-16"/>
+<wire x1="68.6" y1="48" x2="66.1" y2="46.5" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="GND">
 <contactref element="C203" pad="2"/>
@@ -8645,8 +8692,8 @@ design rules under a new name.</description>
 <contactref element="CON102" pad="10"/>
 <contactref element="CON102" pad="7"/>
 <contactref element="R301" pad="1"/>
-<contactref element="C325" pad="2"/>
-<contactref element="C326" pad="2"/>
+<contactref element="C327" pad="2"/>
+<contactref element="C328" pad="2"/>
 <contactref element="SHIELD401" pad="1"/>
 <contactref element="SHIELD401" pad="17"/>
 <contactref element="SHIELD401" pad="14"/>
@@ -8878,9 +8925,9 @@ design rules under a new name.</description>
 <contactref element="C1130" pad="2"/>
 <contactref element="C251" pad="2"/>
 <contactref element="C232" pad="2"/>
-<contactref element="C330" pad="2"/>
 <contactref element="C332" pad="2"/>
-<contactref element="C323" pad="2"/>
+<contactref element="C334" pad="2"/>
+<contactref element="C325" pad="2"/>
 <contactref element="U1203" pad="6"/>
 <contactref element="U1203" pad="9"/>
 <contactref element="C1204" pad="2"/>
@@ -9955,10 +10002,10 @@ design rules under a new name.</description>
 <via x="84.65" y="7.1" extent="1-16" drill="0.2"/>
 <via x="84.65" y="16.3" extent="1-16" drill="0.2"/>
 <via x="80.6" y="78" extent="1-16" drill="0.2"/>
-<contactref element="C329" pad="2"/>
 <contactref element="C331" pad="2"/>
-<contactref element="C327" pad="2"/>
-<contactref element="C328" pad="2"/>
+<contactref element="C333" pad="2"/>
+<contactref element="C329" pad="2"/>
+<contactref element="C330" pad="2"/>
 <via x="73.2" y="77.1" extent="1-16" drill="0.2"/>
 <via x="73.2" y="77.7" extent="1-16" drill="0.2"/>
 <via x="69.9" y="69.5" extent="1-16" drill="0.2"/>
@@ -10842,6 +10889,11 @@ design rules under a new name.</description>
 <via x="20.5" y="93.2" extent="1-16" drill="0.2"/>
 <contactref element="C903" pad="2"/>
 <via x="56.1" y="19.9" extent="1-16" drill="0.2"/>
+<contactref element="C324" pad="2"/>
+<contactref element="C323" pad="2"/>
+<via x="86.7" y="32.6" extent="1-16" drill="0.2"/>
+<via x="87.3" y="32.6" extent="1-16" drill="0.2"/>
+<via x="85" y="31.2" extent="1-16" drill="0.2"/>
 <wire x1="78.65" y1="-9.25" x2="77.65" y2="-9.25" width="0" layer="19" extent="1-16"/>
 <wire x1="78.4" y1="-5.4" x2="78.65" y2="-6.2" width="0" layer="19" extent="1-1"/>
 <wire x1="74.65" y1="-6.2" x2="74.5" y2="-5.4" width="0" layer="19" extent="16-16"/>
@@ -19299,8 +19351,8 @@ design rules under a new name.</description>
 </signal>
 <signal name="0V675_DDR3_VTT">
 <contactref element="R311" pad="1"/>
-<contactref element="C325" pad="1"/>
-<contactref element="C326" pad="1"/>
+<contactref element="C327" pad="1"/>
+<contactref element="C328" pad="1"/>
 <contactref element="U1205" pad="9"/>
 <contactref element="C1235" pad="1"/>
 <contactref element="C1238" pad="1"/>
@@ -19326,9 +19378,9 @@ design rules under a new name.</description>
 <contactref element="R329" pad="2"/>
 <contactref element="R318" pad="1"/>
 <contactref element="R304" pad="1"/>
-<contactref element="C324" pad="2"/>
-<contactref element="C330" pad="1"/>
+<contactref element="C326" pad="2"/>
 <contactref element="C332" pad="1"/>
+<contactref element="C334" pad="1"/>
 <contactref element="R321" pad="2"/>
 <wire x1="111.26" y1="58.6" x2="111.8" y2="58.6" width="0.254" layer="1"/>
 <wire x1="112" y1="58.4" x2="111.8" y2="58.6" width="0.254" layer="1"/>
@@ -19432,10 +19484,10 @@ design rules under a new name.</description>
 <wire x1="83.6" y1="77.4" x2="82.6" y2="77.4" width="0.3048" layer="1"/>
 <wire x1="82.6" y1="77.4" x2="81.6" y2="77.4" width="0.3048" layer="1"/>
 <wire x1="79.6" y1="77.4" x2="78.6" y2="77.4" width="0.3048" layer="1"/>
-<contactref element="C327" pad="1"/>
-<contactref element="C328" pad="1"/>
 <contactref element="C329" pad="1"/>
+<contactref element="C330" pad="1"/>
 <contactref element="C331" pad="1"/>
+<contactref element="C333" pad="1"/>
 <wire x1="68" y1="70.3" x2="67.3" y2="70.3" width="0.3048" layer="1"/>
 <via x="67.3" y="70.3" extent="1-16" drill="0.2"/>
 <wire x1="68" y1="69.1" x2="68" y2="70.3" width="0.3048" layer="1"/>
@@ -20645,7 +20697,7 @@ design rules under a new name.</description>
 <wire x1="42.754" y1="88.75" x2="43.204" y2="89.2" width="0.254" layer="1"/>
 </signal>
 <signal name="N$87">
-<contactref element="C324" pad="1"/>
+<contactref element="C326" pad="1"/>
 <contactref element="R312" pad="1"/>
 <contactref element="R320" pad="2"/>
 <wire x1="68" y1="66.1" x2="68" y2="67.1" width="0.3048" layer="1"/>
@@ -21952,10 +22004,10 @@ design rules under a new name.</description>
 <contactref element="R110" pad="1"/>
 <wire x1="123.46" y1="23.4" x2="121.9" y2="23.4" width="0.127" layer="1"/>
 <via x="121.9" y="23.4" extent="1-16" drill="0.2"/>
-<wire x1="84.4" y1="29.8" x2="86" y2="29.8" width="0.127" layer="1"/>
-<wire x1="86.7" y1="29.1" x2="86.7" y2="27.8" width="0.127" layer="1"/>
+<wire x1="84.4" y1="29.2" x2="86.1" y2="29.2" width="0.127" layer="1"/>
+<wire x1="86.7" y1="28.6" x2="86.7" y2="27.8" width="0.127" layer="1"/>
 <via x="86.7" y="27.8" extent="1-16" drill="0.2"/>
-<wire x1="86" y1="29.8" x2="86.7" y2="29.1" width="0.127" layer="1"/>
+<wire x1="86.1" y1="29.2" x2="86.7" y2="28.6" width="0.127" layer="1"/>
 <wire x1="86.7" y1="25.49466875" x2="86.7" y2="25.5" width="0.127" layer="16"/>
 <wire x1="86.7" y1="25.5" x2="86.7" y2="27.8" width="0.127" layer="16"/>
 <wire x1="121.9" y1="23.4" x2="120.00533125" y2="23.4" width="0.127" layer="16"/>
@@ -21976,10 +22028,10 @@ design rules under a new name.</description>
 <wire x1="121.7" y1="23" x2="121.4" y2="23.3" width="0.127" layer="1"/>
 <wire x1="121.4" y1="23.3" x2="121.4" y2="23.8" width="0.127" layer="1"/>
 <via x="121.4" y="23.8" extent="1-16" drill="0.2"/>
-<wire x1="84.4" y1="30.8" x2="86" y2="30.8" width="0.127" layer="1"/>
-<wire x1="87.3" y1="29.5" x2="87.3" y2="27.8" width="0.127" layer="1"/>
+<wire x1="84.4" y1="30.2" x2="86.2" y2="30.2" width="0.127" layer="1"/>
+<wire x1="87.3" y1="29.1" x2="87.3" y2="27.8" width="0.127" layer="1"/>
 <via x="87.3" y="27.8" extent="1-16" drill="0.2"/>
-<wire x1="86" y1="30.8" x2="87.3" y2="29.5" width="0.127" layer="1"/>
+<wire x1="86.2" y1="30.2" x2="87.3" y2="29.1" width="0.127" layer="1"/>
 <wire x1="87.3" y1="25.2" x2="87.3" y2="27.8" width="0.127" layer="16"/>
 <wire x1="120.1" y1="23.8" x2="121.4" y2="23.8" width="0.127" layer="16"/>
 <wire x1="113.1" y1="16.8" x2="97.1" y2="16.8" width="0.127" layer="16"/>
@@ -21994,8 +22046,8 @@ design rules under a new name.</description>
 <contactref element="R110" pad="2"/>
 <contactref element="U201" pad="A1"/>
 <wire x1="78.1" y1="28.5" x2="78.6" y2="29" width="0.3048" layer="1"/>
-<wire x1="78.6" y1="29" x2="79.4" y2="29.8" width="0.127" layer="1"/>
-<wire x1="79.4" y1="29.8" x2="83.4" y2="29.8" width="0.127" layer="1"/>
+<wire x1="78.6" y1="29" x2="78.8" y2="29.2" width="0.127" layer="1"/>
+<wire x1="78.8" y1="29.2" x2="83.4" y2="29.2" width="0.127" layer="1"/>
 </signal>
 <signal name="CM4_USB_OTG">
 <contactref element="U102" pad="101"/>
@@ -24454,8 +24506,8 @@ design rules under a new name.</description>
 <contactref element="R111" pad="2"/>
 <contactref element="U201" pad="B1"/>
 <wire x1="78.1" y1="29.5" x2="78.6" y2="30" width="0.3048" layer="1"/>
-<wire x1="78.6" y1="30" x2="79.4" y2="30.8" width="0.127" layer="1"/>
-<wire x1="79.4" y1="30.8" x2="83.4" y2="30.8" width="0.127" layer="1"/>
+<wire x1="78.6" y1="30" x2="78.8" y2="30.2" width="0.127" layer="1"/>
+<wire x1="78.8" y1="30.2" x2="83.4" y2="30.2" width="0.127" layer="1"/>
 </signal>
 <signal name="2V5_TRX_INTF_GPO_AUXDAC">
 <contactref element="U401" pad="B8"/>
@@ -24861,7 +24913,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="3V3_DDR3_CLK">
 <contactref element="U302" pad="6"/>
-<contactref element="C323" pad="1"/>
+<contactref element="C325" pad="1"/>
 <contactref element="U302" pad="1"/>
 <wire x1="83.4" y1="32.2" x2="83.4" y2="32.645" width="0.508" layer="1"/>
 <wire x1="83.4" y1="32.645" x2="83.175" y2="32.87" width="0.508" layer="1"/>
@@ -24869,6 +24921,8 @@ design rules under a new name.</description>
 <wire x1="84.625" y1="33.47" x2="83.175" y2="33.47" width="0.127" layer="1"/>
 <contactref element="FB301" pad="2"/>
 <wire x1="82.3" y1="32.2" x2="83.4" y2="32.2" width="0.508" layer="1"/>
+<contactref element="C324" pad="1"/>
+<wire x1="83.4" y1="31.2" x2="83.4" y2="32.2" width="0.508" layer="1"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
