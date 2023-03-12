@@ -5280,7 +5280,7 @@ design rules under a new name.</description>
 <attribute name="VOLTAGE" value="" x="-6.62" y="137.95" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="C1124" library="Capacitor" package="CAP1206" value="100uF" x="128" y="83.5" smashed="yes" rot="R180">
-<attribute name="NAME" x="125.5" y="83.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR180" align="center-left"/>
+<attribute name="NAME" x="125.6" y="82" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="108.95" y="139.38" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
 <element name="C1256" library="Capacitor" package="CAP0402" value="100nF" x="97.4" y="91.3" smashed="yes" rot="R90">
@@ -5423,12 +5423,12 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="35.1" y="34.4" size="1.778" layer="28" rot="MR90" display="off"/>
 <attribute name="TOLERANCE" value="" x="-37.29" y="96.63" size="1.778" layer="28" rot="MR90" display="off"/>
 </element>
-<element name="R401" library="Resistor" package="RES0402" value="25 Ohms" x="47.7" y="34.6" smashed="yes">
+<element name="R401" library="Resistor" package="RES0402" value="25.5 Ohms" x="47.7" y="34.6" smashed="yes">
 <attribute name="NAME" x="46.9" y="33.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="POWER" value="" x="47.7" y="34.6" size="1.778" layer="27" display="off"/>
 <attribute name="TOLERANCE" value="" x="181.05" y="-54.3" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R402" library="Resistor" package="RES0402" value="25 Ohms" x="46.2" y="35.1" smashed="yes" rot="R270">
+<element name="R402" library="Resistor" package="RES0402" value="25.5 Ohms" x="46.2" y="35.1" smashed="yes" rot="R270">
 <attribute name="NAME" x="46.2" y="34.1" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="POWER" value="" x="46.2" y="35.1" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="TOLERANCE" value="" x="-47.78" y="18.59" size="1.778" layer="27" rot="R270" display="off"/>
@@ -5884,7 +5884,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="25.384" y="15.4456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="26.6" y="16.7" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="R507" library="Resistor" package="RES0402" value="TBD Ohms" x="33.5" y="16.3" smashed="yes" rot="R180">
+<element name="R507" library="Resistor" package="RES0402" value="300 Ohms" x="33.5" y="16.3" smashed="yes" rot="R180">
 <attribute name="NAME" x="32.2" y="15.4" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="POWER" value="" x="33.5" y="16.3" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="TOLERANCE" value="" x="33.5" y="16.3" size="1.778" layer="27" rot="R180" display="off"/>
@@ -5915,7 +5915,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="47.5456" y="51.216" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="48.9" y="62.5" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R508" library="Resistor" package="RES0402" value="TBD Ohms" x="49.7" y="58.7" smashed="yes" rot="R180">
+<element name="R508" library="Resistor" package="RES0402" value="300 Ohms" x="49.7" y="58.7" smashed="yes" rot="R180">
 <attribute name="NAME" x="50.9" y="59.3" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="POWER" value="" x="49.7" y="63.8" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="TOLERANCE" value="" x="49.7" y="63.8" size="1.778" layer="27" rot="R180" display="off"/>
@@ -5946,7 +5946,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="16.016" y="28.3544" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="26.2" y="29.8" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="R501" library="Resistor" package="RES0402" value="TBD Ohms" x="22.9" y="29.6" smashed="yes" rot="R180">
+<element name="R501" library="Resistor" package="RES0402" value="470 Ohms" x="22.9" y="29.6" smashed="yes" rot="R180">
 <attribute name="NAME" x="21.8" y="28.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="POWER" value="" x="22.9" y="34.7" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="TOLERANCE" value="" x="22.9" y="34.7" size="1.778" layer="27" rot="R180" display="off"/>
@@ -5977,7 +5977,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="22.584" y="50.7456" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="VOLTAGE" value="" x="12.4" y="49.3" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R502" library="Resistor" package="RES0402" value="TBD Ohms" x="16.2" y="49.8" smashed="yes" rot="R270">
+<element name="R502" library="Resistor" package="RES0402" value="470 Ohms" x="16.2" y="49.8" smashed="yes" rot="R270">
 <attribute name="NAME" x="16.2" y="50.8" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="POWER" value="" x="11.1" y="49.8" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="TOLERANCE" value="" x="11.1" y="49.8" size="1.778" layer="27" rot="R270" display="off"/>
@@ -6213,7 +6213,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="86.0825" y="13.114" size="0.8" layer="25" font="vector" ratio="10" rot="R270" align="center-left"/>
 <attribute name="VALUE" x="80.611" y="12.914" size="0.8" layer="27" font="vector" ratio="10" rot="R270" align="center-left"/>
 </element>
-<element name="R104" library="Resistor" package="RES0402" value="TBD Ohms" x="83.7" y="8.2" smashed="yes" rot="R90">
+<element name="R104" library="Resistor" package="RES0402" value="1.2K Ohms" x="83.7" y="8.2" smashed="yes" rot="R90">
 <attribute name="NAME" x="82.8" y="6.5" size="0.8" layer="25" font="vector" ratio="10" rot="SR90" align="center-left"/>
 <attribute name="POWER" value="" x="83.2" y="8.2" size="2" layer="27" rot="R90" display="off"/>
 <attribute name="TOLERANCE" value="" x="83.2" y="8.2" size="2" layer="27" rot="R90" display="off"/>
@@ -6779,7 +6779,7 @@ design rules under a new name.</description>
 <attribute name="POWER" value="" x="119.6" y="77.35" size="1.778" layer="27" display="off"/>
 <attribute name="TOLERANCE" value="" x="119.6" y="77.35" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R1010" library="Resistor" package="RES0402" value="TBD Ohms" x="127.5" y="77.8" smashed="yes" rot="R180">
+<element name="R1010" library="Resistor" package="RES0402" value="470 Ohms" x="127.5" y="77.8" smashed="yes" rot="R180">
 <attribute name="NAME" x="126.5" y="76.9" size="0.8" layer="25" font="vector" ratio="10" rot="SR0" align="center-left"/>
 <attribute name="POWER" value="" x="128" y="77.3" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="TOLERANCE" value="" x="128" y="77.3" size="1.778" layer="27" rot="R180" display="off"/>
@@ -7404,6 +7404,7 @@ design rules under a new name.</description>
 <attribute name="TOLERANCE" value="" x="-1365" y="84.2" size="0.8" layer="27" font="vector" ratio="10" rot="R270" display="off"/>
 </element>
 <element name="R1123" library="Resistor" package="RES0402" value="DNP" x="117.5" y="83.7" smashed="yes" rot="R270">
+<attribute name="NAME" x="117.5" y="82.7" size="0.8" layer="25" font="vector" ratio="10" rot="SR270" align="center-left"/>
 <attribute name="POWER" value="" x="-1369.5" y="84.2" size="0.8" layer="27" font="vector" ratio="10" rot="R270" display="off"/>
 <attribute name="TOLERANCE" value="" x="-1369.5" y="84.2" size="0.8" layer="27" font="vector" ratio="10" rot="R270" display="off"/>
 </element>
@@ -19769,8 +19770,8 @@ design rules under a new name.</description>
 <vertex x="66.4" y="32.2"/>
 <vertex x="66.4" y="31.8"/>
 <vertex x="67.1" y="31.1"/>
-<vertex x="67.1" y="26.5"/>
-<vertex x="73.3" y="20.3"/>
+<vertex x="67.1" y="25.1"/>
+<vertex x="71.9" y="20.3"/>
 <vertex x="95.6" y="20.3"/>
 <vertex x="106.2" y="30.9"/>
 <vertex x="106.2" y="46.4"/>

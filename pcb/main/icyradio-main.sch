@@ -14731,8 +14731,8 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C402" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="DNP"/>
 <part name="GND72" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND73" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R402" library="Resistor" deviceset="RESISTOR" device="-0402" value="25 Ohms"/>
-<part name="R401" library="Resistor" deviceset="RESISTOR" device="-0402" value="25 Ohms"/>
+<part name="R402" library="Resistor" deviceset="RESISTOR" device="-0402" value="25.5 Ohms"/>
+<part name="R401" library="Resistor" deviceset="RESISTOR" device="-0402" value="25.5 Ohms"/>
 <part name="C711" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="100nF"/>
 <part name="GND74" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND76" library="Supply Symbol" deviceset="GND" device=""/>
@@ -14949,7 +14949,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C553" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="18pF"/>
 <part name="C519" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
 <part name="GND240" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R507" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R507" library="Resistor" deviceset="RESISTOR" device="-0402" value="300 Ohms"/>
 <part name="GND241" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND250" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C521" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
@@ -14963,7 +14963,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="U504" library="Microchip" deviceset="MIC20*9" device="" technology="1"/>
 <part name="C520" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
 <part name="GND253" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R508" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R508" library="Resistor" deviceset="RESISTOR" device="-0402" value="300 Ohms"/>
 <part name="GND254" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND255" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C522" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
@@ -14977,7 +14977,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="U501" library="Microchip" deviceset="MIC20*9" device="" technology="1"/>
 <part name="C503" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
 <part name="GND258" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R501" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R501" library="Resistor" deviceset="RESISTOR" device="-0402" value="470 Ohms"/>
 <part name="GND259" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND260" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C517" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
@@ -14991,7 +14991,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="U502" library="Microchip" deviceset="MIC20*9" device="" technology="1"/>
 <part name="C504" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
 <part name="GND263" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R502" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R502" library="Resistor" deviceset="RESISTOR" device="-0402" value="470 Ohms"/>
 <part name="GND264" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND265" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C518" library="Capacitor" deviceset="CAPACITOR" device="-0603" value="10uF"/>
@@ -15099,7 +15099,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="GND150" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="U101" library="Microchip" deviceset="MIC20*9" device="" technology="1"/>
 <part name="GND151" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R104" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R104" library="Resistor" deviceset="RESISTOR" device="-0402" value="1.2K Ohms"/>
 <part name="GND171" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="C105" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10uF"/>
 <part name="GND172" library="Supply Symbol" deviceset="GND" device=""/>
@@ -15355,7 +15355,7 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="C1014" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="1uF"/>
 <part name="5V00015" library="Supply Symbol" deviceset="5V0" device=""/>
 <part name="R1009" library="Resistor" deviceset="RESISTOR" device="-0402" value="10K Ohms"/>
-<part name="R1010" library="Resistor" deviceset="RESISTOR" device="-0402" value="TBD Ohms"/>
+<part name="R1010" library="Resistor" deviceset="RESISTOR" device="-0402" value="470 Ohms"/>
 <part name="GND130" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND132" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND134" library="Supply Symbol" deviceset="GND" device=""/>
