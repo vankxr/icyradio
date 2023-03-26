@@ -1,14 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Feb 26 17:45:21 2023" VIVADOVERSION="2021.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sun Mar 26 23:15:22 2023" VIVADOVERSION="2021.1">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="icyradio" PACKAGE="fgg484" SPEEDGRADE="-2"/>
 
   <EXTERNALPORTS>
-    <PORT DIR="I" NAME="RESETn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_RESETn">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="ext_reset_combiner" PORT="Op1"/>
-      </CONNECTIONS>
-    </PORT>
     <PORT DIR="I" LEFT="11" NAME="TRX_P1_RXDATA" RIGHT="0" SIGIS="data" SIGNAME="External_Ports_TRX_P1_RXDATA">
       <CONNECTIONS>
         <CONNECTION INSTANCE="axi_ad9361" PORT="rx_data_in"/>
@@ -51,49 +46,31 @@
     </PORT>
     <PORT DIR="I" NAME="PCIe_RESETn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_PCIe_RESETn">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="ext_reset_combiner" PORT="Op2"/>
+        <CONNECTION INSTANCE="mig_7series_0" PORT="sys_rst"/>
+        <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="ext_reset_in"/>
+        <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="ext_reset_in"/>
+        <CONNECTION INSTANCE="clk_wiz_0" PORT="resetn"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="0" NAME="PCIe_CLKREQn" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="GND_0" PORT="dout"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT CLKFREQUENCY="49152000" DIR="I" NAME="I2S_BCLK_IN" SIGIS="clk" SIGNAME="External_Ports_I2S_BCLK_IN">
+    <PORT CLKFREQUENCY="49152000" DIR="I" NAME="FPGA_CLK1" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK1">
       <CONNECTIONS>
         <CONNECTION INSTANCE="axi_i2s_adi_0" PORT="data_clk_i"/>
       </CONNECTIONS>
     </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" NAME="TRX_CLK_OUT" SIGIS="clk"/>
-    <PORT DIR="I" LEFT="7" NAME="TRX_CTRL_OUT" RIGHT="0" SIGIS="undef"/>
-    <PORT DIR="O" LEFT="3" NAME="TRX_CTRL_IN" RIGHT="0" SIGIS="undef" SIGNAME="GND_1_dout">
+    <PORT DIR="I" LEFT="7" NAME="TRX_CTRL_OUT" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_TRX_CTRL_OUT">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="GND_1" PORT="dout"/>
+        <CONNECTION INSTANCE="gpio_concat_0" PORT="In0"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="0" NAME="TRX_EN_AGC" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
+    <PORT DIR="O" LEFT="3" NAME="TRX_CTRL_IN" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_ctrl_out_Dout">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="GND_0" PORT="dout"/>
+        <CONNECTION INSTANCE="gpio_slice_trx_ctrl_out" PORT="Dout"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="0" NAME="TRX_RESETn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
+    <PORT CLKFREQUENCY="50000000" DIR="I" NAME="FPGA_CLK0" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK0">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="peripheral_aresetn"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="TRX_SYNC_IN" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="GND_0" PORT="dout"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="CODEC_RESETn" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_0_gpo">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_0" PORT="gpo"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="0" NAME="PM_I2C_EN" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_gpo">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_iic_1" PORT="gpo"/>
+        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
       </CONNECTIONS>
     </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" LEFT="0" NAME="PCIe_REFCLK_clk_p" RIGHT="0" SIGIS="clk" SIGNAME="util_ds_buf_0_IBUF_DS_P">
@@ -114,36 +91,6 @@
     <PORT DIR="I" NAME="ADCIN_MAIN_v_p" SIGIS="undef" SIGNAME="xadc_wiz_0_vp_in">
       <CONNECTIONS>
         <CONNECTION INSTANCE="xadc_wiz_0" PORT="vp_in"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" LEFT="1" NAME="GPIO0_tri_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="1" NAME="GPIO0_tri_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="1" NAME="GPIO0_tri_t" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_t"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="I" LEFT="1" NAME="GPIO1_tri_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_i">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio2_io_i"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="1" NAME="GPIO1_tri_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_o">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio2_io_o"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT DIR="O" LEFT="1" NAME="GPIO1_tri_t" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_t">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio2_io_t"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="O" LEFT="0" NAME="CODEC_I2S_bclk" RIGHT="0" SIGIS="undef" SIGNAME="axi_i2s_adi_0_bclk_o">
@@ -511,9 +458,49 @@
         <CONNECTION INSTANCE="mig_7series_0" PORT="ddr3_odt"/>
       </CONNECTIONS>
     </PORT>
-    <PORT CLKFREQUENCY="50000000" DIR="I" NAME="FPGA_CLK0" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK0">
+    <PORT DIR="O" LEFT="0" NAME="TRX_EN_AGC" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_en_agc_Dout">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
+        <CONNECTION INSTANCE="gpio_slice_trx_en_agc" PORT="Dout"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="CODEC_RSTn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst" SIGNAME="axi_iic_0_gpo">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_0" PORT="gpo"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="PCIe_CLKREQn" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="GND_0" PORT="dout"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="PM_I2C_EN" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_1_gpo">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_iic_1" PORT="gpo"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="TRX_RESETn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="peripheral_aresetn"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" LEFT="0" NAME="TRX_SYNC_IN" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_sync_in_Dout">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="gpio_slice_trx_sync_in" PORT="Dout"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="I" NAME="FLASH_QSPI_sck_i" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_i">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_0" PORT="sck_i"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="FLASH_QSPI_sck_o" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_o">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_0" PORT="sck_o"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT DIR="O" NAME="FLASH_QSPI_sck_t" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_t">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="axi_quad_spi_0" PORT="sck_t"/>
       </CONNECTIONS>
     </PORT>
   </EXTERNALPORTS>
@@ -533,20 +520,6 @@
         <PORTMAP LOGICAL="rxp" PHYSICAL="PCIe_rxp"/>
         <PORTMAP LOGICAL="txn" PHYSICAL="PCIe_txn"/>
         <PORTMAP LOGICAL="txp" PHYSICAL="PCIe_txp"/>
-      </PORTMAPS>
-    </BUSINTERFACE>
-    <BUSINTERFACE BUSNAME="axi_gpio_0_GPIO" NAME="GPIO0" TYPE="INITIATOR">
-      <PORTMAPS>
-        <PORTMAP LOGICAL="TRI_I" PHYSICAL="GPIO0_tri_i"/>
-        <PORTMAP LOGICAL="TRI_O" PHYSICAL="GPIO0_tri_o"/>
-        <PORTMAP LOGICAL="TRI_T" PHYSICAL="GPIO0_tri_t"/>
-      </PORTMAPS>
-    </BUSINTERFACE>
-    <BUSINTERFACE BUSNAME="axi_gpio_0_GPIO2" NAME="GPIO1" TYPE="INITIATOR">
-      <PORTMAPS>
-        <PORTMAP LOGICAL="TRI_I" PHYSICAL="GPIO1_tri_i"/>
-        <PORTMAP LOGICAL="TRI_O" PHYSICAL="GPIO1_tri_o"/>
-        <PORTMAP LOGICAL="TRI_T" PHYSICAL="GPIO1_tri_t"/>
       </PORTMAPS>
     </BUSINTERFACE>
     <BUSINTERFACE BUSNAME="axi_iic_0_IIC" NAME="AUDIO_I2C" TYPE="INITIATOR">
@@ -576,6 +549,9 @@
         <PORTMAP LOGICAL="SS_I" PHYSICAL="FLASH_QSPI_ss_i"/>
         <PORTMAP LOGICAL="SS_O" PHYSICAL="FLASH_QSPI_ss_o"/>
         <PORTMAP LOGICAL="SS_T" PHYSICAL="FLASH_QSPI_ss_t"/>
+        <PORTMAP LOGICAL="SCK_I" PHYSICAL="FLASH_QSPI_sck_i"/>
+        <PORTMAP LOGICAL="SCK_O" PHYSICAL="FLASH_QSPI_sck_o"/>
+        <PORTMAP LOGICAL="SCK_T" PHYSICAL="FLASH_QSPI_sck_t"/>
       </PORTMAPS>
     </BUSINTERFACE>
     <BUSINTERFACE BUSNAME="axi_i2s_adi_0_i2s" NAME="CODEC_I2S" TYPE="INITIATOR">
@@ -680,39 +656,14 @@
       <PORTS>
         <PORT DIR="O" LEFT="0" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="GND_0_dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_CLKREQn"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="TRX_EN_AGC"/>
             <CONNECTION INSTANCE="irq_concat_0" PORT="In14"/>
             <CONNECTION INSTANCE="irq_concat_0" PORT="In15"/>
-            <CONNECTION INSTANCE="axi_ad9361" PORT="up_enable"/>
-            <CONNECTION INSTANCE="axi_ad9361" PORT="up_txnrx"/>
             <CONNECTION INSTANCE="axi_pcie_0" PORT="INTX_MSI_Request"/>
-            <CONNECTION INSTANCE="axi_quad_spi_0" PORT="gsr"/>
-            <CONNECTION INSTANCE="axi_quad_spi_0" PORT="gts"/>
-            <CONNECTION INSTANCE="axi_quad_spi_0" PORT="usrcclkts"/>
-            <CONNECTION INSTANCE="axi_quad_spi_0" PORT="usrdonets"/>
             <CONNECTION INSTANCE="irq_concat_0" PORT="In9"/>
             <CONNECTION INSTANCE="irq_concat_1" PORT="In0"/>
             <CONNECTION INSTANCE="irq_concat_1" PORT="In1"/>
             <CONNECTION INSTANCE="irq_concat_1" PORT="In2"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="TRX_SYNC_IN"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
-    </MODULE>
-    <MODULE COREREVISION="7" FULLNAME="/GND_1" HWVERSION="1.1" INSTANCE="GND_1" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlconstant" VLNV="xilinx.com:ip:xlconstant:1.1">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="CONST_WIDTH" VALUE="4"/>
-        <PARAMETER NAME="CONST_VAL" VALUE="0x0"/>
-        <PARAMETER NAME="Component_Name" VALUE="icyradio_GND_1_2"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="O" LEFT="3" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="GND_1_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="TRX_CTRL_IN"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_CLKREQn"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -730,6 +681,23 @@
         <PORT DIR="O" LEFT="12" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="GND_2_dout">
           <CONNECTIONS>
             <CONNECTION INSTANCE="irq_concat_1" PORT="In4"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="7" FULLNAME="/GND_3" HWVERSION="1.1" INSTANCE="GND_3" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlconstant" VLNV="xilinx.com:ip:xlconstant:1.1">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="CONST_WIDTH" VALUE="24"/>
+        <PARAMETER NAME="CONST_VAL" VALUE="0x000000"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_GND_2_0"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="O" LEFT="23" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="GND_3_dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="gpio_concat_0" PORT="In1"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -765,7 +733,6 @@
         <PORT DIR="O" LEFT="0" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="VCC_0_dout">
           <CONNECTIONS>
             <CONNECTION INSTANCE="logic_and_0" PORT="Op1"/>
-            <CONNECTION INSTANCE="axi_quad_spi_0" PORT="usrdoneo"/>
             <CONNECTION INSTANCE="logic_and_2" PORT="Op1"/>
           </CONNECTIONS>
         </PORT>
@@ -1028,7 +995,7 @@
         <PARAMETER NAME="IO_DELAY_GROUP" VALUE="dev_if_delay_group"/>
         <PARAMETER NAME="MIMO_ENABLE" VALUE="0"/>
         <PARAMETER NAME="USE_SSI_CLK" VALUE="1"/>
-        <PARAMETER NAME="DELAY_REFCLK_FREQUENCY" VALUE="204"/>
+        <PARAMETER NAME="DELAY_REFCLK_FREQUENCY" VALUE="200"/>
         <PARAMETER NAME="RX_NODPA" VALUE="0"/>
         <PARAMETER NAME="Component_Name" VALUE="icyradio_axi_ad9361_2"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
@@ -1086,9 +1053,9 @@
             <CONNECTION INSTANCE="irq_concat_0" PORT="In2"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="204923077" DIR="I" NAME="delay_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_addn_clk_0">
+        <PORT CLKFREQUENCY="200000000" DIR="I" NAME="delay_clk" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="ui_addn_clk_0"/>
+            <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_out2"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="100000000" DIR="O" NAME="l_clk" SIGIS="clk" SIGNAME="axi_ad9361_l_clk">
@@ -1332,14 +1299,14 @@
             <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M02_AXI_rready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="up_enable" SIGIS="undef" SIGNAME="GND_0_dout">
+        <PORT DIR="I" NAME="up_enable" SIGIS="undef" SIGNAME="gpio_slice_trx_up_enable_Dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_up_enable" PORT="Dout"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="up_txnrx" SIGIS="undef" SIGNAME="GND_0_dout">
+        <PORT DIR="I" NAME="up_txnrx" SIGIS="undef" SIGNAME="gpio_slice_trx_up_txnrx_Dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_up_txnrx" PORT="Dout"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" LEFT="31" NAME="up_dac_gpio_in" RIGHT="0" SIGIS="undef"/>
@@ -6301,7 +6268,7 @@
             <REGISTER NAME="GPIO_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x0"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6314,14 +6281,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x4"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6334,14 +6301,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x8"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6354,14 +6321,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0xC"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6374,7 +6341,7 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
@@ -6467,7 +6434,7 @@
             <REGISTER NAME="GPIO_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x0"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6480,14 +6447,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x4"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6500,14 +6467,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x8"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6520,14 +6487,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0xC"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6540,7 +6507,7 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
@@ -6633,7 +6600,7 @@
             <REGISTER NAME="GPIO_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x0"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6646,14 +6613,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x4"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6666,14 +6633,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x8"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6686,14 +6653,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0xC"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6706,7 +6673,7 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
@@ -6799,7 +6766,7 @@
             <REGISTER NAME="GPIO_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x0"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6812,14 +6779,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-1 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x4"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6832,14 +6799,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_DATA">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO Data register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0x8"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6852,14 +6819,14 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
             <REGISTER NAME="GPIO2_TRI">
               <PROPERTY NAME="DESCRIPTION" VALUE="Channel-2 AXI GPIO 3-State Control register"/>
               <PROPERTY NAME="ADDRESS_OFFSET" VALUE="0xC"/>
-              <PROPERTY NAME="SIZE" VALUE="2"/>
+              <PROPERTY NAME="SIZE" VALUE="32"/>
               <PROPERTY NAME="ACCESS" VALUE="read-write"/>
               <PROPERTY NAME="IS_ENABLED" VALUE="true"/>
               <PROPERTY NAME="RESET_VALUE" VALUE="0x0"/>
@@ -6872,7 +6839,7 @@
                   <PROPERTY NAME="WRITE_CONSTRAINT" VALUE="0"/>
                   <PROPERTY NAME="READ_ACTION" VALUE=""/>
                   <PROPERTY NAME="BIT_OFFSET" VALUE="0"/>
-                  <PROPERTY NAME="BIT_WIDTH" VALUE="2"/>
+                  <PROPERTY NAME="BIT_WIDTH" VALUE="32"/>
                 </FIELD>
               </FIELDS>
             </REGISTER>
@@ -6963,8 +6930,8 @@
         <PARAMETER NAME="C_FAMILY" VALUE="artix7"/>
         <PARAMETER NAME="C_S_AXI_ADDR_WIDTH" VALUE="9"/>
         <PARAMETER NAME="C_S_AXI_DATA_WIDTH" VALUE="32"/>
-        <PARAMETER NAME="C_GPIO_WIDTH" VALUE="2"/>
-        <PARAMETER NAME="C_GPIO2_WIDTH" VALUE="2"/>
+        <PARAMETER NAME="C_GPIO_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="C_GPIO2_WIDTH" VALUE="32"/>
         <PARAMETER NAME="C_ALL_INPUTS" VALUE="0"/>
         <PARAMETER NAME="C_ALL_INPUTS_2" VALUE="0"/>
         <PARAMETER NAME="C_ALL_OUTPUTS" VALUE="0"/>
@@ -7084,36 +7051,24 @@
             <CONNECTION INSTANCE="irq_concat_0" PORT="In3"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="1" NAME="gpio_io_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_i">
+        <PORT DIR="I" LEFT="31" NAME="gpio_io_i" RIGHT="0" SIGIS="undef" SIGNAME="gpio_concat_0_dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO0_tri_i"/>
+            <CONNECTION INSTANCE="gpio_concat_0" PORT="dout"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="1" NAME="gpio_io_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+        <PORT DIR="O" LEFT="31" NAME="gpio_io_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO0_tri_o"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_ctrl_out" PORT="Din"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_sync_in" PORT="Din"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_en_agc" PORT="Din"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_up_enable" PORT="Din"/>
+            <CONNECTION INSTANCE="gpio_slice_trx_up_txnrx" PORT="Din"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="1" NAME="gpio_io_t" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_t">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO0_tri_t"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" LEFT="1" NAME="gpio2_io_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_i">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO1_tri_i"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="1" NAME="gpio2_io_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_o">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO1_tri_o"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="1" NAME="gpio2_io_t" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio2_io_t">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="icyradio_imp" PORT="GPIO1_tri_t"/>
-          </CONNECTIONS>
-        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="gpio_io_t" RIGHT="0" SIGIS="undef"/>
+        <PORT DIR="I" LEFT="31" NAME="gpio2_io_i" RIGHT="0" SIGIS="undef"/>
+        <PORT DIR="O" LEFT="31" NAME="gpio2_io_o" RIGHT="0" SIGIS="undef"/>
+        <PORT DIR="O" LEFT="31" NAME="gpio2_io_t" RIGHT="0" SIGIS="undef"/>
       </PORTS>
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="axi_peripheral_interconnect_M03_AXI" DATAWIDTH="32" NAME="S_AXI" TYPE="SLAVE" VLNV="xilinx.com:interface:aximm:1.0">
@@ -7168,14 +7123,14 @@
             <PORTMAP LOGICAL="WVALID" PHYSICAL="s_axi_wvalid"/>
           </PORTMAPS>
         </BUSINTERFACE>
-        <BUSINTERFACE BUSNAME="axi_gpio_0_GPIO" NAME="GPIO" TYPE="INITIATOR" VLNV="xilinx.com:interface:gpio:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="GPIO" TYPE="INITIATOR" VLNV="xilinx.com:interface:gpio:1.0">
           <PORTMAPS>
             <PORTMAP LOGICAL="TRI_I" PHYSICAL="gpio_io_i"/>
             <PORTMAP LOGICAL="TRI_O" PHYSICAL="gpio_io_o"/>
             <PORTMAP LOGICAL="TRI_T" PHYSICAL="gpio_io_t"/>
           </PORTMAPS>
         </BUSINTERFACE>
-        <BUSINTERFACE BUSNAME="axi_gpio_0_GPIO2" NAME="GPIO2" TYPE="INITIATOR" VLNV="xilinx.com:interface:gpio:1.0">
+        <BUSINTERFACE BUSNAME="__NOC__" NAME="GPIO2" TYPE="INITIATOR" VLNV="xilinx.com:interface:gpio:1.0">
           <PORTMAPS>
             <PORTMAP LOGICAL="TRI_I" PHYSICAL="gpio2_io_i"/>
             <PORTMAP LOGICAL="TRI_O" PHYSICAL="gpio2_io_o"/>
@@ -7215,9 +7170,9 @@
         <PARAMETER NAME="C_HIGHADDR" VALUE="0x40009FFF"/>
       </PARAMETERS>
       <PORTS>
-        <PORT CLKFREQUENCY="49152000" DIR="I" NAME="data_clk_i" SIGIS="clk" SIGNAME="External_Ports_I2S_BCLK_IN">
+        <PORT CLKFREQUENCY="49152000" DIR="I" NAME="data_clk_i" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK1">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="I2S_BCLK_IN"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="FPGA_CLK1"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="bclk_o" RIGHT="0" SIGIS="undef" SIGNAME="axi_i2s_adi_0_bclk_o">
@@ -10621,7 +10576,7 @@
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="gpo" RIGHT="0" SIGIS="undef" SIGNAME="axi_iic_0_gpo">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="CODEC_RESETn"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="CODEC_RSTn"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -29909,7 +29864,7 @@
         <PARAMETER NAME="C_NUM_TRANSFER_BITS" VALUE="8"/>
         <PARAMETER NAME="C_NEW_SEQ_EN" VALUE="1"/>
         <PARAMETER NAME="C_SPI_MODE" VALUE="2"/>
-        <PARAMETER NAME="C_USE_STARTUP" VALUE="1"/>
+        <PARAMETER NAME="C_USE_STARTUP" VALUE="0"/>
         <PARAMETER NAME="C_USE_STARTUP_EXT" VALUE="0"/>
         <PARAMETER NAME="C_SPI_MEMORY" VALUE="1"/>
         <PARAMETER NAME="C_S_AXI_ADDR_WIDTH" VALUE="7"/>
@@ -29917,9 +29872,9 @@
         <PARAMETER NAME="C_S_AXI4_ADDR_WIDTH" VALUE="24"/>
         <PARAMETER NAME="C_S_AXI4_DATA_WIDTH" VALUE="32"/>
         <PARAMETER NAME="C_S_AXI4_ID_WIDTH" VALUE="1"/>
-        <PARAMETER NAME="C_SHARED_STARTUP" VALUE="1"/>
+        <PARAMETER NAME="C_SHARED_STARTUP" VALUE="0"/>
         <PARAMETER NAME="C_LSB_STUP" VALUE="0"/>
-        <PARAMETER NAME="C_USE_STARTUP_INT" VALUE="1"/>
+        <PARAMETER NAME="C_USE_STARTUP_INT" VALUE="0"/>
         <PARAMETER NAME="UC_FAMILY" VALUE="0"/>
         <PARAMETER NAME="Component_Name" VALUE="icyradio_axi_quad_spi_0_0"/>
         <PARAMETER NAME="Master_mode" VALUE="1"/>
@@ -30260,6 +30215,21 @@
             <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_io3_t"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="I" NAME="sck_i" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_i">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_sck_i"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="sck_o" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_sck_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="sck_t" SIGIS="undef" SIGNAME="axi_quad_spi_0_sck_t">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_sck_t"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="I" LEFT="0" NAME="ss_i" RIGHT="0" SIGIS="undef" SIGNAME="axi_quad_spi_0_ss_i">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_ss_i"/>
@@ -30273,37 +30243,6 @@
         <PORT DIR="O" NAME="ss_t" SIGIS="undef" SIGNAME="axi_quad_spi_0_ss_t">
           <CONNECTIONS>
             <CONNECTION INSTANCE="icyradio_imp" PORT="FLASH_QSPI_ss_t"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="cfgclk" SIGIS="clk"/>
-        <PORT DIR="O" NAME="cfgmclk" SIGIS="clk"/>
-        <PORT DIR="O" NAME="eos" SIGIS="undef"/>
-        <PORT DIR="O" NAME="preq" SIGIS="undef"/>
-        <PORT DIR="I" NAME="clk" SIGIS="clk"/>
-        <PORT DIR="I" NAME="gsr" SIGIS="undef" SIGNAME="GND_0_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="gts" SIGIS="undef" SIGNAME="GND_0_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="keyclearb" SIGIS="undef"/>
-        <PORT DIR="I" NAME="usrcclkts" SIGIS="undef" SIGNAME="GND_0_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="usrdoneo" SIGIS="undef" SIGNAME="VCC_0_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="VCC_0" PORT="dout"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="usrdonets" SIGIS="undef" SIGNAME="GND_0_dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="GND_0" PORT="dout"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" NAME="ip2intc_irpt" SENSITIVITY="EDGE_RISING" SIGIS="INTERRUPT" SIGNAME="axi_quad_spi_0_ip2intc_irpt">
@@ -30327,24 +30266,12 @@
             <PORTMAP LOGICAL="IO3_I" PHYSICAL="io3_i"/>
             <PORTMAP LOGICAL="IO3_O" PHYSICAL="io3_o"/>
             <PORTMAP LOGICAL="IO3_T" PHYSICAL="io3_t"/>
+            <PORTMAP LOGICAL="SCK_I" PHYSICAL="sck_i"/>
+            <PORTMAP LOGICAL="SCK_O" PHYSICAL="sck_o"/>
+            <PORTMAP LOGICAL="SCK_T" PHYSICAL="sck_t"/>
             <PORTMAP LOGICAL="SS_I" PHYSICAL="ss_i"/>
             <PORTMAP LOGICAL="SS_O" PHYSICAL="ss_o"/>
             <PORTMAP LOGICAL="SS_T" PHYSICAL="ss_t"/>
-          </PORTMAPS>
-        </BUSINTERFACE>
-        <BUSINTERFACE BUSNAME="__NOC__" NAME="STARTUP_IO_S" TYPE="INITIATOR" VLNV="xilinx.com:interface:startup:1.0">
-          <PORTMAPS>
-            <PORTMAP LOGICAL="cfgclk" PHYSICAL="cfgclk"/>
-            <PORTMAP LOGICAL="cfgmclk" PHYSICAL="cfgmclk"/>
-            <PORTMAP LOGICAL="clk" PHYSICAL="clk"/>
-            <PORTMAP LOGICAL="eos" PHYSICAL="eos"/>
-            <PORTMAP LOGICAL="gsr" PHYSICAL="gsr"/>
-            <PORTMAP LOGICAL="gts" PHYSICAL="gts"/>
-            <PORTMAP LOGICAL="keyclearb" PHYSICAL="keyclearb"/>
-            <PORTMAP LOGICAL="preq" PHYSICAL="preq"/>
-            <PORTMAP LOGICAL="userdoneo" PHYSICAL="usrdoneo"/>
-            <PORTMAP LOGICAL="usrclkts" PHYSICAL="usrcclkts"/>
-            <PORTMAP LOGICAL="usrdonets" PHYSICAL="usrdonets"/>
           </PORTMAPS>
         </BUSINTERFACE>
         <BUSINTERFACE BUSNAME="axi_peripheral_interconnect_M05_AXI" DATAWIDTH="32" NAME="AXI_LITE" TYPE="SLAVE" VLNV="xilinx.com:interface:aximm:1.0">
@@ -37168,7 +37095,7 @@
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=clk_wiz;v=v6_0;d=pg065-clk-wiz.pdf"/>
       </DOCUMENTS>
       <PARAMETERS>
-        <PARAMETER NAME="C_CLKOUT2_USED" VALUE="0"/>
+        <PARAMETER NAME="C_CLKOUT2_USED" VALUE="1"/>
         <PARAMETER NAME="C_USER_CLK_FREQ0" VALUE="100.0"/>
         <PARAMETER NAME="C_AUTO_PRIMITIVE" VALUE="MMCM"/>
         <PARAMETER NAME="C_USER_CLK_FREQ1" VALUE="100.0"/>
@@ -37183,7 +37110,7 @@
         <PARAMETER NAME="C_Enable_PLL1" VALUE="0"/>
         <PARAMETER NAME="C_REF_CLK_FREQ" VALUE="100.0"/>
         <PARAMETER NAME="C_PRECISION" VALUE="1"/>
-        <PARAMETER NAME="C_CLKOUT3_USED" VALUE="0"/>
+        <PARAMETER NAME="C_CLKOUT3_USED" VALUE="1"/>
         <PARAMETER NAME="C_CLKOUT4_USED" VALUE="0"/>
         <PARAMETER NAME="C_CLKOUT5_USED" VALUE="0"/>
         <PARAMETER NAME="C_CLKOUT6_USED" VALUE="0"/>
@@ -37228,7 +37155,7 @@
         <PARAMETER NAME="C_USE_POWER_DOWN" VALUE="0"/>
         <PARAMETER NAME="C_USE_STATUS" VALUE="0"/>
         <PARAMETER NAME="C_USE_FREEZE" VALUE="0"/>
-        <PARAMETER NAME="C_NUM_OUT_CLKS" VALUE="1"/>
+        <PARAMETER NAME="C_NUM_OUT_CLKS" VALUE="3"/>
         <PARAMETER NAME="C_CLKOUT1_DRIVES" VALUE="BUFG"/>
         <PARAMETER NAME="C_CLKOUT2_DRIVES" VALUE="BUFG"/>
         <PARAMETER NAME="C_CLKOUT3_DRIVES" VALUE="BUFG"/>
@@ -37242,15 +37169,15 @@
         <PARAMETER NAME="C_OUTCLK_SUM_ROW0A" VALUE="Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW0B" VALUE="Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW1" VALUE="clk_out1__250.00000______0.000______50.0______136.987____164.985"/>
-        <PARAMETER NAME="C_OUTCLK_SUM_ROW2" VALUE="no_CLK_OUT2_output"/>
-        <PARAMETER NAME="C_OUTCLK_SUM_ROW3" VALUE="no_CLK_OUT3_output"/>
+        <PARAMETER NAME="C_OUTCLK_SUM_ROW2" VALUE="clk_out2__200.00000______0.000______50.0______142.107____164.985"/>
+        <PARAMETER NAME="C_OUTCLK_SUM_ROW3" VALUE="clk_out3__10.00000______0.000______50.0______285.743____164.985"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW4" VALUE="no_CLK_OUT4_output"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW5" VALUE="no_CLK_OUT5_output"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW6" VALUE="no_CLK_OUT6_output"/>
         <PARAMETER NAME="C_OUTCLK_SUM_ROW7" VALUE="no_CLK_OUT7_output"/>
         <PARAMETER NAME="C_CLKOUT1_REQUESTED_OUT_FREQ" VALUE="250"/>
-        <PARAMETER NAME="C_CLKOUT2_REQUESTED_OUT_FREQ" VALUE="100.000"/>
-        <PARAMETER NAME="C_CLKOUT3_REQUESTED_OUT_FREQ" VALUE="100.000"/>
+        <PARAMETER NAME="C_CLKOUT2_REQUESTED_OUT_FREQ" VALUE="200"/>
+        <PARAMETER NAME="C_CLKOUT3_REQUESTED_OUT_FREQ" VALUE="10"/>
         <PARAMETER NAME="C_CLKOUT4_REQUESTED_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT5_REQUESTED_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT6_REQUESTED_OUT_FREQ" VALUE="100.000"/>
@@ -37270,8 +37197,8 @@
         <PARAMETER NAME="C_CLKOUT6_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT7_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT1_OUT_FREQ" VALUE="250.00000"/>
-        <PARAMETER NAME="C_CLKOUT2_OUT_FREQ" VALUE="100.000"/>
-        <PARAMETER NAME="C_CLKOUT3_OUT_FREQ" VALUE="100.000"/>
+        <PARAMETER NAME="C_CLKOUT2_OUT_FREQ" VALUE="200.00000"/>
+        <PARAMETER NAME="C_CLKOUT3_OUT_FREQ" VALUE="10.00000"/>
         <PARAMETER NAME="C_CLKOUT4_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT5_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT6_OUT_FREQ" VALUE="100.000"/>
@@ -37284,8 +37211,8 @@
         <PARAMETER NAME="C_CLKOUT6_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="C_CLKOUT7_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="C_CLKOUT1_DUTY_CYCLE" VALUE="50.0"/>
-        <PARAMETER NAME="C_CLKOUT2_DUTY_CYCLE" VALUE="50.000"/>
-        <PARAMETER NAME="C_CLKOUT3_DUTY_CYCLE" VALUE="50.000"/>
+        <PARAMETER NAME="C_CLKOUT2_DUTY_CYCLE" VALUE="50.0"/>
+        <PARAMETER NAME="C_CLKOUT3_DUTY_CYCLE" VALUE="50.0"/>
         <PARAMETER NAME="C_CLKOUT4_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT5_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT6_DUTY_CYCLE" VALUE="50.000"/>
@@ -37312,8 +37239,8 @@
         <PARAMETER NAME="C_MMCM_REF_JITTER2" VALUE="0.010"/>
         <PARAMETER NAME="C_MMCM_STARTUP_WAIT" VALUE="FALSE"/>
         <PARAMETER NAME="C_MMCM_CLKOUT0_DIVIDE_F" VALUE="4.000"/>
-        <PARAMETER NAME="C_MMCM_CLKOUT1_DIVIDE" VALUE="1"/>
-        <PARAMETER NAME="C_MMCM_CLKOUT2_DIVIDE" VALUE="1"/>
+        <PARAMETER NAME="C_MMCM_CLKOUT1_DIVIDE" VALUE="5"/>
+        <PARAMETER NAME="C_MMCM_CLKOUT2_DIVIDE" VALUE="100"/>
         <PARAMETER NAME="C_MMCM_CLKOUT3_DIVIDE" VALUE="1"/>
         <PARAMETER NAME="C_MMCM_CLKOUT4_DIVIDE" VALUE="1"/>
         <PARAMETER NAME="C_MMCM_CLKOUT5_DIVIDE" VALUE="1"/>
@@ -37443,8 +37370,8 @@
         <PARAMETER NAME="C_FILTER_1" VALUE="0000"/>
         <PARAMETER NAME="C_FILTER_2" VALUE="0000"/>
         <PARAMETER NAME="C_DIVIDE1_AUTO" VALUE="1"/>
-        <PARAMETER NAME="C_DIVIDE2_AUTO" VALUE="0.25"/>
-        <PARAMETER NAME="C_DIVIDE3_AUTO" VALUE="0.25"/>
+        <PARAMETER NAME="C_DIVIDE2_AUTO" VALUE="1.25"/>
+        <PARAMETER NAME="C_DIVIDE3_AUTO" VALUE="25.0"/>
         <PARAMETER NAME="C_DIVIDE4_AUTO" VALUE="0.25"/>
         <PARAMETER NAME="C_DIVIDE5_AUTO" VALUE="0.25"/>
         <PARAMETER NAME="C_DIVIDE6_AUTO" VALUE="0.25"/>
@@ -37470,8 +37397,8 @@
         <PARAMETER NAME="C_CLKOUT6_MATCHED_ROUTING" VALUE="false"/>
         <PARAMETER NAME="C_CLKOUT7_MATCHED_ROUTING" VALUE="false"/>
         <PARAMETER NAME="C_CLKOUT0_ACTUAL_FREQ" VALUE="250.00000"/>
-        <PARAMETER NAME="C_CLKOUT1_ACTUAL_FREQ" VALUE="100.000"/>
-        <PARAMETER NAME="C_CLKOUT2_ACTUAL_FREQ" VALUE="100.000"/>
+        <PARAMETER NAME="C_CLKOUT1_ACTUAL_FREQ" VALUE="200.00000"/>
+        <PARAMETER NAME="C_CLKOUT2_ACTUAL_FREQ" VALUE="10.00000"/>
         <PARAMETER NAME="C_CLKOUT3_ACTUAL_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT4_ACTUAL_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT5_ACTUAL_FREQ" VALUE="100.000"/>
@@ -37528,13 +37455,13 @@
         <PARAMETER NAME="CLKIN1_JITTER_PS" VALUE="200.0"/>
         <PARAMETER NAME="CLKIN2_JITTER_PS" VALUE="100.0"/>
         <PARAMETER NAME="CLKOUT1_USED" VALUE="true"/>
-        <PARAMETER NAME="CLKOUT2_USED" VALUE="false"/>
-        <PARAMETER NAME="CLKOUT3_USED" VALUE="false"/>
+        <PARAMETER NAME="CLKOUT2_USED" VALUE="true"/>
+        <PARAMETER NAME="CLKOUT3_USED" VALUE="true"/>
         <PARAMETER NAME="CLKOUT4_USED" VALUE="false"/>
         <PARAMETER NAME="CLKOUT5_USED" VALUE="false"/>
         <PARAMETER NAME="CLKOUT6_USED" VALUE="false"/>
         <PARAMETER NAME="CLKOUT7_USED" VALUE="false"/>
-        <PARAMETER NAME="NUM_OUT_CLKS" VALUE="1"/>
+        <PARAMETER NAME="NUM_OUT_CLKS" VALUE="3"/>
         <PARAMETER NAME="CLK_OUT1_USE_FINE_PS_GUI" VALUE="false"/>
         <PARAMETER NAME="CLK_OUT2_USE_FINE_PS_GUI" VALUE="false"/>
         <PARAMETER NAME="CLK_OUT3_USE_FINE_PS_GUI" VALUE="false"/>
@@ -37564,10 +37491,10 @@
         <PARAMETER NAME="CLKOUT1_REQUESTED_OUT_FREQ" VALUE="250"/>
         <PARAMETER NAME="CLKOUT1_REQUESTED_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="CLKOUT1_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
-        <PARAMETER NAME="CLKOUT2_REQUESTED_OUT_FREQ" VALUE="100.000"/>
+        <PARAMETER NAME="CLKOUT2_REQUESTED_OUT_FREQ" VALUE="200"/>
         <PARAMETER NAME="CLKOUT2_REQUESTED_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="CLKOUT2_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
-        <PARAMETER NAME="CLKOUT3_REQUESTED_OUT_FREQ" VALUE="100.000"/>
+        <PARAMETER NAME="CLKOUT3_REQUESTED_OUT_FREQ" VALUE="10"/>
         <PARAMETER NAME="CLKOUT3_REQUESTED_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="CLKOUT3_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="CLKOUT4_REQUESTED_OUT_FREQ" VALUE="100.000"/>
@@ -37648,11 +37575,11 @@
         <PARAMETER NAME="MMCM_CLKOUT0_DUTY_CYCLE" VALUE="0.500"/>
         <PARAMETER NAME="MMCM_CLKOUT0_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="MMCM_CLKOUT0_USE_FINE_PS" VALUE="false"/>
-        <PARAMETER NAME="MMCM_CLKOUT1_DIVIDE" VALUE="1"/>
+        <PARAMETER NAME="MMCM_CLKOUT1_DIVIDE" VALUE="5"/>
         <PARAMETER NAME="MMCM_CLKOUT1_DUTY_CYCLE" VALUE="0.500"/>
         <PARAMETER NAME="MMCM_CLKOUT1_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="MMCM_CLKOUT1_USE_FINE_PS" VALUE="false"/>
-        <PARAMETER NAME="MMCM_CLKOUT2_DIVIDE" VALUE="1"/>
+        <PARAMETER NAME="MMCM_CLKOUT2_DIVIDE" VALUE="100"/>
         <PARAMETER NAME="MMCM_CLKOUT2_DUTY_CYCLE" VALUE="0.500"/>
         <PARAMETER NAME="MMCM_CLKOUT2_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="MMCM_CLKOUT2_USE_FINE_PS" VALUE="false"/>
@@ -37724,10 +37651,10 @@
         <PARAMETER NAME="CLKOUTPHY_REQUESTED_FREQ" VALUE="600.000"/>
         <PARAMETER NAME="CLKOUT1_JITTER" VALUE="136.987"/>
         <PARAMETER NAME="CLKOUT1_PHASE_ERROR" VALUE="164.985"/>
-        <PARAMETER NAME="CLKOUT2_JITTER" VALUE="0.0"/>
-        <PARAMETER NAME="CLKOUT2_PHASE_ERROR" VALUE="0.0"/>
-        <PARAMETER NAME="CLKOUT3_JITTER" VALUE="0.0"/>
-        <PARAMETER NAME="CLKOUT3_PHASE_ERROR" VALUE="0.0"/>
+        <PARAMETER NAME="CLKOUT2_JITTER" VALUE="142.107"/>
+        <PARAMETER NAME="CLKOUT2_PHASE_ERROR" VALUE="164.985"/>
+        <PARAMETER NAME="CLKOUT3_JITTER" VALUE="285.743"/>
+        <PARAMETER NAME="CLKOUT3_PHASE_ERROR" VALUE="164.985"/>
         <PARAMETER NAME="CLKOUT4_JITTER" VALUE="0.0"/>
         <PARAMETER NAME="CLKOUT4_PHASE_ERROR" VALUE="0.0"/>
         <PARAMETER NAME="CLKOUT5_JITTER" VALUE="0.0"/>
@@ -37743,9 +37670,9 @@
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT DIR="I" NAME="resetn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="ext_reset_combiner_Res">
+        <PORT DIR="I" NAME="resetn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_PCIe_RESETn">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="ext_reset_combiner" PORT="Res"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_RESETn"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="50000000" DIR="I" NAME="clk_in1" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK0">
@@ -37758,37 +37685,287 @@
             <CONNECTION INSTANCE="mig_7series_0" PORT="sys_clk_i"/>
           </CONNECTIONS>
         </PORT>
+        <PORT CLKFREQUENCY="200000000" DIR="O" NAME="clk_out2" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_ad9361" PORT="delay_clk"/>
+            <CONNECTION INSTANCE="mig_7series_0" PORT="clk_ref_i"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT CLKFREQUENCY="10000000" DIR="O" NAME="clk_out3" SIGIS="clk"/>
         <PORT DIR="O" NAME="locked" SIGIS="undef"/>
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
-    <MODULE COREREVISION="1" FULLNAME="/ext_reset_combiner" HWVERSION="2.0" INSTANCE="ext_reset_combiner" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="util_vector_logic" VLNV="xilinx.com:ip:util_vector_logic:2.0">
+    <MODULE COREREVISION="4" FULLNAME="/gpio_concat_0" HWVERSION="2.1" INSTANCE="gpio_concat_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlconcat" VLNV="xilinx.com:ip:xlconcat:2.1">
       <DOCUMENTS/>
       <PARAMETERS>
-        <PARAMETER NAME="C_OPERATION" VALUE="and"/>
-        <PARAMETER NAME="C_SIZE" VALUE="1"/>
-        <PARAMETER NAME="Component_Name" VALUE="icyradio_reset_combiner_2"/>
-        <PARAMETER NAME="LOGO_FILE" VALUE="data/sym_andgate.png"/>
+        <PARAMETER NAME="IN0_WIDTH" VALUE="8"/>
+        <PARAMETER NAME="IN1_WIDTH" VALUE="24"/>
+        <PARAMETER NAME="IN2_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN3_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN4_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN5_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN6_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN7_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN8_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN9_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN10_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN11_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN12_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN13_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN14_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN15_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN16_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN17_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN18_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN19_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN20_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN21_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN22_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN23_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN24_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN25_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN26_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN27_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN28_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN29_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN30_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN31_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN32_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN33_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN34_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN35_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN36_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN37_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN38_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN39_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN40_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN41_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN42_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN43_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN44_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN45_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN46_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN47_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN48_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN49_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN50_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN51_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN52_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN53_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN54_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN55_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN56_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN57_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN58_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN59_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN60_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN61_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN62_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN63_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN64_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN65_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN66_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN67_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN68_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN69_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN70_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN71_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN72_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN73_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN74_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN75_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN76_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN77_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN78_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN79_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN80_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN81_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN82_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN83_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN84_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN85_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN86_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN87_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN88_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN89_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN90_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN91_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN92_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN93_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN94_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN95_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN96_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN97_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN98_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN99_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN100_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN101_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN102_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN103_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN104_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN105_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN106_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN107_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN108_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN109_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN110_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN111_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN112_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN113_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN114_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN115_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN116_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN117_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN118_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN119_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN120_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN121_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN122_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN123_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN124_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN125_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN126_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="IN127_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="dout_width" VALUE="32"/>
+        <PARAMETER NAME="NUM_PORTS" VALUE="2"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_irq_concat_0_4"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
       </PARAMETERS>
       <PORTS>
-        <PORT DIR="I" LEFT="0" NAME="Op1" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_RESETn">
+        <PORT DIR="I" LEFT="7" NAME="In0" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_TRX_CTRL_OUT">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="RESETn"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="TRX_CTRL_OUT"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="Op2" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="undef" SIGNAME="External_Ports_PCIe_RESETn">
+        <PORT DIR="I" LEFT="23" NAME="In1" RIGHT="0" SIGIS="undef" SIGNAME="GND_3_dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_RESETn"/>
+            <CONNECTION INSTANCE="GND_3" PORT="dout"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="Res" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="undef" SIGNAME="ext_reset_combiner_Res">
+        <PORT DIR="O" LEFT="31" NAME="dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_concat_0_dout">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="sys_rst"/>
-            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="ext_reset_in"/>
-            <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="ext_reset_in"/>
-            <CONNECTION INSTANCE="rst_mig_7series_0_10M" PORT="ext_reset_in"/>
-            <CONNECTION INSTANCE="clk_wiz_0" PORT="resetn"/>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_i"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="2" FULLNAME="/gpio_slice_trx_ctrl_out" HWVERSION="1.0" INSTANCE="gpio_slice_trx_ctrl_out" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DIN_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DIN_FROM" VALUE="3"/>
+        <PARAMETER NAME="DIN_TO" VALUE="0"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_xlslice_0_0"/>
+        <PARAMETER NAME="DOUT_WIDTH" VALUE="4"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="31" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="3" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_ctrl_out_Dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="TRX_CTRL_IN"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="2" FULLNAME="/gpio_slice_trx_en_agc" HWVERSION="1.0" INSTANCE="gpio_slice_trx_en_agc" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DIN_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DIN_FROM" VALUE="4"/>
+        <PARAMETER NAME="DIN_TO" VALUE="4"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_gpio_slice_trx_en_agc_0"/>
+        <PARAMETER NAME="DOUT_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="31" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="0" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_en_agc_Dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="TRX_EN_AGC"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="2" FULLNAME="/gpio_slice_trx_sync_in" HWVERSION="1.0" INSTANCE="gpio_slice_trx_sync_in" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DIN_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DIN_FROM" VALUE="5"/>
+        <PARAMETER NAME="DIN_TO" VALUE="5"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_xlslice_0_1"/>
+        <PARAMETER NAME="DOUT_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="31" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="0" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_sync_in_Dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="TRX_SYNC_IN"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="2" FULLNAME="/gpio_slice_trx_up_enable" HWVERSION="1.0" INSTANCE="gpio_slice_trx_up_enable" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DIN_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DIN_FROM" VALUE="6"/>
+        <PARAMETER NAME="DIN_TO" VALUE="6"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_gpio_slice_trx_ctrl_out_1"/>
+        <PARAMETER NAME="DOUT_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="31" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="0" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_up_enable_Dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_ad9361" PORT="up_enable"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
+    <MODULE COREREVISION="2" FULLNAME="/gpio_slice_trx_up_txnrx" HWVERSION="1.0" INSTANCE="gpio_slice_trx_up_txnrx" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="DIN_WIDTH" VALUE="32"/>
+        <PARAMETER NAME="DIN_FROM" VALUE="7"/>
+        <PARAMETER NAME="DIN_TO" VALUE="7"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_gpio_slice_trx_ctrl_out_0"/>
+        <PARAMETER NAME="DOUT_WIDTH" VALUE="1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="31" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="axi_gpio_0_gpio_io_o">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="gpio_io_o"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="0" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_up_txnrx_Dout">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_ad9361" PORT="up_txnrx"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -37817,7 +37994,6 @@
         <PORT DIR="O" LEFT="0" NAME="Res" POLARITY="ACTIVE_HIGH" RIGHT="0" SIGIS="undef" SIGNAME="int_reset_combiner_Res">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="aux_reset_in"/>
-            <CONNECTION INSTANCE="rst_mig_7series_0_10M" PORT="aux_reset_in"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -38418,7 +38594,7 @@
         <PARAMETER NAME="LPDDR2_DATA_WIDTH" VALUE="8"/>
         <PARAMETER NAME="FREQ_HZ" VALUE="166666667"/>
         <PARAMETER NAME="PHASE" VALUE="0.000"/>
-        <PARAMETER NAME="UI_EXTRA_CLOCKS" VALUE="TRUE"/>
+        <PARAMETER NAME="UI_EXTRA_CLOCKS" VALUE="FALSE"/>
         <PARAMETER NAME="MMCM_VCO" VALUE="666"/>
         <PARAMETER NAME="MMCM_CLKOUT0_FREQ" VALUE="204923077"/>
         <PARAMETER NAME="MMCM_CLKOUT1_FREQ" VALUE="25615385"/>
@@ -39492,7 +39668,7 @@
         <PARAMETER NAME="C7_RLDIII_ADDR_WIDTH" VALUE="29"/>
         <PARAMETER NAME="C7_RLDIII_nCK_PER_CLK" VALUE="1"/>
         <PARAMETER NAME="C7_POLARITY" VALUE="ACTIVE_LOW"/>
-        <PARAMETER NAME="XML_INPUT_FILE" VALUE="mig_b.prj"/>
+        <PARAMETER NAME="XML_INPUT_FILE" VALUE="mig_a.prj"/>
         <PARAMETER NAME="RESET_BOARD_INTERFACE" VALUE="Custom"/>
         <PARAMETER NAME="MIG_DONT_TOUCH_PARAM" VALUE="Custom"/>
         <PARAMETER NAME="BOARD_MIG_PARAM" VALUE="Custom"/>
@@ -39508,14 +39684,14 @@
             <CONNECTION INSTANCE="xadc_wiz_0" PORT="temp_out"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="sys_rst" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="ext_reset_combiner_Res">
+        <PORT DIR="I" NAME="sys_rst" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_PCIe_RESETn">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="ext_reset_combiner" PORT="Res"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_RESETn"/>
           </CONNECTIONS>
         </PORT>
-        <PORT CLKFREQUENCY="204923077" DIR="I" NAME="clk_ref_i" SIGIS="clk" SIGNAME="mig_7series_0_ui_addn_clk_0">
+        <PORT CLKFREQUENCY="200000000" DIR="I" NAME="clk_ref_i" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="ui_addn_clk_0"/>
+            <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_out2"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="IO" LEFT="15" NAME="ddr3_dq" RIGHT="0" SIGIS="undef" SIGNAME="mig_7series_0_ddr3_dq">
@@ -39597,18 +39773,6 @@
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="axi_pcie_interconnect" PORT="M02_ACLK"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT CLKFREQUENCY="204923077" DIR="O" NAME="ui_addn_clk_0" SIGIS="clk" SIGNAME="mig_7series_0_ui_addn_clk_0">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="axi_ad9361" PORT="delay_clk"/>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="clk_ref_i"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT CLKFREQUENCY="25615385" DIR="O" NAME="ui_addn_clk_1" SIGIS="clk"/>
-        <PORT CLKFREQUENCY="10090910" DIR="O" NAME="ui_addn_clk_2" SIGIS="clk" SIGNAME="mig_7series_0_ui_addn_clk_2">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rst_mig_7series_0_10M" PORT="slowest_sync_clk"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" LEFT="3" NAME="s_axi_awid" RIGHT="0" SIGIS="undef" SIGNAME="axi_pcie_interconnect_M02_AXI_awid">
@@ -39799,7 +39963,6 @@
         <PORT DIR="O" NAME="mmcm_locked" SIGIS="undef" SIGNAME="mig_7series_0_mmcm_locked">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_mig_7series_0_166M" PORT="dcm_locked"/>
-            <CONNECTION INSTANCE="rst_mig_7series_0_10M" PORT="dcm_locked"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="250000000" DIR="I" NAME="sys_clk_i" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out1">
@@ -40174,9 +40337,9 @@
             <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="ext_reset_in" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="ext_reset_combiner_Res">
+        <PORT DIR="I" NAME="ext_reset_in" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_PCIe_RESETn">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="ext_reset_combiner" PORT="Res"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_RESETn"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="aux_reset_in" POLARITY="ACTIVE_HIGH" SIGIS="rst" SIGNAME="SOFT_RESET_dout">
@@ -40232,7 +40395,6 @@
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="peripheral_aresetn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="TRX_RESETn"/>
             <CONNECTION INSTANCE="axi_i2s_adi_0" PORT="s_axis_aresetn"/>
             <CONNECTION INSTANCE="axi_i2s_adi_0" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="xadc_wiz_0" PORT="s_axi_aresetn"/>
@@ -40253,57 +40415,9 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_quad_spi_2" PORT="s_axi_aresetn"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="TRX_RESETn"/>
           </CONNECTIONS>
         </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
-    </MODULE>
-    <MODULE COREREVISION="13" FULLNAME="/rst_mig_7series_0_10M" HWVERSION="5.0" INSTANCE="rst_mig_7series_0_10M" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="proc_sys_reset" VLNV="xilinx.com:ip:proc_sys_reset:5.0">
-      <DOCUMENTS>
-        <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=proc_sys_reset;v=v5_0;d=pg164-proc-sys-reset.pdf"/>
-      </DOCUMENTS>
-      <PARAMETERS>
-        <PARAMETER NAME="C_FAMILY" VALUE="artix7"/>
-        <PARAMETER NAME="C_EXT_RST_WIDTH" VALUE="4"/>
-        <PARAMETER NAME="C_AUX_RST_WIDTH" VALUE="4"/>
-        <PARAMETER NAME="C_EXT_RESET_HIGH" VALUE="0"/>
-        <PARAMETER NAME="C_AUX_RESET_HIGH" VALUE="1"/>
-        <PARAMETER NAME="C_NUM_BUS_RST" VALUE="1"/>
-        <PARAMETER NAME="C_NUM_PERP_RST" VALUE="1"/>
-        <PARAMETER NAME="C_NUM_INTERCONNECT_ARESETN" VALUE="1"/>
-        <PARAMETER NAME="C_NUM_PERP_ARESETN" VALUE="1"/>
-        <PARAMETER NAME="Component_Name" VALUE="icyradio_rst_mig_7series_0_25M_0"/>
-        <PARAMETER NAME="USE_BOARD_FLOW" VALUE="false"/>
-        <PARAMETER NAME="RESET_BOARD_INTERFACE" VALUE="Custom"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT CLKFREQUENCY="10090910" DIR="I" NAME="slowest_sync_clk" SIGIS="clk" SIGNAME="mig_7series_0_ui_addn_clk_2">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="ui_addn_clk_2"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="ext_reset_in" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="ext_reset_combiner_Res">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="ext_reset_combiner" PORT="Res"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="aux_reset_in" POLARITY="ACTIVE_HIGH" SIGIS="rst" SIGNAME="int_reset_combiner_Res">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="int_reset_combiner" PORT="Res"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="mb_debug_sys_rst" POLARITY="ACTIVE_HIGH" SIGIS="rst"/>
-        <PORT DIR="I" NAME="dcm_locked" SIGIS="undef" SIGNAME="mig_7series_0_mmcm_locked">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="mig_7series_0" PORT="mmcm_locked"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" NAME="mb_reset" POLARITY="ACTIVE_HIGH" SIGIS="rst"/>
-        <PORT DIR="O" LEFT="0" NAME="bus_struct_reset" POLARITY="ACTIVE_HIGH" RIGHT="0" SIGIS="rst"/>
-        <PORT DIR="O" LEFT="0" NAME="peripheral_reset" POLARITY="ACTIVE_HIGH" RIGHT="0" SIGIS="rst"/>
-        <PORT DIR="O" LEFT="0" NAME="interconnect_aresetn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst"/>
-        <PORT DIR="O" LEFT="0" NAME="peripheral_aresetn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst"/>
       </PORTS>
       <BUSINTERFACES/>
     </MODULE>
@@ -40332,9 +40446,9 @@
             <CONNECTION INSTANCE="mig_7series_0" PORT="ui_clk"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="ext_reset_in" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="ext_reset_combiner_Res">
+        <PORT DIR="I" NAME="ext_reset_in" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="External_Ports_PCIe_RESETn">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="ext_reset_combiner" PORT="Res"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="PCIe_RESETn"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="aux_reset_in" POLARITY="ACTIVE_HIGH" SIGIS="rst" SIGNAME="int_reset_combiner_Res">

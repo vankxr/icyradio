@@ -116,7 +116,7 @@ module example_top #
    parameter ECC                   = "OFF",
    parameter ECC_TEST              = "OFF",
    //parameter nBANK_MACHS           = 4,
-   parameter nBANK_MACHS           = 4,
+   parameter nBANK_MACHS           = 2,
    parameter RANKS                 = 1,
                                      // # of Ranks.
    parameter ROW_WIDTH             = 15,
@@ -165,32 +165,6 @@ module example_top #
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
-   parameter MMCM_CLKOUT0_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT0) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT0) is disabled
-   parameter MMCM_CLKOUT1_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT1) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT1) is disabled
-   parameter MMCM_CLKOUT2_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT2) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT2) is disabled
-   parameter MMCM_CLKOUT3_EN       = "FALSE",
-                                     // "TRUE" - MMCM output clock (CLKOUT3) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT3) is disabled
-   parameter MMCM_CLKOUT4_EN       = "FALSE",
-                                     // "TRUE" - MMCM output clock (CLKOUT4) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT4) is disabled
-   parameter MMCM_CLKOUT0_DIVIDE   = 3.25,
-                                     // VCO output divisor for MMCM output clock (CLKOUT0)
-   parameter MMCM_CLKOUT1_DIVIDE   = 26,
-                                     // VCO output divisor for MMCM output clock (CLKOUT1)
-   parameter MMCM_CLKOUT2_DIVIDE   = 66,
-                                     // VCO output divisor for MMCM output clock (CLKOUT2)
-   parameter MMCM_CLKOUT3_DIVIDE   = 1,
-                                     // VCO output divisor for MMCM output clock (CLKOUT3)
-   parameter MMCM_CLKOUT4_DIVIDE   = 1,
-                                     // VCO output divisor for MMCM output clock (CLKOUT4)
-
 
    //***************************************************************************
    // Simulation parameters
@@ -332,11 +306,6 @@ function integer clogb2 (input integer size);
       
   wire                              clk;
   wire                              rst;
-  wire                              ui_addn_clk_0;
-  wire                              ui_addn_clk_1;
-  wire                              ui_addn_clk_2;
-  wire                              ui_addn_clk_3;
-  wire                              ui_addn_clk_4;
   wire                              mmcm_locked;
   reg                               aresetn;
   wire                              app_sr_active;
@@ -462,11 +431,6 @@ function integer clogb2 (input integer size);
        .ui_clk                         (clk),
        .ui_clk_sync_rst                (rst),
 
-       .ui_addn_clk_0                  (ui_addn_clk_0),
-       .ui_addn_clk_1                  (ui_addn_clk_1),
-       .ui_addn_clk_2                  (ui_addn_clk_2),
-       .ui_addn_clk_3                  (ui_addn_clk_3),
-       .ui_addn_clk_4                  (ui_addn_clk_4),
        .mmcm_locked                    (mmcm_locked),
        .aresetn                        (aresetn),
        .app_sr_active                  (app_sr_active),

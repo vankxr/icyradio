@@ -92,11 +92,6 @@ module icyradio_mig_7series_0_0 (
   // user interface signals
   output            ui_clk,
   output            ui_clk_sync_rst,
-  output            ui_addn_clk_0,
-  output            ui_addn_clk_1,
-  output            ui_addn_clk_2,
-  output            ui_addn_clk_3,
-  output            ui_addn_clk_4,
   output            mmcm_locked,
   input         aresetn,
   output            app_sr_active,
@@ -184,11 +179,6 @@ module icyradio_mig_7series_0_0 (
     // Application interface ports
     .ui_clk                         (ui_clk),
     .ui_clk_sync_rst                (ui_clk_sync_rst),
-    .ui_addn_clk_0                  (ui_addn_clk_0),
-    .ui_addn_clk_1                  (ui_addn_clk_1),
-    .ui_addn_clk_2                  (ui_addn_clk_2),
-    .ui_addn_clk_3                  (ui_addn_clk_3),
-    .ui_addn_clk_4                  (ui_addn_clk_4),
     .mmcm_locked                    (mmcm_locked),
     .aresetn                        (aresetn),
     .app_sr_active                  (app_sr_active),

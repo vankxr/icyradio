@@ -117,7 +117,7 @@ module icyradio_mig_7series_0_0_mig #
                                       //            for distributed Addressing.
       
    //parameter nBANK_MACHS           = 4,
-   parameter nBANK_MACHS           = 4,
+   parameter nBANK_MACHS           = 2,
    parameter RANKS                 = 1,
                                      // # of Ranks.
    parameter ODT_WIDTH             = 1,
@@ -250,32 +250,6 @@ module icyradio_mig_7series_0_0_mig #
                                      // write MMCM VCO multiplier
    parameter MMCM_DIVCLK_DIVIDE    = 1,
                                      // write MMCM VCO divisor
-   parameter MMCM_CLKOUT0_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT0) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT0) is disabled
-   parameter MMCM_CLKOUT1_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT1) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT1) is disabled
-   parameter MMCM_CLKOUT2_EN       = "TRUE",
-                                     // "TRUE" - MMCM output clock (CLKOUT2) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT2) is disabled
-   parameter MMCM_CLKOUT3_EN       = "FALSE",
-                                     // "TRUE" - MMCM output clock (CLKOUT3) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT3) is disabled
-   parameter MMCM_CLKOUT4_EN       = "FALSE",
-                                     // "TRUE" - MMCM output clock (CLKOUT4) is enabled
-                                     // "FALSE" - MMCM output clock (CLKOUT4) is disabled
-   parameter MMCM_CLKOUT0_DIVIDE   = 3.25,
-                                     // VCO output divisor for MMCM output clock (CLKOUT0)
-   parameter MMCM_CLKOUT1_DIVIDE   = 26,
-                                     // VCO output divisor for MMCM output clock (CLKOUT1)
-   parameter MMCM_CLKOUT2_DIVIDE   = 66,
-                                     // VCO output divisor for MMCM output clock (CLKOUT2)
-   parameter MMCM_CLKOUT3_DIVIDE   = 1,
-                                     // VCO output divisor for MMCM output clock (CLKOUT3)
-   parameter MMCM_CLKOUT4_DIVIDE   = 1,
-                                     // VCO output divisor for MMCM output clock (CLKOUT4)
-
 
    //***************************************************************************
    // Memory Timing Parameters. These parameters varies based on the selected
@@ -497,7 +471,7 @@ module icyradio_mig_7series_0_0_mig #
    // AXI4 Shim parameters
    //***************************************************************************
    
-   parameter UI_EXTRA_CLOCKS = "TRUE",
+   parameter UI_EXTRA_CLOCKS = "FALSE",
                                      // Generates extra clocks as
                                      // 1/2, 1/4 and 1/8 of fabrick clock.
                                      // Valid for DDR2/DDR3 AXI interfaces
@@ -630,11 +604,6 @@ module icyradio_mig_7series_0_0_mig #
    output                                       ui_clk,
    output                                       ui_clk_sync_rst,
    
-   output                                       ui_addn_clk_0,
-   output                                       ui_addn_clk_1,
-   output                                       ui_addn_clk_2,
-   output                                       ui_addn_clk_3,
-   output                                       ui_addn_clk_4,
    output                                       mmcm_locked,
    
    input                                        aresetn,
@@ -977,34 +946,23 @@ module icyradio_mig_7series_0_0_mig #
          
   mig_7series_v4_2_infrastructure #
     (
-     .TCQ                 (TCQ),
-     .nCK_PER_CLK         (nCK_PER_CLK),
-     .CLKIN_PERIOD        (CLKIN_PERIOD),
-     .SYSCLK_TYPE         (SYSCLK_TYPE),
-     .UI_EXTRA_CLOCKS     (UI_EXTRA_CLOCKS),
-     .CLKFBOUT_MULT       (CLKFBOUT_MULT),
-     .DIVCLK_DIVIDE       (DIVCLK_DIVIDE),
-     .CLKOUT0_PHASE       (CLKOUT0_PHASE),
-     .CLKOUT0_DIVIDE      (CLKOUT0_DIVIDE),
-     .CLKOUT1_DIVIDE      (CLKOUT1_DIVIDE),
-     .CLKOUT2_DIVIDE      (CLKOUT2_DIVIDE),
-     .CLKOUT3_DIVIDE      (CLKOUT3_DIVIDE),
-     .MMCM_VCO            (MMCM_VCO),
-     .MMCM_MULT_F         (MMCM_MULT_F),
-     .MMCM_DIVCLK_DIVIDE  (MMCM_DIVCLK_DIVIDE),
-     .MMCM_CLKOUT0_EN     (MMCM_CLKOUT0_EN),
-     .MMCM_CLKOUT1_EN     (MMCM_CLKOUT1_EN),
-     .MMCM_CLKOUT2_EN     (MMCM_CLKOUT2_EN),
-     .MMCM_CLKOUT3_EN     (MMCM_CLKOUT3_EN),
-     .MMCM_CLKOUT4_EN     (MMCM_CLKOUT4_EN),
-     .MMCM_CLKOUT0_DIVIDE (MMCM_CLKOUT0_DIVIDE),
-     .MMCM_CLKOUT1_DIVIDE (MMCM_CLKOUT1_DIVIDE),
-     .MMCM_CLKOUT2_DIVIDE (MMCM_CLKOUT2_DIVIDE),
-     .MMCM_CLKOUT3_DIVIDE (MMCM_CLKOUT3_DIVIDE),
-     .MMCM_CLKOUT4_DIVIDE (MMCM_CLKOUT4_DIVIDE),
-     .RST_ACT_LOW         (RST_ACT_LOW),
-     .tCK                 (tCK),
-     .MEM_TYPE            (DRAM_TYPE)
+     .TCQ                (TCQ),
+     .nCK_PER_CLK        (nCK_PER_CLK),
+     .CLKIN_PERIOD       (CLKIN_PERIOD),
+     .SYSCLK_TYPE        (SYSCLK_TYPE),
+     .CLKFBOUT_MULT      (CLKFBOUT_MULT),
+     .DIVCLK_DIVIDE      (DIVCLK_DIVIDE),
+     .CLKOUT0_PHASE      (CLKOUT0_PHASE),
+     .CLKOUT0_DIVIDE     (CLKOUT0_DIVIDE),
+     .CLKOUT1_DIVIDE     (CLKOUT1_DIVIDE),
+     .CLKOUT2_DIVIDE     (CLKOUT2_DIVIDE),
+     .CLKOUT3_DIVIDE     (CLKOUT3_DIVIDE),
+     .MMCM_VCO           (MMCM_VCO),
+     .MMCM_MULT_F        (MMCM_MULT_F),
+     .MMCM_DIVCLK_DIVIDE (MMCM_DIVCLK_DIVIDE),
+     .RST_ACT_LOW        (RST_ACT_LOW),
+     .tCK                (tCK),
+     .MEM_TYPE           (DRAM_TYPE)
      )
     u_ddr3_infrastructure
       (
@@ -1021,11 +979,11 @@ module icyradio_mig_7series_0_0_mig #
        .psdone           (psdone),
        .iddr_rst         (iddr_rst),
 //       .auxout_clk       (),
-       .ui_addn_clk_0    (ui_addn_clk_0),
-       .ui_addn_clk_1    (ui_addn_clk_1),
-       .ui_addn_clk_2    (ui_addn_clk_2),
-       .ui_addn_clk_3    (ui_addn_clk_3),
-       .ui_addn_clk_4    (ui_addn_clk_4),
+       .ui_addn_clk_0    (),
+       .ui_addn_clk_1    (),
+       .ui_addn_clk_2    (),
+       .ui_addn_clk_3    (),
+       .ui_addn_clk_4    (),
        .pll_locked       (pll_locked),
        .mmcm_locked      (mmcm_locked),
        .rst_phaser_ref   (rst_phaser_ref),

@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xFA9EADEEFA5BA02C",
+      "boundary_crc": "0x937BB63E33F04FD2",
       "device": "xc7a100tfgg484-2",
       "gen_directory": "../../../../icyradio.gen/sources_1/bd/icyradio",
       "name": "icyradio",
@@ -21,11 +21,9 @@
       "ad9361_dac_unpacker": "",
       "logic_or_1": "",
       "logic_or_0": "",
-      "ext_reset_combiner": "",
       "xadc_wiz_0": "",
       "irq_concat_0": "",
       "GND_0": "",
-      "GND_1": "",
       "axi_ad9361": "",
       "axi_bram_ctrl_0": "",
       "axi_dmac_rf_rx": "",
@@ -108,10 +106,16 @@
       "picorv32_0": "",
       "irq_concat_1": "",
       "GND_2": "",
-      "rst_mig_7series_0_10M": "",
       "axi_iic_1": "",
       "axi_quad_spi_2": "",
-      "clk_wiz_0": ""
+      "clk_wiz_0": "",
+      "gpio_slice_trx_ctrl_out": "",
+      "gpio_slice_trx_sync_in": "",
+      "gpio_slice_trx_en_agc": "",
+      "gpio_concat_0": "",
+      "GND_3": "",
+      "gpio_slice_trx_up_txnrx": "",
+      "gpio_slice_trx_up_enable": ""
     },
     "interface_ports": {
       "PCIe_REFCLK": {
@@ -133,16 +137,6 @@
         "mode": "Master",
         "vlnv_bus_definition": "xilinx.com:interface:pcie_7x_mgt:1.0",
         "vlnv": "xilinx.com:interface:pcie_7x_mgt_rtl:1.0"
-      },
-      "GPIO0": {
-        "mode": "Master",
-        "vlnv_bus_definition": "xilinx.com:interface:gpio:1.0",
-        "vlnv": "xilinx.com:interface:gpio_rtl:1.0"
-      },
-      "GPIO1": {
-        "mode": "Master",
-        "vlnv_bus_definition": "xilinx.com:interface:gpio:1.0",
-        "vlnv": "xilinx.com:interface:gpio_rtl:1.0"
       },
       "AUDIO_I2C": {
         "mode": "Master",
@@ -236,20 +230,6 @@
       }
     },
     "ports": {
-      "RESETn": {
-        "type": "rst",
-        "direction": "I",
-        "parameters": {
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "POLARITY": {
-            "value": "ACTIVE_LOW",
-            "value_src": "default"
-          }
-        }
-      },
       "TRX_P1_RXDATA": {
         "type": "data",
         "direction": "I",
@@ -347,30 +327,7 @@
           }
         }
       },
-      "PCIe_CLKREQn": {
-        "direction": "O",
-        "left": "0",
-        "right": "0",
-        "parameters": {
-          "PortType": {
-            "value": "intr",
-            "value_src": "ip_prop"
-          },
-          "PortType.PROP_SRC": {
-            "value": "false",
-            "value_src": "ip_prop"
-          },
-          "PortWidth": {
-            "value": "1",
-            "value_src": "default_prop"
-          },
-          "SENSITIVITY": {
-            "value": "LEVEL_HIGH",
-            "value_src": "const_prop"
-          }
-        }
-      },
-      "I2S_BCLK_IN": {
+      "FPGA_CLK1": {
         "type": "clk",
         "direction": "I",
         "parameters": {
@@ -429,6 +386,31 @@
         "left": "3",
         "right": "0"
       },
+      "FPGA_CLK0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "CLK_DOMAIN": {
+            "value": "icyradio_FPGA_CLK0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "50000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
       "TRX_EN_AGC": {
         "direction": "O",
         "left": "0",
@@ -451,6 +433,50 @@
             "value_src": "const_prop"
           }
         }
+      },
+      "CODEC_RSTn": {
+        "type": "rst",
+        "direction": "O",
+        "left": "0",
+        "right": "0",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      },
+      "PCIe_CLKREQn": {
+        "direction": "O",
+        "left": "0",
+        "right": "0",
+        "parameters": {
+          "PortType": {
+            "value": "intr",
+            "value_src": "ip_prop"
+          },
+          "PortType.PROP_SRC": {
+            "value": "false",
+            "value_src": "ip_prop"
+          },
+          "PortWidth": {
+            "value": "1",
+            "value_src": "default_prop"
+          },
+          "SENSITIVITY": {
+            "value": "LEVEL_HIGH",
+            "value_src": "const_prop"
+          }
+        }
+      },
+      "PM_I2C_EN": {
+        "direction": "O",
+        "left": "0",
+        "right": "0"
       },
       "TRX_RESETn": {
         "type": "rst",
@@ -488,41 +514,6 @@
           "SENSITIVITY": {
             "value": "LEVEL_HIGH",
             "value_src": "const_prop"
-          }
-        }
-      },
-      "CODEC_RESETn": {
-        "direction": "O",
-        "left": "0",
-        "right": "0"
-      },
-      "PM_I2C_EN": {
-        "direction": "O",
-        "left": "0",
-        "right": "0"
-      },
-      "FPGA_CLK0": {
-        "type": "clk",
-        "direction": "I",
-        "parameters": {
-          "CLK_DOMAIN": {
-            "value": "icyradio_FPGA_CLK0",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "50000000"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
           }
         }
       }
@@ -592,7 +583,7 @@
             "value": "Custom"
           },
           "XML_INPUT_FILE": {
-            "value": "mig_b.prj"
+            "value": "mig_a.prj"
           }
         }
       },
@@ -652,20 +643,6 @@
         "parameters": {
           "C_OPERATION": {
             "value": "or"
-          },
-          "C_SIZE": {
-            "value": "1"
-          }
-        }
-      },
-      "ext_reset_combiner": {
-        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
-        "xci_name": "icyradio_reset_combiner_2",
-        "xci_path": "ip/icyradio_reset_combiner_2/icyradio_reset_combiner_2.xci",
-        "inst_hier_path": "ext_reset_combiner",
-        "parameters": {
-          "C_OPERATION": {
-            "value": "and"
           },
           "C_SIZE": {
             "value": "1"
@@ -834,20 +811,6 @@
           }
         }
       },
-      "GND_1": {
-        "vlnv": "xilinx.com:ip:xlconstant:1.1",
-        "xci_name": "icyradio_GND_1_2",
-        "xci_path": "ip/icyradio_GND_1_2/icyradio_GND_1_2.xci",
-        "inst_hier_path": "GND_1",
-        "parameters": {
-          "CONST_VAL": {
-            "value": "0"
-          },
-          "CONST_WIDTH": {
-            "value": "4"
-          }
-        }
-      },
       "axi_ad9361": {
         "vlnv": "analog.com:user:axi_ad9361:1.0",
         "xci_name": "icyradio_axi_ad9361_2",
@@ -860,11 +823,14 @@
           "CMOS_OR_LVDS_N": {
             "value": "1"
           },
+          "DAC_IODELAY_ENABLE": {
+            "value": "0"
+          },
           "DAC_USERPORTS_DISABLE": {
             "value": "1"
           },
           "DELAY_REFCLK_FREQUENCY": {
-            "value": "204"
+            "value": "200"
           },
           "DEV_PACKAGE": {
             "value": "10"
@@ -1048,10 +1014,10 @@
         "inst_hier_path": "axi_gpio_0",
         "parameters": {
           "C_GPIO2_WIDTH": {
-            "value": "2"
+            "value": "32"
           },
           "C_GPIO_WIDTH": {
-            "value": "2"
+            "value": "32"
           },
           "C_INTERRUPT_PRESENT": {
             "value": "1"
@@ -1402,8 +1368,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_68",
-                "xci_path": "ip/icyradio_s00_data_fifo_68/icyradio_s00_data_fifo_68.xci",
+                "xci_name": "icyradio_s00_data_fifo_83",
+                "xci_path": "ip/icyradio_s00_data_fifo_83/icyradio_s00_data_fifo_83.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1495,8 +1461,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_44",
-                "xci_path": "ip/icyradio_s01_data_fifo_44/icyradio_s01_data_fifo_44.xci",
+                "xci_name": "icyradio_s01_data_fifo_54",
+                "xci_path": "ip/icyradio_s01_data_fifo_54/icyradio_s01_data_fifo_54.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2366,8 +2332,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_69",
-                "xci_path": "ip/icyradio_s00_data_fifo_69/icyradio_s00_data_fifo_69.xci",
+                "xci_name": "icyradio_s00_data_fifo_84",
+                "xci_path": "ip/icyradio_s00_data_fifo_84/icyradio_s00_data_fifo_84.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2459,8 +2425,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_45",
-                "xci_path": "ip/icyradio_s01_data_fifo_45/icyradio_s01_data_fifo_45.xci",
+                "xci_name": "icyradio_s01_data_fifo_55",
+                "xci_path": "ip/icyradio_s01_data_fifo_55/icyradio_s01_data_fifo_55.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3498,8 +3464,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_70",
-                "xci_path": "ip/icyradio_s00_data_fifo_70/icyradio_s00_data_fifo_70.xci",
+                "xci_name": "icyradio_s00_data_fifo_85",
+                "xci_path": "ip/icyradio_s00_data_fifo_85/icyradio_s00_data_fifo_85.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -4929,9 +4895,6 @@
         "xci_path": "ip/icyradio_axi_quad_spi_0_0/icyradio_axi_quad_spi_0_0.xci",
         "inst_hier_path": "axi_quad_spi_0",
         "parameters": {
-          "C_SHARED_STARTUP": {
-            "value": "1"
-          },
           "C_SPI_MEMORY": {
             "value": "1"
           },
@@ -4945,7 +4908,7 @@
             "value": "1"
           },
           "C_USE_STARTUP": {
-            "value": "1"
+            "value": "0"
           },
           "C_XIP_MODE": {
             "value": "1"
@@ -5174,12 +5137,6 @@
           }
         }
       },
-      "rst_mig_7series_0_10M": {
-        "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
-        "xci_name": "icyradio_rst_mig_7series_0_25M_0",
-        "xci_path": "ip/icyradio_rst_mig_7series_0_25M_0/icyradio_rst_mig_7series_0_25M_0.xci",
-        "inst_hier_path": "rst_mig_7series_0_10M"
-      },
       "axi_iic_1": {
         "vlnv": "xilinx.com:ip:axi_iic:2.1",
         "xci_name": "icyradio_axi_iic_0_1",
@@ -5215,14 +5172,163 @@
           "CLKOUT1_REQUESTED_OUT_FREQ": {
             "value": "250"
           },
+          "CLKOUT2_JITTER": {
+            "value": "142.107"
+          },
+          "CLKOUT2_PHASE_ERROR": {
+            "value": "164.985"
+          },
+          "CLKOUT2_REQUESTED_OUT_FREQ": {
+            "value": "200"
+          },
+          "CLKOUT2_USED": {
+            "value": "true"
+          },
+          "CLKOUT3_JITTER": {
+            "value": "285.743"
+          },
+          "CLKOUT3_PHASE_ERROR": {
+            "value": "164.985"
+          },
+          "CLKOUT3_REQUESTED_OUT_FREQ": {
+            "value": "10"
+          },
+          "CLKOUT3_USED": {
+            "value": "true"
+          },
           "MMCM_CLKOUT0_DIVIDE_F": {
             "value": "4.000"
+          },
+          "MMCM_CLKOUT1_DIVIDE": {
+            "value": "5"
+          },
+          "MMCM_CLKOUT2_DIVIDE": {
+            "value": "100"
+          },
+          "NUM_OUT_CLKS": {
+            "value": "3"
           },
           "RESET_PORT": {
             "value": "resetn"
           },
           "RESET_TYPE": {
             "value": "ACTIVE_LOW"
+          }
+        }
+      },
+      "gpio_slice_trx_ctrl_out": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_xlslice_0_0",
+        "xci_path": "ip/icyradio_xlslice_0_0/icyradio_xlslice_0_0.xci",
+        "inst_hier_path": "gpio_slice_trx_ctrl_out",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "3"
+          },
+          "DOUT_WIDTH": {
+            "value": "4"
+          }
+        }
+      },
+      "gpio_slice_trx_sync_in": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_xlslice_0_1",
+        "xci_path": "ip/icyradio_xlslice_0_1/icyradio_xlslice_0_1.xci",
+        "inst_hier_path": "gpio_slice_trx_sync_in",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "5"
+          },
+          "DIN_TO": {
+            "value": "5"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "gpio_slice_trx_en_agc": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_gpio_slice_trx_en_agc_0",
+        "xci_path": "ip/icyradio_gpio_slice_trx_en_agc_0/icyradio_gpio_slice_trx_en_agc_0.xci",
+        "inst_hier_path": "gpio_slice_trx_en_agc",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "4"
+          },
+          "DIN_TO": {
+            "value": "4"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "gpio_concat_0": {
+        "vlnv": "xilinx.com:ip:xlconcat:2.1",
+        "xci_name": "icyradio_irq_concat_0_4",
+        "xci_path": "ip/icyradio_irq_concat_0_4/icyradio_irq_concat_0_4.xci",
+        "inst_hier_path": "gpio_concat_0",
+        "parameters": {
+          "IN0_WIDTH": {
+            "value": "8"
+          },
+          "IN1_WIDTH": {
+            "value": "24"
+          },
+          "NUM_PORTS": {
+            "value": "2"
+          },
+          "dout_width": {
+            "value": "32"
+          }
+        }
+      },
+      "GND_3": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "icyradio_GND_2_0",
+        "xci_path": "ip/icyradio_GND_2_0/icyradio_GND_2_0.xci",
+        "inst_hier_path": "GND_3",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "0"
+          },
+          "CONST_WIDTH": {
+            "value": "24"
+          }
+        }
+      },
+      "gpio_slice_trx_up_txnrx": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_gpio_slice_trx_ctrl_out_0",
+        "xci_path": "ip/icyradio_gpio_slice_trx_ctrl_out_0/icyradio_gpio_slice_trx_ctrl_out_0.xci",
+        "inst_hier_path": "gpio_slice_trx_up_txnrx",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "7"
+          },
+          "DIN_TO": {
+            "value": "7"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "gpio_slice_trx_up_enable": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_gpio_slice_trx_ctrl_out_1",
+        "xci_path": "ip/icyradio_gpio_slice_trx_ctrl_out_1/icyradio_gpio_slice_trx_ctrl_out_1.xci",
+        "inst_hier_path": "gpio_slice_trx_up_enable",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "6"
+          },
+          "DIN_TO": {
+            "value": "6"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
           }
         }
       }
@@ -5286,18 +5392,6 @@
         "interface_ports": [
           "axi_dmac_rf_tx/m_axis",
           "ad9361_dac_unpacker/s_axis"
-        ]
-      },
-      "axi_gpio_0_GPIO": {
-        "interface_ports": [
-          "GPIO0",
-          "axi_gpio_0/GPIO"
-        ]
-      },
-      "axi_gpio_0_GPIO2": {
-        "interface_ports": [
-          "GPIO1",
-          "axi_gpio_0/GPIO2"
         ]
       },
       "axi_i2s_adi_0_i2s": {
@@ -5510,28 +5604,14 @@
       "GND_0_dout": {
         "ports": [
           "GND_0/dout",
-          "PCIe_CLKREQn",
-          "TRX_EN_AGC",
           "irq_concat_0/In14",
           "irq_concat_0/In15",
-          "axi_ad9361/up_enable",
-          "axi_ad9361/up_txnrx",
           "axi_pcie_0/INTX_MSI_Request",
-          "axi_quad_spi_0/gsr",
-          "axi_quad_spi_0/gts",
-          "axi_quad_spi_0/usrcclkts",
-          "axi_quad_spi_0/usrdonets",
           "irq_concat_0/In9",
           "irq_concat_1/In0",
           "irq_concat_1/In1",
           "irq_concat_1/In2",
-          "TRX_SYNC_IN"
-        ]
-      },
-      "GND_1_dout": {
-        "ports": [
-          "GND_1/dout",
-          "TRX_CTRL_IN"
+          "PCIe_CLKREQn"
         ]
       },
       "GND_2_dout": {
@@ -5540,16 +5620,10 @@
           "irq_concat_1/In4"
         ]
       },
-      "PCIe_RESETn_1": {
+      "GND_3_dout": {
         "ports": [
-          "PCIe_RESETn",
-          "ext_reset_combiner/Op2"
-        ]
-      },
-      "RESETn_1": {
-        "ports": [
-          "RESETn",
-          "ext_reset_combiner/Op1"
+          "GND_3/dout",
+          "gpio_concat_0/In1"
         ]
       },
       "RXCLK_1": {
@@ -5570,11 +5644,16 @@
           "axi_ad9361/rx_frame_in"
         ]
       },
+      "TRX_CTRL_OUT_1": {
+        "ports": [
+          "TRX_CTRL_OUT",
+          "gpio_concat_0/In0"
+        ]
+      },
       "VCC_0_dout": {
         "ports": [
           "VCC_0/dout",
           "logic_and_0/Op1",
-          "axi_quad_spi_0/usrdoneo",
           "logic_and_2/Op1"
         ]
       },
@@ -5769,6 +5848,16 @@
           "logic_and_2/Op2"
         ]
       },
+      "axi_gpio_0_gpio_io_o": {
+        "ports": [
+          "axi_gpio_0/gpio_io_o",
+          "gpio_slice_trx_ctrl_out/Din",
+          "gpio_slice_trx_sync_in/Din",
+          "gpio_slice_trx_en_agc/Din",
+          "gpio_slice_trx_up_enable/Din",
+          "gpio_slice_trx_up_txnrx/Din"
+        ]
+      },
       "axi_gpio_0_ip2intc_irpt": {
         "ports": [
           "axi_gpio_0/ip2intc_irpt",
@@ -5778,7 +5867,7 @@
       "axi_iic_0_gpo": {
         "ports": [
           "axi_iic_0/gpo",
-          "CODEC_RESETn"
+          "CODEC_RSTn"
         ]
       },
       "axi_iic_0_iic2intc_irpt": {
@@ -5906,22 +5995,51 @@
       },
       "clk_wiz_0_delay_ref_clk": {
         "ports": [
-          "mig_7series_0/ui_addn_clk_0",
+          "clk_wiz_0/clk_out2",
           "axi_ad9361/delay_clk",
           "mig_7series_0/clk_ref_i"
         ]
       },
       "data_clk_i_0_1": {
         "ports": [
-          "I2S_BCLK_IN",
+          "FPGA_CLK1",
           "axi_i2s_adi_0/data_clk_i"
+        ]
+      },
+      "gpio_concat_0_dout": {
+        "ports": [
+          "gpio_concat_0/dout",
+          "axi_gpio_0/gpio_io_i"
+        ]
+      },
+      "gpio_slice_trx_en_agc_Dout": {
+        "ports": [
+          "gpio_slice_trx_en_agc/Dout",
+          "TRX_EN_AGC"
+        ]
+      },
+      "gpio_slice_trx_sync_in_Dout": {
+        "ports": [
+          "gpio_slice_trx_sync_in/Dout",
+          "TRX_SYNC_IN"
+        ]
+      },
+      "gpio_slice_trx_up_enable_Dout": {
+        "ports": [
+          "gpio_slice_trx_up_enable/Dout",
+          "axi_ad9361/up_enable"
+        ]
+      },
+      "gpio_slice_trx_up_txnrx_Dout": {
+        "ports": [
+          "gpio_slice_trx_up_txnrx/Dout",
+          "axi_ad9361/up_txnrx"
         ]
       },
       "int_reset_combiner_Res": {
         "ports": [
           "int_reset_combiner/Res",
-          "rst_mig_7series_0_166M/aux_reset_in",
-          "rst_mig_7series_0_10M/aux_reset_in"
+          "rst_mig_7series_0_166M/aux_reset_in"
         ]
       },
       "irq_concat_0_dout": {
@@ -5957,14 +6075,7 @@
       "mig_7series_0_mmcm_locked": {
         "ports": [
           "mig_7series_0/mmcm_locked",
-          "rst_mig_7series_0_166M/dcm_locked",
-          "rst_mig_7series_0_10M/dcm_locked"
-        ]
-      },
-      "mig_7series_0_ui_addn_clk_2": {
-        "ports": [
-          "mig_7series_0/ui_addn_clk_2",
-          "rst_mig_7series_0_10M/slowest_sync_clk"
+          "rst_mig_7series_0_166M/dcm_locked"
         ]
       },
       "mig_7series_0_ui_clk": {
@@ -6021,7 +6132,6 @@
       "rst_axi_pcie_0_125M_peripheral_aresetn": {
         "ports": [
           "rst_axi_pcie_0_125M/peripheral_aresetn",
-          "TRX_RESETn",
           "axi_i2s_adi_0/s_axis_aresetn",
           "axi_i2s_adi_0/s_axi_aresetn",
           "xadc_wiz_0/s_axi_aresetn",
@@ -6041,7 +6151,8 @@
           "axi_dmac_i2s_rx/m_dest_axi_aresetn",
           "axi_dmac_i2s_rx/s_axi_aresetn",
           "axi_iic_1/s_axi_aresetn",
-          "axi_quad_spi_2/s_axi_aresetn"
+          "axi_quad_spi_2/s_axi_aresetn",
+          "TRX_RESETn"
         ]
       },
       "rst_mig_7series_0_166M_interconnect_aresetn": {
@@ -6094,11 +6205,10 @@
       },
       "util_vector_logic_2_Res": {
         "ports": [
-          "ext_reset_combiner/Res",
+          "PCIe_RESETn",
           "mig_7series_0/sys_rst",
           "rst_axi_pcie_0_125M/ext_reset_in",
           "rst_mig_7series_0_166M/ext_reset_in",
-          "rst_mig_7series_0_10M/ext_reset_in",
           "clk_wiz_0/resetn"
         ]
       },
@@ -6112,6 +6222,12 @@
         "ports": [
           "xadc_wiz_0/temp_out",
           "mig_7series_0/device_temp_i"
+        ]
+      },
+      "xlslice_0_Dout": {
+        "ports": [
+          "gpio_slice_trx_ctrl_out/Dout",
+          "TRX_CTRL_IN"
         ]
       }
     },

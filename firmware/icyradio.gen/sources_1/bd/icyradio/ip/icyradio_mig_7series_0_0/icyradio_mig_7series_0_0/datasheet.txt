@@ -63,8 +63,8 @@ Memory Options:
 Bank Selections:
 	Bank: 34
 		Byte Group T0:	DQ[8-15]
-		Byte Group T1:	Address/Ctrl-0
-		Byte Group T2:	Address/Ctrl-1
+		Byte Group T1:	Address/Ctrl-1
+		Byte Group T2:	Address/Ctrl-0
 		Byte Group T3:	Address/Ctrl-2
 	Bank: 35
 		Byte Group T3:	DQ[0-7]

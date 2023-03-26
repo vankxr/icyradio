@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Jan 11 17:28:05 2023
+-- Date        : Tue Mar  7 01:15:49 2023
 -- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_0_0/icyradio_axi_gpio_0_0_stub.vhdl
@@ -34,12 +34,12 @@ entity icyradio_axi_gpio_0_0 is
     s_axi_rvalid : out STD_LOGIC;
     s_axi_rready : in STD_LOGIC;
     ip2intc_irpt : out STD_LOGIC;
-    gpio_io_i : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpio_io_o : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpio_io_t : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpio2_io_i : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpio2_io_o : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    gpio2_io_t : out STD_LOGIC_VECTOR ( 1 downto 0 )
+    gpio_io_i : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio_io_o : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio_io_t : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio2_io_i : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio2_io_o : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    gpio2_io_t : out STD_LOGIC_VECTOR ( 31 downto 0 )
   );
 
 end icyradio_axi_gpio_0_0;
@@ -48,7 +48,7 @@ architecture stub of icyradio_axi_gpio_0_0 is
 attribute syn_black_box : boolean;
 attribute black_box_pad_pin : string;
 attribute syn_black_box of stub : architecture is true;
-attribute black_box_pad_pin of stub : architecture is "s_axi_aclk,s_axi_aresetn,s_axi_awaddr[8:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[8:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,ip2intc_irpt,gpio_io_i[1:0],gpio_io_o[1:0],gpio_io_t[1:0],gpio2_io_i[1:0],gpio2_io_o[1:0],gpio2_io_t[1:0]";
+attribute black_box_pad_pin of stub : architecture is "s_axi_aclk,s_axi_aresetn,s_axi_awaddr[8:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[8:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,ip2intc_irpt,gpio_io_i[31:0],gpio_io_o[31:0],gpio_io_t[31:0],gpio2_io_i[31:0],gpio2_io_o[31:0],gpio2_io_t[31:0]";
 attribute x_core_info : string;
 attribute x_core_info of stub : architecture is "axi_gpio,Vivado 2021.1";
 begin

@@ -148,7 +148,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {  <SystemClock>No Buffer</SystemClock>}
    puts $mig_prj_file {  <ReferenceClock>No Buffer</ReferenceClock>}
    puts $mig_prj_file {  <SysResetPolarity>ACTIVE LOW</SysResetPolarity>}
-   puts $mig_prj_file {  <BankSelectionFlag>TRUE</BankSelectionFlag>}
+   puts $mig_prj_file {  <BankSelectionFlag>FALSE</BankSelectionFlag>}
    puts $mig_prj_file {  <InternalVref>0</InternalVref>}
    puts $mig_prj_file {  <dci_hr_inouts_inputs>40 Ohms</dci_hr_inouts_inputs>}
    puts $mig_prj_file {  <dci_cascade>0</dci_cascade>}
@@ -164,11 +164,11 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <VccAuxIO>1.8V</VccAuxIO>}
    puts $mig_prj_file {    <PHYRatio>2:1</PHYRatio>}
    puts $mig_prj_file {    <InputClkFreq>250</InputClkFreq>}
-   puts $mig_prj_file {    <UIExtraClocks>1</UIExtraClocks>}
+   puts $mig_prj_file {    <UIExtraClocks>0</UIExtraClocks>}
    puts $mig_prj_file {    <MMCM_VCO>666</MMCM_VCO>}
-   puts $mig_prj_file {    <MMCMClkOut0> 3.250</MMCMClkOut0>}
-   puts $mig_prj_file {    <MMCMClkOut1>26</MMCMClkOut1>}
-   puts $mig_prj_file {    <MMCMClkOut2>66</MMCMClkOut2>}
+   puts $mig_prj_file {    <MMCMClkOut0> 1.000</MMCMClkOut0>}
+   puts $mig_prj_file {    <MMCMClkOut1>1</MMCMClkOut1>}
+   puts $mig_prj_file {    <MMCMClkOut2>1</MMCMClkOut2>}
    puts $mig_prj_file {    <MMCMClkOut3>1</MMCMClkOut3>}
    puts $mig_prj_file {    <MMCMClkOut4>1</MMCMClkOut4>}
    puts $mig_prj_file {    <DataWidth>16</DataWidth>}
@@ -176,7 +176,7 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <DataMask>1</DataMask>}
    puts $mig_prj_file {    <ECC>Disabled</ECC>}
    puts $mig_prj_file {    <Ordering>Normal</Ordering>}
-   puts $mig_prj_file {    <BankMachineCnt>4</BankMachineCnt>}
+   puts $mig_prj_file {    <BankMachineCnt>2</BankMachineCnt>}
    puts $mig_prj_file {    <CustomPart>FALSE</CustomPart>}
    puts $mig_prj_file {    <NewPartName/>}
    puts $mig_prj_file {    <RowAddress>15</RowAddress>}
@@ -185,10 +185,56 @@ proc write_mig_file_icyradio_mig_7series_0_0 { str_mig_prj_filepath } {
    puts $mig_prj_file {    <MemoryVoltage>1.35V</MemoryVoltage>}
    puts $mig_prj_file {    <C0_MEM_SIZE>536870912</C0_MEM_SIZE>}
    puts $mig_prj_file {    <UserMemoryAddressMap>BANK_ROW_COLUMN</UserMemoryAddressMap>}
-   puts $mig_prj_file {    <BankSelection>}
-   puts $mig_prj_file {      <Bank T3="DQ[0-7]" name="35"/>}
-   puts $mig_prj_file {      <Bank T0="DQ[8-15]" T1="Address/Ctrl-0" T2="Address/Ctrl-1" T3="Address/Ctrl-2" name="34"/>}
-   puts $mig_prj_file {    </BankSelection>}
+   puts $mig_prj_file {    <PinSelection>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="W6" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="Y3" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[10]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AB2" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[11]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AB3" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[12]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AB1" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[13]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AA1" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[14]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="U5" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="T5" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[2]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="W4" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[3]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="V4" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[4]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AA4" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[5]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="Y4" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[6]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AB5" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[7]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AA5" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[8]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AA3" SLEW="FAST" VCCAUX_IO="" name="ddr3_addr[9]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="V5" SLEW="FAST" VCCAUX_IO="" name="ddr3_ba[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="U6" SLEW="FAST" VCCAUX_IO="" name="ddr3_ba[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="W5" SLEW="FAST" VCCAUX_IO="" name="ddr3_ba[2]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="T6" SLEW="FAST" VCCAUX_IO="" name="ddr3_cas_n"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="DIFF_SSTL135" PADName="V8" SLEW="FAST" VCCAUX_IO="" name="ddr3_ck_n[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="DIFF_SSTL135" PADName="V9" SLEW="FAST" VCCAUX_IO="" name="ddr3_ck_p[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="AA6" SLEW="FAST" VCCAUX_IO="" name="ddr3_cke[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="N4" SLEW="FAST" VCCAUX_IO="" name="ddr3_dm[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="T1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dm[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="R1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="V2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[10]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="W2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[11]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="Y2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[12]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="W1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[13]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="Y1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[14]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="U3" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[15]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="P1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="P2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[2]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="N2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[3]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="M6" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[4]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="M5" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[5]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="P6" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[6]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="N5" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[7]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="U1" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[8]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="SSTL135" PADName="U2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dq[9]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="DIFF_SSTL135" PADName="P4" SLEW="FAST" VCCAUX_IO="" name="ddr3_dqs_n[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="DIFF_SSTL135" PADName="R2" SLEW="FAST" VCCAUX_IO="" name="ddr3_dqs_n[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="DIFF_SSTL135" PADName="P5" SLEW="FAST" VCCAUX_IO="" name="ddr3_dqs_p[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="UNTUNED_SPLIT_40" IOSTANDARD="DIFF_SSTL135" PADName="R3" SLEW="FAST" VCCAUX_IO="" name="ddr3_dqs_p[1]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="V7" SLEW="FAST" VCCAUX_IO="" name="ddr3_odt[0]"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="R6" SLEW="FAST" VCCAUX_IO="" name="ddr3_ras_n"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="R4" SLEW="FAST" VCCAUX_IO="" name="ddr3_reset_n"/>}
+   puts $mig_prj_file {      <Pin IN_TERM="" IOSTANDARD="SSTL135" PADName="Y6" SLEW="FAST" VCCAUX_IO="" name="ddr3_we_n"/>}
+   puts $mig_prj_file {    </PinSelection>}
    puts $mig_prj_file {    <System_Control>}
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="sys_rst"/>}
    puts $mig_prj_file {      <Pin Bank="Select Bank" PADName="No connect" name="init_calib_complete"/>}
@@ -283,10 +329,6 @@ proc create_root_design { parentCell } {
 
   set FLASH_QSPI [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:spi_rtl:1.0 FLASH_QSPI ]
 
-  set GPIO0 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 GPIO0 ]
-
-  set GPIO1 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 GPIO1 ]
-
   set PCIe [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:pcie_7x_mgt_rtl:1.0 PCIe ]
 
   set PCIe_REFCLK [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 PCIe_REFCLK ]
@@ -299,16 +341,15 @@ proc create_root_design { parentCell } {
 
 
   # Create ports
-  set CODEC_RESETn [ create_bd_port -dir O -from 0 -to 0 CODEC_RESETn ]
+  set CODEC_RSTn [ create_bd_port -dir O -from 0 -to 0 -type rst CODEC_RSTn ]
   set FPGA_CLK0 [ create_bd_port -dir I -type clk -freq_hz 50000000 FPGA_CLK0 ]
-  set I2S_BCLK_IN [ create_bd_port -dir I -type clk -freq_hz 49152000 I2S_BCLK_IN ]
+  set FPGA_CLK1 [ create_bd_port -dir I -type clk -freq_hz 49152000 FPGA_CLK1 ]
   set_property -dict [ list \
    CONFIG.PHASE {0.0} \
- ] $I2S_BCLK_IN
+ ] $FPGA_CLK1
   set PCIe_CLKREQn [ create_bd_port -dir O -from 0 -to 0 PCIe_CLKREQn ]
   set PCIe_RESETn [ create_bd_port -dir I -type rst PCIe_RESETn ]
   set PM_I2C_EN [ create_bd_port -dir O -from 0 -to 0 PM_I2C_EN ]
-  set RESETn [ create_bd_port -dir I -type rst RESETn ]
   set TRX_CLK_OUT [ create_bd_port -dir I -type clk -freq_hz 100000000 TRX_CLK_OUT ]
   set TRX_CTRL_IN [ create_bd_port -dir O -from 3 -to 0 TRX_CTRL_IN ]
   set TRX_CTRL_OUT [ create_bd_port -dir I -from 7 -to 0 TRX_CTRL_OUT ]
@@ -330,19 +371,19 @@ proc create_root_design { parentCell } {
    CONFIG.CONST_VAL {0} \
  ] $GND_0
 
-  # Create instance: GND_1, and set properties
-  set GND_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_1 ]
-  set_property -dict [ list \
-   CONFIG.CONST_VAL {0} \
-   CONFIG.CONST_WIDTH {4} \
- ] $GND_1
-
   # Create instance: GND_2, and set properties
   set GND_2 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_2 ]
   set_property -dict [ list \
    CONFIG.CONST_VAL {0} \
    CONFIG.CONST_WIDTH {13} \
  ] $GND_2
+
+  # Create instance: GND_3, and set properties
+  set GND_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_3 ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+   CONFIG.CONST_WIDTH {24} \
+ ] $GND_3
 
   # Create instance: SOFT_RESET, and set properties
   set SOFT_RESET [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 SOFT_RESET ]
@@ -368,8 +409,9 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.ADC_USERPORTS_DISABLE {1} \
    CONFIG.CMOS_OR_LVDS_N {1} \
+   CONFIG.DAC_IODELAY_ENABLE {0} \
    CONFIG.DAC_USERPORTS_DISABLE {1} \
-   CONFIG.DELAY_REFCLK_FREQUENCY {204} \
+   CONFIG.DELAY_REFCLK_FREQUENCY {200} \
    CONFIG.TDD_DISABLE {1} \
  ] $axi_ad9361
 
@@ -458,8 +500,8 @@ proc create_root_design { parentCell } {
   # Create instance: axi_gpio_0, and set properties
   set axi_gpio_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0 ]
   set_property -dict [ list \
-   CONFIG.C_GPIO2_WIDTH {2} \
-   CONFIG.C_GPIO_WIDTH {2} \
+   CONFIG.C_GPIO2_WIDTH {32} \
+   CONFIG.C_GPIO_WIDTH {32} \
    CONFIG.C_INTERRUPT_PRESENT {1} \
    CONFIG.C_IS_DUAL {1} \
  ] $axi_gpio_0
@@ -534,12 +576,13 @@ proc create_root_design { parentCell } {
   # Create instance: axi_quad_spi_0, and set properties
   set axi_quad_spi_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_quad_spi:3.2 axi_quad_spi_0 ]
   set_property -dict [ list \
-   CONFIG.C_SHARED_STARTUP {1} \
+   CONFIG.C_SHARED_STARTUP {0} \
    CONFIG.C_SPI_MEMORY {1} \
    CONFIG.C_SPI_MEM_ADDR_BITS {24} \
    CONFIG.C_SPI_MODE {2} \
    CONFIG.C_TYPE_OF_AXI4_INTERFACE {1} \
-   CONFIG.C_USE_STARTUP {1} \
+   CONFIG.C_USE_STARTUP {0} \
+   CONFIG.C_USE_STARTUP_INT {0} \
    CONFIG.C_XIP_MODE {1} \
    CONFIG.C_XIP_PERF_MODE {0} \
  ] $axi_quad_spi_0
@@ -563,17 +606,68 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.CLKOUT1_JITTER {136.987} \
    CONFIG.CLKOUT1_REQUESTED_OUT_FREQ {250} \
+   CONFIG.CLKOUT2_JITTER {142.107} \
+   CONFIG.CLKOUT2_PHASE_ERROR {164.985} \
+   CONFIG.CLKOUT2_REQUESTED_OUT_FREQ {200} \
+   CONFIG.CLKOUT2_USED {true} \
+   CONFIG.CLKOUT3_JITTER {285.743} \
+   CONFIG.CLKOUT3_PHASE_ERROR {164.985} \
+   CONFIG.CLKOUT3_REQUESTED_OUT_FREQ {10} \
+   CONFIG.CLKOUT3_USED {true} \
    CONFIG.MMCM_CLKOUT0_DIVIDE_F {4.000} \
+   CONFIG.MMCM_CLKOUT1_DIVIDE {5} \
+   CONFIG.MMCM_CLKOUT2_DIVIDE {100} \
+   CONFIG.NUM_OUT_CLKS {3} \
    CONFIG.RESET_PORT {resetn} \
    CONFIG.RESET_TYPE {ACTIVE_LOW} \
  ] $clk_wiz_0
 
-  # Create instance: ext_reset_combiner, and set properties
-  set ext_reset_combiner [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 ext_reset_combiner ]
+  # Create instance: gpio_concat_0, and set properties
+  set gpio_concat_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat:2.1 gpio_concat_0 ]
   set_property -dict [ list \
-   CONFIG.C_OPERATION {and} \
-   CONFIG.C_SIZE {1} \
- ] $ext_reset_combiner
+   CONFIG.IN0_WIDTH {8} \
+   CONFIG.IN1_WIDTH {24} \
+   CONFIG.NUM_PORTS {2} \
+ ] $gpio_concat_0
+
+  # Create instance: gpio_slice_trx_ctrl_out, and set properties
+  set gpio_slice_trx_ctrl_out [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_ctrl_out ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {3} \
+   CONFIG.DOUT_WIDTH {4} \
+ ] $gpio_slice_trx_ctrl_out
+
+  # Create instance: gpio_slice_trx_en_agc, and set properties
+  set gpio_slice_trx_en_agc [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_en_agc ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {4} \
+   CONFIG.DIN_TO {4} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_trx_en_agc
+
+  # Create instance: gpio_slice_trx_sync_in, and set properties
+  set gpio_slice_trx_sync_in [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_sync_in ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {5} \
+   CONFIG.DIN_TO {5} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_trx_sync_in
+
+  # Create instance: gpio_slice_trx_up_enable, and set properties
+  set gpio_slice_trx_up_enable [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_up_enable ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {6} \
+   CONFIG.DIN_TO {6} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_trx_up_enable
+
+  # Create instance: gpio_slice_trx_up_txnrx, and set properties
+  set gpio_slice_trx_up_txnrx [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_up_txnrx ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {7} \
+   CONFIG.DIN_TO {7} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_trx_up_txnrx
 
   # Create instance: int_reset_combiner, and set properties
   set int_reset_combiner [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 int_reset_combiner ]
@@ -632,7 +726,7 @@ proc create_root_design { parentCell } {
 
   # Generate the PRJ File for MIG
   set str_mig_folder [get_property IP_DIR [ get_ips [ get_property CONFIG.Component_Name $mig_7series_0 ] ] ]
-  set str_mig_file_name mig_b.prj
+  set str_mig_file_name mig_a.prj
   set str_mig_file_path ${str_mig_folder}/${str_mig_file_name}
 
   write_mig_file_icyradio_mig_7series_0_0 $str_mig_file_path
@@ -640,7 +734,7 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.BOARD_MIG_PARAM {Custom} \
    CONFIG.RESET_BOARD_INTERFACE {Custom} \
-   CONFIG.XML_INPUT_FILE {mig_b.prj} \
+   CONFIG.XML_INPUT_FILE {mig_a.prj} \
  ] $mig_7series_0
 
   # Create instance: picorv32_0, and set properties
@@ -658,9 +752,6 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.C_AUX_RESET_HIGH {1} \
  ] $rst_axi_pcie_0_125M
-
-  # Create instance: rst_mig_7series_0_10M, and set properties
-  set rst_mig_7series_0_10M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_mig_7series_0_10M ]
 
   # Create instance: rst_mig_7series_0_166M, and set properties
   set rst_mig_7series_0_166M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_mig_7series_0_166M ]
@@ -733,8 +824,6 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net axi_dmac_i2s_tx_m_axis [get_bd_intf_pins axi_dmac_i2s_tx/m_axis] [get_bd_intf_pins axi_i2s_adi_0/s_axis]
   connect_bd_intf_net -intf_net axi_dmac_i2s_tx_m_src_axi [get_bd_intf_pins axi_cpu_dma_interconnect/S02_AXI] [get_bd_intf_pins axi_dmac_i2s_tx/m_src_axi]
   connect_bd_intf_net -intf_net axi_dmac_rf_tx_m_axis [get_bd_intf_pins ad9361_dac_unpacker/s_axis] [get_bd_intf_pins axi_dmac_rf_tx/m_axis]
-  connect_bd_intf_net -intf_net axi_gpio_0_GPIO [get_bd_intf_ports GPIO0] [get_bd_intf_pins axi_gpio_0/GPIO]
-  connect_bd_intf_net -intf_net axi_gpio_0_GPIO2 [get_bd_intf_ports GPIO1] [get_bd_intf_pins axi_gpio_0/GPIO2]
   connect_bd_intf_net -intf_net axi_i2s_adi_0_i2s [get_bd_intf_ports CODEC_I2S] [get_bd_intf_pins axi_i2s_adi_0/i2s]
   connect_bd_intf_net -intf_net axi_i2s_adi_0_m_axis [get_bd_intf_pins axi_dmac_i2s_rx/s_axis] [get_bd_intf_pins axi_i2s_adi_0/m_axis]
   connect_bd_intf_net -intf_net axi_iic_0_IIC [get_bd_intf_ports AUDIO_I2C] [get_bd_intf_pins axi_iic_0/IIC]
@@ -771,15 +860,14 @@ proc create_root_design { parentCell } {
   # Create port connections
   connect_bd_net -net CORTEXM3_AXI_0_SYSRESETREQ [get_bd_pins SOFT_RESET/dout] [get_bd_pins int_reset_combiner/Op2] [get_bd_pins rst_axi_pcie_0_125M/aux_reset_in]
   connect_bd_net -net FPGA_CLK0_1 [get_bd_ports FPGA_CLK0] [get_bd_pins clk_wiz_0/clk_in1]
-  connect_bd_net -net GND_0_dout [get_bd_ports PCIe_CLKREQn] [get_bd_ports TRX_EN_AGC] [get_bd_ports TRX_SYNC_IN] [get_bd_pins GND_0/dout] [get_bd_pins axi_ad9361/up_enable] [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins axi_quad_spi_0/gsr] [get_bd_pins axi_quad_spi_0/gts] [get_bd_pins axi_quad_spi_0/usrcclkts] [get_bd_pins axi_quad_spi_0/usrdonets] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In14] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
-  connect_bd_net -net GND_1_dout [get_bd_ports TRX_CTRL_IN] [get_bd_pins GND_1/dout]
+  connect_bd_net -net GND_0_dout [get_bd_ports PCIe_CLKREQn] [get_bd_pins GND_0/dout] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In14] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
   connect_bd_net -net GND_2_dout [get_bd_pins GND_2/dout] [get_bd_pins irq_concat_1/In4]
-  connect_bd_net -net PCIe_RESETn_1 [get_bd_ports PCIe_RESETn] [get_bd_pins ext_reset_combiner/Op2]
-  connect_bd_net -net RESETn_1 [get_bd_ports RESETn] [get_bd_pins ext_reset_combiner/Op1]
+  connect_bd_net -net GND_3_dout [get_bd_pins GND_3/dout] [get_bd_pins gpio_concat_0/In1]
   connect_bd_net -net RXCLK_1 [get_bd_ports TRX_DATA_CLK] [get_bd_pins axi_ad9361/rx_clk_in]
   connect_bd_net -net RXDATA_1 [get_bd_ports TRX_P1_RXDATA] [get_bd_pins axi_ad9361/rx_data_in]
   connect_bd_net -net RXFRAME_1 [get_bd_ports TRX_RXFRAME] [get_bd_pins axi_ad9361/rx_frame_in]
-  connect_bd_net -net VCC_0_dout [get_bd_pins VCC_0/dout] [get_bd_pins axi_quad_spi_0/usrdoneo] [get_bd_pins logic_and_0/Op1] [get_bd_pins logic_and_2/Op1]
+  connect_bd_net -net TRX_CTRL_OUT_1 [get_bd_ports TRX_CTRL_OUT] [get_bd_pins gpio_concat_0/In0]
+  connect_bd_net -net VCC_0_dout [get_bd_pins VCC_0/dout] [get_bd_pins logic_and_0/Op1] [get_bd_pins logic_and_2/Op1]
   connect_bd_net -net ad9361_adc_packer_fifo_wr_overflow [get_bd_pins ad9361_adc_packer/fifo_wr_overflow] [get_bd_pins axi_ad9361/adc_dovf]
   connect_bd_net -net ad9361_dac_unpacker_fifo_rd_underflow [get_bd_pins ad9361_dac_unpacker/fifo_rd_underflow] [get_bd_pins axi_ad9361/dac_dunf]
   connect_bd_net -net axi_ad9361_0_adc_data_i0 [get_bd_pins ad9361_adc_packer/fifo_wr_data_0] [get_bd_pins axi_ad9361/adc_data_i0]
@@ -811,8 +899,9 @@ proc create_root_design { parentCell } {
   connect_bd_net -net axi_dmac_rf_rx_irq [get_bd_pins axi_dmac_rf_rx/irq] [get_bd_pins irq_concat_0/In0]
   connect_bd_net -net axi_dmac_rf_tx_irq [get_bd_pins axi_dmac_rf_tx/irq] [get_bd_pins irq_concat_0/In1]
   connect_bd_net -net axi_dmac_rf_tx_m_axis_valid [get_bd_pins axi_dmac_rf_tx/m_axis_valid] [get_bd_pins logic_and_2/Op2]
+  connect_bd_net -net axi_gpio_0_gpio_io_o [get_bd_pins axi_gpio_0/gpio_io_o] [get_bd_pins gpio_slice_trx_ctrl_out/Din] [get_bd_pins gpio_slice_trx_en_agc/Din] [get_bd_pins gpio_slice_trx_sync_in/Din] [get_bd_pins gpio_slice_trx_up_enable/Din] [get_bd_pins gpio_slice_trx_up_txnrx/Din]
   connect_bd_net -net axi_gpio_0_ip2intc_irpt [get_bd_pins axi_gpio_0/ip2intc_irpt] [get_bd_pins irq_concat_0/In3]
-  connect_bd_net -net axi_iic_0_gpo [get_bd_ports CODEC_RESETn] [get_bd_pins axi_iic_0/gpo]
+  connect_bd_net -net axi_iic_0_gpo [get_bd_ports CODEC_RSTn] [get_bd_pins axi_iic_0/gpo]
   connect_bd_net -net axi_iic_0_iic2intc_irpt [get_bd_pins axi_iic_0/iic2intc_irpt] [get_bd_pins irq_concat_0/In4]
   connect_bd_net -net axi_iic_1_gpo [get_bd_ports PM_I2C_EN] [get_bd_pins axi_iic_1/gpo]
   connect_bd_net -net axi_iic_1_iic2intc_irpt [get_bd_pins axi_iic_1/iic2intc_irpt] [get_bd_pins irq_concat_0/In12]
@@ -824,16 +913,20 @@ proc create_root_design { parentCell } {
   connect_bd_net -net axi_quad_spi_1_ip2intc_irpt [get_bd_pins axi_quad_spi_1/ip2intc_irpt] [get_bd_pins irq_concat_0/In11]
   connect_bd_net -net axi_quad_spi_2_ip2intc_irpt [get_bd_pins axi_quad_spi_2/ip2intc_irpt] [get_bd_pins irq_concat_0/In13]
   connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins mig_7series_0/sys_clk_i]
-  connect_bd_net -net clk_wiz_0_delay_ref_clk [get_bd_pins axi_ad9361/delay_clk] [get_bd_pins mig_7series_0/clk_ref_i] [get_bd_pins mig_7series_0/ui_addn_clk_0]
-  connect_bd_net -net data_clk_i_0_1 [get_bd_ports I2S_BCLK_IN] [get_bd_pins axi_i2s_adi_0/data_clk_i]
-  connect_bd_net -net int_reset_combiner_Res [get_bd_pins int_reset_combiner/Res] [get_bd_pins rst_mig_7series_0_10M/aux_reset_in] [get_bd_pins rst_mig_7series_0_166M/aux_reset_in]
+  connect_bd_net -net clk_wiz_0_delay_ref_clk [get_bd_pins axi_ad9361/delay_clk] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins mig_7series_0/clk_ref_i]
+  connect_bd_net -net data_clk_i_0_1 [get_bd_ports FPGA_CLK1] [get_bd_pins axi_i2s_adi_0/data_clk_i]
+  connect_bd_net -net gpio_concat_0_dout [get_bd_pins axi_gpio_0/gpio_io_i] [get_bd_pins gpio_concat_0/dout]
+  connect_bd_net -net gpio_slice_trx_en_agc_Dout [get_bd_ports TRX_EN_AGC] [get_bd_pins gpio_slice_trx_en_agc/Dout]
+  connect_bd_net -net gpio_slice_trx_sync_in_Dout [get_bd_ports TRX_SYNC_IN] [get_bd_pins gpio_slice_trx_sync_in/Dout]
+  connect_bd_net -net gpio_slice_trx_up_enable_Dout [get_bd_pins axi_ad9361/up_enable] [get_bd_pins gpio_slice_trx_up_enable/Dout]
+  connect_bd_net -net gpio_slice_trx_up_txnrx_Dout [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins gpio_slice_trx_up_txnrx/Dout]
+  connect_bd_net -net int_reset_combiner_Res [get_bd_pins int_reset_combiner/Res] [get_bd_pins rst_mig_7series_0_166M/aux_reset_in]
   connect_bd_net -net irq_concat_0_dout [get_bd_pins irq_concat_0/dout] [get_bd_pins irq_concat_1/In3]
   connect_bd_net -net irq_concat_1_dout [get_bd_pins irq_concat_1/dout] [get_bd_pins picorv32_0/irq]
   connect_bd_net -net logic_and_0_Res [get_bd_pins ad9361_adc_packer/fifo_wr_en] [get_bd_pins logic_and_0/Res]
   connect_bd_net -net logic_and_2_Res [get_bd_pins ad9361_dac_unpacker/s_axis_valid] [get_bd_pins logic_and_2/Res]
   connect_bd_net -net logic_or_0_Res [get_bd_pins logic_and_0/Op2] [get_bd_pins logic_or_0/Res]
-  connect_bd_net -net mig_7series_0_mmcm_locked [get_bd_pins mig_7series_0/mmcm_locked] [get_bd_pins rst_mig_7series_0_10M/dcm_locked] [get_bd_pins rst_mig_7series_0_166M/dcm_locked]
-  connect_bd_net -net mig_7series_0_ui_addn_clk_2 [get_bd_pins mig_7series_0/ui_addn_clk_2] [get_bd_pins rst_mig_7series_0_10M/slowest_sync_clk]
+  connect_bd_net -net mig_7series_0_mmcm_locked [get_bd_pins mig_7series_0/mmcm_locked] [get_bd_pins rst_mig_7series_0_166M/dcm_locked]
   connect_bd_net -net mig_7series_0_ui_clk [get_bd_pins axi_pcie_interconnect/M02_ACLK] [get_bd_pins mig_7series_0/ui_clk] [get_bd_pins rst_mig_7series_0_166M/slowest_sync_clk]
   connect_bd_net -net mig_7series_0_ui_clk_sync_rst [get_bd_pins int_reset_combiner/Op1] [get_bd_pins mig_7series_0/ui_clk_sync_rst]
   connect_bd_net -net rst_axi_pcie_0_125M_interconnect_aresetn [get_bd_pins axi_cpu_dma_interconnect/ARESETN] [get_bd_pins axi_cpu_dma_interconnect/M00_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/M01_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S00_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S01_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S02_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S03_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S04_ARESETN] [get_bd_pins axi_pcie_0/axi_aresetn] [get_bd_pins axi_pcie_interconnect/ARESETN] [get_bd_pins axi_pcie_interconnect/M00_ARESETN] [get_bd_pins axi_pcie_interconnect/M01_ARESETN] [get_bd_pins axi_pcie_interconnect/M03_ARESETN] [get_bd_pins axi_pcie_interconnect/S00_ARESETN] [get_bd_pins axi_pcie_interconnect/S01_ARESETN] [get_bd_pins axi_peripheral_interconnect/ARESETN] [get_bd_pins axi_peripheral_interconnect/M00_ARESETN] [get_bd_pins axi_peripheral_interconnect/M01_ARESETN] [get_bd_pins axi_peripheral_interconnect/M02_ARESETN] [get_bd_pins axi_peripheral_interconnect/M03_ARESETN] [get_bd_pins axi_peripheral_interconnect/M04_ARESETN] [get_bd_pins axi_peripheral_interconnect/M05_ARESETN] [get_bd_pins axi_peripheral_interconnect/M06_ARESETN] [get_bd_pins axi_peripheral_interconnect/M07_ARESETN] [get_bd_pins axi_peripheral_interconnect/M08_ARESETN] [get_bd_pins axi_peripheral_interconnect/M09_ARESETN] [get_bd_pins axi_peripheral_interconnect/M10_ARESETN] [get_bd_pins axi_peripheral_interconnect/M11_ARESETN] [get_bd_pins axi_peripheral_interconnect/M12_ARESETN] [get_bd_pins axi_peripheral_interconnect/M13_ARESETN] [get_bd_pins axi_peripheral_interconnect/S00_ARESETN] [get_bd_pins axi_protocol_convert_0/aresetn] [get_bd_pins picorv32_0/resetn] [get_bd_pins rst_axi_pcie_0_125M/interconnect_aresetn]
@@ -846,9 +939,10 @@ proc create_root_design { parentCell } {
   connect_bd_net -net util_upack2_1_fifo_rd_data_2 [get_bd_pins ad9361_dac_unpacker/fifo_rd_data_2] [get_bd_pins axi_ad9361/dac_data_i1]
   connect_bd_net -net util_upack2_1_fifo_rd_data_3 [get_bd_pins ad9361_dac_unpacker/fifo_rd_data_3] [get_bd_pins axi_ad9361/dac_data_q1]
   connect_bd_net -net util_vector_logic_0_Res [get_bd_pins ad9361_dac_unpacker/fifo_rd_en] [get_bd_pins logic_or_1/Res]
-  connect_bd_net -net util_vector_logic_2_Res [get_bd_pins clk_wiz_0/resetn] [get_bd_pins ext_reset_combiner/Res] [get_bd_pins mig_7series_0/sys_rst] [get_bd_pins rst_axi_pcie_0_125M/ext_reset_in] [get_bd_pins rst_mig_7series_0_10M/ext_reset_in] [get_bd_pins rst_mig_7series_0_166M/ext_reset_in]
+  connect_bd_net -net util_vector_logic_2_Res [get_bd_ports PCIe_RESETn] [get_bd_pins clk_wiz_0/resetn] [get_bd_pins mig_7series_0/sys_rst] [get_bd_pins rst_axi_pcie_0_125M/ext_reset_in] [get_bd_pins rst_mig_7series_0_166M/ext_reset_in]
   connect_bd_net -net xadc_wiz_0_ip2intc_irpt [get_bd_pins irq_concat_0/In10] [get_bd_pins xadc_wiz_0/ip2intc_irpt]
   connect_bd_net -net xadc_wiz_0_temp_out [get_bd_pins mig_7series_0/device_temp_i] [get_bd_pins xadc_wiz_0/temp_out]
+  connect_bd_net -net xlslice_0_Dout [get_bd_ports TRX_CTRL_IN] [get_bd_pins gpio_slice_trx_ctrl_out/Dout]
 
   # Create address segments
   assign_bd_address -offset 0x40002000 -range 0x00001000 -target_address_space [get_bd_addr_spaces axi_dmac_i2s_rx/m_dest_axi] [get_bd_addr_segs axi_ad9361/s_axi/axi_lite] -force

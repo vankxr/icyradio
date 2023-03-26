@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sun Feb 26 17:46:08 2023
+// Date        : Tue Mar  7 01:15:44 2023
 // Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_clk_wiz_0_0/icyradio_clk_wiz_0_0_sim_netlist.v
@@ -15,32 +15,44 @@
 (* NotValidForBitStream *)
 module icyradio_clk_wiz_0_0
    (clk_out1,
+    clk_out2,
+    clk_out3,
     resetn,
     locked,
     clk_in1);
   output clk_out1;
+  output clk_out2;
+  output clk_out3;
   input resetn;
   output locked;
   input clk_in1;
 
   (* IBUF_LOW_PWR *) wire clk_in1;
   wire clk_out1;
+  wire clk_out2;
+  wire clk_out3;
   wire locked;
   wire resetn;
 
   icyradio_clk_wiz_0_0_clk_wiz inst
        (.clk_in1(clk_in1),
         .clk_out1(clk_out1),
+        .clk_out2(clk_out2),
+        .clk_out3(clk_out3),
         .locked(locked),
         .resetn(resetn));
 endmodule
 
 module icyradio_clk_wiz_0_0_clk_wiz
    (clk_out1,
+    clk_out2,
+    clk_out3,
     resetn,
     locked,
     clk_in1);
   output clk_out1;
+  output clk_out2;
+  output clk_out3;
   input resetn;
   output locked;
   input clk_in1;
@@ -49,6 +61,10 @@ module icyradio_clk_wiz_0_0_clk_wiz
   wire clk_in1_icyradio_clk_wiz_0_0;
   wire clk_out1;
   wire clk_out1_icyradio_clk_wiz_0_0;
+  wire clk_out2;
+  wire clk_out2_icyradio_clk_wiz_0_0;
+  wire clk_out3;
+  wire clk_out3_icyradio_clk_wiz_0_0;
   wire clkfbout_buf_icyradio_clk_wiz_0_0;
   wire clkfbout_icyradio_clk_wiz_0_0;
   wire locked;
@@ -58,9 +74,7 @@ module icyradio_clk_wiz_0_0_clk_wiz
   wire NLW_mmcm_adv_inst_CLKFBSTOPPED_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED;
-  wire NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED;
-  wire NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT3_UNCONNECTED;
   wire NLW_mmcm_adv_inst_CLKOUT3B_UNCONNECTED;
@@ -89,6 +103,14 @@ module icyradio_clk_wiz_0_0_clk_wiz
        (.I(clk_out1_icyradio_clk_wiz_0_0),
         .O(clk_out1));
   (* BOX_TYPE = "PRIMITIVE" *) 
+  BUFG clkout2_buf
+       (.I(clk_out2_icyradio_clk_wiz_0_0),
+        .O(clk_out2));
+  (* BOX_TYPE = "PRIMITIVE" *) 
+  BUFG clkout3_buf
+       (.I(clk_out3_icyradio_clk_wiz_0_0),
+        .O(clk_out3));
+  (* BOX_TYPE = "PRIMITIVE" *) 
   MMCME2_ADV #(
     .BANDWIDTH("OPTIMIZED"),
     .CLKFBOUT_MULT_F(20.000000),
@@ -100,11 +122,11 @@ module icyradio_clk_wiz_0_0_clk_wiz
     .CLKOUT0_DUTY_CYCLE(0.500000),
     .CLKOUT0_PHASE(0.000000),
     .CLKOUT0_USE_FINE_PS("FALSE"),
-    .CLKOUT1_DIVIDE(1),
+    .CLKOUT1_DIVIDE(5),
     .CLKOUT1_DUTY_CYCLE(0.500000),
     .CLKOUT1_PHASE(0.000000),
     .CLKOUT1_USE_FINE_PS("FALSE"),
-    .CLKOUT2_DIVIDE(1),
+    .CLKOUT2_DIVIDE(100),
     .CLKOUT2_DUTY_CYCLE(0.500000),
     .CLKOUT2_PHASE(0.000000),
     .CLKOUT2_USE_FINE_PS("FALSE"),
@@ -149,9 +171,9 @@ module icyradio_clk_wiz_0_0_clk_wiz
         .CLKINSTOPPED(NLW_mmcm_adv_inst_CLKINSTOPPED_UNCONNECTED),
         .CLKOUT0(clk_out1_icyradio_clk_wiz_0_0),
         .CLKOUT0B(NLW_mmcm_adv_inst_CLKOUT0B_UNCONNECTED),
-        .CLKOUT1(NLW_mmcm_adv_inst_CLKOUT1_UNCONNECTED),
+        .CLKOUT1(clk_out2_icyradio_clk_wiz_0_0),
         .CLKOUT1B(NLW_mmcm_adv_inst_CLKOUT1B_UNCONNECTED),
-        .CLKOUT2(NLW_mmcm_adv_inst_CLKOUT2_UNCONNECTED),
+        .CLKOUT2(clk_out3_icyradio_clk_wiz_0_0),
         .CLKOUT2B(NLW_mmcm_adv_inst_CLKOUT2B_UNCONNECTED),
         .CLKOUT3(NLW_mmcm_adv_inst_CLKOUT3_UNCONNECTED),
         .CLKOUT3B(NLW_mmcm_adv_inst_CLKOUT3B_UNCONNECTED),

@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -146,7 +146,7 @@ input wire gps_pps;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME gps_pps_irq, SENSITIVITY LEVEL_HIGH, PortWidth 1" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 gps_pps_irq INTERRUPT" *)
 output wire gps_pps_irq;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME delay_clk, FREQ_HZ 204923077, FREQ_TOLERANCE_HZ 0, PHASE 0, CLK_DOMAIN icyradio_mig_7series_0_0_ui_clk, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME delay_clk, FREQ_HZ 200000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN /clk_wiz_0_clk_out1, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 delay_clk CLK" *)
 input wire delay_clk;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME l_clk, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_ad9361_2_l_clk, INSERT_VIP 0" *)
@@ -268,7 +268,7 @@ output wire [31 : 0] up_adc_gpio_out;
     .IO_DELAY_GROUP("dev_if_delay_group"),
     .MIMO_ENABLE(0),
     .USE_SSI_CLK(1),
-    .DELAY_REFCLK_FREQUENCY(204),
+    .DELAY_REFCLK_FREQUENCY(200),
     .RX_NODPA(0)
   ) inst (
     .rx_clk_in_p(1'B0),

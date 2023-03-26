@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sun Feb 26 17:44:59 2023
+//Date        : Sun Mar 26 23:14:51 2023
 //Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio.bd
 //Design      : icyradio
@@ -13,7 +13,7 @@
 For TX, we apply back-pressure by telling the Unpacker that the data from the DMA is not ready.
 Since the Unpacker copies the valid signal into the ready signal, there is no need to signal the DMA that the Unpacker is not ready.
 For RX, we apply back-pressure by masking the wr_en from the ADC. This way, the ADC keeps spitting out samples that get ignored by the Packer. */
-(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=86,numReposBlks=55,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
+(* CORE_GENERATION_INFO = "icyradio,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=icyradio,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=90,numReposBlks=59,numNonXlnxBlks=9,numHierBlks=31,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=0,numPkgbdBlks=0,bdsource=USER,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_axi4_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_board_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=6,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_bram_cntlr_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=1,\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"\"=23,\"\"\"\"\"\"\"\"\"da_clkrst_cnt\"\"\"\"\"\"\"\"\"=5,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "icyradio.hwdef" *) 
 module icyradio
    (ADCIN_MAIN_v_n,
     ADCIN_MAIN_v_p,
@@ -27,7 +27,7 @@ module icyradio
     CODEC_I2S_lrclk,
     CODEC_I2S_sdata_in,
     CODEC_I2S_sdata_out,
-    CODEC_RESETn,
+    CODEC_RSTn,
     DDR3_addr,
     DDR3_ba,
     DDR3_cas_n,
@@ -54,17 +54,14 @@ module icyradio
     FLASH_QSPI_io3_i,
     FLASH_QSPI_io3_o,
     FLASH_QSPI_io3_t,
+    FLASH_QSPI_sck_i,
+    FLASH_QSPI_sck_o,
+    FLASH_QSPI_sck_t,
     FLASH_QSPI_ss_i,
     FLASH_QSPI_ss_o,
     FLASH_QSPI_ss_t,
     FPGA_CLK0,
-    GPIO0_tri_i,
-    GPIO0_tri_o,
-    GPIO0_tri_t,
-    GPIO1_tri_i,
-    GPIO1_tri_o,
-    GPIO1_tri_t,
-    I2S_BCLK_IN,
+    FPGA_CLK1,
     PCIe_CLKREQn,
     PCIe_REFCLK_clk_n,
     PCIe_REFCLK_clk_p,
@@ -74,7 +71,6 @@ module icyradio
     PCIe_txn,
     PCIe_txp,
     PM_I2C_EN,
-    RESETn,
     SYNTH_SPI_io0_i,
     SYNTH_SPI_io0_o,
     SYNTH_SPI_io0_t,
@@ -131,7 +127,7 @@ module icyradio
   (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S LRCLK" *) output [0:0]CODEC_I2S_lrclk;
   (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_IN" *) input [0:0]CODEC_I2S_sdata_in;
   (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 CODEC_I2S SDATA_OUT" *) output [0:0]CODEC_I2S_sdata_out;
-  output [0:0]CODEC_RESETn;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.CODEC_RSTN RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME RST.CODEC_RSTN, INSERT_VIP 0, POLARITY ACTIVE_LOW" *) output [0:0]CODEC_RSTn;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 ADDR" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME DDR3, AXI_ARBITRATION_SCHEME TDM, BURST_LENGTH 8, CAN_DEBUG false, CAS_LATENCY 11, CAS_WRITE_LATENCY 11, CS_ENABLED true, DATA_MASK_ENABLED true, DATA_WIDTH 8, MEMORY_TYPE COMPONENTS, MEM_ADDR_MAP ROW_COLUMN_BANK, SLOT Single, TIMEPERIOD_PS 1250" *) output [14:0]DDR3_addr;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 BA" *) output [2:0]DDR3_ba;
   (* X_INTERFACE_INFO = "xilinx.com:interface:ddrx:1.0 DDR3 CAS_N" *) output DDR3_cas_n;
@@ -158,17 +154,14 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI IO3_I" *) input FLASH_QSPI_io3_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI IO3_O" *) output FLASH_QSPI_io3_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI IO3_T" *) output FLASH_QSPI_io3_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SCK_I" *) input FLASH_QSPI_sck_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SCK_O" *) output FLASH_QSPI_sck_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SCK_T" *) output FLASH_QSPI_sck_t;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_I" *) input [0:0]FLASH_QSPI_ss_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_O" *) output [0:0]FLASH_QSPI_ss_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 FLASH_QSPI SS_T" *) output FLASH_QSPI_ss_t;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.FPGA_CLK0 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.FPGA_CLK0, CLK_DOMAIN icyradio_FPGA_CLK0, FREQ_HZ 50000000, FREQ_TOLERANCE_HZ 0, INSERT_VIP 0, PHASE 0.0" *) input FPGA_CLK0;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_I" *) input [1:0]GPIO0_tri_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_O" *) output [1:0]GPIO0_tri_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO0 TRI_T" *) output [1:0]GPIO0_tri_t;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO1 TRI_I" *) input [1:0]GPIO1_tri_i;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO1 TRI_O" *) output [1:0]GPIO1_tri_o;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 GPIO1 TRI_T" *) output [1:0]GPIO1_tri_t;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.I2S_BCLK_IN CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.I2S_BCLK_IN, CLK_DOMAIN icyradio_I2S_BCLK_IN, FREQ_HZ 49152000, FREQ_TOLERANCE_HZ 0, INSERT_VIP 0, PHASE 0.0" *) input I2S_BCLK_IN;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.FPGA_CLK1 CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.FPGA_CLK1, CLK_DOMAIN icyradio_I2S_BCLK_IN, FREQ_HZ 49152000, FREQ_TOLERANCE_HZ 0, INSERT_VIP 0, PHASE 0.0" *) input FPGA_CLK1;
   output [0:0]PCIe_CLKREQn;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 PCIe_REFCLK CLK_N" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME PCIe_REFCLK, CAN_DEBUG false, FREQ_HZ 100000000" *) input [0:0]PCIe_REFCLK_clk_n;
   (* X_INTERFACE_INFO = "xilinx.com:interface:diff_clock:1.0 PCIe_REFCLK CLK_P" *) input [0:0]PCIe_REFCLK_clk_p;
@@ -178,7 +171,6 @@ module icyradio
   (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 PCIe txn" *) output [1:0]PCIe_txn;
   (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 PCIe txp" *) output [1:0]PCIe_txp;
   output [0:0]PM_I2C_EN;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 RST.RESETN RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME RST.RESETN, INSERT_VIP 0, POLARITY ACTIVE_LOW" *) input RESETn;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_I" *) input SYNTH_SPI_io0_i;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_O" *) output SYNTH_SPI_io0_o;
   (* X_INTERFACE_INFO = "xilinx.com:interface:spi:1.0 SYNTH_SPI IO0_T" *) output SYNTH_SPI_io0_t;
@@ -227,12 +219,10 @@ module icyradio
   wire [0:0]CORTEXM3_AXI_0_SYSRESETREQ;
   wire FPGA_CLK0_1;
   wire [0:0]GND_0_dout;
-  wire [3:0]GND_1_dout;
   wire [12:0]GND_2_dout;
+  wire [23:0]GND_3_dout;
   wire [0:0]PCIe_REFCLK_1_CLK_N;
   wire [0:0]PCIe_REFCLK_1_CLK_P;
-  wire PCIe_RESETn_1;
-  wire RESETn_1;
   wire RXCLK_1;
   wire [11:0]RXDATA_1;
   wire RXFRAME_1;
@@ -282,6 +272,7 @@ module icyradio
   wire S04_AXI_1_WREADY;
   wire [3:0]S04_AXI_1_WSTRB;
   wire S04_AXI_1_WVALID;
+  wire [7:0]TRX_CTRL_OUT_1;
   wire [0:0]VCC_0_dout;
   wire Vp_Vn_0_1_V_N;
   wire Vp_Vn_0_1_V_P;
@@ -358,12 +349,7 @@ module icyradio
   wire [63:0]axi_dmac_rf_tx_m_axis_TDATA;
   wire axi_dmac_rf_tx_m_axis_TREADY;
   wire axi_dmac_rf_tx_m_axis_valid;
-  wire [1:0]axi_gpio_0_GPIO2_TRI_I;
-  wire [1:0]axi_gpio_0_GPIO2_TRI_O;
-  wire [1:0]axi_gpio_0_GPIO2_TRI_T;
-  wire [1:0]axi_gpio_0_GPIO_TRI_I;
-  wire [1:0]axi_gpio_0_GPIO_TRI_O;
-  wire [1:0]axi_gpio_0_GPIO_TRI_T;
+  wire [31:0]axi_gpio_0_gpio_io_o;
   wire axi_gpio_0_ip2intc_irpt;
   wire [0:0]axi_i2s_adi_0_i2s_BCLK;
   wire [0:0]axi_i2s_adi_0_i2s_LRCLK;
@@ -918,6 +904,9 @@ module icyradio
   wire axi_quad_spi_0_SPI_0_IO3_I;
   wire axi_quad_spi_0_SPI_0_IO3_O;
   wire axi_quad_spi_0_SPI_0_IO3_T;
+  wire axi_quad_spi_0_SPI_0_SCK_I;
+  wire axi_quad_spi_0_SPI_0_SCK_O;
+  wire axi_quad_spi_0_SPI_0_SCK_T;
   wire [0:0]axi_quad_spi_0_SPI_0_SS_I;
   wire [0:0]axi_quad_spi_0_SPI_0_SS_O;
   wire axi_quad_spi_0_SPI_0_SS_T;
@@ -951,6 +940,11 @@ module icyradio
   wire clk_wiz_0_clk_out1;
   wire clk_wiz_0_delay_ref_clk;
   wire data_clk_i_0_1;
+  wire [31:0]gpio_concat_0_dout;
+  wire [0:0]gpio_slice_trx_en_agc_Dout;
+  wire [0:0]gpio_slice_trx_sync_in_Dout;
+  wire [0:0]gpio_slice_trx_up_enable_Dout;
+  wire [0:0]gpio_slice_trx_up_txnrx_Dout;
   wire [0:0]int_reset_combiner_Res;
   wire [15:0]irq_concat_0_dout;
   wire [31:0]irq_concat_1_dout;
@@ -972,7 +966,6 @@ module icyradio
   wire mig_7series_0_DDR3_RESET_N;
   wire mig_7series_0_DDR3_WE_N;
   wire mig_7series_0_mmcm_locked;
-  wire mig_7series_0_ui_addn_clk_2;
   wire mig_7series_0_ui_clk;
   wire mig_7series_0_ui_clk_sync_rst;
   wire [0:0]rst_axi_pcie_0_125M_interconnect_aresetn;
@@ -989,9 +982,10 @@ module icyradio
   wire [15:0]util_upack2_1_fifo_rd_data_2;
   wire [15:0]util_upack2_1_fifo_rd_data_3;
   wire [0:0]util_vector_logic_0_Res;
-  wire [0:0]util_vector_logic_2_Res;
+  wire util_vector_logic_2_Res;
   wire xadc_wiz_0_ip2intc_irpt;
   wire [11:0]xadc_wiz_0_temp_out;
+  wire [3:0]xlslice_0_Dout;
 
   assign AUDIO_I2C_scl_o = axi_iic_0_IIC_SCL_O;
   assign AUDIO_I2C_scl_t = axi_iic_0_IIC_SCL_T;
@@ -1000,7 +994,7 @@ module icyradio
   assign CODEC_I2S_bclk[0] = axi_i2s_adi_0_i2s_BCLK;
   assign CODEC_I2S_lrclk[0] = axi_i2s_adi_0_i2s_LRCLK;
   assign CODEC_I2S_sdata_out[0] = axi_i2s_adi_0_i2s_SDATA_OUT;
-  assign CODEC_RESETn[0] = axi_iic_0_gpo;
+  assign CODEC_RSTn[0] = axi_iic_0_gpo;
   assign DDR3_addr[14:0] = mig_7series_0_DDR3_ADDR;
   assign DDR3_ba[2:0] = mig_7series_0_DDR3_BA;
   assign DDR3_cas_n = mig_7series_0_DDR3_CAS_N;
@@ -1020,21 +1014,17 @@ module icyradio
   assign FLASH_QSPI_io2_t = axi_quad_spi_0_SPI_0_IO2_T;
   assign FLASH_QSPI_io3_o = axi_quad_spi_0_SPI_0_IO3_O;
   assign FLASH_QSPI_io3_t = axi_quad_spi_0_SPI_0_IO3_T;
+  assign FLASH_QSPI_sck_o = axi_quad_spi_0_SPI_0_SCK_O;
+  assign FLASH_QSPI_sck_t = axi_quad_spi_0_SPI_0_SCK_T;
   assign FLASH_QSPI_ss_o[0] = axi_quad_spi_0_SPI_0_SS_O;
   assign FLASH_QSPI_ss_t = axi_quad_spi_0_SPI_0_SS_T;
   assign FPGA_CLK0_1 = FPGA_CLK0;
-  assign GPIO0_tri_o[1:0] = axi_gpio_0_GPIO_TRI_O;
-  assign GPIO0_tri_t[1:0] = axi_gpio_0_GPIO_TRI_T;
-  assign GPIO1_tri_o[1:0] = axi_gpio_0_GPIO2_TRI_O;
-  assign GPIO1_tri_t[1:0] = axi_gpio_0_GPIO2_TRI_T;
   assign PCIe_CLKREQn[0] = GND_0_dout;
   assign PCIe_REFCLK_1_CLK_N = PCIe_REFCLK_clk_n[0];
   assign PCIe_REFCLK_1_CLK_P = PCIe_REFCLK_clk_p[0];
-  assign PCIe_RESETn_1 = PCIe_RESETn;
   assign PCIe_txn[1:0] = axi_pcie_0_pcie_7x_mgt_txn;
   assign PCIe_txp[1:0] = axi_pcie_0_pcie_7x_mgt_txp;
   assign PM_I2C_EN[0] = axi_iic_1_gpo;
-  assign RESETn_1 = RESETn;
   assign RXCLK_1 = TRX_DATA_CLK;
   assign RXDATA_1 = TRX_P1_RXDATA[11:0];
   assign RXFRAME_1 = TRX_RXFRAME;
@@ -1050,9 +1040,10 @@ module icyradio
   assign SYS_I2C_scl_t = axi_iic_1_IIC_SCL_T;
   assign SYS_I2C_sda_o = axi_iic_1_IIC_SDA_O;
   assign SYS_I2C_sda_t = axi_iic_1_IIC_SDA_T;
-  assign TRX_CTRL_IN[3:0] = GND_1_dout;
+  assign TRX_CTRL_IN[3:0] = xlslice_0_Dout;
+  assign TRX_CTRL_OUT_1 = TRX_CTRL_OUT[7:0];
   assign TRX_EN = axi_ad9361_0_enable;
-  assign TRX_EN_AGC[0] = GND_0_dout;
+  assign TRX_EN_AGC[0] = gpio_slice_trx_en_agc_Dout;
   assign TRX_FBCLK = axi_ad9361_0_tx_clk_out;
   assign TRX_P0_TXDATA[11:0] = axi_ad9361_0_tx_data_out;
   assign TRX_RESETn[0] = rst_axi_pcie_0_125M_peripheral_aresetn;
@@ -1064,13 +1055,11 @@ module icyradio
   assign TRX_SPI_sck_t = axi_quad_spi_1_SPI_0_SCK_T;
   assign TRX_SPI_ss_o[0] = axi_quad_spi_1_SPI_0_SS_O;
   assign TRX_SPI_ss_t = axi_quad_spi_1_SPI_0_SS_T;
-  assign TRX_SYNC_IN[0] = GND_0_dout;
+  assign TRX_SYNC_IN[0] = gpio_slice_trx_sync_in_Dout;
   assign TRX_TXFRAME = axi_ad9361_0_tx_frame_out;
   assign TRX_TXNRX = axi_ad9361_0_txnrx;
   assign Vp_Vn_0_1_V_N = ADCIN_MAIN_v_n;
   assign Vp_Vn_0_1_V_P = ADCIN_MAIN_v_p;
-  assign axi_gpio_0_GPIO2_TRI_I = GPIO1_tri_i[1:0];
-  assign axi_gpio_0_GPIO_TRI_I = GPIO0_tri_i[1:0];
   assign axi_i2s_adi_0_i2s_SDATA_IN = CODEC_I2S_sdata_in[0];
   assign axi_iic_0_IIC_SCL_I = AUDIO_I2C_scl_i;
   assign axi_iic_0_IIC_SDA_I = AUDIO_I2C_sda_i;
@@ -1082,6 +1071,7 @@ module icyradio
   assign axi_quad_spi_0_SPI_0_IO1_I = FLASH_QSPI_io1_i;
   assign axi_quad_spi_0_SPI_0_IO2_I = FLASH_QSPI_io2_i;
   assign axi_quad_spi_0_SPI_0_IO3_I = FLASH_QSPI_io3_i;
+  assign axi_quad_spi_0_SPI_0_SCK_I = FLASH_QSPI_sck_i;
   assign axi_quad_spi_0_SPI_0_SS_I = FLASH_QSPI_ss_i[0];
   assign axi_quad_spi_1_SPI_0_IO0_I = TRX_SPI_io0_i;
   assign axi_quad_spi_1_SPI_0_IO1_I = TRX_SPI_io1_i;
@@ -1091,13 +1081,14 @@ module icyradio
   assign axi_quad_spi_2_SPI_0_IO1_I = SYNTH_SPI_io1_i;
   assign axi_quad_spi_2_SPI_0_SCK_I = SYNTH_SPI_sck_i;
   assign axi_quad_spi_2_SPI_0_SS_I = SYNTH_SPI_ss_i[0];
-  assign data_clk_i_0_1 = I2S_BCLK_IN;
+  assign data_clk_i_0_1 = FPGA_CLK1;
+  assign util_vector_logic_2_Res = PCIe_RESETn;
   icyradio_GND_0_2 GND_0
        (.dout(GND_0_dout));
-  icyradio_GND_1_2 GND_1
-       (.dout(GND_1_dout));
   icyradio_GND_0_3 GND_2
        (.dout(GND_2_dout));
+  icyradio_GND_2_0 GND_3
+       (.dout(GND_3_dout));
   icyradio_xlconstant_0_0 SOFT_RESET
        (.dout(CORTEXM3_AXI_0_SYSRESETREQ));
   icyradio_GND_0_0 VCC_0
@@ -1197,8 +1188,8 @@ module icyradio
         .txnrx(axi_ad9361_0_txnrx),
         .up_adc_gpio_in({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}),
         .up_dac_gpio_in({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}),
-        .up_enable(GND_0_dout),
-        .up_txnrx(GND_0_dout));
+        .up_enable(gpio_slice_trx_up_enable_Dout),
+        .up_txnrx(gpio_slice_trx_up_txnrx_Dout));
   icyradio_axi_bram_ctrl_0_0 axi_bram_ctrl_0
        (.bram_addr_a(axi_bram_ctrl_0_BRAM_PORTA_ADDR),
         .bram_clk_a(axi_bram_ctrl_0_BRAM_PORTA_CLK),
@@ -1597,12 +1588,9 @@ module icyradio
         .s_axi_wstrb(axi_interconnect_1_M01_AXI_WSTRB),
         .s_axi_wvalid(axi_interconnect_1_M01_AXI_WVALID));
   icyradio_axi_gpio_0_0 axi_gpio_0
-       (.gpio2_io_i(axi_gpio_0_GPIO2_TRI_I),
-        .gpio2_io_o(axi_gpio_0_GPIO2_TRI_O),
-        .gpio2_io_t(axi_gpio_0_GPIO2_TRI_T),
-        .gpio_io_i(axi_gpio_0_GPIO_TRI_I),
-        .gpio_io_o(axi_gpio_0_GPIO_TRI_O),
-        .gpio_io_t(axi_gpio_0_GPIO_TRI_T),
+       (.gpio2_io_i({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}),
+        .gpio_io_i(gpio_concat_0_dout),
+        .gpio_io_o(axi_gpio_0_gpio_io_o),
         .ip2intc_irpt(axi_gpio_0_ip2intc_irpt),
         .s_axi_aclk(axi_pcie_0_axi_aclk_out),
         .s_axi_araddr(axi_interconnect_1_M03_AXI_ARADDR[8:0]),
@@ -2393,10 +2381,7 @@ module icyradio
         .s_axi_wstrb(axi_mem_interconnect_M00_AXI_WSTRB),
         .s_axi_wvalid(axi_mem_interconnect_M00_AXI_WVALID));
   icyradio_axi_quad_spi_0_0 axi_quad_spi_0
-       (.clk(1'b0),
-        .ext_spi_clk(axi_pcie_0_axi_aclk_out),
-        .gsr(GND_0_dout),
-        .gts(GND_0_dout),
+       (.ext_spi_clk(axi_pcie_0_axi_aclk_out),
         .io0_i(axi_quad_spi_0_SPI_0_IO0_I),
         .io0_o(axi_quad_spi_0_SPI_0_IO0_O),
         .io0_t(axi_quad_spi_0_SPI_0_IO0_T),
@@ -2410,7 +2395,6 @@ module icyradio
         .io3_o(axi_quad_spi_0_SPI_0_IO3_O),
         .io3_t(axi_quad_spi_0_SPI_0_IO3_T),
         .ip2intc_irpt(axi_quad_spi_0_ip2intc_irpt),
-        .keyclearb(1'b0),
         .s_axi4_aclk(axi_pcie_0_axi_aclk_out),
         .s_axi4_araddr(axi_mem_interconnect_M01_AXI_ARADDR),
         .s_axi4_arburst(axi_mem_interconnect_M01_AXI_ARBURST),
@@ -2463,12 +2447,12 @@ module icyradio
         .s_axi_wready(axi_interconnect_1_M05_AXI_WREADY),
         .s_axi_wstrb(axi_interconnect_1_M05_AXI_WSTRB),
         .s_axi_wvalid(axi_interconnect_1_M05_AXI_WVALID),
+        .sck_i(axi_quad_spi_0_SPI_0_SCK_I),
+        .sck_o(axi_quad_spi_0_SPI_0_SCK_O),
+        .sck_t(axi_quad_spi_0_SPI_0_SCK_T),
         .ss_i(axi_quad_spi_0_SPI_0_SS_I),
         .ss_o(axi_quad_spi_0_SPI_0_SS_O),
-        .ss_t(axi_quad_spi_0_SPI_0_SS_T),
-        .usrcclkts(GND_0_dout),
-        .usrdoneo(VCC_0_dout),
-        .usrdonets(GND_0_dout));
+        .ss_t(axi_quad_spi_0_SPI_0_SS_T));
   icyradio_axi_quad_spi_1_0 axi_quad_spi_1
        (.ext_spi_clk(axi_pcie_0_axi_aclk_out),
         .io0_i(axi_quad_spi_1_SPI_0_IO0_I),
@@ -2540,11 +2524,27 @@ module icyradio
   icyradio_clk_wiz_0_0 clk_wiz_0
        (.clk_in1(FPGA_CLK0_1),
         .clk_out1(clk_wiz_0_clk_out1),
+        .clk_out2(clk_wiz_0_delay_ref_clk),
         .resetn(util_vector_logic_2_Res));
-  icyradio_reset_combiner_2 ext_reset_combiner
-       (.Op1(RESETn_1),
-        .Op2(PCIe_RESETn_1),
-        .Res(util_vector_logic_2_Res));
+  icyradio_irq_concat_0_4 gpio_concat_0
+       (.In0(TRX_CTRL_OUT_1),
+        .In1(GND_3_dout),
+        .dout(gpio_concat_0_dout));
+  icyradio_xlslice_0_0 gpio_slice_trx_ctrl_out
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(xlslice_0_Dout));
+  icyradio_gpio_slice_trx_en_agc_0 gpio_slice_trx_en_agc
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(gpio_slice_trx_en_agc_Dout));
+  icyradio_xlslice_0_1 gpio_slice_trx_sync_in
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(gpio_slice_trx_sync_in_Dout));
+  icyradio_gpio_slice_trx_ctrl_out_1 gpio_slice_trx_up_enable
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(gpio_slice_trx_up_enable_Dout));
+  icyradio_gpio_slice_trx_ctrl_out_0 gpio_slice_trx_up_txnrx
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(gpio_slice_trx_up_txnrx_Dout));
   icyradio_ext_reset_combiner_0 int_reset_combiner
        (.Op1(mig_7series_0_ui_clk_sync_rst),
         .Op2(CORTEXM3_AXI_0_SYSRESETREQ),
@@ -2648,8 +2648,6 @@ module icyradio
         .s_axi_wvalid(axi_pcie_interconnect_M02_AXI_WVALID),
         .sys_clk_i(clk_wiz_0_clk_out1),
         .sys_rst(util_vector_logic_2_Res),
-        .ui_addn_clk_0(clk_wiz_0_delay_ref_clk),
-        .ui_addn_clk_2(mig_7series_0_ui_addn_clk_2),
         .ui_clk(mig_7series_0_ui_clk),
         .ui_clk_sync_rst(mig_7series_0_ui_clk_sync_rst));
   icyradio_picorv32_0_0 picorv32_0
@@ -2681,12 +2679,6 @@ module icyradio
         .mb_debug_sys_rst(1'b0),
         .peripheral_aresetn(rst_axi_pcie_0_125M_peripheral_aresetn),
         .slowest_sync_clk(axi_pcie_0_axi_aclk_out));
-  icyradio_rst_mig_7series_0_25M_0 rst_mig_7series_0_10M
-       (.aux_reset_in(int_reset_combiner_Res),
-        .dcm_locked(mig_7series_0_mmcm_locked),
-        .ext_reset_in(util_vector_logic_2_Res),
-        .mb_debug_sys_rst(1'b0),
-        .slowest_sync_clk(mig_7series_0_ui_addn_clk_2));
   icyradio_rst_mig_7series_0_166M_2 rst_mig_7series_0_166M
        (.aux_reset_in(int_reset_combiner_Res),
         .dcm_locked(mig_7series_0_mmcm_locked),
@@ -11815,7 +11807,7 @@ module s00_couplers_imp_12AR84V
   assign s00_data_fifo_to_s00_couplers_RLAST = M_AXI_rlast;
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
-  icyradio_s00_data_fifo_68 s00_data_fifo
+  icyradio_s00_data_fifo_83 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12170,7 +12162,7 @@ module s00_couplers_imp_1OK54OW
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_69 s00_data_fifo
+  icyradio_s00_data_fifo_84 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12418,7 +12410,7 @@ module s00_couplers_imp_YVWGWH
   assign s00_data_fifo_to_s00_couplers_RRESP = M_AXI_rresp[1:0];
   assign s00_data_fifo_to_s00_couplers_RVALID = M_AXI_rvalid;
   assign s00_data_fifo_to_s00_couplers_WREADY = M_AXI_wready;
-  icyradio_s00_data_fifo_70 s00_data_fifo
+  icyradio_s00_data_fifo_85 s00_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s00_data_fifo_to_s00_couplers_ARADDR),
@@ -12732,7 +12724,7 @@ module s01_couplers_imp_EQ149T
   assign s01_data_fifo_to_s01_couplers_RRESP = M_AXI_rresp[1:0];
   assign s01_data_fifo_to_s01_couplers_RVALID = M_AXI_rvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_45 s01_data_fifo
+  icyradio_s01_data_fifo_55 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_araddr(s01_data_fifo_to_s01_couplers_ARADDR),
@@ -12956,7 +12948,7 @@ module s01_couplers_imp_S4EEJ2
   assign s01_data_fifo_to_s01_couplers_BRESP = M_AXI_bresp[1:0];
   assign s01_data_fifo_to_s01_couplers_BVALID = M_AXI_bvalid;
   assign s01_data_fifo_to_s01_couplers_WREADY = M_AXI_wready;
-  icyradio_s01_data_fifo_44 s01_data_fifo
+  icyradio_s01_data_fifo_54 s01_data_fifo
        (.aclk(M_ACLK_1),
         .aresetn(M_ARESETN_1),
         .m_axi_awaddr(s01_data_fifo_to_s01_couplers_AWADDR),

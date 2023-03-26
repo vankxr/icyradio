@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sun Feb 26 17:44:59 2023
+//Date        : Sun Mar 26 23:14:51 2023
 //Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
@@ -18,7 +18,7 @@ module icyradio_wrapper
     CODEC_I2S_lrclk,
     CODEC_I2S_sdata_in,
     CODEC_I2S_sdata_out,
-    CODEC_RESETn,
+    CODEC_RSTn,
     DDR3_addr,
     DDR3_ba,
     DDR3_cas_n,
@@ -37,11 +37,10 @@ module icyradio_wrapper
     FLASH_QSPI_io1_io,
     FLASH_QSPI_io2_io,
     FLASH_QSPI_io3_io,
+    FLASH_QSPI_sck_io,
     FLASH_QSPI_ss_io,
     FPGA_CLK0,
-    GPIO0_tri_io,
-    GPIO1_tri_io,
-    I2S_BCLK_IN,
+    FPGA_CLK1,
     PCIe_CLKREQn,
     PCIe_REFCLK_clk_n,
     PCIe_REFCLK_clk_p,
@@ -51,7 +50,6 @@ module icyradio_wrapper
     PCIe_txn,
     PCIe_txp,
     PM_I2C_EN,
-    RESETn,
     SYNTH_SPI_io0_io,
     SYNTH_SPI_io1_io,
     SYNTH_SPI_sck_io,
@@ -84,7 +82,7 @@ module icyradio_wrapper
   output [0:0]CODEC_I2S_lrclk;
   input [0:0]CODEC_I2S_sdata_in;
   output [0:0]CODEC_I2S_sdata_out;
-  output [0:0]CODEC_RESETn;
+  output [0:0]CODEC_RSTn;
   output [14:0]DDR3_addr;
   output [2:0]DDR3_ba;
   output DDR3_cas_n;
@@ -103,11 +101,10 @@ module icyradio_wrapper
   inout FLASH_QSPI_io1_io;
   inout FLASH_QSPI_io2_io;
   inout FLASH_QSPI_io3_io;
+  inout FLASH_QSPI_sck_io;
   inout [0:0]FLASH_QSPI_ss_io;
   input FPGA_CLK0;
-  inout [1:0]GPIO0_tri_io;
-  inout [1:0]GPIO1_tri_io;
-  input I2S_BCLK_IN;
+  input FPGA_CLK1;
   output [0:0]PCIe_CLKREQn;
   input [0:0]PCIe_REFCLK_clk_n;
   input [0:0]PCIe_REFCLK_clk_p;
@@ -117,7 +114,6 @@ module icyradio_wrapper
   output [1:0]PCIe_txn;
   output [1:0]PCIe_txp;
   output [0:0]PM_I2C_EN;
-  input RESETn;
   inout SYNTH_SPI_io0_io;
   inout SYNTH_SPI_io1_io;
   inout SYNTH_SPI_sck_io;
@@ -157,7 +153,7 @@ module icyradio_wrapper
   wire [0:0]CODEC_I2S_lrclk;
   wire [0:0]CODEC_I2S_sdata_in;
   wire [0:0]CODEC_I2S_sdata_out;
-  wire [0:0]CODEC_RESETn;
+  wire [0:0]CODEC_RSTn;
   wire [14:0]DDR3_addr;
   wire [2:0]DDR3_ba;
   wire DDR3_cas_n;
@@ -188,28 +184,16 @@ module icyradio_wrapper
   wire FLASH_QSPI_io3_io;
   wire FLASH_QSPI_io3_o;
   wire FLASH_QSPI_io3_t;
+  wire FLASH_QSPI_sck_i;
+  wire FLASH_QSPI_sck_io;
+  wire FLASH_QSPI_sck_o;
+  wire FLASH_QSPI_sck_t;
   wire [0:0]FLASH_QSPI_ss_i_0;
   wire [0:0]FLASH_QSPI_ss_io_0;
   wire [0:0]FLASH_QSPI_ss_o_0;
   wire FLASH_QSPI_ss_t;
   wire FPGA_CLK0;
-  wire [0:0]GPIO0_tri_i_0;
-  wire [1:1]GPIO0_tri_i_1;
-  wire [0:0]GPIO0_tri_io_0;
-  wire [1:1]GPIO0_tri_io_1;
-  wire [0:0]GPIO0_tri_o_0;
-  wire [1:1]GPIO0_tri_o_1;
-  wire [0:0]GPIO0_tri_t_0;
-  wire [1:1]GPIO0_tri_t_1;
-  wire [0:0]GPIO1_tri_i_0;
-  wire [1:1]GPIO1_tri_i_1;
-  wire [0:0]GPIO1_tri_io_0;
-  wire [1:1]GPIO1_tri_io_1;
-  wire [0:0]GPIO1_tri_o_0;
-  wire [1:1]GPIO1_tri_o_1;
-  wire [0:0]GPIO1_tri_t_0;
-  wire [1:1]GPIO1_tri_t_1;
-  wire I2S_BCLK_IN;
+  wire FPGA_CLK1;
   wire [0:0]PCIe_CLKREQn;
   wire [0:0]PCIe_REFCLK_clk_n;
   wire [0:0]PCIe_REFCLK_clk_p;
@@ -219,7 +203,6 @@ module icyradio_wrapper
   wire [1:0]PCIe_txn;
   wire [1:0]PCIe_txp;
   wire [0:0]PM_I2C_EN;
-  wire RESETn;
   wire SYNTH_SPI_io0_i;
   wire SYNTH_SPI_io0_io;
   wire SYNTH_SPI_io0_o;
@@ -305,31 +288,16 @@ module icyradio_wrapper
         .IO(FLASH_QSPI_io3_io),
         .O(FLASH_QSPI_io3_i),
         .T(FLASH_QSPI_io3_t));
+  IOBUF FLASH_QSPI_sck_iobuf
+       (.I(FLASH_QSPI_sck_o),
+        .IO(FLASH_QSPI_sck_io),
+        .O(FLASH_QSPI_sck_i),
+        .T(FLASH_QSPI_sck_t));
   IOBUF FLASH_QSPI_ss_iobuf_0
        (.I(FLASH_QSPI_ss_o_0),
         .IO(FLASH_QSPI_ss_io[0]),
         .O(FLASH_QSPI_ss_i_0),
         .T(FLASH_QSPI_ss_t));
-  IOBUF GPIO0_tri_iobuf_0
-       (.I(GPIO0_tri_o_0),
-        .IO(GPIO0_tri_io[0]),
-        .O(GPIO0_tri_i_0),
-        .T(GPIO0_tri_t_0));
-  IOBUF GPIO0_tri_iobuf_1
-       (.I(GPIO0_tri_o_1),
-        .IO(GPIO0_tri_io[1]),
-        .O(GPIO0_tri_i_1),
-        .T(GPIO0_tri_t_1));
-  IOBUF GPIO1_tri_iobuf_0
-       (.I(GPIO1_tri_o_0),
-        .IO(GPIO1_tri_io[0]),
-        .O(GPIO1_tri_i_0),
-        .T(GPIO1_tri_t_0));
-  IOBUF GPIO1_tri_iobuf_1
-       (.I(GPIO1_tri_o_1),
-        .IO(GPIO1_tri_io[1]),
-        .O(GPIO1_tri_i_1),
-        .T(GPIO1_tri_t_1));
   IOBUF SYNTH_SPI_io0_iobuf
        (.I(SYNTH_SPI_io0_o),
         .IO(SYNTH_SPI_io0_io),
@@ -393,7 +361,7 @@ module icyradio_wrapper
         .CODEC_I2S_lrclk(CODEC_I2S_lrclk),
         .CODEC_I2S_sdata_in(CODEC_I2S_sdata_in),
         .CODEC_I2S_sdata_out(CODEC_I2S_sdata_out),
-        .CODEC_RESETn(CODEC_RESETn),
+        .CODEC_RSTn(CODEC_RSTn),
         .DDR3_addr(DDR3_addr),
         .DDR3_ba(DDR3_ba),
         .DDR3_cas_n(DDR3_cas_n),
@@ -420,17 +388,14 @@ module icyradio_wrapper
         .FLASH_QSPI_io3_i(FLASH_QSPI_io3_i),
         .FLASH_QSPI_io3_o(FLASH_QSPI_io3_o),
         .FLASH_QSPI_io3_t(FLASH_QSPI_io3_t),
+        .FLASH_QSPI_sck_i(FLASH_QSPI_sck_i),
+        .FLASH_QSPI_sck_o(FLASH_QSPI_sck_o),
+        .FLASH_QSPI_sck_t(FLASH_QSPI_sck_t),
         .FLASH_QSPI_ss_i(FLASH_QSPI_ss_i_0),
         .FLASH_QSPI_ss_o(FLASH_QSPI_ss_o_0),
         .FLASH_QSPI_ss_t(FLASH_QSPI_ss_t),
         .FPGA_CLK0(FPGA_CLK0),
-        .GPIO0_tri_i({GPIO0_tri_i_1,GPIO0_tri_i_0}),
-        .GPIO0_tri_o({GPIO0_tri_o_1,GPIO0_tri_o_0}),
-        .GPIO0_tri_t({GPIO0_tri_t_1,GPIO0_tri_t_0}),
-        .GPIO1_tri_i({GPIO1_tri_i_1,GPIO1_tri_i_0}),
-        .GPIO1_tri_o({GPIO1_tri_o_1,GPIO1_tri_o_0}),
-        .GPIO1_tri_t({GPIO1_tri_t_1,GPIO1_tri_t_0}),
-        .I2S_BCLK_IN(I2S_BCLK_IN),
+        .FPGA_CLK1(FPGA_CLK1),
         .PCIe_CLKREQn(PCIe_CLKREQn),
         .PCIe_REFCLK_clk_n(PCIe_REFCLK_clk_n),
         .PCIe_REFCLK_clk_p(PCIe_REFCLK_clk_p),
@@ -440,7 +405,6 @@ module icyradio_wrapper
         .PCIe_txn(PCIe_txn),
         .PCIe_txp(PCIe_txp),
         .PM_I2C_EN(PM_I2C_EN),
-        .RESETn(RESETn),
         .SYNTH_SPI_io0_i(SYNTH_SPI_io0_i),
         .SYNTH_SPI_io0_o(SYNTH_SPI_io0_o),
         .SYNTH_SPI_io0_t(SYNTH_SPI_io0_t),
