@@ -1,0 +1,709 @@
+#include "sercom.h"
+
+void _putchar(char ch)
+{
+    sercom3_write_byte((uint8_t)ch);
+}
+
+#if defined(SERCOM0_MODE_SPI) && !defined(SERCOM0_MODE_I2C) && !defined(SERCOM0_MODE_UART)
+void sercom0_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO)
+{
+    while(SERCOM0_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_SWRST_Msk;
+
+    while(SERCOM0_REGS->SPIM.SERCOM_CTRLA & SERCOM_SPIM_CTRLA_SWRST_Msk);
+
+    SERCOM0_REGS->SPIM.SERCOM_CTRLA = (ubBitMode == SERCOM_SPI_MSB_FIRST ? 0 : SERCOM_SPIM_CTRLA_DORD_Msk) | (ubMode & 2 ? SERCOM_SPIM_CTRLA_CPOL_Msk : 0) | (ubMode & 1 ? SERCOM_SPIM_CTRLA_CPHA_Msk : 0) | SERCOM_SPIM_CTRLA_DIPO(ubDIPO) | SERCOM_SPIM_CTRLA_DOPO(ubDOPO) | SERCOM_SPIM_CTRLA_MODE_SPI_MASTER;
+
+    while(SERCOM0_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+    SERCOM0_REGS->SPIM.SERCOM_BAUD = 8000000/*TODO:*/ / (ulBaud << 1) - 1;
+
+    while(SERCOM0_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM0_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom0_spi_transfer_byte(const uint8_t ubData)
+{
+    while(!(SERCOM0_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    if(!(SERCOM0_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk))
+    {
+        SERCOM0_REGS->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_RXEN_Msk;
+
+        while(SERCOM0_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+    }
+
+    SERCOM0_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(!(SERCOM0_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk));
+
+    return SERCOM0_REGS->SPIM.SERCOM_DATA;
+}
+void sercom0_spi_write_byte(const uint8_t ubData, const uint8_t ubWait)
+{
+    while(!(SERCOM0_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    if(SERCOM0_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk)
+        SERCOM0_REGS->SPIM.SERCOM_CTRLB &= ~SERCOM_SPIM_CTRLB_RXEN_Msk;
+
+    SERCOM0_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(ubWait && !(SERCOM0_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk));
+}
+#elif !defined(SERCOM0_MODE_SPI) && defined(SERCOM0_MODE_I2C) && !defined(SERCOM0_MODE_UART)
+void sercom0_init(uint8_t ubMode)
+{
+    while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_SWRST_Msk;
+
+    while(SERCOM0_REGS->I2CM.SERCOM_CTRLA & SERCOM_I2CM_CTRLA_SWRST_Msk);
+
+    SERCOM0_REGS->I2CM.SERCOM_CTRLA = SERCOM_I2CM_CTRLA_LOWTOUT_Msk | SERCOM_I2CM_CTRLA_INACTOUT_55US | SERCOM_I2CM_CTRLA_MODE_I2C_MASTER;
+    SERCOM0_REGS->I2CM.SERCOM_BAUD = (uint8_t)(1/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
+
+    while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM0_REGS->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_LOWTOUT_Msk | (0x01 << SERCOM_I2CM_STATUS_BUSSTATE_Pos) | SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk;
+
+    while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom0_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+{
+    if((ubAddress & 1) && !ulCount)
+        return 0;
+
+    if((SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_BUSSTATE_Msk) == SERCOM_I2CM_STATUS_BUSSTATE(3))
+        return 0;
+
+    SERCOM0_REGS->I2CM.SERCOM_ADDR = ubAddress;
+
+    if(!ulCount)
+    {
+        while(!(SERCOM0_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+        if(SERCOM0_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        if(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+        {
+            SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+            while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+            return 0;
+        }
+    }
+    else
+    {
+        do
+        {
+            if(ubAddress & 1) // Read
+            {
+                while(!(SERCOM0_REGS->I2CM.SERCOM_INTFLAG & (SERCOM_I2CM_INTFLAG_MB_Msk | SERCOM_I2CM_INTFLAG_SB_Msk)));
+
+                if(SERCOM0_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM0_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_SB_Msk)
+                {
+                    *pubSrc++ = SERCOM0_REGS->I2CM.SERCOM_DATA;
+
+                    if(ulCount > 1)
+                        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
+                    else
+                        SERCOM0_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                }
+            }
+            else // Write
+            {
+                while(!(SERCOM0_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+                if(SERCOM0_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+                {
+                    SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+                    while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+                    return 0;
+                }
+
+                SERCOM0_REGS->I2CM.SERCOM_DATA = *pubSrc++;
+
+                while(!(SERCOM0_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+            }
+        } while(--ulCount);
+    }
+
+    if(ubStop)
+    {
+        if(SERCOM0_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+        while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+    }
+
+    return 1;
+}
+#elif !defined(SERCOM0_MODE_SPI) && !defined(SERCOM0_MODE_I2C) && defined(SERCOM0_MODE_UART)
+static volatile uint8_t *pubSERCOM0FIFO = NULL;
+static volatile uint16_t usSERCOM0FIFOWritePos, usSERCOM0FIFOReadPos;
+
+void _sercom0_isr()
+{
+    while(SERCOM0_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk)
+    {
+        pubSERCOM0FIFO[usSERCOM0FIFOWritePos++] = SERCOM0_REGS->USART_INT.SERCOM_DATA;
+
+        if(usSERCOM0FIFOWritePos >= SERCOM0_FIFO_SIZE)
+            usSERCOM0FIFOWritePos = 0;
+    }
+}
+
+void sercom0_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO)
+{
+    while(SERCOM0_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    free((uint8_t *)pubSERCOM0FIFO);
+
+    pubSERCOM0FIFO = (volatile uint8_t *)malloc(SERCOM0_FIFO_SIZE);
+
+    if(!pubSERCOM0FIFO)
+        return;
+
+    memset((uint8_t *)pubSERCOM0FIFO, 0, SERCOM0_FIFO_SIZE);
+
+    usSERCOM0FIFOWritePos = 0;
+    usSERCOM0FIFOReadPos = 0;
+
+    SERCOM0_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_SWRST_Msk;
+
+    while(SERCOM0_REGS->USART_INT.SERCOM_CTRLA & SERCOM_USART_INT_CTRLA_SWRST_Msk);
+
+    SERCOM0_REGS->USART_INT.SERCOM_CTRLA = (ulFrameSettings & SERCOM_USART_INT_CTRLA_DORD_Msk) | SERCOM_USART_INT_CTRLA_CMODE_ASYNC | (ulFrameSettings & SERCOM_USART_INT_CTRLA_FORM_Msk) | SERCOM_USART_INT_CTRLA_RXPO(ubRXPO) | SERCOM_USART_INT_CTRLA_TXPO(ubTXPO) | SERCOM_USART_INT_CTRLA_MODE_USART_INT_CLK;
+    SERCOM0_REGS->USART_INT.SERCOM_CTRLB = SERCOM_USART_INT_CTRLB_RXEN_Msk | SERCOM_USART_INT_CTRLB_TXEN_Msk | (ulFrameSettings & SERCOM_USART_INT_CTRLB_PMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_SBMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_CHSIZE_Msk);
+    SERCOM0_REGS->USART_INT.SERCOM_BAUD = (uint16_t)(65536 * (1 - 16 * ((float)ulBaud / 8000000/*TODO:*/)));
+
+    while(SERCOM0_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    IRQ_CLEAR(SERCOM0_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(SERCOM0_IRQn, 2, 1); // Set priority 2,1
+    IRQ_ENABLE(SERCOM0_IRQn); // Enable vector
+    SERCOM0_REGS->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_RXC_Msk; // Enable RXC flag
+
+    SERCOM0_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_ENABLE_Msk;
+
+    while(SERCOM0_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+void sercom0_write_byte(const uint8_t ubData)
+{
+    while(!(SERCOM0_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_DRE_Msk));
+
+    SERCOM0_REGS->USART_INT.SERCOM_DATA = ubData;
+}
+uint8_t sercom0_read_byte()
+{
+    if(!sercom0_available())
+        return 0;
+
+    uint8_t ubData;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        ubData = pubSERCOM0FIFO[usSERCOM0FIFOReadPos++];
+
+        if(usSERCOM0FIFOReadPos >= SERCOM0_FIFO_SIZE)
+            usSERCOM0FIFOReadPos = 0;
+    }
+
+    return ubData;
+}
+uint32_t sercom0_available()
+{
+    return (SERCOM0_FIFO_SIZE + usSERCOM0FIFOWritePos - usSERCOM0FIFOReadPos) % SERCOM0_FIFO_SIZE;
+}
+void sercom0_flush()
+{
+    usSERCOM0FIFOReadPos = usSERCOM0FIFOWritePos = 0;
+}
+#endif  // SERCOM0_MODE
+
+#if defined(SERCOM1_MODE_SPI) && !defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
+void sercom1_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO)
+{
+    while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_SWRST_Msk;
+
+    while(SERCOM1_REGS->SPIM.SERCOM_CTRLA & SERCOM_SPIM_CTRLA_SWRST_Msk);
+
+    SERCOM1_REGS->SPIM.SERCOM_CTRLA = (ubBitMode == SERCOM_SPI_MSB_FIRST ? 0 : SERCOM_SPIM_CTRLA_DORD_Msk) | (ubMode & 2 ? SERCOM_SPIM_CTRLA_CPOL_Msk : 0) | (ubMode & 1 ? SERCOM_SPIM_CTRLA_CPHA_Msk : 0) | SERCOM_SPIM_CTRLA_DIPO(ubDIPO) | SERCOM_SPIM_CTRLA_DOPO(ubDOPO) | SERCOM_SPIM_CTRLA_MODE_SPI_MASTER;
+
+    while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_RXEN_Msk | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+    SERCOM1_REGS->SPIM.SERCOM_BAUD = 1/*TODO:*/ / (ulBaud << 1) - 1;
+
+    while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom1_spi_transfer_byte(const uint8_t ubData)
+{
+    while(!(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    while(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
+        REG_DISCARD(&(SERCOM1_REGS->SPIM.SERCOM_DATA));
+
+    SERCOM1_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(!(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk));
+
+    return SERCOM1_REGS->SPIM.SERCOM_DATA;
+}
+void sercom1_spi_write_byte(const uint8_t ubData, const uint8_t ubWait)
+{
+    while(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
+        REG_DISCARD(&(SERCOM1_REGS->SPIM.SERCOM_DATA));
+
+    while(!(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    SERCOM1_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(ubWait && !(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+}
+#elif !defined(SERCOM1_MODE_SPI) && defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
+void sercom1_init(uint8_t ubMode)
+{
+    while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_SWRST_Msk;
+
+    while(SERCOM1_REGS->I2CM.SERCOM_CTRLA & SERCOM_I2CM_CTRLA_SWRST_Msk);
+
+    SERCOM1_REGS->I2CM.SERCOM_CTRLA = SERCOM_I2CM_CTRLA_LOWTOUT_Msk | SERCOM_I2CM_CTRLA_INACTOUT_55US | SERCOM_I2CM_CTRLA_MODE_I2C_MASTER;
+    SERCOM1_REGS->I2CM.SERCOM_BAUD = (uint8_t)(8000000/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
+
+    while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM1_REGS->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_LOWTOUT_Msk | (0x01 << SERCOM_I2CM_STATUS_BUSSTATE_Pos) | SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk;
+
+    while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom1_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+{
+    if((ubAddress & 1) && !ulCount)
+        return 0;
+
+    if((SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_BUSSTATE_Msk) == SERCOM_I2CM_STATUS_BUSSTATE(3))
+        return 0;
+
+    SERCOM1_REGS->I2CM.SERCOM_ADDR = ubAddress;
+
+    if(!ulCount)
+    {
+        while(!(SERCOM1_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+        if(SERCOM1_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        if(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+        {
+            SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+            while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+            return 0;
+        }
+    }
+    else
+    {
+        do
+        {
+            if(ubAddress & 1) // Read
+            {
+                while(!(SERCOM1_REGS->I2CM.SERCOM_INTFLAG & (SERCOM_I2CM_INTFLAG_MB_Msk | SERCOM_I2CM_INTFLAG_SB_Msk)));
+
+                if(SERCOM1_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM1_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_SB_Msk)
+                {
+                    *pubSrc++ = SERCOM1_REGS->I2CM.SERCOM_DATA;
+
+                    if(ulCount > 1)
+                        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
+                    else
+                        SERCOM1_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                }
+            }
+            else // Write
+            {
+                while(!(SERCOM1_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+                if(SERCOM1_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+                {
+                    SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+                    while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+                    return 0;
+                }
+
+                SERCOM1_REGS->I2CM.SERCOM_DATA = *pubSrc++;
+
+                while(!(SERCOM1_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+            }
+        } while(--ulCount);
+    }
+
+    if(ubStop)
+    {
+        if(SERCOM1_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+        while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+    }
+
+    return 1;
+}
+#elif !defined(SERCOM1_MODE_SPI) && !defined(SERCOM1_MODE_I2C) && defined(SERCOM1_MODE_UART)
+static volatile uint8_t *pubSERCOM1FIFO = NULL;
+static volatile uint16_t usSERCOM1FIFOWritePos, usSERCOM1FIFOReadPos;
+
+void _sercom1_isr()
+{
+    while(SERCOM1_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk)
+    {
+        pubSERCOM1FIFO[usSERCOM1FIFOWritePos++] = SERCOM1_REGS->USART_INT.SERCOM_DATA;
+
+        if(usSERCOM1FIFOWritePos >= SERCOM1_FIFO_SIZE)
+            usSERCOM1FIFOWritePos = 0;
+    }
+}
+
+void sercom1_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO)
+{
+    while(SERCOM1_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    free((uint8_t *)pubSERCOM1FIFO);
+
+    pubSERCOM1FIFO = (volatile uint8_t *)malloc(SERCOM1_FIFO_SIZE);
+
+    if(!pubSERCOM1FIFO)
+        return;
+
+    memset((uint8_t *)pubSERCOM1FIFO, 0, SERCOM1_FIFO_SIZE);
+
+    usSERCOM1FIFOWritePos = 0;
+    usSERCOM1FIFOReadPos = 0;
+
+    SERCOM1_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_SWRST_Msk;
+
+    while(SERCOM1_REGS->USART_INT.SERCOM_CTRLA & SERCOM_USART_INT_CTRLA_SWRST_Msk);
+
+    SERCOM1_REGS->USART_INT.SERCOM_CTRLA = (ulFrameSettings & SERCOM_USART_INT_CTRLA_DORD_Msk) | SERCOM_USART_INT_CTRLA_CMODE_ASYNC | (ulFrameSettings & SERCOM_USART_INT_CTRLA_FORM_Msk) | SERCOM_USART_INT_CTRLA_RXPO(ubRXPO) | SERCOM_USART_INT_CTRLA_TXPO(ubTXPO) | SERCOM_USART_INT_CTRLA_MODE_USART_INT_CLK;
+    SERCOM1_REGS->USART_INT.SERCOM_CTRLB = SERCOM_USART_INT_CTRLB_RXEN_Msk | SERCOM_USART_INT_CTRLB_TXEN_Msk | (ulFrameSettings & SERCOM_USART_INT_CTRLB_PMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_SBMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_CHSIZE_Msk);
+    SERCOM1_REGS->USART_INT.SERCOM_BAUD = (uint16_t)(65536 * (1 - 16 * ((float)ulBaud / 8000000/*TODO:*/)));
+
+    while(SERCOM1_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    IRQ_CLEAR(SERCOM1_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(SERCOM1_IRQn, 2, 1); // Set priority 2,1
+    IRQ_ENABLE(SERCOM1_IRQn); // Enable vector
+    SERCOM1_REGS->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_RXC_Msk; // Enable RXC flag
+
+    SERCOM1_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_ENABLE_Msk;
+
+    while(SERCOM1_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+void sercom1_write_byte(const uint8_t ubData)
+{
+    while(!(SERCOM1_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_DRE_Msk));
+
+    SERCOM1_REGS->USART_INT.SERCOM_DATA = ubData;
+}
+uint8_t sercom1_read_byte()
+{
+    if(!sercom1_available())
+        return 0;
+
+    uint8_t ubData;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        ubData = pubSERCOM1FIFO[usSERCOM1FIFOReadPos++];
+
+        if(usSERCOM1FIFOReadPos >= SERCOM1_FIFO_SIZE)
+            usSERCOM1FIFOReadPos = 0;
+    }
+
+    return ubData;
+}
+uint32_t sercom1_available()
+{
+    return (SERCOM1_FIFO_SIZE + usSERCOM1FIFOWritePos - usSERCOM1FIFOReadPos) % SERCOM1_FIFO_SIZE;
+}
+void sercom1_flush()
+{
+    usSERCOM1FIFOReadPos = usSERCOM1FIFOWritePos = 0;
+}
+#endif  // SERCOM1_MODE
+
+#if defined(SERCOM3_MODE_SPI) && !defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)
+void sercom3_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO)
+{
+    while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_SWRST_Msk;
+
+    while(SERCOM3_REGS->SPIM.SERCOM_CTRLA & SERCOM_SPIM_CTRLA_SWRST_Msk);
+
+    SERCOM3_REGS->SPIM.SERCOM_CTRLA = (ubBitMode == SERCOM_SPI_MSB_FIRST ? 0 : SERCOM_SPIM_CTRLA_DORD_Msk) | (ubMode & 2 ? SERCOM_SPIM_CTRLA_CPOL_Msk : 0) | (ubMode & 1 ? SERCOM_SPIM_CTRLA_CPHA_Msk : 0) | SERCOM_SPIM_CTRLA_DIPO(ubDIPO) | SERCOM_SPIM_CTRLA_DOPO(ubDOPO) | SERCOM_SPIM_CTRLA_MODE_SPI_MASTER;
+
+    while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_RXEN_Msk | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+    SERCOM3_REGS->SPIM.SERCOM_BAUD = 1/*TODO:*/ / (ulBaud << 1) - 1;
+
+    while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->SPIM.SERCOM_CTRLA |= SERCOM_SPIM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom3_spi_transfer_byte(const uint8_t ubData)
+{
+    while(!(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    while(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
+        REG_DISCARD(&(SERCOM3_REGS->SPIM.SERCOM_DATA));
+
+    SERCOM3_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(!(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk));
+
+    return SERCOM3_REGS->SPIM.SERCOM_DATA;
+}
+void sercom3_spi_write_byte(const uint8_t ubData, const uint8_t ubWait)
+{
+    while(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
+        REG_DISCARD(&(SERCOM3_REGS->SPIM.SERCOM_DATA));
+
+    while(!(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    SERCOM3_REGS->SPIM.SERCOM_DATA = ubData;
+
+    while(ubWait && !(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+}
+#elif !defined(SERCOM3_MODE_SPI) && defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)
+void sercom3_init(uint8_t ubMode)
+{
+    while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_SWRST_Msk;
+
+    while(SERCOM3_REGS->I2CM.SERCOM_CTRLA & SERCOM_I2CM_CTRLA_SWRST_Msk);
+
+    SERCOM3_REGS->I2CM.SERCOM_CTRLA = SERCOM_I2CM_CTRLA_LOWTOUT_Msk | SERCOM_I2CM_CTRLA_INACTOUT_55US | SERCOM_I2CM_CTRLA_MODE_I2C_MASTER;
+    SERCOM3_REGS->I2CM.SERCOM_BAUD = (uint8_t)(1/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
+
+    while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->I2CM.SERCOM_CTRLA |= SERCOM_I2CM_CTRLA_ENABLE_Msk;
+
+    while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+    SERCOM3_REGS->I2CM.SERCOM_STATUS = SERCOM_I2CM_STATUS_LOWTOUT_Msk | (0x01 << SERCOM_I2CM_STATUS_BUSSTATE_Pos) | SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk;
+
+    while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+}
+uint8_t sercom3_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+{
+    if((ubAddress & 1) && !ulCount)
+        return 0;
+
+    if((SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_BUSSTATE_Msk) == SERCOM_I2CM_STATUS_BUSSTATE(3))
+        return 0;
+
+    SERCOM3_REGS->I2CM.SERCOM_ADDR = ubAddress;
+
+    if(!ulCount)
+    {
+        while(!(SERCOM3_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+        if(SERCOM3_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        if(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+        {
+            SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+            while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+            return 0;
+        }
+    }
+    else
+    {
+        do
+        {
+            if(ubAddress & 1) // Read
+            {
+                while(!(SERCOM3_REGS->I2CM.SERCOM_INTFLAG & (SERCOM_I2CM_INTFLAG_MB_Msk | SERCOM_I2CM_INTFLAG_SB_Msk)));
+
+                if(SERCOM3_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM3_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_SB_Msk)
+                {
+                    *pubSrc++ = SERCOM3_REGS->I2CM.SERCOM_DATA;
+
+                    if(ulCount > 1)
+                        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
+                    else
+                        SERCOM3_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                }
+            }
+            else // Write
+            {
+                while(!(SERCOM3_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+
+                if(SERCOM3_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+                    return 0;
+
+                if(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_RXNACK_Msk)
+                {
+                    SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+                    while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+
+                    return 0;
+                }
+
+                SERCOM3_REGS->I2CM.SERCOM_DATA = *pubSrc++;
+
+                while(!(SERCOM3_REGS->I2CM.SERCOM_INTFLAG & SERCOM_I2CM_INTFLAG_MB_Msk));
+            }
+        } while(--ulCount);
+    }
+
+    if(ubStop)
+    {
+        if(SERCOM3_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
+            return 0;
+
+        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+
+        while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
+    }
+
+    return 1;
+}
+#elif !defined(SERCOM3_MODE_SPI) && !defined(SERCOM3_MODE_I2C) && defined(SERCOM3_MODE_UART)
+static volatile uint8_t *pubSERCOM3FIFO = NULL;
+static volatile uint16_t usSERCOM3FIFOWritePos, usSERCOM3FIFOReadPos;
+
+void _sercom3_isr()
+{
+    while(SERCOM3_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_RXC_Msk)
+    {
+        pubSERCOM3FIFO[usSERCOM3FIFOWritePos++] = SERCOM3_REGS->USART_INT.SERCOM_DATA;
+
+        if(usSERCOM3FIFOWritePos >= SERCOM3_FIFO_SIZE)
+            usSERCOM3FIFOWritePos = 0;
+    }
+}
+
+void sercom3_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO)
+{
+    while(SERCOM3_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    free((uint8_t *)pubSERCOM3FIFO);
+
+    pubSERCOM3FIFO = (volatile uint8_t *)malloc(SERCOM3_FIFO_SIZE);
+
+    if(!pubSERCOM3FIFO)
+        return;
+
+    memset((uint8_t *)pubSERCOM3FIFO, 0, SERCOM3_FIFO_SIZE);
+
+    usSERCOM3FIFOWritePos = 0;
+    usSERCOM3FIFOReadPos = 0;
+
+    SERCOM3_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_SWRST_Msk;
+
+    while(SERCOM3_REGS->USART_INT.SERCOM_CTRLA & SERCOM_USART_INT_CTRLA_SWRST_Msk);
+
+    SERCOM3_REGS->USART_INT.SERCOM_CTRLA = (ulFrameSettings & SERCOM_USART_INT_CTRLA_DORD_Msk) | SERCOM_USART_INT_CTRLA_CMODE_ASYNC | (ulFrameSettings & SERCOM_USART_INT_CTRLA_FORM_Msk) | SERCOM_USART_INT_CTRLA_RXPO(ubRXPO) | SERCOM_USART_INT_CTRLA_TXPO(ubTXPO) | SERCOM_USART_INT_CTRLA_MODE_USART_INT_CLK;
+    SERCOM3_REGS->USART_INT.SERCOM_CTRLB = SERCOM_USART_INT_CTRLB_RXEN_Msk | SERCOM_USART_INT_CTRLB_TXEN_Msk | (ulFrameSettings & SERCOM_USART_INT_CTRLB_PMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_SBMODE_Msk) | (ulFrameSettings & SERCOM_USART_INT_CTRLB_CHSIZE_Msk);
+    SERCOM3_REGS->USART_INT.SERCOM_BAUD = (uint16_t)(65536 * (1 - 16 * ((float)ulBaud / 8000000/*TODO:*/)));
+
+    while(SERCOM3_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+
+    IRQ_CLEAR(SERCOM3_IRQn); // Clear pending vector
+    IRQ_SET_PRIO(SERCOM3_IRQn, 2, 1); // Set priority 2,1
+    IRQ_ENABLE(SERCOM3_IRQn); // Enable vector
+    SERCOM3_REGS->USART_INT.SERCOM_INTENSET = SERCOM_USART_INT_INTENSET_RXC_Msk; // Enable RXC flag
+
+    SERCOM3_REGS->USART_INT.SERCOM_CTRLA |= SERCOM_USART_INT_CTRLA_ENABLE_Msk;
+
+    while(SERCOM3_REGS->USART_INT.SERCOM_STATUS & SERCOM_USART_INT_STATUS_SYNCBUSY_Msk);
+}
+void sercom3_write_byte(const uint8_t ubData)
+{
+    while(!(SERCOM3_REGS->USART_INT.SERCOM_INTFLAG & SERCOM_USART_INT_INTFLAG_DRE_Msk));
+
+    SERCOM3_REGS->USART_INT.SERCOM_DATA = ubData;
+}
+uint8_t sercom3_read_byte()
+{
+    if(!sercom3_available())
+        return 0;
+
+    uint8_t ubData;
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        ubData = pubSERCOM3FIFO[usSERCOM3FIFOReadPos++];
+
+        if(usSERCOM3FIFOReadPos >= SERCOM3_FIFO_SIZE)
+            usSERCOM3FIFOReadPos = 0;
+    }
+
+    return ubData;
+}
+uint32_t sercom3_available()
+{
+    return (SERCOM3_FIFO_SIZE + usSERCOM3FIFOWritePos - usSERCOM3FIFOReadPos) % SERCOM3_FIFO_SIZE;
+}
+void sercom3_flush()
+{
+    usSERCOM3FIFOReadPos = usSERCOM3FIFOWritePos = 0;
+}
+#endif  // SERCOM3_MODE

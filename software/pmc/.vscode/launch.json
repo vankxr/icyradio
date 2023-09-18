@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "cwd": "${workspaceRoot}",
+            "executable": "./bin/v1.icyradio-pmc.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "preLaunchTask": "Build",
+            "servertype": "jlink",
+            "device": "ATSAMD20E16",
+            "svdFile": "${env:ARM_LIBROOT}/Microchip.SAMD20_DFP/samd20/svd/ATSAMD20E16.svd",
+            "interface": "swd",
+            "breakAfterReset": true,
+            "swoConfig": {
+                "enabled": true,
+                "swoFrequency": 2000000,
+                "cpuFrequency": 8000000,
+                "source": "probe",
+                "decoders": [
+                    {
+                        "port": 0,
+                        "label": "Console",
+                        "type": "console",
+                        "showOnStartup": true
+                    }
+                ]
+            }
+        }
+    ]
+}

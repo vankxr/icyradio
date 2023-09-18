@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+!c_cpp_properties.json
+!launch.json
+!tasks.json
+!get_gcc_defines.sh
