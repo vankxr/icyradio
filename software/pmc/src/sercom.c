@@ -65,7 +65,7 @@ void sercom0_init(uint8_t ubMode)
     while(SERCOM0_REGS->I2CM.SERCOM_CTRLA & SERCOM_I2CM_CTRLA_SWRST_Msk);
 
     SERCOM0_REGS->I2CM.SERCOM_CTRLA = SERCOM_I2CM_CTRLA_LOWTOUT_Msk | SERCOM_I2CM_CTRLA_INACTOUT_55US | SERCOM_I2CM_CTRLA_MODE_I2C_MASTER;
-    SERCOM0_REGS->I2CM.SERCOM_BAUD = (uint8_t)(1/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
+    SERCOM0_REGS->I2CM.SERCOM_BAUD = (uint8_t)(8000000/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
 
     while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
 
@@ -119,9 +119,7 @@ uint8_t sercom0_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
                     *pubSrc++ = SERCOM0_REGS->I2CM.SERCOM_DATA;
 
                     if(ulCount > 1)
-                        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
-                    else
-                        SERCOM0_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(2);
                 }
             }
             else // Write
@@ -152,7 +150,7 @@ uint8_t sercom0_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
         if(SERCOM0_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
             return 0;
 
-        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+        SERCOM0_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(3);
 
         while(SERCOM0_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
     }
@@ -255,8 +253,8 @@ void sercom1_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ub
 
     while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
 
-    SERCOM1_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_RXEN_Msk | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
-    SERCOM1_REGS->SPIM.SERCOM_BAUD = 1/*TODO:*/ / (ulBaud << 1) - 1;
+    SERCOM1_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+    SERCOM1_REGS->SPIM.SERCOM_BAUD = 8000000/*TODO:*/ / (ulBaud << 1) - 1;
 
     while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
 
@@ -268,8 +266,12 @@ uint8_t sercom1_spi_transfer_byte(const uint8_t ubData)
 {
     while(!(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
 
-    while(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
-        REG_DISCARD(&(SERCOM1_REGS->SPIM.SERCOM_DATA));
+    if(!(SERCOM1_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk))
+    {
+        SERCOM1_REGS->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_RXEN_Msk;
+
+        while(SERCOM1_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+    }
 
     SERCOM1_REGS->SPIM.SERCOM_DATA = ubData;
 
@@ -279,14 +281,14 @@ uint8_t sercom1_spi_transfer_byte(const uint8_t ubData)
 }
 void sercom1_spi_write_byte(const uint8_t ubData, const uint8_t ubWait)
 {
-    while(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
-        REG_DISCARD(&(SERCOM1_REGS->SPIM.SERCOM_DATA));
-
     while(!(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    if(SERCOM1_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk)
+        SERCOM1_REGS->SPIM.SERCOM_CTRLB &= ~SERCOM_SPIM_CTRLB_RXEN_Msk;
 
     SERCOM1_REGS->SPIM.SERCOM_DATA = ubData;
 
-    while(ubWait && !(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+    while(ubWait && !(SERCOM1_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk));
 }
 #elif !defined(SERCOM1_MODE_SPI) && defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
 void sercom1_init(uint8_t ubMode)
@@ -352,9 +354,7 @@ uint8_t sercom1_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
                     *pubSrc++ = SERCOM1_REGS->I2CM.SERCOM_DATA;
 
                     if(ulCount > 1)
-                        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
-                    else
-                        SERCOM1_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(2);
                 }
             }
             else // Write
@@ -385,7 +385,7 @@ uint8_t sercom1_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
         if(SERCOM1_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
             return 0;
 
-        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+        SERCOM1_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(3);
 
         while(SERCOM1_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
     }
@@ -488,8 +488,8 @@ void sercom3_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ub
 
     while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
 
-    SERCOM3_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_RXEN_Msk | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
-    SERCOM3_REGS->SPIM.SERCOM_BAUD = 1/*TODO:*/ / (ulBaud << 1) - 1;
+    SERCOM3_REGS->SPIM.SERCOM_CTRLB = SERCOM_SPIM_CTRLB_CHSIZE_8_BIT;
+    SERCOM3_REGS->SPIM.SERCOM_BAUD = 8000000/*TODO:*/ / (ulBaud << 1) - 1;
 
     while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
 
@@ -501,8 +501,12 @@ uint8_t sercom3_spi_transfer_byte(const uint8_t ubData)
 {
     while(!(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
 
-    while(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
-        REG_DISCARD(&(SERCOM3_REGS->SPIM.SERCOM_DATA));
+    if(!(SERCOM3_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk))
+    {
+        SERCOM3_REGS->SPIM.SERCOM_CTRLB |= SERCOM_SPIM_CTRLB_RXEN_Msk;
+
+        while(SERCOM3_REGS->SPIM.SERCOM_STATUS & SERCOM_SPIM_STATUS_SYNCBUSY_Msk);
+    }
 
     SERCOM3_REGS->SPIM.SERCOM_DATA = ubData;
 
@@ -512,14 +516,14 @@ uint8_t sercom3_spi_transfer_byte(const uint8_t ubData)
 }
 void sercom3_spi_write_byte(const uint8_t ubData, const uint8_t ubWait)
 {
-    while(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_RXC_Msk)
-        REG_DISCARD(&(SERCOM3_REGS->SPIM.SERCOM_DATA));
-
     while(!(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+
+    if(SERCOM3_REGS->SPIM.SERCOM_CTRLB & SERCOM_SPIM_CTRLB_RXEN_Msk)
+        SERCOM3_REGS->SPIM.SERCOM_CTRLB &= ~SERCOM_SPIM_CTRLB_RXEN_Msk;
 
     SERCOM3_REGS->SPIM.SERCOM_DATA = ubData;
 
-    while(ubWait && !(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_DRE_Msk));
+    while(ubWait && !(SERCOM3_REGS->SPIM.SERCOM_INTFLAG & SERCOM_SPIM_INTFLAG_TXC_Msk));
 }
 #elif !defined(SERCOM3_MODE_SPI) && defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)
 void sercom3_init(uint8_t ubMode)
@@ -531,7 +535,7 @@ void sercom3_init(uint8_t ubMode)
     while(SERCOM3_REGS->I2CM.SERCOM_CTRLA & SERCOM_I2CM_CTRLA_SWRST_Msk);
 
     SERCOM3_REGS->I2CM.SERCOM_CTRLA = SERCOM_I2CM_CTRLA_LOWTOUT_Msk | SERCOM_I2CM_CTRLA_INACTOUT_55US | SERCOM_I2CM_CTRLA_MODE_I2C_MASTER;
-    SERCOM3_REGS->I2CM.SERCOM_BAUD = (uint8_t)(1/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
+    SERCOM3_REGS->I2CM.SERCOM_BAUD = (uint8_t)(8000000/*TODO:*/ * (ubMode == SERCOM_I2C_FAST ? 0.00000125 : 0.000005) - 1/*TODO:*/ * 0.000000125 - 4);
 
     while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
 
@@ -585,9 +589,7 @@ uint8_t sercom3_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
                     *pubSrc++ = SERCOM3_REGS->I2CM.SERCOM_DATA;
 
                     if(ulCount > 1)
-                        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(2);
-                    else
-                        SERCOM3_REGS->I2CM.SERCOM_CTRLB = 0x00000000;
+                        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(2);
                 }
             }
             else // Write
@@ -618,7 +620,7 @@ uint8_t sercom3_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCoun
         if(SERCOM3_REGS->I2CM.SERCOM_STATUS & (SERCOM_I2CM_STATUS_ARBLOST_Msk | SERCOM_I2CM_STATUS_BUSERR_Msk))
             return 0;
 
-        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_CMD(3);
+        SERCOM3_REGS->I2CM.SERCOM_CTRLB = SERCOM_I2CM_CTRLB_ACKACT_Msk | SERCOM_I2CM_CTRLB_CMD(3);
 
         while(SERCOM3_REGS->I2CM.SERCOM_STATUS & SERCOM_I2CM_STATUS_SYNCBUSY_Msk);
     }
