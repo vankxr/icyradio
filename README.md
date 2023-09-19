@@ -37,7 +37,7 @@ TODO
 TODO
 
 ## Errata
- - Still WIP, hope no errata makes it here...
+ - The WP pin of the LT7182S regulator was left floating, with a placeholder resistor for pulling it up later, assuming it had an internal pulldown. Turns out it is floating, and thus it can be sampled internally as 1, write-protecting the device and forbidding configuration commands. A quick fix is to scrape a tiny bit of the ground plane near the WP resistor pad, ans shunting it to GND there with a blob of solder.
 
 ## Authors
 
