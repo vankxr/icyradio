@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Jan 11 17:28:44 2023
+-- Date        : Wed Sep 20 17:40:09 2023
 -- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
--- Command     : write_vhdl -force -mode synth_stub
---               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_xbar_7/icyradio_xbar_7_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_xbar_7 -prefix
+--               icyradio_xbar_7_ icyradio_xbar_7_stub.vhdl
 -- Design      : icyradio_xbar_7
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2

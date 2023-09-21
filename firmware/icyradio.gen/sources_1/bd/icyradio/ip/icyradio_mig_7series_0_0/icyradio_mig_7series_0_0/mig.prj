@@ -60,7 +60,7 @@
     <DataMask>1</DataMask>
     <ECC>Disabled</ECC>
     <Ordering>Normal</Ordering>
-    <BankMachineCnt>2</BankMachineCnt>
+    <BankMachineCnt>4</BankMachineCnt>
     <CustomPart>FALSE</CustomPart>
     <NewPartName></NewPartName>
     <RowAddress>15</RowAddress>

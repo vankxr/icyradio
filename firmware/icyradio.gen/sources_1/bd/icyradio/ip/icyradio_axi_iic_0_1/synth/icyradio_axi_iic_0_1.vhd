@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -84,7 +84,7 @@ ENTITY icyradio_axi_iic_0_1 IS
     scl_i : IN STD_LOGIC;
     scl_o : OUT STD_LOGIC;
     scl_t : OUT STD_LOGIC;
-    gpo : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+    gpo : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
 END icyradio_axi_iic_0_1;
 
@@ -136,7 +136,7 @@ ARCHITECTURE icyradio_axi_iic_0_1_arch OF icyradio_axi_iic_0_1 IS
       scl_i : IN STD_LOGIC;
       scl_o : OUT STD_LOGIC;
       scl_t : OUT STD_LOGIC;
-      gpo : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+      gpo : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
   END COMPONENT axi_iic;
   ATTRIBUTE X_CORE_INFO : STRING;
@@ -144,8 +144,8 @@ ARCHITECTURE icyradio_axi_iic_0_1_arch OF icyradio_axi_iic_0_1 IS
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
   ATTRIBUTE CHECK_LICENSE_TYPE OF icyradio_axi_iic_0_1_arch : ARCHITECTURE IS "icyradio_axi_iic_0_1,axi_iic,{}";
   ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF icyradio_axi_iic_0_1_arch: ARCHITECTURE IS "icyradio_axi_iic_0_1,axi_iic,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=axi_iic,x_ipVersion=2.1,x_ipCoreRevision=0,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_FAMILY=artix7,C_S_AXI_ADDR_WIDTH=9,C_S_AXI_DATA_WIDTH=32,C_IIC_FREQ=100000,C_TEN_BIT_ADR=0,C_GPO_WIDTH=1,C_S_AXI_ACLK_FREQ_HZ=125000000,C_SCL_INERTIAL_DELAY=0,C_SDA_INERTIAL_DELAY=0,C_SDA_LEVEL=1,C_SMBUS_PMBUS_HOST=0,C_DISABLE_SETUP_VIOLATION_CHECK=0,C_STATIC_TIMING_REG_WIDTH=0,C_TIMING_REG_WIDTH=32,C_DEFAULT" & 
-"_VALUE=0x00}";
+  ATTRIBUTE CORE_GENERATION_INFO OF icyradio_axi_iic_0_1_arch: ARCHITECTURE IS "icyradio_axi_iic_0_1,axi_iic,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=axi_iic,x_ipVersion=2.1,x_ipCoreRevision=0,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_FAMILY=artix7,C_S_AXI_ADDR_WIDTH=9,C_S_AXI_DATA_WIDTH=32,C_IIC_FREQ=100000,C_TEN_BIT_ADR=0,C_GPO_WIDTH=2,C_S_AXI_ACLK_FREQ_HZ=125000000,C_SCL_INERTIAL_DELAY=0,C_SDA_INERTIAL_DELAY=0,C_SDA_LEVEL=1,C_SMBUS_PMBUS_HOST=0,C_DISABLE_SETUP_VIOLATION_CHECK=0,C_STATIC_TIMING_REG_WIDTH=0,C_TIMING_REG_WIDTH=32,C_DEFAULT" & 
+"_VALUE=0x02}";
   ATTRIBUTE X_INTERFACE_INFO : STRING;
   ATTRIBUTE X_INTERFACE_PARAMETER : STRING;
   ATTRIBUTE X_INTERFACE_INFO OF scl_t: SIGNAL IS "xilinx.com:interface:iic:1.0 IIC SCL_T";
@@ -188,7 +188,7 @@ BEGIN
       C_S_AXI_DATA_WIDTH => 32,
       C_IIC_FREQ => 100000,
       C_TEN_BIT_ADR => 0,
-      C_GPO_WIDTH => 1,
+      C_GPO_WIDTH => 2,
       C_S_AXI_ACLK_FREQ_HZ => 125000000,
       C_SCL_INERTIAL_DELAY => 0,
       C_SDA_INERTIAL_DELAY => 0,
@@ -197,7 +197,7 @@ BEGIN
       C_DISABLE_SETUP_VIOLATION_CHECK => 0,
       C_STATIC_TIMING_REG_WIDTH => 0,
       C_TIMING_REG_WIDTH => 32,
-      C_DEFAULT_VALUE => X"00"
+      C_DEFAULT_VALUE => X"02"
     )
     PORT MAP (
       s_axi_aclk => s_axi_aclk,

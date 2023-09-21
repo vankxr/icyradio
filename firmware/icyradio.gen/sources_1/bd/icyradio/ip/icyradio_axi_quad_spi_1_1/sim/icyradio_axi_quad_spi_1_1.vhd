@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -294,7 +294,7 @@ BEGIN
       C_BYTE_LEVEL_INTERRUPT_EN => 0,
       C_UC_FAMILY => 0,
       C_FIFO_DEPTH => 16,
-      C_SCK_RATIO => 4,
+      C_SCK_RATIO => 8,
       C_DUAL_QUAD_MODE => 0,
       C_NUM_SS_BITS => 1,
       C_NUM_TRANSFER_BITS => 8,

@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -84,7 +84,7 @@ ENTITY icyradio_axi_iic_0_1 IS
     scl_i : IN STD_LOGIC;
     scl_o : OUT STD_LOGIC;
     scl_t : OUT STD_LOGIC;
-    gpo : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+    gpo : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
   );
 END icyradio_axi_iic_0_1;
 
@@ -136,7 +136,7 @@ ARCHITECTURE icyradio_axi_iic_0_1_arch OF icyradio_axi_iic_0_1 IS
       scl_i : IN STD_LOGIC;
       scl_o : OUT STD_LOGIC;
       scl_t : OUT STD_LOGIC;
-      gpo : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+      gpo : OUT STD_LOGIC_VECTOR(1 DOWNTO 0)
     );
   END COMPONENT axi_iic;
   ATTRIBUTE X_INTERFACE_INFO : STRING;
@@ -181,7 +181,7 @@ BEGIN
       C_S_AXI_DATA_WIDTH => 32,
       C_IIC_FREQ => 100000,
       C_TEN_BIT_ADR => 0,
-      C_GPO_WIDTH => 1,
+      C_GPO_WIDTH => 2,
       C_S_AXI_ACLK_FREQ_HZ => 125000000,
       C_SCL_INERTIAL_DELAY => 0,
       C_SDA_INERTIAL_DELAY => 0,
@@ -190,7 +190,7 @@ BEGIN
       C_DISABLE_SETUP_VIOLATION_CHECK => 0,
       C_STATIC_TIMING_REG_WIDTH => 0,
       C_TIMING_REG_WIDTH => 32,
-      C_DEFAULT_VALUE => X"00"
+      C_DEFAULT_VALUE => X"02"
     )
     PORT MAP (
       s_axi_aclk => s_axi_aclk,

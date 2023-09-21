@@ -1,11 +1,11 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sat Oct  1 21:30:32 2022
-// Host        : jsilva-kde running 64-bit KDE neon User - 5.25
-// Command     : write_verilog -force -mode synth_stub -rename_top icyradio_axi_iic_0_1 -prefix
-//               icyradio_axi_iic_0_1_ icyradio_axi_iic_0_0_stub.v
-// Design      : icyradio_axi_iic_0_0
+// Date        : Wed Sep 20 17:39:58 2023
+// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+// Command     : write_verilog -force -mode synth_stub
+//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_iic_0_1/icyradio_axi_iic_0_1_stub.v
+// Design      : icyradio_axi_iic_0_1
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2
 // --------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ module icyradio_axi_iic_0_1(s_axi_aclk, s_axi_aresetn, iic2intc_irpt,
   s_axi_wready, s_axi_bresp, s_axi_bvalid, s_axi_bready, s_axi_araddr, s_axi_arvalid, 
   s_axi_arready, s_axi_rdata, s_axi_rresp, s_axi_rvalid, s_axi_rready, sda_i, sda_o, sda_t, scl_i, 
   scl_o, scl_t, gpo)
-/* synthesis syn_black_box black_box_pad_pin="s_axi_aclk,s_axi_aresetn,iic2intc_irpt,s_axi_awaddr[8:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[8:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,sda_i,sda_o,sda_t,scl_i,scl_o,scl_t,gpo[0:0]" */;
+/* synthesis syn_black_box black_box_pad_pin="s_axi_aclk,s_axi_aresetn,iic2intc_irpt,s_axi_awaddr[8:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[8:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,sda_i,sda_o,sda_t,scl_i,scl_o,scl_t,gpo[1:0]" */;
   input s_axi_aclk;
   input s_axi_aresetn;
   output iic2intc_irpt;
@@ -46,5 +46,5 @@ module icyradio_axi_iic_0_1(s_axi_aclk, s_axi_aresetn, iic2intc_irpt,
   input scl_i;
   output scl_o;
   output scl_t;
-  output [0:0]gpo;
+  output [1:0]gpo;
 endmodule

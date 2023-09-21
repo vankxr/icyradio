@@ -1,11 +1,11 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Wed Jan 11 17:28:37 2023
+// Date        : Tue Sep 19 18:33:32 2023
 // Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 // Command     : write_verilog -force -mode synth_stub -rename_top icyradio_s03_data_fifo_0 -prefix
-//               icyradio_s03_data_fifo_0_ icyradio_s01_data_fifo_40_stub.v
-// Design      : icyradio_s01_data_fifo_40
+//               icyradio_s03_data_fifo_0_ icyradio_s01_data_fifo_56_stub.v
+// Design      : icyradio_s01_data_fifo_56
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2
 // --------------------------------------------------------------------------------

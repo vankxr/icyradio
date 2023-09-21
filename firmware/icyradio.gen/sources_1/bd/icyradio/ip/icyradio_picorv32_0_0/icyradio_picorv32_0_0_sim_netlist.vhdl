@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Jan 11 17:29:52 2023
+-- Date        : Wed Sep 20 00:56:22 2023
 -- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_picorv32_0_0/icyradio_picorv32_0_0_sim_netlist.vhdl
@@ -38110,13 +38110,13 @@ prefetched_high_word_reg: unisim.vcomponents.FDRE
       Q => \reg_next_pc_reg_n_0_[23]\,
       R => trap_i_1_n_0
     );
-\reg_next_pc_reg[24]\: unisim.vcomponents.FDRE
+\reg_next_pc_reg[24]\: unisim.vcomponents.FDSE
      port map (
       C => clk,
       CE => \^q\(3),
       D => \reg_next_pc_reg[24]_i_1_n_4\,
       Q => \reg_next_pc_reg_n_0_[24]\,
-      R => trap_i_1_n_0
+      S => trap_i_1_n_0
     );
 \reg_next_pc_reg[24]_i_1\: unisim.vcomponents.CARRY4
      port map (
@@ -38208,13 +38208,13 @@ prefetched_high_word_reg: unisim.vcomponents.FDRE
       Q => \reg_next_pc_reg_n_0_[2]\,
       R => trap_i_1_n_0
     );
-\reg_next_pc_reg[30]\: unisim.vcomponents.FDRE
+\reg_next_pc_reg[30]\: unisim.vcomponents.FDSE
      port map (
       C => clk,
       CE => \^q\(3),
       D => \reg_next_pc_reg[31]_i_1_n_6\,
       Q => \reg_next_pc_reg_n_0_[30]\,
-      R => trap_i_1_n_0
+      S => trap_i_1_n_0
     );
 \reg_next_pc_reg[31]\: unisim.vcomponents.FDRE
      port map (
@@ -45313,13 +45313,13 @@ prefetched_high_word_reg: unisim.vcomponents.FDRE
       Q => \reg_pc_reg_n_0_[23]\,
       R => trap_i_1_n_0
     );
-\reg_pc_reg[24]\: unisim.vcomponents.FDRE
+\reg_pc_reg[24]\: unisim.vcomponents.FDSE
      port map (
       C => clk,
       CE => \^q\(3),
       D => current_pc(24),
       Q => \reg_pc_reg_n_0_[24]\,
-      R => trap_i_1_n_0
+      S => trap_i_1_n_0
     );
 \reg_pc_reg[25]\: unisim.vcomponents.FDRE
      port map (
@@ -45369,13 +45369,13 @@ prefetched_high_word_reg: unisim.vcomponents.FDRE
       Q => \reg_pc_reg_n_0_[2]\,
       R => trap_i_1_n_0
     );
-\reg_pc_reg[30]\: unisim.vcomponents.FDRE
+\reg_pc_reg[30]\: unisim.vcomponents.FDSE
      port map (
       C => clk,
       CE => \^q\(3),
       D => current_pc(30),
       Q => \reg_pc_reg_n_0_[30]\,
-      R => trap_i_1_n_0
+      S => trap_i_1_n_0
     );
 \reg_pc_reg[31]\: unisim.vcomponents.FDRE
      port map (

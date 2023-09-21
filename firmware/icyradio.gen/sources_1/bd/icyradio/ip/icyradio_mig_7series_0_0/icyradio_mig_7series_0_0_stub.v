@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Tue Mar  7 01:17:41 2023
+// Date        : Thu Sep 21 17:41:20 2023
 // Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 // Command     : write_verilog -force -mode synth_stub -rename_top icyradio_mig_7series_0_0 -prefix
 //               icyradio_mig_7series_0_0_ icyradio_mig_7series_0_0_stub.v

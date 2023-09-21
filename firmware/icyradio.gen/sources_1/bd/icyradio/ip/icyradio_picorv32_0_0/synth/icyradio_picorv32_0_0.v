@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -149,7 +149,7 @@ output wire [31 : 0] eoi;
     .REGS_INIT_ZERO(1'B0),
     .MASKED_IRQ(32'H00000000),
     .LATCHED_IRQ(32'HFFFFFFFF),
-    .PROGADDR_RESET(32'H00000000),
+    .PROGADDR_RESET(32'H41000000),
     .PROGADDR_IRQ(32'H00000010),
     .STACKADDR(32'HFFFFFFFF)
   ) inst (

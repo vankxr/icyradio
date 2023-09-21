@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Wed Jan 11 17:29:51 2023
+// Date        : Wed Sep 20 00:56:21 2023
 // Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_picorv32_0_0/icyradio_picorv32_0_0_sim_netlist.v
@@ -18330,12 +18330,12 @@ module icyradio_picorv32_0_0_picorv32
         .D(\reg_next_pc_reg[24]_i_1_n_5 ),
         .Q(\reg_next_pc_reg_n_0_[23] ),
         .R(trap_i_1_n_0));
-  FDRE \reg_next_pc_reg[24] 
+  FDSE \reg_next_pc_reg[24] 
        (.C(clk),
         .CE(Q[3]),
         .D(\reg_next_pc_reg[24]_i_1_n_4 ),
         .Q(\reg_next_pc_reg_n_0_[24] ),
-        .R(trap_i_1_n_0));
+        .S(trap_i_1_n_0));
   CARRY4 \reg_next_pc_reg[24]_i_1 
        (.CI(\reg_next_pc_reg[20]_i_1_n_0 ),
         .CO({\reg_next_pc_reg[24]_i_1_n_0 ,\reg_next_pc_reg[24]_i_1_n_1 ,\reg_next_pc_reg[24]_i_1_n_2 ,\reg_next_pc_reg[24]_i_1_n_3 }),
@@ -18386,12 +18386,12 @@ module icyradio_picorv32_0_0_picorv32
         .D(\reg_next_pc_reg[4]_i_1_n_6 ),
         .Q(\reg_next_pc_reg_n_0_[2] ),
         .R(trap_i_1_n_0));
-  FDRE \reg_next_pc_reg[30] 
+  FDSE \reg_next_pc_reg[30] 
        (.C(clk),
         .CE(Q[3]),
         .D(\reg_next_pc_reg[31]_i_1_n_6 ),
         .Q(\reg_next_pc_reg_n_0_[30] ),
-        .R(trap_i_1_n_0));
+        .S(trap_i_1_n_0));
   FDRE \reg_next_pc_reg[31] 
        (.C(clk),
         .CE(Q[3]),
@@ -23614,12 +23614,12 @@ module icyradio_picorv32_0_0_picorv32
         .D(current_pc[23]),
         .Q(\reg_pc_reg_n_0_[23] ),
         .R(trap_i_1_n_0));
-  FDRE \reg_pc_reg[24] 
+  FDSE \reg_pc_reg[24] 
        (.C(clk),
         .CE(Q[3]),
         .D(current_pc[24]),
         .Q(\reg_pc_reg_n_0_[24] ),
-        .R(trap_i_1_n_0));
+        .S(trap_i_1_n_0));
   FDRE \reg_pc_reg[25] 
        (.C(clk),
         .CE(Q[3]),
@@ -23656,12 +23656,12 @@ module icyradio_picorv32_0_0_picorv32
         .D(current_pc[2]),
         .Q(\reg_pc_reg_n_0_[2] ),
         .R(trap_i_1_n_0));
-  FDRE \reg_pc_reg[30] 
+  FDSE \reg_pc_reg[30] 
        (.C(clk),
         .CE(Q[3]),
         .D(current_pc[30]),
         .Q(\reg_pc_reg_n_0_[30] ),
-        .R(trap_i_1_n_0));
+        .S(trap_i_1_n_0));
   FDRE \reg_pc_reg[31] 
        (.C(clk),
         .CE(Q[3]),

@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sun Mar 26 23:14:51 2023
+//Date        : Thu Sep 21 20:13:29 2023
 //Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
@@ -14,6 +14,9 @@ module icyradio_wrapper
     ADCIN_MAIN_v_p,
     AUDIO_I2C_scl_io,
     AUDIO_I2C_sda_io,
+    CLK_MNGR_IRQn,
+    CLK_MNGR_OEn,
+    CM4_WAKE,
     CODEC_I2S_bclk,
     CODEC_I2S_lrclk,
     CODEC_I2S_sdata_in,
@@ -50,12 +53,21 @@ module icyradio_wrapper
     PCIe_txn,
     PCIe_txp,
     PM_I2C_EN,
+    SYNTH_CE,
+    SYNTH_LD,
+    SYNTH_MUTE,
+    SYNTH_RESETn,
     SYNTH_SPI_io0_io,
     SYNTH_SPI_io1_io,
     SYNTH_SPI_sck_io,
     SYNTH_SPI_ss_io,
+    SYNTH_SYNC,
     SYS_I2C_scl_io,
     SYS_I2C_sda_io,
+    TRX_5V0_BIAS_T1_OCn,
+    TRX_5V0_BIAS_T2_OCn,
+    TRX_5V0_PA1_OCn,
+    TRX_5V0_PA2_OCn,
     TRX_CLK_OUT,
     TRX_CTRL_IN,
     TRX_CTRL_OUT,
@@ -73,11 +85,15 @@ module icyradio_wrapper
     TRX_SPI_ss_io,
     TRX_SYNC_IN,
     TRX_TXFRAME,
-    TRX_TXNRX);
+    TRX_TXNRX,
+    VIN_REG_ALERTn);
   input ADCIN_MAIN_v_n;
   input ADCIN_MAIN_v_p;
   inout AUDIO_I2C_scl_io;
   inout AUDIO_I2C_sda_io;
+  input CLK_MNGR_IRQn;
+  output [0:0]CLK_MNGR_OEn;
+  output [0:0]CM4_WAKE;
   output [0:0]CODEC_I2S_bclk;
   output [0:0]CODEC_I2S_lrclk;
   input [0:0]CODEC_I2S_sdata_in;
@@ -114,12 +130,21 @@ module icyradio_wrapper
   output [1:0]PCIe_txn;
   output [1:0]PCIe_txp;
   output [0:0]PM_I2C_EN;
+  output [0:0]SYNTH_CE;
+  input SYNTH_LD;
+  output [0:0]SYNTH_MUTE;
+  output [0:0]SYNTH_RESETn;
   inout SYNTH_SPI_io0_io;
   inout SYNTH_SPI_io1_io;
   inout SYNTH_SPI_sck_io;
   inout [0:0]SYNTH_SPI_ss_io;
+  output [0:0]SYNTH_SYNC;
   inout SYS_I2C_scl_io;
   inout SYS_I2C_sda_io;
+  input TRX_5V0_BIAS_T1_OCn;
+  input TRX_5V0_BIAS_T2_OCn;
+  input TRX_5V0_PA1_OCn;
+  input TRX_5V0_PA2_OCn;
   input TRX_CLK_OUT;
   output [3:0]TRX_CTRL_IN;
   input [7:0]TRX_CTRL_OUT;
@@ -138,6 +163,7 @@ module icyradio_wrapper
   output [0:0]TRX_SYNC_IN;
   output TRX_TXFRAME;
   output TRX_TXNRX;
+  input VIN_REG_ALERTn;
 
   wire ADCIN_MAIN_v_n;
   wire ADCIN_MAIN_v_p;
@@ -149,6 +175,9 @@ module icyradio_wrapper
   wire AUDIO_I2C_sda_io;
   wire AUDIO_I2C_sda_o;
   wire AUDIO_I2C_sda_t;
+  wire CLK_MNGR_IRQn;
+  wire [0:0]CLK_MNGR_OEn;
+  wire [0:0]CM4_WAKE;
   wire [0:0]CODEC_I2S_bclk;
   wire [0:0]CODEC_I2S_lrclk;
   wire [0:0]CODEC_I2S_sdata_in;
@@ -203,6 +232,10 @@ module icyradio_wrapper
   wire [1:0]PCIe_txn;
   wire [1:0]PCIe_txp;
   wire [0:0]PM_I2C_EN;
+  wire [0:0]SYNTH_CE;
+  wire SYNTH_LD;
+  wire [0:0]SYNTH_MUTE;
+  wire [0:0]SYNTH_RESETn;
   wire SYNTH_SPI_io0_i;
   wire SYNTH_SPI_io0_io;
   wire SYNTH_SPI_io0_o;
@@ -219,6 +252,7 @@ module icyradio_wrapper
   wire [0:0]SYNTH_SPI_ss_io_0;
   wire [0:0]SYNTH_SPI_ss_o_0;
   wire SYNTH_SPI_ss_t;
+  wire [0:0]SYNTH_SYNC;
   wire SYS_I2C_scl_i;
   wire SYS_I2C_scl_io;
   wire SYS_I2C_scl_o;
@@ -227,6 +261,10 @@ module icyradio_wrapper
   wire SYS_I2C_sda_io;
   wire SYS_I2C_sda_o;
   wire SYS_I2C_sda_t;
+  wire TRX_5V0_BIAS_T1_OCn;
+  wire TRX_5V0_BIAS_T2_OCn;
+  wire TRX_5V0_PA1_OCn;
+  wire TRX_5V0_PA2_OCn;
   wire TRX_CLK_OUT;
   wire [3:0]TRX_CTRL_IN;
   wire [7:0]TRX_CTRL_OUT;
@@ -257,6 +295,7 @@ module icyradio_wrapper
   wire [0:0]TRX_SYNC_IN;
   wire TRX_TXFRAME;
   wire TRX_TXNRX;
+  wire VIN_REG_ALERTn;
 
   IOBUF AUDIO_I2C_scl_iobuf
        (.I(AUDIO_I2C_scl_o),
@@ -357,6 +396,9 @@ module icyradio_wrapper
         .AUDIO_I2C_sda_i(AUDIO_I2C_sda_i),
         .AUDIO_I2C_sda_o(AUDIO_I2C_sda_o),
         .AUDIO_I2C_sda_t(AUDIO_I2C_sda_t),
+        .CLK_MNGR_IRQn(CLK_MNGR_IRQn),
+        .CLK_MNGR_OEn(CLK_MNGR_OEn),
+        .CM4_WAKE(CM4_WAKE),
         .CODEC_I2S_bclk(CODEC_I2S_bclk),
         .CODEC_I2S_lrclk(CODEC_I2S_lrclk),
         .CODEC_I2S_sdata_in(CODEC_I2S_sdata_in),
@@ -405,6 +447,10 @@ module icyradio_wrapper
         .PCIe_txn(PCIe_txn),
         .PCIe_txp(PCIe_txp),
         .PM_I2C_EN(PM_I2C_EN),
+        .SYNTH_CE(SYNTH_CE),
+        .SYNTH_LD(SYNTH_LD),
+        .SYNTH_MUTE(SYNTH_MUTE),
+        .SYNTH_RESETn(SYNTH_RESETn),
         .SYNTH_SPI_io0_i(SYNTH_SPI_io0_i),
         .SYNTH_SPI_io0_o(SYNTH_SPI_io0_o),
         .SYNTH_SPI_io0_t(SYNTH_SPI_io0_t),
@@ -417,12 +463,17 @@ module icyradio_wrapper
         .SYNTH_SPI_ss_i(SYNTH_SPI_ss_i_0),
         .SYNTH_SPI_ss_o(SYNTH_SPI_ss_o_0),
         .SYNTH_SPI_ss_t(SYNTH_SPI_ss_t),
+        .SYNTH_SYNC(SYNTH_SYNC),
         .SYS_I2C_scl_i(SYS_I2C_scl_i),
         .SYS_I2C_scl_o(SYS_I2C_scl_o),
         .SYS_I2C_scl_t(SYS_I2C_scl_t),
         .SYS_I2C_sda_i(SYS_I2C_sda_i),
         .SYS_I2C_sda_o(SYS_I2C_sda_o),
         .SYS_I2C_sda_t(SYS_I2C_sda_t),
+        .TRX_5V0_BIAS_T1_OCn(TRX_5V0_BIAS_T1_OCn),
+        .TRX_5V0_BIAS_T2_OCn(TRX_5V0_BIAS_T2_OCn),
+        .TRX_5V0_PA1_OCn(TRX_5V0_PA1_OCn),
+        .TRX_5V0_PA2_OCn(TRX_5V0_PA2_OCn),
         .TRX_CLK_OUT(TRX_CLK_OUT),
         .TRX_CTRL_IN(TRX_CTRL_IN),
         .TRX_CTRL_OUT(TRX_CTRL_OUT),
@@ -448,5 +499,6 @@ module icyradio_wrapper
         .TRX_SPI_ss_t(TRX_SPI_ss_t),
         .TRX_SYNC_IN(TRX_SYNC_IN),
         .TRX_TXFRAME(TRX_TXFRAME),
-        .TRX_TXNRX(TRX_TXNRX));
+        .TRX_TXNRX(TRX_TXNRX),
+        .VIN_REG_ALERTn(VIN_REG_ALERTn));
 endmodule

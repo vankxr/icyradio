@@ -392,7 +392,7 @@ BEGIN
       C_S_AXI4_ID_WIDTH => 1,
       C_SHARED_STARTUP => 0,
       C_S_AXI4_BASEADDR => X"00000000",
-      C_S_AXI4_HIGHADDR => X"000FFFFF",
+      C_S_AXI4_HIGHADDR => X"007FFFFF",
       C_LSB_STUP => 0
     )
     PORT MAP (

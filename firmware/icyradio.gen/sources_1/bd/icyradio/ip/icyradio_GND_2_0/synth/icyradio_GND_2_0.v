@@ -52,17 +52,17 @@
 
 (* X_CORE_INFO = "xlconstant_v1_1_7_xlconstant,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_GND_2_0,xlconstant_v1_1_7_xlconstant,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_GND_2_0,xlconstant_v1_1_7_xlconstant,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlconstant,x_ipVersion=1.1,x_ipCoreRevision=7,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,CONST_WIDTH=24,CONST_VAL=0x000000}" *)
+(* CORE_GENERATION_INFO = "icyradio_GND_2_0,xlconstant_v1_1_7_xlconstant,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlconstant,x_ipVersion=1.1,x_ipCoreRevision=7,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,CONST_WIDTH=12,CONST_VAL=0x000}" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_GND_2_0 (
   dout
 );
 
-output wire [23 : 0] dout;
+output wire [11 : 0] dout;
 
   xlconstant_v1_1_7_xlconstant #(
-    .CONST_WIDTH(24),
-    .CONST_VAL(24'H000000)
+    .CONST_WIDTH(12),
+    .CONST_VAL(12'H000)
   ) inst (
     .dout(dout)
   );

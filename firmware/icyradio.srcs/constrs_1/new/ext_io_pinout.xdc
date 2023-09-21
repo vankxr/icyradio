@@ -30,3 +30,4 @@
 #set_property IOSTANDARD LVCMOS25 [get_ports EXT_IO_2_6]
 #set_property PACKAGE_PIN A14 [get_ports EXT_IO_2_6]
 
+

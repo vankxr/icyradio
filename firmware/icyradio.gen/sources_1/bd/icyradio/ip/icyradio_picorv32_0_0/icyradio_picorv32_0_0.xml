@@ -672,11 +672,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:36:25 UTC 2022</spirit:value>
+            <spirit:value>Wed Jan 11 17:08:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:12c8f0d7</spirit:value>
+            <spirit:value>9:c5479ac2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -687,7 +687,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:12c8f0d7</spirit:value>
+            <spirit:value>9:c5479ac2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -703,11 +703,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:36:25 UTC 2022</spirit:value>
+            <spirit:value>Tue Sep 19 23:55:08 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:12c8f0d7</spirit:value>
+            <spirit:value>9:c5479ac2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -723,11 +723,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:36:25 UTC 2022</spirit:value>
+            <spirit:value>Wed Jan 11 17:08:55 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:84c4021d</spirit:value>
+            <spirit:value>9:c2ae4c50</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -743,11 +743,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:36:25 UTC 2022</spirit:value>
+            <spirit:value>Tue Sep 19 23:55:08 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:84c4021d</spirit:value>
+            <spirit:value>9:c2ae4c50</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -761,11 +761,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:29:52 UTC 2023</spirit:value>
+            <spirit:value>Tue Sep 19 23:56:22 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:12c8f0d7</spirit:value>
+            <spirit:value>9:c5479ac2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1470,7 +1470,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>PROGADDR_RESET</spirit:name>
         <spirit:displayName>Progaddr Reset</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x00000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x41000000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>PROGADDR_IRQ</spirit:name>
@@ -1685,7 +1685,7 @@
     <spirit:parameter>
       <spirit:name>PROGADDR_RESET</spirit:name>
       <spirit:displayName>Program Reset Address</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x00000000</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x41000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>PROGADDR_IRQ</spirit:name>
@@ -1805,6 +1805,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_IRQ" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_MUL" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_TRACE" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PROGADDR_RESET" xilinx:valueSource="user"/>
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

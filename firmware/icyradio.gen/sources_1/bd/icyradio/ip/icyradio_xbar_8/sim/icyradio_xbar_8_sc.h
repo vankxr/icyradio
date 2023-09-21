@@ -1,7 +1,7 @@
 #ifndef IP_ICYRADIO_XBAR_8_SC_H_
 #define IP_ICYRADIO_XBAR_8_SC_H_
 
-// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -106,6 +106,8 @@ public:
   xtlm::xtlm_aximm_initiator_socket* initiator_12_wr_socket;
   xtlm::xtlm_aximm_initiator_socket* initiator_13_rd_socket;
   xtlm::xtlm_aximm_initiator_socket* initiator_13_wr_socket;
+  xtlm::xtlm_aximm_initiator_socket* initiator_14_rd_socket;
+  xtlm::xtlm_aximm_initiator_socket* initiator_14_wr_socket;
 
   // module socket-to-socket TLM interfaces
 

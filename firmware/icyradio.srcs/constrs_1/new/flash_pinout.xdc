@@ -10,3 +10,4 @@ set_property PACKAGE_PIN P21 [get_ports FLASH_QSPI_io2_io]
 set_property PACKAGE_PIN R21 [get_ports FLASH_QSPI_io3_io]
 set_property PACKAGE_PIN N13 [get_ports FLASH_QSPI_sck_io]
 set_property PACKAGE_PIN T19 [get_ports {FLASH_QSPI_ss_io[0]}]
+
