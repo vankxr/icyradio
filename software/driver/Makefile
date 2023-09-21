@@ -1,5 +1,5 @@
 # Module Config
-KPATH = /usr/src/linux-headers-`uname -r`
+KPATH ?= /usr/src/linux-headers-`uname -r`
 MOD_NAME = icyradio
 
 # Directories

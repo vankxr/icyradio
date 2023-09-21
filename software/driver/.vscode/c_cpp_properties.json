@@ -4,18 +4,18 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/src/linux-headers-5.4.0-86/include/**",
-                "/usr/src/linux-headers-5.4.0-86/arch/x86/include/**",
-                "/usr/src/linux-headers-5.4.0-86-generic/include/**",
-                "/usr/src/linux-headers-5.4.0-86-generic/arch/x86/include/**"
+                "/home/joao/Development/linux/include",
+                "/home/joao/Development/linux/arch/arm64/include",
+                "/home/joao/Development/linux/arch/arm64/include/generated"
             ],
             "defines": [
-                "__KERNEL__"
+                "__KERNEL__",
+                "MODULE"
             ],
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64"
+            "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-arm64"
         }
     ],
     "version": 4

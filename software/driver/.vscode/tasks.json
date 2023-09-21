@@ -9,6 +9,15 @@
             "command": "make",
             "group": {
                 "kind": "build",
+                "isDefault": false
+            }
+        },
+        {
+            "label": "Build (arm64)",
+            "type": "shell",
+            "command": "make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KPATH=/home/joao/Development/linux",
+            "group": {
+                "kind": "build",
                 "isDefault": true
             }
         },

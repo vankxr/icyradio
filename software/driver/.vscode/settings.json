@@ -1,0 +1,7 @@
+{
+    "cSpell.enabled": false,
+    "files.associations": {
+        "kernel.h": "c",
+        "module.h": "c"
+    }
+}
