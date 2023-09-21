@@ -372,13 +372,21 @@ int main()
     lt7182s_set_operation(1, LT7182S_OPERATION_ON);
     lt7182s_set_operation(0, LT7182S_OPERATION_ON);
 
-    delay_ms(1000);
+    DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
+    delay_ms(500);
+
+    FPGA_INIT_DEASSERT();
+    delay_ms(50);
+    FPGA_INIT_ASSERT();
+    delay_ms(50);
+    FPGA_INIT_DEASSERT();
+
+    DBGPRINTLN_CTX("Turning CM4 ON in 2 seconds...");
+    delay_ms(2000);
 
     //CM4_USB_OTG_DEVICE();
     //CM4_BTLDR_ENABLE();
     CM4_GLOBAL_ENABLE();
-
-    FPGA_INIT_DEASSERT();
 
     while(1)
     {

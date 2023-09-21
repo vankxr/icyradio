@@ -74,7 +74,8 @@ static inline uint8_t sercom0_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    sercom0_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop);
+    if(!sercom0_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+        return 0;
 
     return ubData;
 }
@@ -153,7 +154,8 @@ static inline uint8_t sercom1_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    sercom1_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop);
+    if(!sercom1_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+        return 0;
 
     return ubData;
 }
@@ -232,7 +234,8 @@ static inline uint8_t sercom2_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    sercom2_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop);
+    if(!sercom2_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+        return 0;
 
     return ubData;
 }
@@ -311,7 +314,8 @@ static inline uint8_t sercom3_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    sercom3_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop);
+    if(!sercom3_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+        return 0;
 
     return ubData;
 }
