@@ -1,5 +1,5 @@
 # icyradio
-![](https://github.com/vankxr/icyradio/blob/v2/pcb/main/icyradio-main.top.png)  
+![](https://github.com/vankxr/icyradio/blob/v2/pcb/main/icyradio-main.top.png)
 A **S**oftware **D**efined **R**adio development board.
 
 Initial project codename **Icy**radio originated from the device family name of the FPGA used in the [first version](https://github.com/vankxr/icyradio/tree/v1/qo100) (**ICE**40). Coincidently, the device family name of the FPGA used in this version (Artix) also resembles a very cold region, the Arctic, hence, the project codename still holds some of its sense :blush:.
@@ -16,7 +16,7 @@ Initial project codename **Icy**radio originated from the device family name of 
  - [LT7182S](https://www.analog.com/media/en/technical-documentation/data-sheets/lt7182s.pdf) - Main Buck regulator
 
 ## Functional block diagram
-![](https://github.com/vankxr/icyradio/blob/v2/docs/block-diagram.png)  
+![](https://github.com/vankxr/icyradio/blob/v2/docs/block-diagram.png)
 #### v2
 **Note: From v2 onwards, the only components in this repository are hardware related, no specific application software, like in v1 branches. Applications that use this hardware are kept in a separate repository (TODO: Add link)**
 The goal of this project is to develop a flexible and feature rich SDR platform for tinkering. It will include, among other features, a mmWave synthesizer controlled by software to allow external mixers to be attached to the SDR and extend its frequency range (i.e. for 5G applications), and also allow interfacing to a Raspberry Pi Compute Module 4 for standalone operation.
@@ -37,7 +37,10 @@ TODO
 TODO
 
 ## Errata
- - The WP pin of the LT7182S regulator was left floating, with a placeholder resistor for pulling it up later, assuming it had an internal pulldown. Turns out it is floating, and thus it can be sampled internally as 1, write-protecting the device and forbidding configuration commands. A quick fix is to scrape a tiny bit of the ground plane near the WP resistor pad, ans shunting it to GND there with a blob of solder.
+ - The WP pin of the LT7182S regulator was left floating, with a placeholder resistor for pulling it up later, assuming it had an internal pulldown. Turns out it is floating, and thus it can be sampled internally as 1, write-protecting the device and forbidding configuration commands. A quick fix is to scrape a tiny bit of the ground plane near the WP resistor (R1120) pad, ans shunting it to GND there with a blob of solder. The figure below exemplifies the process. The solder blob is marked in blue.
+![](https://github.com/vankxr/icyradio/blob/v2/docs/errata/vin_reg_wp.png)
+ - The FPGA INIT and DONE LED markings on the PCB are swapped (oops). In the picture below, it can be seen that D202 connects to the FPGA_DONE signal, yet its labelled INIT. The FPGA_INIT signal connects to D201, and it is labelled as DONE. It is merely an aesthetic problem, and does not affect functionality at all!
+![](https://github.com/vankxr/icyradio/blob/v2/docs/errata/fpga_init_done_leds.png)
 
 ## Authors
 
