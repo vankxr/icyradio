@@ -4,13 +4,15 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/joao/Development/linux/include",
-                "/home/joao/Development/linux/arch/arm64/include",
-                "/home/joao/Development/linux/arch/arm64/include/generated"
+                "/home/joao/linux/include",
+                "/home/joao/linux/arch/arm64/include",
+                "/home/joao/linux/arch/arm64/include/generated",
+                "/home/joao/linux/include/uapi"
             ],
             "defines": [
                 "__KERNEL__",
-                "MODULE"
+                "MODULE",
+                "KBUILD_MODNAME=\"icyradio\""
             ],
             "compilerPath": "/usr/bin/aarch64-linux-gnu-gcc",
             "cStandard": "c17",
