@@ -121,8 +121,8 @@ set_property IOSTANDARD LVCMOS25 [get_ports TRX_CLK_OUT]
 set_property PULLDOWN true [get_ports TRX_DATA_CLK]
 set_property PULLDOWN true [get_ports TRX_FBCLK]
 set_property PULLDOWN true [get_ports TRX_CLK_OUT]
-set_property PACKAGE_PIN J19 [get_ports TRX_DATA_CLK]
-set_property PACKAGE_PIN K18 [get_ports TRX_FBCLK]
+set_property PACKAGE_PIN K18 [get_ports TRX_DATA_CLK]
+set_property PACKAGE_PIN J19 [get_ports TRX_FBCLK]
 set_property PACKAGE_PIN J20 [get_ports TRX_CLK_OUT]
 
 # Control IOs

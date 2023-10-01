@@ -395,14 +395,14 @@ proc create_root_design { parentCell } {
   set GND_3 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_3 ]
   set_property -dict [ list \
    CONFIG.CONST_VAL {0} \
-   CONFIG.CONST_WIDTH {12} \
+   CONFIG.CONST_WIDTH {11} \
  ] $GND_3
 
   # Create instance: GND_4, and set properties
   set GND_4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_4 ]
   set_property -dict [ list \
    CONFIG.CONST_VAL {0} \
-   CONFIG.CONST_WIDTH {23} \
+   CONFIG.CONST_WIDTH {22} \
  ] $GND_4
 
   # Create instance: GND_5, and set properties
@@ -418,6 +418,20 @@ proc create_root_design { parentCell } {
    CONFIG.CONST_VAL {0} \
    CONFIG.CONST_WIDTH {8} \
  ] $GND_6
+
+  # Create instance: GND_7, and set properties
+  set GND_7 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_7 ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+   CONFIG.CONST_WIDTH {1} \
+ ] $GND_7
+
+  # Create instance: GND_8, and set properties
+  set GND_8 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 GND_8 ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+   CONFIG.CONST_WIDTH {1} \
+ ] $GND_8
 
   # Create instance: SOFT_RESET, and set properties
   set SOFT_RESET [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 SOFT_RESET ]
@@ -534,6 +548,7 @@ proc create_root_design { parentCell } {
   # Create instance: axi_gpio_0, and set properties
   set axi_gpio_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_0 ]
   set_property -dict [ list \
+   CONFIG.C_DOUT_DEFAULT {0x80000000} \
    CONFIG.C_GPIO2_WIDTH {32} \
    CONFIG.C_GPIO_WIDTH {32} \
    CONFIG.C_INTERRUPT_PRESENT {1} \
@@ -544,7 +559,7 @@ proc create_root_design { parentCell } {
   # Create instance: axi_gpio_1, and set properties
   set axi_gpio_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio:2.0 axi_gpio_1 ]
   set_property -dict [ list \
-   CONFIG.C_DOUT_DEFAULT {0x00000002} \
+   CONFIG.C_DOUT_DEFAULT {0x80000002} \
    CONFIG.C_GPIO2_WIDTH {32} \
    CONFIG.C_GPIO_WIDTH {32} \
    CONFIG.C_INTERRUPT_PRESENT {1} \
@@ -582,13 +597,13 @@ proc create_root_design { parentCell } {
    CONFIG.BAR1_TYPE {Memory} \
    CONFIG.BAR2_ENABLED {true} \
    CONFIG.BAR2_SCALE {Megabytes} \
-   CONFIG.BAR2_SIZE {1} \
+   CONFIG.BAR2_SIZE {8} \
    CONFIG.BAR2_TYPE {Memory} \
    CONFIG.BAR_64BIT {false} \
-   CONFIG.DEVICE_ID {0x7022} \
+   CONFIG.DEVICE_ID {0x7021} \
    CONFIG.MAX_LINK_SPEED {5.0_GT/s} \
    CONFIG.M_AXI_DATA_WIDTH {64} \
-   CONFIG.NO_OF_LANES {X2} \
+   CONFIG.NO_OF_LANES {X1} \
    CONFIG.NUM_MSI_REQ {1} \
    CONFIG.PCIEBAR2AXIBAR_0 {0x40000000} \
    CONFIG.PCIEBAR2AXIBAR_1 {0x20000000} \
@@ -684,8 +699,9 @@ proc create_root_design { parentCell } {
    CONFIG.IN0_WIDTH {8} \
    CONFIG.IN1_WIDTH {8} \
    CONFIG.IN2_WIDTH {4} \
-   CONFIG.IN3_WIDTH {12} \
-   CONFIG.NUM_PORTS {4} \
+   CONFIG.IN3_WIDTH {11} \
+   CONFIG.IN4_WIDTH {1} \
+   CONFIG.NUM_PORTS {5} \
  ] $gpio_concat_0
 
   # Create instance: gpio_concat_1, and set properties
@@ -703,8 +719,9 @@ proc create_root_design { parentCell } {
   set_property -dict [ list \
    CONFIG.IN0_WIDTH {8} \
    CONFIG.IN1_WIDTH {1} \
-   CONFIG.IN2_WIDTH {23} \
-   CONFIG.NUM_PORTS {3} \
+   CONFIG.IN2_WIDTH {22} \
+   CONFIG.IN3_WIDTH {1} \
+   CONFIG.NUM_PORTS {4} \
  ] $gpio_concat_2
 
   # Create instance: gpio_slice_clk_mngr_oen, and set properties
@@ -740,6 +757,14 @@ proc create_root_design { parentCell } {
    CONFIG.DOUT_WIDTH {1} \
  ] $gpio_slice_synth_mute
 
+  # Create instance: gpio_slice_synth_resetn, and set properties
+  set gpio_slice_synth_resetn [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_synth_resetn ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {31} \
+   CONFIG.DIN_TO {31} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_synth_resetn
+
   # Create instance: gpio_slice_synth_sync, and set properties
   set gpio_slice_synth_sync [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_synth_sync ]
   set_property -dict [ list \
@@ -762,6 +787,14 @@ proc create_root_design { parentCell } {
    CONFIG.DIN_TO {4} \
    CONFIG.DOUT_WIDTH {1} \
  ] $gpio_slice_trx_en_agc
+
+  # Create instance: gpio_slice_trx_resetn, and set properties
+  set gpio_slice_trx_resetn [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_resetn ]
+  set_property -dict [ list \
+   CONFIG.DIN_FROM {31} \
+   CONFIG.DIN_TO {31} \
+   CONFIG.DOUT_WIDTH {1} \
+ ] $gpio_slice_trx_resetn
 
   # Create instance: gpio_slice_trx_sync_in, and set properties
   set gpio_slice_trx_sync_in [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 gpio_slice_trx_sync_in ]
@@ -980,12 +1013,14 @@ proc create_root_design { parentCell } {
   # Create port connections
   connect_bd_net -net CORTEXM3_AXI_0_SYSRESETREQ [get_bd_pins SOFT_RESET/dout] [get_bd_pins int_reset_combiner/Op2] [get_bd_pins rst_axi_pcie_0_125M/aux_reset_in]
   connect_bd_net -net FPGA_CLK0_1 [get_bd_ports FPGA_CLK0] [get_bd_pins clk_wiz_0/clk_in1]
-  connect_bd_net -net GND_0_dout [get_bd_ports CM4_WAKE] [get_bd_ports PCIe_CLKREQn] [get_bd_pins GND_0/dout] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
+  connect_bd_net -net GND_0_dout [get_bd_ports CM4_WAKE] [get_bd_ports PCIe_CLKREQn] [get_bd_pins GND_0/dout] [get_bd_pins axi_ad9361/tdd_sync] [get_bd_pins axi_pcie_0/INTX_MSI_Request] [get_bd_pins irq_concat_0/In9] [get_bd_pins irq_concat_0/In15] [get_bd_pins irq_concat_1/In0] [get_bd_pins irq_concat_1/In1] [get_bd_pins irq_concat_1/In2]
   connect_bd_net -net GND_2_dout [get_bd_pins GND_2/dout] [get_bd_pins irq_concat_1/In4]
   connect_bd_net -net GND_3_dout [get_bd_pins GND_3/dout] [get_bd_pins gpio_concat_0/In3]
   connect_bd_net -net GND_4_dout [get_bd_pins GND_4/dout] [get_bd_pins gpio_concat_2/In2]
   connect_bd_net -net GND_5_dout [get_bd_pins GND_5/dout] [get_bd_pins gpio_concat_0/In0]
   connect_bd_net -net GND_6_dout [get_bd_pins GND_6/dout] [get_bd_pins gpio_concat_2/In0]
+  connect_bd_net -net GND_7_dout [get_bd_pins GND_7/dout] [get_bd_pins gpio_concat_0/In4]
+  connect_bd_net -net GND_8_dout [get_bd_pins GND_8/dout] [get_bd_pins gpio_concat_2/In3]
   connect_bd_net -net RXCLK_1 [get_bd_ports TRX_DATA_CLK] [get_bd_pins axi_ad9361/rx_clk_in]
   connect_bd_net -net RXDATA_1 [get_bd_ports TRX_P1_RXDATA] [get_bd_pins axi_ad9361/rx_data_in]
   connect_bd_net -net RXFRAME_1 [get_bd_ports TRX_RXFRAME] [get_bd_pins axi_ad9361/rx_frame_in]
@@ -1027,9 +1062,9 @@ proc create_root_design { parentCell } {
   connect_bd_net -net axi_dmac_rf_rx_irq [get_bd_pins axi_dmac_rf_rx/irq] [get_bd_pins irq_concat_0/In0]
   connect_bd_net -net axi_dmac_rf_tx_irq [get_bd_pins axi_dmac_rf_tx/irq] [get_bd_pins irq_concat_0/In1]
   connect_bd_net -net axi_dmac_rf_tx_m_axis_valid [get_bd_pins axi_dmac_rf_tx/m_axis_valid] [get_bd_pins logic_and_2/Op2]
-  connect_bd_net -net axi_gpio_0_gpio_io_o [get_bd_pins axi_gpio_0/gpio_io_o] [get_bd_pins gpio_slice_trx_ctrl_out/Din] [get_bd_pins gpio_slice_trx_en_agc/Din] [get_bd_pins gpio_slice_trx_sync_in/Din] [get_bd_pins gpio_slice_trx_up_enable/Din] [get_bd_pins gpio_slice_trx_up_txnrx/Din]
+  connect_bd_net -net axi_gpio_0_gpio_io_o [get_bd_pins axi_gpio_0/gpio_io_o] [get_bd_pins gpio_slice_trx_ctrl_out/Din] [get_bd_pins gpio_slice_trx_en_agc/Din] [get_bd_pins gpio_slice_trx_resetn/Din] [get_bd_pins gpio_slice_trx_sync_in/Din] [get_bd_pins gpio_slice_trx_up_enable/Din] [get_bd_pins gpio_slice_trx_up_txnrx/Din]
   connect_bd_net -net axi_gpio_0_ip2intc_irpt [get_bd_pins axi_gpio_0/ip2intc_irpt] [get_bd_pins irq_concat_0/In3]
-  connect_bd_net -net axi_gpio_1_gpio_io_o [get_bd_pins axi_gpio_1/gpio_io_o] [get_bd_pins gpio_slice_synth_ce/Din] [get_bd_pins gpio_slice_synth_mute/Din] [get_bd_pins gpio_slice_synth_sync/Din]
+  connect_bd_net -net axi_gpio_1_gpio_io_o [get_bd_pins axi_gpio_1/gpio_io_o] [get_bd_pins gpio_slice_synth_ce/Din] [get_bd_pins gpio_slice_synth_mute/Din] [get_bd_pins gpio_slice_synth_resetn/Din] [get_bd_pins gpio_slice_synth_sync/Din]
   connect_bd_net -net axi_gpio_1_ip2intc_irpt [get_bd_pins axi_gpio_1/ip2intc_irpt] [get_bd_pins irq_concat_0/In14]
   connect_bd_net -net axi_iic_0_gpo [get_bd_ports CODEC_RSTn] [get_bd_pins axi_iic_0/gpo]
   connect_bd_net -net axi_iic_0_iic2intc_irpt [get_bd_pins axi_iic_0/iic2intc_irpt] [get_bd_pins irq_concat_0/In4]
@@ -1052,8 +1087,10 @@ proc create_root_design { parentCell } {
   connect_bd_net -net gpio_slice_pm_i2c_en_Dout [get_bd_ports PM_I2C_EN] [get_bd_pins gpio_slice_pm_i2c_en/Dout]
   connect_bd_net -net gpio_slice_synth_ce_Dout [get_bd_ports SYNTH_CE] [get_bd_pins gpio_slice_synth_ce/Dout]
   connect_bd_net -net gpio_slice_synth_mute_Dout [get_bd_ports SYNTH_MUTE] [get_bd_pins gpio_slice_synth_mute/Dout]
+  connect_bd_net -net gpio_slice_synth_resetn_Dout [get_bd_ports SYNTH_RESETn] [get_bd_pins gpio_slice_synth_resetn/Dout]
   connect_bd_net -net gpio_slice_synth_sync_Dout [get_bd_ports SYNTH_SYNC] [get_bd_pins gpio_slice_synth_sync/Dout]
   connect_bd_net -net gpio_slice_trx_en_agc_Dout [get_bd_ports TRX_EN_AGC] [get_bd_pins gpio_slice_trx_en_agc/Dout]
+  connect_bd_net -net gpio_slice_trx_resestn_Dout [get_bd_ports TRX_RESETn] [get_bd_pins gpio_slice_trx_resetn/Dout]
   connect_bd_net -net gpio_slice_trx_sync_in_Dout [get_bd_ports TRX_SYNC_IN] [get_bd_pins gpio_slice_trx_sync_in/Dout]
   connect_bd_net -net gpio_slice_trx_up_enable_Dout [get_bd_pins axi_ad9361/up_enable] [get_bd_pins gpio_slice_trx_up_enable/Dout]
   connect_bd_net -net gpio_slice_trx_up_txnrx_Dout [get_bd_pins axi_ad9361/up_txnrx] [get_bd_pins gpio_slice_trx_up_txnrx/Dout]
@@ -1067,7 +1104,7 @@ proc create_root_design { parentCell } {
   connect_bd_net -net mig_7series_0_ui_clk [get_bd_pins axi_pcie_interconnect/M02_ACLK] [get_bd_pins mig_7series_0/ui_clk] [get_bd_pins rst_mig_7series_0_166M/slowest_sync_clk]
   connect_bd_net -net mig_7series_0_ui_clk_sync_rst [get_bd_pins int_reset_combiner/Op1] [get_bd_pins mig_7series_0/ui_clk_sync_rst]
   connect_bd_net -net rst_axi_pcie_0_125M_interconnect_aresetn [get_bd_pins axi_cpu_dma_interconnect/ARESETN] [get_bd_pins axi_cpu_dma_interconnect/M00_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/M01_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S00_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S01_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S02_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S03_ARESETN] [get_bd_pins axi_cpu_dma_interconnect/S04_ARESETN] [get_bd_pins axi_pcie_0/axi_aresetn] [get_bd_pins axi_pcie_interconnect/ARESETN] [get_bd_pins axi_pcie_interconnect/M00_ARESETN] [get_bd_pins axi_pcie_interconnect/M01_ARESETN] [get_bd_pins axi_pcie_interconnect/M03_ARESETN] [get_bd_pins axi_pcie_interconnect/S00_ARESETN] [get_bd_pins axi_pcie_interconnect/S01_ARESETN] [get_bd_pins axi_peripheral_interconnect/ARESETN] [get_bd_pins axi_peripheral_interconnect/M00_ARESETN] [get_bd_pins axi_peripheral_interconnect/M01_ARESETN] [get_bd_pins axi_peripheral_interconnect/M02_ARESETN] [get_bd_pins axi_peripheral_interconnect/M03_ARESETN] [get_bd_pins axi_peripheral_interconnect/M04_ARESETN] [get_bd_pins axi_peripheral_interconnect/M05_ARESETN] [get_bd_pins axi_peripheral_interconnect/M06_ARESETN] [get_bd_pins axi_peripheral_interconnect/M07_ARESETN] [get_bd_pins axi_peripheral_interconnect/M08_ARESETN] [get_bd_pins axi_peripheral_interconnect/M09_ARESETN] [get_bd_pins axi_peripheral_interconnect/M10_ARESETN] [get_bd_pins axi_peripheral_interconnect/M11_ARESETN] [get_bd_pins axi_peripheral_interconnect/M12_ARESETN] [get_bd_pins axi_peripheral_interconnect/M13_ARESETN] [get_bd_pins axi_peripheral_interconnect/M14_ARESETN] [get_bd_pins axi_peripheral_interconnect/S00_ARESETN] [get_bd_pins axi_protocol_convert_0/aresetn] [get_bd_pins picorv32_0/resetn] [get_bd_pins rst_axi_pcie_0_125M/interconnect_aresetn]
-  connect_bd_net -net rst_axi_pcie_0_125M_peripheral_aresetn [get_bd_ports SYNTH_RESETn] [get_bd_ports TRX_RESETn] [get_bd_pins axi_ad9361/s_axi_aresetn] [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] [get_bd_pins axi_dmac_i2s_rx/m_dest_axi_aresetn] [get_bd_pins axi_dmac_i2s_rx/s_axi_aresetn] [get_bd_pins axi_dmac_i2s_tx/m_src_axi_aresetn] [get_bd_pins axi_dmac_i2s_tx/s_axi_aresetn] [get_bd_pins axi_dmac_rf_rx/m_dest_axi_aresetn] [get_bd_pins axi_dmac_rf_rx/s_axi_aresetn] [get_bd_pins axi_dmac_rf_tx/m_src_axi_aresetn] [get_bd_pins axi_dmac_rf_tx/s_axi_aresetn] [get_bd_pins axi_gpio_0/s_axi_aresetn] [get_bd_pins axi_gpio_1/s_axi_aresetn] [get_bd_pins axi_i2s_adi_0/s_axi_aresetn] [get_bd_pins axi_i2s_adi_0/s_axis_aresetn] [get_bd_pins axi_iic_0/s_axi_aresetn] [get_bd_pins axi_iic_1/s_axi_aresetn] [get_bd_pins axi_quad_spi_0/s_axi4_aresetn] [get_bd_pins axi_quad_spi_0/s_axi_aresetn] [get_bd_pins axi_quad_spi_1/s_axi_aresetn] [get_bd_pins axi_quad_spi_2/s_axi_aresetn] [get_bd_pins rst_axi_pcie_0_125M/peripheral_aresetn] [get_bd_pins xadc_wiz_0/s_axi_aresetn]
+  connect_bd_net -net rst_axi_pcie_0_125M_peripheral_aresetn [get_bd_pins axi_ad9361/s_axi_aresetn] [get_bd_pins axi_bram_ctrl_0/s_axi_aresetn] [get_bd_pins axi_dmac_i2s_rx/m_dest_axi_aresetn] [get_bd_pins axi_dmac_i2s_rx/s_axi_aresetn] [get_bd_pins axi_dmac_i2s_tx/m_src_axi_aresetn] [get_bd_pins axi_dmac_i2s_tx/s_axi_aresetn] [get_bd_pins axi_dmac_rf_rx/m_dest_axi_aresetn] [get_bd_pins axi_dmac_rf_rx/s_axi_aresetn] [get_bd_pins axi_dmac_rf_tx/m_src_axi_aresetn] [get_bd_pins axi_dmac_rf_tx/s_axi_aresetn] [get_bd_pins axi_gpio_0/s_axi_aresetn] [get_bd_pins axi_gpio_1/s_axi_aresetn] [get_bd_pins axi_i2s_adi_0/s_axi_aresetn] [get_bd_pins axi_i2s_adi_0/s_axis_aresetn] [get_bd_pins axi_iic_0/s_axi_aresetn] [get_bd_pins axi_iic_1/s_axi_aresetn] [get_bd_pins axi_quad_spi_0/s_axi4_aresetn] [get_bd_pins axi_quad_spi_0/s_axi_aresetn] [get_bd_pins axi_quad_spi_1/s_axi_aresetn] [get_bd_pins axi_quad_spi_2/s_axi_aresetn] [get_bd_pins rst_axi_pcie_0_125M/peripheral_aresetn] [get_bd_pins xadc_wiz_0/s_axi_aresetn]
   connect_bd_net -net rst_mig_7series_0_166M_interconnect_aresetn [get_bd_pins axi_pcie_interconnect/M02_ARESETN] [get_bd_pins rst_mig_7series_0_166M/interconnect_aresetn]
   connect_bd_net -net rst_mig_7series_0_166M_peripheral_aresetn [get_bd_pins mig_7series_0/aresetn] [get_bd_pins rst_mig_7series_0_166M/peripheral_aresetn]
   connect_bd_net -net util_ds_buf_0_IBUF_OUT [get_bd_pins axi_pcie_0/REFCLK] [get_bd_pins util_ds_buf_0/IBUF_OUT]

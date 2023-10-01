@@ -1,8 +1,8 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Sep 20 18:07:19 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+-- Date        : Sat Sep 30 00:23:17 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_0_1/icyradio_axi_gpio_0_1_sim_netlist.vhdl
 -- Design      : icyradio_axi_gpio_0_1
@@ -5881,16 +5881,16 @@ begin
       Q => gpio_Data_In(9),
       R => '0'
     );
-\Not_Dual.gpio_Data_Out_reg[0]\: unisim.vcomponents.FDRE
+\Not_Dual.gpio_Data_Out_reg[0]\: unisim.vcomponents.FDSE
     generic map(
-      INIT => '0'
+      INIT => '1'
     )
         port map (
       C => s_axi_aclk,
       CE => \Not_Dual.gpio_Data_Out_reg[0]_0\(0),
       D => s_axi_wdata(31),
       Q => \^gpio_io_o\(31),
-      R => bus2ip_reset
+      S => bus2ip_reset
     );
 \Not_Dual.gpio_Data_Out_reg[10]\: unisim.vcomponents.FDRE
     generic map(
@@ -7941,7 +7941,7 @@ entity icyradio_axi_gpio_0_1_axi_gpio is
   attribute C_ALL_OUTPUTS_2 : integer;
   attribute C_ALL_OUTPUTS_2 of icyradio_axi_gpio_0_1_axi_gpio : entity is 0;
   attribute C_DOUT_DEFAULT : integer;
-  attribute C_DOUT_DEFAULT of icyradio_axi_gpio_0_1_axi_gpio : entity is 2;
+  attribute C_DOUT_DEFAULT of icyradio_axi_gpio_0_1_axi_gpio : entity is -2147483646;
   attribute C_DOUT_DEFAULT_2 : integer;
   attribute C_DOUT_DEFAULT_2 of icyradio_axi_gpio_0_1_axi_gpio : entity is 0;
   attribute C_FAMILY : string;
@@ -8719,7 +8719,7 @@ architecture STRUCTURE of icyradio_axi_gpio_0_1 is
   attribute C_ALL_OUTPUTS_2 : integer;
   attribute C_ALL_OUTPUTS_2 of U0 : label is 0;
   attribute C_DOUT_DEFAULT : integer;
-  attribute C_DOUT_DEFAULT of U0 : label is 2;
+  attribute C_DOUT_DEFAULT of U0 : label is -2147483646;
   attribute C_DOUT_DEFAULT_2 : integer;
   attribute C_DOUT_DEFAULT_2 of U0 : label is 0;
   attribute C_FAMILY : string;

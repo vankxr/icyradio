@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Wed Sep 20 18:07:19 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+// Date        : Sat Sep 30 00:23:17 2023
+// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_0_1/icyradio_axi_gpio_0_1_sim_netlist.v
 // Design      : icyradio_axi_gpio_0_1
@@ -98,7 +98,7 @@ module icyradio_axi_gpio_0_1
   (* C_ALL_INPUTS_2 = "0" *) 
   (* C_ALL_OUTPUTS = "0" *) 
   (* C_ALL_OUTPUTS_2 = "0" *) 
-  (* C_DOUT_DEFAULT = "2" *) 
+  (* C_DOUT_DEFAULT = "-2147483646" *) 
   (* C_DOUT_DEFAULT_2 = "0" *) 
   (* C_FAMILY = "artix7" *) 
   (* C_GPIO2_WIDTH = "32" *) 
@@ -1817,14 +1817,14 @@ module icyradio_axi_gpio_0_1_GPIO_Core
         .D(gpio_io_i_d2[9]),
         .Q(gpio_Data_In[9]),
         .R(1'b0));
-  FDRE #(
-    .INIT(1'b0)) 
+  FDSE #(
+    .INIT(1'b1)) 
     \Not_Dual.gpio_Data_Out_reg[0] 
        (.C(s_axi_aclk),
         .CE(\Not_Dual.gpio_Data_Out_reg[0]_0 ),
         .D(s_axi_wdata[31]),
         .Q(gpio_io_o[31]),
-        .R(bus2ip_reset));
+        .S(bus2ip_reset));
   FDRE #(
     .INIT(1'b0)) 
     \Not_Dual.gpio_Data_Out_reg[10] 
@@ -3527,7 +3527,7 @@ module icyradio_axi_gpio_0_1_address_decoder
 endmodule
 
 (* C_ALL_INPUTS = "0" *) (* C_ALL_INPUTS_2 = "0" *) (* C_ALL_OUTPUTS = "0" *) 
-(* C_ALL_OUTPUTS_2 = "0" *) (* C_DOUT_DEFAULT = "2" *) (* C_DOUT_DEFAULT_2 = "0" *) 
+(* C_ALL_OUTPUTS_2 = "0" *) (* C_DOUT_DEFAULT = "-2147483646" *) (* C_DOUT_DEFAULT_2 = "0" *) 
 (* C_FAMILY = "artix7" *) (* C_GPIO2_WIDTH = "32" *) (* C_GPIO_WIDTH = "32" *) 
 (* C_INTERRUPT_PRESENT = "1" *) (* C_IS_DUAL = "0" *) (* C_S_AXI_ADDR_WIDTH = "9" *) 
 (* C_S_AXI_DATA_WIDTH = "32" *) (* C_TRI_DEFAULT = "256" *) (* C_TRI_DEFAULT_2 = "-1" *) 

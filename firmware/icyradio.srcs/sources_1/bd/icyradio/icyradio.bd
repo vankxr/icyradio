@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xD44B6FF51A84A45A",
+      "boundary_crc": "0x1BEE1CE38CD02628",
       "device": "xc7a100tfgg484-2",
       "gen_directory": "../../../../icyradio.gen/sources_1/bd/icyradio",
       "name": "icyradio",
@@ -17,7 +17,6 @@
       "mig_7series_0": "",
       "rst_mig_7series_0_166M": "",
       "rst_axi_pcie_0_125M": "",
-      "ad9361_adc_packer": "",
       "ad9361_dac_unpacker": "",
       "logic_or_1": "",
       "logic_or_0": "",
@@ -26,9 +25,6 @@
       "GND_0": "",
       "axi_ad9361": "",
       "axi_bram_ctrl_0": "",
-      "axi_dmac_rf_rx": "",
-      "axi_dmac_rf_tx": "",
-      "axi_dmac_i2s_tx": "",
       "axi_gpio_0": "",
       "axi_iic_0": "",
       "axi_cpu_dma_interconnect": {
@@ -99,7 +95,6 @@
       "axi_quad_spi_0": "",
       "axi_quad_spi_1": "",
       "util_ds_buf_0": "",
-      "axi_dmac_i2s_rx": "",
       "VCC_0": "",
       "logic_and_2": "",
       "SOFT_RESET": "",
@@ -127,7 +122,16 @@
       "gpio_slice_pm_i2c_en": "",
       "gpio_slice_clk_mngr_oen": "",
       "GND_5": "",
-      "GND_6": ""
+      "GND_6": "",
+      "ad9361_adc_packer": "",
+      "axi_dmac_i2s_rx": "",
+      "axi_dmac_rf_rx": "",
+      "axi_dmac_i2s_tx": "",
+      "axi_dmac_rf_tx": "",
+      "gpio_slice_trx_resetn": "",
+      "GND_7": "",
+      "gpio_slice_synth_resetn": "",
+      "GND_8": ""
     },
     "interface_ports": {
       "PCIe_REFCLK": {
@@ -461,7 +465,7 @@
           },
           "POLARITY": {
             "value": "ACTIVE_LOW",
-            "value_src": "const_prop"
+            "value_src": "default"
           }
         }
       },
@@ -473,13 +477,7 @@
       "SYNTH_RESETn": {
         "direction": "O",
         "left": "0",
-        "right": "0",
-        "parameters": {
-          "POLARITY": {
-            "value": "ACTIVE_LOW",
-            "value_src": "const_prop"
-          }
-        }
+        "right": "0"
       },
       "TRX_5V0_PA1_OCn": {
         "direction": "I"
@@ -623,12 +621,6 @@
             "value": "1"
           }
         }
-      },
-      "ad9361_adc_packer": {
-        "vlnv": "analog.com:user:util_cpack2:1.0",
-        "xci_name": "icyradio_ad9361_adc_packer_2",
-        "xci_path": "ip/icyradio_ad9361_adc_packer_2/icyradio_ad9361_adc_packer_2.xci",
-        "inst_hier_path": "ad9361_adc_packer"
       },
       "ad9361_dac_unpacker": {
         "vlnv": "analog.com:user:util_upack2:1.0",
@@ -884,150 +876,15 @@
           }
         }
       },
-      "axi_dmac_rf_rx": {
-        "vlnv": "analog.com:user:axi_dmac:1.0",
-        "xci_name": "icyradio_axi_dmac_rf_rx_2",
-        "xci_path": "ip/icyradio_axi_dmac_rf_rx_2/icyradio_axi_dmac_rf_rx_2.xci",
-        "inst_hier_path": "axi_dmac_rf_rx",
-        "parameters": {
-          "ALLOW_ASYM_MEM": {
-            "value": "1"
-          },
-          "CYCLIC": {
-            "value": "false"
-          },
-          "DMA_LENGTH_WIDTH": {
-            "value": "24"
-          },
-          "SYNC_TRANSFER_START": {
-            "value": "true"
-          }
-        },
-        "interface_ports": {
-          "m_dest_axi": {
-            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
-            "mode": "Master",
-            "address_space_ref": "m_dest_axi",
-            "base_address": {
-              "minimum": "0x00000000",
-              "maximum": "0x7FFFFFFF",
-              "width": "31"
-            }
-          }
-        },
-        "addressing": {
-          "address_spaces": {
-            "m_dest_axi": {
-              "range": "2G",
-              "width": "31"
-            }
-          }
-        }
-      },
-      "axi_dmac_rf_tx": {
-        "vlnv": "analog.com:user:axi_dmac:1.0",
-        "xci_name": "icyradio_axi_dmac_rf_tx_2",
-        "xci_path": "ip/icyradio_axi_dmac_rf_tx_2/icyradio_axi_dmac_rf_tx_2.xci",
-        "inst_hier_path": "axi_dmac_rf_tx",
-        "parameters": {
-          "ALLOW_ASYM_MEM": {
-            "value": "1"
-          },
-          "CYCLIC": {
-            "value": "false"
-          },
-          "DMA_LENGTH_WIDTH": {
-            "value": "24"
-          },
-          "DMA_TYPE_DEST": {
-            "value": "1"
-          },
-          "DMA_TYPE_SRC": {
-            "value": "0"
-          },
-          "ID": {
-            "value": "1"
-          }
-        },
-        "interface_ports": {
-          "m_src_axi": {
-            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
-            "mode": "Master",
-            "address_space_ref": "m_src_axi",
-            "base_address": {
-              "minimum": "0x00000000",
-              "maximum": "0x7FFFFFFF",
-              "width": "31"
-            }
-          }
-        },
-        "addressing": {
-          "address_spaces": {
-            "m_src_axi": {
-              "range": "2G",
-              "width": "31"
-            }
-          }
-        }
-      },
-      "axi_dmac_i2s_tx": {
-        "vlnv": "analog.com:user:axi_dmac:1.0",
-        "xci_name": "icyradio_axi_dmac_rf_tx_0",
-        "xci_path": "ip/icyradio_axi_dmac_rf_tx_0/icyradio_axi_dmac_rf_tx_0.xci",
-        "inst_hier_path": "axi_dmac_i2s_tx",
-        "parameters": {
-          "ALLOW_ASYM_MEM": {
-            "value": "1"
-          },
-          "AXI_SLICE_DEST": {
-            "value": "false"
-          },
-          "CYCLIC": {
-            "value": "false"
-          },
-          "DMA_DATA_WIDTH_DEST": {
-            "value": "32"
-          },
-          "DMA_LENGTH_WIDTH": {
-            "value": "24"
-          },
-          "DMA_TYPE_DEST": {
-            "value": "1"
-          },
-          "DMA_TYPE_SRC": {
-            "value": "0"
-          },
-          "ID": {
-            "value": "3"
-          }
-        },
-        "interface_ports": {
-          "m_src_axi": {
-            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
-            "mode": "Master",
-            "address_space_ref": "m_src_axi",
-            "base_address": {
-              "minimum": "0x00000000",
-              "maximum": "0x7FFFFFFF",
-              "width": "31"
-            }
-          }
-        },
-        "addressing": {
-          "address_spaces": {
-            "m_src_axi": {
-              "range": "2G",
-              "width": "31"
-            }
-          }
-        }
-      },
       "axi_gpio_0": {
         "vlnv": "xilinx.com:ip:axi_gpio:2.0",
         "xci_name": "icyradio_axi_gpio_0_0",
         "xci_path": "ip/icyradio_axi_gpio_0_0/icyradio_axi_gpio_0_0.xci",
         "inst_hier_path": "axi_gpio_0",
         "parameters": {
+          "C_DOUT_DEFAULT": {
+            "value": "0x80000000"
+          },
           "C_GPIO_WIDTH": {
             "value": "32"
           },
@@ -1383,8 +1240,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_128",
-                "xci_path": "ip/icyradio_s00_data_fifo_128/icyradio_s00_data_fifo_128.xci",
+                "xci_name": "icyradio_s00_data_fifo_140",
+                "xci_path": "ip/icyradio_s00_data_fifo_140/icyradio_s00_data_fifo_140.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -1476,8 +1333,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_84",
-                "xci_path": "ip/icyradio_s01_data_fifo_84/icyradio_s01_data_fifo_84.xci",
+                "xci_name": "icyradio_s01_data_fifo_92",
+                "xci_path": "ip/icyradio_s01_data_fifo_92/icyradio_s01_data_fifo_92.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2347,8 +2204,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_129",
-                "xci_path": "ip/icyradio_s00_data_fifo_129/icyradio_s00_data_fifo_129.xci",
+                "xci_name": "icyradio_s00_data_fifo_141",
+                "xci_path": "ip/icyradio_s00_data_fifo_141/icyradio_s00_data_fifo_141.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -2440,8 +2297,8 @@
             "components": {
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s01_data_fifo_85",
-                "xci_path": "ip/icyradio_s01_data_fifo_85/icyradio_s01_data_fifo_85.xci",
+                "xci_name": "icyradio_s01_data_fifo_93",
+                "xci_path": "ip/icyradio_s01_data_fifo_93/icyradio_s01_data_fifo_93.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -3501,8 +3358,8 @@
             "components": {
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
-                "xci_name": "icyradio_s00_data_fifo_130",
-                "xci_path": "ip/icyradio_s00_data_fifo_130/icyradio_s00_data_fifo_130.xci",
+                "xci_name": "icyradio_s00_data_fifo_142",
+                "xci_path": "ip/icyradio_s00_data_fifo_142/icyradio_s00_data_fifo_142.xci",
                 "inst_hier_path": "axi_peripheral_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -4904,7 +4761,7 @@
             "value": "Megabytes"
           },
           "BAR2_SIZE": {
-            "value": "1"
+            "value": "8"
           },
           "BAR2_TYPE": {
             "value": "Memory"
@@ -4913,7 +4770,7 @@
             "value": "false"
           },
           "DEVICE_ID": {
-            "value": "0x7022"
+            "value": "0x7021"
           },
           "MAX_LINK_SPEED": {
             "value": "5.0_GT/s"
@@ -4922,7 +4779,7 @@
             "value": "64"
           },
           "NO_OF_LANES": {
-            "value": "X2"
+            "value": "X1"
           },
           "NUM_MSI_REQ": {
             "value": "1"
@@ -5077,61 +4934,6 @@
         "parameters": {
           "C_BUF_TYPE": {
             "value": "IBUFDSGTE"
-          }
-        }
-      },
-      "axi_dmac_i2s_rx": {
-        "vlnv": "analog.com:user:axi_dmac:1.0",
-        "xci_name": "icyradio_axi_dmac_i2s_tx_1",
-        "xci_path": "ip/icyradio_axi_dmac_i2s_tx_1/icyradio_axi_dmac_i2s_tx_1.xci",
-        "inst_hier_path": "axi_dmac_i2s_rx",
-        "parameters": {
-          "ALLOW_ASYM_MEM": {
-            "value": "1"
-          },
-          "AXI_SLICE_DEST": {
-            "value": "false"
-          },
-          "CYCLIC": {
-            "value": "false"
-          },
-          "DMA_DATA_WIDTH_DEST": {
-            "value": "64"
-          },
-          "DMA_DATA_WIDTH_SRC": {
-            "value": "32"
-          },
-          "DMA_LENGTH_WIDTH": {
-            "value": "24"
-          },
-          "DMA_TYPE_DEST": {
-            "value": "0"
-          },
-          "DMA_TYPE_SRC": {
-            "value": "1"
-          },
-          "ID": {
-            "value": "2"
-          }
-        },
-        "interface_ports": {
-          "m_dest_axi": {
-            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
-            "mode": "Master",
-            "address_space_ref": "m_dest_axi",
-            "base_address": {
-              "minimum": "0x00000000",
-              "maximum": "0x7FFFFFFF",
-              "width": "31"
-            }
-          }
-        },
-        "addressing": {
-          "address_spaces": {
-            "m_dest_axi": {
-              "range": "2G",
-              "width": "31"
-            }
           }
         }
       },
@@ -5425,10 +5227,13 @@
             "value": "4"
           },
           "IN3_WIDTH": {
-            "value": "12"
+            "value": "11"
+          },
+          "IN4_WIDTH": {
+            "value": "1"
           },
           "NUM_PORTS": {
-            "value": "4"
+            "value": "5"
           },
           "dout_width": {
             "value": "32"
@@ -5445,7 +5250,7 @@
             "value": "0"
           },
           "CONST_WIDTH": {
-            "value": "12"
+            "value": "11"
           }
         }
       },
@@ -5516,7 +5321,7 @@
         "inst_hier_path": "axi_gpio_1",
         "parameters": {
           "C_DOUT_DEFAULT": {
-            "value": "0x00000002"
+            "value": "0x80000002"
           },
           "C_GPIO_WIDTH": {
             "value": "32"
@@ -5545,10 +5350,13 @@
             "value": "1"
           },
           "IN2_WIDTH": {
-            "value": "23"
+            "value": "22"
+          },
+          "IN3_WIDTH": {
+            "value": "1"
           },
           "NUM_PORTS": {
-            "value": "3"
+            "value": "4"
           },
           "dout_width": {
             "value": "32"
@@ -5565,7 +5373,7 @@
             "value": "0"
           },
           "CONST_WIDTH": {
-            "value": "23"
+            "value": "22"
           }
         }
       },
@@ -5682,6 +5490,267 @@
           },
           "CONST_WIDTH": {
             "value": "8"
+          }
+        }
+      },
+      "ad9361_adc_packer": {
+        "vlnv": "analog.com:user:util_cpack2:1.0",
+        "xci_name": "icyradio_ad9361_adc_packer_2",
+        "xci_path": "ip/icyradio_ad9361_adc_packer_2/icyradio_ad9361_adc_packer_2.xci",
+        "inst_hier_path": "ad9361_adc_packer"
+      },
+      "axi_dmac_i2s_rx": {
+        "vlnv": "analog.com:user:axi_dmac:1.0",
+        "xci_name": "icyradio_axi_dmac_i2s_tx_1",
+        "xci_path": "ip/icyradio_axi_dmac_i2s_tx_1/icyradio_axi_dmac_i2s_tx_1.xci",
+        "inst_hier_path": "axi_dmac_i2s_rx",
+        "parameters": {
+          "ALLOW_ASYM_MEM": {
+            "value": "1"
+          },
+          "AXI_SLICE_DEST": {
+            "value": "false"
+          },
+          "CYCLIC": {
+            "value": "false"
+          },
+          "DMA_DATA_WIDTH_DEST": {
+            "value": "64"
+          },
+          "DMA_DATA_WIDTH_SRC": {
+            "value": "32"
+          },
+          "DMA_LENGTH_WIDTH": {
+            "value": "24"
+          },
+          "DMA_TYPE_DEST": {
+            "value": "0"
+          },
+          "DMA_TYPE_SRC": {
+            "value": "1"
+          },
+          "ID": {
+            "value": "2"
+          }
+        },
+        "interface_ports": {
+          "m_dest_axi": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "m_dest_axi",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0x7FFFFFFF",
+              "width": "31"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "m_dest_axi": {
+              "range": "2G",
+              "width": "31"
+            }
+          }
+        }
+      },
+      "axi_dmac_rf_rx": {
+        "vlnv": "analog.com:user:axi_dmac:1.0",
+        "xci_name": "icyradio_axi_dmac_rf_rx_2",
+        "xci_path": "ip/icyradio_axi_dmac_rf_rx_2/icyradio_axi_dmac_rf_rx_2.xci",
+        "inst_hier_path": "axi_dmac_rf_rx",
+        "parameters": {
+          "ALLOW_ASYM_MEM": {
+            "value": "1"
+          },
+          "CYCLIC": {
+            "value": "false"
+          },
+          "DMA_LENGTH_WIDTH": {
+            "value": "24"
+          },
+          "SYNC_TRANSFER_START": {
+            "value": "true"
+          }
+        },
+        "interface_ports": {
+          "m_dest_axi": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "m_dest_axi",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0x7FFFFFFF",
+              "width": "31"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "m_dest_axi": {
+              "range": "2G",
+              "width": "31"
+            }
+          }
+        }
+      },
+      "axi_dmac_i2s_tx": {
+        "vlnv": "analog.com:user:axi_dmac:1.0",
+        "xci_name": "icyradio_axi_dmac_rf_tx_0",
+        "xci_path": "ip/icyradio_axi_dmac_rf_tx_0/icyradio_axi_dmac_rf_tx_0.xci",
+        "inst_hier_path": "axi_dmac_i2s_tx",
+        "parameters": {
+          "ALLOW_ASYM_MEM": {
+            "value": "1"
+          },
+          "AXI_SLICE_DEST": {
+            "value": "false"
+          },
+          "CYCLIC": {
+            "value": "false"
+          },
+          "DMA_DATA_WIDTH_DEST": {
+            "value": "32"
+          },
+          "DMA_LENGTH_WIDTH": {
+            "value": "24"
+          },
+          "DMA_TYPE_DEST": {
+            "value": "1"
+          },
+          "DMA_TYPE_SRC": {
+            "value": "0"
+          },
+          "ID": {
+            "value": "3"
+          }
+        },
+        "interface_ports": {
+          "m_src_axi": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "m_src_axi",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0x7FFFFFFF",
+              "width": "31"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "m_src_axi": {
+              "range": "2G",
+              "width": "31"
+            }
+          }
+        }
+      },
+      "axi_dmac_rf_tx": {
+        "vlnv": "analog.com:user:axi_dmac:1.0",
+        "xci_name": "icyradio_axi_dmac_rf_tx_2",
+        "xci_path": "ip/icyradio_axi_dmac_rf_tx_2/icyradio_axi_dmac_rf_tx_2.xci",
+        "inst_hier_path": "axi_dmac_rf_tx",
+        "parameters": {
+          "ALLOW_ASYM_MEM": {
+            "value": "1"
+          },
+          "CYCLIC": {
+            "value": "false"
+          },
+          "DMA_LENGTH_WIDTH": {
+            "value": "24"
+          },
+          "DMA_TYPE_DEST": {
+            "value": "1"
+          },
+          "DMA_TYPE_SRC": {
+            "value": "0"
+          },
+          "ID": {
+            "value": "1"
+          }
+        },
+        "interface_ports": {
+          "m_src_axi": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "m_src_axi",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0x7FFFFFFF",
+              "width": "31"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "m_src_axi": {
+              "range": "2G",
+              "width": "31"
+            }
+          }
+        }
+      },
+      "gpio_slice_trx_resetn": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_gpio_slice_trx_sync_in_0",
+        "xci_path": "ip/icyradio_gpio_slice_trx_sync_in_0/icyradio_gpio_slice_trx_sync_in_0.xci",
+        "inst_hier_path": "gpio_slice_trx_resetn",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "31"
+          },
+          "DIN_TO": {
+            "value": "31"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "GND_7": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "icyradio_GND_3_2",
+        "xci_path": "ip/icyradio_GND_3_2/icyradio_GND_3_2.xci",
+        "inst_hier_path": "GND_7",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "0"
+          },
+          "CONST_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "gpio_slice_synth_resetn": {
+        "vlnv": "xilinx.com:ip:xlslice:1.0",
+        "xci_name": "icyradio_gpio_slice_trx_resestn_0",
+        "xci_path": "ip/icyradio_gpio_slice_trx_resestn_0/icyradio_gpio_slice_trx_resestn_0.xci",
+        "inst_hier_path": "gpio_slice_synth_resetn",
+        "parameters": {
+          "DIN_FROM": {
+            "value": "31"
+          },
+          "DIN_TO": {
+            "value": "31"
+          },
+          "DOUT_WIDTH": {
+            "value": "1"
+          }
+        }
+      },
+      "GND_8": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "icyradio_GND_7_0",
+        "xci_path": "ip/icyradio_GND_7_0/icyradio_GND_7_0.xci",
+        "inst_hier_path": "GND_8",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "0"
+          },
+          "CONST_WIDTH": {
+            "value": "1"
           }
         }
       }
@@ -5970,7 +6039,8 @@
           "irq_concat_1/In1",
           "irq_concat_1/In2",
           "PCIe_CLKREQn",
-          "CM4_WAKE"
+          "CM4_WAKE",
+          "axi_ad9361/tdd_sync"
         ]
       },
       "GND_2_dout": {
@@ -6001,6 +6071,18 @@
         "ports": [
           "GND_6/dout",
           "gpio_concat_2/In0"
+        ]
+      },
+      "GND_7_dout": {
+        "ports": [
+          "GND_7/dout",
+          "gpio_concat_0/In4"
+        ]
+      },
+      "GND_8_dout": {
+        "ports": [
+          "GND_8/dout",
+          "gpio_concat_2/In3"
         ]
       },
       "RXCLK_1": {
@@ -6187,9 +6269,9 @@
       "axi_ad9361_0_l_clk": {
         "ports": [
           "axi_ad9361/l_clk",
-          "ad9361_adc_packer/clk",
           "ad9361_dac_unpacker/clk",
           "axi_ad9361/clk",
+          "ad9361_adc_packer/clk",
           "axi_dmac_rf_rx/fifo_wr_clk",
           "axi_dmac_rf_tx/m_axis_aclk"
         ]
@@ -6197,8 +6279,8 @@
       "axi_ad9361_0_rst": {
         "ports": [
           "axi_ad9361/rst",
-          "ad9361_adc_packer/reset",
-          "ad9361_dac_unpacker/reset"
+          "ad9361_dac_unpacker/reset",
+          "ad9361_adc_packer/reset"
         ]
       },
       "axi_ad9361_0_tx_clk_out": {
@@ -6262,7 +6344,8 @@
           "gpio_slice_trx_sync_in/Din",
           "gpio_slice_trx_en_agc/Din",
           "gpio_slice_trx_up_enable/Din",
-          "gpio_slice_trx_up_txnrx/Din"
+          "gpio_slice_trx_up_txnrx/Din",
+          "gpio_slice_trx_resetn/Din"
         ]
       },
       "axi_gpio_0_ip2intc_irpt": {
@@ -6276,7 +6359,8 @@
           "axi_gpio_1/gpio_io_o",
           "gpio_slice_synth_sync/Din",
           "gpio_slice_synth_mute/Din",
-          "gpio_slice_synth_ce/Din"
+          "gpio_slice_synth_ce/Din",
+          "gpio_slice_synth_resetn/Din"
         ]
       },
       "axi_gpio_1_ip2intc_irpt": {
@@ -6320,13 +6404,6 @@
           "xadc_wiz_0/s_axi_aclk",
           "axi_ad9361/s_axi_aclk",
           "axi_bram_ctrl_0/s_axi_aclk",
-          "axi_dmac_rf_rx/s_axi_aclk",
-          "axi_dmac_rf_rx/m_dest_axi_aclk",
-          "axi_dmac_rf_tx/s_axi_aclk",
-          "axi_dmac_rf_tx/m_src_axi_aclk",
-          "axi_dmac_i2s_tx/s_axi_aclk",
-          "axi_dmac_i2s_tx/m_src_axi_aclk",
-          "axi_dmac_i2s_tx/m_axis_aclk",
           "axi_gpio_0/s_axi_aclk",
           "axi_iic_0/s_axi_aclk",
           "axi_cpu_dma_interconnect/ACLK",
@@ -6360,9 +6437,6 @@
           "axi_quad_spi_0/s_axi_aclk",
           "axi_quad_spi_1/ext_spi_clk",
           "axi_quad_spi_1/s_axi_aclk",
-          "axi_dmac_i2s_rx/s_axis_aclk",
-          "axi_dmac_i2s_rx/m_dest_axi_aclk",
-          "axi_dmac_i2s_rx/s_axi_aclk",
           "axi_cpu_dma_interconnect/S04_ACLK",
           "picorv32_0/clk",
           "axi_iic_1/s_axi_aclk",
@@ -6372,7 +6446,17 @@
           "axi_quad_spi_2/ext_spi_clk",
           "axi_peripheral_interconnect/M14_ACLK",
           "axi_gpio_1/s_axi_aclk",
-          "axi_quad_spi_0/s_axi4_aclk"
+          "axi_quad_spi_0/s_axi4_aclk",
+          "axi_dmac_i2s_rx/s_axi_aclk",
+          "axi_dmac_i2s_rx/m_dest_axi_aclk",
+          "axi_dmac_i2s_rx/s_axis_aclk",
+          "axi_dmac_rf_rx/s_axi_aclk",
+          "axi_dmac_rf_rx/m_dest_axi_aclk",
+          "axi_dmac_i2s_tx/s_axi_aclk",
+          "axi_dmac_i2s_tx/m_src_axi_aclk",
+          "axi_dmac_i2s_tx/m_axis_aclk",
+          "axi_dmac_rf_tx/s_axi_aclk",
+          "axi_dmac_rf_tx/m_src_axi_aclk"
         ]
       },
       "axi_pcie_0_axi_ctl_aclk_out": {
@@ -6472,6 +6556,12 @@
           "SYNTH_MUTE"
         ]
       },
+      "gpio_slice_synth_resetn_Dout": {
+        "ports": [
+          "gpio_slice_synth_resetn/Dout",
+          "SYNTH_RESETn"
+        ]
+      },
       "gpio_slice_synth_sync_Dout": {
         "ports": [
           "gpio_slice_synth_sync/Dout",
@@ -6482,6 +6572,12 @@
         "ports": [
           "gpio_slice_trx_en_agc/Dout",
           "TRX_EN_AGC"
+        ]
+      },
+      "gpio_slice_trx_resestn_Dout": {
+        "ports": [
+          "gpio_slice_trx_resetn/Dout",
+          "TRX_RESETn"
         ]
       },
       "gpio_slice_trx_sync_in_Dout": {
@@ -6604,24 +6700,22 @@
           "xadc_wiz_0/s_axi_aresetn",
           "axi_ad9361/s_axi_aresetn",
           "axi_bram_ctrl_0/s_axi_aresetn",
-          "axi_dmac_rf_rx/s_axi_aresetn",
-          "axi_dmac_rf_rx/m_dest_axi_aresetn",
-          "axi_dmac_rf_tx/s_axi_aresetn",
-          "axi_dmac_rf_tx/m_src_axi_aresetn",
-          "axi_dmac_i2s_tx/s_axi_aresetn",
-          "axi_dmac_i2s_tx/m_src_axi_aresetn",
           "axi_gpio_0/s_axi_aresetn",
           "axi_iic_0/s_axi_aresetn",
           "axi_quad_spi_0/s_axi_aresetn",
           "axi_quad_spi_1/s_axi_aresetn",
-          "axi_dmac_i2s_rx/m_dest_axi_aresetn",
-          "axi_dmac_i2s_rx/s_axi_aresetn",
           "axi_iic_1/s_axi_aresetn",
           "axi_quad_spi_2/s_axi_aresetn",
-          "TRX_RESETn",
-          "SYNTH_RESETn",
           "axi_gpio_1/s_axi_aresetn",
-          "axi_quad_spi_0/s_axi4_aresetn"
+          "axi_quad_spi_0/s_axi4_aresetn",
+          "axi_dmac_i2s_rx/s_axi_aresetn",
+          "axi_dmac_i2s_rx/m_dest_axi_aresetn",
+          "axi_dmac_rf_rx/s_axi_aresetn",
+          "axi_dmac_rf_rx/m_dest_axi_aresetn",
+          "axi_dmac_i2s_tx/s_axi_aresetn",
+          "axi_dmac_i2s_tx/m_src_axi_aresetn",
+          "axi_dmac_rf_tx/s_axi_aresetn",
+          "axi_dmac_rf_tx/m_src_axi_aresetn"
         ]
       },
       "rst_mig_7series_0_166M_interconnect_aresetn": {
@@ -6708,7 +6802,208 @@
       }
     },
     "addressing": {
-      "/axi_dmac_rf_rx": {
+      "/axi_pcie_0": {
+        "address_spaces": {
+          "M_AXI": {
+            "segments": {
+              "SEG_axi_ad9361_axi_lite": {
+                "address_block": "/axi_ad9361/s_axi/axi_lite",
+                "offset": "0x40100000",
+                "range": "64K"
+              },
+              "SEG_axi_bram_ctrl_0_Mem0": {
+                "address_block": "/axi_bram_ctrl_0/S_AXI/Mem0",
+                "offset": "0x41000000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_i2s_rx_axi_lite": {
+                "address_block": "/axi_dmac_i2s_rx/s_axi/axi_lite",
+                "offset": "0x4000C000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_i2s_tx_axi_lite": {
+                "address_block": "/axi_dmac_i2s_tx/s_axi/axi_lite",
+                "offset": "0x4000E000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_rf_rx_axi_lite": {
+                "address_block": "/axi_dmac_rf_rx/s_axi/axi_lite",
+                "offset": "0x40000000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_rf_tx_axi_lite": {
+                "address_block": "/axi_dmac_rf_tx/s_axi/axi_lite",
+                "offset": "0x40002000",
+                "range": "8K"
+              },
+              "SEG_axi_gpio_0_Reg": {
+                "address_block": "/axi_gpio_0/S_AXI/Reg",
+                "offset": "0x40004000",
+                "range": "8K"
+              },
+              "SEG_axi_gpio_1_Reg": {
+                "address_block": "/axi_gpio_1/S_AXI/Reg",
+                "offset": "0x4001A000",
+                "range": "8K"
+              },
+              "SEG_axi_i2s_adi_0_axi_lite": {
+                "address_block": "/axi_i2s_adi_0/s_axi/axi_lite",
+                "offset": "0x40010000",
+                "range": "8K"
+              },
+              "SEG_axi_iic_0_Reg": {
+                "address_block": "/axi_iic_0/S_AXI/Reg",
+                "offset": "0x40006000",
+                "range": "8K"
+              },
+              "SEG_axi_iic_1_Reg": {
+                "address_block": "/axi_iic_1/S_AXI/Reg",
+                "offset": "0x40016000",
+                "range": "8K"
+              },
+              "SEG_axi_pcie_0_CTL0": {
+                "address_block": "/axi_pcie_0/S_AXI_CTL/CTL0",
+                "offset": "0x4000A000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_0_MEM0": {
+                "address_block": "/axi_quad_spi_0/aximm/MEM0",
+                "offset": "0x00000000",
+                "range": "8M"
+              },
+              "SEG_axi_quad_spi_0_Reg": {
+                "address_block": "/axi_quad_spi_0/AXI_LITE/Reg",
+                "offset": "0x40008000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_1_Reg": {
+                "address_block": "/axi_quad_spi_1/AXI_LITE/Reg",
+                "offset": "0x40014000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_2_Reg": {
+                "address_block": "/axi_quad_spi_2/AXI_LITE/Reg",
+                "offset": "0x40018000",
+                "range": "8K"
+              },
+              "SEG_mig_7series_0_memaddr": {
+                "address_block": "/mig_7series_0/memmap/memaddr",
+                "offset": "0x20000000",
+                "range": "512M"
+              },
+              "SEG_xadc_wiz_0_Reg": {
+                "address_block": "/xadc_wiz_0/s_axi_lite/Reg",
+                "offset": "0x40012000",
+                "range": "8K"
+              }
+            }
+          }
+        }
+      },
+      "/picorv32_0": {
+        "address_spaces": {
+          "M_AXI": {
+            "segments": {
+              "SEG_axi_ad9361_axi_lite": {
+                "address_block": "/axi_ad9361/s_axi/axi_lite",
+                "offset": "0x40100000",
+                "range": "64K"
+              },
+              "SEG_axi_bram_ctrl_0_Mem0": {
+                "address_block": "/axi_bram_ctrl_0/S_AXI/Mem0",
+                "offset": "0x41000000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_i2s_rx_axi_lite": {
+                "address_block": "/axi_dmac_i2s_rx/s_axi/axi_lite",
+                "offset": "0x4000C000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_i2s_tx_axi_lite": {
+                "address_block": "/axi_dmac_i2s_tx/s_axi/axi_lite",
+                "offset": "0x4000E000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_rf_rx_axi_lite": {
+                "address_block": "/axi_dmac_rf_rx/s_axi/axi_lite",
+                "offset": "0x40000000",
+                "range": "8K"
+              },
+              "SEG_axi_dmac_rf_tx_axi_lite": {
+                "address_block": "/axi_dmac_rf_tx/s_axi/axi_lite",
+                "offset": "0x40002000",
+                "range": "8K"
+              },
+              "SEG_axi_gpio_0_Reg": {
+                "address_block": "/axi_gpio_0/S_AXI/Reg",
+                "offset": "0x40004000",
+                "range": "8K"
+              },
+              "SEG_axi_gpio_1_Reg": {
+                "address_block": "/axi_gpio_1/S_AXI/Reg",
+                "offset": "0x4001A000",
+                "range": "8K"
+              },
+              "SEG_axi_i2s_adi_0_axi_lite": {
+                "address_block": "/axi_i2s_adi_0/s_axi/axi_lite",
+                "offset": "0x40010000",
+                "range": "8K"
+              },
+              "SEG_axi_iic_0_Reg": {
+                "address_block": "/axi_iic_0/S_AXI/Reg",
+                "offset": "0x40006000",
+                "range": "8K"
+              },
+              "SEG_axi_iic_1_Reg": {
+                "address_block": "/axi_iic_1/S_AXI/Reg",
+                "offset": "0x40016000",
+                "range": "8K"
+              },
+              "SEG_axi_pcie_0_BAR0": {
+                "address_block": "/axi_pcie_0/S_AXI/BAR0",
+                "offset": "0x60000000",
+                "range": "256M"
+              },
+              "SEG_axi_pcie_0_CTL0": {
+                "address_block": "/axi_pcie_0/S_AXI_CTL/CTL0",
+                "offset": "0x4000A000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_0_MEM0": {
+                "address_block": "/axi_quad_spi_0/aximm/MEM0",
+                "offset": "0x00000000",
+                "range": "8M"
+              },
+              "SEG_axi_quad_spi_0_Reg": {
+                "address_block": "/axi_quad_spi_0/AXI_LITE/Reg",
+                "offset": "0x40008000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_1_Reg": {
+                "address_block": "/axi_quad_spi_1/AXI_LITE/Reg",
+                "offset": "0x40014000",
+                "range": "8K"
+              },
+              "SEG_axi_quad_spi_2_Reg": {
+                "address_block": "/axi_quad_spi_2/AXI_LITE/Reg",
+                "offset": "0x40018000",
+                "range": "8K"
+              },
+              "SEG_mig_7series_0_memaddr": {
+                "address_block": "/mig_7series_0/memmap/memaddr",
+                "offset": "0x20000000",
+                "range": "512M"
+              },
+              "SEG_xadc_wiz_0_Reg": {
+                "address_block": "/xadc_wiz_0/s_axi_lite/Reg",
+                "offset": "0x40012000",
+                "range": "8K"
+              }
+            }
+          }
+        }
+      },
+      "/axi_dmac_i2s_rx": {
         "address_spaces": {
           "m_dest_axi": {
             "segments": {
@@ -6811,9 +7106,9 @@
           }
         }
       },
-      "/axi_dmac_rf_tx": {
+      "/axi_dmac_rf_rx": {
         "address_spaces": {
-          "m_src_axi": {
+          "m_dest_axi": {
             "segments": {
               "SEG_axi_ad9361_axi_lite": {
                 "address_block": "/axi_ad9361/s_axi/axi_lite",
@@ -7017,210 +7312,9 @@
           }
         }
       },
-      "/axi_pcie_0": {
+      "/axi_dmac_rf_tx": {
         "address_spaces": {
-          "M_AXI": {
-            "segments": {
-              "SEG_axi_ad9361_axi_lite": {
-                "address_block": "/axi_ad9361/s_axi/axi_lite",
-                "offset": "0x40100000",
-                "range": "64K"
-              },
-              "SEG_axi_bram_ctrl_0_Mem0": {
-                "address_block": "/axi_bram_ctrl_0/S_AXI/Mem0",
-                "offset": "0x41000000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_i2s_rx_axi_lite": {
-                "address_block": "/axi_dmac_i2s_rx/s_axi/axi_lite",
-                "offset": "0x4000C000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_i2s_tx_axi_lite": {
-                "address_block": "/axi_dmac_i2s_tx/s_axi/axi_lite",
-                "offset": "0x4000E000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_rf_rx_axi_lite": {
-                "address_block": "/axi_dmac_rf_rx/s_axi/axi_lite",
-                "offset": "0x40000000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_rf_tx_axi_lite": {
-                "address_block": "/axi_dmac_rf_tx/s_axi/axi_lite",
-                "offset": "0x40002000",
-                "range": "8K"
-              },
-              "SEG_axi_gpio_0_Reg": {
-                "address_block": "/axi_gpio_0/S_AXI/Reg",
-                "offset": "0x40004000",
-                "range": "8K"
-              },
-              "SEG_axi_gpio_1_Reg": {
-                "address_block": "/axi_gpio_1/S_AXI/Reg",
-                "offset": "0x4001A000",
-                "range": "8K"
-              },
-              "SEG_axi_i2s_adi_0_axi_lite": {
-                "address_block": "/axi_i2s_adi_0/s_axi/axi_lite",
-                "offset": "0x40010000",
-                "range": "8K"
-              },
-              "SEG_axi_iic_0_Reg": {
-                "address_block": "/axi_iic_0/S_AXI/Reg",
-                "offset": "0x40006000",
-                "range": "8K"
-              },
-              "SEG_axi_iic_1_Reg": {
-                "address_block": "/axi_iic_1/S_AXI/Reg",
-                "offset": "0x40016000",
-                "range": "8K"
-              },
-              "SEG_axi_pcie_0_CTL0": {
-                "address_block": "/axi_pcie_0/S_AXI_CTL/CTL0",
-                "offset": "0x4000A000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_0_MEM0": {
-                "address_block": "/axi_quad_spi_0/aximm/MEM0",
-                "offset": "0x00000000",
-                "range": "8M"
-              },
-              "SEG_axi_quad_spi_0_Reg": {
-                "address_block": "/axi_quad_spi_0/AXI_LITE/Reg",
-                "offset": "0x40008000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_1_Reg": {
-                "address_block": "/axi_quad_spi_1/AXI_LITE/Reg",
-                "offset": "0x40014000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_2_Reg": {
-                "address_block": "/axi_quad_spi_2/AXI_LITE/Reg",
-                "offset": "0x40018000",
-                "range": "8K"
-              },
-              "SEG_mig_7series_0_memaddr": {
-                "address_block": "/mig_7series_0/memmap/memaddr",
-                "offset": "0x20000000",
-                "range": "512M"
-              },
-              "SEG_xadc_wiz_0_Reg": {
-                "address_block": "/xadc_wiz_0/s_axi_lite/Reg",
-                "offset": "0x40012000",
-                "range": "8K"
-              }
-            }
-          }
-        }
-      },
-      "/axi_dmac_i2s_rx": {
-        "address_spaces": {
-          "m_dest_axi": {
-            "segments": {
-              "SEG_axi_ad9361_axi_lite": {
-                "address_block": "/axi_ad9361/s_axi/axi_lite",
-                "offset": "0x40100000",
-                "range": "64K"
-              },
-              "SEG_axi_bram_ctrl_0_Mem0": {
-                "address_block": "/axi_bram_ctrl_0/S_AXI/Mem0",
-                "offset": "0x41000000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_i2s_rx_axi_lite": {
-                "address_block": "/axi_dmac_i2s_rx/s_axi/axi_lite",
-                "offset": "0x4000C000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_i2s_tx_axi_lite": {
-                "address_block": "/axi_dmac_i2s_tx/s_axi/axi_lite",
-                "offset": "0x4000E000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_rf_rx_axi_lite": {
-                "address_block": "/axi_dmac_rf_rx/s_axi/axi_lite",
-                "offset": "0x40000000",
-                "range": "8K"
-              },
-              "SEG_axi_dmac_rf_tx_axi_lite": {
-                "address_block": "/axi_dmac_rf_tx/s_axi/axi_lite",
-                "offset": "0x40002000",
-                "range": "8K"
-              },
-              "SEG_axi_gpio_0_Reg": {
-                "address_block": "/axi_gpio_0/S_AXI/Reg",
-                "offset": "0x40004000",
-                "range": "8K"
-              },
-              "SEG_axi_gpio_1_Reg": {
-                "address_block": "/axi_gpio_1/S_AXI/Reg",
-                "offset": "0x4001A000",
-                "range": "8K"
-              },
-              "SEG_axi_i2s_adi_0_axi_lite": {
-                "address_block": "/axi_i2s_adi_0/s_axi/axi_lite",
-                "offset": "0x40010000",
-                "range": "8K"
-              },
-              "SEG_axi_iic_0_Reg": {
-                "address_block": "/axi_iic_0/S_AXI/Reg",
-                "offset": "0x40006000",
-                "range": "8K"
-              },
-              "SEG_axi_iic_1_Reg": {
-                "address_block": "/axi_iic_1/S_AXI/Reg",
-                "offset": "0x40016000",
-                "range": "8K"
-              },
-              "SEG_axi_pcie_0_BAR0": {
-                "address_block": "/axi_pcie_0/S_AXI/BAR0",
-                "offset": "0x60000000",
-                "range": "256M"
-              },
-              "SEG_axi_pcie_0_CTL0": {
-                "address_block": "/axi_pcie_0/S_AXI_CTL/CTL0",
-                "offset": "0x4000A000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_0_MEM0": {
-                "address_block": "/axi_quad_spi_0/aximm/MEM0",
-                "offset": "0x00000000",
-                "range": "8M"
-              },
-              "SEG_axi_quad_spi_0_Reg": {
-                "address_block": "/axi_quad_spi_0/AXI_LITE/Reg",
-                "offset": "0x40008000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_1_Reg": {
-                "address_block": "/axi_quad_spi_1/AXI_LITE/Reg",
-                "offset": "0x40014000",
-                "range": "8K"
-              },
-              "SEG_axi_quad_spi_2_Reg": {
-                "address_block": "/axi_quad_spi_2/AXI_LITE/Reg",
-                "offset": "0x40018000",
-                "range": "8K"
-              },
-              "SEG_mig_7series_0_memaddr": {
-                "address_block": "/mig_7series_0/memmap/memaddr",
-                "offset": "0x20000000",
-                "range": "512M"
-              },
-              "SEG_xadc_wiz_0_Reg": {
-                "address_block": "/xadc_wiz_0/s_axi_lite/Reg",
-                "offset": "0x40012000",
-                "range": "8K"
-              }
-            }
-          }
-        }
-      },
-      "/picorv32_0": {
-        "address_spaces": {
-          "M_AXI": {
+          "m_src_axi": {
             "segments": {
               "SEG_axi_ad9361_axi_lite": {
                 "address_block": "/axi_ad9361/s_axi/axi_lite",

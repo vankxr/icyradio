@@ -1,8 +1,8 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Thu Sep 21 20:13:29 2023
-//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+//Date        : Sat Sep 30 03:55:14 2023
+//Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
 //Purpose     : IP block netlist
@@ -125,10 +125,10 @@ module icyradio_wrapper
   input [0:0]PCIe_REFCLK_clk_n;
   input [0:0]PCIe_REFCLK_clk_p;
   input PCIe_RESETn;
-  input [1:0]PCIe_rxn;
-  input [1:0]PCIe_rxp;
-  output [1:0]PCIe_txn;
-  output [1:0]PCIe_txp;
+  input [0:0]PCIe_rxn;
+  input [0:0]PCIe_rxp;
+  output [0:0]PCIe_txn;
+  output [0:0]PCIe_txp;
   output [0:0]PM_I2C_EN;
   output [0:0]SYNTH_CE;
   input SYNTH_LD;
@@ -227,10 +227,10 @@ module icyradio_wrapper
   wire [0:0]PCIe_REFCLK_clk_n;
   wire [0:0]PCIe_REFCLK_clk_p;
   wire PCIe_RESETn;
-  wire [1:0]PCIe_rxn;
-  wire [1:0]PCIe_rxp;
-  wire [1:0]PCIe_txn;
-  wire [1:0]PCIe_txp;
+  wire [0:0]PCIe_rxn;
+  wire [0:0]PCIe_rxp;
+  wire [0:0]PCIe_txn;
+  wire [0:0]PCIe_txp;
   wire [0:0]PM_I2C_EN;
   wire [0:0]SYNTH_CE;
   wire SYNTH_LD;

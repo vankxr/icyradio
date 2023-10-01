@@ -57,11 +57,11 @@ module icyradio_GND_2_0 (
   dout
 );
 
-output wire [11 : 0] dout;
+output wire [10 : 0] dout;
 
   xlconstant_v1_1_7_xlconstant #(
-    .CONST_WIDTH(12),
-    .CONST_VAL(12'H000)
+    .CONST_WIDTH(11),
+    .CONST_VAL(11'H000)
   ) inst (
     .dout(dout)
   );

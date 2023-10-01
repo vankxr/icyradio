@@ -163,7 +163,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:21 UTC 2022</spirit:value>
+            <spirit:value>Fri Sep 29 23:21:41 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
@@ -194,7 +194,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:21 UTC 2022</spirit:value>
+            <spirit:value>Fri Sep 29 23:21:41 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
@@ -213,7 +213,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:21 UTC 2022</spirit:value>
+            <spirit:value>Fri Sep 29 23:21:41 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
@@ -233,7 +233,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:21 UTC 2022</spirit:value>
+            <spirit:value>Fri Sep 29 23:21:41 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
@@ -251,7 +251,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:27:04 UTC 2023</spirit:value>
+            <spirit:value>Fri Sep 29 23:23:14 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
@@ -3334,6 +3334,9 @@
               <spirit:viewNameRef>xilinx_anylanguagebehavioralsimulation</spirit:viewNameRef>
             </spirit:wireTypeDef>
           </spirit:wireTypeDefs>
+          <spirit:driver>
+            <spirit:defaultValue spirit:format="long">0</spirit:defaultValue>
+          </spirit:driver>
         </spirit:wire>
       </spirit:port>
       <spirit:port>
@@ -3541,7 +3544,7 @@
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2021.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="e5c8c4c4"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="f62bda8c"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="0c32e9ab"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="aa511e64"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="65ba3f33"/>
     </xilinx:packagingInfo>

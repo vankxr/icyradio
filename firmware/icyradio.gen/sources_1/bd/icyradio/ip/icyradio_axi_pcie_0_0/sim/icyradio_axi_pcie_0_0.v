@@ -299,13 +299,13 @@ ut, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_P
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 M_AXI RREADY" *)
 output wire m_axi_rready;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt txp" *)
-output wire [1 : 0] pci_exp_txp;
+output wire [0 : 0] pci_exp_txp;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt txn" *)
-output wire [1 : 0] pci_exp_txn;
+output wire [0 : 0] pci_exp_txn;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt rxp" *)
-input wire [1 : 0] pci_exp_rxp;
+input wire [0 : 0] pci_exp_rxp;
 (* X_INTERFACE_INFO = "xilinx.com:interface:pcie_7x_mgt:1.0 pcie_7x_mgt rxn" *)
-input wire [1 : 0] pci_exp_rxn;
+input wire [0 : 0] pci_exp_rxn;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME CLK.REFCLK, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_util_ds_buf_0_0_IBUF_OUT, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 CLK.REFCLK CLK" *)
 input wire REFCLK;
@@ -354,10 +354,10 @@ input wire s_axi_ctl_rready;
     .C_S_AXI_DATA_WIDTH(64),
     .C_M_AXI_ADDR_WIDTH(32),
     .C_M_AXI_DATA_WIDTH(64),
-    .C_NO_OF_LANES(2),
+    .C_NO_OF_LANES(1),
     .C_MAX_LINK_SPEED(1),
     .C_PCIE_USE_MODE("1.0"),
-    .C_DEVICE_ID(16'H7022),
+    .C_DEVICE_ID(16'H7021),
     .C_VENDOR_ID(16'H10EE),
     .C_CLASS_CODE(24'H058000),
     .C_REF_CLK_FREQ(0),
@@ -409,7 +409,7 @@ input wire s_axi_ctl_rready;
     .C_PCIEBAR_LEN_1(29),
     .C_PCIEBAR2AXIBAR_1(32'H20000000),
     .C_PCIEBAR2AXIBAR_1_SEC(1),
-    .C_PCIEBAR_LEN_2(20),
+    .C_PCIEBAR_LEN_2(23),
     .C_PCIEBAR2AXIBAR_2(32'H00000000),
     .C_PCIEBAR2AXIBAR_2_SEC(1),
     .C_PCIE_BLK_LOCN("0"),
@@ -546,7 +546,7 @@ input wire s_axi_ctl_rready;
     .pipe_rxprbscntreset(1'B0),
     .pipe_loopback(3'B0),
     .pipe_rxprbserr(),
-    .pipe_txinhibit(2'B0),
+    .pipe_txinhibit(1'B0),
     .pipe_rst_fsm(),
     .pipe_qrst_fsm(),
     .pipe_rate_fsm(),
@@ -595,15 +595,15 @@ input wire s_axi_ctl_rready;
     .int_qplloutclk_out(),
     .int_qplloutrefclk_out(),
     .int_rxoutclk_out(),
-    .int_pclk_sel_slave(2'B0),
+    .int_pclk_sel_slave(1'B0),
     .ext_ch_gt_drpclk(),
-    .ext_ch_gt_drpaddr(18'B0),
-    .ext_ch_gt_drpen(2'B0),
-    .ext_ch_gt_drpdi(32'B0),
-    .ext_ch_gt_drpwe(2'B0),
+    .ext_ch_gt_drpaddr(9'B0),
+    .ext_ch_gt_drpen(1'B0),
+    .ext_ch_gt_drpdi(16'B0),
+    .ext_ch_gt_drpwe(1'B0),
     .ext_ch_gt_drpdo(),
     .ext_ch_gt_drprdy(),
-    .clk_fab_refclk(2'B0),
+    .clk_fab_refclk(1'B0),
     .clk_pclk(1'B0),
     .clk_rxusrclk(1'B0),
     .clk_dclk(1'B0),
