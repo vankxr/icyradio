@@ -1,5 +1,78 @@
 #include "lt7182s.h"
 
+static float lt7182s_pow2(int8_t bExp)
+{
+    switch(bExp)
+    {
+        case -16:
+            return 0.0000152587890625f;
+        case -15:
+            return 0.000030517578125f;
+        case -14:
+            return 0.00006103515625f;
+        case -13:
+            return 0.0001220703125f;
+        case -12:
+            return 0.000244140625f;
+        case -11:
+            return 0.00048828125f;
+        case -10:
+            return 0.0009765625f;
+        case -9:
+            return 0.001953125f;
+        case -8:
+            return 0.00390625f;
+        case -7:
+            return 0.0078125f;
+        case -6:
+            return 0.015625f;
+        case -5:
+            return 0.03125f;
+        case -4:
+            return 0.0625f;
+        case -3:
+            return 0.125f;
+        case -2:
+            return 0.25f;
+        case -1:
+            return 0.5f;
+        case 0:
+            return 1.f;
+        case 1:
+            return 2.f;
+        case 2:
+            return 4.f;
+        case 3:
+            return 8.f;
+        case 4:
+            return 16.f;
+        case 5:
+            return 32.f;
+        case 6:
+            return 64.f;
+        case 7:
+            return 128.f;
+        case 8:
+            return 256.f;
+        case 9:
+            return 512.f;
+        case 10:
+            return 1024.f;
+        case 11:
+            return 2048.f;
+        case 12:
+            return 4096.f;
+        case 13:
+            return 8192.f;
+        case 14:
+            return 16384.f;
+        case 15:
+            return 32768.f;
+    }
+
+    return 0.f;
+}
+
 static uint8_t lt7182s_pmbus_send_command(uint8_t ubCommand)
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
@@ -43,25 +116,34 @@ static uint8_t lt7182s_pmbus_write_word(uint8_t ubCommand, uint16_t usData)
 }
 static uint8_t lt7182s_pmbus_write_l11(uint8_t ubCommand, float fData)
 {
-    int32_t iExp = -16;
-    int32_t iMant = (int32_t)(fData / powf(2, iExp));
+    int8_t bExp = -16;
+    int16_t sMant = (int16_t)(fData / lt7182s_pow2(bExp));
 
     // Search for an exponent that produces valid 11-bit mantissa
     do
     {
-        if((iMant >= -1024) && (iMant <= 1023))
+        if(sMant >= -1024 && sMant <= 1023)
             break;
 
-        iMant = (int)(fData / powf(2, ++iExp));
-    } while (iExp < 15);
+        sMant = (int16_t)(fData / lt7182s_pow2(++bExp));
+    } while(bExp < 15);
 
-    uint16_t usExp = iExp << 11;
-    uint16_t usMant = iMant & 0x07FF;
+    if(sMant < -1024 || sMant > 1023)
+        return 0;
+
+    if(bExp < -16 || bExp > 15)
+        return 0;
+
+    uint16_t usExp = bExp << 11;
+    uint16_t usMant = sMant & 0x07FF;
 
     return lt7182s_pmbus_write_word(ubCommand, usExp | usMant);
 }
 static uint8_t lt7182s_pmbus_write_ul16(uint8_t ubCommand, float fData)
 {
+    if(fData < 0.f || fData > 16.f)
+        return 0;
+
     uint16_t usData = (uint16_t)(fData * 4096.f);
 
     return lt7182s_pmbus_write_word(ubCommand, usData);
@@ -110,7 +192,7 @@ static float lt7182s_pmbus_read_l11(uint8_t ubCommand)
     if(usTemp & BIT(10))
         sMant = -1 * (sMant ^ 0x3FF) - 1;
 
-    return (float)sMant * powf(2, bExp);
+    return (float)sMant * lt7182s_pow2(bExp);
 }
 static float lt7182s_pmbus_read_ul16(uint8_t ubCommand)
 {
