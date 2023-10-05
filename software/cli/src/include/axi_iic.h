@@ -72,12 +72,15 @@
 #define AXI_IIC_REG_TX_FIFO_START BIT(8)
 #define AXI_IIC_REG_TX_FIFO_STOP  BIT(9)
 
+#define AXI_IIC_NORMAL 0
+#define AXI_IIC_FAST 1
+
 #define AXI_IIC_RESTART 0
 #define AXI_IIC_STOP 1
 
 extern void *pAXIIICBase[AXI_IIC_NUM_INSTANCES];
 
-void axi_iic_init(void *pBase);
+void axi_iic_init(void *pBase, uint64_t ullInputFrequency, uint8_t ubMode);
 uint8_t axi_iic_transmit(void *pBase, uint8_t ubAddress, uint8_t *pubSrc, uint8_t ubCount, uint8_t ubStop);
 static inline uint8_t axi_iic_write(void *pBase, uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
 {
@@ -103,9 +106,10 @@ static inline uint8_t axi_iic_read_byte(void *pBase, uint8_t ubAddress, uint8_t 
 void axi_iic_gpo_set_value(void *pBase, uint8_t ubGPO, uint8_t ubValue);
 uint8_t axi_iic_gpo_get_value(void *pBase, uint8_t ubGPO);
 
-static inline void axi_iic0_init()
+#define AXI_IIC0_CODEC_RSTn_BIT      0 // BIT  0: CODEC_RSTn
+static inline void axi_iic0_init(uint64_t ullInputFrequency, uint8_t ubMode)
 {
-    axi_iic_init(pAXIIICBase[0]);
+    axi_iic_init(pAXIIICBase[0], ullInputFrequency, ubMode);
 }
 static inline uint8_t axi_iic0_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint8_t ubCount, uint8_t ubStop)
 {
@@ -136,9 +140,11 @@ static inline uint8_t axi_iic0_gpo_get_value(uint8_t ubGPO)
     return axi_iic_gpo_get_value(pAXIIICBase[0], ubGPO);
 }
 
-static inline void axi_iic1_init()
+#define AXI_IIC1_GPO_PM_I2C_EN_BIT      0 // BIT  0: PM_I2C_EN
+#define AXI_IIC1_GPO_CLK_MNGR_OEn_BIT   1 // BIT  1: CLK_MNGR_OEn
+static inline void axi_iic1_init(uint64_t ullInputFrequency, uint8_t ubMode)
 {
-    axi_iic_init(pAXIIICBase[1]);
+    axi_iic_init(pAXIIICBase[1], ullInputFrequency, ubMode);
 }
 static inline uint8_t axi_iic1_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint8_t ubCount, uint8_t ubStop)
 {

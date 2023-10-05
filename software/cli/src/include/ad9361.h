@@ -2834,13 +2834,13 @@
 *    Driver
 */
 
-enum rx_gain_table_type
+enum ad9361_rx_gain_table_type
 {
     RXGAIN_FULL_TBL,
     RXGAIN_SPLIT_TBL,
 };
 
-enum rx_gain_table_name
+enum ad9361_rx_gain_table_name
 {
     TBL_200_1300_MHZ,
     TBL_1300_4000_MHZ,
@@ -2848,7 +2848,7 @@ enum rx_gain_table_name
     RXGAIN_TBLS_END,
 };
 
-struct gain_table_info
+struct ad9361_gain_table_info
 {
     uint64_t start;
     uint64_t end;
@@ -2858,7 +2858,7 @@ struct gain_table_info
     uint8_t(*tab)[3];
 };
 
-enum fir_dest
+enum ad9361_fir_dest
 {
     FIR_TX1 = 0x01,
     FIR_TX2 = 0x02,
@@ -2869,13 +2869,13 @@ enum fir_dest
     FIR_IS_RX = 0x80,
 };
 
-struct rf_gain_ctrl
+struct ad9361_rf_gain_ctrl
 {
     uint32_t ant;
     uint8_t mode;
 };
 
-enum rf_gain_ctrl_mode
+enum ad9361_rf_gain_ctrl_mode
 {
     RF_GAIN_MGC,
     RF_GAIN_FASTATTACK_AGC,
@@ -2883,7 +2883,7 @@ enum rf_gain_ctrl_mode
     RF_GAIN_HYBRID_AGC
 };
 
-enum f_agc_target_gain_index_type
+enum ad9361_fagc_target_gain_index_type
 {
     MAX_GAIN,
     SET_GAIN,
@@ -2891,10 +2891,10 @@ enum f_agc_target_gain_index_type
     NO_GAIN_CHANGE,
 };
 
-struct gain_control
+struct ad9361_gain_control
 {
-    enum rf_gain_ctrl_mode rx1_mode;
-    enum rf_gain_ctrl_mode rx2_mode;
+    enum ad9361_rf_gain_ctrl_mode rx1_mode;
+    enum ad9361_rf_gain_ctrl_mode rx2_mode;
 
     /* Common */
     uint8_t adc_ovr_sample_size; /* 1..8 Sum x samples, AGC_CONFIG_3 */
@@ -2970,7 +2970,7 @@ struct gain_control
     bool f_agc_gain_increase_after_gain_lock_en; /* 0x110:7  */
     /* Fast AGC - Unlocking the Gain */
     /* 0 = MAX Gain, 1 = Set Gain, 2 = Optimized Gain */
-    enum f_agc_target_gain_index_type f_agc_gain_index_type_after_exit_rx_mode; /* 0x110:[4,2]  */
+    enum ad9361_fagc_target_gain_index_type f_agc_gain_index_type_after_exit_rx_mode; /* 0x110:[4,2]  */
     bool f_agc_use_last_lock_level_for_set_gain_en; /* 0x111:7 */
     uint8_t f_agc_optimized_gain_offset;    /*0x116 0..15 steps */
     bool f_agc_rst_gla_stronger_sig_thresh_exceeded_en; /* 0x110:~6 */
@@ -2984,12 +2984,12 @@ struct gain_control
     bool f_agc_rst_gla_en_agc_pulled_high_en;
     /* 0 = Max Gain, 1 = Set Gain, 2 = Optimized Gain, 3 = No Gain Change */
 
-    enum f_agc_target_gain_index_type f_agc_rst_gla_if_en_agc_pulled_high_mode; /* 0x0FB, 0x111 */
+    enum ad9361_fagc_target_gain_index_type f_agc_rst_gla_if_en_agc_pulled_high_mode; /* 0x0FB, 0x111 */
     uint8_t f_agc_power_measurement_duration_in_state5; /* 0x109, 0x10a RX samples 0..524288*/
     uint8_t f_agc_large_overload_inc_steps; /* 0x106 [D6:D4] 0..7 */
 };
 
-struct auxdac_control
+struct ad9361_auxdac_control
 {
     uint16_t dac1_default_value;
     uint16_t dac2_default_value;
@@ -3010,7 +3010,7 @@ struct auxdac_control
     uint8_t dac2_tx_delay_us;
 };
 
-enum rssi_restart_mode
+enum ad9361_rssi_restart_mode
 {
     AGC_IN_FAST_ATTACK_MODE_LOCKS_THE_GAIN,
     EN_AGC_PIN_IS_PULLED_HIGH,
@@ -3020,18 +3020,18 @@ enum rssi_restart_mode
     GAIN_CHANGE_OCCURS_OR_EN_AGC_PIN_PULLED_HIGH,
 };
 
-struct rssi_control
+struct ad9361_rssi_control
 {
-    enum rssi_restart_mode restart_mode;
+    enum ad9361_rssi_restart_mode restart_mode;
     bool rssi_unit_is_rx_samples;    /* default unit is time */
     uint32_t rssi_delay;
     uint32_t rssi_wait;
     uint32_t rssi_duration;
 };
 
-struct rx_gain_info
+struct ad9361_rx_gain_info
 {
-    enum rx_gain_table_type tbl_type;
+    enum ad9361_rx_gain_table_type tbl_type;
     int32_t starting_gain_db;
     int32_t max_gain_db;
     int32_t gain_step_db;
@@ -3039,7 +3039,7 @@ struct rx_gain_info
     int32_t idx_step_offset;
 };
 
-struct port_control
+struct ad9361_data_port_control
 {
     uint8_t            pp_conf[3];
     uint8_t            rx_clk_data_delay;
@@ -3049,13 +3049,13 @@ struct port_control
     uint8_t            lvds_invert[2];
 };
 
-struct ctrl_outs_control
+struct ad9361_ctrl_out_control
 {
     uint8_t            index;
     uint8_t            en_mask;
 };
 
-struct elna_control
+struct ad9361_elna_control
 {
     uint16_t            gain_mdB;
     uint16_t            bypass_loss_mdB;
@@ -3065,7 +3065,7 @@ struct elna_control
     bool                elna_in_gaintable_all_index_en;
 };
 
-struct auxadc_control
+struct ad9361_auxadc_control
 {
     int8_t              offset;
     uint32_t            temp_time_inteval_ms;
@@ -3075,7 +3075,7 @@ struct auxadc_control
     uint32_t            auxadc_decimation;
 };
 
-struct gpo_control
+struct ad9361_gpo_control
 {
     uint32_t gpo_manual_mode_enable_mask;
     bool gpo_manual_mode_en;
@@ -3101,7 +3101,7 @@ struct gpo_control
     uint8_t gpo3_tx_delay_us;
 };
 
-struct tx_monitor_control
+struct ad9361_tx_mon_control
 {
     bool tx_mon_track_en;
     bool one_shot_mode_en;
@@ -3193,18 +3193,18 @@ struct ad9361_phy_platform_data
 
     enum ad9361_clkout   ad9361_clkout_mode;
 
-    struct gain_control       gain_ctrl;
-    struct rssi_control       rssi_ctrl;
-    struct port_control       port_ctrl;
-    struct ctrl_outs_control  ctrl_outs_ctrl;
-    struct elna_control       elna_ctrl;
-    struct auxadc_control     auxadc_ctrl;
-    struct auxdac_control     auxdac_ctrl;
-    struct gpo_control        gpo_ctrl;
-    struct tx_monitor_control txmon_ctrl;
+    struct ad9361_gain_control       gain_ctrl;
+    struct ad9361_rssi_control       rssi_ctrl;
+    struct ad9361_data_port_control       port_ctrl;
+    struct ad9361_ctrl_out_control  ctrl_outs_ctrl;
+    struct ad9361_elna_control       elna_ctrl;
+    struct ad9361_auxadc_control     auxadc_ctrl;
+    struct ad9361_auxdac_control     auxdac_ctrl;
+    struct ad9361_gpo_control        gpo_ctrl;
+    struct ad9361_tx_mon_control txmon_ctrl;
 };
 
-struct rf_rx_gain
+struct ad9361_rf_rx_gain
 {
     uint32_t ant;        /* Antenna number to read gain */
     int32_t gain_db;        /* gain value in dB */
@@ -3218,7 +3218,7 @@ struct rf_rx_gain
     uint32_t mixer_index;        /* MIXER Index (Split GT mode only) */
 
 };
-struct rf_rssi
+struct ad9361_rf_rssi
 {
     uint32_t ant;        /* Antenna number for which RSSI is reported */
     uint32_t symbol;        /* Runtime RSSI */
@@ -3227,7 +3227,7 @@ struct rf_rssi
     uint8_t duration;        /* Duration to be considered for measuring */
 };
 
-struct SynthLUT
+struct ad9361_synth_lut
 {
     uint16_t VCO_MHz;
     uint8_t VCO_Output_Level;
@@ -3278,16 +3278,6 @@ enum ad9361_clocks
     EXT_REF_CLK,
 };
 
-struct ad9361_debugfs_entry
-{
-    struct ad9361_rf_phy* phy;
-    const char* propname;
-    void* out_value;
-    uint32_t val;
-    uint8_t size;
-    uint8_t cmd;
-};
-
 struct ad9361_fastlock_entry
 {
 #define FASTLOOK_INIT    1
@@ -3303,16 +3293,6 @@ struct ad9361_fastlock
     struct ad9361_fastlock_entry entry[2][8];
 };
 
-enum dig_tune_flags
-{
-    BE_VERBOSE = 1,
-    BE_MOREVERBOSE = 2,
-    DO_IDELAY = 4,
-    DO_ODELAY = 8,
-    SKIP_STORE_RESULT = 16,
-    RESTORE_DEFAULT = 32,
-};
-
 enum ad9361_bist_mode
 {
     BIST_DISABLE,
@@ -3320,14 +3300,14 @@ enum ad9361_bist_mode
     BIST_INJ_RX,
 };
 
-enum synth_pd_ctrl
+enum ad9361_synth_pd_ctrl
 {
     LO_DONTCARE,
     LO_OFF,
     LO_ON,
 };
 
-enum dev_id
+enum ad9361_dev_id
 {
     ID_AD9361,
     ID_AD9364,
@@ -3336,20 +3316,13 @@ enum dev_id
 
 struct ad9361_rf_phy
 {
-    enum dev_id                      dev_sel;
-    // struct no_os_spi_desc* spi;
-    // struct no_os_gpio_desc* gpio_desc_resetb;
-    // struct no_os_gpio_desc* gpio_desc_sync;
-    // struct no_os_gpio_desc* gpio_desc_cal_sw1;
-    // struct no_os_gpio_desc* gpio_desc_cal_sw2;
-    struct axi_adc*                  rx_adc;
-    struct axi_dac*                  tx_dac;
-    struct ad9361_clk*                clk_refin;
-    struct ad9361_clk*                clks[NUM_AD9361_CLKS];
-    struct refclk_scale*             ref_clk_scale[NUM_AD9361_CLKS];
-    uint32_t(*ad9361_rfpll_ext_recalc_rate)(struct refclk_scale* clk_priv);
-    int32_t(*ad9361_rfpll_ext_round_rate)(struct refclk_scale* clk_priv, uint32_t rate);
-    int32_t(*ad9361_rfpll_ext_set_rate)(struct refclk_scale* clk_priv, uint32_t rate);
+    enum ad9361_dev_id                      dev_sel;
+    struct ad9361_clk*               clk_refin;
+    struct ad9361_clk*               clks[NUM_AD9361_CLKS];
+    struct ad9361_clk_scale*             ref_clk_scale[NUM_AD9361_CLKS];
+    uint32_t(*ad9361_rfpll_ext_recalc_rate)(struct ad9361_clk_scale* clk_priv);
+    int32_t(*ad9361_rfpll_ext_round_rate)(struct ad9361_clk_scale* clk_priv, uint32_t rate);
+    int32_t(*ad9361_rfpll_ext_set_rate)(struct ad9361_clk_scale* clk_priv, uint32_t rate);
     struct ad9361_phy_platform_data* pdata;
     uint8_t                          prev_ensm_state;
     uint8_t                          curr_ensm_state;
@@ -3358,7 +3331,7 @@ struct ad9361_rf_phy
     uint8_t                          cached_synth_pd[2];
     int32_t                          tx_quad_lpf_tia_match;
     uint32_t                         current_table;
-    struct gain_table_info*          gt_info;
+    struct ad9361_gain_table_info*          gt_info;
     bool                             ensm_pin_ctl_en;
     bool                             auto_cal_en;
     bool                             manual_tx_quad_cal_en;
@@ -3398,8 +3371,6 @@ struct ad9361_rf_phy
     uint32_t                         tx1_atten_cached;
     uint32_t                         tx2_atten_cached;
     struct ad9361_fastlock           fastlock;
-    struct axiadc_converter*         adc_conv;
-    struct axiadc_state*             adc_state;
     int32_t                          bist_loopback_mode;
     int32_t                          bist_config;
     enum ad9361_bist_mode            bist_prbs_mode;
@@ -3410,10 +3381,8 @@ struct ad9361_rf_phy
     bool                             bbpll_initialized;
 };
 
-struct refclk_scale
+struct ad9361_clk_scale
 {
-    //struct no_os_spi_desc* spi;
-    struct ad9361_rf_phy*  phy;
     uint32_t               mult;
     uint32_t               div;
     enum ad9361_clocks     source;
@@ -3426,93 +3395,84 @@ struct ad9361_clk
     uint32_t    rate;
 };
 
-enum debugfs_cmd
-{
-    DBGFS_NONE,
-    DBGFS_INIT,
-    DBGFS_LOOPBACK,
-    DBGFS_BIST_PRBS,
-    DBGFS_BIST_TONE,
-    DBGFS_BIST_DT_ANALYSIS,
-    DBGFS_RXGAIN_1,
-    DBGFS_RXGAIN_2,
-};
+extern struct ad9361_rf_phy *g_pAD9361Phy;
 
 int32_t ad9361_spi_readm(uint32_t reg, uint8_t* rbuf, uint32_t num);
 int32_t ad9361_spi_read(uint32_t reg);
-int32_t ad9361_reg_read(struct ad9361_rf_phy* phy, uint32_t reg, uint32_t* val);
+int32_t ad9361_reg_read(uint32_t reg, uint32_t* val);
 int32_t ad9361_spi_write(uint32_t reg, uint32_t val);
-int32_t ad9361_reg_write(struct ad9361_rf_phy* phy, uint32_t reg, uint32_t val);
-int32_t ad9361_reset(struct ad9361_rf_phy* phy);
-int32_t ad9361_register_clocks(struct ad9361_rf_phy* phy);
-int32_t ad9361_unregister_clocks(struct ad9361_rf_phy* phy);
-uint32_t ad9361_gt(struct ad9361_rf_phy* phy);
-int32_t ad9361_init_gain_tables(struct ad9361_rf_phy* phy);
-int32_t ad9361_setup(struct ad9361_rf_phy* phy);
-int32_t ad9361_post_setup(struct ad9361_rf_phy* phy);
-int32_t ad9361_set_ensm_mode(struct ad9361_rf_phy* phy, bool fdd, bool pinctrl);
-int32_t ad9361_ensm_set_state(struct ad9361_rf_phy* phy, uint8_t ensm_state, bool pinctrl);
-int32_t ad9361_set_rx_gain(struct ad9361_rf_phy* phy, uint32_t rx_id, struct rf_rx_gain* rx_gain);
-int32_t ad9361_get_rx_gain(struct ad9361_rf_phy* phy, uint32_t rx_id, struct rf_rx_gain* rx_gain);
-int32_t ad9361_update_rf_bandwidth(struct ad9361_rf_phy* phy, uint32_t rf_rx_bw, uint32_t rf_tx_bw);
-int32_t ad9361_calculate_rf_clock_chain(struct ad9361_rf_phy* phy, uint32_t tx_sample_rate, uint32_t rate_gov, uint32_t* rx_path_clks, uint32_t* tx_path_clks);
-int32_t ad9361_set_trx_clock_chain(struct ad9361_rf_phy* phy, uint32_t* rx_path_clks, uint32_t* tx_path_clks);
-int32_t ad9361_get_trx_clock_chain(struct ad9361_rf_phy* phy, uint32_t* rx_path_clks, uint32_t* tx_path_clks);
+int32_t ad9361_reg_write(uint32_t reg, uint32_t val);
+int32_t ad9361_reset();
+uint32_t ad9361_clk_get_rate(struct ad9361_clk_scale* clk_priv);
+int32_t ad9361_clk_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate);
+int32_t ad9361_register_clocks();
+int32_t ad9361_unregister_clocks();
+uint32_t ad9361_gt();
+int32_t ad9361_init_gain_tables();
+int32_t ad9361_setup();
+int32_t ad9361_set_ensm_mode(bool fdd, bool pinctrl);
+int32_t ad9361_ensm_set_state(uint8_t ensm_state, bool pinctrl);
+int32_t ad9361_set_rx_gain(uint32_t rx_id, struct ad9361_rf_rx_gain* rx_gain);
+int32_t ad9361_get_rx_gain(uint32_t rx_id, struct ad9361_rf_rx_gain* rx_gain);
+int32_t ad9361_update_rf_bandwidth(uint32_t rf_rx_bw, uint32_t rf_tx_bw);
+int32_t ad9361_calculate_rf_clock_chain(uint32_t tx_sample_rate, uint32_t rate_gov, uint32_t* rx_path_clks, uint32_t* tx_path_clks);
+int32_t ad9361_set_trx_clock_chain(uint32_t* rx_path_clks, uint32_t* tx_path_clks);
+int32_t ad9361_get_trx_clock_chain(uint32_t* rx_path_clks, uint32_t* tx_path_clks);
 uint32_t ad9361_to_clk(uint64_t freq);
 uint64_t ad9361_from_clk(uint32_t freq);
-int32_t ad9361_read_rssi(struct ad9361_rf_phy* phy, struct rf_rssi* rssi);
-int32_t ad9361_set_gain_ctrl_mode(struct ad9361_rf_phy* phy, struct rf_gain_ctrl* gain_ctrl);
-int32_t ad9361_load_fir_filter_coef(struct ad9361_rf_phy* phy, enum fir_dest dest, int32_t gain_dB, uint32_t ntaps, short* coef);
-int32_t ad9361_validate_enable_fir(struct ad9361_rf_phy* phy);
-int32_t ad9361_set_tx_atten(struct ad9361_rf_phy* phy, uint32_t atten_mdb, bool tx1, bool tx2, bool immed);
-int32_t ad9361_get_tx_atten(struct ad9361_rf_phy* phy, uint32_t tx_num);
-uint32_t ad9361_clk_factor_recalc_rate(struct refclk_scale* clk_priv, uint32_t parent_rate);
-int32_t ad9361_clk_factor_round_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t* prate);
-int32_t ad9361_clk_factor_set_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
-uint32_t ad9361_bbpll_recalc_rate(struct refclk_scale* clk_priv, uint32_t parent_rate);
-int32_t ad9361_bbpll_round_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t* prate);
-int32_t ad9361_bbpll_set_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
-uint32_t ad9361_rfpll_int_recalc_rate(struct refclk_scale* clk_priv, uint32_t parent_rate);
-int32_t ad9361_rfpll_int_round_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t* prate);
-int32_t ad9361_rfpll_int_set_rate(struct refclk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
-uint32_t ad9361_rfpll_dummy_recalc_rate(struct refclk_scale* clk_priv);
-int32_t ad9361_rfpll_dummy_set_rate(struct refclk_scale* clk_priv, uint32_t rate);
-uint32_t ad9361_rfpll_recalc_rate(struct refclk_scale* clk_priv);
-int32_t ad9361_rfpll_round_rate(struct refclk_scale* clk_priv, uint32_t rate);
-int32_t ad9361_rfpll_set_rate(struct refclk_scale* clk_priv, uint32_t rate);
-int32_t ad9361_clk_mux_set_parent(struct refclk_scale* clk_priv, uint8_t index);
-int32_t ad9361_tracking_control(struct ad9361_rf_phy* phy, bool bbdc_track, bool rfdc_track, bool rxquad_track);
-int32_t ad9361_bist_loopback(struct ad9361_rf_phy* phy, int32_t mode);
-void ad9361_get_bist_loopback(struct ad9361_rf_phy* phy, int32_t* mode);
-int32_t ad9361_bist_prbs(struct ad9361_rf_phy* phy, enum ad9361_bist_mode mode);
-void ad9361_get_bist_prbs(struct ad9361_rf_phy* phy, enum ad9361_bist_mode* mode);
-int32_t ad9361_bist_tone(struct ad9361_rf_phy* phy, enum ad9361_bist_mode mode, uint32_t freq_Hz, uint32_t level_dB, uint32_t mask);
-void ad9361_get_bist_tone(struct ad9361_rf_phy* phy, enum ad9361_bist_mode* mode, uint32_t* freq_Hz, uint32_t* level_dB, uint32_t* mask);
-int32_t ad9361_rf_port_setup(struct ad9361_rf_phy* phy, bool is_out, uint32_t rx_inputs, uint32_t txb);
-int32_t ad9361_mcs(struct ad9361_rf_phy* phy, int32_t step);
-int32_t ad9361_do_calib_run(struct ad9361_rf_phy* phy, uint32_t cal, int32_t arg);
-int32_t ad9361_fastlock_store(struct ad9361_rf_phy* phy, bool tx, uint32_t profile);
-int32_t ad9361_fastlock_recall(struct ad9361_rf_phy* phy, bool tx, uint32_t profile);
-int32_t ad9361_fastlock_load(struct ad9361_rf_phy* phy, bool tx, uint32_t profile, uint8_t* values);
-int32_t ad9361_fastlock_save(struct ad9361_rf_phy* phy, bool tx, uint32_t profile, uint8_t* values);
-void ad9361_ensm_force_state(struct ad9361_rf_phy* phy, uint8_t ensm_state);
-uint8_t ad9361_ensm_get_state(struct ad9361_rf_phy* phy);
-void ad9361_ensm_restore_state(struct ad9361_rf_phy* phy, uint8_t ensm_state);
-void ad9361_ensm_restore_prev_state(struct ad9361_rf_phy* phy);
-int32_t ad9361_set_trx_clock_chain_freq(struct ad9361_rf_phy* phy, uint32_t freq);
-int32_t ad9361_find_opt(uint8_t* field, uint32_t size, uint32_t* ret_start);
-int32_t ad9361_hdl_loopback(struct ad9361_rf_phy* phy, bool enable);
-int32_t ad9361_dig_interface_timing_analysis(struct ad9361_rf_phy* phy, char* buf, int32_t buflen);
-int32_t ad9361_dig_tune(struct ad9361_rf_phy* phy, uint32_t max_freq, enum dig_tune_flags flags);
-int32_t ad9361_en_dis_tx(struct ad9361_rf_phy* phy, uint32_t tx_if, uint32_t enable);
-int32_t ad9361_en_dis_rx(struct ad9361_rf_phy* phy, uint32_t rx_if, uint32_t enable);
-int32_t ad9361_1rx1tx_channel_map(struct ad9361_rf_phy* phy, bool tx, int32_t channel);
-int32_t ad9361_rssi_gain_step_calib(struct ad9361_rf_phy* phy);
-int32_t ad9361_set_dcxo_tune(struct ad9361_rf_phy* phy, uint32_t coarse, uint32_t fine);
-int32_t ad9361_tx_mute(struct ad9361_rf_phy* phy, uint32_t state);
-uint32_t ad9361_validate_rf_bw(struct ad9361_rf_phy* phy, uint32_t bw);
-int32_t ad9361_get_temp(struct ad9361_rf_phy* phy);
-int ad9361_synth_lo_powerdown(struct ad9361_rf_phy* phy, enum synth_pd_ctrl rx, enum synth_pd_ctrl tx);
-void ad9361_clear_state(struct ad9361_rf_phy* phy);
+int32_t ad9361_read_rssi(struct ad9361_rf_rssi* rssi);
+int32_t ad9361_set_gain_ctrl_mode(struct ad9361_rf_gain_ctrl* gain_ctrl);
+int32_t ad9361_load_fir_filter_coef(enum ad9361_fir_dest dest, int32_t gain_dB, uint32_t ntaps, short* coef);
+int32_t ad9361_validate_enable_fir();
+int32_t ad9361_set_tx_atten(uint32_t atten_mdb, bool tx1, bool tx2, bool immed);
+int32_t ad9361_get_tx_atten(uint32_t tx_num);
+uint32_t ad9361_clk_factor_recalc_rate(struct ad9361_clk_scale* clk_priv, uint32_t parent_rate);
+int32_t ad9361_clk_factor_round_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t* prate);
+int32_t ad9361_clk_factor_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
+uint32_t ad9361_bbpll_recalc_rate(struct ad9361_clk_scale* clk_priv, uint32_t parent_rate);
+int32_t ad9361_bbpll_round_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t* prate);
+int32_t ad9361_bbpll_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
+uint32_t ad9361_rfpll_int_recalc_rate(struct ad9361_clk_scale* clk_priv, uint32_t parent_rate);
+int32_t ad9361_rfpll_int_round_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t* prate);
+int32_t ad9361_rfpll_int_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate, uint32_t parent_rate);
+uint32_t ad9361_rfpll_dummy_recalc_rate(struct ad9361_clk_scale* clk_priv);
+int32_t ad9361_rfpll_dummy_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate);
+uint32_t ad9361_rfpll_recalc_rate(struct ad9361_clk_scale* clk_priv);
+int32_t ad9361_rfpll_round_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate);
+int32_t ad9361_rfpll_set_rate(struct ad9361_clk_scale* clk_priv, uint32_t rate);
+int32_t ad9361_clk_mux_set_parent(struct ad9361_clk_scale* clk_priv, uint8_t index);
+int32_t ad9361_tracking_control(bool bbdc_track, bool rfdc_track, bool rxquad_track);
+int32_t ad9361_bist_loopback(int32_t mode);
+void ad9361_get_bist_loopback(int32_t* mode);
+int32_t ad9361_bist_prbs(enum ad9361_bist_mode mode);
+void ad9361_get_bist_prbs(enum ad9361_bist_mode* mode);
+int32_t ad9361_bist_tone(enum ad9361_bist_mode mode, uint32_t freq_Hz, uint32_t level_dB, uint32_t mask);
+void ad9361_get_bist_tone(enum ad9361_bist_mode* mode, uint32_t* freq_Hz, uint32_t* level_dB, uint32_t* mask);
+int32_t ad9361_rf_port_setup(bool is_out, uint32_t rx_inputs, uint32_t txb);
+int32_t ad9361_mcs(int32_t step);
+int32_t ad9361_do_calib_run(uint32_t cal, int32_t arg);
+int32_t ad9361_fastlock_store(bool tx, uint32_t profile);
+int32_t ad9361_fastlock_recall(bool tx, uint32_t profile);
+int32_t ad9361_fastlock_load(bool tx, uint32_t profile, uint8_t* values);
+int32_t ad9361_fastlock_save(bool tx, uint32_t profile, uint8_t* values);
+void ad9361_ensm_force_state(uint8_t ensm_state);
+uint8_t ad9361_ensm_get_state();
+void ad9361_ensm_restore_state(uint8_t ensm_state);
+void ad9361_ensm_restore_prev_state();
+int32_t ad9361_set_trx_clock_chain_freq(uint32_t freq);
+int32_t ad9361_en_dis_tx(uint32_t tx_if, uint32_t enable);
+int32_t ad9361_en_dis_rx(uint32_t rx_if, uint32_t enable);
+int32_t ad9361_1rx1tx_channel_map(bool tx, int32_t channel);
+int32_t ad9361_rssi_gain_step_calib();
+int32_t ad9361_set_dcxo_tune(uint32_t coarse, uint32_t fine);
+int32_t ad9361_tx_mute(bool mute);
+uint32_t ad9361_validate_rf_bw(uint32_t bw);
+int32_t ad9361_get_temp();
+int ad9361_synth_lo_powerdown(enum ad9361_synth_pd_ctrl rx, enum ad9361_synth_pd_ctrl tx);
+void ad9361_clear_state();
+int32_t ad9361_gpo_set(uint8_t gpo, uint8_t val);
+int32_t ad9361_gpo_get(uint8_t gpo);
+int32_t ad9361_auxdac_set(int32_t dac, int32_t val_mV);
+int32_t ad9361_auxdac_get(int32_t dac);
 
 #endif //__AD9361_H__

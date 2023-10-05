@@ -11,200 +11,19 @@
 #include "axi_gpio.h"
 #include "axi_quad_spi.h"
 #include "axi_iic.h"
+#include "axi_xadc.h"
 #include "axi_dmac.h"
-#include "axi_adc_core.h"
-#include "axi_dac_core.h"
+#include "axi_ad9361.h"
 #include "ad9361_api.h"
 #include "si5351.h"
+#include "r8v97003.h"
 #include "debug_macros.h"
 #include "utils.h"
 
-/*
-void spi_init(void *pBase)
-{
-    // Reset
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x40) = 0x0000000A;
-
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x60) = BIT(7) | BIT(6) | BIT(5) | BIT(2) | BIT(1);
-}
-void spi_select(void *pBase, uint8_t ubSelect)
-{
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x70) = ubSelect ? 0 : BIT(0);
-}
-uint8_t spi_xfer(void *pBase, uint8_t ubData)
-{
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x60) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x60)) | BIT(6); // Clear RX FIFO
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x68) = ubData;
-
-    while((*(volatile uint32_t*)((uintptr_t)pBase + 0x64)) & BIT(0)) // Wait for RX FIFO to be not empty
-        usleep(0);
-
-    return (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x6C));
-}
-
-void i2c_init(void *pBase)
-{
-    // Reset
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x040) = 0x0000000A;
-
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x120) = 0x0000000F;
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x100) = ((*(volatile uint32_t*)((uintptr_t)pBase + 0x100)) & ~(BIT(6) | BIT(0))) | BIT(1);
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x100) = ((*(volatile uint32_t*)((uintptr_t)pBase + 0x100)) & ~(BIT(6) | BIT(1))) | BIT(0);
-
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x020) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020)); // Clear IRQs
-}
-uint8_t i2c_transmit(void *pBase, uint8_t ubAddress, uint8_t *pubSrc, uint8_t ubCount, uint8_t ubStop)
-{
-    uint32_t ulFlags;
-
-    if(!ubCount)
-        return 0;
-
-    // DBGPRINTLN_CTX("status %02X, intr %02X", (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x104)), (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x020)));
-
-    if(((*(volatile uint32_t*)((uintptr_t)pBase + 0x104)) & BIT(2)) && !((*(volatile uint32_t*)((uintptr_t)pBase + 0x020)) & BIT(2))) // Bus busy and not owner
-        return 0;
-
-    // DBGPRINTLN_CTX("bus ok");
-
-    if(!((*(volatile uint32_t*)((uintptr_t)pBase + 0x104)) & BIT(7))) // Clear TX FIFO
-    {
-        *(volatile uint32_t*)((uintptr_t)pBase + 0x100) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x100)) | BIT(1);
-        *(volatile uint32_t*)((uintptr_t)pBase + 0x100) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x100)) & ~BIT(1);
-    }
-
-    // DBGPRINTLN_CTX("tx fifo cleared");
-
-    while(!((*(volatile uint32_t*)((uintptr_t)pBase + 0x104)) & BIT(6))) // Clear RX FIFO
-        (void)(*(volatile uint32_t*)((uintptr_t)pBase + 0x10C));
-
-    // DBGPRINTLN_CTX("rx fifo cleared");
-    // DBGPRINTLN_CTX("status %02X", (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x104)));
-
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x020) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020)); // Clear IRQs
-    // DBGPRINTLN_CTX("irq cleared, intr %02X", (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x020)));
-
-    *(volatile uint32_t*)((uintptr_t)pBase + 0x108) = BIT(8) | ubAddress;
-    // DBGPRINTLN_CTX("addr written");
-
-    ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-
-    if(ubAddress & 1) // Read
-    {
-        *(volatile uint32_t*)((uintptr_t)pBase + 0x108) = (ubStop ? BIT(9) : 0) | ubCount;
-    }
-    else
-    {
-        while(ulFlags & BIT(4))
-        {
-            *(volatile uint32_t*)((uintptr_t)pBase + 0x020) = ulFlags & BIT(4);
-            ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-
-            usleep(0);
-        }
-
-        // DBGPRINTLN_CTX("not busy irq cleared, intr %02X", (uint8_t)ulFlags);
-    }
-
-    do
-    {
-        if(ubAddress & 1) // Read
-        {
-            // DBGPRINTLN_CTX("wait for rx data (%hhu), status %02X", ubCount, (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x104)));
-
-            while((*(volatile uint32_t*)((uintptr_t)pBase + 0x104)) & BIT(6))
-            {
-                ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-
-                if(ulFlags & (BIT(1) | BIT(0)))
-                    return 0; // Early read termination OR Arbitration lost
-
-                usleep(0);
-            }
-
-            *pubSrc++ = (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x10C));
-        }
-        else // Write
-        {
-            // DBGPRINTLN_CTX("wait for tx empty or error");
-
-            while(!((*(volatile uint32_t*)((uintptr_t)pBase + 0x104)) & BIT(7)))
-            {
-                ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-
-                if(ulFlags & (BIT(1) | BIT(0)))
-                    return 0; // Slave NACK OR Arbitration lost
-
-                usleep(0);
-            }
-
-            *(volatile uint32_t*)((uintptr_t)pBase + 0x020) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020)) & BIT(2);
-
-            // DBGPRINTLN_CTX("tx throttle irq cleared, intr %02X", (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x020)));
-
-            // DBGPRINTLN_CTX("write tx data (%hhu), stop %hhu", ubCount, ubStop);
-
-            *(volatile uint32_t*)((uintptr_t)pBase + 0x108) = ((ubCount == 1 && ubStop) ? BIT(9) : 0) | *pubSrc++;
-        }
-    } while(--ubCount);
-
-    if(ubAddress & 1) // Read
-        *(volatile uint32_t*)((uintptr_t)pBase + 0x020) = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020)) & BIT(4); // Clear NOT_BUSY IRQ, so that if we encounter it set again it is really not busy
-
-    while(1)
-    {
-        ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-
-        if(ulFlags & BIT(0))
-            return 0; // Arbitration lost
-
-        if(!(ubAddress & 1) && (ulFlags & BIT(1)))
-            return 0; // Slave NACK
-
-        if(ubStop && (ulFlags & BIT(4)))
-            break; // Stop was requested and bus is free, we are done!
-
-        if(!ubStop && !(ubAddress & 1) && (ulFlags & BIT(2)))
-            break; // No stop was requested and bus is throttled by the master, waiting for another transaction, we are done!
-
-        if(!ubStop && (ubAddress & 1))
-            break; // No stop was requested and we already read all the bytes we wanted, no need to wait for the bus to be free, we are done!
-
-        usleep(0);
-
-        ulFlags = (*(volatile uint32_t*)((uintptr_t)pBase + 0x020));
-    }
-
-    // DBGPRINTLN_CTX("status %02X, intr %02X", (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x104)), (uint8_t)(*(volatile uint32_t*)((uintptr_t)pBase + 0x020)));
-
-    return 1;
-}
-uint8_t i2c_write(void *pBase, uint8_t ubAddress, uint8_t *pubSrc, uint8_t ubCount, uint8_t ubStop)
-{
-    return i2c_transmit(pBase, (ubAddress << 1) & ~0x01, pubSrc, ubCount, ubStop);
-}
-uint8_t i2c_read(void *pBase, uint8_t ubAddress, uint8_t *pubDst, uint8_t ubCount, uint8_t ubStop)
-{
-    return i2c_transmit(pBase, (ubAddress << 1) | 0x01, pubDst, ubCount, ubStop);
-}
-uint8_t i2c_write_byte(void *pBase, uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
-{
-    return i2c_transmit(pBase, (ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
-}
-uint8_t i2c_read_byte(void *pBase, uint8_t ubAddress, uint8_t ubStop)
-{
-    uint8_t ubData;
-
-    if(!i2c_transmit(pBase, (ubAddress << 1) | 0x01, &ubData, 1, ubStop))
-        return 0;
-
-    return ubData;
-}
-*/
-
-
 void *pAXIFlashMap;
 void *pAXIFlashBase;
+void *pAXIBRAMMap;
+void *pAXIBRAMBase;
 void *pAXIDDRMap;
 void *pAXIDDRBase;
 void *pAXIPeriphMap;
@@ -212,23 +31,10 @@ void *pAXIPeriphBase;
 void *pAXIGPIOBase[AXI_GPIO_NUM_INSTANCES];
 void *pAXIQuadSPIBase[AXI_QUAD_SPI_NUM_INSTANCES];
 void *pAXIIICBase[AXI_IIC_NUM_INSTANCES];
+void *pAXIXADCBase;
+void *pAXIAD9361Base;
 int iDeviceFile;
 
-
-struct axi_adc_init rx_adc_init =
-{
-	.name = "cf-ad9361-lpc",
-	.base = NULL, // To be initialized later
-	.num_channels = 4,
-};
-struct axi_dac_init tx_dac_init =
-{
-	.name = "cf-ad9361-dds-core-lpc",
-	.base = NULL, // To be initialized later
-	.num_channels = 4,
-    .channels = NULL,
-	.rate = 3,
-};
 
 struct axi_dmac_init rx_dmac_init =
 {
@@ -278,8 +84,8 @@ AD9361_InitParam trx_init =
     .ensm_enable_pin_pulse_mode_enable = 0,
     .ensm_enable_txnrx_control_enable = 0,
     /* LO Control */
-    .rx_synthesizer_frequency_hz = 100000000UL, // 100 MHz
-    .tx_synthesizer_frequency_hz = 2400000000UL, // 2.4 GHz
+    .rx_synthesizer_frequency_hz = 98000000UL, // 98 MHz
+    .tx_synthesizer_frequency_hz = 100000000UL, // 100 MHz
     .tx_lo_powerdown_managed_enable = 1,
     /* Rate & BW Control */
     .rx_path_clock_frequencies = {983040000, 245760000, 122880000, 61440000, 30720000, 30720000}, // BBPLL, ADC, R2CLK, R1CLK, CLKRF, RSAMPL
@@ -287,7 +93,7 @@ AD9361_InitParam trx_init =
     .rf_rx_bandwidth_hz = 20000000, // 20 MHz
     .rf_tx_bandwidth_hz = 20000000, // 20 MHz
     /* RF Port Control */
-    .rx_rf_port_input_select = 0,
+    .rx_rf_port_input_select = 2,
     .tx_rf_port_input_select = 0,
     /* TX Attenuation Control */
     .tx_attenuation_mdB = 10000, // 10 dB
@@ -409,7 +215,7 @@ AD9361_InitParam trx_init =
     .elna_rx2_gpo1_control_enable = 0,
     .elna_gaintable_all_index_enable = 0,
     /* Digital Interface Control */
-    .digital_interface_tune_skip_mode = 0,
+    .digital_interface_tune_skip_mode = 0, // Set to 0 and let calibration run
     .digital_interface_tune_fir_disable = 1,
     .pp_tx_swap_enable = 1,
     .pp_rx_swap_enable = 1,
@@ -430,9 +236,9 @@ AD9361_InitParam trx_init =
     .full_port_enable = 1,
     .full_duplex_swap_bits_enable = 0,
     .delay_rx_data = 0,
-    .rx_data_clock_delay = 0,
+    .rx_data_clock_delay = 9, // Set from calibration run
     .rx_data_delay = 0,
-    .tx_fb_clock_delay = 0,
+    .tx_fb_clock_delay = 11, // Set from calibration run
     .tx_data_delay = 0,
     .lvds_bias_mV = 150,
     .lvds_rx_onchip_termination_enable = 0,
@@ -479,10 +285,6 @@ AD9361_InitParam trx_init =
     .ad9361_rfpll_ext_recalc_rate = NULL,
     .ad9361_rfpll_ext_round_rate = NULL,
     .ad9361_rfpll_ext_set_rate = NULL,
-
-    /* AXI ADC and DAC */
-    .rx_adc_init = &rx_adc_init,
-    .tx_dac_init = &tx_dac_init,
 };
 AD9361_RXFIRConfig rx_fir_config =
 {	// BPF PASSBAND 3/20 fs to 1/4 fs
@@ -538,29 +340,96 @@ AD9361_TXFIRConfig tx_fir_config =
 	{0, 0, 0, 0, 0, 0}, // tx_path_clks[6]
 	0 // tx_bandwidth
 };
-struct ad9361_rf_phy *ad9361_phy;
 
 void trx_test()
 {
-	ad9361_init(&ad9361_phy, &trx_init);
+	ad9361_init(&trx_init);
 
-    ad9361_tx_lo_powerdown(ad9361_phy, OFF);
+    //DBGPRINTLN_CTX("gpo0 state: %hhu", ad9361_gpo_get(0));
+    //ad9361_gpo_set(0, 1);
+    //DBGPRINTLN_CTX("gpo0 state: %hhu", ad9361_gpo_get(0));
 
-    // char buf[1024];
+    ad9361_tx_lo_powerdown(OFF);
 
-    // memset(buf, 0, sizeof(buf));
+    // Channel 1
+    axi_ad9361_dac_dds_set_frequency(0, 0, 125000000ULL, 2000000UL);
+    axi_ad9361_dac_dds_set_phase(0, 0, 90000);
+    axi_ad9361_dac_dds_set_scale(0, 0, 750000);
+    axi_ad9361_dac_dds_set_frequency(1, 0, 125000000ULL, 2000000UL);
+    axi_ad9361_dac_dds_set_phase(1, 0, 0);
+    axi_ad9361_dac_dds_set_scale(1, 0, 750000);
 
-    // if(ad9361_dig_interface_timing_analysis(ad9361_phy, buf, sizeof(buf)) >= 0)
-    //     DBGPRINTLN_CTX("DIGITAL TIMING ANALYSIS:\n%s", buf);
+    axi_ad9361_dac_dds_set_frequency(0, 1, 125000000ULL, 7000000UL);
+    axi_ad9361_dac_dds_set_phase(0, 1, 90000);
+    axi_ad9361_dac_dds_set_scale(0, 1, 250000);
+    axi_ad9361_dac_dds_set_frequency(1, 1, 125000000ULL, 7000000UL);
+    axi_ad9361_dac_dds_set_phase(1, 1, 0);
+    axi_ad9361_dac_dds_set_scale(1, 1, 250000);
 
-	//ad9361_set_tx_fir_config(ad9361_phy, tx_fir_config);
-	//ad9361_set_rx_fir_config(ad9361_phy, rx_fir_config);
+    axi_ad9361_dac_set_data_sel(0, AXI_DAC_DATA_SEL_DDS);
+    axi_ad9361_dac_set_data_sel(1, AXI_DAC_DATA_SEL_DDS);
+
+    // Channel 2
+    axi_ad9361_dac_dds_set_frequency(2, 0, 125000000ULL, 4000000UL);
+    axi_ad9361_dac_dds_set_phase(2, 0, 90000);
+    axi_ad9361_dac_dds_set_scale(2, 0, 750000);
+    axi_ad9361_dac_dds_set_frequency(3, 0, 125000000ULL, 4000000UL);
+    axi_ad9361_dac_dds_set_phase(3, 0, 0);
+    axi_ad9361_dac_dds_set_scale(3, 0, 750000);
+
+    axi_ad9361_dac_dds_set_frequency(2, 1, 125000000ULL, 6000000UL);
+    axi_ad9361_dac_dds_set_phase(2, 1, 90000);
+    axi_ad9361_dac_dds_set_scale(2, 1, 250000);
+    axi_ad9361_dac_dds_set_frequency(3, 1, 125000000ULL, 6000000UL);
+    axi_ad9361_dac_dds_set_phase(3, 1, 0);
+    axi_ad9361_dac_dds_set_scale(3, 1, 250000);
+
+    axi_ad9361_dac_set_data_sel(2, AXI_DAC_DATA_SEL_DDS);
+    axi_ad9361_dac_set_data_sel(3, AXI_DAC_DATA_SEL_DDS);
+
+	//ad9361_set_tx_fir_config(tx_fir_config);
+	//ad9361_set_rx_fir_config(rx_fir_config);
 
     int32_t status = axi_dmac_init(&tx_dmac, &tx_dmac_init);
 	if (status < 0) {
 		printf("axi_dmac_init tx init error: %"PRIi32"\n", status);
 		return;
 	}
+
+    // TX Loopback test for data delay
+    /*
+    for(uint32_t i = 0; i < 65536 * 4 * sizeof(uint16_t); i += sizeof(uint16_t))
+        *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i)) = ((i >> 1) % 16) << 4;
+
+    axi_ad9361_dac_set_data_sel(0, AXI_DAC_DATA_SEL_DMA);
+    axi_ad9361_dac_set_data_sel(1, AXI_DAC_DATA_SEL_DMA);
+    axi_ad9361_dac_set_data_sel(2, AXI_DAC_DATA_SEL_ZERO);
+    axi_ad9361_dac_set_data_sel(3, AXI_DAC_DATA_SEL_ZERO);
+
+    ad9361_bist_loopback(1);
+
+	struct axi_dma_transfer write_transfer =
+    {
+		// Number of bytes to write/read
+		.size = 65536 * 4 * sizeof(uint16_t),
+		// Transfer done flag
+		.transfer_done = 0,
+		// Signal transfer mode
+		.cyclic = NO,
+		// Address of data source
+		.src_addr = (uintptr_t)AXI_MIG_DDR3_BASE,
+		// Address of data destination
+		.dest_addr = 0,
+	};
+
+	axi_dmac_transfer_start(tx_dmac, &write_transfer);
+
+	status = axi_dmac_transfer_wait_completion(tx_dmac, 500);
+	if(status < 0)
+		return;
+    */
+
+   uint32_t dma_samples = 512 * 1024;
 
 	status = axi_dmac_init(&rx_dmac, &rx_dmac_init);
 	if (status < 0) {
@@ -571,7 +440,7 @@ void trx_test()
 	struct axi_dma_transfer read_transfer =
     {
 		// Number of bytes to write/read
-		.size = 65536 * 4 * sizeof(uint16_t),
+		.size = dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(),
 		// Transfer done flag
 		.transfer_done = 0,
 		// Signal transfer mode
@@ -579,19 +448,17 @@ void trx_test()
 		// Address of data source
 		.src_addr = 0,
 		// Address of data destination
-		.dest_addr = (uintptr_t)AXI_MIG_DDR3_BASE
+		.dest_addr = (uintptr_t)AXI_MIG_DDR3_BASE,
 	};
 
-	/* Read the data from the ADC DMA. */
 	axi_dmac_transfer_start(rx_dmac, &read_transfer);
 
-	/* Wait until transfer finishes */
 	status = axi_dmac_transfer_wait_completion(rx_dmac, 500);
 	if(status < 0)
 		return;
 
-    printf("DMA_EXAMPLE: address=%016lX samples=%d channels=%u bits=%u\n",
-	       (uintptr_t)pAXIDDRBase, 65536 * 4, rx_adc_init.num_channels,
+    printf("DMA_EXAMPLE: address=%016lX samples=%u bytes=%lu bits=%u\n",
+	       (uintptr_t)pAXIDDRBase, dma_samples, dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(),
 	       16);
 
     // Export data to a matlab file for FFT analysis
@@ -606,7 +473,7 @@ void trx_test()
 
     fprintf(pFile, "adc_ch0 = [");
 
-    for(uint32_t i = 0; i < 65536 * 4 * sizeof(uint16_t); i += 4 * sizeof(uint16_t))
+    for(uint32_t i = 0; i < dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
     {
         int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i));
 
@@ -617,7 +484,7 @@ void trx_test()
 
     fprintf(pFile, "adc_ch1 = [");
 
-    for(uint32_t i = 0; i < 65536 * 4 * sizeof(uint16_t); i += 4 * sizeof(uint16_t))
+    for(uint32_t i = 0; i < dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
     {
         int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i + 1 * sizeof(uint16_t)));
 
@@ -626,38 +493,165 @@ void trx_test()
 
     fprintf(pFile, "];\n");
 
-    fprintf(pFile, "adc_ch2 = [");
-
-    for(uint32_t i = 0; i < 65536 * 4 * sizeof(uint16_t); i += 4 * sizeof(uint16_t))
+    if(axi_ad9361_get_num_channels() > 2)
     {
-        int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i + 2 * sizeof(uint16_t)));
+        fprintf(pFile, "adc_ch2 = [");
 
-        fprintf(pFile, "%d ", sSample);
+        for(uint32_t i = 0; i < dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+        {
+            int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i + 2 * sizeof(uint16_t)));
+
+            fprintf(pFile, "%d ", sSample);
+        }
+
+        fprintf(pFile, "];\n");
+
+        fprintf(pFile, "adc_ch3 = [");
+
+        for(uint32_t i = 0; i < dma_samples * sizeof(uint16_t) * axi_ad9361_get_num_channels(); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+        {
+            int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i + 3 * sizeof(uint16_t)));
+
+            fprintf(pFile, "%d ", sSample);
+        }
+
+        fprintf(pFile, "];\n");
     }
 
-    fprintf(pFile, "];\n");
+    fprintf(pFile, "\n");
 
-    fprintf(pFile, "adc_ch3 = [");
+    fprintf(pFile, "adc_ch0 = adc_ch0 / 2048;\n");
+    fprintf(pFile, "adc_ch1 = adc_ch1 / 2048;\n");
 
-    for(uint32_t i = 0; i < 65536 * 4 * sizeof(uint16_t); i += 4 * sizeof(uint16_t))
+    if(axi_ad9361_get_num_channels() > 2)
     {
-        int16_t sSample = *((volatile int16_t *)((uintptr_t)pAXIDDRBase + i + 3 * sizeof(uint16_t)));
-
-        fprintf(pFile, "%d ", sSample);
+        fprintf(pFile, "adc_ch2 = adc_ch2 / 2048;\n");
+        fprintf(pFile, "adc_ch3 = adc_ch3 / 2048;\n");
     }
 
-    fprintf(pFile, "];\n");
+    fprintf(pFile, "\n");
+
+    fprintf(pFile, "trx_ch0 = adc_ch0 + j * adc_ch1;\n");
+
+    if(axi_ad9361_get_num_channels() > 2)
+        fprintf(pFile, "trx_ch1 = adc_ch2 + j * adc_ch3;\n");
+
+    fprintf(pFile, "\n");
+
+    uint32_t fs = 0;
+    ad9361_get_rx_sampling_freq(&fs);
+
+    fprintf(pFile, "fs = %u;\n", fs);
+
+    uint64_t fc = 0;
+    ad9361_get_rx_lo_freq(&fc);
+
+    fprintf(pFile, "fc = %lu;\n", fc);
+
+    fprintf(pFile, "\n");
+
+    fprintf(pFile, "X0 = fftshift(fft(trx_ch0) / length(trx_ch0));\n");
+
+    if(axi_ad9361_get_num_channels() > 2)
+        fprintf(pFile, "X1 = fftshift(fft(trx_ch1) / length(trx_ch1));\n");
+
+    fprintf(pFile, "\n");
+
+    fprintf(pFile, "f = linspace(-fs/2, fs/2, length(adc_ch0)) + fc;\n");
+
+    fprintf(pFile, "\n");
+
+    if(axi_ad9361_get_num_channels() > 2)
+    {
+        fprintf(pFile, "subplot 211\n");
+        fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
+        fprintf(pFile, "subplot 212\n");
+        fprintf(pFile, "plot(f, 10 * log10(abs(X1)));\n");
+    }
+    else
+    {
+        fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
+    }
 
     fclose(pFile);
 
     int32_t temp;
 
-    status = ad9361_get_temperature(ad9361_phy, &temp);
+    status = ad9361_get_temperature(&temp);
 
     if(status < 0)
         return;
 
     DBGPRINTLN_CTX("PHY Temperature: %f C", (double)temp / 1000);
+
+    // Timing analysis
+    // uint32_t rates[4] = { 5000000UL, 10000000UL, 20000000UL, 30720000UL };
+
+    // pFile = fopen("timing.txt", "wb");
+
+    // if(pFile == NULL)
+    // {
+    //     printf("Unable to open file!\n");
+
+    //     return;
+    // }
+
+    // char buf[1024];
+
+    // for(uint8_t i = 0; i < ARRAY_SIZE(rates); i++)
+    // {
+    //     ad9361_set_trx_clock_chain_freq(ad9361_phy, rates[i]);
+
+    //     memset(buf, 0, sizeof(buf));
+
+    //     if(ad9361_dig_interface_timing_analysis(ad9361_phy, buf, sizeof(buf)) >= 0)
+    //     {
+    //         fprintf(pFile, "\r\n\r\n%s DIGITAL TIMING ANALYSIS @ %u SPS (%u Hz):\n%s", "RX", rates[i], rates[i] * 2, buf);
+    //     }
+    // }
+
+    // fclose(pFile);
+}
+
+void rv_test()
+{
+    #include "firmware.bin.h"
+
+    DBGPRINTLN_CTX("picorv32 reset: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_RESETN_BIT) ? "no" : "yes");
+    DBGPRINTLN_CTX("picorv32 trap: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_TRAPPED_BIT) ? "yes" : "no");
+
+    for(uint32_t i = 0; i < firmware_bin_len; i++)
+        *(volatile uint8_t*)((uintptr_t)pAXIBRAMBase + i) = firmware_bin[i];
+
+    DBGPRINTLN_CTX("rv32 fw 0: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase));
+    DBGPRINTLN_CTX("rv32 fw max: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase + AXI_BRAM_SIZE - 4));
+
+    axi_gpio2_set_value(AXI_GPIO2_RV32_RESETN_BIT, 1);
+    DBGPRINTLN_CTX("picorv32 reset: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_RESETN_BIT) ? "no" : "yes");
+    DBGPRINTLN_CTX("picorv32 trap: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_TRAPPED_BIT) ? "yes" : "no");
+    DBGPRINTLN_CTX("rv32 next waddr 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase));
+    DBGPRINTLN_CTX("rv32 complete %u", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4));
+
+    uint32_t to = 10000;
+
+    while(--to && !axi_gpio2_get_value(AXI_GPIO2_RV32_TRAPPED_BIT))
+        usleep(1000);
+
+    DBGPRINTLN_CTX("picorv32 reset: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_RESETN_BIT) ? "no" : "yes");
+    DBGPRINTLN_CTX("picorv32 trap: %s", axi_gpio2_get_value(AXI_GPIO2_RV32_TRAPPED_BIT) ? "yes" : "no");
+    DBGPRINTLN_CTX("rv32 next waddr 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase));
+    DBGPRINTLN_CTX("rv32 complete %u", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4));
+
+    uint32_t sz = *(volatile uint32_t*)((uintptr_t)pAXIDDRBase) - (AXI_MIG_DDR3_BASE + 4);
+
+    DBGPRINTLN_CTX("rv32 print size %u", sz);
+
+    DBGPRINTLN("");
+
+    for(uint32_t i = 0; i < sz; i++)
+        DBGPRINT("%c", *(volatile uint8_t*)((uintptr_t)pAXIDDRBase + 4 + i));
+
+    DBGPRINTLN("");
 }
 
 uint8_t icyradio_setup_mmaps()
@@ -693,6 +687,30 @@ uint8_t icyradio_setup_mmaps()
 
     DBGPRINTLN_CTX("AXI Flash Base: 0x%016lX", (uintptr_t)pAXIFlashBase);
 
+    // BRAM region
+    ulMapAddrStart = AXI_BRAM_BASE & ~(ulPageSize - 1);
+    ulMapAddrOffset = AXI_BRAM_BASE & (ulPageSize - 1);
+    ulMapSize = AXI_BRAM_SIZE;
+
+    DBGPRINTLN_CTX("Start Address: 0x%08X", ulMapAddrStart);
+    DBGPRINTLN_CTX("Offset Address: 0x%08X", ulMapAddrOffset);
+    DBGPRINTLN_CTX("Map Size: 0x%08X", ulMapSize);
+
+	pAXIBRAMMap = mmap(NULL, ulMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ulMapAddrStart);
+
+	if(pAXIBRAMMap == MAP_FAILED)
+    {
+        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+
+        munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
+
+        return 0;
+    }
+
+    pAXIBRAMBase = (void *)((uintptr_t)pAXIBRAMMap + ulMapAddrOffset);
+
+    DBGPRINTLN_CTX("AXI BRAM Base: 0x%016lX", (uintptr_t)pAXIBRAMBase);
+
     // DDR region
     ulMapAddrStart = AXI_MIG_DDR3_BASE & ~(ulPageSize - 1);
     ulMapAddrOffset = AXI_MIG_DDR3_BASE & (ulPageSize - 1);
@@ -709,6 +727,7 @@ uint8_t icyradio_setup_mmaps()
         DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
+        munmap(pAXIBRAMMap, AXI_QUAD_SPI0_XIP_SIZE);
 
         return 0;
     }
@@ -733,6 +752,7 @@ uint8_t icyradio_setup_mmaps()
         DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
+        munmap(pAXIBRAMMap, AXI_QUAD_SPI0_XIP_SIZE);
         munmap(pAXIDDRMap, AXI_MIG_DDR3_SIZE);
 
         return 0;
@@ -744,6 +764,7 @@ uint8_t icyradio_setup_mmaps()
 
     pAXIGPIOBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO0_BASE - AXI_PERIPH_BASE));
     pAXIGPIOBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO1_BASE - AXI_PERIPH_BASE));
+    pAXIGPIOBase[2] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO2_BASE - AXI_PERIPH_BASE));
 
     pAXIQuadSPIBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_QUAD_SPI0_BASE - AXI_PERIPH_BASE));
     pAXIQuadSPIBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_QUAD_SPI1_BASE - AXI_PERIPH_BASE));
@@ -752,8 +773,10 @@ uint8_t icyradio_setup_mmaps()
     pAXIIICBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC0_BASE - AXI_PERIPH_BASE));
     pAXIIICBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC1_BASE - AXI_PERIPH_BASE));
 
-    rx_adc_init.base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE));
-    tx_dac_init.base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE) + 0x4000);
+    pAXIXADCBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_XADC_WIZ_BASE - AXI_PERIPH_BASE));
+
+    pAXIAD9361Base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE));
+
     rx_dmac_init.base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_RX_BASE - AXI_PERIPH_BASE));
     tx_dmac_init.base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_TX_BASE - AXI_PERIPH_BASE));
 
@@ -787,30 +810,125 @@ uint8_t icyradio_free_mmaps()
     return 1;
 }
 
-void icyradio_init_clocks()
+uint8_t icyradio_init_clocks()
 {
-    si5351_xtal_config(26000000, 10); // fPFD = XTAL, CLoad = 10 pF
-    //si5351_clkin_config(50000000, 2); // fPFD = CLKIN / 2
+    DBGPRINTLN_CTX("Setup clock manager...");
 
-    DBGPRINTLN_CTX("XTAL Clock: %.3f MHz", (float)SI5351_XTAL_FREQ / 1000000);
-    DBGPRINTLN_CTX("CLKIN Clock: %.3f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
-    DBGPRINTLN_CTX("CLKIN Divided Clock: %.3f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
+    if(!si5351_init())
+    {
+        DBGPRINTLN_CTX("Unable to initialize clock manager!");
+
+        return 0;
+    }
+
+    DBGPRINTLN_CTX("---- Inputs ----");
+    si5351_xtal_config(26000000, 10); // fPFD = XTAL, CLoad = 10 pF
+
+    uint8_t ubStatus = si5351_read_status();
+    uint32_t ulTimeout = 2000;
+
+    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_XO_LOS))
+    {
+        usleep(1000);
+
+        ubStatus = si5351_read_status();
+    }
+
+    if(ubStatus & SI5351_REG_STATUS_XO_LOS)
+    {
+        DBGPRINTLN_CTX("XTAL clock not detected, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("XTAL Clock: %.3f MHz", (float)SI5351_XTAL_FREQ / 1000000);
+    }
+
+    si5351_clkin_config(10000000, 1); // fPFD = CLKIN / 1
+
+    ubStatus = si5351_read_status();
+    ulTimeout = 2000;
+
+    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_XO_LOS))
+    {
+        usleep(1000);
+
+        ubStatus = si5351_read_status();
+    }
+
+    if(ubStatus & SI5351_REG_STATUS_CLKIN_LOS)
+    {
+        DBGPRINTLN_CTX("CLKIN clock not detected!");
+
+        // No problem since we are not using it
+        //return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("CLKIN Clock: %.3f MHz", (float)SI5351_CLKIN_FREQ / 1000000);
+        DBGPRINTLN_CTX("CLKIN Divided Clock: %.3f MHz", (float)SI5351_CLKIN_DIV_FREQ / 1000000);
+    }
 
     //// PLLA
+    DBGPRINTLN_CTX("---- PLL A ----");
+
     si5351_pll_set_source(SI5351_PLLA, SI5351_PLL_SRC_XTAL);
     si5351_pll_set_freq(SI5351_PLLA, 650000000);
 
-    DBGPRINTLN_CTX("PLLA Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLA] / 1000000);
-    DBGPRINTLN_CTX("PLLA VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLA] / 1000000);
+    ubStatus = si5351_read_status();
+    ulTimeout = 2000;
+
+    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_LOL_A))
+    {
+        usleep(1000);
+
+        ubStatus = si5351_read_status();
+    }
+
+    if(ubStatus & SI5351_REG_STATUS_LOL_A)
+    {
+        DBGPRINTLN_CTX("PLLA did not achieve lock, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("PLLA Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLA] / 1000000);
+        DBGPRINTLN_CTX("PLLA VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLA] / 1000000);
+    }
 
     //// PLLB
+    DBGPRINTLN_CTX("---- PLL B ----");
+
     si5351_pll_set_source(SI5351_PLLB, SI5351_PLL_SRC_XTAL);
     si5351_pll_set_freq(SI5351_PLLB, 800000000);
 
-    DBGPRINTLN_CTX("PLLB Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLB] / 1000000);
-    DBGPRINTLN_CTX("PLLB VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLB] / 1000000);
+    ubStatus = si5351_read_status();
+    ulTimeout = 2000;
+
+    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_LOL_B))
+    {
+        usleep(1000);
+
+        ubStatus = si5351_read_status();
+    }
+
+    if(ubStatus & SI5351_REG_STATUS_LOL_B)
+    {
+        DBGPRINTLN_CTX("PLLB did not achieve lock, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("PLLB Source Clock: %.3f MHz", (float)SI5351_PLL_SRC_FREQ[SI5351_PLLB] / 1000000);
+        DBGPRINTLN_CTX("PLLB VCO Clock: %.3f MHz", (float)SI5351_PLL_FREQ[SI5351_PLLB] / 1000000);
+    }
 
     //// FPGA Clock #0
+    DBGPRINTLN_CTX("---- MS #%hhu (FPGA_CLK0) ----", SI5351_FPGA_CLK0);
+
     si5351_multisynth_set_source(SI5351_FPGA_CLK0, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_FPGA_CLK0, 50000000);
     si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK0, 0.f);
@@ -831,26 +949,30 @@ void icyradio_init_clocks()
     si5351_clock_enable(SI5351_FPGA_CLK0); // Software enable the clock output
 
     //// FPGA Clock #1
-    // si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
-    // si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 25000000);
-    // si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 20.f);
+    DBGPRINTLN_CTX("---- MS #%hhu (FPGA_CLK1) ----", SI5351_FPGA_CLK1);
 
-    // DBGPRINTLN_CTX("MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
-    // DBGPRINTLN_CTX("MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
-    // DBGPRINTLN_CTX("MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK1, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK1));
+    si5351_multisynth_set_source(SI5351_FPGA_CLK1, SI5351_MS_SRC_PLLA);
+    si5351_multisynth_set_freq(SI5351_FPGA_CLK1, 49152000);
+    si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK1, 20.f);
 
-    // si5351_clock_set_disable_state(SI5351_FPGA_CLK1, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
-    // si5351_clock_set_drive_current(SI5351_FPGA_CLK1, 8); // 8 mA
-    // si5351_clock_set_invert(SI5351_FPGA_CLK1, 0); // Not inverted
-    // si5351_clock_set_source(SI5351_FPGA_CLK1, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
-    // si5351_clock_set_output_divider(SI5351_FPGA_CLK1, 1); // Divide by 1 at the output
+    DBGPRINTLN_CTX("MS%hhu Source Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_SRC_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("MS%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_MS_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    DBGPRINTLN_CTX("MS%hhu Phase offset: %.1f deg", SI5351_FPGA_CLK1, si5351_multisynth_get_phase_offset(SI5351_FPGA_CLK1));
 
-    // DBGPRINTLN_CTX("CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 1000000);
+    si5351_clock_set_disable_state(SI5351_FPGA_CLK1, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_FPGA_CLK1, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_FPGA_CLK1, 0); // Not inverted
+    si5351_clock_set_source(SI5351_FPGA_CLK1, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_FPGA_CLK1, 1); // Divide by 1 at the output
 
-    // si5351_clock_power_up(SI5351_FPGA_CLK1); // Power the output stage up
-    //si5351_clock_enable(SI5351_FPGA_CLK1); // Software enable the clock output
+    DBGPRINTLN_CTX("CLK%hhu Clock: %.3f MHz", SI5351_FPGA_CLK1, (float)SI5351_CLK_FREQ[SI5351_FPGA_CLK1] / 1000000);
+
+    si5351_clock_power_up(SI5351_FPGA_CLK1); // Power the output stage up
+    si5351_clock_enable(SI5351_FPGA_CLK1); // Software enable the clock output
 
     //// FPGA Clock #2
+    //DBGPRINTLN_CTX("---- MS #%hhu (FPGA_CLK2) ----", SI5351_FPGA_CLK2);
+
     // si5351_multisynth_set_source(SI5351_FPGA_CLK2, SI5351_MS_SRC_PLLA);
     // si5351_multisynth_set_freq(SI5351_FPGA_CLK2, 25000000);
     // si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK2, 30.f);
@@ -871,6 +993,8 @@ void icyradio_init_clocks()
     //si5351_clock_enable(SI5351_FPGA_CLK2); // Software enable the clock output
 
     //// FPGA Clock #3
+    //DBGPRINTLN_CTX("---- MS #%hhu (FPGA_CLK3) ----", SI5351_FPGA_CLK3);
+
     // si5351_multisynth_set_source(SI5351_FPGA_CLK3, SI5351_MS_SRC_PLLA);
     // si5351_multisynth_set_freq(SI5351_FPGA_CLK3, 25000000);
     // si5351_multisynth_set_phase_offset(SI5351_FPGA_CLK3, 40.f);
@@ -891,6 +1015,8 @@ void icyradio_init_clocks()
     //si5351_clock_enable(SI5351_FPGA_CLK3); // Software enable the clock output
 
     //// Transceiver Reference clock
+    DBGPRINTLN_CTX("---- MS #%hhu (TRX_REF_CLK) ----", SI5351_TRX_REF_CLK);
+
     si5351_multisynth_set_source(SI5351_TRX_REF_CLK, SI5351_MS_SRC_PLLB);
     si5351_multisynth_set_freq(SI5351_TRX_REF_CLK, 40000000);
     si5351_multisynth_set_phase_offset(SI5351_TRX_REF_CLK, 80.f);
@@ -911,6 +1037,8 @@ void icyradio_init_clocks()
     si5351_clock_enable(SI5351_TRX_REF_CLK); // Software enable the clock output
 
     //// mmWave Synthesizer Reference clock
+    DBGPRINTLN_CTX("---- MS #%hhu (SYNTH_REF_CLK) ----", SI5351_SYNTH_REF_CLK);
+
     si5351_multisynth_set_source(SI5351_SYNTH_REF_CLK, SI5351_MS_SRC_PLLA);
     si5351_multisynth_set_freq(SI5351_SYNTH_REF_CLK, 50000000);
     si5351_multisynth_set_phase_offset(SI5351_SYNTH_REF_CLK, 100.f);
@@ -931,6 +1059,8 @@ void icyradio_init_clocks()
     si5351_clock_enable(SI5351_SYNTH_REF_CLK); // Software enable the clock output
 
     //// External clock output (on frontend interface pin 2_3)
+    //DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_2_3) ----", SI5351_EXT_CLK_2_3);
+
     // si5351_multisynth_set_source(SI5351_EXT_CLK_2_3, SI5351_MS_SRC_PLLB);
     // si5351_multisynth_set_freq(SI5351_EXT_CLK_2_3, 10000000);
     // si5351_multisynth_set_phase_offset(SI5351_EXT_CLK_2_3, 0.f);
@@ -951,6 +1081,8 @@ void icyradio_init_clocks()
     // si5351_clock_enable(SI5351_EXT_CLK_2_3); // Software enable the clock output
 
     //// External clock output (on u.FL connector)
+    DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_OUT) ----", SI5351_EXT_CLK_OUT);
+
     si5351_multisynth_set_source(SI5351_EXT_CLK_OUT, SI5351_MS_SRC_PLLB);
     si5351_multisynth_set_freq(SI5351_EXT_CLK_OUT, 10000000);
     si5351_multisynth_set_phase_offset(SI5351_EXT_CLK_OUT, 0.f);
@@ -970,17 +1102,264 @@ void icyradio_init_clocks()
     si5351_clock_power_up(SI5351_EXT_CLK_OUT); // Power the output stage up
     si5351_clock_enable(SI5351_EXT_CLK_OUT); // Software enable the clock output
 
+    DBGPRINTLN_CTX("Waiting for all clocks to stabilize...");
     usleep(100000);
 
     //// Global output enable
-    axi_iic1_gpo_set_value(1, 0);
+    axi_iic1_gpo_set_value(AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 0);
 
-    usleep(100000);
+    DBGPRINTLN_CTX("Clock manager global output enabled: %s", axi_iic1_gpo_get_value(1) ? "no" : "yes");
+
+    // Check clk_wiz_0 lock
+    ulTimeout = 2000;
+
+    while(--ulTimeout && !axi_gpio2_get_value(AXI_GPIO2_CLK_WIZ0_LOCKED_BIT))
+        usleep(1000);
+
+    if(!axi_gpio2_get_value(AXI_GPIO2_CLK_WIZ0_LOCKED_BIT))
+    {
+        DBGPRINTLN_CTX("FPGA clk_wiz_0 MMCM did not achieve lock (possible issue with FPGA_CLK0), aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("FPGA clk_wiz_0 MMCM locked!");
+    }
+
+    // Check DDR3 controller MMCM lock
+    ulTimeout = 2000;
+
+    while(--ulTimeout && !axi_gpio2_get_value(AXI_GPIO2_MIG_MMCM_LOCKED_BIT))
+        usleep(1000);
+
+    if(!axi_gpio2_get_value(AXI_GPIO2_MIG_MMCM_LOCKED_BIT))
+    {
+        DBGPRINTLN_CTX("FPGA DDR3 MMCM (mig_7series_0) did not achieve lock, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("FPGA DDR3 MMCM locked!");
+    }
+
+    // Check PCIe MMCM lock
+    // ulTimeout = 2000;
+
+    // while(--ulTimeout && !axi_gpio2_get_value(AXI_GPIO2_PCIE_MMCM_LOCKED_BIT))
+    //     usleep(1000);
+
+    // if(!axi_gpio2_get_value(AXI_GPIO2_PCIE_MMCM_LOCKED_BIT))
+    // {
+    //     DBGPRINTLN_CTX("FPGA PCIe MMCM (axi_pcie_0) did not achieve lock (how did we get here?), aborting!");
+
+    //     return 0;
+    // }
+    // else
+    // {
+    //     DBGPRINTLN_CTX("FPGA PCIe MMCM locked!");
+    // }
+
+    return 1;
+}
+uint8_t icyradio_deinit_clocks()
+{
+    // First, reset the DDR3 AXI interface
+    DBGPRINTLN_CTX("Resetting DDR3 AXI interface...");
+
+    axi_gpio2_set_value(AXI_GPIO2_RST_MIG_166M_AUX_RESET_IN_BIT, 1);
+
+    uint32_t ulTimeout = 2000;
+
+    while(--ulTimeout && axi_gpio2_get_value(AXI_GPIO2_RST_MIG_166M_PERI_ARESETn_BIT))
+        usleep(1000);
+
+    if(axi_gpio2_get_value(AXI_GPIO2_RST_MIG_166M_PERI_ARESETn_BIT))
+    {
+        DBGPRINTLN_CTX("Could not reset DDR3 AXI interface, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("DDR3 AXI interface reset!");
+    }
+
+    // Then reset the DDR3 core
+    DBGPRINTLN_CTX("Resetting DDR3 core...");
+
+    axi_gpio2_set_value(AXI_GPIO2_RST_CLK_WIZ0_250M_AUX_RESET_IN_BIT, 1);
+
+    ulTimeout = 2000;
+
+    while(--ulTimeout && axi_gpio2_get_value(AXI_GPIO2_RST_CLK_WIZ0_250M_PERI_ARESETn_BIT))
+        usleep(1000);
+
+    if(axi_gpio2_get_value(AXI_GPIO2_RST_CLK_WIZ0_250M_PERI_ARESETn_BIT))
+    {
+        DBGPRINTLN_CTX("Could not reset DDR3 core, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("DDR3 core reset, DDR3 MMCM is %s!", axi_gpio2_get_value(AXI_GPIO2_MIG_MMCM_LOCKED_BIT) ? "locked (how?)" : "unlocked");
+    }
+
+    // Disable clock manager output
+    axi_iic1_gpo_set_value(AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1);
+
+    DBGPRINTLN_CTX("Clock manager global output disabled, clk_wiz_0 MMCM is %s!", axi_gpio2_get_value(AXI_GPIO2_CLK_WIZ0_LOCKED_BIT) ? "locked (how?)" : "unlocked");
+
+    return 1;
 }
 
-void icyradio_memtest()
+uint8_t icyradio_system_reset()
 {
+    uint8_t ubCLKMngrOutStatus = !axi_iic1_gpo_get_value(AXI_IIC1_GPO_CLK_MNGR_OEn_BIT);
+    uint8_t ubCLKWIZ0Locked = axi_gpio2_get_value(AXI_GPIO2_CLK_WIZ0_LOCKED_BIT);
+    uint8_t ubDDRSrcStatus = axi_gpio2_get_value(AXI_GPIO2_RST_CLK_WIZ0_250M_PERI_ARESETn_BIT);
+    uint8_t ubDDR3MMCMLocked = axi_gpio2_get_value(AXI_GPIO2_MIG_MMCM_LOCKED_BIT);
+    uint8_t ubDDRAXIStatus = axi_gpio2_get_value(AXI_GPIO2_RST_MIG_166M_PERI_ARESETn_BIT);
+
+    if(ubCLKMngrOutStatus)
+    {
+        DBGPRINTLN_CTX("Clock manager global output is enabled!");
+
+        if(ubCLKWIZ0Locked && ubDDRSrcStatus && ubDDR3MMCMLocked && ubDDRAXIStatus)
+        {
+            DBGPRINTLN_CTX("DDR3 is properly out of reset, looks like the system was left initialized");
+
+            if(!icyradio_deinit_clocks())
+            {
+                DBGPRINTLN_CTX("Could not de-initialize clocks, aborting!");
+
+                return 0;
+            }
+
+            DBGPRINTLN_CTX("Initiating system reset...");
+
+            // This will clear the two DDR3 reset bits set previously!
+            axi_gpio2_set_value(AXI_GPIO2_SYS_AUX_RESET_BIT, 1);
+            usleep(100000); // Do not access anything while it's resetting, otherwise the ENTIRE SYSTEM will hang!
+
+            if(axi_gpio2_get_value(AXI_GPIO2_RST_MIG_166M_AUX_RESET_IN_BIT) || axi_gpio2_get_value(AXI_GPIO2_RST_CLK_WIZ0_250M_AUX_RESET_IN_BIT))
+            {
+                DBGPRINTLN_CTX("DDR3 reset bits did not de-assert (how?), system reset failed, aborting!");
+
+                return 0;
+            }
+            else
+            {
+                DBGPRINTLN_CTX("System reset complete!");
+            }
+        }
+        else
+        {
+            DBGPRINTLN_CTX("DDR3 is not correctly out of reset, looks like the system was left in an invalid state (clk_mngr_oe: %s, clk_wiz_0: %s, rst_clk_wiz_0_250M: %s, mig_mmcm: %s, rst_mig_166M: %s), aborting!", ubCLKMngrOutStatus ? "yes" : "no", ubCLKWIZ0Locked ? "locked" : "unlocked", ubDDRSrcStatus ? "de-asserted" : "asserted", ubDDR3MMCMLocked ? "locked" : "unlocked", ubDDRAXIStatus ? "de-asserted" : "asserted");
+            DBGPRINTLN_CTX("Please perform a power cycle to properly reset the system");
+
+            return 0;
+        }
+    }
+    else
+    {
+        if(!ubCLKWIZ0Locked && !ubDDRSrcStatus && !ubDDR3MMCMLocked && !ubDDRAXIStatus)
+        {
+            DBGPRINTLN_CTX("DDR3 is properly reset, looks like the system was left uninitialized");
+            DBGPRINTLN_CTX("Initiating system reset...");
+
+            axi_gpio2_set_value(AXI_GPIO2_SYS_AUX_RESET_BIT, 1);
+            usleep(100000); // Do not access anything while it's resetting, otherwise the ENTIRE SYSTEM will hang!
+
+            if(axi_gpio2_get_value(AXI_GPIO2_SYS_AUX_RESET_BIT))
+            {
+                DBGPRINTLN_CTX("System reset bit did not de-assert (how?), system reset failed, aborting!");
+
+                return 0;
+            }
+            else
+            {
+                DBGPRINTLN_CTX("System reset complete!");
+            }
+        }
+        else if(!ubCLKWIZ0Locked && !ubDDR3MMCMLocked)
+        {
+            DBGPRINTLN_CTX("DDR3 clocks are not locked, but resets are not properly asserted, looks like the system was left in an invalid state (clk_mngr_oe: %s, clk_wiz_0: %s, rst_clk_wiz_0_250M: %s, mig_mmcm: %s, rst_mig_166M: %s), aborting!", ubCLKMngrOutStatus ? "yes" : "no", ubCLKWIZ0Locked ? "locked" : "unlocked", ubDDRSrcStatus ? "de-asserted" : "asserted", ubDDR3MMCMLocked ? "locked" : "unlocked", ubDDRAXIStatus ? "de-asserted" : "asserted");
+            DBGPRINTLN_CTX("Please perform a power cycle to properly reset the system");
+
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+uint8_t icyradio_ddr3_memtest(uint8_t ubFull)
+{
+    uint32_t ulTimeout = 10000;
+
+    while(--ulTimeout && !axi_gpio2_get_value(AXI_GPIO2_MIG_INIT_CALIB_COMPLETE_BIT))
+        usleep(1000);
+
+    if(!axi_gpio2_get_value(AXI_GPIO2_MIG_INIT_CALIB_COMPLETE_BIT))
+    {
+        DBGPRINTLN_CTX("DDR3 initialization and calibration did not complete in time, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("MIG initialization and calibration completed successfully!");
+    }
+
+    // Basic read/write at first and last address
+    DBGPRINTLN_CTX("DDR First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000));
+    DBGPRINTLN_CTX("DDR Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4));
+
+    *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000) = 0x5A5A5A5A;
+    *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4) = 0xA5A5A5A5;
+
+    DBGPRINTLN_CTX("DDR First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000));
+    DBGPRINTLN_CTX("DDR Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4));
+
     clock_t start, end;
+    uint32_t sum = 0;
+
+    // DBGPRINTLN_CTX("Speed test - Write Bytes");
+    // start = clock();
+    // for(uint32_t i = 0; i < 32 * 1024 * 1024; i++)
+    //     *(volatile uint8_t*)((uintptr_t)pAXIDDRBase + i) = i & 0xFF;
+    // end = clock();
+    // DBGPRINTLN_CTX("Speed test - Write Bytes 32 MB took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (32.f * 1024 * 1024 * 8) / ((double)(end - start) / CLOCKS_PER_SEC) / 1000000.f);
+
+    // DBGPRINTLN_CTX("Speed test - Read Bytes");
+    // sum = 0;
+    // start = clock();
+    // for(uint32_t i = 0; i < 32 * 1024 * 1024; i++)
+    //     sum += *(volatile uint8_t*)((uintptr_t)pAXIDDRBase + i);
+    // end = clock();
+    // DBGPRINTLN_CTX("Speed test - Read Bytes 32 MB took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (32.f * 1024 * 1024 * 8) / ((double)(end - start) / CLOCKS_PER_SEC) / 1000000.f);
+
+    DBGPRINTLN_CTX("Speed test - Write Words");
+    start = clock();
+    for(uint32_t i = 0; i < 8 * 1024 * 1024; i += 4)
+        *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i) = i & 0xFFFFFFFF;
+    end = clock();
+    DBGPRINTLN_CTX("Speed test - Write Words 32 MB took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (32.f * 1024 * 1024 * 8) / ((double)(end - start) / CLOCKS_PER_SEC) / 1000000.f);
+
+    DBGPRINTLN_CTX("Speed test - Read Words");
+    sum = 0;
+    start = clock();
+    for(uint32_t i = 0; i < 8 * 1024 * 1024; i += 4)
+        sum += *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i);
+    end = clock();
+    DBGPRINTLN_CTX("Speed test - Read Words 32 MB took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (32.f * 1024 * 1024 * 8) / ((double)(end - start) / CLOCKS_PER_SEC) / 1000000.f);
+
+    // Full memory read/write
+    if(!ubFull)
+        return 1;
 
     DBGPRINTLN_CTX("Memory test - 1st stage");
 
@@ -989,19 +1368,19 @@ void icyradio_memtest()
         *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i) = i;
     end = clock();
 
-    DBGPRINTLN_CTX("Memory test - 1st stage write took %f seconds", (double)(end - start) / CLOCKS_PER_SEC);
+    DBGPRINTLN_CTX("Memory test - 1st stage write took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (double)AXI_MIG_DDR3_SIZE / ((double)(end - start) * CLOCKS_PER_SEC) / 1000000 * 8);
 
     start = clock();
     for(uint32_t i = 0; i < AXI_MIG_DDR3_SIZE; i += 4)
-        if((*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i)) != i)
+        if(*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i) != i)
         {
             DBGPRINTLN_CTX("Memory test failed at 0x%08X", i);
 
-            break;
+            return 0;
         }
     end = clock();
 
-    DBGPRINTLN_CTX("Memory test - 1st stage verify took %f seconds", (double)(end - start) / CLOCKS_PER_SEC);
+    DBGPRINTLN_CTX("Memory test - 1st stage verify took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (double)AXI_MIG_DDR3_SIZE / ((double)(end - start) * CLOCKS_PER_SEC) / 1000000 * 8);
 
     DBGPRINTLN_CTX("Memory test - 2nd stage");
 
@@ -1010,7 +1389,7 @@ void icyradio_memtest()
         *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + i) = ~i;
     end = clock();
 
-    DBGPRINTLN_CTX("Memory test - 2nd stage write took %f seconds", (double)(end - start) / CLOCKS_PER_SEC);
+    DBGPRINTLN_CTX("Memory test - 2nd stage write took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (double)AXI_MIG_DDR3_SIZE / ((double)(end - start) * CLOCKS_PER_SEC) / 1000000 * 8);
 
     start = clock();
     for(uint32_t i = 0; i < AXI_MIG_DDR3_SIZE; i += 4)
@@ -1018,11 +1397,13 @@ void icyradio_memtest()
         {
             DBGPRINTLN_CTX("Memory test failed at 0x%08X", i);
 
-            break;
+            return 0;
         }
     end = clock();
 
-    DBGPRINTLN_CTX("Memory test - 2nd stage verify took %f seconds", (double)(end - start) / CLOCKS_PER_SEC);
+    DBGPRINTLN_CTX("Memory test - 2nd stage verify took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (double)AXI_MIG_DDR3_SIZE / ((double)(end - start) * CLOCKS_PER_SEC) / 1000000 * 8);
+
+    return 1;
 }
 
 int main(int argc, char *argv[])
@@ -1052,10 +1433,107 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    DBGPRINTLN_CTX("Device file %s opened", argv[1]);
+    DBGPRINTLN_CTX("Device file %s opened", pszFilPath);
 
     if(!icyradio_setup_mmaps())
+    {
+        DBGPRINTLN_CTX("Unable to setup memory maps");
+
+        close(iDeviceFile);
+
         return 1;
+    }
+
+    DBGPRINTLN_CTX("Memory maps successfully setup");
+
+    if(!icyradio_system_reset())
+    {
+        DBGPRINTLN_CTX("Unable to reset system");
+
+        icyradio_free_mmaps();
+        close(iDeviceFile);
+
+        return 1;
+    }
+
+    // DBGPRINTLN_CTX("O clk_mngr oe? %s", axi_iic1_gpo_get_value(1) ? "no" : "yes");
+    // DBGPRINTLN_CTX("I clk_wiz_0 locked? %s", axi_gpio2_get_value(0) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I mig_7series_0 locked? %s", axi_gpio2_get_value(1) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I axi_pcie_0 locked? %s", axi_gpio2_get_value(2) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I mig_7series_0 init_calib_complete? %s", axi_gpio2_get_value(4) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I axi_pcie_0 user_link_up? %s", axi_gpio2_get_value(5) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I picorv32_0 trap? %s", axi_gpio2_get_value(6) ? "yes" : "no");
+    // DBGPRINTLN_CTX("O CM4_WAKE asserted? %s", axi_gpio2_get_value(16) ? "yes" : "no");
+    // DBGPRINTLN_CTX("I rst_mig_7series_0_166M peripheral_aresetn asserted? %s", axi_gpio2_get_value(24) ? "no" : "yes");
+    // DBGPRINTLN_CTX("I rst_clk_wiz_0_250M peripheral_aresetn asserted? %s", axi_gpio2_get_value(25) ? "no" : "yes");
+    // DBGPRINTLN_CTX("O rst_mig_7series_0_166M aux_reset_in asserted? %s", axi_gpio2_get_value(28) ? "yes" : "no");
+    // DBGPRINTLN_CTX("O rst_clk_wiz_0_250M aux_reset_in asserted? %s", axi_gpio2_get_value(29) ? "yes" : "no");
+    // DBGPRINTLN_CTX("O picorv32_0 resetn asserted? %s", axi_gpio2_get_value(30) ? "no" : "yes");
+    // DBGPRINTLN_CTX("O sys_aux_reset asserted? %s", axi_gpio2_get_value(31) ? "yes" : "no");
+
+    // Init interfaces
+    axi_iic0_init(125000000UL, AXI_IIC_NORMAL);
+    axi_iic1_init(125000000UL, AXI_IIC_NORMAL);
+    //axi_quad_spi0_init(AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST); // Quad PI 0 is used for flash XIP
+    axi_quad_spi1_init(AXI_QUAD_SPI_MODE_1, AXI_QUAD_SPI_MSB_FIRST);
+    axi_quad_spi2_init(AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST);
+
+    DBGPRINTLN_CTX("Interfaces successfully initialized");
+
+    // Init Si5351 clock manager
+    if(!icyradio_init_clocks())
+    {
+        DBGPRINTLN_CTX("Unable to initialize clocks");
+
+        icyradio_free_mmaps();
+        close(iDeviceFile);
+
+        return 1;
+    }
+
+    DBGPRINTLN_CTX("--- Flash QSPI XIP Test ---");
+    DBGPRINTLN_CTX("Flash First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIFlashBase));
+    DBGPRINTLN_CTX("Flash Bitstream Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIFlashBase + 0x20));
+    DBGPRINTLN_CTX("Flash Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIFlashBase + AXI_QUAD_SPI0_XIP_SIZE - 4));
+
+    DBGPRINTLN_CTX("--- BRAM Test ---");
+    DBGPRINTLN_CTX("BRAM First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase));
+    DBGPRINTLN_CTX("BRAM Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase + AXI_BRAM_SIZE - 4));
+
+    *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase + 0x00000000) = 0x5A5A5A5A;
+    *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase + AXI_BRAM_SIZE - 4) = 0xA5A5A5A5;
+
+    DBGPRINTLN_CTX("BRAM First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase));
+    DBGPRINTLN_CTX("BRAM Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIBRAMBase + AXI_BRAM_SIZE - 4));
+
+    DBGPRINTLN_CTX("--- XADC Test ---");
+
+    if(!axi_xadc_init())
+    {
+        DBGPRINTLN_CTX("Unable to initialize XADC");
+
+        icyradio_free_mmaps();
+        close(iDeviceFile);
+
+        return 1;
+    }
+
+    DBGPRINTLN_CTX("XADC Temperature: %.3f C (Max: %.3f C, Min: %.3f C)", axi_xadc_read_temperature(), axi_xadc_read_max_temperature(), axi_xadc_read_min_temperature());
+    DBGPRINTLN_CTX("XADC VCCINT: %.3f V (Max: %.3f V, Min: %.3f V)", axi_xadc_read_vccint(), axi_xadc_read_max_vccint(), axi_xadc_read_min_vccint());
+    DBGPRINTLN_CTX("XADC VCCAUX: %.3f V (Max: %.3f V, Min: %.3f V)", axi_xadc_read_vccaux(), axi_xadc_read_max_vccaux(), axi_xadc_read_min_vccaux());
+    DBGPRINTLN_CTX("XADC VBRAM: %.3f V (Max: %.3f V, Min: %.3f V)", axi_xadc_read_vbram(), axi_xadc_read_max_vbram(), axi_xadc_read_min_vbram());
+
+    // DDR3
+    // icyradio_ddr3_memtest(0);
+
+    // rv_test();
+
+    // mmWave Synthesizer
+    r8v97003_init();
+
+    //DBGPRINTLN_CTX("axi_rf_timestamping reset: %s", axi_gpio0_get_value(AXI_GPIO0_RST_AD9361_61M44_PERI_ARESETn_BIT) ? "no" : "yes");
+    //trx_test();
+    //DBGPRINTLN_CTX("axi_rf_timestamping reset: %s", axi_gpio0_get_value(AXI_GPIO0_RST_AD9361_61M44_PERI_ARESETn_BIT) ? "no" : "yes");
 
     /*
     DBGPRINTLN_CTX("--- Flash SPI Test ---");
@@ -1122,119 +1600,34 @@ int main(int argc, char *argv[])
     spi_select(pBAR0 + 0x00008000, 0);
     */
 
-    DBGPRINTLN_CTX("--- Synth SPI Test ---");
+    /*
+    // DBGPRINTLN_CTX("--- CODEC_I2C Test ---");
+    // axi_iic0_init();
 
-    axi_quad_spi2_init(AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST);
+    // axi_iic0_gpo_set_value(0, 1);
+    // usleep(10000);
 
-    axi_gpio1_set_direction(0, AXI_GPIO_OUTPUT);
-    axi_gpio1_set_direction(31, AXI_GPIO_OUTPUT);
-    axi_gpio1_set_value(0, 1);
-    axi_gpio1_set_value(31, 1);
+    // uint8_t buf[10];
 
-    usleep(10000);
+    // buf[0] = 0x00;
+    // buf[1] = 0x00;
+    // axi_iic0_write(0x3C, buf, 2, 0);
+    // DBGPRINTLN_CTX("ADAU1372 Reg0 before: 0x%02X", axi_iic0_read_byte(0x3C, 1));
 
-    axi_quad_spi2_slave_select(BIT(0), 1);
+    // buf[0] = 0x00;
+    // buf[1] = 0x00;
+    // buf[2] = BIT(4);
+    // axi_iic0_write(0x3C, buf, 3, 1);
 
-    axi_quad_spi2_write_byte(0x00, 0);
-    axi_quad_spi2_write_byte(0x00, 0);
-    axi_quad_spi2_write_byte(BIT(5) | BIT(4) | BIT(3) | BIT(2), 1);
+    // buf[0] = 0x00;
+    // buf[1] = 0x00;
+    // axi_iic0_write(0x3C, buf, 2, 0);
+    // DBGPRINTLN_CTX("ADAU1372 Reg0 after: 0x%02X", axi_iic0_read_byte(0x3C, 1));
 
-    axi_quad_spi2_slave_select(BIT(0), 0);
+    // axi_iic0_gpo_set_value(0, 0);
+    */
 
-    usleep(10000);
-
-    axi_quad_spi2_slave_select(BIT(0), 1);
-
-    axi_quad_spi2_write_byte(BIT(7) | 0x00, 0);
-    axi_quad_spi2_write_byte(0x03, 1);
-    DBGPRINTLN_CTX("Synth ChipType: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-    DBGPRINTLN_CTX("Synth ChipID Low: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-    DBGPRINTLN_CTX("Synth ChipID High: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-    DBGPRINTLN_CTX("Synth ChipVersion: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-    DBGPRINTLN_CTX("Synth ChipOption: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-
-    axi_quad_spi2_slave_select(BIT(0), 0);
-
-    usleep(10000);
-
-    axi_quad_spi2_slave_select(BIT(0), 1);
-
-    axi_quad_spi2_write_byte(BIT(7) | 0x00, 0);
-    axi_quad_spi2_write_byte(0x0C, 1);
-    DBGPRINTLN_CTX("Synth VendorID Low: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-    DBGPRINTLN_CTX("Synth VendorID High: 0x%02X", axi_quad_spi2_transfer_byte(0x00));
-
-    axi_quad_spi2_slave_select(BIT(0), 0);
-
-    axi_gpio1_set_value(0, 0);
-
-    DBGPRINTLN_CTX("--- TRX SPI Test ---");
-
-    axi_quad_spi1_init(AXI_QUAD_SPI_MODE_1, AXI_QUAD_SPI_MSB_FIRST);
-
-    axi_gpio0_set_direction(5, AXI_GPIO_OUTPUT);
-    axi_gpio0_set_direction(31, AXI_GPIO_OUTPUT);
-
-    uint16_t cmd = (0 << 15) | ((((1) - 1) & 0x7) << 12) | ((0x037) & 0x3FF);
-
-    axi_quad_spi1_slave_select(BIT(0), 1);
-
-    axi_quad_spi1_write_byte(cmd >> 8, 0);
-    axi_quad_spi1_write_byte(cmd & 0xFF, 1);
-    DBGPRINTLN_CTX("TRX Product ID Reg: 0x%02X", axi_quad_spi1_transfer_byte(0x00));
-
-    axi_quad_spi1_slave_select(BIT(0), 0);
-
-
-
-    DBGPRINTLN_CTX("--- SYS_I2C Test ---");
-    axi_iic1_init();
-
-    axi_iic1_write_byte(0x60, 0x00, 0);
-    DBGPRINTLN_CTX("Si5351C Status: 0x%02X", axi_iic1_read_byte(0x60, 1));
-
-    si5351_init();
-    icyradio_init_clocks();
-
-    DBGPRINTLN_CTX("--- CODEC_I2C Test ---");
-    axi_iic0_init();
-
-    axi_iic0_gpo_set_value(0, 1);
-    usleep(10000);
-
-    uint8_t buf[10];
-
-    buf[0] = 0x00;
-    buf[1] = 0x00;
-    axi_iic0_write(0x3C, buf, 2, 0);
-    DBGPRINTLN_CTX("ADAU1372 Reg0 before: 0x%02X", axi_iic0_read_byte(0x3C, 1));
-
-    buf[0] = 0x00;
-    buf[1] = 0x00;
-    buf[2] = BIT(4);
-    axi_iic0_write(0x3C, buf, 3, 1);
-
-    buf[0] = 0x00;
-    buf[1] = 0x00;
-    axi_iic0_write(0x3C, buf, 2, 0);
-    DBGPRINTLN_CTX("ADAU1372 Reg0 after: 0x%02X", axi_iic0_read_byte(0x3C, 1));
-
-    axi_iic0_gpo_set_value(0, 0);
-
-    // DDR3
-    DBGPRINTLN_CTX("DDR First Word: 0x%08X", (*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000)));
-    DBGPRINTLN_CTX("DDR Last Word: 0x%08X", (*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x1FFFFFFC)));
-
-    *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000) = 0x5A5A5A5A;
-    *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x1FFFFFFC) = 0xA5A5A5A5;
-
-    DBGPRINTLN_CTX("DDR First Word: 0x%08X", (*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000)));
-    DBGPRINTLN_CTX("DDR Last Word: 0x%08X", (*(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x1FFFFFFC)));
-
-    //icyradio_memtest();
-
-    trx_test();
-
+    icyradio_deinit_clocks();
     icyradio_free_mmaps();
     close(iDeviceFile);
 

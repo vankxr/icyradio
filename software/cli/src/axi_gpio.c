@@ -11,51 +11,43 @@ static uint32_t axi_gpio_reg_read(void *pBase, uint32_t ulRegister)
 
 void axi_gpio_set_direction(void *pBase, uint8_t ubGPIO, uint8_t ubDirection)
 {
-    if(ubGPIO > 63)
+    if(ubGPIO > 31)
         return;
 
-    uint32_t ulReg = ubGPIO > 31 ? AXI_GPIO_REG_GPIO2_TRI : AXI_GPIO_REG_GPIO_TRI;
-
-    uint32_t ulRegValue = axi_gpio_reg_read(pBase, ulReg);
+    uint32_t ulRegValue = axi_gpio_reg_read(pBase, AXI_GPIO_REG_GPIO_IN_MASK);
 
     if(ubDirection == AXI_GPIO_OUTPUT)
-        ulRegValue &= ~BIT(ubGPIO % 32);
+        ulRegValue &= ~BIT(ubGPIO);
     else
-        ulRegValue |= BIT(ubGPIO % 32);
+        ulRegValue |= BIT(ubGPIO);
 
-    axi_gpio_reg_write(pBase, ulReg, ulRegValue);
+    axi_gpio_reg_write(pBase, AXI_GPIO_REG_GPIO_IN_MASK, ulRegValue);
 }
 uint8_t axi_gpio_get_direction(void *pBase, uint8_t ubGPIO)
 {
-    if(ubGPIO > 63)
+    if(ubGPIO > 31)
         return AXI_GPIO_INPUT;
 
-    uint32_t ulReg = ubGPIO > 31 ? AXI_GPIO_REG_GPIO2_TRI : AXI_GPIO_REG_GPIO_TRI;
-
-    return axi_gpio_reg_read(pBase, ulReg) & BIT(ubGPIO % 32) ? AXI_GPIO_INPUT : AXI_GPIO_OUTPUT;
+    return axi_gpio_reg_read(pBase, AXI_GPIO_REG_GPIO_IN_MASK) & BIT(ubGPIO) ? AXI_GPIO_INPUT : AXI_GPIO_OUTPUT;
 }
 void axi_gpio_set_value(void *pBase, uint8_t ubGPIO, uint8_t ubValue)
 {
-    if(ubGPIO > 63)
+    if(ubGPIO > 31)
         return;
 
-    uint32_t ulReg = ubGPIO > 31 ? AXI_GPIO_REG_GPIO2_DATA : AXI_GPIO_REG_GPIO_DATA;
-
-    uint32_t ulRegValue = axi_gpio_reg_read(pBase, ulReg);
+    uint32_t ulRegValue = axi_gpio_reg_read(pBase, AXI_GPIO_REG_GPIO_DATA);
 
     if(ubValue)
-        ulRegValue |= BIT(ubGPIO % 32);
+        ulRegValue |= BIT(ubGPIO);
     else
-        ulRegValue &= ~BIT(ubGPIO % 32);
+        ulRegValue &= ~BIT(ubGPIO);
 
-    axi_gpio_reg_write(pBase, ulReg, ulRegValue);
+    axi_gpio_reg_write(pBase, AXI_GPIO_REG_GPIO_DATA, ulRegValue);
 }
 uint8_t axi_gpio_get_value(void *pBase, uint8_t ubGPIO)
 {
-    if(ubGPIO > 63)
+    if(ubGPIO > 31)
         return 0;
 
-    uint32_t ulReg = ubGPIO > 31 ? AXI_GPIO_REG_GPIO2_DATA : AXI_GPIO_REG_GPIO_DATA;
-
-    return axi_gpio_reg_read(pBase, ulReg) & BIT(ubGPIO % 32) ? 1 : 0;
+    return axi_gpio_reg_read(pBase, AXI_GPIO_REG_GPIO_DATA) & BIT(ubGPIO) ? 1 : 0;
 }

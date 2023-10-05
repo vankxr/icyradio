@@ -63,13 +63,24 @@ static void si5351_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ubVa
 
 uint8_t si5351_init()
 {
+    if(!axi_iic1_write_byte(SI5351_I2C_ADDR, SI5351_REG_STATUS, AXI_IIC_STOP))
+    {
+        DBGPRINTLN_CTX("I2C write failed (is the device present?), aborting");
+
+        return 0;
+    }
+
+    uint8_t ubReg = axi_iic1_read_byte(SI5351_I2C_ADDR, AXI_IIC_STOP);
+
+    DBGPRINTLN_CTX("Found Si5351 Rev %hhu", ubReg & SI5351_REG_STATUS_REVID);
+
     while(si5351_read_status() & SI5351_REG_STATUS_SYS_INIT)
         usleep(0);
 
     si5351_write_register(SI5351_REG_CLK_OEB, 0xFF); // Disable all outputs by software
     si5351_write_register(SI5351_REG_OEB_MASK, 0x00); // Control all output enables via the OEB pad
 
-    axi_iic1_gpo_set_value(1, 1); // Disable all outputs by hardware
+    axi_iic1_gpo_set_value(AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1); // Disable all outputs by hardware
 
     si5351_write_register(SI5351_REG_IRQ_MASK, SI5351_REG_IRQ_MASK_XO_LOS); // Mask XTAL loss IRQ since we are not using it as a source
     si5351_write_register(SI5351_REG_IRQ_FLAGS, 0x00); // Clear all IRQs
@@ -92,15 +103,26 @@ uint8_t si5351_read_revision_id()
 }
 uint8_t si5351_read_status()
 {
-    return si5351_read_register(SI5351_REG_STATUS) & 0xF0;
+    return si5351_read_register(SI5351_REG_STATUS) & 0xF8;
 }
 
 uint8_t si5351_xtal_config(uint32_t ulFrequency, uint8_t ubCapacitance)
 {
-    if(ulFrequency < 25000000UL || ulFrequency > 27000000UL)
-        return 0;
+    // DBGPRINTLN_CTX("Freq: %lu Hz, Cap: %hhu pF", ulFrequency, ubCapacitance);
 
-    SI5351_XTAL_FREQ = ulFrequency;
+    if(ulFrequency < 25000000UL)
+    {
+        DBGPRINTLN_CTX("XTAL frequency too low (Valid: 25-27 MHz)");
+
+        return 0;
+    }
+
+    if(ulFrequency > 27000000UL)
+    {
+        DBGPRINTLN_CTX("XTAL frequency too high (Valid: 25-27 MHz)");
+
+        return 0;
+    }
 
     switch(ubCapacitance)
     {
@@ -114,24 +136,40 @@ uint8_t si5351_xtal_config(uint32_t ulFrequency, uint8_t ubCapacitance)
             si5351_write_register(SI5351_REG_XTAL_CL, SI5351_REG_XTAL_CL_10PF);
         break;
         default:
+            DBGPRINTLN_CTX("Invalid capacitance (Valid: 6, 8, 10 pF)");
+
             return 0;
+        break;
     }
+
+    SI5351_XTAL_FREQ = ulFrequency;
+
+    return 1;
 }
 uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
 {
-    if(!ulFrequency)
-        return 0;
+    // DBGPRINTLN_CTX("Freq: %lu Hz, Div: %hhu", ulFrequency, ubDivider);
 
-    if(!ubDivider)
+    if(ubDivider < 1)
+    {
+        DBGPRINTLN_CTX("Invalid divider (Valid: 1, 2, 4, 8)");
+
         return 0;
+    }
 
     if(ulFrequency / ubDivider < 10000000UL)
+    {
+        DBGPRINTLN_CTX("Divided frequency too low (%u Hz, Valid: 10-40 MHz)", ulFrequency / ubDivider);
+
         return 0;
+    }
 
     if(ulFrequency / ubDivider > 40000000UL)
-        return 0;
+    {
+        DBGPRINTLN_CTX("Divided frequency too high (%u Hz, Valid: 10-40 MHz)", ulFrequency / ubDivider);
 
-    SI5351_CLKIN_FREQ = ulFrequency;
+        return 0;
+    }
 
     switch(ubDivider)
     {
@@ -139,6 +177,7 @@ uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
         {
             si5351_rmw_register(SI5351_REG_PLL_SRC, (uint8_t)~0xC0, SI5351_REG_PLL_SRC_CLKIN_DIV1);
 
+            SI5351_CLKIN_FREQ = ulFrequency;
             SI5351_CLKIN_DIV_FREQ = SI5351_CLKIN_FREQ >> 0;
         }
         break;
@@ -146,6 +185,7 @@ uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
         {
             si5351_rmw_register(SI5351_REG_PLL_SRC, (uint8_t)~0xC0, SI5351_REG_PLL_SRC_CLKIN_DIV2);
 
+            SI5351_CLKIN_FREQ = ulFrequency;
             SI5351_CLKIN_DIV_FREQ = SI5351_CLKIN_FREQ >> 1;
         }
         break;
@@ -153,6 +193,7 @@ uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
         {
             si5351_rmw_register(SI5351_REG_PLL_SRC, (uint8_t)~0xC0, SI5351_REG_PLL_SRC_CLKIN_DIV4);
 
+            SI5351_CLKIN_FREQ = ulFrequency;
             SI5351_CLKIN_DIV_FREQ = SI5351_CLKIN_FREQ >> 2;
         }
         break;
@@ -160,11 +201,15 @@ uint8_t si5351_clkin_config(uint32_t ulFrequency, uint8_t ubDivider)
         {
             si5351_rmw_register(SI5351_REG_PLL_SRC, (uint8_t)~0xC0, SI5351_REG_PLL_SRC_CLKIN_DIV8);
 
+            SI5351_CLKIN_FREQ = ulFrequency;
             SI5351_CLKIN_DIV_FREQ = SI5351_CLKIN_FREQ >> 3;
         }
         break;
         default:
+            DBGPRINTLN_CTX("Invalid divider (Valid: 1, 2, 4, 8)");
+
             return 0;
+        break;
     }
 
     return 1;
@@ -211,57 +256,64 @@ uint8_t si5351_pll_set_source(uint8_t ubPLL, uint8_t ubSource)
 }
 uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
 {
+    // DBGPRINTLN_CTX("PLL: %hhu, Freq: %lu Hz", ubPLL, ulFreq);
+
     if(ubPLL > 1)
         return 0;
 
-    if(ulFreq < 600000000UL || ulFreq > 900000000UL) // VCO limits
-        return 0;
-
-    // fVCO = fPFD * M
-    // M = fVCO / fPFD
-
-    si5351_mixed_number_t *pMultiplier = (si5351_mixed_number_t *)malloc(sizeof(si5351_mixed_number_t));
-
-    memset(pMultiplier, 0, sizeof(si5351_mixed_number_t));
-
-    if(!pMultiplier)
-        return 0;
-
-    si5351_get_mixed_number(ulFreq, SI5351_PLL_SRC_FREQ[ubPLL], pMultiplier);
-
-    if(!pMultiplier->ulDen) // Division by zero, should never happen, unless the previous function failed
+    if(ulFreq < 600000000UL)
     {
-        free(pMultiplier);
+        DBGPRINTLN_CTX("VCO frequency too low (Valid: 600-900 MHz)");
 
         return 0;
     }
 
-    if(pMultiplier->ulInt < 15 || pMultiplier->ulInt > 90) // Integer limits
+    if(ulFreq > 900000000UL)
     {
-        free(pMultiplier);
+        DBGPRINTLN_CTX("VCO frequency too high (Valid: 600-900 MHz)");
 
         return 0;
     }
 
-    if(pMultiplier->ulInt == 90 && pMultiplier->ulNum) // Fractional limits
+    si5351_mixed_number_t xMult;
+
+    memset(&xMult, 0, sizeof(si5351_mixed_number_t));
+
+    si5351_get_mixed_number(ulFreq, SI5351_PLL_SRC_FREQ[ubPLL], &xMult);
+
+    if(!xMult.ulDen) // Division by zero, should never happen, unless the previous function failed
     {
-        free(pMultiplier);
+        DBGPRINTLN_CTX("Division by zero");
 
         return 0;
     }
 
-    if(pMultiplier->ulDen > BIT(20) - 1) // Denominator must fit in 20 bits
+    if(xMult.ulInt < 15 || xMult.ulInt > 90) // Integer limits
     {
-        free(pMultiplier);
+        DBGPRINTLN_CTX("Invalid integer multiplier (%u, Valid: 15-90)", xMult.ulInt);
 
         return 0;
     }
 
-    uint32_t ulP1 = 128 * pMultiplier->ulInt + (uint32_t)((128 * pMultiplier->ulNum) / pMultiplier->ulDen) - 512;
-    uint32_t ulP2 = 128 * pMultiplier->ulNum - pMultiplier->ulDen * (uint32_t)((128 * pMultiplier->ulNum) / pMultiplier->ulDen);
-    uint32_t ulP3 = pMultiplier->ulDen;
+    if(xMult.ulInt == 90 && xMult.ulNum > 0) // Fractional limits
+    {
+        DBGPRINTLN_CTX("Invalid multiplier (%u + (%u / %u), Valid: 15-90 + (0 / 1))", xMult.ulInt, xMult.ulNum, xMult.ulDen);
 
-    if(!pMultiplier->ulNum && !(pMultiplier->ulInt & 1)) // If multiplier is an even integer, turn on integer mode
+        return 0;
+    }
+
+    if(xMult.ulDen > BIT(20) - 1) // Denominator must fit in 20 bits
+    {
+        DBGPRINTLN_CTX("Invalid denominator (%u, Valid: < %lu)", xMult.ulDen, BIT(20));
+
+        return 0;
+    }
+
+    uint32_t ulP1 = 128 * xMult.ulInt + (uint32_t)((128 * xMult.ulNum) / xMult.ulDen) - 512;
+    uint32_t ulP2 = 128 * xMult.ulNum - xMult.ulDen * (uint32_t)((128 * xMult.ulNum) / xMult.ulDen);
+    uint32_t ulP3 = xMult.ulDen;
+
+    if(!xMult.ulNum && !(xMult.ulInt & 1)) // If multiplier is an even integer, turn on integer mode
         si5351_rmw_register(SI5351_REG_CLKn_CFG(6 + ubPLL), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_INT);
     else
         si5351_rmw_register(SI5351_REG_CLKn_CFG(6 + ubPLL), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
@@ -277,9 +329,7 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
 
     si5351_pll_reset(ubPLL);
 
-    SI5351_PLL_FREQ[ubPLL] = SI5351_PLL_SRC_FREQ[ubPLL] * pMultiplier->ulInt + ((SI5351_PLL_SRC_FREQ[ubPLL] * pMultiplier->ulNum) / pMultiplier->ulDen);
-
-    free(pMultiplier);
+    SI5351_PLL_FREQ[ubPLL] = (uint64_t)SI5351_PLL_SRC_FREQ[ubPLL] * xMult.ulInt + (((uint64_t)SI5351_PLL_SRC_FREQ[ubPLL] * xMult.ulNum) / xMult.ulDen);
 
     return 1;
 }
@@ -313,93 +363,107 @@ uint8_t si5351_multisynth_set_source(uint8_t ubMS, uint8_t ubSource)
 }
 uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
 {
+    // DBGPRINTLN_CTX("MS: %hhu, Freq: %lu Hz", ubMS, ulFreq);
+
     if(ubMS > 7)
         return 0;
 
-    if(ulFreq < 666666UL || ulFreq > 200000000UL) // Divider limits
-        return 0;
-
-    // fMS = fVCO / M
-    // M = fVCO / fMS
-
-    si5351_mixed_number_t *pDivider = (si5351_mixed_number_t *)malloc(sizeof(si5351_mixed_number_t));
-
-    memset(pDivider, 0, sizeof(si5351_mixed_number_t));
-
-    if(!pDivider)
-        return 0;
-
-    si5351_get_mixed_number(SI5351_MS_SRC_FREQ[ubMS], ulFreq, pDivider);
-
-    if(!pDivider->ulDen) // Division by zero, should never happen, unless the previous function failed
+    if(ulFreq < 666666UL)
     {
-        free(pDivider);
+        DBGPRINTLN_CTX("Frequency too low (Valid: 666.666-200 MHz)");
+
+        return 0;
+    }
+
+    if(ulFreq > 200000000UL)
+    {
+        DBGPRINTLN_CTX("Frequency too high (Valid: 666.666-200 MHz)");
+
+        return 0;
+    }
+
+    si5351_mixed_number_t xDiv;
+
+    memset(&xDiv, 0, sizeof(si5351_mixed_number_t));
+
+    si5351_get_mixed_number(SI5351_MS_SRC_FREQ[ubMS], ulFreq, &xDiv);
+
+    if(!xDiv.ulDen) // Division by zero, should never happen, unless the previous function failed
+    {
+        DBGPRINTLN_CTX("Division by zero");
 
         return 0;
     }
 
     if(ubMS > 5)
     {
-        if(pDivider->ulInt < 6 || pDivider->ulInt > 254 || (pDivider->ulInt & 1))
+        if(xDiv.ulInt < 6 || xDiv.ulInt > 254 || (xDiv.ulInt & 1))
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Invalid integer divider (%u, Valid: 6-254, Even)", xDiv.ulInt);
 
             return 0;
         }
 
-        si5351_write_register(ubMS == 6 ? SI5351_REG_MS6_P1 : SI5351_REG_MS7_P1, pDivider->ulInt);
+        if(xDiv.ulNum > 0)
+        {
+            DBGPRINTLN_CTX("MS 6 and 7 do not support fractional mode (Div: %u + (%u / %u))", xDiv.ulInt, xDiv.ulNum, xDiv.ulDen);
+
+            return 0;
+        }
+
+        si5351_write_register(ubMS == 6 ? SI5351_REG_MS6_P1 : SI5351_REG_MS7_P1, xDiv.ulInt);
     }
     else
     {
-        if(pDivider->ulInt < 4 || pDivider->ulInt > 900) // Integer limits
+        if(xDiv.ulInt < 4 || xDiv.ulInt > 900) // Integer limits
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Invalid integer divider (%u, Valid: 4-900)", xDiv.ulInt);
 
             return 0;
         }
 
-        if(pDivider->ulNum && pDivider->ulInt < 8) // Integer limits
+        if(xDiv.ulNum && xDiv.ulInt < 8) // Integer limits
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Fractional part not supported for integer < 8 (Div: %u + (%u / %u))", xDiv.ulInt, xDiv.ulNum, xDiv.ulDen);
 
             return 0;
         }
 
-        if(!pDivider->ulNum && pDivider->ulInt < 8 && pDivider->ulInt != 4 && pDivider->ulInt != 6) // Integer limits
+        if(xDiv.ulInt < 8 && xDiv.ulInt != 4 && xDiv.ulInt != 6) // Integer limits
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Invalid integer divider < 8 (%u, Valid: 4, 6)", xDiv.ulInt);
 
             return 0;
         }
 
-        if(pDivider->ulInt == 900 && pDivider->ulNum) // Fractional limits
+        if(xDiv.ulInt == 900 && xDiv.ulNum) // Fractional limits
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Invalid divider (%u + (%u / %u), Valid: 4, 6, 8-900 + (0 / 1))", xDiv.ulInt, xDiv.ulNum, xDiv.ulDen);
 
             return 0;
         }
 
-        if(pDivider->ulDen > BIT(20) - 1) // Denominator must fit in 20 bits
+        if(xDiv.ulDen > BIT(20) - 1) // Denominator must fit in 20 bits
         {
-            free(pDivider);
+            DBGPRINTLN_CTX("Invalid denominator (%u, Valid: < %lu)", xDiv.ulDen, BIT(20));
 
             return 0;
         }
 
-        uint32_t ulP1 = 128 * pDivider->ulInt + (uint32_t)((128 * pDivider->ulNum) / pDivider->ulDen) - 512;
-        uint32_t ulP2 = 128 * pDivider->ulNum - pDivider->ulDen * (uint32_t)((128 * pDivider->ulNum) / pDivider->ulDen);
-        uint32_t ulP3 = pDivider->ulDen;
+        uint32_t ulP1 = 128 * xDiv.ulInt + (uint32_t)((128 * xDiv.ulNum) / xDiv.ulDen) - 512;
+        uint32_t ulP2 = 128 * xDiv.ulNum - xDiv.ulDen * (uint32_t)((128 * xDiv.ulNum) / xDiv.ulDen);
+        uint32_t ulP3 = xDiv.ulDen;
 
         float fPhase = si5351_multisynth_get_phase_offset(ubMS);
 
-        if(!pDivider->ulNum && !(pDivider->ulInt & 1) && fPhase == 0.f) // If multiplier is an even integer, and we are not using phase offset, turn on integer mode
+        if(!xDiv.ulNum && !(xDiv.ulInt & 1) && fPhase == 0.f) // If multiplier is an even integer, and we are not using phase offset, turn on integer mode
             si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_INT);
         else
             si5351_rmw_register(SI5351_REG_CLKn_CFG(ubMS), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC);
 
         si5351_write_register(SI5351_REG_MSn_P3_MID(ubMS), (ulP3 >> 8) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_LSB(ubMS), (ulP3 >> 0) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((pDivider->ulNum == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
+        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((xDiv.ulNum == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
         si5351_write_register(SI5351_REG_MSn_P1_MID(ubMS), (ulP1 >> 8) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P1_LSB(ubMS), (ulP1 >> 0) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_2_MSB(ubMS), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
@@ -409,9 +473,7 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
         si5351_multisynth_set_phase_offset(ubMS, fPhase);
     }
 
-    SI5351_MS_FREQ[ubMS] = (SI5351_MS_SRC_FREQ[ubMS] * pDivider->ulDen) / ((pDivider->ulInt * pDivider->ulDen) + pDivider->ulNum);
-
-    free(pDivider);
+    SI5351_MS_FREQ[ubMS] = ((uint64_t)SI5351_MS_SRC_FREQ[ubMS] * xDiv.ulDen) / (((uint64_t)xDiv.ulInt * xDiv.ulDen) + xDiv.ulNum);
 
     return 1;
 }

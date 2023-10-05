@@ -1,39 +1,29 @@
 #ifndef __AD9361_UTIL_H__
 #define __AD9361_UTIL_H__
 
-#include <limits.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <unistd.h>
+#include "axi_ad9361.h"
 #include "ad9361.h"
 #include "utils.h"
 #include "debug_macros.h"
 
-#define CLK_IGNORE_UNUSED     BIT(3)
-#define CLK_GET_RATE_NOCACHE  BIT(6)
-
-
-struct axiadc_state
+enum ad9361_util_dig_tune_flags
 {
-    struct ad9361_rf_phy* phy;
-    uint32_t              pcore_version;
+    DO_HDL_RX_ADC = BIT(0),
+    DO_HDL_TX_DAC = BIT(1),
+    DO_CHIP_RX = BIT(2),
+    DO_CHIP_TX = BIT(3),
+
+    FORCE_TUNING = BIT(29),
+    SKIP_STORE_RESULT = BIT(30),
+    RESTORE_PREVIOUS = BIT(31),
 };
 
-struct axiadc_chip_info
-{
-    char* name;
-    int32_t     num_channels;
-};
-
-struct axiadc_converter
-{
-    struct axiadc_chip_info* chip_info;
-    uint32_t                   scratch_reg[16];
-};
-
-uint32_t ad9361_clk_get_rate(struct ad9361_rf_phy* phy, struct refclk_scale* clk_priv);
-int32_t ad9361_clk_set_rate(struct ad9361_rf_phy* phy, struct refclk_scale* clk_priv, uint32_t rate);
+uint8_t ad9361_util_dig_timing_analysis(char* pszBuf, uint32_t ulBufSize);
+uint8_t ad9361_util_dig_tune(uint8_t ubTestFreqs, enum ad9361_util_dig_tune_flags eFlags);
 
 #endif // __AD9361_UTIL_H__

@@ -5,6 +5,10 @@
 #define AXI_QUAD_SPI0_XIP_BASE  0x00000000
 #define AXI_QUAD_SPI0_XIP_SIZE  (8 * 1024 * 1024) // 8 MB
 
+// BRAM
+#define AXI_BRAM_BASE           0x01000000
+#define AXI_BRAM_SIZE           (128 * 1024) // 128 KB
+
 // DDR3 Memory Mapped
 #define AXI_MIG_DDR3_BASE       0x20000000
 #define AXI_MIG_DDR3_SIZE       (512 * 1024 * 1024) // 512 MB
@@ -27,10 +31,11 @@
 #define AXI_IIC1_BASE           0x40016000
 #define AXI_QUAD_SPI2_BASE      0x40018000
 #define AXI_GPIO1_BASE          0x4001A000
+#define AXI_GPIO2_BASE          0x4001C000
+#define AXI_RF_TSTAMP_BASE      0x4001E000
+#define AXI_IRQ_CTRL_BASE       0x40020000
 // RSVD
 #define AXI_AD9361_BASE         0x40100000
-// RSVD
-#define AXI_BRAM_BASE           0x41000000
 
 // PCIe Access to Host
 #define AXI_PCIE_MM_BASE        0x60000000
