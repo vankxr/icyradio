@@ -15692,17 +15692,17 @@ Button commonly used for reset or general input. Spark Fun Electronics SKU : COM
 <part name="L602" library="Inductor" deviceset="INDUCTOR" device="-0402" value="18nH"/>
 <part name="C620" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="10nF"/>
 <part name="GND431" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R608" library="Resistor" deviceset="RESISTOR" device="-0402" value="360 Ohms"/>
-<part name="C616" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="47nF"/>
-<part name="R609" library="Resistor" deviceset="RESISTOR" device="-0402" value="1K Ohms"/>
-<part name="C617" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="2.7nF"/>
+<part name="R608" library="Resistor" deviceset="RESISTOR" device="-0402" value="62 Ohms"/>
+<part name="C616" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="220nF"/>
+<part name="R609" library="Resistor" deviceset="RESISTOR" device="-0402" value="20 Ohms"/>
+<part name="C617" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="2.2nF"/>
 <part name="C618" library="Capacitor" deviceset="CAPACITOR" device="-0402" value="680pF"/>
 <part name="GND432" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND433" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="GND434" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R603" library="Resistor" deviceset="RESISTOR" device="-0402" value="10K Ohms"/>
+<part name="R603" library="Resistor" deviceset="RESISTOR" device="-0402" value="1K Ohms"/>
 <part name="GND435" library="Supply Symbol" deviceset="GND" device=""/>
-<part name="R601" library="Resistor" deviceset="RESISTOR" device="-0402" value="10K Ohms"/>
+<part name="R601" library="Resistor" deviceset="RESISTOR" device="-0402" value="DNP"/>
 <part name="GND436" library="Supply Symbol" deviceset="GND" device=""/>
 <part name="5V00018" library="Supply Symbol" deviceset="5V0" device=""/>
 <part name="5V00019" library="Supply Symbol" deviceset="5V0" device=""/>
