@@ -2,6 +2,7 @@
 #define __AD9361_API_H__
 
 #include <stdint.h>
+#include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>

@@ -1,8 +1,8 @@
 #ifndef __SI5351_H__
 #define __SI5351_H__
 
-#include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <unistd.h>
 #include "axi_iic.h"
 #include "debug_macros.h"
@@ -51,19 +51,12 @@
 #define SI5351_REG_STATUS_XO_LOS    0x08
 #define SI5351_REG_STATUS_REVID     0x03
 
-// SI5351_REG_IRQ_FLAGS
-#define SI5351_REG_IRQ_FLAGS_SYS_INIT   0x80
-#define SI5351_REG_IRQ_FLAGS_LOL_B      0x40
-#define SI5351_REG_IRQ_FLAGS_LOL_A      0x20
-#define SI5351_REG_IRQ_FLAGS_CLKIN_LOS  0x10
-#define SI5351_REG_IRQ_FLAGS_XO_LOS     0x08
-
-// SI5351_REG_IRQ_FLAGS
-#define SI5351_REG_IRQ_MASK_SYS_INIT   0x80
-#define SI5351_REG_IRQ_MASK_LOL_B      0x40
-#define SI5351_REG_IRQ_MASK_LOL_A      0x20
-#define SI5351_REG_IRQ_MASK_CLKIN_LOS  0x10
-#define SI5351_REG_IRQ_MASK_XO_LOS     0x08
+// SI5351_REG_IRQ_FLAGS/MASK
+#define SI5351_REG_IRQ_SYS_INIT   0x80
+#define SI5351_REG_IRQ_LOL_B      0x40
+#define SI5351_REG_IRQ_LOL_A      0x20
+#define SI5351_REG_IRQ_CLKIN_LOS  0x10
+#define SI5351_REG_IRQ_XO_LOS     0x08
 
 // SI5351_REG_PLL_SRC
 #define SI5351_REG_PLL_SRC_CLKIN_DIV1   0x00

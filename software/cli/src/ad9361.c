@@ -645,13 +645,13 @@ int32_t ad9361_spi_readm(uint32_t reg, uint8_t* rbuf, uint32_t num)
 
     cmd = AD_READ | AD_CNT(num) | AD_ADDR(reg);
 
-    axi_quad_spi1_slave_select(BIT(0), 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 1);
 
-    axi_quad_spi1_write_byte(cmd >> 8, 0);
-    axi_quad_spi1_write_byte(cmd & 0xFF, 1);
-    axi_quad_spi1_read(rbuf, num, 0x00);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd >> 8, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd & 0xFF, 1);
+    axi_quad_spi_read(AXI_QUAD_SPI_TRX_INST, rbuf, num, 0x00);
 
-    axi_quad_spi1_slave_select(BIT(0), 0);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 0);
 
     return 0;
 }
@@ -746,13 +746,13 @@ int32_t ad9361_spi_write(uint32_t reg, uint32_t val)
 
     cmd = AD_WRITE | AD_CNT(1) | AD_ADDR(reg);
 
-    axi_quad_spi1_slave_select(BIT(0), 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 1);
 
-    axi_quad_spi1_write_byte(cmd >> 8, 0);
-    axi_quad_spi1_write_byte(cmd & 0xFF, 0);
-    axi_quad_spi1_write_byte(val & 0xFF, 1);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd >> 8, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd & 0xFF, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, val & 0xFF, 1);
 
-    axi_quad_spi1_slave_select(BIT(0), 0);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 0);
 
     return 0;
 }
@@ -827,13 +827,13 @@ static int32_t ad9361_spi_writem(uint32_t reg, uint8_t* tbuf, uint32_t num)
 
     cmd = AD_WRITE | AD_CNT(num) | AD_ADDR(reg);
 
-    axi_quad_spi1_slave_select(BIT(0), 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 1);
 
-    axi_quad_spi1_write_byte(cmd >> 8, 0);
-    axi_quad_spi1_write_byte(cmd & 0xFF, 0);
-    axi_quad_spi1_write(tbuf, num, 1);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd >> 8, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_TRX_INST, cmd & 0xFF, 0);
+    axi_quad_spi_write(AXI_QUAD_SPI_TRX_INST, tbuf, num, 1);
 
-    axi_quad_spi1_slave_select(BIT(0), 0);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI1_TRX_SS, 0);
 
 #ifdef _DEBUG
     {
@@ -918,9 +918,9 @@ int32_t ad9361_1rx1tx_channel_map(bool tx, int32_t channel)
  */
 int32_t ad9361_reset()
 {
-    axi_gpio0_set_value(AXI_GPIO0_TRX_RESETn_BIT, 0);
+    axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_RESETn_BIT, 0);
     usleep(1000);
-    axi_gpio0_set_value(AXI_GPIO0_TRX_RESETn_BIT, 1);
+    axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_RESETn_BIT, 1);
     usleep(1000);
 
     return 0;
@@ -4753,15 +4753,15 @@ int32_t ad9361_mcs(int32_t step)
              * relative to rising and falling edge of REF_CLK
              */
 
-            axi_gpio0_set_value(AXI_GPIO0_TRX_SYNC_IN_BIT, 1);
-            axi_gpio0_set_value(AXI_GPIO0_TRX_SYNC_IN_BIT, 0);
+            axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_SYNC_IN_BIT, 1);
+            axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_SYNC_IN_BIT, 0);
         break;
         case 3:
             ad9361_spi_writef(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mcs_mask, MCS_BB_ENABLE | MCS_DIGITAL_CLK_ENABLE | MCS_RF_ENABLE);
         break;
         case 4:
-            axi_gpio0_set_value(AXI_GPIO0_TRX_SYNC_IN_BIT, 1);
-            axi_gpio0_set_value(AXI_GPIO0_TRX_SYNC_IN_BIT, 0);
+            axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_SYNC_IN_BIT, 1);
+            axi_gpio_set_value(AXI_GPIO_TRX_INST, AXI_GPIO0_TRX_SYNC_IN_BIT, 0);
         break;
         case 5:
             ad9361_spi_writef(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mcs_mask, MCS_RF_ENABLE);

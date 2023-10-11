@@ -3,11 +3,10 @@
 
 #include <limits.h>
 #include <stdint.h>
+#include <inttypes.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <inttypes.h>
 #include <errno.h>
 #include "axi_quad_spi.h"
 #include "axi_gpio.h"

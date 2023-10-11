@@ -1,8 +1,6 @@
 #ifndef __AD9361_UTIL_H__
 #define __AD9361_UTIL_H__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
 #include <unistd.h>

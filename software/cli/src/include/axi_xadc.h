@@ -62,23 +62,14 @@ extern void *pAXIXADCBase;
 
 #define AXI_XADC_REG_GIER_GIE           BIT(0)
 
-#define AXI_XADC_REG_IPISR_OT               BIT(0)
-#define AXI_XADC_REG_IPISR_ALM(n)           BIT((((n) > 2) ? 7 : 1) + (n))
-#define AXI_XADC_REG_IPISR_EOS              BIT(4)
-#define AXI_XADC_REG_IPISR_EOC              BIT(5)
-#define AXI_XADC_REG_IPISR_JTAG_LOCKED      BIT(6)
-#define AXI_XADC_REG_IPISR_JTAG_MODIFIED    BIT(7)
-#define AXI_XADC_REG_IPISR_OT_DEACT         BIT(8)
-#define AXI_XADC_REG_IPISR_ALM0_DEACT       BIT(9)
-
-#define AXI_XADC_REG_IPIER_OT               BIT(0)
-#define AXI_XADC_REG_IPIER_ALM(n)           BIT((((n) > 2) ? 7 : 1) + (n))
-#define AXI_XADC_REG_IPIER_EOS              BIT(4)
-#define AXI_XADC_REG_IPIER_EOC              BIT(5)
-#define AXI_XADC_REG_IPIER_JTAG_LOCKED      BIT(6)
-#define AXI_XADC_REG_IPIER_JTAG_MODIFIED    BIT(7)
-#define AXI_XADC_REG_IPIER_OT_DEACT         BIT(8)
-#define AXI_XADC_REG_IPIER_ALM0_DEACT       BIT(9)
+#define AXI_XADC_REG_IPIxR_OT               BIT(0)
+#define AXI_XADC_REG_IPIxR_ALM(n)           BIT((((n) > 2) ? 7 : 1) + (n))
+#define AXI_XADC_REG_IPIxR_EOS              BIT(4)
+#define AXI_XADC_REG_IPIxR_EOC              BIT(5)
+#define AXI_XADC_REG_IPIxR_JTAG_LOCKED      BIT(6)
+#define AXI_XADC_REG_IPIxR_JTAG_MODIFIED    BIT(7)
+#define AXI_XADC_REG_IPIxR_OT_DEACT         BIT(8)
+#define AXI_XADC_REG_IPIxR_ALM0_DEACT       BIT(9)
 
 uint8_t axi_xadc_init();
 

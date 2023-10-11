@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <unistd.h>
+#include <pthread.h>
 #include "utils.h"
 
 #define AXI_QUAD_SPI_NUM_INSTANCES 3
@@ -46,35 +47,20 @@
 
 #define AXI_QUAD_SPI_REG_DGIER_GIE            BIT(31)
 
-#define AXI_QUAD_SPI_REG_IPISR_MODE_FAULT         BIT(0)
-#define AXI_QUAD_SPI_REG_IPISR_SLAVE_MODE_FAULT   BIT(1)
-#define AXI_QUAD_SPI_REG_IPISR_DTR_EMPTY          BIT(2)
-#define AXI_QUAD_SPI_REG_IPISR_DTR_UNDERRUN       BIT(3)
-#define AXI_QUAD_SPI_REG_IPISR_DRR_FULL           BIT(4)
-#define AXI_QUAD_SPI_REG_IPISR_DRR_OVERRUN        BIT(5)
-#define AXI_QUAD_SPI_REG_IPISR_TX_FIFO_HALF_EMPTY BIT(6)
-#define AXI_QUAD_SPI_REG_IPISR_SS_MODE            BIT(7)
-#define AXI_QUAD_SPI_REG_IPISR_DRR_NOT_EMPTY      BIT(8)
-#define AXI_QUAD_SPI_REG_IPISR_CPOL_CPHA_ERR      BIT(9)
-#define AXI_QUAD_SPI_REG_IPISR_SLAVE_MODE_ERR     BIT(10)
-#define AXI_QUAD_SPI_REG_IPISR_MSB_ERR            BIT(11)
-#define AXI_QUAD_SPI_REG_IPISR_LOOPBACK_ERR       BIT(12)
-#define AXI_QUAD_SPI_REG_IPISR_CMD_ERR            BIT(13)
-
-#define AXI_QUAD_SPI_REG_IPIER_MODE_FAULT         BIT(0)
-#define AXI_QUAD_SPI_REG_IPIER_SLAVE_MODE_FAULT   BIT(1)
-#define AXI_QUAD_SPI_REG_IPIER_DTR_EMPTY          BIT(2)
-#define AXI_QUAD_SPI_REG_IPIER_DTR_UNDERRUN       BIT(3)
-#define AXI_QUAD_SPI_REG_IPIER_DRR_FULL           BIT(4)
-#define AXI_QUAD_SPI_REG_IPIER_DRR_OVERRUN        BIT(5)
-#define AXI_QUAD_SPI_REG_IPIER_TX_FIFO_HALF_EMPTY BIT(6)
-#define AXI_QUAD_SPI_REG_IPIER_SS_MODE            BIT(7)
-#define AXI_QUAD_SPI_REG_IPIER_DRR_NOT_EMPTY      BIT(8)
-#define AXI_QUAD_SPI_REG_IPIER_CPOL_CPHA_ERR      BIT(9)
-#define AXI_QUAD_SPI_REG_IPIER_SLAVE_MODE_ERR     BIT(10)
-#define AXI_QUAD_SPI_REG_IPIER_MSB_ERR            BIT(11)
-#define AXI_QUAD_SPI_REG_IPIER_LOOPBACK_ERR       BIT(12)
-#define AXI_QUAD_SPI_REG_IPIER_CMD_ERR            BIT(13)
+#define AXI_QUAD_SPI_REG_IPIxR_MODE_FAULT         BIT(0)
+#define AXI_QUAD_SPI_REG_IPIxR_SLAVE_MODE_FAULT   BIT(1)
+#define AXI_QUAD_SPI_REG_IPIxR_DTR_EMPTY          BIT(2)
+#define AXI_QUAD_SPI_REG_IPIxR_DTR_UNDERRUN       BIT(3)
+#define AXI_QUAD_SPI_REG_IPIxR_DRR_FULL           BIT(4)
+#define AXI_QUAD_SPI_REG_IPIxR_DRR_OVERRUN        BIT(5)
+#define AXI_QUAD_SPI_REG_IPIxR_TX_FIFO_HALF_EMPTY BIT(6)
+#define AXI_QUAD_SPI_REG_IPIxR_SS_MODE            BIT(7)
+#define AXI_QUAD_SPI_REG_IPIxR_DRR_NOT_EMPTY      BIT(8)
+#define AXI_QUAD_SPI_REG_IPIxR_CPOL_CPHA_ERR      BIT(9)
+#define AXI_QUAD_SPI_REG_IPIxR_SLAVE_MODE_ERR     BIT(10)
+#define AXI_QUAD_SPI_REG_IPIxR_MSB_ERR            BIT(11)
+#define AXI_QUAD_SPI_REG_IPIxR_LOOPBACK_ERR       BIT(12)
+#define AXI_QUAD_SPI_REG_IPIxR_CMD_ERR            BIT(13)
 
 #define AXI_QUAD_SPI_LSB_FIRST 0
 #define AXI_QUAD_SPI_MSB_FIRST 1
@@ -86,11 +72,11 @@
 
 extern void *pAXIQuadSPIBase[AXI_QUAD_SPI_NUM_INSTANCES];
 
-void axi_quad_spi_init(void *pBase, uint8_t ubMode, uint8_t ubBitMode);
-void axi_quad_spi_slave_select(void *pBase, uint32_t ubSelectMask, uint8_t ubSelect);
-uint8_t axi_quad_spi_transfer_byte(void *pBase, const uint8_t ubData);
-void axi_quad_spi_write_byte(void *pBase, const uint8_t ubData, const uint8_t ubWait);
-static inline void axi_quad_spi_transfer(void *pBase, const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
+void axi_quad_spi_init(uint8_t ubInst, uint8_t ubMode, uint8_t ubBitMode);
+void axi_quad_spi_slave_select(uint8_t ubInst, uint32_t ubSelectMask, uint8_t ubSelect);
+uint8_t axi_quad_spi_transfer_byte(uint8_t ubInst, const uint8_t ubData);
+void axi_quad_spi_write_byte(uint8_t ubInst, const uint8_t ubData, const uint8_t ubWait);
+static inline void axi_quad_spi_transfer(uint8_t ubInst, const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
 {
     if(!pubSrc)
         return;
@@ -99,110 +85,38 @@ static inline void axi_quad_spi_transfer(void *pBase, const uint8_t *pubSrc, uin
         return;
 
     while(ulSize--)
-        *pubDst++ = axi_quad_spi_transfer_byte(pBase, *pubSrc++);
+        *pubDst++ = axi_quad_spi_transfer_byte(ubInst, *pubSrc++);
 }
-static inline void axi_quad_spi_write(void *pBase, const uint8_t *pubSrc, uint32_t ulSize, const uint8_t ubWait)
+static inline void axi_quad_spi_write(uint8_t ubInst, const uint8_t *pubSrc, uint32_t ulSize, const uint8_t ubWait)
 {
     if(!pubSrc)
         return;
 
     while(ulSize--)
-        axi_quad_spi_write_byte(pBase, *pubSrc++, ubWait && !ulSize);
+        axi_quad_spi_write_byte(ubInst, *pubSrc++, ubWait && !ulSize);
 }
-static inline void axi_quad_spi_read(void *pBase, uint8_t *pubDst, uint32_t ulSize, uint8_t ubSendData)
+static inline void axi_quad_spi_read(uint8_t ubInst, uint8_t *pubDst, uint32_t ulSize, uint8_t ubSendData)
 {
     if(!pubDst)
         return;
 
     while(ulSize--)
-        *pubDst++ = axi_quad_spi_transfer_byte(pBase, ubSendData);
+        *pubDst++ = axi_quad_spi_transfer_byte(ubInst, ubSendData);
 }
 
-static inline void axi_quad_spi0_init(uint8_t ubMode, uint8_t ubBitMode)
-{
-    axi_quad_spi_init(pAXIQuadSPIBase[0], ubMode, ubBitMode);
-}
-static inline void axi_quad_spi0_slave_select(uint32_t ubSelectMask, uint8_t ubSelect)
-{
-    axi_quad_spi_slave_select(pAXIQuadSPIBase[0], ubSelectMask, ubSelect);
-}
-static inline uint8_t axi_quad_spi0_transfer_byte(const uint8_t ubData)
-{
-    return axi_quad_spi_transfer_byte(pAXIQuadSPIBase[0], ubData);
-}
-static inline void axi_quad_spi0_write_byte(const uint8_t ubData, const uint8_t ubWait)
-{
-    axi_quad_spi_write_byte(pAXIQuadSPIBase[0], ubData, ubWait);
-}
-static inline void axi_quad_spi0_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
-{
-    axi_quad_spi_transfer(pAXIQuadSPIBase[0], pubSrc, ulSize, pubDst);
-}
-static inline void axi_quad_spi0_write(const uint8_t *pubSrc, uint32_t ulSize, const uint8_t ubWait)
-{
-    axi_quad_spi_write(pAXIQuadSPIBase[0], pubSrc, ulSize, ubWait);
-}
-static inline void axi_quad_spi0_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ubSendData)
-{
-    axi_quad_spi_read(pAXIQuadSPIBase[0], pubDst, ulSize, ubSendData);
-}
+// Instance 0 - axi_quad_spi_0 - QSPI Flash
+#define AXI_QUAD_SPI_FLASH_INST 0
 
-static inline void axi_quad_spi1_init(uint8_t ubMode, uint8_t ubBitMode)
-{
-    axi_quad_spi_init(pAXIQuadSPIBase[1], ubMode, ubBitMode);
-}
-static inline void axi_quad_spi1_slave_select(uint32_t ubSelectMask, uint8_t ubSelect)
-{
-    axi_quad_spi_slave_select(pAXIQuadSPIBase[1], ubSelectMask, ubSelect);
-}
-static inline uint8_t axi_quad_spi1_transfer_byte(const uint8_t ubData)
-{
-    return axi_quad_spi_transfer_byte(pAXIQuadSPIBase[1], ubData);
-}
-static inline void axi_quad_spi1_write_byte(const uint8_t ubData, const uint8_t ubWait)
-{
-    axi_quad_spi_write_byte(pAXIQuadSPIBase[1], ubData, ubWait);
-}
-static inline void axi_quad_spi1_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
-{
-    axi_quad_spi_transfer(pAXIQuadSPIBase[1], pubSrc, ulSize, pubDst);
-}
-static inline void axi_quad_spi1_write(const uint8_t *pubSrc, uint32_t ulSize, const uint8_t ubWait)
-{
-    axi_quad_spi_write(pAXIQuadSPIBase[1], pubSrc, ulSize, ubWait);
-}
-static inline void axi_quad_spi1_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ubSendData)
-{
-    axi_quad_spi_read(pAXIQuadSPIBase[1], pubDst, ulSize, ubSendData);
-}
+#define AXI_QUAD_SPI0_FLASH_SS BIT(0)
 
-static inline void axi_quad_spi2_init(uint8_t ubMode, uint8_t ubBitMode)
-{
-    axi_quad_spi_init(pAXIQuadSPIBase[2], ubMode, ubBitMode);
-}
-static inline void axi_quad_spi2_slave_select(uint32_t ubSelectMask, uint8_t ubSelect)
-{
-    axi_quad_spi_slave_select(pAXIQuadSPIBase[2], ubSelectMask, ubSelect);
-}
-static inline uint8_t axi_quad_spi2_transfer_byte(const uint8_t ubData)
-{
-    return axi_quad_spi_transfer_byte(pAXIQuadSPIBase[2], ubData);
-}
-static inline void axi_quad_spi2_write_byte(const uint8_t ubData, const uint8_t ubWait)
-{
-    axi_quad_spi_write_byte(pAXIQuadSPIBase[2], ubData, ubWait);
-}
-static inline void axi_quad_spi2_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
-{
-    axi_quad_spi_transfer(pAXIQuadSPIBase[2], pubSrc, ulSize, pubDst);
-}
-static inline void axi_quad_spi2_write(const uint8_t *pubSrc, uint32_t ulSize, const uint8_t ubWait)
-{
-    axi_quad_spi_write(pAXIQuadSPIBase[2], pubSrc, ulSize, ubWait);
-}
-static inline void axi_quad_spi2_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ubSendData)
-{
-    axi_quad_spi_read(pAXIQuadSPIBase[2], pubDst, ulSize, ubSendData);
-}
+// Instance 1 - axi_quad_spi_1 - Transceiver
+#define AXI_QUAD_SPI_TRX_INST 1
+
+#define AXI_QUAD_SPI1_TRX_SS BIT(0)
+
+// Instance 2 - axi_quad_spi_2 - mmWave Synthesizer
+#define AXI_QUAD_SPI_SYNTH_INST 2
+
+#define AXI_QUAD_SPI2_SYNTH_SS BIT(0)
 
 #endif // __AXI_QUAD_SPI_H__

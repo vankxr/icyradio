@@ -62,8 +62,9 @@ static uint32_t axi_ad9361_dac_reg_read(int32_t ulRegister)
 uint8_t axi_ad9361_init()
 {
     uint32_t ulVersion = axi_ad9361_get_core_version();
+    uint32_t ulID = axi_ad9361_reg_read(AXI_AD9361_REG_ID);
 
-    DBGPRINTLN_CTX("Found AXI AD9361 Core v%d.%d.%d", AXI_CORE_VERSION_MAJOR(ulVersion), AXI_CORE_VERSION_MINOR(ulVersion), AXI_CORE_VERSION_PATCH(ulVersion));
+    DBGPRINTLN_CTX("Found AXI AD9361 Core v%d.%d.%d (ID: %u)", AXI_CORE_VERSION_MAJOR(ulVersion), AXI_CORE_VERSION_MINOR(ulVersion), AXI_CORE_VERSION_PATCH(ulVersion), ulID);
 
     if(AXI_CORE_VERSION_MAJOR(ulVersion) < 10)
     {
@@ -74,7 +75,7 @@ uint8_t axi_ad9361_init()
 
     uint32_t ulCaps = axi_ad9361_reg_read(AXI_AD9361_REG_CONFIG);
 
-    DBGPRINTLN_CTX("Capabilities:");
+    DBGPRINTLN_CTX("Configuration / Capabilities:");
     DBGPRINTLN_CTX("  IQ Correction: %s", (ulCaps & AXI_AD9361_REG_CONFIG_IQCORRECTION_DISABLE) ? "Disabled" : "Enabled");
     DBGPRINTLN_CTX("  DC Filter: %s", (ulCaps & AXI_AD9361_REG_CONFIG_DCFILTER_DISABLE) ? "Disabled" : "Enabled");
     DBGPRINTLN_CTX("  Data formatter: %s", (ulCaps & AXI_AD9361_REG_CONFIG_DATAFORMAT_DISABLE) ? "Disabled" : "Enabled");
@@ -461,7 +462,7 @@ uint8_t axi_ad9361_dac_init()
         axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_2(i), 1); // Set tone 1 to min frequency
         axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_3(i), 0); // Mute tone 2
         axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_4(i), 1); // Set tone 2 to min frequency
-        axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_7(i), AXI_DAC_CHAN_REG_CHAN_CNTRL_7_DAC_DDS_SEL_TONE); // Select DDS as data source
+        axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_7(i), AXI_DAC_CHAN_REG_CHAN_CNTRL_7_DAC_DDS_SEL_ZERO); // Select no data source
         axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_8(i), (i & 1) ? 0x00004000 : 0x40000000); // I/Q Gain = 1
         axi_ad9361_dac_reg_write(AXI_DAC_CHAN_REG_CHAN_CNTRL_6(i), AXI_DAC_CHAN_REG_CHAN_CNTRL_6_IQCOR_ENB);
     }

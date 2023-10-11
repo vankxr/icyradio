@@ -37,12 +37,16 @@ static void si5351_get_mixed_number(uint32_t ulM, uint32_t ulN, si5351_mixed_num
 
 static uint8_t si5351_read_register(uint8_t ubRegister)
 {
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_iic1_write_byte(SI5351_I2C_ADDR, ubRegister, AXI_IIC_RESTART);
+    uint8_t ubValue = 0x00;
 
-        return axi_iic1_read_byte(SI5351_I2C_ADDR, AXI_IIC_STOP);
-    // }
+    axi_iic_lock(AXI_IIC_SYS_INST); // Lock the I2C bus so the next two transactions are not interrupted
+
+    axi_iic_write_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, ubRegister, AXI_IIC_RESTART);
+    ubValue = axi_iic_read_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, AXI_IIC_STOP);
+
+    axi_iic_unlock(AXI_IIC_SYS_INST); // Unlock the I2C bus
+
+    return ubValue;
 }
 static void si5351_write_register(uint8_t ubRegister, uint8_t ubValue)
 {
@@ -51,10 +55,8 @@ static void si5351_write_register(uint8_t ubRegister, uint8_t ubValue)
     pubBuffer[0] = ubRegister;
     pubBuffer[1] = ubValue;
 
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_iic1_write(SI5351_I2C_ADDR, pubBuffer, 2, AXI_IIC_STOP);
-    // }
+    // No need to lock the I2C bus here, since I2C transactions are guaranteed to be atomic
+    axi_iic_write(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, pubBuffer, 2, AXI_IIC_STOP);
 }
 static void si5351_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ubValue)
 {
@@ -63,14 +65,14 @@ static void si5351_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ubVa
 
 uint8_t si5351_init()
 {
-    if(!axi_iic1_write_byte(SI5351_I2C_ADDR, SI5351_REG_STATUS, AXI_IIC_STOP))
+    if(!axi_iic_write_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, SI5351_REG_STATUS, AXI_IIC_STOP))
     {
         DBGPRINTLN_CTX("I2C write failed (is the device present?), aborting");
 
         return 0;
     }
 
-    uint8_t ubReg = axi_iic1_read_byte(SI5351_I2C_ADDR, AXI_IIC_STOP);
+    uint8_t ubReg = axi_iic_read_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, AXI_IIC_STOP);
 
     DBGPRINTLN_CTX("Found Si5351 Rev %hhu", ubReg & SI5351_REG_STATUS_REVID);
 
@@ -80,9 +82,9 @@ uint8_t si5351_init()
     si5351_write_register(SI5351_REG_CLK_OEB, 0xFF); // Disable all outputs by software
     si5351_write_register(SI5351_REG_OEB_MASK, 0x00); // Control all output enables via the OEB pad
 
-    axi_iic1_gpo_set_value(AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1); // Disable all outputs by hardware
+    axi_iic_gpo_set_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1); // Disable all outputs by hardware
 
-    si5351_write_register(SI5351_REG_IRQ_MASK, SI5351_REG_IRQ_MASK_XO_LOS); // Mask XTAL loss IRQ since we are not using it as a source
+    si5351_write_register(SI5351_REG_IRQ_MASK, 0x00);
     si5351_write_register(SI5351_REG_IRQ_FLAGS, 0x00); // Clear all IRQs
 
     for(uint8_t i = 0; i < 8; i++) // Power down all clocks
@@ -95,6 +97,8 @@ void si5351_isr()
     uint8_t ubFlags = si5351_read_register(SI5351_REG_IRQ_FLAGS);
 
     si5351_write_register(SI5351_REG_IRQ_FLAGS, 0x00);
+
+    // TODO:
 }
 
 uint8_t si5351_read_revision_id()

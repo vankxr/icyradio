@@ -1,8 +1,8 @@
 #ifndef __R8V97003_H__
 #define __R8V97003_H__
 
-#include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include <unistd.h>
 #include "axi_quad_spi.h"
 #include "axi_gpio.h"
@@ -58,6 +58,7 @@
 #define R8V97003_REG_OUT_DIV_DBL        0x3B
 #define R8V97003_REG_LD_CAL_VCO_STATUS  0x44
 #define R8V97003_REG_DIG_BAND_STATUS    0x45
+#define R8V97003_REG_LOSS_LOCK          0x49
 
 // R8V97003_REG_INTF_CONFIG
 #define R8V97003_REG_INTF_CONFIG_SOFT_RESET (BIT(7) | BIT(0))
@@ -72,10 +73,12 @@
 #define R8V97003_REG_BUF_TRANSFER_TRANSFER_ON   BIT(0)
 
 // R8V97003_REG_DSM_CTL
+#define R8V97003_REG_DSM_CTL_DSM_TYPE           BIT(7) // (Undocumented) 0 = Feed-Forward SSMF-II, 1 = MASH
 #define R8V97003_REG_DSM_CTL_DSM_ORDER_OFF      0x00
 #define R8V97003_REG_DSM_CTL_DSM_ORDER_1ST      0x10
 #define R8V97003_REG_DSM_CTL_DSM_ORDER_2ND      0x20
 #define R8V97003_REG_DSM_CTL_DSM_ORDER_3RD      0x30
+#define R8V97003_REG_DSM_CTL_DSM_ORDER_4TH      0x70 // (Undocumented) 4th order only when DSM_TYPE = 1 (MASH), else 3rd order
 #define R8V97003_REG_DSM_CTL_DITHER_G_LSB       0x00
 #define R8V97003_REG_DSM_CTL_DITHER_G_LSB_X2    0x04
 #define R8V97003_REG_DSM_CTL_DITHER_G_LSB_X4    0x08
@@ -103,12 +106,12 @@
 #define R8V97003_REG_LD_CTL1_LD_PIN_MODE_CAL_DONE   0x10
 #define R8V97003_REG_LD_CTL1_LD_PIN_MODE_LOW        0x20
 #define R8V97003_REG_LD_CTL1_LD_PIN_MODE_HIGH       0x30
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_0p375ns   0x00
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_0p75ns    0x01
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_1p5ns     0x02
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_2p4ns     0x03
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_5p2ns     0x04
-#define R8V97003_REG_LD_CTL1_LD_PRECISION_8p5ns     0x06
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_0p5ns     0x00
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_1p0ns     0x01
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_1p8ns     0x02
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_3p0ns     0x03
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_6p4ns     0x04
+#define R8V97003_REG_LD_CTL1_LD_PRECISION_10p4ns    0x06
 
 // R8V97003_REG_PWR_CTL
 #define R8V97003_REG_PWR_CTL_REF_VREG_PDOWN         BIT(6)
@@ -169,6 +172,8 @@
 #define R8V97003_REG_LD_CAL_VCO_STATUS_BAND_SEL_DONE    BIT(6)
 #define R8V97003_REG_LD_CAL_VCO_STATUS_VCO_STS          0x0F
 
+// R8V97003_REG_LOSS_LOCK
+#define R8V97003_REG_LOSS_LOCK_LOSS_LOCK               BIT(2)
 
 typedef struct r8v97003_mixed_number_t r8v97003_mixed_number_t;
 
@@ -179,6 +184,52 @@ struct r8v97003_mixed_number_t
     uint32_t ulDen; // Fractional part denominator
 };
 
+enum r8v97003_pfd_pulse_width_t
+{
+    R8V97003_PFD_PW_260ps = R8V97003_REG_PFD_PULSE_WIDTH_PW_260ps,
+    R8V97003_PFD_PW_348ps = R8V97003_REG_PFD_PULSE_WIDTH_PW_348ps,
+    R8V97003_PFD_PW_487ps = R8V97003_REG_PFD_PULSE_WIDTH_PW_487ps,
+    R8V97003_PFD_PW_583ps = R8V97003_REG_PFD_PULSE_WIDTH_PW_583ps
+};
+
+enum r8v97003_power_flags_t
+{
+    R8V97003_PWR_REF    = R8V97003_REG_PWR_CTL_REF_VREG_PDOWN,
+    R8V97003_PWR_PDCP   = R8V97003_REG_PWR_CTL_PDCP_VREG_PDOWN,
+    R8V97003_PWR_FB     = R8V97003_REG_PWR_CTL_FB_VREG_PDOWN,
+    R8V97003_PWR_OUTA   = R8V97003_REG_PWR_CTL_OUTA_VREG_PDOWN,
+    R8V97003_PWR_OUTB   = R8V97003_REG_PWR_CTL_OUTB_BUF_VREG_PDOWN,
+    R8V97003_PWR_ANA    = R8V97003_REG_PWR_CTL_ANA_PDOWN,
+    R8V97003_PWR_VCO    = R8V97003_REG_PWR_CTL_VCO_EN,
+    R8V97003_PWR_ALL    = R8V97003_PWR_REF | R8V97003_PWR_PDCP | R8V97003_PWR_FB | R8V97003_PWR_OUTA | R8V97003_PWR_OUTB | R8V97003_PWR_ANA | R8V97003_PWR_VCO
+};
+
+enum r8v97003_ld_pin_mode_t
+{
+    R8V97003_LD_PIN_MODE_LD         = R8V97003_REG_LD_CTL1_LD_PIN_MODE_LD,
+    R8V97003_LD_PIN_MODE_CAL_DONE   = R8V97003_REG_LD_CTL1_LD_PIN_MODE_CAL_DONE,
+    R8V97003_LD_PIN_MODE_LOW        = R8V97003_REG_LD_CTL1_LD_PIN_MODE_LOW,
+    R8V97003_LD_PIN_MODE_HIGH       = R8V97003_REG_LD_CTL1_LD_PIN_MODE_HIGH
+};
+
+enum r8v97003_ld_precision_t
+{
+    R8V97003_LD_PREC_0p5ns   = R8V97003_REG_LD_CTL1_LD_PRECISION_0p5ns,
+    R8V97003_LD_PREC_1p0ns   = R8V97003_REG_LD_CTL1_LD_PRECISION_1p0ns,
+    R8V97003_LD_PREC_1p8ns   = R8V97003_REG_LD_CTL1_LD_PRECISION_1p8ns,
+    R8V97003_LD_PREC_3p0ns   = R8V97003_REG_LD_CTL1_LD_PRECISION_3p0ns,
+    R8V97003_LD_PREC_6p4ns   = R8V97003_REG_LD_CTL1_LD_PRECISION_6p4ns,
+    R8V97003_LD_PREC_10p4ns  = R8V97003_REG_LD_CTL1_LD_PRECISION_10p4ns
+};
+
+extern uint32_t R8V97003_REF_FREQ;
+extern uint32_t R8V97003_REF_MULT_IN_FREQ;
+extern uint32_t R8V97003_REF_RDIV_IN_FREQ;
+extern uint32_t R8V97003_PFD_FREQ;
+extern uint32_t R8V97003_BAND_SEL_CLK_FREQ;
+extern uint64_t R8V97003_VCO_FREQ;
+extern uint64_t R8V97003_FREQ;
+
 uint8_t r8v97003_init();
 
 uint8_t r8v97003_get_chip_type();
@@ -187,11 +238,27 @@ uint8_t r8v97003_get_chip_version();
 uint8_t r8v97003_get_chip_option();
 uint16_t r8v97003_get_vendor_id();
 
-uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDouble, uint8_t ubMult, uint16_t usRDiv);
+void r8v97003_power_down(enum r8v97003_power_flags_t eFlags);
+void r8v97003_power_up(enum r8v97003_power_flags_t eFlags);
+
+uint8_t r8v97003_get_vco_band();
+uint8_t r8v97003_get_digital_band();
+
+uint8_t r8v97003_pll_locked();
+void r8v97003_ld_config(uint8_t ubEnable, uint8_t ubAutoRecalEnable, enum r8v97003_ld_pin_mode_t ePinMode, enum r8v97003_ld_precision_t ePrecision);
+
+uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDouble, uint8_t ubMult, uint16_t usRDiv, enum r8v97003_pfd_pulse_width_t ePw);
 
 double r8v97003_get_cp_pmos_current();
 double r8v97003_get_cp_nmos_current();
 double r8v97003_get_cp_bleeder_current();
 uint8_t r8v97003_set_cp_current(double dPMOS, double dNMOS, double dBleeder);
+
+uint8_t r8v97003_set_frequency(uint64_t ullFrequency);
+
+uint8_t r8v97003_set_phase(double dPhase);
+double r8v97003_get_phase();
+
+uint8_t r8v97003_out_config(uint8_t ubIndex, uint8_t ubEnable, uint8_t ubPower);
 
 #endif // __R8V97003_H__

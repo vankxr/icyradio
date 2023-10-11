@@ -37,69 +37,90 @@ static uint8_t r8v97003_read_register(uint8_t ubRegister)
 {
     uint8_t ubValue = 0;
 
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_quad_spi2_slave_select(BIT(0), 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
 
-        axi_quad_spi2_write_byte(BIT(7), 0);
-        axi_quad_spi2_write_byte(ubRegister, 1);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, BIT(7), 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 1);
 
-        ubValue = axi_quad_spi2_transfer_byte(0x00);
+    ubValue = axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00);
 
-        axi_quad_spi2_slave_select(BIT(0), 0);
-    // }
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
 
     return ubValue;
+}
+static uint16_t r8v97003_read_register16(uint8_t ubRegister)
+{
+    uint16_t usValue = 0;
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
+
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, BIT(7), 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 1);
+
+    usValue |= (uint16_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 0;
+    usValue |= (uint16_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 8;
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
+
+    return usValue;
 }
 static uint32_t r8v97003_read_register32(uint8_t ubRegister)
 {
     uint32_t ulValue = 0;
 
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_quad_spi2_slave_select(BIT(0), 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
 
-        axi_quad_spi2_write_byte(BIT(7), 0);
-        axi_quad_spi2_write_byte(ubRegister, 1);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, BIT(7), 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 1);
 
-        ulValue |= (uint32_t)axi_quad_spi2_transfer_byte(0x00) << 0;
-        ulValue |= (uint32_t)axi_quad_spi2_transfer_byte(0x00) << 8;
-        ulValue |= (uint32_t)axi_quad_spi2_transfer_byte(0x00) << 16;
-        ulValue |= (uint32_t)axi_quad_spi2_transfer_byte(0x00) << 24;
+    ulValue |= (uint32_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 0;
+    ulValue |= (uint32_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 8;
+    ulValue |= (uint32_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 16;
+    ulValue |= (uint32_t)axi_quad_spi_transfer_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00) << 24;
 
-        axi_quad_spi2_slave_select(BIT(0), 0);
-    // }
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
 
     return ulValue;
 }
 static void r8v97003_write_register(uint8_t ubRegister, uint8_t ubValue)
 {
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_quad_spi2_slave_select(BIT(0), 1);
+    // DBGPRINTLN_CTX("Write 0x%02X to reg 0x%02X", ubValue, ubRegister);
 
-        axi_quad_spi2_write_byte(0x00, 0);
-        axi_quad_spi2_write_byte(ubRegister, 0);
-        axi_quad_spi2_write_byte(ubValue, 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
 
-        axi_quad_spi2_slave_select(BIT(0), 0);
-    // }
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubValue, 1);
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
+}
+static void r8v97003_write_register16(uint8_t ubRegister, uint16_t usValue)
+{
+    // DBGPRINTLN_CTX("Write 0x%04X to reg 0x%02X", usValue, ubRegister);
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
+
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (usValue >> 0) & 0xFF, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (usValue >> 8) & 0xFF, 1);
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
 }
 static void r8v97003_write_register32(uint8_t ubRegister, uint32_t ulValue)
 {
-    // ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-    // {
-        axi_quad_spi2_slave_select(BIT(0), 1);
+    // DBGPRINTLN_CTX("Write 0x%08X to reg 0x%02X", ulValue, ubRegister);
 
-        axi_quad_spi2_write_byte(0x00, 0);
-        axi_quad_spi2_write_byte(ubRegister, 0);
-        axi_quad_spi2_write_byte((ulValue >> 0) & 0xFF, 0);
-        axi_quad_spi2_write_byte((ulValue >> 8) & 0xFF, 0);
-        axi_quad_spi2_write_byte((ulValue >> 16) & 0xFF, 0);
-        axi_quad_spi2_write_byte((ulValue >> 24) & 0xFF, 1);
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1);
 
-        axi_quad_spi2_slave_select(BIT(0), 0);
-    // }
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, 0x00, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, ubRegister, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (ulValue >> 0) & 0xFF, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (ulValue >> 8) & 0xFF, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (ulValue >> 16) & 0xFF, 0);
+    axi_quad_spi_write_byte(AXI_QUAD_SPI_SYNTH_INST, (ulValue >> 24) & 0xFF, 1);
+
+    axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);
 }
 static void r8v97003_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ubValue)
 {
@@ -108,15 +129,40 @@ static void r8v97003_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ub
 
 uint8_t r8v97003_init()
 {
-    axi_gpio1_set_value(AXI_GPIO1_SYNTH_CE_BIT, 1);
-    axi_gpio1_set_value(AXI_GPIO1_SYNTH_RESETn_BIT, 0);
-    usleep(10000);
-    axi_gpio1_set_value(AXI_GPIO1_SYNTH_RESETn_BIT, 1);
+    axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_CE_BIT, 1);
+    axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_RESETn_BIT, 0);
     usleep(100000);
+    axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_RESETn_BIT, 1);
+    usleep(200000);
 
-    r8v97003_write_register(R8V97003_REG_INTF_CONFIG, R8V97003_REG_INTF_CONFIG_SOFT_RESET | R8V97003_REG_INTF_CONFIG_ADDR_ASC | R8V97003_REG_INTF_CONFIG_SDO_ACTIVE);
+    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
 
-    usleep(100000);
+    // {uint8_t dat[] = {0x00,0x00,0x3C,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x03,0x06,0x01,0x00,0x01,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0C,0x00,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x00,0x17,0x00,0x00,0x00,0x00,0x00,0x02,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x02,0x08,0x40,0x03,0x35,0x0C,0x80,0x00,0x18,0x06,0x01,0x01,0x14,0x85,0xE0,0x1D,0x1D,0x00,0x02,0x00,0x00,0x00,0x28,0x00,0x08}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x3B,0x00,0x02,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x3F,0x00,0x00,0x62,0x22,0x22,0x00,0x00,0x00,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x49,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
+
+    // usleep(100000);
+    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
+    // usleep(1000000);
+    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
+    // usleep(1000000);
+    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
+    // usleep(1000000);
+
+    // return 1;
+
+    r8v97003_write_register(R8V97003_REG_INTF_CONFIG, R8V97003_REG_INTF_CONFIG_ADDR_ASC | R8V97003_REG_INTF_CONFIG_SDO_ACTIVE);
 
     uint16_t usVal = r8v97003_get_chip_type();
 
@@ -147,7 +193,32 @@ uint8_t r8v97003_init()
 
     DBGPRINTLN_CTX("Found 8V97003 Rev %hhu (Opt %hhu)", r8v97003_get_chip_version(), r8v97003_get_chip_option());
 
-    r8v97003_write_register(R8V97003_REG_PWR_CTL, R8V97003_REG_PWR_CTL_ANA_PDOWN);
+    r8v97003_write_register(R8V97003_REG_BUF_READ, 0x00); // Reads target the active register, not the buffer
+    r8v97003_write_register(R8V97003_REG_DSM_CTL, R8V97003_REG_DSM_CTL_SHAPE_DITHER_EN);
+    r8v97003_write_register(R8V97003_REG_MANUAL_VCO, 0x00);
+    r8v97003_write_register(R8V97003_REG_MANUAL_DIGITAL, 0x00);
+    r8v97003_write_register(R8V97003_REG_MANUAL_CTL, R8V97003_REG_MANUAL_CTL_BAND_SEL_ACC_8X);
+    r8v97003_write_register(0x24, 0x80);
+    r8v97003_write_register(0x25, 0x00);
+    r8v97003_write_register(R8V97003_REG_MULT_CTL0, 0x00);
+    r8v97003_write_register(R8V97003_REG_MULT_CTL1, R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW);
+    r8v97003_write_register(R8V97003_REG_ICP_BLEEDER, 0);
+    r8v97003_write_register(R8V97003_REG_PFD_PULSE_WIDTH, 0x02);
+    r8v97003_write_register(0x31, 0x88);
+    r8v97003_write_register(R8V97003_REG_AUTO_RESYNC, 0x13);
+    r8v97003_write_register(R8V97003_REG_RFOUTA_PWR, 0x00);
+    r8v97003_write_register(R8V97003_REG_RFOUTA_ENA, 0x8E | R8V97003_REG_RFOUTA_ENA_MUTE_UNTIL_LD);
+    r8v97003_write_register(R8V97003_REG_RFOUTB_PWR, 0x00);
+    r8v97003_write_register(R8V97003_REG_RFOUTB_ENA, 0x8E);
+    r8v97003_write_register(0x3C, 0x02);
+    r8v97003_write_register(0x3D, 0x00);
+    r8v97003_write_register(0x3F, 0x00);
+    r8v97003_write_register(0x40, 0x00);
+    r8v97003_write_register(0x41, 0x62);
+    r8v97003_write_register(0x42, 0x22);
+    r8v97003_write_register(0x43, 0x22);
+
+    r8v97003_write_register(R8V97003_REG_BUF_TRANSFER, R8V97003_REG_BUF_TRANSFER_TRANSFER_ON);
 
     return 1;
 }
@@ -181,7 +252,67 @@ static void r8v97003_transfer_dbuf()
         usleep(0);
 }
 
-uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDouble, uint8_t ubMult, uint16_t usRDiv)
+void r8v97003_power_down(enum r8v97003_power_flags_t eFlags)
+{
+    uint8_t ubReg = r8v97003_read_register(R8V97003_REG_PWR_CTL);
+
+    ubReg |= (eFlags & R8V97003_PWR_REF) ? R8V97003_REG_PWR_CTL_REF_VREG_PDOWN : 0;
+    ubReg |= (eFlags & R8V97003_PWR_PDCP) ? R8V97003_REG_PWR_CTL_PDCP_VREG_PDOWN : 0;
+    ubReg |= (eFlags & R8V97003_PWR_FB) ? R8V97003_REG_PWR_CTL_FB_VREG_PDOWN : 0;
+    ubReg |= (eFlags & R8V97003_PWR_OUTA) ? R8V97003_REG_PWR_CTL_OUTA_VREG_PDOWN : 0;
+    ubReg |= (eFlags & R8V97003_PWR_OUTB) ? R8V97003_REG_PWR_CTL_OUTB_BUF_VREG_PDOWN : 0;
+    ubReg |= (eFlags & R8V97003_PWR_ANA) ? R8V97003_REG_PWR_CTL_ANA_PDOWN : 0;
+    ubReg &= (eFlags & R8V97003_PWR_VCO) ? ~R8V97003_REG_PWR_CTL_VCO_EN : 0xFF; // VCO is inverted
+
+    r8v97003_write_register(R8V97003_REG_PWR_CTL, ubReg);
+}
+void r8v97003_power_up(enum r8v97003_power_flags_t eFlags)
+{
+    uint8_t ubReg = r8v97003_read_register(R8V97003_REG_PWR_CTL);
+
+    ubReg &= (eFlags & R8V97003_PWR_REF) ? ~R8V97003_REG_PWR_CTL_REF_VREG_PDOWN : 0xFF;
+    ubReg &= (eFlags & R8V97003_PWR_PDCP) ? ~R8V97003_REG_PWR_CTL_PDCP_VREG_PDOWN : 0xFF;
+    ubReg &= (eFlags & R8V97003_PWR_FB) ? ~R8V97003_REG_PWR_CTL_FB_VREG_PDOWN : 0xFF;
+    ubReg &= (eFlags & R8V97003_PWR_OUTA) ? ~R8V97003_REG_PWR_CTL_OUTA_VREG_PDOWN : 0xFF;
+    ubReg &= (eFlags & R8V97003_PWR_OUTB) ? ~R8V97003_REG_PWR_CTL_OUTB_BUF_VREG_PDOWN : 0xFF;
+    ubReg &= (eFlags & R8V97003_PWR_ANA) ? ~R8V97003_REG_PWR_CTL_ANA_PDOWN : 0xFF;
+    ubReg |= (eFlags & R8V97003_PWR_VCO) ? R8V97003_REG_PWR_CTL_VCO_EN : 0; // VCO is inverted
+
+    r8v97003_write_register(R8V97003_REG_PWR_CTL, ubReg);
+}
+
+uint8_t r8v97003_get_vco_band()
+{
+    return r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS) & 0x0F;
+}
+uint8_t r8v97003_get_digital_band()
+{
+    return r8v97003_read_register(R8V97003_REG_DIG_BAND_STATUS) & 0x7F;
+}
+
+uint8_t r8v97003_pll_locked()
+{
+    return !!(r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS) & R8V97003_REG_LD_CAL_VCO_STATUS_DIG_LOCK);
+}
+void r8v97003_ld_config(uint8_t ubEnable, uint8_t ubAutoRecalEnable, enum r8v97003_ld_pin_mode_t ePinMode, enum r8v97003_ld_precision_t ePrecision)
+{
+    uint8_t ubReg0 = 0;
+    uint8_t ubReg1 = 0;
+
+    if(ubEnable)
+        ubReg0 |= R8V97003_REG_LD_CTL0_LD_DISABLE;
+
+    if(ubAutoRecalEnable)
+        ubReg0 |= R8V97003_REG_LD_CTL0_AUTO_RECAL_EN;
+
+    ubReg1 |= ePinMode & 0x30;
+    ubReg1 |= ePrecision & 0x07;
+
+    r8v97003_write_register(R8V97003_REG_LD_CTL0, ubReg0);
+    r8v97003_write_register(R8V97003_REG_LD_CTL1, ubReg1);
+}
+
+uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDouble, uint8_t ubMult, uint16_t usRDiv, enum r8v97003_pfd_pulse_width_t ePw)
 {
     // DBGPRINTLN_CTX("Ref: %u, Diff: %s, RefDouble: %s, Mult: %hhu, RDiv: %hu", ulRefFreq, ubDiff ? "yes" : "no", ubRefDouble ? "yes" : "no", ubMult, usRDiv);
 
@@ -213,16 +344,21 @@ uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDou
         return 0;
     }
 
-    uint32_t ulMultOutFreq = ulRefFreq * (1 + !!ubRefDouble) * ubMult;
+    uint32_t ulMultOutFreq = 0;
 
-    if(ulMultOutFreq < 160000000UL || ulMultOutFreq > 250000000UL)
+    if(ubMult > 1)
     {
-        DBGPRINTLN_CTX("Multiplier output frequency out of range (Valid: 160-250 MHz)");
+        ulMultOutFreq = ulRefFreq * (1 + !!ubRefDouble) * ubMult;
 
-        return 0;
+        if(ulMultOutFreq < 160000000UL || ulMultOutFreq > 250000000UL)
+        {
+            DBGPRINTLN_CTX("Multiplier output frequency out of range (Valid: 160-250 MHz)");
+
+            return 0;
+        }
     }
 
-    uint32_t ulPFDFrequency = ulMultOutFreq / usRDiv;
+    uint32_t ulPFDFrequency = (ulRefFreq * (1 + !!ubRefDouble) * ubMult) / usRDiv;
 
     if(ulPFDFrequency > 500000000UL)
     {
@@ -236,12 +372,12 @@ uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDou
     }
 
     // Calculate band select clock divider
-    uint32_t ulBandSelectClock = ulPFDFrequency / 1;
+    uint32_t ulBandSelectClock = ulPFDFrequency;
     uint16_t usBandSelectDivider = 1;
 
     while(usBandSelectDivider < 8192)
     {
-        if(ulBandSelectClock >= 50000UL && ulBandSelectClock <= 100000UL)
+        if(ulBandSelectClock >= 50000UL && ulBandSelectClock <= 80000UL) // Actual range is 50-100, but we leave some margin
             break;
 
         usBandSelectDivider++;
@@ -257,34 +393,32 @@ uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDou
 
     // DBGPRINTLN_CTX("PFD: %u Hz, BandSel: %u Hz", ulPFDFrequency, ulBandSelectClock);
 
+    r8v97003_write_register(R8V97003_REG_MULT_CTL0, (ubMult > 1 ? R8V97003_REG_MULT_CTL0_MULT_EN : 0) | R8V97003_REG_MULT_CTL0_MULT_RESET);
+    r8v97003_transfer_dbuf();
+
     r8v97003_write_register(R8V97003_REG_RDIV_LOW, usRDiv & 0xFF);
     r8v97003_write_register(R8V97003_REG_RDIV_HIGH, ((ulRefFreq < 50000000UL) ? R8V97003_REG_RDIV_HIGH_REF_DBL_DELAY : 0) | (ubDiff ? R8V97003_REG_RDIV_HIGH_INPUT_TYPE : 0) | (ubRefDouble ? R8V97003_REG_RDIV_HIGH_REF_DBL_EN : 0) | ((usRDiv >> 8) & 0x03));
-    r8v97003_transfer_dbuf();
 
     if(ubMult > 1)
     {
-        r8v97003_write_register(R8V97003_REG_MULT_CTL0, R8V97003_REG_MULT_CTL0_MULT_EN | R8V97003_REG_MULT_CTL0_MULT_RESET);
-        r8v97003_transfer_dbuf();
-
         r8v97003_write_register(R8V97003_REG_MULT_CTL0, R8V97003_REG_MULT_CTL0_MULT_EN | (ubMult & 0x3F));
-        r8v97003_write_register(R8V97003_REG_MULT_CTL1, R8V97003_REG_MULT_CTL1_MULT_MUX_ENA | R8V97003_REG_MULT_CTL1_MULT_D2S_ENA | R8V97003_REG_MULT_CTL1_MULT_CP_ENA | BIT(2));
+        r8v97003_rmw_register(R8V97003_REG_MULT_CTL1, 0x07, R8V97003_REG_MULT_CTL1_MULT_MUX_ENA | R8V97003_REG_MULT_CTL1_MULT_D2S_ENA | R8V97003_REG_MULT_CTL1_MULT_CP_ENA);
     }
     else
     {
         r8v97003_write_register(R8V97003_REG_MULT_CTL0, 0);
-        r8v97003_write_register(R8V97003_REG_MULT_CTL1, R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW | BIT(2));
+        r8v97003_rmw_register(R8V97003_REG_MULT_CTL1, 0x07, R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW);
     }
 
-    r8v97003_transfer_dbuf();
-
-    r8v97003_write_register(R8V97003_REG_BAND_SEL_DIV_LOW, usBandSelectDivider & 0xFF);
-    r8v97003_write_register(R8V97003_REG_BAND_SEL_DIV_HIGH, (usBandSelectDivider >> 8) & 0x1F);
+    r8v97003_write_register16(R8V97003_REG_BAND_SEL_DIV_LOW, usBandSelectDivider & 0x1FFF);
 
     r8v97003_transfer_dbuf();
+
+    r8v97003_rmw_register(R8V97003_REG_PFD_PULSE_WIDTH, ~0x0C, (ePw & 0x0C));
 
     R8V97003_REF_FREQ = ulRefFreq;
     R8V97003_REF_MULT_IN_FREQ = ulRefFreq * (1 + !!ubRefDouble);
-    R8V97003_REF_RDIV_IN_FREQ = ulMultOutFreq;
+    R8V97003_REF_RDIV_IN_FREQ = (ubMult > 1) ? ulMultOutFreq : R8V97003_REF_MULT_IN_FREQ;
     R8V97003_PFD_FREQ = ulPFDFrequency;
     R8V97003_BAND_SEL_CLK_FREQ = ulBandSelectClock;
 
@@ -402,6 +536,8 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
 
     r8v97003_get_mixed_number(ullVCOFrequency, R8V97003_PFD_FREQ, &xMult);
 
+    DBGPRINTLN_CTX("Mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+
     if(!xMult.ulDen) // Division by zero, should never happen, unless the previous function failed
     {
         DBGPRINTLN_CTX("Division by zero");
@@ -430,52 +566,143 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
         return 0;
     }
 
-    double dFrac = (double)xMult.ulNum / (double)xMult.ulDen;
-
-    if(dFrac < 0.01)
-        DBGPRINTLN_CTX("Warning: PLL operating close to integer-boundary mode (%u / %u = %f)", xMult.ulNum, xMult.ulDen, dFrac);
-
-    while(xMult.ulDen < BIT(31) - 1) // Maximise MOD and FRAC to improve phase noise
-    {
-        xMult.ulDen <<= 1;
-        xMult.ulNum <<= 1;
-    }
-
-    uint8_t ulManCtlReg = R8V97003_REG_MANUAL_CTL_FORCE_RELOCK;
-
-    r8v97003_write_register(R8V97003_REG_NINT_LOW, xMult.ulInt & 0xFF);
-    r8v97003_write_register(R8V97003_REG_NINT_HIGH, (xMult.ulInt >> 8) & 0xFF);
 
     if(xMult.ulNum > 0)
     {
-        r8v97003_write_register32(R8V97003_REG_NMOD_LOW, xMult.ulDen);
-        r8v97003_write_register32(R8V97003_REG_NFRAC_LOW, xMult.ulNum);
+        double dFrac = (double)xMult.ulNum / (double)xMult.ulDen;
 
+        if(dFrac < 0.1)
+            DBGPRINTLN_CTX("Warning: PLL operating close to integer-boundary mode (%u / %u = %g)", xMult.ulNum, xMult.ulDen, dFrac);
+
+        while(!(xMult.ulDen & BIT(31))) // Maximise MOD and FRAC to improve phase noise
+        {
+            xMult.ulDen <<= 1;
+            xMult.ulNum <<= 1;
+        }
+    }
+    else
+    {
+        xMult.ulDen = 2;
+    }
+
+    DBGPRINTLN_CTX("Maximized mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+
+    uint8_t ubManCtlReg = R8V97003_REG_MANUAL_CTL_FORCE_RELOCK | R8V97003_REG_MANUAL_CTL_MANUAL_RESYNC;
+
+    r8v97003_write_register16(R8V97003_REG_NINT_LOW, xMult.ulInt);
+    r8v97003_write_register32(R8V97003_REG_NMOD_LOW, xMult.ulDen);
+    r8v97003_write_register32(R8V97003_REG_NFRAC_LOW, xMult.ulNum);
+
+    if(xMult.ulNum > 0)
+    {
         // Re-calculate the phase word since it depends and is limited by MOD
-        uint32_t ulPrevDen = r8v97003_read_register32(R8V97003_REG_NMOD_LOW);
-        uint32_t ulPhase = r8v97003_read_register32(R8V97003_REG_PHASE_LOW);
+        uint32_t ulPrevDen = r8v97003_read_register32(R8V97003_REG_NMOD_LOW); // Its ok to read after write because the register is buffered
+        uint64_t ullPhase = r8v97003_read_register32(R8V97003_REG_PHASE_LOW);
 
-        ulPhase *= ((double)xMult.ulDen / ulPrevDen);
+        ullPhase = ((ullPhase * (uint64_t)xMult.ulDen) / ulPrevDen);
 
-        if(ulPhase >= xMult.ulDen)
-            ulPhase = xMult.ulDen - 1;
+        if(ullPhase >= xMult.ulDen)
+            ullPhase = xMult.ulDen - 1;
 
-        r8v97003_write_register32(R8V97003_REG_PHASE_LOW, ulPhase);
+        r8v97003_write_register32(R8V97003_REG_PHASE_LOW, ullPhase & 0xFFFFFFFF);
 
-        ulManCtlReg |= R8V97003_REG_MANUAL_CTL_PH_ADJ;
+        ubManCtlReg |= R8V97003_REG_MANUAL_CTL_PH_ADJ;
     }
 
     r8v97003_transfer_dbuf();
 
-    r8v97003_rmw_register(R8V97003_REG_DSM_CTL, ~0x70, xMult.ulNum > 0 ? R8V97003_REG_DSM_CTL_DSM_ORDER_3RD : R8V97003_REG_DSM_CTL_DSM_ORDER_OFF);
-    r8v97003_write_register(R8V97003_REG_OUT_DIV_DBL, (ubDoubler ? R8V97003_REG_OUT_DIV_DBL_OUT_DBL_ENA : 0) | (ubM0 > 0 ? R8V97003_REG_OUT_DIV_DBL_OUT_DIV_ENA : 0) | (ullVCOFrequency < 7000000000ULL ? R8V97003_REG_OUT_DIV_DBL_OUT_DBL_FREQ : 0) | (ubM0 & 0x07));
+    r8v97003_rmw_register(R8V97003_REG_DSM_CTL, 0x0F, (xMult.ulNum > 0) ? R8V97003_REG_DSM_CTL_DSM_ORDER_3RD : R8V97003_REG_DSM_CTL_DSM_ORDER_OFF);
 
-    r8v97003_write_register(R8V97003_REG_MANUAL_CTL, ulManCtlReg);
+    uint8_t ubOutDivDblReg = 0;
+
+    if(ubDoubler)
+    {
+        ubOutDivDblReg |= R8V97003_REG_OUT_DIV_DBL_OUT_DBL_ENA;
+
+        if(ullVCOFrequency < 7000000000ULL)
+            ubOutDivDblReg |= R8V97003_REG_OUT_DIV_DBL_OUT_DBL_FREQ;
+    }
+
+    if(ubM0 > 0)
+        ubOutDivDblReg |= R8V97003_REG_OUT_DIV_DBL_OUT_DIV_ENA | (ubM0 & 0x07);
+
+    r8v97003_write_register(R8V97003_REG_OUT_DIV_DBL, ubOutDivDblReg);
+    r8v97003_rmw_register(R8V97003_REG_MANUAL_CTL, 0x03, ubManCtlReg);
 
     R8V97003_VCO_FREQ = (uint64_t)R8V97003_PFD_FREQ * xMult.ulInt + (((uint64_t)R8V97003_PFD_FREQ * xMult.ulNum) / xMult.ulDen);
     R8V97003_FREQ = (R8V97003_VCO_FREQ >> ubM0) * (ubDoubler + 1);
 
-    // while(!TXPLL_LOCKED());
+    if(r8v97003_read_register(R8V97003_REG_LD_CTL0) & R8V97003_REG_LD_CTL0_LD_DISABLE)
+    {
+        uint8_t ubStatus = r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS);
+        uint32_t ulTimeout = 500;
+
+        while(--ulTimeout && !(ubStatus & R8V97003_REG_LD_CAL_VCO_STATUS_DIG_LOCK))
+        {
+            usleep(1000);
+
+            ubStatus = r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS);
+        }
+
+        if(!(ubStatus & R8V97003_REG_LD_CAL_VCO_STATUS_DIG_LOCK))
+        {
+            DBGPRINTLN_CTX("PLL not locked (Status: 0x%02X, LD: %hhu, DBand: 0x%02X)", ubStatus, axi_gpio_get_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_LD_BIT), r8v97003_read_register(R8V97003_REG_DIG_BAND_STATUS));
+
+            return 0;
+        }
+    }
+    else
+    {
+        DBGPRINTLN_CTX("Warning: Lock detect circuit disabled, PLL may not be locked");
+    }
+
+    return 1;
+}
+
+uint8_t r8v97003_set_phase(double dPhase)
+{
+    if(dPhase < 0.f || dPhase > 360.f)
+        return 0;
+
+    uint32_t ulDen = r8v97003_read_register32(R8V97003_REG_NMOD_LOW);
+
+    uint32_t ulPhase = (dPhase / 360.f) * ulDen;
+
+    if(ulPhase >= ulDen)
+        ulPhase = ulDen - 1;
+
+    r8v97003_write_register32(R8V97003_REG_PHASE_LOW, ulPhase);
+    r8v97003_transfer_dbuf();
+
+    r8v97003_rmw_register(R8V97003_REG_MANUAL_CTL, 0xFF, R8V97003_REG_MANUAL_CTL_PH_ADJ);
+
+    return 1;
+}
+double r8v97003_get_phase()
+{
+    uint32_t ulDen = r8v97003_read_register32(R8V97003_REG_NMOD_LOW);
+    uint32_t ulPhase = r8v97003_read_register32(R8V97003_REG_PHASE_LOW);
+
+    return ((double)ulPhase / (double)ulDen) * 360.f;
+}
+
+uint8_t r8v97003_out_config(uint8_t ubIndex, uint8_t ubEnable, uint8_t ubPower)
+{
+    if(ubIndex > 1)
+        return 0;
+
+    if(ubPower > 12)
+    {
+        DBGPRINTLN_CTX("Invalid power level (Valid: 0-12)");
+
+        return 0;
+    }
+
+    uint8_t ubPwrReg = ubIndex ? R8V97003_REG_RFOUTB_PWR : R8V97003_REG_RFOUTA_PWR;
+    uint8_t ubEnReg = ubIndex ? R8V97003_REG_RFOUTB_ENA : R8V97003_REG_RFOUTA_ENA;
+
+    r8v97003_write_register(ubPwrReg, ubPower & 0x0F);
+    r8v97003_rmw_register(ubEnReg, 0x8E, ubEnable ? R8V97003_REG_RFOUTA_ENA_RFOUTA_ENA : 0);
 
     return 1;
 }

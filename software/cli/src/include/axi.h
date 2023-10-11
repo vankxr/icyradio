@@ -25,7 +25,7 @@
 #define AXI_PCIE0_BASE          0x4000A000
 #define AXI_DMAC_I2S_RX_BASE    0x4000C000
 #define AXI_DMAC_I2S_TX_BASE    0x4000E000
-#define AXI_I2S_ADI_BASE        0x40010000
+#define AXI_I2S_BASE            0x40010000
 #define AXI_XADC_WIZ_BASE       0x40012000
 #define AXI_QUAD_SPI1_BASE      0x40014000
 #define AXI_IIC1_BASE           0x40016000
@@ -38,7 +38,11 @@
 #define AXI_AD9361_BASE         0x40100000
 
 // PCIe Access to Host
-#define AXI_PCIE_MM_BASE        0x60000000
-#define AXI_PCIE_MM_SIZE        (256 * 1024 * 1024) // 256 MB
+#define AXI_PCIE_BAR0_MM_BASE   0x50000000
+#define AXI_PCIE_BAR0_MM_SIZE   (256 * 1024 * 1024) // 256 MB
+#define AXI_PCIE_BAR1_MM_BASE   0x60000000
+#define AXI_PCIE_BAR1_MM_SIZE   (256 * 1024 * 1024) // 256 MB
+#define AXI_PCIE_BAR2_MM_BASE   0x70000000
+#define AXI_PCIE_BAR2_MM_SIZE   (256 * 1024 * 1024) // 256 MB
 
 #endif // __AXI_H__

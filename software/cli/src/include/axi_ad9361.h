@@ -1,10 +1,7 @@
 #ifndef __AXI_AD9361_H__
 #define __AXI_AD9361_H__
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <inttypes.h>
 #include <unistd.h>
 #include "axi.h"
 #include "ad9361.h"
