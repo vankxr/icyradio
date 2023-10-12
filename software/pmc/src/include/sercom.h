@@ -4,6 +4,8 @@
 #include <sam.h>
 #include <stdlib.h>
 #include <string.h>
+#include "pm.h"
+#include "gclk.h"
 #include "nvic.h"
 #include "utils.h"
 #include "atomic.h"
@@ -20,8 +22,6 @@
 //#define SERCOM0_MODE_I2C                   // Define for I2C
 #define SERCOM0_MODE_SPI                   // Define for SPI
 //#define SERCOM0_MODE_UART                  // Define for UART
-//#define SERCOM0_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
-#define SERCOM0_DMA_CHANNEL          0     // Only relevant when in UART mode
 #define SERCOM0_FIFO_SIZE            256   // Only relevant when in UART mode
 
 #if defined(SERCOM0_MODE_SPI) && !defined(SERCOM0_MODE_I2C) && !defined(SERCOM0_MODE_UART)
@@ -100,8 +100,6 @@ static inline void sercom0_read(uint8_t *pubDst, uint32_t ulSize)
 #define SERCOM1_MODE_I2C                   // Define for I2C
 //#define SERCOM1_MODE_SPI                   // Define for SPI
 //#define SERCOM1_MODE_UART                  // Define for UART
-//#define SERCOM1_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
-#define SERCOM1_DMA_CHANNEL          0     // Only relevant when in UART mode
 #define SERCOM1_FIFO_SIZE            256   // Only relevant when in UART mode
 
 #if defined(SERCOM1_MODE_SPI) && !defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
@@ -180,8 +178,6 @@ static inline void sercom1_read(uint8_t *pubDst, uint32_t ulSize)
 //#define SERCOM2_MODE_I2C                   // Define for I2C
 //#define SERCOM2_MODE_SPI                   // Define for SPI
 //#define SERCOM2_MODE_UART                  // Define for UART
-//#define SERCOM2_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
-#define SERCOM2_DMA_CHANNEL          0     // Only relevant when in UART mode
 #define SERCOM2_FIFO_SIZE            256   // Only relevant when in UART mode
 
 #if defined(SERCOM2_MODE_SPI) && !defined(SERCOM2_MODE_I2C) && !defined(SERCOM2_MODE_UART)
@@ -260,8 +256,6 @@ static inline void sercom2_read(uint8_t *pubDst, uint32_t ulSize)
 //#define SERCOM3_MODE_I2C                   // Define for I2C
 //#define SERCOM3_MODE_SPI                   // Define for SPI
 #define SERCOM3_MODE_UART                  // Define for UART
-//#define SERCOM3_MODE_SPI_3W              // Define for 3-wire SPI, comment out for 4-wire SPI
-#define SERCOM3_DMA_CHANNEL          0     // Only relevant when in UART mode
 #define SERCOM3_FIFO_SIZE            256   // Only relevant when in UART mode
 
 #if defined(SERCOM3_MODE_SPI) && !defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)

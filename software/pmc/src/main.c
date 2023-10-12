@@ -6,16 +6,14 @@
 #include "nvic.h"
 #include "atomic.h"
 #include "systick.h"
-// #include "rmu.h"
-// #include "emu.h"
-// #include "cmu.h"
+#include "sysctrl.h"
+#include "gclk.h"
+#include "pm.h"
 #include "port.h"
-// #include "msc.h"
-// #include "rtcc.h"
-// #include "adc.h"
-// #include "crc.h"
+#include "nvmctrl.h"
+#include "adc.h"
 #include "sercom.h"
-// #include "wdog.h"
+#include "wdt.h"
 #include "lt7182s.h"
 
 // Structs
@@ -28,9 +26,11 @@ static void sleep();
 
 static uint32_t get_free_ram();
 
-// static void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize);
-// static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
-// static uint16_t get_device_revision();
+static void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize);
+static void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize);
+static uint8_t get_device_revision();
+
+static void wdt_warning_isr();
 
 // Variables
 
@@ -85,47 +85,96 @@ uint32_t get_free_ram()
     }
 }
 
+void get_device_core_name(char *pszDeviceCoreName, uint32_t ulDeviceCoreNameSize)
+{
+    uint8_t ubImplementer = (SCB->CPUID & SCB_CPUID_IMPLEMENTER_Msk) >> SCB_CPUID_IMPLEMENTER_Pos;
+    const char* szImplementer = "?";
+
+    switch(ubImplementer)
+    {
+        case 0x41: szImplementer = "ARM"; break;
+    }
+
+    uint16_t usPartNo = (SCB->CPUID & SCB_CPUID_PARTNO_Msk) >> SCB_CPUID_PARTNO_Pos;
+    const char* szPartNo = "?";
+
+    switch(usPartNo)
+    {
+        case 0xC20: szPartNo = "Cortex-M0"; break;
+        case 0xC60: szPartNo = "Cortex-M0+"; break;
+        case 0xC21: szPartNo = "Cortex-M1"; break;
+        case 0xD20: szPartNo = "Cortex-M23"; break;
+        case 0xC23: szPartNo = "Cortex-M3"; break;
+        case 0xD21: szPartNo = "Cortex-M33"; break;
+        case 0xC24: szPartNo = "Cortex-M4"; break;
+        case 0xC27: szPartNo = "Cortex-M7"; break;
+    }
+
+    uint8_t ubVariant = (SCB->CPUID & SCB_CPUID_VARIANT_Msk) >> SCB_CPUID_VARIANT_Pos;
+    uint8_t ubRevision = (SCB->CPUID & SCB_CPUID_REVISION_Msk) >> SCB_CPUID_REVISION_Pos;
+
+    snprintf(pszDeviceCoreName, ulDeviceCoreNameSize, "%s %s r%hhup%hhu", szImplementer, szPartNo, ubVariant, ubRevision);
+}
+void get_device_name(char *pszDeviceName, uint32_t ulDeviceNameSize)
+{
+    uint8_t ubSeries =  (DSU_REGS->DSU_DID & DSU_DID_SERIES_Msk) >> DSU_DID_SERIES_Pos;
+    const char* szSeries = "?";
+
+    switch(ubSeries)
+    {
+        case 0x00: szSeries = "SAMD20"; break;
+        case 0x01: szSeries = "SAMD21"; break;
+    }
+
+    const char *szFlashSize = "?";
+
+    switch(nvmctrl_get_flash_size() >> 10)
+    {
+        case  32: szFlashSize = "15"; break;
+        case  64: szFlashSize = "16"; break;
+        case 128: szFlashSize = "17"; break;
+        case 256: szFlashSize = "18"; break;
+    }
+
+    uint8_t ubFamily =  (DSU_REGS->DSU_DID & DSU_DID_FAMILY_Msk) >> DSU_DID_FAMILY_Pos;
+    char cFamily = '?';
+
+    switch(ubFamily)
+    {
+        case 0x00: cFamily = 'A'; break;
+        case 0x01: cFamily = 'B'; break;
+    }
+
+    snprintf(pszDeviceName, ulDeviceNameSize, "AT%sx%s%c", szSeries, szFlashSize, cFamily);
+}
+uint8_t get_device_revision()
+{
+    return (DSU_REGS->DSU_DID & DSU_DID_REVISION_Msk) >> DSU_DID_REVISION_Pos;
+}
+
+void wdt_warning_isr()
+{
+    DBGPRINTLN_CTX("Watchdog warning!");
+}
+
 int init()
 {
-    SYSCTRL_REGS->SYSCTRL_OSC8M &= ~SYSCTRL_OSC8M_PRESC_Msk; // Set OSC8M prescaler to 1
-    // rmu_init(RMU_CTRL_PINRMODE_FULL, RMU_CTRL_SYSRMODE_EXTENDED, RMU_CTRL_LOCKUPRMODE_EXTENDED, RMU_CTRL_WDOGRMODE_EXTENDED); // Init RMU and set reset modes
+    nvmctrl_init(); // Init NVMCTRL
 
-    // emu_init(1); // Init EMU, ignore DCDC and switch digital power immediatly to DVDD
-
-    // cmu_init(); // Init Clocks
-
-    // msc_init(); // Init Flash, RAM and caches
+    sysctrl_init(); // Init Oscillators
+    gclk_init(); // Init GCLKs
+    pm_init(); // Init System clock tree
 
     systick_init(); // Init system tick
 
-    // wdog_init((8 <<_WDOG_CTRL_PERSEL_SHIFT) | (3 << _WDOG_CTRL_WARNSEL_SHIFT)); // Init the watchdog timer, 2049 ms timeout, 75% warning
-    // wdog_set_warning_isr(wdog_warning_isr);
+    wdt_init(WDT_CONFIG_PER_16K, WDT_EWCTRL_EWOFFSET_4K); // Init the watchdog time (500 ms timeout, 125 ms warning, typical)
+    wdt_set_warning_isr(wdt_warning_isr);
 
     port_init(); // Init GPIOs
-    // ldma_init(); // Init LDMA
-    // rtcc_init(); // Init RTCC
-    // crc_init(); // Init CRC calculation unit
-    // adc_init(); // Init ADCs
+    adc_init(); // Init ADC
 
-    // float fAVDDHighThresh, fAVDDLowThresh;
-    // float fDVDDHighThresh, fDVDDLowThresh;
-    // float fIOVDDHighThresh, fIOVDDLowThresh;
-
-    // emu_vmon_avdd_config(1, 2.8f, &fAVDDLowThresh, 2.92f, &fAVDDHighThresh); // Enable AVDD monitor
-    // emu_vmon_dvdd_config(1, 2.8f, &fDVDDLowThresh); // Enable DVDD monitor
-    // emu_vmon_iovdd_config(1, 2.85f, &fIOVDDLowThresh); // Enable IOVDD monitor
-
-    // fDVDDHighThresh = fDVDDLowThresh + 0.026f; // Hysteresis from datasheet
-    // fIOVDDHighThresh = fIOVDDLowThresh + 0.026f; // Hysteresis from datasheet
-    PM_REGS->PM_APBCMASK |= PM_APBCMASK_SERCOM0_Msk;
-    GCLK_REGS->GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN_Msk | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID_SERCOM0_CORE;
     sercom0_init(1000000, 0, SERCOM_SPI_MSB_FIRST, 0, 2);
-    PM_REGS->PM_APBCMASK |= PM_APBCMASK_SERCOM1_Msk;
-    GCLK_REGS->GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN_Msk | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID_SERCOM1_CORE;
-    GCLK_REGS->GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN_Msk | GCLK_CLKCTRL_GEN_GCLK2 | GCLK_CLKCTRL_ID_SERCOMX_SLOW;
     sercom1_init(SERCOM_I2C_FAST);
-    PM_REGS->PM_APBCMASK |= PM_APBCMASK_SERCOM3_Msk;
-    GCLK_REGS->GCLK_CLKCTRL = GCLK_CLKCTRL_CLKEN_Msk | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID_SERCOM3_CORE;
     sercom3_init(115200, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
 
     // i2c0_init(I2C_SLAVE_ADDRESS, 4, 4);
@@ -133,74 +182,51 @@ int init()
     // i2c0_set_slave_tx_data_isr(i2c_slave_tx_data_isr);
     // i2c0_set_slave_rx_data_isr(i2c_slave_rx_data_isr);
 
-    // char szDeviceCoreName[32];
-    // char szDeviceName[32];
+    char szDeviceCoreName[32];
+    char szDeviceName[32];
+    uint32_t ulUniqueID[4];
 
-    // get_device_core_name(szDeviceCoreName, 32);
-    // get_device_name(szDeviceName, 32);
+    get_device_core_name(szDeviceCoreName, 32);
+    get_device_name(szDeviceName, 32);
+    nvmctrl_get_unique_id(ulUniqueID);
 
     printf("\x1B[2J\x1B[2J\x1B[2J\x1B[2J"); // Clear the screen
     printf("\x1B[H"); // Move cursor to top left corner
 
     DBGPRINTLN_CTX("IcyRadio PMU v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
-    // DBGPRINTLN_CTX("Core: %s", szDeviceCoreName);
-    // DBGPRINTLN_CTX("Device: %s", szDeviceName);
-    // DBGPRINTLN_CTX("Device Revision: 0x%04X", get_device_revision());
-    // DBGPRINTLN_CTX("Calibration temperature: %hhu C", (DEVINFO->CAL & _DEVINFO_CAL_TEMP_MASK) >> _DEVINFO_CAL_TEMP_SHIFT);
-    DBGPRINTLN_CTX("Flash Size: %hu kB", FLASH_SIZE >> 10);
+    DBGPRINTLN_CTX("Core: %s", szDeviceCoreName);
+    DBGPRINTLN_CTX("Device: %s", szDeviceName);
+    DBGPRINTLN_CTX("Device Revision: %hhu", get_device_revision());
+    DBGPRINTLN_CTX("Calibration temperature: %hhu.%hhu C", (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_NVMCTRL_ROOM_TEMP_VAL_INT_Msk) >> FUSES_TEMP_LOG_WORD_0_NVMCTRL_ROOM_TEMP_VAL_INT_Pos, (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_NVMCTRL_ROOM_TEMP_VAL_DEC_Msk) >> FUSES_TEMP_LOG_WORD_0_NVMCTRL_ROOM_TEMP_VAL_DEC_Pos);
+    DBGPRINTLN_CTX("Flash Size: %hu kB", nvmctrl_get_flash_size() >> 10);
     DBGPRINTLN_CTX("RAM Size: %hu kB", HRAMC0_SIZE >> 10);
     DBGPRINTLN_CTX("Free RAM: %lu B", get_free_ram());
-    // DBGPRINTLN_CTX("Unique ID: %08X-%08X", DEVINFO->UNIQUEH, DEVINFO->UNIQUEL);
+    DBGPRINTLN_CTX("Unique ID: %08X-%08X-%08X-%08X", ulUniqueID[0], ulUniqueID[1], ulUniqueID[2], ulUniqueID[3]);
 
-    // DBGPRINTLN_CTX("RMU - Reset cause: %hhu", rmu_get_reset_reason());
-    // DBGPRINTLN_CTX("RMU - Reset state: %hhu", rmu_get_reset_state());
+    DBGPRINTLN_CTX("RMU - Reset cause: %hhu", pm_get_reset_reason());
 
-    // rmu_clear_reset_reason();
+    DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f mV", adc_get_iovdd());
+    DBGPRINTLN_CTX("ADC - Core Voltage: %.2f mV", adc_get_corevdd());
+    DBGPRINTLN_CTX("ADC - VBUS Voltage: %.2f mV", adc_get_vbus());
+    DBGPRINTLN_CTX("ADC - VIN Voltage: %.2f mV", adc_get_vin());
+    DBGPRINTLN_CTX("ADC - 12V0 Voltage: %.2f mV", adc_get_12v0());
+    DBGPRINTLN_CTX("ADC - VEXT Voltage: %.2f mV", adc_get_vext());
+    DBGPRINTLN_CTX("ADC - Temperature: %.2f C", adc_get_temperature());
 
-    // DBGPRINTLN_CTX("EMU - AVDD Fall Threshold: %.2f mV!", fAVDDLowThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - AVDD Rise Threshold: %.2f mV!", fAVDDHighThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - AVDD Voltage: %.2f mV", adc_get_avdd());
-    // DBGPRINTLN_CTX("EMU - AVDD Status: %s", g_ubAVDDLow ? "LOW" : "OK");
-    // DBGPRINTLN_CTX("EMU - DVDD Fall Threshold: %.2f mV!", fDVDDLowThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - DVDD Rise Threshold: %.2f mV!", fDVDDHighThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - DVDD Voltage: %.2f mV", adc_get_dvdd());
-    // DBGPRINTLN_CTX("EMU - DVDD Status: %s", g_ubDVDDLow ? "LOW" : "OK");
-    // DBGPRINTLN_CTX("EMU - IOVDD Fall Threshold: %.2f mV!", fIOVDDLowThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - IOVDD Rise Threshold: %.2f mV!", fIOVDDHighThresh * 1000);
-    // DBGPRINTLN_CTX("EMU - IOVDD Voltage: %.2f mV", adc_get_iovdd());
-    // DBGPRINTLN_CTX("EMU - IOVDD Status: %s", g_ubIOVDDLow ? "LOW" : "OK");
-    // DBGPRINTLN_CTX("EMU - Core Voltage: %.2f mV", adc_get_corevdd());
+    nvmctrl_config_waitstates(PM_CPU_CLOCK_FREQ, adc_get_iovdd()); // Optimize flash wait states for frequency and voltage
 
-    // DBGPRINTLN_CTX("CMU - HFXO Oscillator: %.3f MHz", (float)HFXO_OSC_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFRCO Oscillator: %.3f MHz", (float)HFRCO_OSC_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - AUXHFRCO Oscillator: %.3f MHz", (float)AUXHFRCO_OSC_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - LFXO Oscillator: %.3f kHz", (float)LFXO_OSC_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LFRCO Oscillator: %.3f kHz", (float)LFRCO_OSC_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - ULFRCO Oscillator: %.3f kHz", (float)ULFRCO_OSC_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - HFSRC Clock: %.3f MHz", (float)HFSRC_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HF Clock: %.3f MHz", (float)HF_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFBUS Clock: %.3f MHz", (float)HFBUS_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFCORE Clock: %.3f MHz", (float)HFCORE_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFEXP Clock: %.3f MHz", (float)HFEXP_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFPER Clock: %.3f MHz", (float)HFPER_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFPERB Clock: %.3f MHz", (float)HFPERB_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFPERC Clock: %.3f MHz", (float)HFPERC_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - HFLE Clock: %.3f MHz", (float)HFLE_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - ADC0 Clock: %.3f MHz", (float)ADC0_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - DBG Clock: %.3f MHz", (float)DBG_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - AUX Clock: %.3f MHz", (float)AUX_CLOCK_FREQ / 1000000);
-    // DBGPRINTLN_CTX("CMU - LFA Clock: %.3f kHz", (float)LFA_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LESENSE Clock: %.3f kHz", (float)LESENSE_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LETIMER0 Clock: %.3f kHz", (float)LETIMER0_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LFB Clock: %.3f kHz", (float)LFB_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LEUART0 Clock: %.3f kHz", (float)LEUART0_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - SYSTICK Clock: %.3f kHz", (float)SYSTICK_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - CSEN Clock: %.3f kHz", (float)CSEN_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - LFE Clock: %.3f kHz", (float)LFE_CLOCK_FREQ / 1000);
-    // DBGPRINTLN_CTX("CMU - RTCC Clock: %.3f kHz", (float)RTCC_CLOCK_FREQ / 1000);
+    DBGPRINTLN_CTX("SYSCTRL - XOSC Oscillator: %.3f MHz", (float)SYSCTRL_XOSC_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("SYSCTRL - OSC8M Oscillator: %.3f MHz", (float)SYSCTRL_OSC8M_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("SYSCTRL - DFLL48M Clock: %.3f MHz", (float)SYSCTRL_DFLL48M_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - MAIN Clock: %.3f MHz", (float)PM_MAIN_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - CPU Clock: %.3f MHz", (float)PM_CPU_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - AHB Clock: %.3f MHz", (float)PM_AHB_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - APBA Clock: %.3f MHz", (float)PM_APBA_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - APBB Clock: %.3f MHz", (float)PM_APBB_CLOCK_FREQ / 1000000);
+    DBGPRINTLN_CTX("PM - APBC Clock: %.3f MHz", (float)PM_APBC_CLOCK_FREQ / 1000000);
 
-    // DBGPRINTLN_CTX("WDOG - Timeout period: %.3f ms", wdog_get_timeout_period());
-    // DBGPRINTLN_CTX("WDOG - Warning period: %.3f ms", wdog_get_warning_period());
+    DBGPRINTLN_CTX("WDT - Timeout period: %.3f ms", wdt_get_timeout_period());
+    DBGPRINTLN_CTX("WDT - Warning period: %.3f ms", wdt_get_warning_period());
 
     DBGPRINTLN_CTX("Scanning I2C bus 1...");
 
@@ -335,61 +361,78 @@ int main()
     DBGPRINTLN_CTX("LT7182S OT Warning Temperature: %.3f C", lt7182s_get_ot_warn());
     DBGPRINTLN_CTX("LT7182S Frequency: %.3f kHz", lt7182s_get_freq());
 
+    volatile uint64_t x = g_ullSystemTick;
+    for(uint32_t i = 0; i < 1000; i++)
+        (void)adc_get_vbus();
+    volatile uint64_t y = g_ullSystemTick;
 
-    UPD350_SELECT();
-    delay_ms(50);
-    UPD350_UNSELECT();
-    delay_ms(500);
+    DBGPRINTLN_CTX("Sample rate: %.3f Hz", 1000.0 / ((float)(y - x) / 1000.0));
 
-    uint8_t buf[8];
+    x = g_ullSystemTick;
+    for(uint32_t i = 0; i < 1000; i++)
+        (void)adc_get_iovdd();
+    y = g_ullSystemTick;
 
-    UPD350_SELECT();
+    DBGPRINTLN_CTX("Sample rate: %.3f Hz", 1000.0 / ((float)(y - x) / 1000.0));
 
-    sercom0_spi_write_byte(0x0B, 0);
+    // UPD350_SELECT();
+    // delay_ms(50);
+    // UPD350_UNSELECT();
+    // delay_ms(500);
 
-    sercom0_spi_write_byte(0x00, 0);
-    sercom0_spi_write_byte(0x00, 0);
+    // uint8_t buf[8];
 
-    sercom0_spi_write_byte(0x00, 1);
+    // UPD350_SELECT();
 
-    sercom0_spi_read(buf, 8, 0x00);
+    // sercom0_spi_write_byte(0x0B, 0);
 
-    UPD350_UNSELECT();
+    // sercom0_spi_write_byte(0x00, 0);
+    // sercom0_spi_write_byte(0x00, 0);
 
-    DBGPRINTLN_CTX("UPD350 ID: 0x%08X", *(uint32_t *)buf);
-    DBGPRINTLN_CTX("UPD350 USB Vendor ID: 0x%04X", *(uint16_t *)(buf + 4));
-    DBGPRINTLN_CTX("UPD350 USB Product ID: 0x%04X", *(uint16_t *)(buf + 6));
+    // sercom0_spi_write_byte(0x00, 1);
 
-    DBGPRINTLN_CTX("Enabling VEXT in 2 seconds...");
-    delay_ms(2000);
+    // sercom0_spi_read(buf, 8, 0x00);
 
-    VBUS_SNK_DISABLE();
-    PCIE_12V0_DISABLE();
-    VEXT_ENABLE();
+    // UPD350_UNSELECT();
 
-    delay_ms(100);
+    // DBGPRINTLN_CTX("UPD350 ID: 0x%08X", *(uint32_t *)buf);
+    // DBGPRINTLN_CTX("UPD350 USB Vendor ID: 0x%04X", *(uint16_t *)(buf + 4));
+    // DBGPRINTLN_CTX("UPD350 USB Product ID: 0x%04X", *(uint16_t *)(buf + 6));
 
-    lt7182s_set_operation(1, LT7182S_OPERATION_ON);
-    lt7182s_set_operation(0, LT7182S_OPERATION_ON);
+    // DBGPRINTLN_CTX("Enabling VEXT in 2 seconds...");
+    // delay_ms(2000);
 
-    DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
-    delay_ms(500);
+    // VBUS_SNK_DISABLE();
+    // PCIE_12V0_DISABLE();
+    // VEXT_ENABLE();
 
-    FPGA_INIT_DEASSERT();
-    delay_ms(50);
-    FPGA_INIT_ASSERT();
-    delay_ms(50);
-    FPGA_INIT_DEASSERT();
+    // delay_ms(100);
 
-    DBGPRINTLN_CTX("Turning CM4 ON in 2 seconds...");
-    delay_ms(2000);
+    // lt7182s_set_operation(1, LT7182S_OPERATION_ON);
+    // lt7182s_set_operation(0, LT7182S_OPERATION_ON);
 
-    //CM4_USB_OTG_DEVICE();
-    //CM4_BTLDR_ENABLE();
-    CM4_GLOBAL_ENABLE();
+    // DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
+    // delay_ms(500);
+
+    // FPGA_INIT_DEASSERT();
+    // delay_ms(50);
+    // FPGA_INIT_ASSERT();
+    // delay_ms(50);
+    // FPGA_INIT_DEASSERT();
+
+    // DBGPRINTLN_CTX("Turning CM4 ON in 2 seconds...");
+    // delay_ms(2000);
+
+    // //CM4_USB_OTG_DEVICE();
+    // //CM4_BTLDR_ENABLE();
+    // CM4_GLOBAL_ENABLE();
+
+    wdt_enable();
 
     while(1)
     {
+        wdt_feed();
+
         static uint64_t ullLastHeartBeat = 0;
         static uint64_t ullLastTelemetryUpdate = 0;
 
@@ -407,25 +450,25 @@ int main()
         {
             ullLastTelemetryUpdate = g_ullSystemTick;
 
-            DBGPRINTLN_CTX("------------------------------");
-            DBGPRINTLN_CTX("LT7182S Channel #0 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(0), lt7182s_read_vin_peak(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 IIN: %.3f A", lt7182s_read_iin(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 VOUT: %.3f V (Set: %.3f V, Peak: %.3f V)", lt7182s_read_vout(0), lt7182s_get_vout(0), lt7182s_read_vout_peak(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 IOUT: %.3f A (Peak: %.3f A)", lt7182s_read_iout(0), lt7182s_read_iout_peak(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 FREQ: %.3f kHz", lt7182s_read_freq(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 POUT: %.3f W", lt7182s_read_pout(0));
-            DBGPRINTLN_CTX("LT7182S Channel #0 ITH Voltage: %.3f V", lt7182s_read_ith(0));
-            DBGPRINTLN_CTX("------------------------------");
-            DBGPRINTLN_CTX("LT7182S Channel #1 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(1), lt7182s_read_vin_peak(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 IIN: %.3f A", lt7182s_read_iin(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 VOUT: %.3f V (Set: %.3f V, Peak: %.3f V)", lt7182s_read_vout(1), lt7182s_get_vout(1), lt7182s_read_vout_peak(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 IOUT: %.3f A (Peak: %.3f A)", lt7182s_read_iout(1), lt7182s_read_iout_peak(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 FREQ: %.3f kHz", lt7182s_read_freq(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 POUT: %.3f W", lt7182s_read_pout(1));
-            DBGPRINTLN_CTX("LT7182S Channel #1 ITH Voltage: %.3f V", lt7182s_read_ith(1));
-            DBGPRINTLN_CTX("------------------------------");
-            DBGPRINTLN_CTX("LT7182S EXTVCC Voltage: %.3f V", lt7182s_read_extvcc());
-            DBGPRINTLN_CTX("LT7182S Temperature: %.3f C (Peak: %.3f C)", lt7182s_read_temperature(), lt7182s_read_temperature_peak());
+            // DBGPRINTLN_CTX("------------------------------");
+            // DBGPRINTLN_CTX("LT7182S Channel #0 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(0), lt7182s_read_vin_peak(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 IIN: %.3f A", lt7182s_read_iin(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 VOUT: %.3f V (Set: %.3f V, Peak: %.3f V)", lt7182s_read_vout(0), lt7182s_get_vout(0), lt7182s_read_vout_peak(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 IOUT: %.3f A (Peak: %.3f A)", lt7182s_read_iout(0), lt7182s_read_iout_peak(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 FREQ: %.3f kHz", lt7182s_read_freq(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 POUT: %.3f W", lt7182s_read_pout(0));
+            // DBGPRINTLN_CTX("LT7182S Channel #0 ITH Voltage: %.3f V", lt7182s_read_ith(0));
+            // DBGPRINTLN_CTX("------------------------------");
+            // DBGPRINTLN_CTX("LT7182S Channel #1 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(1), lt7182s_read_vin_peak(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 IIN: %.3f A", lt7182s_read_iin(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 VOUT: %.3f V (Set: %.3f V, Peak: %.3f V)", lt7182s_read_vout(1), lt7182s_get_vout(1), lt7182s_read_vout_peak(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 IOUT: %.3f A (Peak: %.3f A)", lt7182s_read_iout(1), lt7182s_read_iout_peak(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 FREQ: %.3f kHz", lt7182s_read_freq(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 POUT: %.3f W", lt7182s_read_pout(1));
+            // DBGPRINTLN_CTX("LT7182S Channel #1 ITH Voltage: %.3f V", lt7182s_read_ith(1));
+            // DBGPRINTLN_CTX("------------------------------");
+            // DBGPRINTLN_CTX("LT7182S EXTVCC Voltage: %.3f V", lt7182s_read_extvcc());
+            // DBGPRINTLN_CTX("LT7182S Temperature: %.3f C (Peak: %.3f C)", lt7182s_read_temperature(), lt7182s_read_temperature_peak());
             DBGPRINTLN_CTX("------------------------------");
             DBGPRINTLN_CTX("RPi CM4 State: %s", CM4_RUNNING() ? "Running" : "OFF");
 

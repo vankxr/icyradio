@@ -8,7 +8,7 @@ void _systick_isr()
 }
 void systick_init()
 {
-    SysTick->LOAD = (/* TODO: Get clock */ 8000000 / 1000) - 1;
+    SysTick->LOAD = (PM_CPU_CLOCK_FREQ / 1000) - 1;
     SysTick->VAL = 0;
     SysTick->CTRL = SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_CLKSOURCE_Msk;
 
