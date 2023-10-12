@@ -56,14 +56,13 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// clk_out1__250.00000______0.000______50.0______136.987____164.985
-// clk_out2__200.00000______0.000______50.0______142.107____164.985
-// clk_out3__10.00000______0.000______50.0______285.743____164.985
+// clk_out1__250.00000______0.000______50.0______131.089____164.985
+// clk_out2__200.00000______0.000______50.0______136.431____164.985
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
 //----------------------------------------------------------------------------
-// __primary__________50.000____________0.010
+// __primary__________50.000___________0.3422
 
 `timescale 1ps/1ps
 
@@ -73,7 +72,6 @@ module icyradio_clk_wiz_0_0_clk_wiz
   // Clock out ports
   output        clk_out1,
   output        clk_out2,
-  output        clk_out3,
   // Status and control signals
   input         resetn,
   output        locked,
@@ -110,10 +108,10 @@ wire clk_in2_icyradio_clk_wiz_0_0;
   wire        psdone_unused;
   wire        locked_int;
   wire        clkfbout_icyradio_clk_wiz_0_0;
-  wire        clkfbout_buf_icyradio_clk_wiz_0_0;
   wire        clkfboutb_unused;
     wire clkout0b_unused;
    wire clkout1b_unused;
+   wire clkout2_unused;
    wire clkout2b_unused;
    wire clkout3_unused;
    wire clkout3b_unused;
@@ -125,7 +123,7 @@ wire clk_in2_icyradio_clk_wiz_0_0;
   wire        reset_high;
 
   MMCME2_ADV
-  #(.BANDWIDTH            ("OPTIMIZED"),
+  #(.BANDWIDTH            ("HIGH"),
     .CLKOUT4_CASCADE      ("FALSE"),
     .COMPENSATION         ("ZHOLD"),
     .STARTUP_WAIT         ("FALSE"),
@@ -141,10 +139,6 @@ wire clk_in2_icyradio_clk_wiz_0_0;
     .CLKOUT1_PHASE        (0.000),
     .CLKOUT1_DUTY_CYCLE   (0.500),
     .CLKOUT1_USE_FINE_PS  ("FALSE"),
-    .CLKOUT2_DIVIDE       (100),
-    .CLKOUT2_PHASE        (0.000),
-    .CLKOUT2_DUTY_CYCLE   (0.500),
-    .CLKOUT2_USE_FINE_PS  ("FALSE"),
     .CLKIN1_PERIOD        (20.000))
   mmcm_adv_inst
     // Output clocks
@@ -155,7 +149,7 @@ wire clk_in2_icyradio_clk_wiz_0_0;
     .CLKOUT0B            (clkout0b_unused),
     .CLKOUT1             (clk_out2_icyradio_clk_wiz_0_0),
     .CLKOUT1B            (clkout1b_unused),
-    .CLKOUT2             (clk_out3_icyradio_clk_wiz_0_0),
+    .CLKOUT2             (clkout2_unused),
     .CLKOUT2B            (clkout2b_unused),
     .CLKOUT3             (clkout3_unused),
     .CLKOUT3B            (clkout3b_unused),
@@ -163,7 +157,7 @@ wire clk_in2_icyradio_clk_wiz_0_0;
     .CLKOUT5             (clkout5_unused),
     .CLKOUT6             (clkout6_unused),
      // Input clock control
-    .CLKFBIN             (clkfbout_buf_icyradio_clk_wiz_0_0),
+    .CLKFBIN             (clkfbout_icyradio_clk_wiz_0_0),
     .CLKIN1              (clk_in1_icyradio_clk_wiz_0_0),
     .CLKIN2              (1'b0),
      // Tied to always select the primary input clock
@@ -195,10 +189,6 @@ wire clk_in2_icyradio_clk_wiz_0_0;
  // Output buffering
   //-----------------------------------
 
-  BUFG clkf_buf
-   (.O (clkfbout_buf_icyradio_clk_wiz_0_0),
-    .I (clkfbout_icyradio_clk_wiz_0_0));
-
 
 
 
@@ -212,10 +202,6 @@ wire clk_in2_icyradio_clk_wiz_0_0;
   BUFG clkout2_buf
    (.O   (clk_out2),
     .I   (clk_out2_icyradio_clk_wiz_0_0));
-
-  BUFG clkout3_buf
-   (.O   (clk_out3),
-    .I   (clk_out3_icyradio_clk_wiz_0_0));
 
 
 

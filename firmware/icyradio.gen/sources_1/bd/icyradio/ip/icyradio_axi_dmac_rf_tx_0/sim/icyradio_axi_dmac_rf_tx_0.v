@@ -188,7 +188,7 @@ input wire [1 : 0] m_src_axi_rresp;
 WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 m_src_axi RLAST" *)
 input wire m_src_axi_rlast;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME m_axis_aclk, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, INSERT_VIP 0, XIL_INTERFACENAME m_axis_signal_clock, ASSOCIATED_BUSIF m_axis, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME m_axis_aclk, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, INSERT_VIP 0, XIL_INTERFACENAME m_axis_signal_clock, ASSOCIATED_BUSIF m_axis, FREQ_HZ 49152000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_FPGA_CLK1, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 m_axis_aclk CLK, xilinx.com:signal:clock:1.0 m_axis_signal_clock CLK" *)
 input wire m_axis_aclk;
 (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 m_axis TREADY" *)
@@ -207,7 +207,7 @@ output wire [0 : 0] m_axis_user;
 output wire [7 : 0] m_axis_id;
 (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 m_axis TDEST" *)
 output wire [3 : 0] m_axis_dest;
-(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME m_axis, TDATA_NUM_BYTES 4, TDEST_WIDTH 4, TID_WIDTH 8, TUSER_WIDTH 1, HAS_TREADY 1, HAS_TSTRB 1, HAS_TKEEP 1, HAS_TLAST 1, FREQ_HZ 125000000, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, LAYERED_METADATA undef, INSERT_VIP 0" *)
+(* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME m_axis, TDATA_NUM_BYTES 4, TDEST_WIDTH 4, TID_WIDTH 8, TUSER_WIDTH 1, HAS_TREADY 1, HAS_TSTRB 1, HAS_TKEEP 1, HAS_TLAST 1, FREQ_HZ 49152000, PHASE 0.0, CLK_DOMAIN icyradio_FPGA_CLK1, LAYERED_METADATA undef, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:axis:1.0 m_axis TLAST" *)
 output wire m_axis_last;
 output wire m_axis_xfer_req;
@@ -219,8 +219,8 @@ output wire m_axis_xfer_req;
     .DMA_LENGTH_WIDTH(24),
     .DMA_2D_TRANSFER(1'B0),
     .ASYNC_CLK_REQ_SRC(1'B0),
-    .ASYNC_CLK_SRC_DEST(1'B0),
-    .ASYNC_CLK_DEST_REQ(1'B0),
+    .ASYNC_CLK_SRC_DEST(1'B1),
+    .ASYNC_CLK_DEST_REQ(1'B1),
     .AXI_SLICE_DEST(1'B0),
     .AXI_SLICE_SRC(1'B0),
     .SYNC_TRANSFER_START(1'B0),

@@ -63,7 +63,7 @@ typedef bit bit_as_bool;
 
 (* SC_MODULE_EXPORT *)
 module icyradio_GND_2_0 (
-  output bit [10 : 0 ] dout
+  output bit [3 : 0 ] dout
 );
 endmodule
 `endif
@@ -73,14 +73,14 @@ endmodule
 module icyradio_GND_2_0 (dout)
 (* integer foreign = "SystemC";
 *);
- output wire [10 : 0 ] dout;  
+ output wire [3 : 0 ] dout;  
 endmodule
 `endif
 
 `ifdef RIVIERA
 (* SC_MODULE_EXPORT *)
 module icyradio_GND_2_0 (dout)
-  output wire [10 : 0 ] dout;
+  output wire [3 : 0 ] dout;
 endmodule
 `endif
 

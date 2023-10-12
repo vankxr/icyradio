@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2022 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2023 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -70,7 +70,7 @@ module icyradio_axi_bram_ctrl_0_0 (
   input bit_as_bool s_axi_aclk,
   input bit_as_bool s_axi_aresetn,
   input bit [3 : 0] s_axi_awid,
-  input bit [12 : 0] s_axi_awaddr,
+  input bit [16 : 0] s_axi_awaddr,
   input bit [7 : 0] s_axi_awlen,
   input bit [2 : 0] s_axi_awsize,
   input bit [1 : 0] s_axi_awburst,
@@ -89,7 +89,7 @@ module icyradio_axi_bram_ctrl_0_0 (
   output bit_as_bool s_axi_bvalid,
   input bit_as_bool s_axi_bready,
   input bit [3 : 0] s_axi_arid,
-  input bit [12 : 0] s_axi_araddr,
+  input bit [16 : 0] s_axi_araddr,
   input bit [7 : 0] s_axi_arlen,
   input bit [2 : 0] s_axi_arsize,
   input bit [1 : 0] s_axi_arburst,
@@ -108,7 +108,7 @@ module icyradio_axi_bram_ctrl_0_0 (
   output bit_as_bool bram_clk_a,
   output bit_as_bool bram_en_a,
   output bit [7 : 0] bram_we_a,
-  output bit [12 : 0] bram_addr_a,
+  output bit [16 : 0] bram_addr_a,
   output bit [63 : 0] bram_wrdata_a,
   input bit [63 : 0] bram_rddata_a
 );
@@ -123,7 +123,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   input bit s_axi_aclk;
   input bit s_axi_aresetn;
   input bit [3 : 0] s_axi_awid;
-  input bit [12 : 0] s_axi_awaddr;
+  input bit [16 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -142,7 +142,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   output wire s_axi_bvalid;
   input bit s_axi_bready;
   input bit [3 : 0] s_axi_arid;
-  input bit [12 : 0] s_axi_araddr;
+  input bit [16 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -161,7 +161,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   output wire bram_clk_a;
   output wire bram_en_a;
   output wire [7 : 0] bram_we_a;
-  output wire [12 : 0] bram_addr_a;
+  output wire [16 : 0] bram_addr_a;
   output wire [63 : 0] bram_wrdata_a;
   input bit [63 : 0] bram_rddata_a;
 endmodule
@@ -173,7 +173,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   input bit s_axi_aclk;
   input bit s_axi_aresetn;
   input bit [3 : 0] s_axi_awid;
-  input bit [12 : 0] s_axi_awaddr;
+  input bit [16 : 0] s_axi_awaddr;
   input bit [7 : 0] s_axi_awlen;
   input bit [2 : 0] s_axi_awsize;
   input bit [1 : 0] s_axi_awburst;
@@ -192,7 +192,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   output wire s_axi_bvalid;
   input bit s_axi_bready;
   input bit [3 : 0] s_axi_arid;
-  input bit [12 : 0] s_axi_araddr;
+  input bit [16 : 0] s_axi_araddr;
   input bit [7 : 0] s_axi_arlen;
   input bit [2 : 0] s_axi_arsize;
   input bit [1 : 0] s_axi_arburst;
@@ -211,7 +211,7 @@ module icyradio_axi_bram_ctrl_0_0 (s_axi_aclk,s_axi_aresetn,s_axi_awid,s_axi_awa
   output wire bram_clk_a;
   output wire bram_en_a;
   output wire [7 : 0] bram_we_a;
-  output wire [12 : 0] bram_addr_a;
+  output wire [16 : 0] bram_addr_a;
   output wire [63 : 0] bram_wrdata_a;
   input bit [63 : 0] bram_rddata_a;
 endmodule

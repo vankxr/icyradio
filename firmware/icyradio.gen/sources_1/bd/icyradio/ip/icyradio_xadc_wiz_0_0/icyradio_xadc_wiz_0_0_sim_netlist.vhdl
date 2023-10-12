@@ -1,8 +1,8 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Jan 11 17:27:13 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+-- Date        : Sun Oct  8 02:40:42 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_xadc_wiz_0_0/icyradio_xadc_wiz_0_0_sim_netlist.vhdl
 -- Design      : icyradio_xadc_wiz_0_0
@@ -7561,15 +7561,15 @@ XADC_INST: unisim.vcomponents.XADC
     generic map(
       INIT_40 => X"1000",
       INIT_41 => X"21AF",
-      INIT_42 => X"0400",
+      INIT_42 => X"0500",
       INIT_43 => X"0000",
       INIT_44 => X"0000",
       INIT_45 => X"0000",
       INIT_46 => X"0000",
       INIT_47 => X"0000",
-      INIT_48 => X"4F00",
+      INIT_48 => X"4700",
       INIT_49 => X"0000",
-      INIT_4A => X"4F00",
+      INIT_4A => X"4700",
       INIT_4B => X"0000",
       INIT_4C => X"0000",
       INIT_4D => X"0000",
@@ -7582,7 +7582,7 @@ XADC_INST: unisim.vcomponents.XADC
       INIT_54 => X"A93A",
       INIT_55 => X"52C6",
       INIT_56 => X"9555",
-      INIT_57 => X"AE4E",
+      INIT_57 => X"BD8B",
       INIT_58 => X"5999",
       INIT_59 => X"0000",
       INIT_5A => X"0000",

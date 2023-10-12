@@ -61,9 +61,9 @@ icyradio_auto_ds_0_sc::icyradio_auto_ds_0_sc(const sc_core::sc_module_name& nm) 
 
   // initialize module
     xsc::common_cpp::properties model_param_props;
-    model_param_props.addLong("C_AXI_PROTOCOL", "0");
-    model_param_props.addLong("C_S_AXI_ID_WIDTH", "4");
-    model_param_props.addLong("C_SUPPORTS_ID", "1");
+    model_param_props.addLong("C_AXI_PROTOCOL", "2");
+    model_param_props.addLong("C_S_AXI_ID_WIDTH", "1");
+    model_param_props.addLong("C_SUPPORTS_ID", "0");
     model_param_props.addLong("C_AXI_ADDR_WIDTH", "32");
     model_param_props.addLong("C_S_AXI_DATA_WIDTH", "64");
     model_param_props.addLong("C_M_AXI_DATA_WIDTH", "32");
@@ -73,7 +73,7 @@ icyradio_auto_ds_0_sc::icyradio_auto_ds_0_sc(const sc_core::sc_module_name& nm) 
     model_param_props.addLong("C_S_AXI_ACLK_RATIO", "1");
     model_param_props.addLong("C_M_AXI_ACLK_RATIO", "2");
     model_param_props.addLong("C_AXI_IS_ACLK_ASYNC", "0");
-    model_param_props.addLong("C_MAX_SPLIT_BEATS", "256");
+    model_param_props.addLong("C_MAX_SPLIT_BEATS", "16");
     model_param_props.addLong("C_PACKING_LEVEL", "1");
     model_param_props.addLong("C_SYNCHRONIZER_STAGE", "3");
     model_param_props.addString("C_FAMILY", "artix7");

@@ -50,4 +50,4 @@
 # Input clock periods. These duplicate the values entered for the
 #  input clocks. You can use these to time your system
 #----------------------------------------------------------------
-#create_clock -period 10 [get_ports s_axi_aclk]
+#create_clock -period 8 [get_ports s_axi_aclk]

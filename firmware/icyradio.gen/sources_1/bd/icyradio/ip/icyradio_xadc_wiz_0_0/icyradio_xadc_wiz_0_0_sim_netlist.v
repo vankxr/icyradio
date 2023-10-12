@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Wed Jan 11 17:27:13 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+// Date        : Sun Oct  8 02:40:42 2023
+// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_xadc_wiz_0_0/icyradio_xadc_wiz_0_0_sim_netlist.v
 // Design      : icyradio_xadc_wiz_0_0
@@ -7710,15 +7710,15 @@ module icyradio_xadc_wiz_0_0_xadc_core_drp
   XADC #(
     .INIT_40(16'h1000),
     .INIT_41(16'h21AF),
-    .INIT_42(16'h0400),
+    .INIT_42(16'h0500),
     .INIT_43(16'h0000),
     .INIT_44(16'h0000),
     .INIT_45(16'h0000),
     .INIT_46(16'h0000),
     .INIT_47(16'h0000),
-    .INIT_48(16'h4F00),
+    .INIT_48(16'h4700),
     .INIT_49(16'h0000),
-    .INIT_4A(16'h4F00),
+    .INIT_4A(16'h4700),
     .INIT_4B(16'h0000),
     .INIT_4C(16'h0000),
     .INIT_4D(16'h0000),
@@ -7731,7 +7731,7 @@ module icyradio_xadc_wiz_0_0_xadc_core_drp
     .INIT_54(16'hA93A),
     .INIT_55(16'h52C6),
     .INIT_56(16'h9555),
-    .INIT_57(16'hAE4E),
+    .INIT_57(16'hBD8B),
     .INIT_58(16'h5999),
     .INIT_59(16'h0000),
     .INIT_5A(16'h0000),

@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Sep 30 00:23:19 2023
+-- Date        : Tue Oct 10 04:49:44 2023
 -- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_dmac_rf_tx_0/icyradio_axi_dmac_rf_tx_0_stub.vhdl

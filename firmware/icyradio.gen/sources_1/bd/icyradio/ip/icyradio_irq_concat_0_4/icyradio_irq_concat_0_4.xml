@@ -18,11 +18,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:08:43 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:46 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:b5f22ba0</spirit:value>
+            <spirit:value>9:6aa8da9d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -33,7 +33,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:b5f22ba0</spirit:value>
+            <spirit:value>9:6aa8da9d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -49,11 +49,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:44 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:51 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:b5f22ba0</spirit:value>
+            <spirit:value>9:6aa8da9d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -69,11 +69,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:08:43 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:46 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:84db04a7</spirit:value>
+            <spirit:value>9:5643f392</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -89,11 +89,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:44 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:51 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:84db04a7</spirit:value>
+            <spirit:value>9:5643f392</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -185,7 +185,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN3_WIDTH&apos;)) - 1)">10</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN3_WIDTH&apos;)) - 1)">1</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -212,7 +212,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN4_WIDTH&apos;)) - 1)">0</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN4_WIDTH&apos;)) - 1)">1</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -239,7 +239,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN5_WIDTH&apos;)) - 1)">0</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN5_WIDTH&apos;)) - 1)">1</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -256,7 +256,7 @@
         <spirit:vendorExtensions>
           <xilinx:portInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In5" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 5)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In5" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 5)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:portInfo>
         </spirit:vendorExtensions>
@@ -283,7 +283,7 @@
         <spirit:vendorExtensions>
           <xilinx:portInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In6" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 6)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In6" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 6)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:portInfo>
         </spirit:vendorExtensions>
@@ -293,7 +293,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN7_WIDTH&apos;)) - 1)">0</spirit:left>
+            <spirit:left spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.IN7_WIDTH&apos;)) - 1)">3</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -310,7 +310,7 @@
         <spirit:vendorExtensions>
           <xilinx:portInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In7" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 7)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In7" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 7)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:portInfo>
         </spirit:vendorExtensions>
@@ -337,7 +337,7 @@
         <spirit:vendorExtensions>
           <xilinx:portInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In8" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 8)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="PORT_ENABLEMENT.In8" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.NUM_PORTS&apos;)) > 8)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:portInfo>
         </spirit:vendorExtensions>
@@ -3592,17 +3592,17 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN3_WIDTH</spirit:name>
         <spirit:displayName>In3 Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN3_WIDTH">11</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN3_WIDTH">2</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN4_WIDTH</spirit:name>
         <spirit:displayName>In4 Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN4_WIDTH">1</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN4_WIDTH">2</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN5_WIDTH</spirit:name>
         <spirit:displayName>In5 Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN5_WIDTH">1</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN5_WIDTH">2</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN6_WIDTH</spirit:name>
@@ -3612,7 +3612,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN7_WIDTH</spirit:name>
         <spirit:displayName>In7 Width</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN7_WIDTH">1</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.IN7_WIDTH">4</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>IN8_WIDTH</spirit:name>
@@ -4222,7 +4222,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>NUM_PORTS</spirit:name>
         <spirit:displayName>Number of Ports</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.NUM_PORTS">5</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.NUM_PORTS">9</spirit:value>
       </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
@@ -4270,7 +4270,7 @@
     <spirit:parameter>
       <spirit:name>NUM_PORTS</spirit:name>
       <spirit:displayName>Number of Ports</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.NUM_PORTS" spirit:order="3" spirit:minimum="1" spirit:maximum="128" spirit:rangeType="long">5</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.NUM_PORTS" spirit:order="3" spirit:minimum="1" spirit:maximum="128" spirit:rangeType="long">9</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>IN0_WIDTH</spirit:name>
@@ -4290,17 +4290,17 @@
     <spirit:parameter>
       <spirit:name>IN3_WIDTH</spirit:name>
       <spirit:displayName>In3 Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN3_WIDTH" spirit:order="7" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">11</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN3_WIDTH" spirit:order="7" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">2</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>IN4_WIDTH</spirit:name>
       <spirit:displayName>In4 Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN4_WIDTH" spirit:order="8" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">1</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN4_WIDTH" spirit:order="8" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">2</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>IN5_WIDTH</spirit:name>
       <spirit:displayName>In5 Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN5_WIDTH" spirit:order="9" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">1</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN5_WIDTH" spirit:order="9" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">2</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>IN6_WIDTH</spirit:name>
@@ -4310,7 +4310,7 @@
     <spirit:parameter>
       <spirit:name>IN7_WIDTH</spirit:name>
       <spirit:displayName>In7 Width</spirit:displayName>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN7_WIDTH" spirit:order="11" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">1</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.IN7_WIDTH" spirit:order="11" spirit:minimum="1" spirit:maximum="4096" spirit:rangeType="long">4</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>IN8_WIDTH</spirit:name>
@@ -5006,7 +5006,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN57_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN58_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN59_WIDTH" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN5_WIDTH" xilinx:valueSource="propagated" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN5_WIDTH" xilinx:valueSource="user" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN60_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN61_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN62_WIDTH" xilinx:valuePermission="bd_and_user"/>
@@ -5017,7 +5017,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN67_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN68_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN69_WIDTH" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN6_WIDTH" xilinx:valueSource="propagated" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN6_WIDTH" xilinx:valueSource="user" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN70_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN71_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN72_WIDTH" xilinx:valuePermission="bd_and_user"/>
@@ -5028,7 +5028,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN77_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN78_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN79_WIDTH" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN7_WIDTH" xilinx:valueSource="propagated" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN7_WIDTH" xilinx:valueSource="user" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN80_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN81_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN82_WIDTH" xilinx:valuePermission="bd_and_user"/>
@@ -5039,7 +5039,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN87_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN88_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN89_WIDTH" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN8_WIDTH" xilinx:valueSource="propagated" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN8_WIDTH" xilinx:valueSource="user" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN90_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN91_WIDTH" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.IN92_WIDTH" xilinx:valuePermission="bd_and_user"/>

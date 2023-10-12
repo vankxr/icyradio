@@ -62,7 +62,7 @@ icyradio_auto_cc_1_sc::icyradio_auto_cc_1_sc(const sc_core::sc_module_name& nm) 
   // initialize module
     xsc::common_cpp::properties model_param_props;
     model_param_props.addLong("C_AXI_ID_WIDTH", "1");
-    model_param_props.addLong("C_AXI_ADDR_WIDTH", "32");
+    model_param_props.addLong("C_AXI_ADDR_WIDTH", "5");
     model_param_props.addLong("C_AXI_DATA_WIDTH", "32");
     model_param_props.addLong("C_S_AXI_ACLK_RATIO", "1");
     model_param_props.addLong("C_M_AXI_ACLK_RATIO", "2");

@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Sat Sep 30 03:55:14 2023
+//Date        : Wed Oct 11 07:05:46 2023
 //Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
@@ -17,10 +17,11 @@ module icyradio_wrapper
     CLK_MNGR_IRQn,
     CLK_MNGR_OEn,
     CM4_WAKE,
-    CODEC_I2S_bclk,
-    CODEC_I2S_lrclk,
-    CODEC_I2S_sdata_in,
-    CODEC_I2S_sdata_out,
+    CODEC_I2S_BCLK,
+    CODEC_I2S_LRCLK,
+    CODEC_I2S_SDIN,
+    CODEC_I2S_SDOUT,
+    CODEC_MCLK,
     CODEC_RSTn,
     DDR3_addr,
     DDR3_ba,
@@ -94,10 +95,11 @@ module icyradio_wrapper
   input CLK_MNGR_IRQn;
   output [0:0]CLK_MNGR_OEn;
   output [0:0]CM4_WAKE;
-  output [0:0]CODEC_I2S_bclk;
-  output [0:0]CODEC_I2S_lrclk;
-  input [0:0]CODEC_I2S_sdata_in;
-  output [0:0]CODEC_I2S_sdata_out;
+  output CODEC_I2S_BCLK;
+  output CODEC_I2S_LRCLK;
+  output CODEC_I2S_SDIN;
+  input CODEC_I2S_SDOUT;
+  output CODEC_MCLK;
   output [0:0]CODEC_RSTn;
   output [14:0]DDR3_addr;
   output [2:0]DDR3_ba;
@@ -178,10 +180,11 @@ module icyradio_wrapper
   wire CLK_MNGR_IRQn;
   wire [0:0]CLK_MNGR_OEn;
   wire [0:0]CM4_WAKE;
-  wire [0:0]CODEC_I2S_bclk;
-  wire [0:0]CODEC_I2S_lrclk;
-  wire [0:0]CODEC_I2S_sdata_in;
-  wire [0:0]CODEC_I2S_sdata_out;
+  wire CODEC_I2S_BCLK;
+  wire CODEC_I2S_LRCLK;
+  wire CODEC_I2S_SDIN;
+  wire CODEC_I2S_SDOUT;
+  wire CODEC_MCLK;
   wire [0:0]CODEC_RSTn;
   wire [14:0]DDR3_addr;
   wire [2:0]DDR3_ba;
@@ -399,10 +402,11 @@ module icyradio_wrapper
         .CLK_MNGR_IRQn(CLK_MNGR_IRQn),
         .CLK_MNGR_OEn(CLK_MNGR_OEn),
         .CM4_WAKE(CM4_WAKE),
-        .CODEC_I2S_bclk(CODEC_I2S_bclk),
-        .CODEC_I2S_lrclk(CODEC_I2S_lrclk),
-        .CODEC_I2S_sdata_in(CODEC_I2S_sdata_in),
-        .CODEC_I2S_sdata_out(CODEC_I2S_sdata_out),
+        .CODEC_I2S_BCLK(CODEC_I2S_BCLK),
+        .CODEC_I2S_LRCLK(CODEC_I2S_LRCLK),
+        .CODEC_I2S_SDIN(CODEC_I2S_SDIN),
+        .CODEC_I2S_SDOUT(CODEC_I2S_SDOUT),
+        .CODEC_MCLK(CODEC_MCLK),
         .CODEC_RSTn(CODEC_RSTn),
         .DDR3_addr(DDR3_addr),
         .DDR3_ba(DDR3_ba),

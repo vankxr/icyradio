@@ -1396,7 +1396,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>NUM_READ_OUTSTANDING</spirit:name>
-          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_READ_OUTSTANDING">1</spirit:value>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_READ_OUTSTANDING">2</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -1405,7 +1405,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>NUM_WRITE_OUTSTANDING</spirit:name>
-          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_WRITE_OUTSTANDING">1</spirit:value>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_WRITE_OUTSTANDING">2</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -4954,7 +4954,7 @@ RP- Read and  writable
         <spirit:vendorExtensions>
           <xilinx:addressBlockInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="ADDRBLOCK_ENABLEMENT.S_AXI.BAR1" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;))>1">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="ADDRBLOCK_ENABLEMENT.S_AXI.BAR1" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;))>1">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:addressBlockInfo>
         </spirit:vendorExtensions>
@@ -4979,7 +4979,7 @@ RP- Read and  writable
         <spirit:vendorExtensions>
           <xilinx:addressBlockInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="ADDRBLOCK_ENABLEMENT.S_AXI.BAR2" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;))>2">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="ADDRBLOCK_ENABLEMENT.S_AXI.BAR2" xilinx:dependency="spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;))>2">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:addressBlockInfo>
         </spirit:vendorExtensions>
@@ -5070,7 +5070,7 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:88abe408</spirit:value>
+            <spirit:value>9:b110e5e1</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5100,11 +5100,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:43 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:144f779b</spirit:value>
+            <spirit:value>9:daa9e957</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5115,7 +5115,7 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:144f779b</spirit:value>
+            <spirit:value>9:daa9e957</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5131,11 +5131,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:43 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:144f779b</spirit:value>
+            <spirit:value>9:daa9e957</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5165,11 +5165,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:43 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:031260bd</spirit:value>
+            <spirit:value>9:af3caec2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5185,11 +5185,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:21:43 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:031260bd</spirit:value>
+            <spirit:value>9:af3caec2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5203,11 +5203,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Sep 29 23:27:04 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 19:02:54 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:144f779b</spirit:value>
+            <spirit:value>9:daa9e957</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -9536,7 +9536,7 @@ RP- Read and  writable
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_NUM_MSI_REQ</spirit:name>
         <spirit:displayName>C_NUM_MSI_REQ</spirit:displayName>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_NUM_MSI_REQ" spirit:choiceRef="choice_list_5977852d" spirit:order="70">1</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_NUM_MSI_REQ" spirit:choiceRef="choice_list_5977852d" spirit:order="70">5</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_INTERRUPT_PIN</spirit:name>
@@ -9580,11 +9580,11 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_AXIBAR_NUM</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_NUM" spirit:order="78" spirit:minimum="0" spirit:maximum="6" spirit:rangeType="long">1</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_NUM" spirit:order="78" spirit:minimum="0" spirit:maximum="6" spirit:rangeType="long">3</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR2PCIEBAR_0</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR2PCIEBAR_0" spirit:order="79" spirit:bitStringLength="32">0x60000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR2PCIEBAR_0" spirit:order="79" spirit:bitStringLength="32">0x00000000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR2PCIEBAR_1</spirit:name>
@@ -9592,7 +9592,7 @@ RP- Read and  writable
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR2PCIEBAR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR2PCIEBAR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
@@ -9603,7 +9603,7 @@ RP- Read and  writable
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR2PCIEBAR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR2PCIEBAR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
@@ -9643,26 +9643,26 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_AXIBAR_AS_0</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_0" spirit:order="85" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">0</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_0" spirit:order="85" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">1</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_AXIBAR_AS_1</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_1" spirit:order="86" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">0</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_1" spirit:order="86" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">1</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_AS_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_AS_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_AXIBAR_AS_2</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_2" spirit:order="87" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">0</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_AS_2" spirit:order="87" spirit:minimum="0" spirit:maximum="1" spirit:rangeType="long">1</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_AS_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_AS_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
@@ -9702,52 +9702,52 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_0</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_0" spirit:order="91" spirit:bitStringLength="32">0x60000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_0" spirit:order="91" spirit:bitStringLength="32">0x50000000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_HIGHADDR_0</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_0" spirit:order="92" spirit:bitStringLength="32">0x6FFFFFFF</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_0" spirit:order="92" spirit:bitStringLength="32">0x5FFFFFFF</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_1</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_1" spirit:order="93" spirit:bitStringLength="32">0xFFFFFFFF</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_1" spirit:order="93" spirit:bitStringLength="32">0x60000000</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_HIGHADDR_1</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_1" spirit:order="94" spirit:bitStringLength="32">0x00000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_1" spirit:order="94" spirit:bitStringLength="32">0x6FFFFFFF</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_HIGHADDR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_HIGHADDR_1" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 2)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_2</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_2" spirit:order="95" spirit:bitStringLength="32">0xFFFFFFFF</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_2" spirit:order="95" spirit:bitStringLength="32">0x70000000</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_AXIBAR_HIGHADDR_2</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_2" spirit:order="96" spirit:bitStringLength="32">0x00000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_AXIBAR_HIGHADDR_2" spirit:order="96" spirit:bitStringLength="32">0x7FFFFFFF</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
-              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_HIGHADDR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">false</xilinx:isEnabled>
+              <xilinx:isEnabled xilinx:resolve="dependent" xilinx:id="MODELPARAM_ENABLEMENT.C_AXIBAR_HIGHADDR_2" xilinx:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_AXIBAR_NUM&apos;)) >= 3)">true</xilinx:isEnabled>
             </xilinx:enablement>
           </xilinx:parameterInfo>
         </spirit:vendorExtensions>
@@ -9828,7 +9828,7 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_PCIEBAR_LEN_0</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PCIEBAR_LEN_0" spirit:order="105" spirit:minimum="13" spirit:maximum="32" spirit:rangeType="long">25</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PCIEBAR_LEN_0" spirit:order="105" spirit:minimum="13" spirit:maximum="32" spirit:rangeType="long">21</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector">
         <spirit:name>C_PCIEBAR2AXIBAR_0</spirit:name>
@@ -9873,7 +9873,7 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_PCIEBAR_LEN_2</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PCIEBAR_LEN_2" spirit:order="111" spirit:minimum="13" spirit:maximum="31" spirit:rangeType="long">23</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_PCIEBAR_LEN_2" spirit:order="111" spirit:minimum="13" spirit:maximum="31" spirit:rangeType="long">25</spirit:value>
         <spirit:vendorExtensions>
           <xilinx:parameterInfo>
             <xilinx:enablement>
@@ -10564,7 +10564,7 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>BAR0_SIZE</spirit:name>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BAR0_SIZE" spirit:choiceRef="choice_list_c15e8c67" spirit:order="13800" spirit:configGroups="1 UnGrouped">32</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BAR0_SIZE" spirit:choiceRef="choice_list_c15e8c67" spirit:order="13800" spirit:configGroups="1 UnGrouped">2</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>BAR1_SIZE</spirit:name>
@@ -10572,7 +10572,7 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>BAR2_SIZE</spirit:name>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BAR2_SIZE" spirit:choiceRef="choice_list_c15e8c67" spirit:order="14000" spirit:configGroups="1 UnGrouped">8</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.BAR2_SIZE" spirit:choiceRef="choice_list_c15e8c67" spirit:order="14000" spirit:configGroups="1 UnGrouped">32</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>PCIEBAR2AXIBAR_0</spirit:name>
@@ -10608,7 +10608,7 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>NUM_MSI_REQ</spirit:name>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.NUM_MSI_REQ" spirit:choiceRef="choice_list_5977852d" spirit:order="15700" spirit:configGroups="1 UnGrouped">1</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.NUM_MSI_REQ" spirit:choiceRef="choice_list_5977852d" spirit:order="15700" spirit:configGroups="1 UnGrouped">5</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>INT_FIFO_DEPTH</spirit:name>
@@ -10624,15 +10624,15 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_AS_0</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_0" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16600" spirit:configGroups="1 UnGrouped">false</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_0" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16600" spirit:configGroups="1 UnGrouped">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_AS_1</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_1" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16700" spirit:configGroups="1 UnGrouped">false</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_1" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16700" spirit:configGroups="1 UnGrouped">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_AS_2</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_2" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16800" spirit:configGroups="1 UnGrouped">false</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_AS_2" spirit:choiceRef="choice_list_e42ba42f" spirit:order="16800" spirit:configGroups="1 UnGrouped">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_AS_3</spirit:name>
@@ -10648,15 +10648,15 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_0</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_0" spirit:order="17200" spirit:configGroups="1 UnGrouped">0x60000000</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_0" spirit:order="17200" spirit:configGroups="1 UnGrouped">0x50000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_1</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_1" spirit:order="17300" spirit:configGroups="1 UnGrouped">0xFFFFFFFF</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_1" spirit:order="17300" spirit:configGroups="1 UnGrouped">0x60000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_2</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_2" spirit:order="17400" spirit:configGroups="1 UnGrouped">0xFFFFFFFF</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_2" spirit:order="17400" spirit:configGroups="1 UnGrouped">0x70000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_3</spirit:name>
@@ -10672,15 +10672,15 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_HIGHADDR_0</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_0" spirit:order="17800" spirit:configGroups="1 UnGrouped">0x6FFFFFFF</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_0" spirit:order="17800" spirit:configGroups="1 UnGrouped">0x5FFFFFFF</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_HIGHADDR_1</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_1" spirit:order="17900" spirit:configGroups="1 UnGrouped">0x00000000</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_1" spirit:order="17900" spirit:configGroups="1 UnGrouped">0x6FFFFFFF</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_HIGHADDR_2</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_2" spirit:order="18000" spirit:configGroups="1 UnGrouped">0x00000000</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_HIGHADDR_2" spirit:order="18000" spirit:configGroups="1 UnGrouped">0x7FFFFFFF</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_HIGHADDR_3</spirit:name>
@@ -10696,7 +10696,7 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR2PCIEBAR_0</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR2PCIEBAR_0" spirit:order="18400" spirit:configGroups="1 UnGrouped">0x60000000</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR2PCIEBAR_0" spirit:order="18400" spirit:configGroups="1 UnGrouped">0x00000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR2PCIEBAR_1</spirit:name>
@@ -10764,7 +10764,7 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AXIBAR_NUM</spirit:name>
-      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_NUM" spirit:order="16500" spirit:configGroups="1 UnGrouped" spirit:minimum="1" spirit:maximum="6" spirit:rangeType="long">1</spirit:value>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.AXIBAR_NUM" spirit:order="16500" spirit:configGroups="1 UnGrouped" spirit:minimum="1" spirit:maximum="6" spirit:rangeType="long">3</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>en_ext_clk</spirit:name>
@@ -10938,8 +10938,17 @@ RP- Read and  writable
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_CTL.WUSER_BITS_PER_BYTE" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_CTL.WUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR2PCIEBAR_0" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR2PCIEBAR_1" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR2PCIEBAR_2" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_0" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_1" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_2" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_AS_0" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_AS_1" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_AS_2" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_HIGHADDR_0" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_HIGHADDR_1" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_HIGHADDR_2" xilinx:valueSource="propagated"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AXIBAR_NUM" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BAR0_SCALE" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BAR0_SIZE" xilinx:valueSource="user"/>

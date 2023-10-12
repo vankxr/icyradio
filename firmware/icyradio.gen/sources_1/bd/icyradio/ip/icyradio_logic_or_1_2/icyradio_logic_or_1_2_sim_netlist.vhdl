@@ -1,11 +1,11 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Jan 11 17:26:59 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_logic_or_1_2/icyradio_logic_or_1_2_sim_netlist.vhdl
--- Design      : icyradio_logic_or_1_2
+-- Date        : Mon Oct  2 04:14:32 2023
+-- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+-- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_logic_or_1_2 -prefix
+--               icyradio_logic_or_1_2_ icyradio_logic_or_1_3_sim_netlist.vhdl
+-- Design      : icyradio_logic_or_1_3
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7a100tfgg484-2
@@ -23,7 +23,7 @@ entity icyradio_logic_or_1_2 is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of icyradio_logic_or_1_2 : entity is true;
   attribute CHECK_LICENSE_TYPE : string;
-  attribute CHECK_LICENSE_TYPE of icyradio_logic_or_1_2 : entity is "icyradio_logic_or_1_2,util_vector_logic_v2_0_1_util_vector_logic,{}";
+  attribute CHECK_LICENSE_TYPE of icyradio_logic_or_1_2 : entity is "icyradio_logic_or_1_3,util_vector_logic_v2_0_1_util_vector_logic,{}";
   attribute DowngradeIPIdentifiedWarnings : string;
   attribute DowngradeIPIdentifiedWarnings of icyradio_logic_or_1_2 : entity is "yes";
   attribute X_CORE_INFO : string;

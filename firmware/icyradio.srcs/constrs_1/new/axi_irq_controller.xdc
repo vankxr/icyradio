@@ -1,0 +1,1 @@
+set_false_path -through [get_pins -hier -filter {NAME =~ "*axi_irq_controller_*/irq_in*"}]

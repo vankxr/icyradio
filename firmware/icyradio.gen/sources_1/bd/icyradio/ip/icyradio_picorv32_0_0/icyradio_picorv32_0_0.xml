@@ -672,11 +672,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:08:55 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:49 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c5479ac2</spirit:value>
+            <spirit:value>9:ec9a8634</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -687,7 +687,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c5479ac2</spirit:value>
+            <spirit:value>9:ec9a8634</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -703,11 +703,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Sep 19 23:55:08 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:49 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c5479ac2</spirit:value>
+            <spirit:value>9:ec9a8634</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -723,11 +723,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:08:55 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:49 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c2ae4c50</spirit:value>
+            <spirit:value>9:63d53e3a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -743,11 +743,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Sep 19 23:55:08 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:54:49 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c2ae4c50</spirit:value>
+            <spirit:value>9:63d53e3a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -761,11 +761,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Sep 19 23:56:22 UTC 2023</spirit:value>
+            <spirit:value>Sat Oct 07 18:55:07 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:c5479ac2</spirit:value>
+            <spirit:value>9:ec9a8634</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1420,12 +1420,12 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>ENABLE_MUL</spirit:name>
         <spirit:displayName>Enable Mul</spirit:displayName>
-        <spirit:value spirit:format="bool" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.ENABLE_MUL">true</spirit:value>
+        <spirit:value spirit:format="bool" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.ENABLE_MUL">false</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>ENABLE_FAST_MUL</spirit:name>
         <spirit:displayName>Enable Fast Mul</spirit:displayName>
-        <spirit:value spirit:format="bool" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.ENABLE_FAST_MUL">false</spirit:value>
+        <spirit:value spirit:format="bool" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.ENABLE_FAST_MUL">true</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>ENABLE_DIV</spirit:name>
@@ -1470,17 +1470,17 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>PROGADDR_RESET</spirit:name>
         <spirit:displayName>Progaddr Reset</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x41000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x01000000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>PROGADDR_IRQ</spirit:name>
         <spirit:displayName>Progaddr Irq</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_IRQ" spirit:bitStringLength="32">0x00000010</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.PROGADDR_IRQ" spirit:bitStringLength="32">0x01000010</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>STACKADDR</spirit:name>
         <spirit:displayName>Stackaddr</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.STACKADDR" spirit:bitStringLength="32">0xFFFFFFFF</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.STACKADDR" spirit:bitStringLength="32">0x01020000</spirit:value>
       </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
@@ -1532,10 +1532,10 @@
     <spirit:fileSet>
       <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>icyradio_picorv32_0_0.dcp</spirit:name>
-        <spirit:userFileType>dcp</spirit:userFileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:name>icyradio_picorv32_0_0_sim_netlist.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
@@ -1551,10 +1551,10 @@
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
-        <spirit:name>icyradio_picorv32_0_0_sim_netlist.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:name>icyradio_picorv32_0_0.dcp</spirit:name>
+        <spirit:userFileType>dcp</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
       <spirit:file>
@@ -1635,12 +1635,12 @@
     <spirit:parameter>
       <spirit:name>ENABLE_MUL</spirit:name>
       <spirit:displayName>Enable Multiplier</spirit:displayName>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.ENABLE_MUL">true</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.ENABLE_MUL">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>ENABLE_FAST_MUL</spirit:name>
       <spirit:displayName>Enable Fast Multiplier</spirit:displayName>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.ENABLE_FAST_MUL">false</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.ENABLE_FAST_MUL">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>ENABLE_DIV</spirit:name>
@@ -1685,17 +1685,17 @@
     <spirit:parameter>
       <spirit:name>PROGADDR_RESET</spirit:name>
       <spirit:displayName>Program Reset Address</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x41000000</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_RESET" spirit:bitStringLength="32">0x01000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>PROGADDR_IRQ</spirit:name>
       <spirit:displayName>IRQ Handler Address</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_IRQ" spirit:bitStringLength="32">0x00000010</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.PROGADDR_IRQ" spirit:bitStringLength="32">0x01000010</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>STACKADDR</spirit:name>
       <spirit:displayName>Stack Address</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.STACKADDR" spirit:bitStringLength="32">0xFFFFFFFF</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.STACKADDR" spirit:bitStringLength="32">0x01020000</spirit:value>
     </spirit:parameter>
   </spirit:parameters>
   <spirit:vendorExtensions>
@@ -1761,7 +1761,7 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@109c7ab7_ARCHIVE_LOCATION">c:/Users/pullin/fpga/vivado-picorv32/picorv32_1.0</xilinx:tag>
       </xilinx:tags>
       <xilinx:configElementInfos>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.IRQ.PortWidth" xilinx:valueSource="ip_propagated" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.IRQ.PortWidth" xilinx:valueSource="default_prop" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.IRQ.SENSITIVITY" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXI.ADDR_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXI.ARUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd"/>
@@ -1802,10 +1802,16 @@
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.M_AXI_RST.POLARITY" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.COMPRESSED_ISA" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_DIV" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_FAST_MUL" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_IRQ" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_MUL" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_PCPI" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_TRACE" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.LATCHED_IRQ" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PROGADDR_IRQ" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PROGADDR_RESET" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.STACKADDR" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.TWO_CYCLE_COMPARE" xilinx:valueSource="user"/>
       </xilinx:configElementInfos>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>

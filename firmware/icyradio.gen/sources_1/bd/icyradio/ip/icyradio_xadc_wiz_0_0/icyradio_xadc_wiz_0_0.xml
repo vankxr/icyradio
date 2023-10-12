@@ -1730,11 +1730,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:24 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 08 01:39:26 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7f4980e9</spirit:value>
+            <spirit:value>9:f0824cd3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1745,7 +1745,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7f4980e9</spirit:value>
+            <spirit:value>9:f0824cd3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1761,11 +1761,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:24 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 08 01:39:26 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7f4980e9</spirit:value>
+            <spirit:value>9:f0824cd3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1780,11 +1780,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:24 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 08 01:39:26 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8c081ac7</spirit:value>
+            <spirit:value>9:a4872978</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1800,11 +1800,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Mon Jan 31 13:06:24 UTC 2022</spirit:value>
+            <spirit:value>Sun Oct 08 01:39:26 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:8c081ac7</spirit:value>
+            <spirit:value>9:a4872978</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1818,11 +1818,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Wed Jan 11 17:27:13 UTC 2023</spirit:value>
+            <spirit:value>Sun Oct 08 01:40:42 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:7f4980e9</spirit:value>
+            <spirit:value>9:f0824cd3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3915,7 +3915,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_DCLK_FREQUENCY</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_DCLK_FREQUENCY" spirit:order="161">100</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_DCLK_FREQUENCY" spirit:order="161">125</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_SAMPLING_RATE</spirit:name>
@@ -3963,7 +3963,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_CONFIGURATION_R2</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_CONFIGURATION_R2" spirit:order="172">1024</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_CONFIGURATION_R2" spirit:order="172">1280</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_ALARM_LIMIT_R0</spirit:name>
@@ -3995,7 +3995,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_ALARM_LIMIT_R7</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_ALARM_LIMIT_R7" spirit:order="180">44622</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_ALARM_LIMIT_R7" spirit:order="180">48523</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_ALARM_LIMIT_R8</spirit:name>
@@ -4031,7 +4031,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_SEQUENCE_R0</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_SEQUENCE_R0" spirit:order="189">20224</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_SEQUENCE_R0" spirit:order="189">18176</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_SEQUENCE_R1</spirit:name>
@@ -4039,7 +4039,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_SEQUENCE_R2</spirit:name>
-        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_SEQUENCE_R2" spirit:order="191">20224</spirit:value>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_SEQUENCE_R2" spirit:order="191">18176</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_SEQUENCE_R3</spirit:name>
@@ -4530,7 +4530,7 @@
     <spirit:parameter>
       <spirit:name>STIMULUS_FREQ</spirit:name>
       <spirit:displayName>Stimulus Freq (KHz)</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.STIMULUS_FREQ" spirit:order="15910" spirit:minimum="0.1" spirit:maximum="480.77">1.0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.STIMULUS_FREQ" spirit:order="15910" spirit:minimum="0.1" spirit:maximum="96.15">1.0</spirit:value>
       <spirit:vendorExtensions>
         <xilinx:parameterInfo>
           <xilinx:enablement>
@@ -4564,7 +4564,7 @@
     <spirit:parameter>
       <spirit:name>DCLK_FREQUENCY</spirit:name>
       <spirit:displayName>DCLK Frequency(MHz)</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.DCLK_FREQUENCY" spirit:order="8" spirit:minimum="8" spirit:maximum="250">100</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.DCLK_FREQUENCY" spirit:order="8" spirit:minimum="8" spirit:maximum="250">125</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>ADC_CONVERSION_RATE</spirit:name>
@@ -4674,7 +4674,7 @@
     <spirit:parameter>
       <spirit:name>TEMPERATURE_ALARM_OT_RESET</spirit:name>
       <spirit:displayName>OT Reset (°C)</spirit:displayName>
-      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.TEMPERATURE_ALARM_OT_RESET" spirit:order="31" spirit:minimum="-40" spirit:maximum="125">70.0</spirit:value>
+      <spirit:value spirit:format="float" spirit:resolve="user" spirit:id="PARAM_VALUE.TEMPERATURE_ALARM_OT_RESET" spirit:order="31" spirit:minimum="-40" spirit:maximum="125">100.0</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>VCCINT_ALARM_LOWER</spirit:name>
@@ -4833,7 +4833,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>CHANNEL_ENABLE_VP_VN</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.CHANNEL_ENABLE_VP_VN" spirit:order="63">true</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.CHANNEL_ENABLE_VP_VN" spirit:order="63">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>CHANNEL_ENABLE_VREFP</spirit:name>
@@ -4941,7 +4941,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AVERAGE_ENABLE_VP_VN</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.AVERAGE_ENABLE_VP_VN" spirit:order="90">true</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.AVERAGE_ENABLE_VP_VN" spirit:order="90">false</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>AVERAGE_ENABLE_VAUXP0_VAUXN0</spirit:name>
@@ -5221,15 +5221,15 @@
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.CLK_DOMAIN" xilinx:valueSource="default_prop" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.DATA_WIDTH" xilinx:valueSource="auto" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.FREQ_HZ" xilinx:valueSource="user_prop" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_BRESP" xilinx:valueSource="auto" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_BRESP" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_BURST" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_CACHE" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_LOCK" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_PROT" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_QOS" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_REGION" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_RRESP" xilinx:valueSource="auto" xilinx:valuePermission="bd"/>
-        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_WSTRB" xilinx:valueSource="auto" xilinx:valuePermission="bd"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_RRESP" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.HAS_WSTRB" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.ID_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.MAX_BURST_LENGTH" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.NUM_READ_OUTSTANDING" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
@@ -5244,6 +5244,8 @@
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.SUPPORTS_NARROW_BURST" xilinx:valueSource="auto" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.WUSER_BITS_PER_BYTE" xilinx:valuePermission="bd_and_user"/>
         <xilinx:configElementInfo xilinx:referenceId="BUSIFPARAM_VALUE.S_AXI_LITE.WUSER_WIDTH" xilinx:valueSource="constant" xilinx:valuePermission="bd_and_user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ADC_CONVERSION_RATE" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ADC_OFFSET_AND_GAIN_CALIBRATION" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AVERAGE_ENABLE_TEMPERATURE" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AVERAGE_ENABLE_VBRAM" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.AVERAGE_ENABLE_VCCAUX" xilinx:valueSource="user"/>
@@ -5274,6 +5276,7 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.CHANNEL_ENABLE_VP_VN" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.CHANNEL_ENABLE_VREFN" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.CHANNEL_ENABLE_VREFP" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.DCLK_FREQUENCY" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_EXTERNAL_MUX" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_RESET" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.ENABLE_TEMP_BUS" xilinx:valueSource="user"/>
@@ -5281,8 +5284,10 @@
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.EXTERNAL_MUX_CHANNEL" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.INTERFACE_SELECTION" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.OT_ALARM" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.SENSOR_OFFSET_AND_GAIN_CALIBRATION" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.SEQUENCER_MODE" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.SINGLE_CHANNEL_SELECTION" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.TEMPERATURE_ALARM_OT_RESET" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.USER_TEMP_ALARM" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.VCCAUX_ALARM" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.VCCINT_ALARM" xilinx:valueSource="user"/>
