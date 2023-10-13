@@ -117,25 +117,25 @@ static uint8_t lt7182s_pmbus_write_word(uint8_t ubCommand, uint16_t usData)
 static uint8_t lt7182s_pmbus_write_l11(uint8_t ubCommand, float fData)
 {
     int8_t bExp = -16;
-    int16_t sMant = (int16_t)(fData / lt7182s_pow2(bExp));
+    int32_t lMant = (int32_t)(fData / lt7182s_pow2(bExp));
 
     // Search for an exponent that produces valid 11-bit mantissa
     do
     {
-        if(sMant >= -1024 && sMant <= 1023)
+        if(lMant >= -1024 && lMant <= 1023)
             break;
 
-        sMant = (int16_t)(fData / lt7182s_pow2(++bExp));
+        lMant = (int32_t)(fData / lt7182s_pow2(++bExp));
     } while(bExp < 15);
 
-    if(sMant < -1024 || sMant > 1023)
+    if(lMant < -1024 || lMant > 1023)
         return 0;
 
     if(bExp < -16 || bExp > 15)
         return 0;
 
     uint16_t usExp = bExp << 11;
-    uint16_t usMant = sMant & 0x07FF;
+    uint16_t usMant = lMant & 0x07FF;
 
     return lt7182s_pmbus_write_word(ubCommand, usExp | usMant);
 }
@@ -261,42 +261,6 @@ uint8_t lt7182s_init()
     if(!lt7182s_pmbus_write_byte(0xD8, BIT(0))) // Enable debug telemetry
         return 0;
 
-    // Configure Channel 0
-    lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
-    lt7182s_set_on_off_config(0, BIT(3)); // Only care about OPERATION commands, ignore RUN pin
-    lt7182s_set_pwm_config(0, (3 << 11) | (2 << 9) | (7 << 6) | (3 << 3) | BIT(2)); // GMEA = 150 uS, ILIM = 6.5 A / -4 A, CITH = 80 pF, RITH = 40 kOhm, FCM, Low VOUT Disabled
-    lt7182s_set_vin_on(0, 7.f); // 7 V Input Voltage to start power conversion
-    lt7182s_set_vin_off(0, 6.5f); // 6.5 V Input Voltage to stop power conversion (UVLO)
-    lt7182s_set_vin_uv_warn(0, 6.75f); // 6.75 V Input Undervoltage Warning
-    lt7182s_set_iin_oc_warn(0, 4.5f); // 4.5 A Input Overcurrent Warning
-    lt7182s_set_vout_max(0, 5.4f); // 5.4 V Maximum Output Voltage
-    lt7182s_set_vout(0, 5.2f); // 5.2 V Nominal Output Voltage
-    lt7182s_set_vout_margin_high(0, 5.25f); // 5.25 V High Margin
-    lt7182s_set_vout_margin_low(0, 5.15f); // 5.15 V Low Margin
-    lt7182s_set_vout_ov_fault(0, 5.5f); // 5.5 V Overvoltage Fault
-    lt7182s_set_vout_ov_warn(0, 5.4f); // 5.4 V Overvoltage Warning
-    lt7182s_set_vout_uv_fault(0, 4.95f); // 4.95 V Undervoltage Fault
-    lt7182s_set_vout_uv_warn(0, 5.05f); // 5.05 V Undervoltage Warning
-    lt7182s_set_iout_oc_warn(0, 5.5f); // 5.5 A Output Overcurrent Warning
-
-    // Configure Channel 1
-    lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
-    lt7182s_set_on_off_config(1, BIT(3) | BIT(2) | BIT(0)); // Only start if OPERATION is on and RUN is high (PGOOD from previous regulator)
-    lt7182s_set_pwm_config(1, (0 << 11) | (2 << 9) | (7 << 6) | (3 << 3) | BIT(2) | BIT(1)); // GMEA = 150 uS, ILIM = 6.5 A / -4 A, CITH = 80 pF, RITH = 40 kOhm, FCM, Low VOUT Enabled
-    lt7182s_set_vin_on(1, 7.f); // 7 V Input Voltage to start power conversion
-    lt7182s_set_vin_off(1, 6.5f); // 6.5 V Input Voltage to stop power conversion (UVLO)
-    lt7182s_set_vin_uv_warn(1, 6.75f); // 6.75 V Input Undervoltage Warning
-    lt7182s_set_iin_oc_warn(1, 0.8f); // 0.8 A Input Overcurrent Warning
-    lt7182s_set_vout_max(1, 1.1f); // 1.1 V Maximum Output Voltage
-    lt7182s_set_vout(1, 1.f); // 1 V Nominal Output Voltage
-    lt7182s_set_vout_margin_high(1, 1.05f); // 1.05 V High Margin
-    lt7182s_set_vout_margin_low(1, 1.f); // 1 V Low Margin
-    lt7182s_set_vout_ov_fault(1, 1.15f); // 1.15 V Overvoltage Fault
-    lt7182s_set_vout_ov_warn(1, 1.1f); // 1.1 V Overvoltage Warning
-    lt7182s_set_vout_uv_fault(1, 0.9f); // 0.9 V Undervoltage Fault
-    lt7182s_set_vout_uv_warn(1, 0.95f); // 0.95 V Undervoltage Warning
-    lt7182s_set_iout_oc_warn(1, 3.f); // 3 A Output Overcurrent Warning TODO: Up up
-
     return 1;
 }
 
@@ -328,12 +292,26 @@ uint8_t lt7182s_get_status_byte(uint8_t ubChannel)
 
     return lt7182s_pmbus_read_byte(0x78);
 }
+uint8_t lt7182s_clear_status_byte(uint8_t ubChannel, uint8_t ubMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_byte(0x78, ubMask);
+}
 uint16_t lt7182s_get_status_word(uint8_t ubChannel)
 {
     if(!lt7182s_select_page(ubChannel))
         return 0;
 
     return lt7182s_pmbus_read_word(0x79);
+}
+uint8_t lt7182s_clear_status_word(uint8_t ubChannel, uint16_t usMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_word(0x79, usMask);
 }
 uint8_t lt7182s_get_status_vout(uint8_t ubChannel)
 {
@@ -342,12 +320,26 @@ uint8_t lt7182s_get_status_vout(uint8_t ubChannel)
 
     return lt7182s_pmbus_read_byte(0x7A);
 }
+uint8_t lt7182s_clear_status_vout(uint8_t ubChannel, uint8_t ubMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_byte(0x7A, ubMask);
+}
 uint8_t lt7182s_get_status_iout(uint8_t ubChannel)
 {
     if(!lt7182s_select_page(ubChannel))
         return 0;
 
     return lt7182s_pmbus_read_byte(0x7B);
+}
+uint8_t lt7182s_clear_status_iout(uint8_t ubChannel, uint8_t ubMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_byte(0x7B, ubMask);
 }
 uint8_t lt7182s_get_status_input(uint8_t ubChannel)
 {
@@ -356,13 +348,28 @@ uint8_t lt7182s_get_status_input(uint8_t ubChannel)
 
     return lt7182s_pmbus_read_byte(0x7C);
 }
+uint8_t lt7182s_clear_status_input(uint8_t ubChannel, uint8_t ubMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_byte(0x7C, ubMask);
+}
 uint8_t lt7182s_get_status_temperature()
 {
     return lt7182s_pmbus_read_byte(0x7D);
 }
+uint8_t lt7182s_clear_status_temperature(uint8_t ubMask)
+{
+    return lt7182s_pmbus_write_byte(0x7D, ubMask);
+}
 uint8_t lt7182s_get_status_cml()
 {
     return lt7182s_pmbus_read_byte(0x7E);
+}
+uint8_t lt7182s_clear_status_cml(uint8_t ubMask)
+{
+    return lt7182s_pmbus_write_byte(0x7E, ubMask);
 }
 uint8_t lt7182s_get_status_mfr_specific(uint8_t ubChannel)
 {
@@ -370,6 +377,13 @@ uint8_t lt7182s_get_status_mfr_specific(uint8_t ubChannel)
         return 0;
 
     return lt7182s_pmbus_read_byte(0x80);
+}
+uint8_t lt7182s_clear_status_mfr_specific(uint8_t ubChannel, uint8_t ubMask)
+{
+    if(!lt7182s_select_page(ubChannel))
+        return 0;
+
+    return lt7182s_pmbus_write_byte(0x80, ubMask);
 }
 uint8_t lt7182s_get_status_mfr_common()
 {
@@ -442,22 +456,22 @@ uint8_t lt7182s_set_pwm_config(uint8_t ubChannel, uint16_t usConfig)
 
     return lt7182s_pmbus_write_word(0xD4, usConfig & 0x3FFF);
 }
-uint16_t lt7182s_get_pwm_phase(uint8_t ubChannel)
+float lt7182s_get_pwm_phase(uint8_t ubChannel)
 {
     if(!lt7182s_select_page(ubChannel))
         return 0;
 
-    return lt7182s_pmbus_read_word(0xF5);
+    return lt7182s_pmbus_read_l11(0xF5);
 }
-uint8_t lt7182s_set_pwm_phase(uint8_t ubChannel, uint16_t usPhase)
+uint8_t lt7182s_set_pwm_phase(uint8_t ubChannel, float fPhase)
 {
     if(!lt7182s_select_page(ubChannel))
         return 0;
 
-    while(usPhase >= 360)
-        usPhase -= 360;
+    while(fPhase >= 360)
+        fPhase -= 360;
 
-    return lt7182s_pmbus_write_word(0xF5, usPhase);
+    return lt7182s_pmbus_write_l11(0xF5, fPhase);
 }
 
 float l17182s_pwm_config_parse_gmea(uint16_t usPWMConfig)

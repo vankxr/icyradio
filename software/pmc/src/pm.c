@@ -36,6 +36,26 @@ uint8_t pm_get_reset_reason()
 {
     return PM_REGS->PM_RCAUSE & PM_RCAUSE_Msk;
 }
+const char *pm_get_reset_reason_string(uint8_t ubResetReason)
+{
+    switch(ubResetReason)
+    {
+        case PM_RCAUSE_POR_Msk:
+            return "Power On Reset";
+        case PM_RCAUSE_BOD12_Msk:
+            return "Core 1.2V Brown Out Reset";
+        case PM_RCAUSE_BOD33_Msk:
+            return "3.3V Brown Out Reset";
+        case PM_RCAUSE_EXT_Msk:
+            return "External Reset Pin";
+        case PM_RCAUSE_WDT_Msk:
+            return "Watchdog Reset";
+        case PM_RCAUSE_SYST_Msk:
+            return "System Reset Request";
+    }
+
+    return "Unknown";
+}
 
 void pm_cpu_ahb_clock_config(uint8_t ubPrescaler)
 {

@@ -17,6 +17,7 @@ void pm_init();
 void pm_update_clocks();
 
 uint8_t pm_get_reset_reason();
+const char *pm_get_reset_reason_string(uint8_t ubResetReason);
 
 void pm_cpu_ahb_clock_config(uint8_t ubPrescaler);
 void pm_apba_clock_config(uint8_t ubPrescaler);

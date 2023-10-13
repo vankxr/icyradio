@@ -24,13 +24,21 @@ uint8_t lt7182s_read_mfr_serial(uint8_t *pubBuffer, uint8_t ubBufferMaxSize);
 uint16_t lt7182s_read_mfr_special_id();
 
 uint8_t lt7182s_get_status_byte(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_byte(uint8_t ubChannel, uint8_t ubMask);
 uint16_t lt7182s_get_status_word(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_word(uint8_t ubChannel, uint16_t usMask);
 uint8_t lt7182s_get_status_vout(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_vout(uint8_t ubChannel, uint8_t ubMask);
 uint8_t lt7182s_get_status_iout(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_iout(uint8_t ubChannel, uint8_t ubMask);
 uint8_t lt7182s_get_status_input(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_input(uint8_t ubChannel, uint8_t ubMask);
 uint8_t lt7182s_get_status_temperature();
+uint8_t lt7182s_clear_status_temperature(uint8_t ubMask);
 uint8_t lt7182s_get_status_cml();
+uint8_t lt7182s_clear_status_cml(uint8_t ubMask);
 uint8_t lt7182s_get_status_mfr_specific(uint8_t ubChannel);
+uint8_t lt7182s_clear_status_mfr_specific(uint8_t ubChannel, uint8_t ubMask);
 uint8_t lt7182s_get_status_mfr_common();
 uint16_t lt7182s_get_status_mfr_pads();
 uint8_t lt7182s_get_status_mfr_pin_config();
@@ -45,8 +53,8 @@ uint8_t lt7182s_get_on_off_config(uint8_t ubChannel);
 uint8_t lt7182s_set_on_off_config(uint8_t ubChannel, uint8_t ubConfig);
 uint16_t lt7182s_get_pwm_config(uint8_t ubChannel);
 uint8_t lt7182s_set_pwm_config(uint8_t ubChannel, uint16_t usConfig);
-uint16_t lt7182s_get_pwm_phase(uint8_t ubChannel);
-uint8_t lt7182s_set_pwm_phase(uint8_t ubChannel, uint16_t usPhase);
+float lt7182s_get_pwm_phase(uint8_t ubChannel);
+uint8_t lt7182s_set_pwm_phase(uint8_t ubChannel, float fPhase);
 
 float l17182s_pwm_config_parse_gmea(uint16_t usPWMConfig); // uS
 float l17182s_pwm_config_parse_pos_ilim(uint16_t usPWMConfig); // A

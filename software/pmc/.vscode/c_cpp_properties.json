@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
+                "${workspaceFolder}/src/**",
                 "/opt/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/${env:ARM_GCC_NONE_EABI_VERSION}/include",
                 "/opt/gcc-arm-none-eabi/lib/gcc/arm-none-eabi/${env:ARM_GCC_NONE_EABI_VERSION}/include-fixed",
                 "/opt/gcc-arm-none-eabi/arm-none-eabi/include",
@@ -14,7 +14,6 @@
                 "${env:ARM_LIBROOT}/Microchip.SAMD20_DFP/samd20//include"
             ],
             "defines": [
-                // START GCC DEFINES
                 "__ACCUM_EPSILON__=0x1P-15K",
                 "__ACCUM_FBIT__=15",
                 "__ACCUM_IBIT__=16",
@@ -407,7 +406,6 @@
                 "__WINT_MIN__=0U",
                 "__WINT_TYPE__=unsigned int",
                 "__WINT_WIDTH__=32",
-                // END GCC DEFINES
                 "BUILD_VERSION",
                 "__ATSAMD20E16__"
             ],

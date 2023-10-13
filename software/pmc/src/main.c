@@ -32,6 +32,8 @@ static uint8_t get_device_revision();
 
 static void wdt_warning_isr();
 
+static uint8_t pmc_check_input_voltages();
+
 // Variables
 
 // ISRs
@@ -157,6 +159,57 @@ void wdt_warning_isr()
     DBGPRINTLN_CTX("Watchdog warning!");
 }
 
+uint8_t pmc_check_input_voltages()
+{
+    float fVIN = adc_get_vin();
+    float fVEXT = adc_get_vext();
+
+    if(!VEXT_STATUS() && fVEXT > 7000.f && fVEXT > fVIN)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            PCIE_12V0_DISABLE();
+            VBUS_SNK_DISABLE();
+
+            VEXT_ENABLE();
+        }
+
+        return 1;
+    }
+
+    float f12V0 = adc_get_12v0();
+
+    if(!PCIE_12V0_STATUS() && f12V0 > 7000.f && f12V0 > fVIN)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            VBUS_SNK_DISABLE();
+            VEXT_DISABLE();
+
+            PCIE_12V0_ENABLE();
+        }
+
+        return 1;
+    }
+
+    float fVBUS = adc_get_vbus();
+
+    if(!VBUS_SNK_STATUS() && fVBUS > 7000.f && fVBUS > fVIN)
+    {
+        ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+        {
+            PCIE_12V0_DISABLE();
+            VEXT_DISABLE();
+
+            VBUS_SNK_ENABLE();
+        }
+
+        return 1;
+    }
+
+    return 0;
+}
+
 int init()
 {
     nvmctrl_init(); // Init NVMCTRL
@@ -175,7 +228,7 @@ int init()
 
     sercom0_init(1000000, 0, SERCOM_SPI_MSB_FIRST, 0, 2);
     sercom1_init(SERCOM_I2C_FAST);
-    sercom3_init(115200, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
+    sercom3_init(500000, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
 
     // i2c0_init(I2C_SLAVE_ADDRESS, 4, 4);
     // i2c0_set_slave_addr_isr(i2c_slave_addr_isr);
@@ -203,7 +256,7 @@ int init()
     DBGPRINTLN_CTX("Free RAM: %lu B", get_free_ram());
     DBGPRINTLN_CTX("Unique ID: %08X-%08X-%08X-%08X", ulUniqueID[0], ulUniqueID[1], ulUniqueID[2], ulUniqueID[3]);
 
-    DBGPRINTLN_CTX("RMU - Reset cause: %hhu", pm_get_reset_reason());
+    DBGPRINTLN_CTX("RMU - Reset cause: %s", pm_get_reset_reason_string(pm_get_reset_reason()));
 
     DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f mV", adc_get_iovdd());
     DBGPRINTLN_CTX("ADC - Core Voltage: %.2f mV", adc_get_corevdd());
@@ -287,6 +340,42 @@ int main()
 
     DBGPRINTLN_CTX("LT7182S MFR Special ID: 0x%04X", lt7182s_read_mfr_special_id());
 
+    // Configure Channel 0
+    lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
+    lt7182s_set_on_off_config(0, BIT(3)); // Only care about OPERATION commands, ignore RUN pin
+    lt7182s_set_pwm_config(0, (3 << 11) | (2 << 9) | (7 << 6) | (3 << 3) | BIT(2)); // GMEA = 150 uS, ILIM = 6.5 A / -4 A, CITH = 80 pF, RITH = 40 kOhm, FCM, Low VOUT Disabled
+    lt7182s_set_vin_on(0, 7.f); // 7 V Input Voltage to start power conversion
+    lt7182s_set_vin_off(0, 6.5f); // 6.5 V Input Voltage to stop power conversion (UVLO)
+    lt7182s_set_vin_uv_warn(0, 6.75f); // 6.75 V Input Undervoltage Warning
+    lt7182s_set_iin_oc_warn(0, 4.5f); // 4.5 A Input Overcurrent Warning
+    lt7182s_set_vout_max(0, 5.4f); // 5.4 V Maximum Output Voltage
+    lt7182s_set_vout(0, 5.2f); // 5.2 V Nominal Output Voltage
+    lt7182s_set_vout_margin_high(0, 5.25f); // 5.25 V High Margin
+    lt7182s_set_vout_margin_low(0, 5.15f); // 5.15 V Low Margin
+    lt7182s_set_vout_ov_fault(0, 5.5f); // 5.5 V Overvoltage Fault
+    lt7182s_set_vout_ov_warn(0, 5.4f); // 5.4 V Overvoltage Warning
+    lt7182s_set_vout_uv_fault(0, 4.95f); // 4.95 V Undervoltage Fault
+    lt7182s_set_vout_uv_warn(0, 5.05f); // 5.05 V Undervoltage Warning
+    lt7182s_set_iout_oc_warn(0, 5.5f); // 5.5 A Output Overcurrent Warning
+
+    // Configure Channel 1
+    lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
+    lt7182s_set_on_off_config(1, BIT(3) | BIT(2) | BIT(0)); // Only start if OPERATION is on and RUN is high (PGOOD from previous regulator)
+    lt7182s_set_pwm_config(1, (0 << 11) | (2 << 9) | (7 << 6) | (3 << 3) | BIT(2) | BIT(1)); // GMEA = 150 uS, ILIM = 6.5 A / -4 A, CITH = 80 pF, RITH = 40 kOhm, FCM, Low VOUT Enabled
+    lt7182s_set_vin_on(1, 7.f); // 7 V Input Voltage to start power conversion
+    lt7182s_set_vin_off(1, 6.5f); // 6.5 V Input Voltage to stop power conversion (UVLO)
+    lt7182s_set_vin_uv_warn(1, 6.75f); // 6.75 V Input Undervoltage Warning
+    lt7182s_set_iin_oc_warn(1, 0.8f); // 0.8 A Input Overcurrent Warning
+    lt7182s_set_vout_max(1, 1.1f); // 1.1 V Maximum Output Voltage
+    lt7182s_set_vout(1, 1.f); // 1 V Nominal Output Voltage
+    lt7182s_set_vout_margin_high(1, 1.05f); // 1.05 V High Margin
+    lt7182s_set_vout_margin_low(1, 1.f); // 1 V Low Margin
+    lt7182s_set_vout_ov_fault(1, 1.15f); // 1.15 V Overvoltage Fault
+    lt7182s_set_vout_ov_warn(1, 1.1f); // 1.1 V Overvoltage Warning
+    lt7182s_set_vout_uv_fault(1, 0.9f); // 0.9 V Undervoltage Fault
+    lt7182s_set_vout_uv_warn(1, 0.95f); // 0.95 V Undervoltage Warning
+    lt7182s_set_iout_oc_warn(1, 3.f); // 3 A Output Overcurrent Warning TODO: Up up
+
     DBGPRINTLN_CTX("LT7182S Channel #0 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(0), lt7182s_read_vin_peak(0));
     DBGPRINTLN_CTX("LT7182S Channel #0 VIN ON Voltage: %.3f V", lt7182s_get_vin_on(0));
     DBGPRINTLN_CTX("LT7182S Channel #0 VIN OFF Voltage: %.3f V", lt7182s_get_vin_off(0));
@@ -319,7 +408,7 @@ int main()
     DBGPRINTLN_CTX("  LT7182S Channel #0 Pulse Skipping: %s", l17182s_pwm_config_parse_pulse_skipping(usPWMConfig) ? "Enabled" : "Disabled");
     DBGPRINTLN_CTX("  LT7182S Channel #0 FCM at TOFF: %s", l17182s_pwm_config_parse_fcm_at_toff(usPWMConfig) ? "Enabled" : "Disabled");
     DBGPRINTLN_CTX("  LT7182S Channel #0 Low VOUT Mode: %s", l17182s_pwm_config_parse_low_vout_mode(usPWMConfig) ? "Enabled" : "Disabled");
-    DBGPRINTLN_CTX("  LT7182S Channel #0 PWM Phase: %hu deg", lt7182s_get_pwm_phase(0));
+    DBGPRINTLN_CTX("  LT7182S Channel #0 PWM Phase: %.3f deg", lt7182s_get_pwm_phase(0));
     DBGPRINTLN_CTX("------------------------------");
     DBGPRINTLN_CTX("LT7182S Channel #1 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(1), lt7182s_read_vin_peak(1));
     DBGPRINTLN_CTX("LT7182S Channel #1 VIN ON Voltage: %.3f V", lt7182s_get_vin_on(1));
@@ -353,7 +442,7 @@ int main()
     DBGPRINTLN_CTX("  LT7182S Channel #1 Pulse Skipping: %s", l17182s_pwm_config_parse_pulse_skipping(usPWMConfig) ? "Enabled" : "Disabled");
     DBGPRINTLN_CTX("  LT7182S Channel #1 FCM at TOFF: %s", l17182s_pwm_config_parse_fcm_at_toff(usPWMConfig) ? "Enabled" : "Disabled");
     DBGPRINTLN_CTX("  LT7182S Channel #1 Low VOUT Mode: %s", l17182s_pwm_config_parse_low_vout_mode(usPWMConfig) ? "Enabled" : "Disabled");
-    DBGPRINTLN_CTX("  LT7182S Channel #1 PWM Phase: %hu deg", lt7182s_get_pwm_phase(1));
+    DBGPRINTLN_CTX("  LT7182S Channel #1 PWM Phase: %.3f deg", lt7182s_get_pwm_phase(1));
     DBGPRINTLN_CTX("------------------------------");
     DBGPRINTLN_CTX("LT7182S EXTVCC Voltage: %.3f V", lt7182s_read_extvcc());
     DBGPRINTLN_CTX("LT7182S Temperature: %.3f C (Peak: %.3f C)", lt7182s_read_temperature(), lt7182s_read_temperature_peak());
@@ -361,71 +450,99 @@ int main()
     DBGPRINTLN_CTX("LT7182S OT Warning Temperature: %.3f C", lt7182s_get_ot_warn());
     DBGPRINTLN_CTX("LT7182S Frequency: %.3f kHz", lt7182s_get_freq());
 
-    volatile uint64_t x = g_ullSystemTick;
-    for(uint32_t i = 0; i < 1000; i++)
-        (void)adc_get_vbus();
-    volatile uint64_t y = g_ullSystemTick;
+    //// UPD test
+    UPD350_SELECT();
+    delay_ms(50);
+    UPD350_UNSELECT();
+    delay_ms(500);
 
-    DBGPRINTLN_CTX("Sample rate: %.3f Hz", 1000.0 / ((float)(y - x) / 1000.0));
+    uint8_t buf[8];
 
-    x = g_ullSystemTick;
-    for(uint32_t i = 0; i < 1000; i++)
-        (void)adc_get_iovdd();
-    y = g_ullSystemTick;
+    UPD350_SELECT();
 
-    DBGPRINTLN_CTX("Sample rate: %.3f Hz", 1000.0 / ((float)(y - x) / 1000.0));
+    sercom0_spi_write_byte(0x0B, 0);
 
-    // UPD350_SELECT();
-    // delay_ms(50);
-    // UPD350_UNSELECT();
-    // delay_ms(500);
+    sercom0_spi_write_byte(0x00, 0);
+    sercom0_spi_write_byte(0x00, 0);
 
-    // uint8_t buf[8];
+    sercom0_spi_write_byte(0x00, 1);
 
-    // UPD350_SELECT();
+    sercom0_spi_read(buf, 8, 0x00);
 
-    // sercom0_spi_write_byte(0x0B, 0);
+    UPD350_UNSELECT();
 
-    // sercom0_spi_write_byte(0x00, 0);
-    // sercom0_spi_write_byte(0x00, 0);
+    DBGPRINTLN_CTX("UPD350 ID: 0x%08X", *(uint32_t *)buf);
+    DBGPRINTLN_CTX("UPD350 USB Vendor ID: 0x%04X", *(uint16_t *)(buf + 4));
+    DBGPRINTLN_CTX("UPD350 USB Product ID: 0x%04X", *(uint16_t *)(buf + 6));
+    //// End UPD test
 
-    // sercom0_spi_write_byte(0x00, 1);
+    DBGPRINTLN_CTX("Enabling power source in 500 ms...");
+    delay_ms(500);
 
-    // sercom0_spi_read(buf, 8, 0x00);
+    if(!pmc_check_input_voltages())
+    {
+        DBGPRINTLN_CTX("No suitable power source detected, retrying until one is found...");
 
-    // UPD350_UNSELECT();
+        while(1)
+        {
+            LED_TOGGLE();
+            delay_ms(100);
 
-    // DBGPRINTLN_CTX("UPD350 ID: 0x%08X", *(uint32_t *)buf);
-    // DBGPRINTLN_CTX("UPD350 USB Vendor ID: 0x%04X", *(uint16_t *)(buf + 4));
-    // DBGPRINTLN_CTX("UPD350 USB Product ID: 0x%04X", *(uint16_t *)(buf + 6));
+            if(pmc_check_input_voltages())
+                break;
+        }
+    }
 
-    // DBGPRINTLN_CTX("Enabling VEXT in 2 seconds...");
-    // delay_ms(2000);
+    DBGPRINTLN_CTX("Selected power source: %s", VEXT_STATUS() ? "VEXT" : PCIE_12V0_STATUS() ? "PCIe 12V0" : VBUS_SNK_STATUS() ? "VBUS" : "UNKNOWN");
 
-    // VBUS_SNK_DISABLE();
-    // PCIE_12V0_DISABLE();
-    // VEXT_ENABLE();
+    DBGPRINTLN_CTX("Enabling 5V0 and 1V0 in 100 ms...");
+    delay_ms(100);
 
-    // delay_ms(100);
+    lt7182s_set_operation(1, LT7182S_OPERATION_ON);
+    lt7182s_set_operation(0, LT7182S_OPERATION_ON);
+    delay_ms(50);
 
-    // lt7182s_set_operation(1, LT7182S_OPERATION_ON);
-    // lt7182s_set_operation(0, LT7182S_OPERATION_ON);
+    for(uint8_t i = 0; i < 2; i++)
+    {
+        uint16_t usStatus = lt7182s_get_status_word(i);
 
-    // DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
-    // delay_ms(500);
+        if(usStatus != 0x0000)
+        {
+            lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
+            lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
 
-    // FPGA_INIT_DEASSERT();
-    // delay_ms(50);
-    // FPGA_INIT_ASSERT();
-    // delay_ms(50);
-    // FPGA_INIT_DEASSERT();
+            DBGPRINTLN_CTX("LT7182S Channel #%hhu failed to turn on! Status word: 0x%04X", i, usStatus);
 
-    // DBGPRINTLN_CTX("Turning CM4 ON in 2 seconds...");
-    // delay_ms(2000);
+            // TODO: Further investigate status bits to determine the cause
 
-    // //CM4_USB_OTG_DEVICE();
-    // //CM4_BTLDR_ENABLE();
-    // CM4_GLOBAL_ENABLE();
+            while(1)
+            {
+                LED_TOGGLE();
+                delay_ms(100);
+            }
+        }
+    }
+
+    DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
+    delay_ms(500);
+
+    FPGA_INIT_DEASSERT();
+    delay_ms(50);
+    FPGA_INIT_ASSERT();
+    delay_ms(50);
+    FPGA_INIT_DEASSERT();
+
+    if(VEXT_STATUS() && !PCIE_12V0_STATUS() && !VBUS_SNK_STATUS())
+    {
+        DBGPRINTLN_CTX("Turning CM4 ON in 500 ms...");
+        delay_ms(500);
+
+        //CM4_USB_OTG_DEVICE();
+        //CM4_BTLDR_ENABLE();
+        CM4_GLOBAL_ENABLE();
+
+        while(!CM4_RUNNING());
+    }
 
     wdt_enable();
 
@@ -433,17 +550,42 @@ int main()
     {
         wdt_feed();
 
+        if(!NO_VOLTAGE_ENABLED() && pmc_check_input_voltages())
+            DBGPRINTLN_CTX("Power source changed to: %s", VEXT_STATUS() ? "VEXT" : PCIE_12V0_STATUS() ? "PCIe 12V0" : VBUS_SNK_STATUS() ? "VBUS" : "UNKNOWN");
+
+        if(CM4_GLOBAL_STATUS() && !CM4_RUNNING())
+        {
+            // DBGPRINTLN_CTX("RPi CM4 is OFF, restarting...");
+
+            // CM4_GLOBAL_DISABLE();
+            // delay_ms(50);
+            // CM4_GLOBAL_ENABLE();
+
+            DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
+
+            CM4_GLOBAL_DISABLE();
+            FPGA_INIT_ASSERT();
+            lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
+            lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
+            delay_ms(50);
+            VEXT_DISABLE();
+            PCIE_12V0_DISABLE();
+            VBUS_SNK_DISABLE();
+
+            DBGPRINTLN_CTX("Done!");
+        }
+
         static uint64_t ullLastHeartBeat = 0;
         static uint64_t ullLastTelemetryUpdate = 0;
 
-        if((g_ullSystemTick > 0 && ullLastHeartBeat == 0) || g_ullSystemTick - ullLastHeartBeat > 2000)
+        if((g_ullSystemTick > 0 && ullLastHeartBeat == 0) || g_ullSystemTick - ullLastHeartBeat > 1000)
         {
             ullLastHeartBeat = g_ullSystemTick;
 
             LED_TOGGLE();
 
             if(LED_STATUS())
-                ullLastHeartBeat -= 1900;
+                ullLastHeartBeat -= 900;
         }
 
         if((g_ullSystemTick > 0 && ullLastTelemetryUpdate == 0) || g_ullSystemTick - ullLastTelemetryUpdate > 5000)
@@ -469,23 +611,8 @@ int main()
             // DBGPRINTLN_CTX("------------------------------");
             // DBGPRINTLN_CTX("LT7182S EXTVCC Voltage: %.3f V", lt7182s_read_extvcc());
             // DBGPRINTLN_CTX("LT7182S Temperature: %.3f C (Peak: %.3f C)", lt7182s_read_temperature(), lt7182s_read_temperature_peak());
-            DBGPRINTLN_CTX("------------------------------");
-            DBGPRINTLN_CTX("RPi CM4 State: %s", CM4_RUNNING() ? "Running" : "OFF");
-
-            static uint8_t ubLastRPiState = 0;
-
-            if(ubLastRPiState != CM4_RUNNING())
-            {
-                ubLastRPiState = CM4_RUNNING();
-            }
-            else if(!CM4_RUNNING() && !ubLastRPiState)
-            {
-                DBGPRINTLN_CTX("RPi CM4 is OFF, restarting...");
-
-                CM4_GLOBAL_DISABLE();
-                delay_ms(50);
-                CM4_GLOBAL_ENABLE();
-            }
+            // DBGPRINTLN_CTX("------------------------------");
+            // DBGPRINTLN_CTX("RPi CM4 State: %s", CM4_RUNNING() ? "Running" : "OFF");
         }
     }
 
