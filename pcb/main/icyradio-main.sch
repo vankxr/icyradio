@@ -33881,7 +33881,7 @@ FPGA IO Banks 34/35, DDR3 VDDQ</text>
 <wire x1="251.46" y1="172.72" x2="254" y2="175.26" width="0.1524" layer="97"/>
 <wire x1="254" y1="175.26" x2="251.46" y2="177.8" width="0.1524" layer="97"/>
 <text x="299.72" y="175.26" size="1.778" layer="97" align="center-left">Digital Rail
-FPGA Auxiliary, FPGA Bank 3</text>
+FPGA Auxiliary</text>
 <wire x1="259.08" y1="195.58" x2="284.48" y2="195.58" width="0.1524" layer="97"/>
 <text x="271.78" y="165.1" size="1.778" layer="97" align="center">MIC23159
 1.35V @ 2A</text>
