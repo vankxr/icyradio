@@ -146,12 +146,12 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(copy_from_user(&ullSize, (void __user *)ulArg, sizeof(uint32_t)))
             {
-                DBGPRINTLN_CTX("Can't copy size from user space, aborting");
+                DBGPRINTLN_CTX("Can't copy from user space, aborting");
 
                 return -EFAULT;
             }
 
-            if(!ullSize || ullSize > 0xFFFFFFFF)
+            if(!ullSize)
             {
                 DBGPRINTLN_CTX("Invalid size, aborting");
 
@@ -195,7 +195,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
             {
                 DBGPRINTLN_CTX("DMA buffer not allocated, aborting");
 
-                return -EINVAL;
+                return -ENODEV;
             }
 
             sQuery.ullPhysAddr = (uint64_t)pDev->ulDMAPhysAddr;
@@ -215,7 +215,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
             {
                 DBGPRINTLN_CTX("DMA buffer not allocated, aborting");
 
-                return -EINVAL;
+                return -ENODEV;
             }
 
             DBGPRINTLN_CTX("Freeing DMA buffer for device %u at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
@@ -227,6 +227,26 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
             pDev->ulDMABufSize = 0;
         }
         break;
+        case ICYRADIO_IOCTL_IRQ_QUERY:
+        {
+            uint8_t ubIRQs = 0;
+
+            if(pDev->iNumIRQs <= 0)
+            {
+                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+
+                return -ENODEV;
+            }
+
+            ubIRQs = pDev->iNumIRQs;
+
+            if(copy_to_user((void __user *)ulArg, &ubIRQs, sizeof(uint8_t)))
+            {
+                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+
+                return -EFAULT;
+            }
+        }
     }
 
     return 0;
@@ -338,7 +358,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 }
 static int icyradio_open(struct inode *pInode, struct file *pFile)
 {
-    icyradio_dev_t *pDev = container_of(pInode->i_cdev, icyradio_dev_t, cdev);
+    icyradio_dev_t *pDev = container_of(pInode->i_cdev, icyradio_dev_t, sCharDev);
 
     DBGPRINTLN_CTX("Opening device %u", pDev->ulDevID);
 
@@ -423,14 +443,14 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     pDev->ulDevID = ulDevID;
     pDev->pPCIDev = pPCIDev;
 
-    cdev_init(&pDev->cdev, &icyradio_fops);
-    pDev->cdev.owner = THIS_MODULE;
+    cdev_init(&pDev->sCharDev, &icyradio_fops);
+    pDev->sCharDev.owner = THIS_MODULE;
 
     ulDevNum = MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ulDevID);
 
     DBGPRINTLN_CTX("Registering device with major %u and minor %u", MAJOR(ulDevNum), MINOR(ulDevNum));
 
-    if(cdev_add(&pDev->cdev, ulDevNum, 1))
+    if(cdev_add(&pDev->sCharDev, ulDevNum, 1))
     {
         DBGPRINTLN_CTX("Can't add cdev device, aborting");
 
@@ -445,7 +465,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     {
         DBGPRINTLN_CTX("Can't create udev device, aborting");
 
-        cdev_del(&pDev->cdev);
+        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return PTR_ERR(pUDevDevice);
@@ -458,7 +478,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         DBGPRINTLN_CTX("Can't enable PCI device, aborting");
 
         device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->cdev);
+        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
@@ -480,7 +500,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
         pci_disable_device(pPCIDev);
         device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->cdev);
+        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
@@ -497,7 +517,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
             device_destroy(icyradio_class, ulDevNum);
-            cdev_del(&pDev->cdev);
+            cdev_del(&pDev->sCharDev);
             kfree(pDev);
 
             return -EFAULT;
@@ -516,7 +536,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
         device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->cdev);
+        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
@@ -541,7 +561,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
             device_destroy(icyradio_class, ulDevNum);
-            cdev_del(&pDev->cdev);
+            cdev_del(&pDev->sCharDev);
             kfree(pDev);
 
             return -EFAULT;
@@ -613,7 +633,7 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
             DBGPRINTLN_CTX("PCI Device ptr mismatch");
 
         device_destroy(icyradio_class, MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + pDev->ulDevID));
-        cdev_del(&pDev->cdev);
+        cdev_del(&pDev->sCharDev);
 
         icyradio_devs[pDev->ulDevID] = NULL;
 

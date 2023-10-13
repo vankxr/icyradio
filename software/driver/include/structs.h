@@ -11,14 +11,13 @@ typedef struct
     uint32_t ulDevID;
     struct pci_dev *pPCIDev;
     struct file *pFile;
-    struct cdev cdev;
+    struct cdev sCharDev;
     void *pDMAVirtAddr;
     dma_addr_t ulDMAPhysAddr;
     uint32_t ulDMABufSize;
     int iNumIRQs;
     wait_queue_head_t sIRQWaitQueue;
     uint64_t ullIRQCount;
-}
-icyradio_dev_t;
+} icyradio_dev_t;
 
 #endif  // __STRUCTS_H__
