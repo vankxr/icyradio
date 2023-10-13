@@ -68,6 +68,6 @@ uint8_t axi_irq_ctrl_irq_set_isr(enum axi_irq_ctrl_irq_num eIRQNum, axi_irq_ctrl
 uint8_t axi_irq_ctrl_irq_get_pend(enum axi_irq_ctrl_irq_num eIRQNum);
 uint8_t axi_irq_ctrl_irq_set_pend(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubPend);
 uint8_t axi_irq_ctrl_irq_get_enable(enum axi_irq_ctrl_irq_num eIRQNum);
-uint8_t axi_irq_ctrl_irq_set_enable(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubPend);
+uint8_t axi_irq_ctrl_irq_set_enable(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubEnable);
 
 #endif // __AXI_IRQ_CTRL_H__

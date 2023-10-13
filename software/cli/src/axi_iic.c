@@ -89,8 +89,10 @@ uint8_t axi_iic_transmit(uint8_t ubInst, uint8_t ubAddress, uint8_t *pubSrc, uin
 
     if(!(axi_iic_reg_read(ubInst, AXI_IIC_REG_SR) & AXI_IIC_REG_SR_TX_FIFO_EMPTY)) // Clear TX FIFO
     {
-        axi_iic_reg_write(ubInst, AXI_IIC_REG_CR, axi_iic_reg_read(ubInst, AXI_IIC_REG_CR) | AXI_IIC_REG_CR_TXFIFO_RESET);
-        axi_iic_reg_write(ubInst, AXI_IIC_REG_CR, axi_iic_reg_read(ubInst, AXI_IIC_REG_CR) & ~AXI_IIC_REG_CR_TXFIFO_RESET);
+        uint32_t ulReg = axi_iic_reg_read(ubInst, AXI_IIC_REG_CR);
+
+        axi_iic_reg_write(ubInst, AXI_IIC_REG_CR, ulReg | AXI_IIC_REG_CR_TXFIFO_RESET);
+        axi_iic_reg_write(ubInst, AXI_IIC_REG_CR, ulReg & ~AXI_IIC_REG_CR_TXFIFO_RESET);
     }
 
     // DBGPRINTLN_CTX("tx fifo cleared");

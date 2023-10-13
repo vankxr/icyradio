@@ -344,27 +344,6 @@ AD9361_TXFIRConfig tx_fir_config =
 };
 
 
-static void ts_rw(uint32_t r, uint32_t v)
-{
-    *(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r) = v;
-}
-static void ts_rw64(uint32_t r, uint64_t v)
-{
-    *(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r) = v & 0xFFFFFFFF;
-    *(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r + 4) = (v >> 32) & 0xFFFFFFFF;
-}
-static uint32_t ts_rr(uint32_t r)
-{
-    return *(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r);
-}
-static uint64_t ts_rr64(uint32_t r)
-{
-    uint64_t v = *(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r);
-    v |= ((uint64_t)*(volatile uint32_t *)((uintptr_t)pAXIRFTstampBase + r + 4)) << 32;
-
-    return v;
-}
-
 uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
 {
     if(plTx == NULL || plRx == NULL)
@@ -454,7 +433,11 @@ uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
     axi_ad9361_dac_sync();
 
     // Disable TX & RX and Enable counter
-    ts_rw(AXI_RF_TSTAMP_REG_CTL_STAT, AXI_RF_TSTAMP_REG_CTL_STAT_CNT_EN | AXI_RF_TSTAMP_REG_CTL_STAT_CNT_RX_DIS | AXI_RF_TSTAMP_REG_CTL_STAT_CNT_TX_DIS | AXI_RF_TSTAMP_REG_CTL_STAT_RX_DIS | AXI_RF_TSTAMP_REG_CTL_STAT_TX_DIS);
+    axi_rf_tstamp_cnt_tx_enable(0);
+    axi_rf_tstamp_tx_enable(0);
+    axi_rf_tstamp_cnt_rx_enable(0);
+    axi_rf_tstamp_rx_enable(0);
+    axi_rf_tstamp_cnt_enable(1);
 
     uint8_t ubRet = 0;
 
@@ -478,18 +461,19 @@ uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
     }
 
     // Setup timestamps
-    uint64_t ullCounter = ts_rr64(AXI_RF_TSTAMP_REG_CNT_LOW);
+    uint64_t ullCounter = axi_rf_tstamp_get_cnt();
 
-    uint64_t ullTXCounter = ullCounter + 10 * axi_ad9361_adc_get_interface_freq(125000000ULL) / 1000;
-    uint64_t ullRXCounter = ullCounter + 10 * axi_ad9361_adc_get_interface_freq(125000000ULL) / 1000;
-    ts_rw64(AXI_RF_TSTAMP_REG_CNT_TX_LOW, ullTXCounter);
-    ts_rw64(AXI_RF_TSTAMP_REG_CNT_RX_LOW, ullRXCounter);
+    uint64_t ullTXCounter = ullCounter + 50 * axi_ad9361_adc_get_interface_freq(125000000ULL) / 1000;
+    uint64_t ullRXCounter = ullCounter + 50 * axi_ad9361_adc_get_interface_freq(125000000ULL) / 1000;
+    axi_rf_tstamp_set_tx_cnt(ullTXCounter);
+    axi_rf_tstamp_set_rx_cnt(ullRXCounter);
 
     // Enable counters
-    ts_rw(AXI_RF_TSTAMP_REG_CTL_STAT, AXI_RF_TSTAMP_REG_CTL_STAT_CNT_RX_EN | AXI_RF_TSTAMP_REG_CTL_STAT_CNT_TX_EN);
+    axi_rf_tstamp_cnt_rx_enable(1);
+    axi_rf_tstamp_cnt_tx_enable(1);
 
     // While the TX counter is armed, wait
-    while(ts_rr(AXI_RF_TSTAMP_REG_CTL_STAT) & AXI_RF_TSTAMP_REG_CTL_STAT_CNT_TX_STAT)
+    while(axi_rf_tstamp_cnt_tx_enabled())
         usleep(0);
 
     // Wait for DMA transfer completion
@@ -507,7 +491,8 @@ uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
     }
 
     // Disable TX & RX
-    ts_rw(AXI_RF_TSTAMP_REG_CTL_STAT, AXI_RF_TSTAMP_REG_CTL_STAT_TX_DIS | AXI_RF_TSTAMP_REG_CTL_STAT_RX_DIS);
+    axi_rf_tstamp_tx_enable(0);
+    axi_rf_tstamp_rx_enable(0);
 
     // Check received data
     for(uint32_t i = 0; i < (ulBufferSize >> 1); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
@@ -684,7 +669,7 @@ void trx_test()
         },
     };
 
-    ts_rw(AXI_RF_TSTAMP_REG_CTL_STAT, AXI_RF_TSTAMP_REG_CTL_STAT_RX_EN);
+    axi_rf_tstamp_cnt_rx_enable(1);
 
     void *pDummy = malloc(ulDescSize / sizeof(uint16_t) * sizeof(float));
     if(pDummy) // Test long RX
@@ -876,7 +861,7 @@ void trx_test()
         return;
     }
 
-    ts_rw(AXI_RF_TSTAMP_REG_CTL_STAT, AXI_RF_TSTAMP_REG_CTL_STAT_RX_DIS);
+    axi_rf_tstamp_rx_enable(0);
 
     // Export data to a matlab file for FFT analysis
     FILE *pFile = fopen("adc_data.m", "wb");
@@ -2019,8 +2004,8 @@ int main(int argc, char *argv[])
     // DBGPRINTLN_CTX("O sys_aux_reset asserted? %s", axi_gpio_get_value(AXI_GPIO_SYS_INST, 31) ? "yes" : "no");
 
     // Init interfaces
-    axi_iic_init(AXI_IIC_CODEC_INST, 125000000UL, AXI_IIC_NORMAL);
-    axi_iic_init(AXI_IIC_SYS_INST, 125000000UL, AXI_IIC_NORMAL);
+    axi_iic_init(AXI_IIC_CODEC_INST, 125000000UL, AXI_IIC_FAST);
+    axi_iic_init(AXI_IIC_SYS_INST, 125000000UL, AXI_IIC_FAST);
     //axi_quad_spi_init(AXI_QUAD_SPI_FLASH_INST, AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST); // Quad PI 0 is used for flash XIP
     axi_quad_spi_init(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI_MODE_1, AXI_QUAD_SPI_MSB_FIRST);
     axi_quad_spi_init(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST);

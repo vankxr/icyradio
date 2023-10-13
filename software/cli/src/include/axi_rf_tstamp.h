@@ -2,6 +2,7 @@
 #define __AXI_RF_TSTAMP_H__
 
 #include <stdint.h>
+#include <pthread.h>
 #include <unistd.h>
 #include "axi.h"
 #include "axi_gpio.h"
@@ -69,5 +70,28 @@ extern void *pAXIRFTstampBase;
 uint8_t axi_rf_tstamp_init();
 
 uint32_t axi_rf_tstamp_get_core_version();
+
+uint8_t axi_rf_tstamp_tx_enable(uint8_t ubEnable);
+uint8_t axi_rf_tstamp_tx_enabled();
+uint8_t axi_rf_tstamp_rx_enable(uint8_t ubEnable);
+uint8_t axi_rf_tstamp_rx_enabled();
+
+void axi_rf_tstamp_cnt_enable(uint8_t ubEnable);
+uint8_t axi_rf_tstamp_cnt_enabled();
+void axi_rf_tstamp_cnt_tx_enable(uint8_t ubEnable);
+uint8_t axi_rf_tstamp_cnt_tx_enabled();
+void axi_rf_tstamp_cnt_rx_enable(uint8_t ubEnable);
+uint8_t axi_rf_tstamp_cnt_rx_enabled();
+void axi_rf_tstamp_cnt_latch_arm(uint8_t ubReqArm);
+uint8_t axi_rf_tstamp_cnt_latch_armed();
+
+uint64_t axi_rf_tstamp_get_cnt();
+uint8_t axi_rf_tstamp_set_cnt(uint64_t ullVal);
+uint64_t axi_rf_tstamp_get_tx_cnt();
+void axi_rf_tstamp_set_tx_cnt(uint64_t ullVal);
+uint64_t axi_rf_tstamp_get_rx_cnt();
+void axi_rf_tstamp_set_rx_cnt(uint64_t ullVal);
+uint64_t axi_rf_tstamp_get_cnt_latch();
+uint8_t axi_rf_tstamp_get_cnt_latch_valid();
 
 #endif // __AXI_RF_TSTAMP_H__

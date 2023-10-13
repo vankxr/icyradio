@@ -137,12 +137,12 @@ uint8_t axi_irq_ctrl_irq_get_enable(enum axi_irq_ctrl_irq_num eIRQNum)
 
     return (axi_irq_ctrl_reg_read(AXI_IRQ_CTRL_REG_IRQ_ENABLE) & BIT(eIRQNum)) ? 1 : 0;
 }
-uint8_t axi_irq_ctrl_irq_set_enable(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubPend)
+uint8_t axi_irq_ctrl_irq_set_enable(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubEnable)
 {
     if(eIRQNum >= AXI_IRQ_CTRL_IRQ_NUM_MAX)
         return 0;
 
-    axi_irq_ctrl_reg_write(ubPend ? AXI_IRQ_CTRL_REG_IRQ_ENABLE_SET : AXI_IRQ_CTRL_REG_IRQ_ENABLE_CLR, BIT(eIRQNum));
+    axi_irq_ctrl_reg_write(ubEnable ? AXI_IRQ_CTRL_REG_IRQ_ENABLE_SET : AXI_IRQ_CTRL_REG_IRQ_ENABLE_CLR, BIT(ubEnable));
 
     return 1;
 }

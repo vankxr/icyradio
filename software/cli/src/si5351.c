@@ -37,12 +37,10 @@ static void si5351_get_mixed_number(uint32_t ulM, uint32_t ulN, si5351_mixed_num
 
 static uint8_t si5351_read_register(uint8_t ubRegister)
 {
-    uint8_t ubValue = 0x00;
-
     axi_iic_lock(AXI_IIC_SYS_INST); // Lock the I2C bus so the next two transactions are not interrupted
 
     axi_iic_write_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, ubRegister, AXI_IIC_RESTART);
-    ubValue = axi_iic_read_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, AXI_IIC_STOP);
+    uint8_t ubValue = axi_iic_read_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, AXI_IIC_STOP);
 
     axi_iic_unlock(AXI_IIC_SYS_INST); // Unlock the I2C bus
 
