@@ -69,6 +69,8 @@ static ssize_t icyradio_read(struct file *pFile, char __user *pBuf, size_t ulCou
 
     DBGPRINTLN_CTX("Reading device %u Count: %lu", pDev->ulDevID, ulCount);
 
+    // TODO: Use read syscall to read the last IRQ vector, if we ever need more than one
+
     return 0;
 }
 static ssize_t icyradio_write(struct file *pFile, const char __user *pBuf, size_t ulCount, loff_t *pOffset)
@@ -271,9 +273,11 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
                 return -EBUSY;
             }
 
+            DBGPRINTLN_CTX("Set IRQ flush pending for device %u and waking up wait queue", pDev->ulDevID);
+
             pDev->ubIRQFlush = 1;
 
-            DBGPRINTLN_CTX("Set IRQ flush pending for device %u", pDev->ulDevID);
+            wake_up_interruptible(&pDev->sIRQWaitQueue);
         }
     }
 
