@@ -553,29 +553,8 @@ int main()
         if(!NO_VOLTAGE_ENABLED() && pmc_check_input_voltages())
             DBGPRINTLN_CTX("Power source changed to: %s", VEXT_STATUS() ? "VEXT" : PCIE_12V0_STATUS() ? "PCIe 12V0" : VBUS_SNK_STATUS() ? "VBUS" : "UNKNOWN");
 
-        if(CM4_GLOBAL_STATUS() && !CM4_RUNNING())
-        {
-            // DBGPRINTLN_CTX("RPi CM4 is OFF, restarting...");
-
-            // CM4_GLOBAL_DISABLE();
-            // delay_ms(50);
-            // CM4_GLOBAL_ENABLE();
-
-            DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
-
-            CM4_GLOBAL_DISABLE();
-            FPGA_INIT_ASSERT();
-            lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
-            lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
-            delay_ms(50);
-            VEXT_DISABLE();
-            PCIE_12V0_DISABLE();
-            VBUS_SNK_DISABLE();
-
-            DBGPRINTLN_CTX("Done!");
-        }
-
         static uint64_t ullLastHeartBeat = 0;
+        static uint64_t ullLastCM4Check = 0;
         static uint64_t ullLastTelemetryUpdate = 0;
 
         if((g_ullSystemTick > 0 && ullLastHeartBeat == 0) || g_ullSystemTick - ullLastHeartBeat > 1000)
@@ -586,6 +565,34 @@ int main()
 
             if(LED_STATUS())
                 ullLastHeartBeat -= 900;
+        }
+
+        if((g_ullSystemTick > 0 && ullLastCM4Check == 0) || g_ullSystemTick - ullLastCM4Check > 500)
+        {
+            ullLastCM4Check = g_ullSystemTick;
+
+            static uint8_t ubCM4CheckCount = 0;
+
+            if(CM4_GLOBAL_STATUS() && !CM4_RUNNING())
+                ubCM4CheckCount++;
+            else
+                ubCM4CheckCount = 0;
+
+            if(ubCM4CheckCount > 3)
+            {
+                DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
+
+                CM4_GLOBAL_DISABLE();
+                FPGA_INIT_ASSERT();
+                lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
+                lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
+                delay_ms(50);
+                VEXT_DISABLE();
+                PCIE_12V0_DISABLE();
+                VBUS_SNK_DISABLE();
+
+                DBGPRINTLN_CTX("Done!");
+            }
         }
 
         if((g_ullSystemTick > 0 && ullLastTelemetryUpdate == 0) || g_ullSystemTick - ullLastTelemetryUpdate > 5000)
