@@ -239,7 +239,7 @@ int8_t axi_dmac_transfer_submit(uint8_t ubInst, axi_dmac_transfer_t *pTransfer)
     // Validate transfer parameters
     if((pTransfer->eFlags & AXI_DMAC_FLAGS_CYCLIC))
     {
-        if(!!sCaps.ubCyclicSupport)
+        if(!sCaps.ubCyclicSupport)
         {
             DBGPRINTLN_CTX("(#%hhu) Cyclic transfers are not supported", ubInst);
 

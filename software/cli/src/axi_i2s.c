@@ -64,9 +64,6 @@ uint8_t axi_i2s_clk_config(uint32_t ulInputFreq, uint32_t ulMCLKFreq, uint32_t u
 }
 uint8_t axi_i2s_clk_auto_config(uint32_t ulInputFreq, uint32_t ulMCLKFreq, uint32_t ulSampRate, uint32_t *pulBCLKFreq)
 {
-    uint32_t ulMCLKDiv = ulInputFreq / ulMCLKFreq; // MCLK is independent
-    uint32_t ulLRCLKDiv = ulInputFreq / ulSampRate; // LRCLK is always the sample rate
-
     // Determine BCLK based on the sample rate, number of channels and channel bit size
     uint32_t ulBCLKFreq = ulSampRate;
 

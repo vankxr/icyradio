@@ -34,6 +34,7 @@
 #define AXI_GPIO2_BASE          0x4001C000
 #define AXI_RF_TSTAMP_BASE      0x4001E000
 #define AXI_IRQ_CTRL_BASE       0x40020000
+#define AXI_DNA_BASE            0x40022000
 // RSVD
 #define AXI_AD9361_BASE         0x40100000
 

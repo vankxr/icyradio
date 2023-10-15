@@ -16,7 +16,7 @@
 #include "axi_irq_ctrl.h"
 #include "axi_i2s.h"
 #include "axi_rf_tstamp.h"
-#include "axi_rf_tstamp.h"
+#include "axi_dna.h"
 #include "axi_dmac.h"
 #include "axi_ad9361.h"
 #include "ad9361_api.h"
@@ -41,16 +41,17 @@ void *pAXIDDRMap;
 void *pAXIDDRBase;
 void *pAXIPeriphMap;
 void *pAXIPeriphBase;
-void *pAXIGPIOBase[AXI_GPIO_NUM_INSTANCES];
-void *pAXIQuadSPIBase[AXI_QUAD_SPI_NUM_INSTANCES];
-void *pAXIIICBase[AXI_IIC_NUM_INSTANCES];
-void *pAXIXADCBase;
-void *pAXIIRQCtrlBase;
-void *pAXII2SBase;
-void *pAXIAD9361Base;
-void *pAXIRFTstampBase;
 void *pAXIDMACBase[AXI_DMAC_NUM_INSTANCES];
+void *pAXIGPIOBase[AXI_GPIO_NUM_INSTANCES];
+void *pAXIIICBase[AXI_IIC_NUM_INSTANCES];
+void *pAXIQuadSPIBase[AXI_QUAD_SPI_NUM_INSTANCES];
 void *pAXIPCIeBase;
+void *pAXII2SBase;
+void *pAXIXADCBase;
+void *pAXIRFTstampBase;
+void *pAXIIRQCtrlBase;
+void *pAXIDNABase;
+void *pAXIAD9361Base;
 int iDeviceFile;
 
 
@@ -342,7 +343,6 @@ AD9361_TXFIRConfig tx_fir_config =
 	{0, 0, 0, 0, 0, 0}, // tx_path_clks[6]
 	0 // tx_bandwidth
 };
-
 
 uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
 {
@@ -1058,10 +1058,10 @@ uint8_t icyradio_setup_mmaps()
 {
     uint32_t ulPageSize = (uint32_t)sysconf(_SC_PAGESIZE);
 
-    DBGPRINTLN_CTX("Page Size: %u", ulPageSize);
+    // DBGPRINTLN_CTX("Page Size: %u", ulPageSize);
 
     if(ulPageSize != 4096)
-        DBGPRINTLN_CTX("WARNING: Page size is not 4096 bytes!");
+        DBGPRINTLN_CTX("WARNING: Page size is not 4096 bytes (%u)", ulPageSize);
 
     uint64_t ullMapAddrStart, ullMapAddrOffset, ullMapSize;
 
@@ -1070,15 +1070,15 @@ uint8_t icyradio_setup_mmaps()
     ullMapAddrOffset = AXI_QUAD_SPI0_XIP_BASE & (uint64_t)(ulPageSize - 1);
     ullMapSize = AXI_QUAD_SPI0_XIP_SIZE;
 
-    DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
-    DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
-    DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
+    // DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
+    // DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
+    // DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
 
 	pAXIFlashMap = mmap(NULL, ullMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ullMapAddrStart);
 
 	if(pAXIFlashMap == MAP_FAILED)
     {
-        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to map AXI Flash region (%d)", errno);
 
         return 0;
     }
@@ -1092,15 +1092,15 @@ uint8_t icyradio_setup_mmaps()
     ullMapAddrOffset = AXI_BRAM_BASE & (uint64_t)(ulPageSize - 1);
     ullMapSize = AXI_BRAM_SIZE;
 
-    DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
-    DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
-    DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
+    // DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
+    // DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
+    // DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
 
 	pAXIBRAMMap = mmap(NULL, ullMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ullMapAddrStart);
 
 	if(pAXIBRAMMap == MAP_FAILED)
     {
-        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to map AXI BRAM region (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
 
@@ -1116,15 +1116,15 @@ uint8_t icyradio_setup_mmaps()
     ullMapAddrOffset = AXI_MIG_DDR3_BASE & (uint64_t)(ulPageSize - 1);
     ullMapSize = AXI_MIG_DDR3_SIZE;
 
-    DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
-    DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
-    DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
+    // DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
+    // DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
+    // DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
 
 	pAXIDDRMap = mmap(NULL, ullMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ullMapAddrStart);
 
 	if(pAXIDDRMap == MAP_FAILED)
     {
-        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to map AXI DDR3 region (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
         munmap(pAXIBRAMMap, AXI_BRAM_SIZE);
@@ -1141,15 +1141,15 @@ uint8_t icyradio_setup_mmaps()
     ullMapAddrOffset = AXI_PERIPH_BASE & (uint64_t)(ulPageSize - 1);
     ullMapSize = AXI_PERIPH_SIZE;
 
-    DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
-    DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
-    DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
+    // DBGPRINTLN_CTX("Start Address: 0x%08lX", ullMapAddrStart);
+    // DBGPRINTLN_CTX("Offset Address: 0x%08lX", ullMapAddrOffset);
+    // DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
 
 	pAXIPeriphMap = mmap(NULL, ullMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ullMapAddrStart);
 
 	if(pAXIPeriphMap == MAP_FAILED)
     {
-        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to map AXI Peripheral region (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
         munmap(pAXIBRAMMap, AXI_BRAM_SIZE);
@@ -1162,36 +1162,29 @@ uint8_t icyradio_setup_mmaps()
 
     DBGPRINTLN_CTX("AXI Peripheral Base: 0x%016lX", (uintptr_t)pAXIPeriphBase);
 
-    pAXIGPIOBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO0_BASE - AXI_PERIPH_BASE));
-    pAXIGPIOBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO1_BASE - AXI_PERIPH_BASE));
-    pAXIGPIOBase[2] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO2_BASE - AXI_PERIPH_BASE));
-
+    pAXIDMACBase[0] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_RX_BASE - AXI_PERIPH_BASE));
+    pAXIDMACBase[1] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_TX_BASE - AXI_PERIPH_BASE));
+    pAXIGPIOBase[0] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO0_BASE - AXI_PERIPH_BASE));
+    pAXIIICBase[0] =     (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC0_BASE - AXI_PERIPH_BASE));
     pAXIQuadSPIBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_QUAD_SPI0_BASE - AXI_PERIPH_BASE));
+    pAXIPCIeBase =       (void *)((uintptr_t)pAXIPeriphBase + (AXI_PCIE0_BASE - AXI_PERIPH_BASE));
+    pAXIDMACBase[2] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_I2S_RX_BASE - AXI_PERIPH_BASE));
+    pAXIDMACBase[3] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_I2S_TX_BASE - AXI_PERIPH_BASE));
+    pAXII2SBase =        (void *)((uintptr_t)pAXIPeriphBase + (AXI_I2S_BASE - AXI_PERIPH_BASE));
+    pAXIXADCBase =       (void *)((uintptr_t)pAXIPeriphBase + (AXI_XADC_WIZ_BASE - AXI_PERIPH_BASE));
     pAXIQuadSPIBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_QUAD_SPI1_BASE - AXI_PERIPH_BASE));
+    pAXIIICBase[1] =     (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC1_BASE - AXI_PERIPH_BASE));
     pAXIQuadSPIBase[2] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_QUAD_SPI2_BASE - AXI_PERIPH_BASE));
+    pAXIGPIOBase[1] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO1_BASE - AXI_PERIPH_BASE));
+    pAXIGPIOBase[2] =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_GPIO2_BASE - AXI_PERIPH_BASE));
+    pAXIRFTstampBase =   (void *)((uintptr_t)pAXIPeriphBase + (AXI_RF_TSTAMP_BASE - AXI_PERIPH_BASE));
+    pAXIIRQCtrlBase =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_IRQ_CTRL_BASE - AXI_PERIPH_BASE));
+    pAXIDNABase =        (void *)((uintptr_t)pAXIPeriphBase + (AXI_DNA_BASE - AXI_PERIPH_BASE));
 
-    pAXIIICBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC0_BASE - AXI_PERIPH_BASE));
-    pAXIIICBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC1_BASE - AXI_PERIPH_BASE));
+    pAXIAD9361Base =     (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE));
 
-    pAXIXADCBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_XADC_WIZ_BASE - AXI_PERIPH_BASE));
-
-    pAXIIRQCtrlBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_IRQ_CTRL_BASE - AXI_PERIPH_BASE));
-
-    pAXII2SBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_I2S_BASE - AXI_PERIPH_BASE));
-
-    pAXIAD9361Base = (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE));
-
-    pAXIRFTstampBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_RF_TSTAMP_BASE - AXI_PERIPH_BASE));
-
-    pAXIDMACBase[0] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_RX_BASE - AXI_PERIPH_BASE));
-    pAXIDMACBase[1] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_RF_TX_BASE - AXI_PERIPH_BASE));
-    pAXIDMACBase[2] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_I2S_RX_BASE - AXI_PERIPH_BASE));
-    pAXIDMACBase[3] = (void *)((uintptr_t)pAXIPeriphBase + (AXI_DMAC_I2S_TX_BASE - AXI_PERIPH_BASE));
-
-    pAXIPCIeBase = (void *)((uintptr_t)pAXIPeriphBase + (AXI_PCIE0_BASE - AXI_PERIPH_BASE));
-
-    // Alloc DMA buffer
-    uint64_t ullArg = ullDMABufferSize;
+    // Alloc and map DMA buffer
+    uint64_t ullArg = ullDMABufferSize; // We pass in the size as argument, and get the physical address back
 
     ioctl(iDeviceFile, ICYRADIO_IOCTL_DMA_FREE); // TODO: Implement getting an existing buffer
 
@@ -1209,8 +1202,8 @@ uint8_t icyradio_setup_mmaps()
 
     ullDMABufferPhys = ullArg;
 
-    DBGPRINTLN_CTX("DMA Buffer Physical Address: 0x%016lX", ullDMABufferPhys);
-    DBGPRINTLN_CTX("DMA Buffer Size: 0x%016lX", ullDMABufferSize);
+    DBGPRINTLN_CTX("DMA Buffer Physical Address: 0x%012lX", ullDMABufferPhys);
+    DBGPRINTLN_CTX("DMA Buffer Size: 0x%012lX", ullDMABufferSize);
 
     ullMapAddrStart = ullDMABufferPhys & ~(uint64_t)(ulPageSize - 1);
     ullMapAddrOffset = ullDMABufferPhys & (uint64_t)(ulPageSize - 1);
@@ -1218,15 +1211,15 @@ uint8_t icyradio_setup_mmaps()
 
     ullMapAddrStart |= BIT(48); // DMA Buffer region starts at 0x100000000000
 
-    DBGPRINTLN_CTX("Start Address: 0x%016lX", ullMapAddrStart);
-    DBGPRINTLN_CTX("Offset Address: 0x%016lX", ullMapAddrOffset);
-    DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
+    // DBGPRINTLN_CTX("Start Address: 0x%016lX", ullMapAddrStart);
+    // DBGPRINTLN_CTX("Offset Address: 0x%016lX", ullMapAddrOffset);
+    // DBGPRINTLN_CTX("Map Size: 0x%08lX", ullMapSize);
 
 	pDMABufferMap = mmap(NULL, ullMapSize, PROT_READ | PROT_WRITE, MAP_SHARED, iDeviceFile, ullMapAddrStart);
 
 	if(pDMABufferMap == MAP_FAILED)
     {
-        DBGPRINTLN_CTX("Unable to map memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to map DMA Buffer region (%d)", errno);
 
         munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE);
         munmap(pAXIBRAMMap, AXI_BRAM_SIZE);
@@ -1249,42 +1242,35 @@ uint8_t icyradio_free_mmaps()
 
     if(munmap(pAXIFlashMap, AXI_QUAD_SPI0_XIP_SIZE))
     {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to unmap AXI Flash region (%d)", errno);
 
         ubRet = 0;
     }
 
     if(munmap(pAXIBRAMMap, AXI_BRAM_SIZE))
     {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to unmap AXI BRAM region (%d)", errno);
 
         ubRet = 0;
     }
 
     if(munmap(pAXIDDRMap, AXI_MIG_DDR3_SIZE))
     {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to unmap AXI DDR3 region (%d)", errno);
 
         ubRet = 0;
     }
 
     if(munmap(pAXIPeriphMap, AXI_PERIPH_SIZE))
     {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
-
-        ubRet = 0;
-    }
-
-    if(munmap(pAXIPeriphMap, AXI_PERIPH_SIZE))
-    {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to unmap AXI Peripheral region (%d)", errno);
 
         ubRet = 0;
     }
 
     if(munmap(pDMABufferMap, ullDMABufferSize))
     {
-        DBGPRINTLN_CTX("Unable to unmap memory (%d)", errno);
+        DBGPRINTLN_CTX("Unable to unmap DMA Buffer region (%d)", errno);
 
         ubRet = 0;
     }
@@ -1761,10 +1747,6 @@ uint8_t icyradio_system_reset()
 
                 return 0;
             }
-            else
-            {
-                DBGPRINTLN_CTX("System reset complete!");
-            }
         }
         else
         {
@@ -1789,10 +1771,6 @@ uint8_t icyradio_system_reset()
                 DBGPRINTLN_CTX("System reset bit did not de-assert (how?), system reset failed, aborting!");
 
                 return 0;
-            }
-            else
-            {
-                DBGPRINTLN_CTX("System reset complete!");
             }
         }
         else if(!ubCLKWIZ0Locked && !ubDDR3MMCMLocked)
@@ -1967,6 +1945,13 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    DBGPRINTLN_CTX("System reset complete");
+
+    while(!axi_dna_ready())
+        usleep(1000);
+
+    DBGPRINTLN_CTX("Device serial number: %015lX", axi_dna_read());
+
     uint32_t bar0h = *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x208);
     uint32_t bar0l = *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x20C);
     uint32_t bar1h = *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x210);
@@ -2022,6 +2007,8 @@ int main(int argc, char *argv[])
 
         return 1;
     }
+
+    DBGPRINTLN_CTX("Clocks successfully initialized");
 
     void *tbuf = NULL;//malloc(ullDMABufferSize);
     if(tbuf)
@@ -2284,7 +2271,7 @@ int main(int argc, char *argv[])
     // axi_iic_gpo_set_value(AXI_IIC_CODEC_INST, 0, 0);
     */
 
-   usleep(2000000);
+    usleep(2000000);
 
     icyradio_deinit_clocks();
     icyradio_free_mmaps();

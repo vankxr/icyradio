@@ -24,4 +24,5 @@ enum ad9361_util_dig_tune_flags
 uint8_t ad9361_util_dig_timing_analysis(char* pszBuf, uint32_t ulBufSize);
 uint8_t ad9361_util_dig_tune(uint8_t ubTestFreqs, enum ad9361_util_dig_tune_flags eFlags);
 
+
 #endif // __AD9361_UTIL_H__
