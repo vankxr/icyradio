@@ -18,6 +18,7 @@ typedef struct
     int iNumIRQs;
     wait_queue_head_t sIRQWaitQueue;
     uint64_t ullIRQCount;
+    uint8_t ubIRQFlush;
 } icyradio_dev_t;
 
 #endif  // __STRUCTS_H__

@@ -95,6 +95,13 @@ static unsigned int icyradio_poll(struct file *pFile, poll_table *pPollTable)
         ulMask |= POLLIN | POLLRDNORM;
     }
 
+    if(pDev->ubIRQFlush)
+    {
+        pDev->ubIRQFlush = 0;
+
+        ulMask |= POLLHUP;
+    }
+
     return ulMask;
 }
 static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long ulArg)
@@ -247,6 +254,27 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
                 return -EFAULT;
             }
         }
+        break;
+        case ICYRADIO_IOCTL_IRQ_FLUSH:
+        {
+            if(pDev->iNumIRQs <= 0)
+            {
+                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+
+                return -ENODEV;
+            }
+
+            if(pDev->ubIRQFlush)
+            {
+                DBGPRINTLN_CTX("IRQ flush already pending, aborting");
+
+                return -EBUSY;
+            }
+
+            pDev->ubIRQFlush = 1;
+
+            DBGPRINTLN_CTX("Set IRQ flush pending for device %u", pDev->ulDevID);
+        }
     }
 
     return 0;
@@ -360,6 +388,13 @@ static int icyradio_open(struct inode *pInode, struct file *pFile)
 {
     icyradio_dev_t *pDev = container_of(pInode->i_cdev, icyradio_dev_t, sCharDev);
 
+    if(!pDev)
+    {
+        DBGPRINTLN_CTX("Can't find IcyRadio device struct, aborting");
+
+        return -ENODEV;
+    }
+
     DBGPRINTLN_CTX("Opening device %u", pDev->ulDevID);
 
     if(pDev->pFile)
@@ -375,6 +410,7 @@ static int icyradio_open(struct inode *pInode, struct file *pFile)
     init_waitqueue_head(&pDev->sIRQWaitQueue);
 
     pDev->ullIRQCount = 0;
+    pDev->ubIRQFlush = 0;
 
     return 0;
 }
@@ -572,7 +608,6 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     icyradio_devs[ulDevID] = pDev;
     pci_set_drvdata(pPCIDev, pDev);
 
-
     //void *pBAR0;
     // pBAR0 = pci_iomap(pPCIDev, 0, 0);
 
@@ -586,29 +621,6 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     // DBGPRINTLN_CTX("BAR0 mapped at %p", pBAR0);
 
     // DBGPRINTLN_CTX("AXI SPI #0 - SPICR: 0x%08X", ioread32(pBAR0 + 0x00008000 + 0x60));
-    // DBGPRINTLN_CTX("AXI SPI #0 - SPISR: 0x%08X", ioread32(pBAR0 + 0x00008000 + 0x64));
-    // DBGPRINTLN_CTX("AXI SPI #1 - SPICR: 0x%08X", ioread32(pBAR0 + 0x00014000 + 0x60));
-    // DBGPRINTLN_CTX("AXI SPI #1 - SPISR: 0x%08X", ioread32(pBAR0 + 0x00014000 + 0x64));
-    // DBGPRINTLN_CTX("AXI SPI #2 - SPICR: 0x%08X", ioread32(pBAR0 + 0x00018000 + 0x60));
-    // DBGPRINTLN_CTX("AXI SPI #2 - SPISR: 0x%08X", ioread32(pBAR0 + 0x00018000 + 0x64));
-    // DBGPRINTLN_CTX("AXI GPIO #0 - DATA: 0x%08X", ioread32(pBAR0 + 0x00004000 + 0x00));
-    // DBGPRINTLN_CTX("AXI GPIO #0 - TRI: 0x%08X", ioread32(pBAR0 + 0x00004000 + 0x04));
-    // DBGPRINTLN_CTX("AXI GPIO #1 - DATA: 0x%08X", ioread32(pBAR0 + 0x0001A000 + 0x00));
-    // DBGPRINTLN_CTX("AXI GPIO #1 - TRI: 0x%08X", ioread32(pBAR0 + 0x0001A000 + 0x04));
-    // DBGPRINTLN_CTX("AXI AD9361 Version: 0x%08X", ioread32(pBAR0 + 0x00100000 + 0x0000));
-    // DBGPRINTLN_CTX("AXI DMA RF RX Version: 0x%08X", ioread32(pBAR0 + 0x00000000 + 0x0000));
-    // DBGPRINTLN_CTX("AXI DMA RF TX Version: 0x%08X", ioread32(pBAR0 + 0x00002000 + 0x0000));
-    // DBGPRINTLN_CTX("AXI DMA I2S RX Version: 0x%08X", ioread32(pBAR0 + 0x0000C000 + 0x0000));
-    // DBGPRINTLN_CTX("AXI DMA I2S TX Version: 0x%08X", ioread32(pBAR0 + 0x0000E000 + 0x0000));
-
-    // DBGPRINTLN_CTX("BRAM First Word: 0x%08X", ioread32(pBAR0 + 0x01000000));
-    // DBGPRINTLN_CTX("BRAM Last Word: 0x%08X", ioread32(pBAR0 + 0x01001FFC));
-
-    // iowrite32(0xDEADBEEF, pBAR0 + 0x01000000);
-    // iowrite32(0xDEADCAFE, pBAR0 + 0x01001FFC);
-
-    // DBGPRINTLN_CTX("BRAM First Word: 0x%08X", ioread32(pBAR0 + 0x01000000));
-    // DBGPRINTLN_CTX("BRAM Last Word: 0x%08X", ioread32(pBAR0 + 0x01001FFC));
 
     return 0;
 }
