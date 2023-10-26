@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="axi_i2s_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_i2s_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="21.850001 us"></ZoomEndTime>
+      <Cursor1Time time="4.125000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="275"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/aclk">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/aresetn">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/m_axis_tready">
+      <obj_property name="ElementShortName">m_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/m_axis_tvalid">
+      <obj_property name="ElementShortName">m_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_i2s_tb/uut/m_axis_tdata">
+      <obj_property name="ElementShortName">m_axis_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">m_axis_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/s_axis_tready">
+      <obj_property name="ElementShortName">s_axis_tready</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tready</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/s_axis_tvalid">
+      <obj_property name="ElementShortName">s_axis_tvalid</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tvalid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_i2s_tb/uut/s_axis_tdata">
+      <obj_property name="ElementShortName">s_axis_tdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">s_axis_tdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_en">
+      <obj_property name="ElementShortName">i2s_en</obj_property>
+      <obj_property name="ObjectShortName">i2s_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_fsm_state">
+      <obj_property name="ElementShortName">i2s_fsm_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">i2s_fsm_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_clk_div_en">
+      <obj_property name="ElementShortName">i2s_clk_div_en</obj_property>
+      <obj_property name="ObjectShortName">i2s_clk_div_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_chan_cnt">
+      <obj_property name="ElementShortName">i2s_chan_cnt[2:0]</obj_property>
+      <obj_property name="ObjectShortName">i2s_chan_cnt[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_bit_cnt">
+      <obj_property name="ElementShortName">i2s_bit_cnt[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i2s_bit_cnt[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group53">
+      <obj_property name="label">DOUT shift register</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_sdata_out_sr_bit_cnt">
+         <obj_property name="ElementShortName">i2s_sdata_out_sr_bit_cnt[5:0]</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_out_sr_bit_cnt[5:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_sdata_out_sr">
+         <obj_property name="ElementShortName">i2s_sdata_out_sr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_out_sr[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group54">
+      <obj_property name="label">DIN shift register</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_sdata_in_sr_bit_cnt">
+         <obj_property name="ElementShortName">i2s_sdata_in_sr_bit_cnt[5:0]</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_in_sr_bit_cnt[5:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_i2s_tb/uut/i2s_sdata_in_sr">
+         <obj_property name="ElementShortName">i2s_sdata_in_sr[31:0]</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_in_sr[31:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group105">
+      <obj_property name="label">I2S</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_mclk">
+         <obj_property name="ElementShortName">i2s_mclk</obj_property>
+         <obj_property name="ObjectShortName">i2s_mclk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_bclk">
+         <obj_property name="ElementShortName">i2s_bclk</obj_property>
+         <obj_property name="ObjectShortName">i2s_bclk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_lrclk">
+         <obj_property name="ElementShortName">i2s_lrclk</obj_property>
+         <obj_property name="ObjectShortName">i2s_lrclk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_sdata_out">
+         <obj_property name="ElementShortName">i2s_sdata_out</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_out</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_i2s_tb/uut/i2s_sdata_in">
+         <obj_property name="ElementShortName">i2s_sdata_in</obj_property>
+         <obj_property name="ObjectShortName">i2s_sdata_in</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

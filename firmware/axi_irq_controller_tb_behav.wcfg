@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="axi_irq_controller_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_irq_controller_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="2,995.424 ns"></ZoomStartTime>
+      <ZoomEndTime time="3,071.425 ns"></ZoomEndTime>
+      <Cursor1Time time="3,015.424 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="263"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/aclk">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/aresetn">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/irq_in">
+      <obj_property name="ElementShortName">irq_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">irq_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/cpu_irq_out">
+      <obj_property name="ElementShortName">cpu_irq_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_irq_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/cpu_eoi_in">
+      <obj_property name="ElementShortName">cpu_eoi_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_eoi_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_enabled">
+      <obj_property name="ElementShortName">pcie_msi_enabled</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_enabled</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_granted">
+      <obj_property name="ElementShortName">pcie_msi_granted</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_granted</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_vector_width">
+      <obj_property name="ElementShortName">pcie_msi_vector_width[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_vector_width[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_request">
+      <obj_property name="ElementShortName">pcie_msi_request</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_request</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_vector">
+      <obj_property name="ElementShortName">pcie_msi_vector[0:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_vector[0:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_fsm_state">
+      <obj_property name="ElementShortName">pcie_msi_fsm_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_fsm_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/irq_pend">
+      <obj_property name="ElementShortName">irq_pend[31:0]</obj_property>
+      <obj_property name="ObjectShortName">irq_pend[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/irq_ack">
+      <obj_property name="ElementShortName">irq_ack[31:0]</obj_property>
+      <obj_property name="ObjectShortName">irq_ack[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/irq_enabled">
+      <obj_property name="ElementShortName">irq_enabled[31:0]</obj_property>
+      <obj_property name="ObjectShortName">irq_enabled[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_wr_ptr">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_wr_ptr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_wr_ptr[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_wr_data">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_wr_data[0:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_wr_data[0:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_wr_en">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_wr_en</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_wr_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_rd_ptr">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_rd_ptr[4:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_rd_ptr[4:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_rd_data">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_rd_data[0:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_rd_data[0:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_rd_en">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_rd_en</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_rd_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_rd_delay">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_rd_delay[1:0]</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_rd_delay[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_irq_controller_tb/uut/pcie_msi_req_fifo_rd_valid">
+      <obj_property name="ElementShortName">pcie_msi_req_fifo_rd_valid</obj_property>
+      <obj_property name="ObjectShortName">pcie_msi_req_fifo_rd_valid</obj_property>
+   </wvobject>
+</wave_config>
