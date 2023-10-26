@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Oct 11 07:06:11 2023" VIVADOVERSION="2021.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Oct 13 22:59:39 2023" VIVADOVERSION="2021.1">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="icyradio" PACKAGE="fgg484" SPEEDGRADE="-2"/>
 
@@ -6524,6 +6524,187 @@
         <PERIPHERAL INSTANCE="mig_7series_0"/>
         <PERIPHERAL INSTANCE="axi_pcie_0"/>
       </PERIPHERALS>
+    </MODULE>
+    <MODULE COREREVISION="1" FULLNAME="/axi_dna_0" HWVERSION="1.0" INSTANCE="axi_dna_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="axi_dna" VLNV="xilinx.com:module_ref:axi_dna:1.0">
+      <DOCUMENTS/>
+      <ADDRESSBLOCKS>
+        <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi" NAME="reg0" RANGE="4096" USAGE="register"/>
+      </ADDRESSBLOCKS>
+      <ADDRESSBLOCKS>
+        <ADDRESSBLOCK ACCESS="" INTERFACE="s_axi" NAME="reg0" RANGE="4096" USAGE="register"/>
+      </ADDRESSBLOCKS>
+      <PARAMETERS>
+        <PARAMETER NAME="DNA_CLK_DIV" VALUE="8"/>
+        <PARAMETER NAME="Component_Name" VALUE="icyradio_axi_dna_0_0"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+        <PARAMETER NAME="C_BASEADDR" VALUE="0x40022000"/>
+        <PARAMETER NAME="C_HIGHADDR" VALUE="0x40023FFF"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT CLKFREQUENCY="125000000" DIR="I" NAME="aclk" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="aresetn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="peripheral_aresetn"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="2" NAME="s_axi_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awaddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_awaddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="2" NAME="s_axi_awprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awprot">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_awprot"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="s_axi_awvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_awvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="s_axi_awready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_awready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="31" NAME="s_axi_wdata" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_wdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="3" NAME="s_axi_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wstrb">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_wstrb"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="s_axi_wvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_wvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="s_axi_wready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_wready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="1" NAME="s_axi_bresp" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_bresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="s_axi_bvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_bvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="s_axi_bready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_bready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="2" NAME="s_axi_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_araddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_araddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="2" NAME="s_axi_arprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arprot">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_arprot"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="s_axi_arvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_arvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="s_axi_arready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_arready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="s_axi_rdata" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_rdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="1" NAME="s_axi_rresp" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_rresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="s_axi_rvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_rvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="s_axi_rready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_AXI_rready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="56" NAME="dna" RIGHT="0" SIGIS="undef"/>
+        <PORT DIR="O" NAME="dna_ready" SIGIS="undef"/>
+      </PORTS>
+      <BUSINTERFACES>
+        <BUSINTERFACE BUSNAME="axi_peripheral_interconnect_M18_AXI" DATAWIDTH="32" NAME="s_axi" TYPE="SLAVE" VLNV="xilinx.com:interface:aximm:1.0">
+          <PARAMETER NAME="DATA_WIDTH" VALUE="32"/>
+          <PARAMETER NAME="PROTOCOL" VALUE="AXI4LITE"/>
+          <PARAMETER NAME="FREQ_HZ" VALUE="125000000"/>
+          <PARAMETER NAME="ID_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="ADDR_WIDTH" VALUE="3"/>
+          <PARAMETER NAME="AWUSER_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="ARUSER_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="WUSER_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="RUSER_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="BUSER_WIDTH" VALUE="0"/>
+          <PARAMETER NAME="READ_WRITE_MODE" VALUE="READ_WRITE"/>
+          <PARAMETER NAME="HAS_BURST" VALUE="0"/>
+          <PARAMETER NAME="HAS_LOCK" VALUE="0"/>
+          <PARAMETER NAME="HAS_PROT" VALUE="1"/>
+          <PARAMETER NAME="HAS_CACHE" VALUE="0"/>
+          <PARAMETER NAME="HAS_QOS" VALUE="0"/>
+          <PARAMETER NAME="HAS_REGION" VALUE="0"/>
+          <PARAMETER NAME="HAS_WSTRB" VALUE="1"/>
+          <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
+          <PARAMETER NAME="HAS_RRESP" VALUE="1"/>
+          <PARAMETER NAME="SUPPORTS_NARROW_BURST" VALUE="0"/>
+          <PARAMETER NAME="NUM_READ_OUTSTANDING" VALUE="1"/>
+          <PARAMETER NAME="NUM_WRITE_OUTSTANDING" VALUE="1"/>
+          <PARAMETER NAME="MAX_BURST_LENGTH" VALUE="1"/>
+          <PARAMETER NAME="PHASE" VALUE="0.0"/>
+          <PARAMETER NAME="CLK_DOMAIN" VALUE="icyradio_axi_pcie_0_0_axi_aclk_out"/>
+          <PARAMETER NAME="NUM_READ_THREADS" VALUE="1"/>
+          <PARAMETER NAME="NUM_WRITE_THREADS" VALUE="1"/>
+          <PARAMETER NAME="RUSER_BITS_PER_BYTE" VALUE="0"/>
+          <PARAMETER NAME="WUSER_BITS_PER_BYTE" VALUE="0"/>
+          <PARAMETER NAME="INSERT_VIP" VALUE="0"/>
+          <PORTMAPS>
+            <PORTMAP LOGICAL="AWADDR" PHYSICAL="s_axi_awaddr"/>
+            <PORTMAP LOGICAL="AWPROT" PHYSICAL="s_axi_awprot"/>
+            <PORTMAP LOGICAL="AWVALID" PHYSICAL="s_axi_awvalid"/>
+            <PORTMAP LOGICAL="AWREADY" PHYSICAL="s_axi_awready"/>
+            <PORTMAP LOGICAL="WDATA" PHYSICAL="s_axi_wdata"/>
+            <PORTMAP LOGICAL="WSTRB" PHYSICAL="s_axi_wstrb"/>
+            <PORTMAP LOGICAL="WVALID" PHYSICAL="s_axi_wvalid"/>
+            <PORTMAP LOGICAL="WREADY" PHYSICAL="s_axi_wready"/>
+            <PORTMAP LOGICAL="BRESP" PHYSICAL="s_axi_bresp"/>
+            <PORTMAP LOGICAL="BVALID" PHYSICAL="s_axi_bvalid"/>
+            <PORTMAP LOGICAL="BREADY" PHYSICAL="s_axi_bready"/>
+            <PORTMAP LOGICAL="ARADDR" PHYSICAL="s_axi_araddr"/>
+            <PORTMAP LOGICAL="ARPROT" PHYSICAL="s_axi_arprot"/>
+            <PORTMAP LOGICAL="ARVALID" PHYSICAL="s_axi_arvalid"/>
+            <PORTMAP LOGICAL="ARREADY" PHYSICAL="s_axi_arready"/>
+            <PORTMAP LOGICAL="RDATA" PHYSICAL="s_axi_rdata"/>
+            <PORTMAP LOGICAL="RRESP" PHYSICAL="s_axi_rresp"/>
+            <PORTMAP LOGICAL="RVALID" PHYSICAL="s_axi_rvalid"/>
+            <PORTMAP LOGICAL="RREADY" PHYSICAL="s_axi_rready"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+      </BUSINTERFACES>
     </MODULE>
     <MODULE COREREVISION="1" FULLNAME="/axi_gpio_0" HWVERSION="1.0" INSTANCE="axi_gpio_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="axi_gpio" VLNV="xilinx.com:module_ref:axi_gpio:1.0">
       <DOCUMENTS/>
@@ -13792,6 +13973,8 @@
             <CONNECTION INSTANCE="axi_gpio_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_gpio_1" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aclk"/>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_ACLK"/>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="aclk"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="125000000" DIR="O" NAME="axi_ctl_aclk_out" SIGIS="clk" SIGNAME="axi_pcie_0_axi_ctl_aclk_out">
@@ -14412,8 +14595,8 @@
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_RRESP" VALUE="1"/>
           <PARAMETER NAME="SUPPORTS_NARROW_BURST" VALUE="0"/>
-          <PARAMETER NAME="NUM_READ_OUTSTANDING" VALUE="2"/>
-          <PARAMETER NAME="NUM_WRITE_OUTSTANDING" VALUE="2"/>
+          <PARAMETER NAME="NUM_READ_OUTSTANDING" VALUE="1"/>
+          <PARAMETER NAME="NUM_WRITE_OUTSTANDING" VALUE="1"/>
           <PARAMETER NAME="MAX_BURST_LENGTH" VALUE="1"/>
           <PARAMETER NAME="PHASE" VALUE="0.0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="icyradio_axi_pcie_0_0_axi_aclk_out"/>
@@ -14472,6 +14655,7 @@
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x4001C000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4001DFFF" INSTANCE="axi_gpio_2" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x4001E000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4001FFFF" INSTANCE="axi_rf_timestamping_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x40020000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x40021FFF" INSTANCE="axi_irq_controller_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
+        <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x40022000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x40023FFF" INSTANCE="axi_dna_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="axi_lite" BASENAME="C_BASEADDR" BASEVALUE="0x40100000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4010FFFF" INSTANCE="axi_ad9361" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
       </MEMORYMAP>
       <PERIPHERALS>
@@ -14494,6 +14678,7 @@
         <PERIPHERAL INSTANCE="axi_gpio_2"/>
         <PERIPHERAL INSTANCE="axi_rf_timestamping_0"/>
         <PERIPHERAL INSTANCE="axi_irq_controller_0"/>
+        <PERIPHERAL INSTANCE="axi_dna_0"/>
         <PERIPHERAL INSTANCE="axi_ad9361"/>
       </PERIPHERALS>
     </MODULE>
@@ -16224,7 +16409,7 @@
       </DOCUMENTS>
       <PARAMETERS>
         <PARAMETER NAME="NUM_SI" VALUE="1"/>
-        <PARAMETER NAME="NUM_MI" VALUE="18"/>
+        <PARAMETER NAME="NUM_MI" VALUE="19"/>
         <PARAMETER NAME="STRATEGY" VALUE="1"/>
         <PARAMETER NAME="ENABLE_ADVANCED_OPTIONS" VALUE="0"/>
         <PARAMETER NAME="ENABLE_PROTOCOL_CHECKERS" VALUE="0"/>
@@ -18490,6 +18675,127 @@
             <CONNECTION INSTANCE="axi_irq_controller_0" PORT="s_axi_rready"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="I" NAME="M18_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="peripheral_aresetn"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M18_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awaddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awaddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_awlen" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awsize" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awburst" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awlock" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awcache" SIGIS="undef"/>
+        <PORT DIR="O" LEFT="2" NAME="M18_AXI_awprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awprot">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awprot"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_awregion" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awqos" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_AXI_awready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M18_AXI_wdata" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="3" NAME="M18_AXI_wstrb" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wstrb">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wstrb"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_wlast" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_AXI_wready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="M18_AXI_bresp" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_bresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_AXI_bvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_bvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_bready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_bready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_bready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="31" NAME="M18_AXI_araddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_araddr">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_araddr"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_arlen" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arsize" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arburst" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arlock" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arcache" SIGIS="undef"/>
+        <PORT DIR="O" LEFT="2" NAME="M18_AXI_arprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arprot">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_arprot"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_arregion" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arqos" SIGIS="undef"/>
+        <PORT DIR="O" NAME="M18_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_arvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_AXI_arready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_arready"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="31" NAME="M18_AXI_rdata" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rdata">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rdata"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" LEFT="1" NAME="M18_AXI_rresp" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rresp">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rresp"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_AXI_rlast" SIGIS="undef"/>
+        <PORT DIR="I" NAME="M18_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rvalid">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rvalid"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="M18_AXI_rready" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rready">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rready"/>
+          </CONNECTIONS>
+        </PORT>
       </PORTS>
       <BUSINTERFACES>
         <BUSINTERFACE BUSNAME="axi_protocol_convert_0_M_AXI" DATAWIDTH="64" NAME="S00_AXI" TYPE="SLAVE" VLNV="xilinx.com:interface:aximm:1.0">
@@ -18927,6 +19233,45 @@
             <PORTMAP LOGICAL="RRESP" PHYSICAL="M17_AXI_rresp"/>
             <PORTMAP LOGICAL="RVALID" PHYSICAL="M17_AXI_rvalid"/>
             <PORTMAP LOGICAL="RREADY" PHYSICAL="M17_AXI_rready"/>
+          </PORTMAPS>
+        </BUSINTERFACE>
+        <BUSINTERFACE BUSNAME="axi_peripheral_interconnect_M18_AXI" DATAWIDTH="32" NAME="M18_AXI" TYPE="MASTER" VLNV="xilinx.com:interface:aximm:1.0">
+          <PORTMAPS>
+            <PORTMAP LOGICAL="AWADDR" PHYSICAL="M18_AXI_awaddr"/>
+            <PORTMAP LOGICAL="AWLEN" PHYSICAL="M18_AXI_awlen"/>
+            <PORTMAP LOGICAL="AWSIZE" PHYSICAL="M18_AXI_awsize"/>
+            <PORTMAP LOGICAL="AWBURST" PHYSICAL="M18_AXI_awburst"/>
+            <PORTMAP LOGICAL="AWLOCK" PHYSICAL="M18_AXI_awlock"/>
+            <PORTMAP LOGICAL="AWCACHE" PHYSICAL="M18_AXI_awcache"/>
+            <PORTMAP LOGICAL="AWPROT" PHYSICAL="M18_AXI_awprot"/>
+            <PORTMAP LOGICAL="AWREGION" PHYSICAL="M18_AXI_awregion"/>
+            <PORTMAP LOGICAL="AWQOS" PHYSICAL="M18_AXI_awqos"/>
+            <PORTMAP LOGICAL="AWVALID" PHYSICAL="M18_AXI_awvalid"/>
+            <PORTMAP LOGICAL="AWREADY" PHYSICAL="M18_AXI_awready"/>
+            <PORTMAP LOGICAL="WDATA" PHYSICAL="M18_AXI_wdata"/>
+            <PORTMAP LOGICAL="WSTRB" PHYSICAL="M18_AXI_wstrb"/>
+            <PORTMAP LOGICAL="WLAST" PHYSICAL="M18_AXI_wlast"/>
+            <PORTMAP LOGICAL="WVALID" PHYSICAL="M18_AXI_wvalid"/>
+            <PORTMAP LOGICAL="WREADY" PHYSICAL="M18_AXI_wready"/>
+            <PORTMAP LOGICAL="BRESP" PHYSICAL="M18_AXI_bresp"/>
+            <PORTMAP LOGICAL="BVALID" PHYSICAL="M18_AXI_bvalid"/>
+            <PORTMAP LOGICAL="BREADY" PHYSICAL="M18_AXI_bready"/>
+            <PORTMAP LOGICAL="ARADDR" PHYSICAL="M18_AXI_araddr"/>
+            <PORTMAP LOGICAL="ARLEN" PHYSICAL="M18_AXI_arlen"/>
+            <PORTMAP LOGICAL="ARSIZE" PHYSICAL="M18_AXI_arsize"/>
+            <PORTMAP LOGICAL="ARBURST" PHYSICAL="M18_AXI_arburst"/>
+            <PORTMAP LOGICAL="ARLOCK" PHYSICAL="M18_AXI_arlock"/>
+            <PORTMAP LOGICAL="ARCACHE" PHYSICAL="M18_AXI_arcache"/>
+            <PORTMAP LOGICAL="ARPROT" PHYSICAL="M18_AXI_arprot"/>
+            <PORTMAP LOGICAL="ARREGION" PHYSICAL="M18_AXI_arregion"/>
+            <PORTMAP LOGICAL="ARQOS" PHYSICAL="M18_AXI_arqos"/>
+            <PORTMAP LOGICAL="ARVALID" PHYSICAL="M18_AXI_arvalid"/>
+            <PORTMAP LOGICAL="ARREADY" PHYSICAL="M18_AXI_arready"/>
+            <PORTMAP LOGICAL="RDATA" PHYSICAL="M18_AXI_rdata"/>
+            <PORTMAP LOGICAL="RRESP" PHYSICAL="M18_AXI_rresp"/>
+            <PORTMAP LOGICAL="RLAST" PHYSICAL="M18_AXI_rlast"/>
+            <PORTMAP LOGICAL="RVALID" PHYSICAL="M18_AXI_rvalid"/>
+            <PORTMAP LOGICAL="RREADY" PHYSICAL="M18_AXI_rready"/>
           </PORTMAPS>
         </BUSINTERFACE>
       </BUSINTERFACES>
@@ -30905,6 +31250,7 @@
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x4001C000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4001DFFF" INSTANCE="axi_gpio_2" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x4001E000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4001FFFF" INSTANCE="axi_rf_timestamping_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x40020000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x40021FFF" INSTANCE="axi_irq_controller_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
+        <MEMRANGE ADDRESSBLOCK="reg0" BASENAME="C_BASEADDR" BASEVALUE="0x40022000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x40023FFF" INSTANCE="axi_dna_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="axi_lite" BASENAME="C_BASEADDR" BASEVALUE="0x40100000" HIGHNAME="C_HIGHADDR" HIGHVALUE="0x4010FFFF" INSTANCE="axi_ad9361" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="REGISTER" SLAVEBUSINTERFACE="s_axi"/>
         <MEMRANGE ADDRESSBLOCK="BAR0" BASENAME="AXIBAR_0" BASEVALUE="0x50000000" HIGHNAME="AXIBAR_HIGHADDR_0" HIGHVALUE="0x5FFFFFFF" INSTANCE="axi_pcie_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="MEMORY" SLAVEBUSINTERFACE="S_AXI"/>
         <MEMRANGE ADDRESSBLOCK="BAR1" BASENAME="AXIBAR_1" BASEVALUE="0x60000000" HIGHNAME="AXIBAR_HIGHADDR_1" HIGHVALUE="0x6FFFFFFF" INSTANCE="axi_pcie_0" IS_DATA="TRUE" IS_INSTRUCTION="TRUE" MASTERBUSINTERFACE="M_AXI" MEMTYPE="MEMORY" SLAVEBUSINTERFACE="S_AXI"/>
@@ -30930,6 +31276,7 @@
         <PERIPHERAL INSTANCE="axi_gpio_2"/>
         <PERIPHERAL INSTANCE="axi_rf_timestamping_0"/>
         <PERIPHERAL INSTANCE="axi_irq_controller_0"/>
+        <PERIPHERAL INSTANCE="axi_dna_0"/>
         <PERIPHERAL INSTANCE="axi_ad9361"/>
       </PERIPHERALS>
     </MODULE>
@@ -31171,6 +31518,8 @@
             <CONNECTION INSTANCE="axi_gpio_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_gpio_1" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_ARESETN"/>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="aresetn"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
