@@ -17,17 +17,17 @@ void AXIQuadSPI::init(AXIQuadSPI::Mode mode, AXIQuadSPI::BitOrder bit_order)
     this->writeReg(AXI_QUAD_SPI_REG_SPICR, (bit_order == AXIQuadSPI::LSB_FIRST ? AXI_QUAD_SPI_REG_SPICR_LSB_FIRST : 0) | AXI_QUAD_SPI_REG_SPICR_MANUAL_SS | ((mode & BIT(0)) ? AXI_QUAD_SPI_REG_SPICR_CPHA : 0) | ((mode & BIT(1)) ? AXI_QUAD_SPI_REG_SPICR_CPOL : 0) | AXI_QUAD_SPI_REG_SPICR_MASTER | AXI_QUAD_SPI_REG_SPICR_SPE);
 }
 
-void AXIQuadSPI::slaveSelect(uint32_t mask, AXIQuadSPI::Select select)
+void AXIQuadSPI::slaveSelect(uint32_t mask, const bool select)
 {
     if(!mask)
         return; // Nothing to do
 
-    if(select == AXIQuadSPI::SELECT) // Always take the mutex when selecting a slave
+    if(select) // Always take the mutex when selecting a slave
         this->mutex.lock();
 
     uint32_t reg_value = this->readReg(AXI_QUAD_SPI_REG_SPISSR);
 
-    if(select == AXIQuadSPI::SELECT)
+    if(select)
         reg_value &= ~mask;
     else
         reg_value |= mask;
@@ -49,7 +49,7 @@ uint8_t AXIQuadSPI::transferByte(const uint8_t data)
 
     return (uint8_t)this->readReg(AXI_QUAD_SPI_REG_SPI_DRR);
 }
-void AXIQuadSPI::writeByte(const uint8_t data, const AXIQuadSPI::Wait wait)
+void AXIQuadSPI::writeByte(const uint8_t data, const bool wait)
 {
     this->writeReg(AXI_QUAD_SPI_REG_SPICR, this->readReg(AXI_QUAD_SPI_REG_SPICR) | AXI_QUAD_SPI_REG_SPICR_RXFIFO_RESET);
 
@@ -58,6 +58,6 @@ void AXIQuadSPI::writeByte(const uint8_t data, const AXIQuadSPI::Wait wait)
 
     this->writeReg(AXI_QUAD_SPI_REG_SPI_DTR, data);
 
-    while(wait == AXIQuadSPI::Wait::WAIT && !(this->readReg(AXI_QUAD_SPI_REG_SPISR) & AXI_QUAD_SPI_REG_SPISR_TX_EMPTY))
+    while(wait && !(this->readReg(AXI_QUAD_SPI_REG_SPISR) & AXI_QUAD_SPI_REG_SPISR_TX_EMPTY))
         usleep(0);
 }

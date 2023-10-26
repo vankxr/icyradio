@@ -85,26 +85,16 @@ public:
         MODE_2 = 2,
         MODE_3 = 3
     };
-    enum Select
-    {
-        DESELECT = 0,
-        SELECT = 1,
-    };
-    enum Wait
-    {
-        NO_WAIT = 0,
-        WAIT = 1,
-    };
 
     AXIQuadSPI(void *base_address);
     AXIQuadSPI(void *base_address, AXIQuadSPI::Mode mode, AXIQuadSPI::BitOrder bit_order = AXIQuadSPI::MSB_FIRST);
 
     void init(AXIQuadSPI::Mode mode = AXIQuadSPI::MODE_0, AXIQuadSPI::BitOrder bit_order = AXIQuadSPI::MSB_FIRST);
 
-    void slaveSelect(uint32_t mask, AXIQuadSPI::Select select);
+    void slaveSelect(const uint32_t mask, const bool select);
 
     uint8_t transferByte(const uint8_t data);
-    void writeByte(const uint8_t data, const AXIQuadSPI::Wait wait = AXIQuadSPI::WAIT);
+    void writeByte(const uint8_t data, const bool wait = true);
     inline uint8_t readByte()
     {
         return this->transferByte(0x00);
@@ -120,13 +110,13 @@ public:
         while(size--)
             *dst++ = this->transferByte(*src++);
     }
-    inline void write(const uint8_t *src, uint32_t size, const AXIQuadSPI::Wait wait = AXIQuadSPI::WAIT)
+    inline void write(const uint8_t *src, uint32_t size, const bool wait = true)
     {
         if(src == nullptr)
             throw std::invalid_argument("AXI Quad SPI: Source buffer cannot be null");
 
         while(size--)
-            this->writeByte(*src++, wait == AXIQuadSPI::WAIT && !size ? AXIQuadSPI::WAIT : AXIQuadSPI::NO_WAIT);
+            this->writeByte(*src++, wait && !size);
     }
     inline void read(uint8_t *dst, uint32_t size, uint8_t send_data = 0x00)
     {

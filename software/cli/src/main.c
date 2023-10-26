@@ -2154,25 +2154,25 @@ int main(int argc, char *argv[])
     // mmWave Synthesizer
     if(r8v97003_init())
     {
-        // r8v97003_power_up(R8V97003_PWR_ALL); // Power the chip up
+        r8v97003_power_up(R8V97003_PWR_ALL); // Power the chip up
 
-        // r8v97003_ld_config(1, 1, R8V97003_LD_PIN_MODE_LD, R8V97003_LD_PREC_6p4ns);
-        // r8v97003_pfd_config(SI5351_CLK_FREQ[SI5351_SYNTH_REF_CLK], 0, 1, 5, 1, R8V97003_PFD_PW_260ps); // 25 MHz * 2 * 5 = 250 MHz PFD
+        r8v97003_ld_config(1, 1, R8V97003_LD_PIN_MODE_LD, R8V97003_LD_PREC_6p4ns);
+        r8v97003_pfd_config(SI5351_CLK_FREQ[SI5351_SYNTH_REF_CLK], 0, 1, 5, 1, R8V97003_PFD_PW_260ps); // 25 MHz * 2 * 5 = 250 MHz PFD
 
-        // DBGPRINTLN_CTX("mmWave Synth Ref: %.3f MHz", (float)R8V97003_REF_FREQ / 1000000);
-        // DBGPRINTLN_CTX("mmWave Synth Ref Mult In: %.3f MHz", (float)R8V97003_REF_MULT_IN_FREQ / 1000000);
-        // DBGPRINTLN_CTX("mmWave Synth Ref RDiv In: %.3f MHz", (float)R8V97003_REF_RDIV_IN_FREQ / 1000000);
-        // DBGPRINTLN_CTX("mmWave Synth PFD: %.3f MHz", (float)R8V97003_PFD_FREQ / 1000000);
-        // DBGPRINTLN_CTX("mmWave Synth Band Sel: %.3f kHz", (float)R8V97003_BAND_SEL_CLK_FREQ / 1000);
+        DBGPRINTLN_CTX("mmWave Synth Ref: %.3f MHz", (float)R8V97003_REF_FREQ / 1000000);
+        DBGPRINTLN_CTX("mmWave Synth Ref Mult In: %.3f MHz", (float)R8V97003_REF_MULT_IN_FREQ / 1000000);
+        DBGPRINTLN_CTX("mmWave Synth Ref RDiv In: %.3f MHz", (float)R8V97003_REF_RDIV_IN_FREQ / 1000000);
+        DBGPRINTLN_CTX("mmWave Synth PFD: %.3f MHz", (float)R8V97003_PFD_FREQ / 1000000);
+        DBGPRINTLN_CTX("mmWave Synth Band Sel: %.3f kHz", (float)R8V97003_BAND_SEL_CLK_FREQ / 1000);
 
-        // r8v97003_set_cp_current(9.0, 9.0, 0.0);
-        // DBGPRINTLN_CTX("mmWave Synth CP PMOS: %.3f mA", r8v97003_get_cp_pmos_current());
-        // DBGPRINTLN_CTX("mmWave Synth CP NMOS: %.3f mA", r8v97003_get_cp_nmos_current());
-        // DBGPRINTLN_CTX("mmWave Synth CP Bleeder: %.3f mA", r8v97003_get_cp_bleeder_current());
+        r8v97003_set_cp_current(9.0, 9.0, 0.0);
+        DBGPRINTLN_CTX("mmWave Synth CP PMOS: %.3f mA", r8v97003_get_cp_pmos_current());
+        DBGPRINTLN_CTX("mmWave Synth CP NMOS: %.3f mA", r8v97003_get_cp_nmos_current());
+        DBGPRINTLN_CTX("mmWave Synth CP Bleeder: %.3f mA", r8v97003_get_cp_bleeder_current());
 
-        // r8v97003_set_frequency(5750000000ULL); //4000000000ULL - 4000000ULL);
-        // DBGPRINTLN_CTX("mmWave Synth VCO: %.3f GHz", (double)R8V97003_VCO_FREQ / 1000000000);
-        // DBGPRINTLN_CTX("mmWave Synth Frequency: %.3f MHz", (double)R8V97003_FREQ / 1000000);
+        r8v97003_set_frequency(1500000000ULL);
+        DBGPRINTLN_CTX("mmWave Synth VCO: %.3f GHz", (double)R8V97003_VCO_FREQ / 1000000000);
+        DBGPRINTLN_CTX("mmWave Synth Frequency: %.3f MHz", (double)R8V97003_FREQ / 1000000);
 
         r8v97003_power_down(R8V97003_PWR_ALL); // Power the chip down
     }

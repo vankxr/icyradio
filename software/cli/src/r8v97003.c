@@ -135,33 +135,6 @@ uint8_t r8v97003_init()
     axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_RESETn_BIT, 1);
     usleep(200000);
 
-    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
-
-    // {uint8_t dat[] = {0x00,0x00,0x3C,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x03,0x06,0x01,0x00,0x01,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0C,0x00,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x00,0x17,0x00,0x00,0x00,0x00,0x00,0x02,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x02,0x08,0x40,0x03,0x35,0x0C,0x80,0x00,0x18,0x06,0x01,0x01,0x14,0x85,0xE0,0x1D,0x1D,0x00,0x02,0x00,0x00,0x00,0x28,0x00,0x08}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x3B,0x00,0x02,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x3F,0x00,0x00,0x62,0x22,0x22,0x00,0x00,0x00,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x49,0x00}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-    // {uint8_t dat[] = {0x00,0x0F,0x01}; axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 1); axi_quad_spi_write(AXI_QUAD_SPI_SYNTH_INST, dat, sizeof(dat), 1); axi_quad_spi_slave_select(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI2_SYNTH_SS, 0);}
-
-    // usleep(100000);
-    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
-    // usleep(1000000);
-    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
-    // usleep(1000000);
-    // DBGPRINTLN_CTX("Status: %02X", r8v97003_read_register(R8V97003_REG_LD_CAL_VCO_STATUS));
-    // usleep(1000000);
-
-    // return 1;
-
     r8v97003_write_register(R8V97003_REG_INTF_CONFIG, R8V97003_REG_INTF_CONFIG_ADDR_ASC | R8V97003_REG_INTF_CONFIG_SDO_ACTIVE);
 
     uint16_t usVal = r8v97003_get_chip_type();
@@ -393,22 +366,23 @@ uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDou
 
     // DBGPRINTLN_CTX("PFD: %u Hz, BandSel: %u Hz", ulPFDFrequency, ulBandSelectClock);
 
-    r8v97003_write_register(R8V97003_REG_MULT_CTL0, (ubMult > 1 ? R8V97003_REG_MULT_CTL0_MULT_EN : 0) | R8V97003_REG_MULT_CTL0_MULT_RESET);
-    r8v97003_transfer_dbuf();
-
-    r8v97003_write_register(R8V97003_REG_RDIV_LOW, usRDiv & 0xFF);
-    r8v97003_write_register(R8V97003_REG_RDIV_HIGH, ((ulRefFreq < 50000000UL) ? R8V97003_REG_RDIV_HIGH_REF_DBL_DELAY : 0) | (ubDiff ? R8V97003_REG_RDIV_HIGH_INPUT_TYPE : 0) | (ubRefDouble ? R8V97003_REG_RDIV_HIGH_REF_DBL_EN : 0) | ((usRDiv >> 8) & 0x03));
-
     if(ubMult > 1)
     {
-        r8v97003_write_register(R8V97003_REG_MULT_CTL0, R8V97003_REG_MULT_CTL0_MULT_EN | (ubMult & 0x3F));
         r8v97003_rmw_register(R8V97003_REG_MULT_CTL1, 0x07, R8V97003_REG_MULT_CTL1_MULT_MUX_ENA | R8V97003_REG_MULT_CTL1_MULT_D2S_ENA | R8V97003_REG_MULT_CTL1_MULT_CP_ENA);
+        r8v97003_write_register(R8V97003_REG_MULT_CTL0, R8V97003_REG_MULT_CTL0_MULT_EN | R8V97003_REG_MULT_CTL0_MULT_RESET);
+
+        r8v97003_transfer_dbuf();
+
+        r8v97003_write_register(R8V97003_REG_MULT_CTL0, R8V97003_REG_MULT_CTL0_MULT_EN | (ubMult & 0x3F));
     }
     else
     {
         r8v97003_write_register(R8V97003_REG_MULT_CTL0, 0);
         r8v97003_rmw_register(R8V97003_REG_MULT_CTL1, 0x07, R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW);
     }
+
+    r8v97003_write_register(R8V97003_REG_RDIV_LOW, usRDiv & 0xFF);
+    r8v97003_write_register(R8V97003_REG_RDIV_HIGH, ((ulRefFreq < 50000000UL) ? R8V97003_REG_RDIV_HIGH_REF_DBL_DELAY : 0) | (ubDiff ? R8V97003_REG_RDIV_HIGH_INPUT_TYPE : 0) | (ubRefDouble ? R8V97003_REG_RDIV_HIGH_REF_DBL_EN : 0) | ((usRDiv >> 8) & 0x03));
 
     r8v97003_write_register16(R8V97003_REG_BAND_SEL_DIV_LOW, usBandSelectDivider & 0x1FFF);
 
