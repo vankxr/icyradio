@@ -1534,24 +1534,24 @@ uint8_t icyradio_init_clocks()
     si5351_clock_enable(SI5351_SYNTH_REF_CLK); // Software enable the clock output
 
     //// External clock output (on frontend interface pin 2_3)
-    //DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_2_3) ----", SI5351_EXT_CLK_2_3);
+    DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_2_3) ----", SI5351_EXT_CLK_2_3);
 
-    // si5351_multisynth_set_source(SI5351_EXT_CLK_2_3, SI5351_MS_SRC_PLLB);
-    // si5351_multisynth_set_freq(SI5351_EXT_CLK_2_3, 10000000);
+    si5351_multisynth_set_source(SI5351_EXT_CLK_2_3, SI5351_MS_SRC_PLLB);
+    si5351_multisynth_set_freq(SI5351_EXT_CLK_2_3, 10000000);
 
-    // DBGPRINTLN_CTX("MS%hhu Source Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_MS_SRC_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
-    // DBGPRINTLN_CTX("MS%hhu Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_MS_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
+    DBGPRINTLN_CTX("MS%hhu Source Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_MS_SRC_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
+    DBGPRINTLN_CTX("MS%hhu Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_MS_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
 
-    // si5351_clock_set_disable_state(SI5351_EXT_CLK_2_3, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
-    // si5351_clock_set_drive_current(SI5351_EXT_CLK_2_3, 8); // 8 mA
-    // si5351_clock_set_invert(SI5351_EXT_CLK_2_3, 0); // Not inverted
-    // si5351_clock_set_source(SI5351_EXT_CLK_2_3, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
-    // si5351_clock_set_output_divider(SI5351_EXT_CLK_2_3, 1); // Divide by 1 at the output
+    si5351_clock_set_disable_state(SI5351_EXT_CLK_2_3, SI5351_REG_CLKm_n_DIS_DISn_HIZ); // Disable in High-Z mode
+    si5351_clock_set_drive_current(SI5351_EXT_CLK_2_3, 8); // 8 mA
+    si5351_clock_set_invert(SI5351_EXT_CLK_2_3, 0); // Not inverted
+    si5351_clock_set_source(SI5351_EXT_CLK_2_3, SI5351_CLK_SRC_MSn); // Corresponding multisynth as source
+    si5351_clock_set_output_divider(SI5351_EXT_CLK_2_3, 1); // Divide by 1 at the output
 
-    // DBGPRINTLN_CTX("CLK%hhu Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_CLK_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
+    DBGPRINTLN_CTX("CLK%hhu Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_CLK_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
 
-    // si5351_clock_power_up(SI5351_EXT_CLK_2_3); // Power the output stage up
-    // si5351_clock_enable(SI5351_EXT_CLK_2_3); // Software enable the clock output
+    si5351_clock_power_up(SI5351_EXT_CLK_2_3); // Power the output stage up
+    si5351_clock_enable(SI5351_EXT_CLK_2_3); // Software enable the clock output
 
     //// External clock output (on u.FL connector)
     DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_OUT) ----", SI5351_EXT_CLK_OUT);
@@ -2170,9 +2170,17 @@ int main(int argc, char *argv[])
         DBGPRINTLN_CTX("mmWave Synth CP NMOS: %.3f mA", r8v97003_get_cp_nmos_current());
         DBGPRINTLN_CTX("mmWave Synth CP Bleeder: %.3f mA", r8v97003_get_cp_bleeder_current());
 
+        r8v97003_out_config(0, 1, 1);
+
         r8v97003_set_frequency(1500000000ULL);
         DBGPRINTLN_CTX("mmWave Synth VCO: %.3f GHz", (double)R8V97003_VCO_FREQ / 1000000000);
         DBGPRINTLN_CTX("mmWave Synth Frequency: %.3f MHz", (double)R8V97003_FREQ / 1000000);
+
+        DBGPRINTLN_CTX("mmWave Synth Muted: %s", axi_gpio_get_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_MUTE_BIT) ? "yes" : "no");
+        axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_MUTE_BIT, 0);
+        DBGPRINTLN_CTX("mmWave Synth Muted: %s", axi_gpio_get_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_MUTE_BIT) ? "yes" : "no");
+
+        usleep(2000000);
 
         r8v97003_power_down(R8V97003_PWR_ALL); // Power the chip down
     }

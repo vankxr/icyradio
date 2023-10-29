@@ -510,7 +510,7 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
 
     r8v97003_get_mixed_number(ullVCOFrequency, R8V97003_PFD_FREQ, &xMult);
 
-    DBGPRINTLN_CTX("Mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+    // DBGPRINTLN_CTX("Mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
 
     if(!xMult.ulDen) // Division by zero, should never happen, unless the previous function failed
     {
@@ -559,7 +559,7 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
         xMult.ulDen = 2;
     }
 
-    DBGPRINTLN_CTX("Maximized mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+    // DBGPRINTLN_CTX("Maximized mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
 
     uint8_t ubManCtlReg = R8V97003_REG_MANUAL_CTL_FORCE_RELOCK | R8V97003_REG_MANUAL_CTL_MANUAL_RESYNC;
 
