@@ -1,0 +1,4 @@
+Package: soapy-module-icyradio
+Version: 0.0.1
+Maintainer: João Silva <jgc3silva@gmail.com>
+Description: IcyRadio SoapySDR support module

@@ -11,6 +11,10 @@ on:
     branches: [ "v2" ]
   workflow_dispatch:
 
+env:
+  SOAPY_BRANCH: "soapy-sdr-0.8.1"
+  SOAPY_VERSION: "0.8"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,7 +23,10 @@ jobs:
       matrix:
         include:
           - arch: amd64
+            lib-arch: x86_64
+
           - arch: arm64
+            lib-arch: aarch64
 
     steps:
     - name: Update install
@@ -42,34 +49,47 @@ jobs:
 
     - name: Install SoapySDR
       run: |
+        git clone --depth=1 --branch $SOAPY_BRANCH https://github.com/pothosware/SoapySDR
+        cd SoapySDR
+        mkdir build
+        cd build
+
         if [[ "${{matrix.arch}}" == "amd64" ]]; then
           # Native
-          sudo apt-get install libsoapysdr-dev
+          cmake \
+            -D ENABLE_APPS=OFF \
+            -D ENABLE_LIBRARY=ON \
+            -D ENABLE_PYTHON=OFF \
+            -D ENABLE_PYTHON3=OFF \
+            -D ENABLE_TESTS=OFF \
+            ..
         elif [[ "${{matrix.arch}}" == "arm64" ]]; then
           # 64-bit ARM
-          # Cross-build SoapySDR from source
           CROSS_COMPILE=aarch64-linux-gnu-
-          git clone --depth=1 https://github.com/pothosware/SoapySDR
-          cd SoapySDR
-          mkdir build
-          cd build
+
           cmake \
-            -D CMAKE_C_COMPILER=$(CROSS_COMPILE)gcc \
-            -D CMAKE_CXX_COMPILER=$(CROSS_COMPILE)g++ \
-            -D CMAKE_AR=$(CROSS_COMPILE)ar \
-            -D CMAKE_C_COMPILER_AR=$(CROSS_COMPILE)gcc-ar \
-            -D CMAKE_C_COMPILER_RANLIB=$(CROSS_COMPILE)gcc-ranlib \
-            -D CMAKE_LINKER=$(CROSS_COMPILE)ld \
-            -D CMAKE_NM=$(CROSS_COMPILE)nm \
-            -D CMAKE_OBJCOPY=$(CROSS_COMPILE)objcopy \
-            -D CMAKE_OBJDUMP=$(CROSS_COMPILE)objdump \
-            -D CMAKE_RANLIB=$(CROSS_COMPILE)ranlib \
-            -D CMAKE_STRIP=$(CROSS_COMPILE)strip \
+            -D ENABLE_APPS=OFF \
+            -D ENABLE_LIBRARY=ON \
+            -D ENABLE_PYTHON=OFF \
+            -D ENABLE_PYTHON3=OFF \
+            -D ENABLE_TESTS=OFF \
+            -D CMAKE_C_COMPILER=${CROSS_COMPILE}gcc \
+            -D CMAKE_CXX_COMPILER=${CROSS_COMPILE}g++ \
+            -D CMAKE_AR=${CROSS_COMPILE}ar \
+            -D CMAKE_C_COMPILER_AR=${CROSS_COMPILE}gcc-ar \
+            -D CMAKE_C_COMPILER_RANLIB=${CROSS_COMPILE}gcc-ranlib \
+            -D CMAKE_LINKER=${CROSS_COMPILE}ld \
+            -D CMAKE_NM=${CROSS_COMPILE}nm \
+            -D CMAKE_OBJCOPY=${CROSS_COMPILE}objcopy \
+            -D CMAKE_OBJDUMP=${CROSS_COMPILE}objdump \
+            -D CMAKE_RANLIB=${CROSS_COMPILE}ranlib \
+            -D CMAKE_STRIP=${CROSS_COMPILE}strip \
             ..
-          make -j$(nproc)
-          sudo make install
-          sudo ldconfig
         fi
+
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
       timeout-minutes: 5
 
     - uses: actions/checkout@v3
@@ -82,32 +102,51 @@ jobs:
         cd ${{github.workspace}}/software/soapy
         mkdir build
         cd build
-        
+
         if [[ "${{matrix.arch}}" == "amd64" ]]; then
           # Native
-          cmake ../
+          cmake ..
         elif [[ "${{matrix.arch}}" == "arm64" ]]; then
           # 64-bit ARM
+          CROSS_COMPILE=aarch64-linux-gnu-
+
           cmake \
-            -D CMAKE_C_COMPILER=$(CROSS_COMPILE)gcc \
-            -D CMAKE_CXX_COMPILER=$(CROSS_COMPILE)g++ \
-            -D CMAKE_AR=$(CROSS_COMPILE)ar \
-            -D CMAKE_C_COMPILER_AR=$(CROSS_COMPILE)gcc-ar \
-            -D CMAKE_C_COMPILER_RANLIB=$(CROSS_COMPILE)gcc-ranlib \
-            -D CMAKE_LINKER=$(CROSS_COMPILE)ld \
-            -D CMAKE_NM=$(CROSS_COMPILE)nm \
-            -D CMAKE_OBJCOPY=$(CROSS_COMPILE)objcopy \
-            -D CMAKE_OBJDUMP=$(CROSS_COMPILE)objdump \
-            -D CMAKE_RANLIB=$(CROSS_COMPILE)ranlib \
-            -D CMAKE_STRIP=$(CROSS_COMPILE)strip \
+            -D CMAKE_C_COMPILER=${CROSS_COMPILE}gcc \
+            -D CMAKE_CXX_COMPILER=${CROSS_COMPILE}g++ \
+            -D CMAKE_AR=${CROSS_COMPILE}ar \
+            -D CMAKE_C_COMPILER_AR=${CROSS_COMPILE}gcc-ar \
+            -D CMAKE_C_COMPILER_RANLIB=${CROSS_COMPILE}gcc-ranlib \
+            -D CMAKE_LINKER=${CROSS_COMPILE}ld \
+            -D CMAKE_NM=${CROSS_COMPILE}nm \
+            -D CMAKE_OBJCOPY=${CROSS_COMPILE}objcopy \
+            -D CMAKE_OBJDUMP=${CROSS_COMPILE}objdump \
+            -D CMAKE_RANLIB=${CROSS_COMPILE}ranlib \
+            -D CMAKE_STRIP=${CROSS_COMPILE}strip \
             ..
         fi
 
         make -j$(nproc)
 
+    - name: Make deb package (${{matrix.arch}})
+      run: |
+        mkdir deb
+
+        mkdir deb/DEBIAN
+        cp ${{github.workspace}}/software/soapy/.deb/control deb/DEBIAN/
+
+        echo "Architecture: ${{matrix.arch}}" >> deb/DEBIAN/control
+        echo "" >> deb/DEBIAN/control
+
+        mkdir -p deb/usr/lib/${{matrix.lib-arch}}-linux-gnu/SoapySDR/modules${SOAPY_VERSION}
+        cp ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so deb/usr/lib/${{matrix.lib-arch}}-linux-gnu/SoapySDR/modules${SOAPY_VERSION}
+
+        dpkg-deb --build --root-owner-group ./deb ${{github.workspace}}/software/soapy/soapysdr-module-icyradio_${{matrix.arch}}.deb
+
     - name: Upload results
       uses: actions/upload-artifact@v3
       with:
         name: soapy_module_${{matrix.arch}}
-        path: ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so
+        path: |
+          ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so
+          ${{github.workspace}}/software/soapy/soapysdr-module-icyradio_${{matrix.arch}}.deb
         retention-days: 30
