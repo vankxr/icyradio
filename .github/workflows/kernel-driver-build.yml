@@ -1,0 +1,85 @@
+name: Kernel driver build tests
+
+on:
+  pull_request:
+    paths:
+      - "software/driver/**"
+    branches: [ "v2" ]
+  push:
+    paths:
+      - "software/driver/**"
+    branches: [ "v2" ]
+  workflow_dispatch:
+
+env:
+  KERNEL_ROOT: "/opt/linux"
+  KERNEL_BRANCH: "stable_20231030" # Raspberry Pi kernel branch when building for arm64
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+            - arch: amd64
+            - arch: arm64
+
+    steps:
+    - name: Update install
+      run:
+        sudo apt-get update
+      timeout-minutes: 5
+
+    - name: Install build dependencies
+      run: |
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          # Native
+          sudo apt-get install build-essential
+        elif [[ "${{matrix.arch}}" == "arm64" ]]; then
+          # 64-bit ARM
+          sudo apt-get install crossbuild-essential-arm64
+        fi
+      timeout-minutes: 5
+
+    - name: Install Kernel headers
+      run: |
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          # Native
+          sudo apt-get install linux-headers-$(uname -r)
+        elif [[ "${{matrix.arch}}" == "arm64" ]]; then
+          # 64-bit ARM
+          # Build Raspberry Pi Kernel modules
+          sudo mkdir -p $KERNEL_ROOT
+          sudo chown $USER $KERNEL_ROOT
+
+          git clone --depth=1 --branch $KERNEL_BRANCH https://github.com/raspberrypi/linux $KERNEL_ROOT
+          cd $KERNEL_ROOT
+          KERNEL=kernel8
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- bcm2711_defconfig
+          make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules
+        fi
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        clean: true
+
+    - name: Build Kernel driver (${{matrix.arch}})
+      run: |
+        cd ${{github.workspace}}/software/driver
+        
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          # Native
+          make -j$(nproc)
+        elif [[ "${{matrix.arch}}" == "arm64" ]]; then
+          # 64-bit ARM
+          make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KPATH=$KERNEL_ROOT
+        fi
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: kernel_driver_${{matrix.arch}}
+        path: ${{github.workspace}}/software/driver/icyradio.ko
+        retention-days: 30
