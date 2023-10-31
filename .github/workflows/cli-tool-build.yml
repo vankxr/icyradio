@@ -1,0 +1,63 @@
+name: CLI tool build tests
+
+on:
+  pull_request:
+    paths:
+      - "software/cli/**"
+    branches: [ "v2" ]
+  push:
+    paths:
+      - "software/cli/**"
+    branches: [ "v2" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+          - arch: arm64
+
+    steps:
+    - name: Update install
+      run:
+        sudo apt-get update
+      timeout-minutes: 5
+
+    - name: Install build dependencies
+      run: |
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          # Native
+          sudo apt-get install build-essential
+        elif [[ "${{matrix.arch}}" == "arm64" ]]; then
+          # 64-bit ARM
+          sudo apt-get install crossbuild-essential-arm64
+        fi
+      timeout-minutes: 5
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        clean: true
+
+    - name: Build CLI tool (${{matrix.arch}})
+      run: |
+        cd ${{github.workspace}}/software/cli
+        
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          # Native
+          make
+        elif [[ "${{matrix.arch}}" == "arm64" ]]; then
+          # 64-bit ARM
+          make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+        fi
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: cli_tool_${{matrix.arch}}
+        path: ${{github.workspace}}/software/cli/bin/icyradio*
+        retention-days: 30
