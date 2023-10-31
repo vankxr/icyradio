@@ -1,0 +1,52 @@
+name: SoapySDR module build tests
+
+on:
+  pull_request:
+    paths:
+      - "software/soapy/**"
+    branches: [ "v2" ]
+  push:
+    paths:
+      - "software/soapy/**"
+    branches: [ "v2" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update install
+      run:
+        sudo apt-get update
+      timeout-minutes: 5
+
+    - name: Install build dependencies
+      run:
+        sudo apt-get install build-essential cmake
+      timeout-minutes: 5
+
+    - name: Install SoapySDR
+      run:
+        sudo apt-get install libsoapysdr-dev
+      timeout-minutes: 5
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        clean: true
+
+    - name: Build SoapySDR module
+      run: |
+        cd ${{github.workspace}}/software/soapy
+        mkdir build
+        cd build
+        cmake ../
+        make -j$(nproc)
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: soapy_module
+        path: ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so
+        retention-days: 30
