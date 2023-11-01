@@ -1,0 +1,3 @@
+Package: icyradio-driver
+Maintainer: João Silva <jgc3silva@gmail.com>
+Description: IcyRadio kernel module

@@ -68,7 +68,7 @@ jobs:
     - name: Build Kernel driver (${{matrix.arch}})
       run: |
         cd ${{github.workspace}}/software/driver
-        
+
         if [[ "${{matrix.arch}}" == "amd64" ]]; then
           # Native
           make -j$(nproc)
@@ -77,9 +77,59 @@ jobs:
           make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KPATH=$KERNEL_ROOT
         fi
 
+    - name: Make deb package (${{matrix.arch}})
+      run: |
+        mkdir deb
+
+        mkdir deb/DEBIAN
+        cp ${{github.workspace}}/software/driver/.deb/* deb/DEBIAN/
+
+        MOD_VERSION=$(cat ${{github.workspace}}/software/driver/src/icyradio.c | grep MODULE_VERSION | sed "s@MODULE_VERSION(\"@@g" | sed "s@\");@@g")
+
+        echo "Architecture: ${{matrix.arch}}" >> deb/DEBIAN/control
+        echo "Version: ${MOD_VERSION}" >> deb/DEBIAN/control
+        echo "" >> deb/DEBIAN/control
+
+        echo "#!/bin/sh" >> deb/DEBIAN/postinst
+        echo "" >> deb/DEBIAN/postinst
+        echo "dkms add -m icyradio -v ${MOD_VERSION}" >> deb/DEBIAN/postinst
+        echo "dkms build -m icyradio -v ${MOD_VERSION} && dkms install -m icyradio -v ${MOD_VERSION} || true" >> deb/DEBIAN/postinst
+        echo "" >> deb/DEBIAN/postinst
+        chmod +x deb/DEBIAN/postinst
+
+        echo "#!/bin/sh" >> deb/DEBIAN/prerm
+        echo "" >> deb/DEBIAN/prerm
+        echo "dkms remove -m icyradio -v ${MOD_VERSION} --all || true" >> deb/DEBIAN/prerm
+        echo "" >> deb/DEBIAN/prerm
+        chmod +x deb/DEBIAN/prerm
+
+        mkdir -p deb/usr/src/icyradio-${MOD_VERSION}
+        cp ${{github.workspace}}/software/driver/Makefile deb/usr/src/icyradio-${MOD_VERSION}
+        cp -r ${{github.workspace}}/software/driver/src deb/usr/src/icyradio-${MOD_VERSION}
+        cp -r ${{github.workspace}}/software/driver/include deb/usr/src/icyradio-${MOD_VERSION}
+
+        echo "PACKAGE_NAME=\"icyradio\"" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+        echo "PACKAGE_VERSION=\"${MOD_VERSION}\"" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+        echo "BUILT_MODULE_NAME[0]=\"icyradio\"" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+        echo "DEST_MODULE_LOCATION[0]=\"/extra\"" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+        echo "AUTOINSTALL=\"yes\"" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+        echo "" >> deb/usr/src/icyradio-${MOD_VERSION}/dkms.conf
+
+        dpkg-deb --build --root-owner-group ./deb ${{github.workspace}}/software/driver/icyradio-driver_${{matrix.arch}}.deb
+
+    - name: Test deb package (DKMS) (${{matrix.arch}})
+      run: |
+        if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          sudo dpkg -i ${{github.workspace}}/software/driver/icyradio-driver_${{matrix.arch}}.deb
+        else
+          echo "Cross-testing DKMS not implemented, skipping"
+        fi
+
     - name: Upload results
       uses: actions/upload-artifact@v3
       with:
         name: kernel_driver_${{matrix.arch}}
-        path: ${{github.workspace}}/software/driver/icyradio.ko
+        path: |
+          ${{github.workspace}}/software/driver/icyradio.ko
+          ${{github.workspace}}/software/driver/icyradio-driver_${{matrix.arch}}.deb
         retention-days: 30

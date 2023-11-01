@@ -8,7 +8,7 @@ SOURCEDIR = src
 INCLUDEDIR = include
 
 # Extra flags
-EXTRA_CFLAGS := -I$(M)/$(INCLUDEDIR)
+EXTRA_CFLAGS := -I$(M)/$(INCLUDEDIR) -std=gnu99
 
 # Sources & objects
 SOURCES := $(notdir $(wildcard $(M)/$(SOURCEDIR)/*.c))
