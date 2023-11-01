@@ -120,6 +120,7 @@ jobs:
     - name: Test deb package (DKMS) (${{matrix.arch}})
       run: |
         if [[ "${{matrix.arch}}" == "amd64" ]]; then
+          sudo apt-get install dkms
           sudo dpkg -i ${{github.workspace}}/software/driver/icyradio-driver_${{matrix.arch}}.deb
         else
           echo "Cross-testing DKMS not implemented, skipping"
