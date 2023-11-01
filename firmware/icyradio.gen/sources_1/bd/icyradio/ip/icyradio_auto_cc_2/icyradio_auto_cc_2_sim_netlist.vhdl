@@ -1,11 +1,11 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  7 00:03:41 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+-- Date        : Fri Oct 27 01:04:05 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_auto_cc_2 -prefix
---               icyradio_auto_cc_2_ icyradio_auto_cc_1_sim_netlist.vhdl
--- Design      : icyradio_auto_cc_1
+--               icyradio_auto_cc_2_ icyradio_auto_cc_2_sim_netlist.vhdl
+-- Design      : icyradio_auto_cc_2
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7a100tfgg484-2
@@ -5020,7 +5020,7 @@ entity icyradio_auto_cc_2 is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of icyradio_auto_cc_2 : entity is true;
   attribute CHECK_LICENSE_TYPE : string;
-  attribute CHECK_LICENSE_TYPE of icyradio_auto_cc_2 : entity is "icyradio_auto_cc_1,axi_clock_converter_v2_1_23_axi_clock_converter,{}";
+  attribute CHECK_LICENSE_TYPE of icyradio_auto_cc_2 : entity is "icyradio_auto_cc_2,axi_clock_converter_v2_1_23_axi_clock_converter,{}";
   attribute DowngradeIPIdentifiedWarnings : string;
   attribute DowngradeIPIdentifiedWarnings of icyradio_auto_cc_2 : entity is "yes";
   attribute X_CORE_INFO : string;

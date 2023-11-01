@@ -1,8 +1,8 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Tue Oct 10 04:49:34 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+-- Date        : Mon Oct 30 15:33:20 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_1_1/icyradio_axi_gpio_1_1_sim_netlist.vhdl
 -- Design      : icyradio_axi_gpio_1_1
@@ -1456,29 +1456,29 @@ begin
       Q => \^gpio_out\(23),
       R => s_axi_awready_i_1_n_0
     );
-\gpio_out_reg[24]\: unisim.vcomponents.FDRE
+\gpio_out_reg[24]\: unisim.vcomponents.FDSE
      port map (
       C => aclk,
       CE => \gpio_out[31]_i_1_n_0\,
       D => p_7_out(24),
       Q => \^gpio_out\(24),
-      R => s_axi_awready_i_1_n_0
+      S => s_axi_awready_i_1_n_0
     );
-\gpio_out_reg[25]\: unisim.vcomponents.FDRE
+\gpio_out_reg[25]\: unisim.vcomponents.FDSE
      port map (
       C => aclk,
       CE => \gpio_out[31]_i_1_n_0\,
       D => p_7_out(25),
       Q => \^gpio_out\(25),
-      R => s_axi_awready_i_1_n_0
+      S => s_axi_awready_i_1_n_0
     );
-\gpio_out_reg[26]\: unisim.vcomponents.FDRE
+\gpio_out_reg[26]\: unisim.vcomponents.FDSE
      port map (
       C => aclk,
       CE => \gpio_out[31]_i_1_n_0\,
       D => p_7_out(26),
       Q => \^gpio_out\(26),
-      R => s_axi_awready_i_1_n_0
+      S => s_axi_awready_i_1_n_0
     );
 \gpio_out_reg[27]\: unisim.vcomponents.FDRE
      port map (

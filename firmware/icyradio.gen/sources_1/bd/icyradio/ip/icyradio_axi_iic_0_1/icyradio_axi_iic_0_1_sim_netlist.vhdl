@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Wed Sep 20 17:39:57 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_iic_0_1 -prefix
---               icyradio_axi_iic_0_1_ icyradio_axi_iic_0_1_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:55:10 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_iic_0_1/icyradio_axi_iic_0_1_sim_netlist.vhdl
 -- Design      : icyradio_axi_iic_0_1
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -36,6 +36,8 @@ entity icyradio_axi_iic_0_1_SRL_FIFO is
     Rc_fifo_wr_d : in STD_LOGIC;
     Rc_fifo_wr : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_SRL_FIFO : entity is "SRL_FIFO";
 end icyradio_axi_iic_0_1_SRL_FIFO;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_SRL_FIFO is
@@ -1274,6 +1276,8 @@ entity icyradio_axi_iic_0_1_address_decoder is
     p_0_in : in STD_LOGIC_VECTOR ( 0 to 0 );
     AXI_IP2Bus_RdAck2_reg : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_address_decoder : entity is "address_decoder";
 end icyradio_axi_iic_0_1_address_decoder;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_address_decoder is
@@ -2552,6 +2556,8 @@ entity icyradio_axi_iic_0_1_cdc_sync is
     sda_i : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_cdc_sync : entity is "cdc_sync";
 end icyradio_axi_iic_0_1_cdc_sync;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_cdc_sync is
@@ -2748,6 +2754,8 @@ entity icyradio_axi_iic_0_1_dynamic_master is
     Tx_fifo_rd : in STD_LOGIC;
     earlyAckHdr : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_dynamic_master : entity is "dynamic_master";
 end icyradio_axi_iic_0_1_dynamic_master;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_dynamic_master is
@@ -3128,6 +3136,8 @@ entity icyradio_axi_iic_0_1_interrupt_control is
     s_axi_wdata : in STD_LOGIC_VECTOR ( 7 downto 0 );
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_interrupt_control : entity is "interrupt_control";
 end icyradio_axi_iic_0_1_interrupt_control;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_interrupt_control is
@@ -3577,6 +3587,8 @@ entity icyradio_axi_iic_0_1_reg_interface is
     \cr_i_reg[2]_1\ : in STD_LOGIC_VECTOR ( 2 downto 0 );
     \IIC2Bus_IntrEvent_reg[0]_0\ : in STD_LOGIC_VECTOR ( 4 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_reg_interface : entity is "reg_interface";
 end icyradio_axi_iic_0_1_reg_interface;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_reg_interface is
@@ -5492,6 +5504,8 @@ entity icyradio_axi_iic_0_1_shift8 is
     s_axi_aclk : in STD_LOGIC;
     \data_int_reg[0]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_shift8 : entity is "shift8";
 end icyradio_axi_iic_0_1_shift8;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_shift8 is
@@ -6027,6 +6041,8 @@ entity icyradio_axi_iic_0_1_soft_reset is
     s_axi_wdata : in STD_LOGIC_VECTOR ( 1 downto 0 );
     Tx_fifo_rst : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_soft_reset : entity is "soft_reset";
 end icyradio_axi_iic_0_1_soft_reset;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_soft_reset is
@@ -6226,6 +6242,8 @@ entity icyradio_axi_iic_0_1_upcnt_n is
     \q_int_reg[10]_0\ : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_upcnt_n : entity is "upcnt_n";
 end icyradio_axi_iic_0_1_upcnt_n;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_upcnt_n is
@@ -7316,6 +7334,8 @@ entity icyradio_axi_iic_0_1_debounce is
     scl_i : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_debounce : entity is "debounce";
 end icyradio_axi_iic_0_1_debounce;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_debounce is
@@ -7432,6 +7452,8 @@ entity icyradio_axi_iic_0_1_iic_control is
     \FSM_sequential_state_reg[2]_0\ : in STD_LOGIC;
     \FSM_onehot_scl_state_reg[5]_1\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_iic_control : entity is "iic_control";
 end icyradio_axi_iic_0_1_iic_control;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_iic_control is
@@ -9563,6 +9585,8 @@ entity icyradio_axi_iic_0_1_slave_attachment is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_slave_attachment : entity is "slave_attachment";
 end icyradio_axi_iic_0_1_slave_attachment;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_slave_attachment is
@@ -11356,6 +11380,8 @@ entity icyradio_axi_iic_0_1_axi_lite_ipif is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_axi_lite_ipif : entity is "axi_lite_ipif";
 end icyradio_axi_iic_0_1_axi_lite_ipif;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_axi_lite_ipif is
@@ -11460,6 +11486,8 @@ entity icyradio_axi_iic_0_1_filter is
     s_axi_aclk : in STD_LOGIC;
     sda_i : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_filter : entity is "filter";
 end icyradio_axi_iic_0_1_filter;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_filter is
@@ -11544,6 +11572,8 @@ entity icyradio_axi_iic_0_1_axi_ipif_ssp1 is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_axi_ipif_ssp1 : entity is "axi_ipif_ssp1";
 end icyradio_axi_iic_0_1_axi_ipif_ssp1;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_axi_ipif_ssp1 is
@@ -11781,6 +11811,8 @@ entity icyradio_axi_iic_0_1_iic is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_iic : entity is "iic";
 end icyradio_axi_iic_0_1_iic;
 
 architecture STRUCTURE of icyradio_axi_iic_0_1_iic is
@@ -12587,6 +12619,8 @@ entity icyradio_axi_iic_0_1_axi_iic is
   attribute C_TEN_BIT_ADR of icyradio_axi_iic_0_1_axi_iic : entity is 0;
   attribute C_TIMING_REG_WIDTH : integer;
   attribute C_TIMING_REG_WIDTH of icyradio_axi_iic_0_1_axi_iic : entity is 32;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_iic_0_1_axi_iic : entity is "axi_iic";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_axi_iic_0_1_axi_iic : entity is "yes";
 end icyradio_axi_iic_0_1_axi_iic;

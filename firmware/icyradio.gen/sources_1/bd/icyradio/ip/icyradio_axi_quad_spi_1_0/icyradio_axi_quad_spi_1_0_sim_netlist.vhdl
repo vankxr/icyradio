@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Thu Sep 21 18:30:23 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_quad_spi_1_0 -prefix
---               icyradio_axi_quad_spi_1_0_ icyradio_axi_quad_spi_1_0_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:54:49 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_quad_spi_1_0/icyradio_axi_quad_spi_1_0_sim_netlist.vhdl
 -- Design      : icyradio_axi_quad_spi_1_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -554,6 +554,8 @@ entity icyradio_axi_quad_spi_1_0_cdc_sync is
     prmry_in : in STD_LOGIC;
     ext_spi_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_cdc_sync : entity is "cdc_sync";
 end icyradio_axi_quad_spi_1_0_cdc_sync;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_cdc_sync is
@@ -686,6 +688,8 @@ entity icyradio_axi_quad_spi_1_0_counter_f is
     \icount_out_reg[0]_2\ : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_counter_f : entity is "counter_f";
 end icyradio_axi_quad_spi_1_0_counter_f;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_counter_f is
@@ -876,6 +880,8 @@ entity icyradio_axi_quad_spi_1_0_cross_clk_sync_fifo_1 is
     io1_i_sync : in STD_LOGIC;
     io0_i_sync : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_cross_clk_sync_fifo_1 : entity is "cross_clk_sync_fifo_1";
 end icyradio_axi_quad_spi_1_0_cross_clk_sync_fifo_1;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_cross_clk_sync_fifo_1 is
@@ -1705,6 +1711,8 @@ entity icyradio_axi_quad_spi_1_0_interrupt_control is
     E : in STD_LOGIC_VECTOR ( 0 to 0 );
     D : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_interrupt_control : entity is "interrupt_control";
 end icyradio_axi_quad_spi_1_0_interrupt_control;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_interrupt_control is
@@ -2114,6 +2122,8 @@ entity icyradio_axi_quad_spi_1_0_qspi_cntrl_reg is
     data_Exists_RcFIFO_int_d1 : in STD_LOGIC;
     \GEN_IP_IRPT_STATUS_REG[8].GEN_REG_STATUS.ip_irpt_status_reg_reg[8]_0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_qspi_cntrl_reg : entity is "qspi_cntrl_reg";
 end icyradio_axi_quad_spi_1_0_qspi_cntrl_reg;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_qspi_cntrl_reg is
@@ -2302,6 +2312,8 @@ entity icyradio_axi_quad_spi_1_0_qspi_fifo_ifmodule is
     Bus_RNW_reg : in STD_LOGIC;
     p_4_in : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_qspi_fifo_ifmodule : entity is "qspi_fifo_ifmodule";
 end icyradio_axi_quad_spi_1_0_qspi_fifo_ifmodule;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_qspi_fifo_ifmodule is
@@ -2398,6 +2410,8 @@ entity icyradio_axi_quad_spi_1_0_qspi_mode_0_module is
     spicr_0_loop_to_spi_clk : in STD_LOGIC;
     register_Data_slvsel_int : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_qspi_mode_0_module : entity is "qspi_mode_0_module";
 end icyradio_axi_quad_spi_1_0_qspi_mode_0_module;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_qspi_mode_0_module is
@@ -3779,6 +3793,8 @@ entity icyradio_axi_quad_spi_1_0_qspi_status_slave_sel_reg is
     p_3_in : in STD_LOGIC;
     Bus_RNW_reg : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_qspi_status_slave_sel_reg : entity is "qspi_status_slave_sel_reg";
 end icyradio_axi_quad_spi_1_0_qspi_status_slave_sel_reg;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_qspi_status_slave_sel_reg is
@@ -3817,6 +3833,8 @@ entity icyradio_axi_quad_spi_1_0_reset_sync_module is
     reset2ip_reset_int : in STD_LOGIC;
     ext_spi_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_reset_sync_module : entity is "reset_sync_module";
 end icyradio_axi_quad_spi_1_0_reset_sync_module;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_reset_sync_module is
@@ -3873,6 +3891,8 @@ entity icyradio_axi_quad_spi_1_0_soft_reset is
     \FIFO_EXISTS.TX_FULL_EMP_INTR_MD_0_GEN.Tx_FIFO_Full_i_reg_0\ : in STD_LOGIC;
     Tx_FIFO_Full_int : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_soft_reset : entity is "soft_reset";
 end icyradio_axi_quad_spi_1_0_soft_reset;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_soft_reset is
@@ -4420,6 +4440,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_cdc_gray is
   attribute DEST_SYNC_FF of icyradio_axi_quad_spi_1_0_xpm_cdc_gray : entity is 2;
   attribute INIT_SYNC_FF : integer;
   attribute INIT_SYNC_FF of icyradio_axi_quad_spi_1_0_xpm_cdc_gray : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_cdc_gray : entity is "xpm_cdc_gray";
   attribute REG_OUTPUT : integer;
   attribute REG_OUTPUT of icyradio_axi_quad_spi_1_0_xpm_cdc_gray : entity is 0;
   attribute SIM_ASSERT_CHK : integer;
@@ -6749,6 +6771,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_cdc_sync_rst is
   attribute INIT of icyradio_axi_quad_spi_1_0_xpm_cdc_sync_rst : entity is "0";
   attribute INIT_SYNC_FF : integer;
   attribute INIT_SYNC_FF of icyradio_axi_quad_spi_1_0_xpm_cdc_sync_rst : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_cdc_sync_rst : entity is "xpm_cdc_sync_rst";
   attribute SIM_ASSERT_CHK : integer;
   attribute SIM_ASSERT_CHK of icyradio_axi_quad_spi_1_0_xpm_cdc_sync_rst : entity is 0;
   attribute VERSION : integer;
@@ -7028,6 +7052,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_counter_updn is
     wr_pntr_plus1_pf_carry : in STD_LOGIC;
     wr_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_counter_updn : entity is "xpm_counter_updn";
 end icyradio_axi_quad_spi_1_0_xpm_counter_updn;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_counter_updn is
@@ -9169,6 +9195,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_fifo_reg_bit is
     prog_full : in STD_LOGIC;
     wr_en : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_fifo_reg_bit : entity is "xpm_fifo_reg_bit";
 end icyradio_axi_quad_spi_1_0_xpm_fifo_reg_bit;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_reg_bit is
@@ -9306,6 +9334,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_fifo_reg_vec is
     D : in STD_LOGIC_VECTOR ( 3 downto 0 );
     wr_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_fifo_reg_vec : entity is "xpm_fifo_reg_vec";
 end icyradio_axi_quad_spi_1_0_xpm_fifo_reg_vec;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_reg_vec is
@@ -10457,6 +10487,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_memory_base is
   attribute MESSAGE_CONTROL of icyradio_axi_quad_spi_1_0_xpm_memory_base : entity is 0;
   attribute NUM_CHAR_LOC : integer;
   attribute NUM_CHAR_LOC of icyradio_axi_quad_spi_1_0_xpm_memory_base : entity is 0;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_memory_base : entity is "xpm_memory_base";
   attribute P_ECC_MODE : string;
   attribute P_ECC_MODE of icyradio_axi_quad_spi_1_0_xpm_memory_base : entity is "no_ecc";
   attribute P_ENABLE_BYTE_WRITE_A : integer;
@@ -11481,6 +11513,8 @@ entity icyradio_axi_quad_spi_1_0_address_decoder is
     s_axi_wready : in STD_LOGIC;
     s_axi_wready_0 : in STD_LOGIC_VECTOR ( 5 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_address_decoder : entity is "address_decoder";
 end icyradio_axi_quad_spi_1_0_address_decoder;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_address_decoder is
@@ -12857,6 +12891,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_fifo_rst is
     \guf.underflow_i_reg\ : in STD_LOGIC;
     rd_en : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_fifo_rst : entity is "xpm_fifo_rst";
 end icyradio_axi_quad_spi_1_0_xpm_fifo_rst;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_xpm_fifo_rst is
@@ -13994,6 +14030,8 @@ entity icyradio_axi_quad_spi_1_0_slave_attachment is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 4 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_slave_attachment : entity is "slave_attachment";
 end icyradio_axi_quad_spi_1_0_slave_attachment;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_slave_attachment is
@@ -14960,6 +14998,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_fifo_base is
   attribute FULL_RESET_VALUE of icyradio_axi_quad_spi_1_0_xpm_fifo_base : entity is 0;
   attribute FULL_RST_VAL : string;
   attribute FULL_RST_VAL of icyradio_axi_quad_spi_1_0_xpm_fifo_base : entity is "1'b0";
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_fifo_base : entity is "xpm_fifo_base";
   attribute PE_THRESH_ADJ : integer;
   attribute PE_THRESH_ADJ of icyradio_axi_quad_spi_1_0_xpm_fifo_base : entity is 8;
   attribute PE_THRESH_MAX : integer;
@@ -17091,6 +17131,8 @@ entity icyradio_axi_quad_spi_1_0_axi_lite_ipif is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 4 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_axi_lite_ipif : entity is "axi_lite_ipif";
 end icyradio_axi_quad_spi_1_0_axi_lite_ipif;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_axi_lite_ipif is
@@ -17251,6 +17293,8 @@ entity icyradio_axi_quad_spi_1_0_xpm_fifo_async is
   attribute FIFO_WRITE_DEPTH of icyradio_axi_quad_spi_1_0_xpm_fifo_async : entity is 16;
   attribute FULL_RESET_VALUE : integer;
   attribute FULL_RESET_VALUE of icyradio_axi_quad_spi_1_0_xpm_fifo_async : entity is 0;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_xpm_fifo_async : entity is "xpm_fifo_async";
   attribute PROG_EMPTY_THRESH : integer;
   attribute PROG_EMPTY_THRESH of icyradio_axi_quad_spi_1_0_xpm_fifo_async : entity is 10;
   attribute PROG_FULL_THRESH : integer;
@@ -17719,6 +17763,8 @@ entity icyradio_axi_quad_spi_1_0_async_fifo_fg is
     p_2_in : in STD_LOGIC;
     spicr_9_lsb_to_spi_clk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_async_fifo_fg : entity is "async_fifo_fg";
 end icyradio_axi_quad_spi_1_0_async_fifo_fg;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_async_fifo_fg is
@@ -18060,6 +18106,8 @@ entity icyradio_axi_quad_spi_1_0_qspi_core_interface is
     io1_i_sync : in STD_LOGIC;
     io0_i_sync : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_qspi_core_interface : entity is "qspi_core_interface";
 end icyradio_axi_quad_spi_1_0_qspi_core_interface;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_qspi_core_interface is
@@ -19122,6 +19170,8 @@ entity icyradio_axi_quad_spi_1_0_axi_quad_spi_top is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 4 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 4 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_axi_quad_spi_top : entity is "axi_quad_spi_top";
 end icyradio_axi_quad_spi_1_0_axi_quad_spi_top;
 
 architecture STRUCTURE of icyradio_axi_quad_spi_1_0_axi_quad_spi_top is
@@ -19682,6 +19732,8 @@ entity icyradio_axi_quad_spi_1_0_axi_quad_spi is
   attribute C_XIP_MODE of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is 0;
   attribute C_XIP_PERF_MODE : integer;
   attribute C_XIP_PERF_MODE of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is "axi_quad_spi";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_axi_quad_spi_1_0_axi_quad_spi : entity is "yes";
 end icyradio_axi_quad_spi_1_0_axi_quad_spi;

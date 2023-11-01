@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Fri Oct 13 22:59:39 2023" VIVADOVERSION="2021.1">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Wed Nov  1 02:25:43 2023" VIVADOVERSION="2021.1">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a100t" NAME="icyradio" PACKAGE="fgg484" SPEEDGRADE="-2"/>
 
@@ -58,9 +58,9 @@
       <CONNECTIONS>
         <CONNECTION INSTANCE="rst_FPGA_CLK1_49M152" PORT="slowest_sync_clk"/>
         <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M08_ACLK"/>
+        <CONNECTION INSTANCE="axi_i2s_0" PORT="aclk"/>
         <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axis_aclk"/>
         <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="m_axis_aclk"/>
-        <CONNECTION INSTANCE="axi_i2s_0" PORT="aclk"/>
       </CONNECTIONS>
     </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" NAME="TRX_CLK_OUT" SIGIS="clk"/>
@@ -72,11 +72,6 @@
     <PORT DIR="O" LEFT="3" NAME="TRX_CTRL_IN" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_ctrl_out_Dout">
       <CONNECTIONS>
         <CONNECTION INSTANCE="gpio_slice_trx_ctrl_out" PORT="Dout"/>
-      </CONNECTIONS>
-    </PORT>
-    <PORT CLKFREQUENCY="50000000" DIR="I" NAME="FPGA_CLK0" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK0">
-      <CONNECTIONS>
-        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="O" LEFT="0" NAME="TRX_EN_AGC" RIGHT="0" SIGIS="undef" SIGNAME="gpio_slice_trx_en_agc_Dout">
@@ -189,6 +184,11 @@
     <PORT DIR="O" NAME="CODEC_MCLK" SIGIS="undef" SIGNAME="axi_i2s_0_i2s_mclk">
       <CONNECTIONS>
         <CONNECTION INSTANCE="axi_i2s_0" PORT="i2s_mclk"/>
+      </CONNECTIONS>
+    </PORT>
+    <PORT CLKFREQUENCY="50000000" DIR="I" NAME="FPGA_CLK0" SIGIS="clk" SIGNAME="External_Ports_FPGA_CLK0">
+      <CONNECTIONS>
+        <CONNECTION INSTANCE="clk_wiz_0" PORT="clk_in1"/>
       </CONNECTIONS>
     </PORT>
     <PORT CLKFREQUENCY="100000000" DIR="I" LEFT="0" NAME="PCIe_REFCLK_clk_p" RIGHT="0" SIGIS="clk" SIGNAME="util_ds_buf_0_IBUF_DS_P">
@@ -1439,10 +1439,10 @@
             <CONNECTION INSTANCE="ad9361_dac_unpacker" PORT="clk"/>
             <CONNECTION INSTANCE="axi_ad9361" PORT="clk"/>
             <CONNECTION INSTANCE="ad9361_adc_packer" PORT="clk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="fifo_wr_clk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="m_axis_aclk"/>
             <CONNECTION INSTANCE="rst_axi_ad9361_61M44" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M16_ACLK"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="fifo_wr_clk"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="m_axis_aclk"/>
             <CONNECTION INSTANCE="axi_rf_timestamping_0" PORT="aclk"/>
           </CONNECTIONS>
         </PORT>
@@ -7106,7 +7106,7 @@
       </ADDRESSBLOCKS>
       <PARAMETERS>
         <PARAMETER NAME="GPIO_IN_MASK_DEFAULT" VALUE="0x00070077"/>
-        <PARAMETER NAME="GPIO_OUT_DEFAULT" VALUE="0x00000000"/>
+        <PARAMETER NAME="GPIO_OUT_DEFAULT" VALUE="0x07000000"/>
         <PARAMETER NAME="NUM_CDC_STAGES" VALUE="2"/>
         <PARAMETER NAME="Component_Name" VALUE="icyradio_axi_gpio_1_1"/>
         <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
@@ -13928,14 +13928,6 @@
             <CONNECTION INSTANCE="axi_quad_spi_2" PORT="s_axi_aclk"/>
             <CONNECTION INSTANCE="axi_quad_spi_2" PORT="ext_spi_clk"/>
             <CONNECTION INSTANCE="axi_quad_spi_0" PORT="s_axi4_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="m_dest_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="m_dest_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="m_src_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_aclk"/>
-            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="m_src_axi_aclk"/>
             <CONNECTION INSTANCE="rst_axi_pcie_0_125M_pcie_core" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="rst_pulse_gen_0" PORT="clk"/>
             <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M06_ACLK"/>
@@ -13972,9 +13964,17 @@
             <CONNECTION INSTANCE="axi_gpio_2" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_gpio_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_gpio_1" PORT="aclk"/>
-            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_ACLK"/>
             <CONNECTION INSTANCE="axi_dna_0" PORT="aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="m_dest_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="m_dest_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="m_src_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="m_src_axi_aclk"/>
+            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aclk"/>
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="125000000" DIR="O" NAME="axi_ctl_aclk_out" SIGIS="clk" SIGNAME="axi_pcie_0_axi_ctl_aclk_out">
@@ -14595,8 +14595,8 @@
           <PARAMETER NAME="HAS_BRESP" VALUE="1"/>
           <PARAMETER NAME="HAS_RRESP" VALUE="1"/>
           <PARAMETER NAME="SUPPORTS_NARROW_BURST" VALUE="0"/>
-          <PARAMETER NAME="NUM_READ_OUTSTANDING" VALUE="1"/>
-          <PARAMETER NAME="NUM_WRITE_OUTSTANDING" VALUE="1"/>
+          <PARAMETER NAME="NUM_READ_OUTSTANDING" VALUE="2"/>
+          <PARAMETER NAME="NUM_WRITE_OUTSTANDING" VALUE="2"/>
           <PARAMETER NAME="MAX_BURST_LENGTH" VALUE="1"/>
           <PARAMETER NAME="PHASE" VALUE="0.0"/>
           <PARAMETER NAME="CLK_DOMAIN" VALUE="icyradio_axi_pcie_0_0_axi_aclk_out"/>
@@ -16926,6 +16926,16 @@
             <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
           </CONNECTIONS>
         </PORT>
+        <PORT DIR="I" NAME="M18_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="M18_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_interconnect_aresetn">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="interconnect_aresetn"/>
+          </CONNECTIONS>
+        </PORT>
         <PORT DIR="I" LEFT="31" NAME="S00_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_peripheral_interconnect_S00_AXI_awaddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_protocol_convert_0" PORT="m_axi_awaddr"/>
@@ -17308,12 +17318,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_awprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M00_AXI_awvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_awvalid">
+        <PORT DIR="O" NAME="M00_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M00_AXI_awready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_awready">
+        <PORT DIR="I" NAME="M00_AXI_awready" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_awready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_awready"/>
           </CONNECTIONS>
@@ -17328,12 +17338,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M00_AXI_wvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_wvalid">
+        <PORT DIR="O" NAME="M00_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M00_AXI_wready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_wready">
+        <PORT DIR="I" NAME="M00_AXI_wready" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_wready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_wready"/>
           </CONNECTIONS>
@@ -17343,12 +17353,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M00_AXI_bvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_bvalid">
+        <PORT DIR="I" NAME="M00_AXI_bvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_bvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M00_AXI_bready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_bready">
+        <PORT DIR="O" NAME="M00_AXI_bready" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_bready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_bready"/>
           </CONNECTIONS>
@@ -17363,12 +17373,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_arprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M00_AXI_arvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_arvalid">
+        <PORT DIR="O" NAME="M00_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M00_AXI_arready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_arready">
+        <PORT DIR="I" NAME="M00_AXI_arready" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_arready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_arready"/>
           </CONNECTIONS>
@@ -17383,12 +17393,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M00_AXI_rvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_rvalid">
+        <PORT DIR="I" NAME="M00_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M00_AXI_rready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_rready">
+        <PORT DIR="O" NAME="M00_AXI_rready" SIGIS="undef" SIGNAME="axi_dmac_rf_rx_s_axi_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_rready"/>
           </CONNECTIONS>
@@ -17403,12 +17413,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_awprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M01_AXI_awvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_awvalid">
+        <PORT DIR="O" NAME="M01_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M01_AXI_awready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_awready">
+        <PORT DIR="I" NAME="M01_AXI_awready" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_awready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_awready"/>
           </CONNECTIONS>
@@ -17423,12 +17433,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M01_AXI_wvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_wvalid">
+        <PORT DIR="O" NAME="M01_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M01_AXI_wready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_wready">
+        <PORT DIR="I" NAME="M01_AXI_wready" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_wready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_wready"/>
           </CONNECTIONS>
@@ -17438,12 +17448,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M01_AXI_bvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_bvalid">
+        <PORT DIR="I" NAME="M01_AXI_bvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_bvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M01_AXI_bready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_bready">
+        <PORT DIR="O" NAME="M01_AXI_bready" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_bready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_bready"/>
           </CONNECTIONS>
@@ -17458,12 +17468,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_arprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M01_AXI_arvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_arvalid">
+        <PORT DIR="O" NAME="M01_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M01_AXI_arready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_arready">
+        <PORT DIR="I" NAME="M01_AXI_arready" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_arready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_arready"/>
           </CONNECTIONS>
@@ -17478,12 +17488,12 @@
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M01_AXI_rvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_rvalid">
+        <PORT DIR="I" NAME="M01_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M01_AXI_rready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_rready">
+        <PORT DIR="O" NAME="M01_AXI_rready" SIGIS="undef" SIGNAME="axi_dmac_rf_tx_s_axi_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_rready"/>
           </CONNECTIONS>
@@ -17767,12 +17777,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_awprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M06_AXI_awvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_awvalid">
+        <PORT DIR="O" NAME="M06_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M06_AXI_awready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_awready">
+        <PORT DIR="I" NAME="M06_AXI_awready" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_awready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_awready"/>
           </CONNECTIONS>
@@ -17787,12 +17797,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M06_AXI_wvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_wvalid">
+        <PORT DIR="O" NAME="M06_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M06_AXI_wready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_wready">
+        <PORT DIR="I" NAME="M06_AXI_wready" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_wready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_wready"/>
           </CONNECTIONS>
@@ -17802,12 +17812,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M06_AXI_bvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_bvalid">
+        <PORT DIR="I" NAME="M06_AXI_bvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_bvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M06_AXI_bready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_bready">
+        <PORT DIR="O" NAME="M06_AXI_bready" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_bready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_bready"/>
           </CONNECTIONS>
@@ -17822,12 +17832,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_arprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M06_AXI_arvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_arvalid">
+        <PORT DIR="O" NAME="M06_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M06_AXI_arready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_arready">
+        <PORT DIR="I" NAME="M06_AXI_arready" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_arready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_arready"/>
           </CONNECTIONS>
@@ -17842,12 +17852,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M06_AXI_rvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_rvalid">
+        <PORT DIR="I" NAME="M06_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M06_AXI_rready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_rready">
+        <PORT DIR="O" NAME="M06_AXI_rready" SIGIS="undef" SIGNAME="axi_dmac_i2s_rx_s_axi_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_rready"/>
           </CONNECTIONS>
@@ -17862,12 +17872,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_awprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M07_AXI_awvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_awvalid">
+        <PORT DIR="O" NAME="M07_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_awvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M07_AXI_awready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_awready">
+        <PORT DIR="I" NAME="M07_AXI_awready" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_awready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_awready"/>
           </CONNECTIONS>
@@ -17882,12 +17892,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M07_AXI_wvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_wvalid">
+        <PORT DIR="O" NAME="M07_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_wvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M07_AXI_wready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_wready">
+        <PORT DIR="I" NAME="M07_AXI_wready" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_wready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_wready"/>
           </CONNECTIONS>
@@ -17897,12 +17907,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_bresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M07_AXI_bvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_bvalid">
+        <PORT DIR="I" NAME="M07_AXI_bvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_bvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_bvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M07_AXI_bready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_bready">
+        <PORT DIR="O" NAME="M07_AXI_bready" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_bready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_bready"/>
           </CONNECTIONS>
@@ -17917,12 +17927,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_arprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M07_AXI_arvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_arvalid">
+        <PORT DIR="O" NAME="M07_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_arvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M07_AXI_arready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_arready">
+        <PORT DIR="I" NAME="M07_AXI_arready" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_arready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_arready"/>
           </CONNECTIONS>
@@ -17937,12 +17947,12 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" LEFT="0" NAME="M07_AXI_rvalid" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_rvalid">
+        <PORT DIR="I" NAME="M07_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_rvalid"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" LEFT="0" NAME="M07_AXI_rready" RIGHT="0" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_rready">
+        <PORT DIR="O" NAME="M07_AXI_rready" SIGIS="undef" SIGNAME="axi_dmac_i2s_tx_s_axi_rready">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="s_axi_rready"/>
           </CONNECTIONS>
@@ -18675,33 +18685,16 @@
             <CONNECTION INSTANCE="axi_irq_controller_0" PORT="s_axi_rready"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M18_ACLK" SIGIS="clk" SIGNAME="axi_pcie_0_axi_aclk_out">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="axi_pcie_0" PORT="axi_aclk_out"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="I" NAME="M18_ARESETN" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rst_axi_pcie_0_125M" PORT="peripheral_aresetn"/>
-          </CONNECTIONS>
-        </PORT>
         <PORT DIR="O" LEFT="31" NAME="M18_AXI_awaddr" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awaddr">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awaddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M18_AXI_awlen" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_awsize" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_awburst" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_awlock" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_awcache" SIGIS="undef"/>
         <PORT DIR="O" LEFT="2" NAME="M18_AXI_awprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awprot">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M18_AXI_awregion" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_awqos" SIGIS="undef"/>
         <PORT DIR="O" NAME="M18_AXI_awvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_awvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_awvalid"/>
@@ -18722,7 +18715,6 @@
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wstrb"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M18_AXI_wlast" SIGIS="undef"/>
         <PORT DIR="O" NAME="M18_AXI_wvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_wvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_wvalid"/>
@@ -18753,18 +18745,11 @@
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_araddr"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M18_AXI_arlen" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_arsize" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_arburst" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_arlock" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_arcache" SIGIS="undef"/>
         <PORT DIR="O" LEFT="2" NAME="M18_AXI_arprot" RIGHT="0" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arprot">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_arprot"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="M18_AXI_arregion" SIGIS="undef"/>
-        <PORT DIR="O" NAME="M18_AXI_arqos" SIGIS="undef"/>
         <PORT DIR="O" NAME="M18_AXI_arvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_arvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_arvalid"/>
@@ -18785,7 +18770,6 @@
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rresp"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="I" NAME="M18_AXI_rlast" SIGIS="undef"/>
         <PORT DIR="I" NAME="M18_AXI_rvalid" SIGIS="undef" SIGNAME="axi_dna_0_s_axi_rvalid">
           <CONNECTIONS>
             <CONNECTION INSTANCE="axi_dna_0" PORT="s_axi_rvalid"/>
@@ -19238,38 +19222,22 @@
         <BUSINTERFACE BUSNAME="axi_peripheral_interconnect_M18_AXI" DATAWIDTH="32" NAME="M18_AXI" TYPE="MASTER" VLNV="xilinx.com:interface:aximm:1.0">
           <PORTMAPS>
             <PORTMAP LOGICAL="AWADDR" PHYSICAL="M18_AXI_awaddr"/>
-            <PORTMAP LOGICAL="AWLEN" PHYSICAL="M18_AXI_awlen"/>
-            <PORTMAP LOGICAL="AWSIZE" PHYSICAL="M18_AXI_awsize"/>
-            <PORTMAP LOGICAL="AWBURST" PHYSICAL="M18_AXI_awburst"/>
-            <PORTMAP LOGICAL="AWLOCK" PHYSICAL="M18_AXI_awlock"/>
-            <PORTMAP LOGICAL="AWCACHE" PHYSICAL="M18_AXI_awcache"/>
             <PORTMAP LOGICAL="AWPROT" PHYSICAL="M18_AXI_awprot"/>
-            <PORTMAP LOGICAL="AWREGION" PHYSICAL="M18_AXI_awregion"/>
-            <PORTMAP LOGICAL="AWQOS" PHYSICAL="M18_AXI_awqos"/>
             <PORTMAP LOGICAL="AWVALID" PHYSICAL="M18_AXI_awvalid"/>
             <PORTMAP LOGICAL="AWREADY" PHYSICAL="M18_AXI_awready"/>
             <PORTMAP LOGICAL="WDATA" PHYSICAL="M18_AXI_wdata"/>
             <PORTMAP LOGICAL="WSTRB" PHYSICAL="M18_AXI_wstrb"/>
-            <PORTMAP LOGICAL="WLAST" PHYSICAL="M18_AXI_wlast"/>
             <PORTMAP LOGICAL="WVALID" PHYSICAL="M18_AXI_wvalid"/>
             <PORTMAP LOGICAL="WREADY" PHYSICAL="M18_AXI_wready"/>
             <PORTMAP LOGICAL="BRESP" PHYSICAL="M18_AXI_bresp"/>
             <PORTMAP LOGICAL="BVALID" PHYSICAL="M18_AXI_bvalid"/>
             <PORTMAP LOGICAL="BREADY" PHYSICAL="M18_AXI_bready"/>
             <PORTMAP LOGICAL="ARADDR" PHYSICAL="M18_AXI_araddr"/>
-            <PORTMAP LOGICAL="ARLEN" PHYSICAL="M18_AXI_arlen"/>
-            <PORTMAP LOGICAL="ARSIZE" PHYSICAL="M18_AXI_arsize"/>
-            <PORTMAP LOGICAL="ARBURST" PHYSICAL="M18_AXI_arburst"/>
-            <PORTMAP LOGICAL="ARLOCK" PHYSICAL="M18_AXI_arlock"/>
-            <PORTMAP LOGICAL="ARCACHE" PHYSICAL="M18_AXI_arcache"/>
             <PORTMAP LOGICAL="ARPROT" PHYSICAL="M18_AXI_arprot"/>
-            <PORTMAP LOGICAL="ARREGION" PHYSICAL="M18_AXI_arregion"/>
-            <PORTMAP LOGICAL="ARQOS" PHYSICAL="M18_AXI_arqos"/>
             <PORTMAP LOGICAL="ARVALID" PHYSICAL="M18_AXI_arvalid"/>
             <PORTMAP LOGICAL="ARREADY" PHYSICAL="M18_AXI_arready"/>
             <PORTMAP LOGICAL="RDATA" PHYSICAL="M18_AXI_rdata"/>
             <PORTMAP LOGICAL="RRESP" PHYSICAL="M18_AXI_rresp"/>
-            <PORTMAP LOGICAL="RLAST" PHYSICAL="M18_AXI_rlast"/>
             <PORTMAP LOGICAL="RVALID" PHYSICAL="M18_AXI_rvalid"/>
             <PORTMAP LOGICAL="RREADY" PHYSICAL="M18_AXI_rready"/>
           </PORTMAPS>
@@ -27140,7 +27108,7 @@
         <PARAMETER NAME="C_CLKOUT7_REQUESTED_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT1_OUT_FREQ" VALUE="250.00000"/>
         <PARAMETER NAME="C_CLKOUT2_OUT_FREQ" VALUE="200.00000"/>
-        <PARAMETER NAME="C_CLKOUT3_OUT_FREQ" VALUE="10.00000"/>
+        <PARAMETER NAME="C_CLKOUT3_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT4_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT5_OUT_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT6_OUT_FREQ" VALUE="100.000"/>
@@ -27154,7 +27122,7 @@
         <PARAMETER NAME="C_CLKOUT7_PHASE" VALUE="0.000"/>
         <PARAMETER NAME="C_CLKOUT1_DUTY_CYCLE" VALUE="50.0"/>
         <PARAMETER NAME="C_CLKOUT2_DUTY_CYCLE" VALUE="50.0"/>
-        <PARAMETER NAME="C_CLKOUT3_DUTY_CYCLE" VALUE="50.0"/>
+        <PARAMETER NAME="C_CLKOUT3_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT4_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT5_DUTY_CYCLE" VALUE="50.000"/>
         <PARAMETER NAME="C_CLKOUT6_DUTY_CYCLE" VALUE="50.000"/>
@@ -27340,7 +27308,7 @@
         <PARAMETER NAME="C_CLKOUT7_MATCHED_ROUTING" VALUE="false"/>
         <PARAMETER NAME="C_CLKOUT0_ACTUAL_FREQ" VALUE="250.00000"/>
         <PARAMETER NAME="C_CLKOUT1_ACTUAL_FREQ" VALUE="200.00000"/>
-        <PARAMETER NAME="C_CLKOUT2_ACTUAL_FREQ" VALUE="10.00000"/>
+        <PARAMETER NAME="C_CLKOUT2_ACTUAL_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT3_ACTUAL_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT4_ACTUAL_FREQ" VALUE="100.000"/>
         <PARAMETER NAME="C_CLKOUT5_ACTUAL_FREQ" VALUE="100.000"/>
@@ -31492,6 +31460,7 @@
             <CONNECTION INSTANCE="axi_cpu_dma_interconnect" PORT="S02_ARESETN"/>
             <CONNECTION INSTANCE="axi_cpu_dma_interconnect" PORT="S03_ARESETN"/>
             <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M17_ARESETN"/>
+            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_ARESETN"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="peripheral_aresetn" POLARITY="ACTIVE_LOW" RIGHT="0" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_peripheral_aresetn">
@@ -31505,6 +31474,11 @@
             <CONNECTION INSTANCE="axi_iic_1" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_quad_spi_2" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_quad_spi_0" PORT="s_axi4_aresetn"/>
+            <CONNECTION INSTANCE="clk_wiz_0" PORT="resetn"/>
+            <CONNECTION INSTANCE="axi_gpio_2" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_gpio_0" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_gpio_1" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_dna_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_dmac_i2s_rx" PORT="m_dest_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_dmac_rf_rx" PORT="s_axi_aresetn"/>
@@ -31513,13 +31487,7 @@
             <CONNECTION INSTANCE="axi_dmac_i2s_tx" PORT="m_src_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="s_axi_aresetn"/>
             <CONNECTION INSTANCE="axi_dmac_rf_tx" PORT="m_src_axi_aresetn"/>
-            <CONNECTION INSTANCE="clk_wiz_0" PORT="resetn"/>
-            <CONNECTION INSTANCE="axi_gpio_2" PORT="aresetn"/>
-            <CONNECTION INSTANCE="axi_gpio_0" PORT="aresetn"/>
-            <CONNECTION INSTANCE="axi_gpio_1" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aresetn"/>
-            <CONNECTION INSTANCE="axi_peripheral_interconnect" PORT="M18_ARESETN"/>
-            <CONNECTION INSTANCE="axi_dna_0" PORT="aresetn"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>

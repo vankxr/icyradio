@@ -1,11 +1,11 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sat Oct  7 00:03:41 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+// Date        : Fri Oct 27 01:04:05 2023
+// Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 // Command     : write_verilog -force -mode funcsim -rename_top icyradio_auto_cc_2 -prefix
-//               icyradio_auto_cc_2_ icyradio_auto_cc_1_sim_netlist.v
-// Design      : icyradio_auto_cc_1
+//               icyradio_auto_cc_2_ icyradio_auto_cc_2_sim_netlist.v
+// Design      : icyradio_auto_cc_2
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7a100tfgg484-2
@@ -1597,7 +1597,7 @@ module icyradio_auto_cc_2_axi_clock_converter_v2_1_23_lite_async__xdcDup__1
         .R(\s_areset_dly_reg[3]_0 ));
 endmodule
 
-(* CHECK_LICENSE_TYPE = "icyradio_auto_cc_1,axi_clock_converter_v2_1_23_axi_clock_converter,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* X_CORE_INFO = "axi_clock_converter_v2_1_23_axi_clock_converter,Vivado 2021.1" *) 
+(* CHECK_LICENSE_TYPE = "icyradio_auto_cc_2,axi_clock_converter_v2_1_23_axi_clock_converter,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* X_CORE_INFO = "axi_clock_converter_v2_1_23_axi_clock_converter,Vivado 2021.1" *) 
 (* NotValidForBitStream *)
 module icyradio_auto_cc_2
    (s_axi_aclk,

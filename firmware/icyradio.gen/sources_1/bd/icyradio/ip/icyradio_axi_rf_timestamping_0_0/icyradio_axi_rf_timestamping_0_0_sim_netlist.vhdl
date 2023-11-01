@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sun Oct  8 19:58:36 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_rf_timestamping_0_0/icyradio_axi_rf_timestamping_0_0_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:53:48 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_rf_timestamping_0_0 -prefix
+--               icyradio_axi_rf_timestamping_0_0_ icyradio_axi_rf_timestamping_0_0_sim_netlist.vhdl
 -- Design      : icyradio_axi_rf_timestamping_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -42,8 +42,6 @@ entity icyradio_axi_rf_timestamping_0_0_axi_rf_timestamping is
     tx_fifo_underflow : in STD_LOGIC;
     rx_fifo_overflow : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_axi_rf_timestamping_0_0_axi_rf_timestamping : entity is "axi_rf_timestamping";
 end icyradio_axi_rf_timestamping_0_0_axi_rf_timestamping;
 
 architecture STRUCTURE of icyradio_axi_rf_timestamping_0_0_axi_rf_timestamping is

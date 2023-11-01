@@ -573,7 +573,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f103bcfe</spirit:value>
+            <spirit:value>9:c123a92f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -584,7 +584,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f103bcfe</spirit:value>
+            <spirit:value>9:c123a92f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -600,11 +600,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Oct 10 03:48:14 UTC 2023</spirit:value>
+            <spirit:value>Mon Oct 30 15:32:43 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f103bcfe</spirit:value>
+            <spirit:value>9:c123a92f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -616,7 +616,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:e6ace0b7</spirit:value>
+            <spirit:value>9:4ccd6cba</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -632,11 +632,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Oct 10 03:48:14 UTC 2023</spirit:value>
+            <spirit:value>Mon Oct 30 15:32:43 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:e6ace0b7</spirit:value>
+            <spirit:value>9:4ccd6cba</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -650,11 +650,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Tue Oct 10 03:49:34 UTC 2023</spirit:value>
+            <spirit:value>Mon Oct 30 15:33:21 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:f103bcfe</spirit:value>
+            <spirit:value>9:c123a92f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1046,7 +1046,7 @@
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>GPIO_OUT_DEFAULT</spirit:name>
         <spirit:displayName>Gpio Out Default</spirit:displayName>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.GPIO_OUT_DEFAULT" spirit:bitStringLength="32">0x00000000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.GPIO_OUT_DEFAULT" spirit:bitStringLength="32">0x07000000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>NUM_CDC_STAGES</spirit:name>
@@ -1126,7 +1126,7 @@
     <spirit:parameter>
       <spirit:name>GPIO_OUT_DEFAULT</spirit:name>
       <spirit:displayName>Gpio Out Default</spirit:displayName>
-      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.GPIO_OUT_DEFAULT" spirit:bitStringLength="32">0x00000000</spirit:value>
+      <spirit:value spirit:format="bitString" spirit:resolve="user" spirit:id="PARAM_VALUE.GPIO_OUT_DEFAULT" spirit:bitStringLength="32">0x07000000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>NUM_CDC_STAGES</spirit:name>

@@ -1,11 +1,11 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Oct  7 00:03:40 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+-- Date        : Fri Oct 27 01:04:05 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_auto_cc_2 -prefix
---               icyradio_auto_cc_2_ icyradio_auto_cc_1_stub.vhdl
--- Design      : icyradio_auto_cc_1
+--               icyradio_auto_cc_2_ icyradio_auto_cc_2_stub.vhdl
+-- Design      : icyradio_auto_cc_2
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------

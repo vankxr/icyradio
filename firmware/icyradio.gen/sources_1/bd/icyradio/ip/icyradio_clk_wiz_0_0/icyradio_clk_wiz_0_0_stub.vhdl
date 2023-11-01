@@ -1,8 +1,8 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sun Oct  1 18:28:43 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+-- Date        : Fri Oct 27 00:54:51 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_clk_wiz_0_0 -prefix
 --               icyradio_clk_wiz_0_0_ icyradio_clk_wiz_0_0_stub.vhdl
 -- Design      : icyradio_clk_wiz_0_0

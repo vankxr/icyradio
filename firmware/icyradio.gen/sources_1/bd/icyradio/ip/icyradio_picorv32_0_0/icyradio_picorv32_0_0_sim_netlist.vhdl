@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Tue Oct  3 02:08:01 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_picorv32_0_0 -prefix
---               icyradio_picorv32_0_0_ icyradio_picorv32_0_0_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:55:15 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_picorv32_0_0/icyradio_picorv32_0_0_sim_netlist.vhdl
 -- Design      : icyradio_picorv32_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -30,6 +30,8 @@ entity icyradio_picorv32_0_0_picorv32_axi_adapter is
     mem_axi_arready : in STD_LOGIC;
     mem_axi_wready : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_picorv32_0_0_picorv32_axi_adapter : entity is "picorv32_axi_adapter";
 end icyradio_picorv32_0_0_picorv32_axi_adapter;
 
 architecture STRUCTURE of icyradio_picorv32_0_0_picorv32_axi_adapter is
@@ -167,6 +169,8 @@ entity icyradio_picorv32_0_0_picorv32_pcpi_div is
     clk : in STD_LOGIC;
     \divisor_reg[62]_0\ : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_picorv32_0_0_picorv32_pcpi_div : entity is "picorv32_pcpi_div";
 end icyradio_picorv32_0_0_picorv32_pcpi_div;
 
 architecture STRUCTURE of icyradio_picorv32_0_0_picorv32_pcpi_div is
@@ -7582,6 +7586,8 @@ entity icyradio_picorv32_0_0_picorv32_pcpi_fast_mul is
     \rd_reg__0_1\ : in STD_LOGIC;
     \active[0]_i_2_0\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_picorv32_0_0_picorv32_pcpi_fast_mul : entity is "picorv32_pcpi_fast_mul";
 end icyradio_picorv32_0_0_picorv32_pcpi_fast_mul;
 
 architecture STRUCTURE of icyradio_picorv32_0_0_picorv32_pcpi_fast_mul is
@@ -13437,6 +13443,8 @@ entity icyradio_picorv32_0_0_picorv32 is
     mem_valid_reg_1 : in STD_LOGIC;
     irq : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_picorv32_0_0_picorv32 : entity is "picorv32";
 end icyradio_picorv32_0_0_picorv32;
 
 architecture STRUCTURE of icyradio_picorv32_0_0_picorv32 is
@@ -42488,6 +42496,8 @@ entity icyradio_picorv32_0_0_picorv32_axi is
     mem_axi_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     irq : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_picorv32_0_0_picorv32_axi : entity is "picorv32_axi";
 end icyradio_picorv32_0_0_picorv32_axi;
 
 architecture STRUCTURE of icyradio_picorv32_0_0_picorv32_axi is

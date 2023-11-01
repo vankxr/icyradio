@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sat Sep 30 00:23:13 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
-// Command     : write_verilog -force -mode funcsim -rename_top icyradio_ad9361_adc_packer_2 -prefix
-//               icyradio_ad9361_adc_packer_2_ icyradio_ad9361_adc_packer_2_sim_netlist.v
+// Date        : Fri Oct 27 00:55:00 2023
+// Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+// Command     : write_verilog -force -mode funcsim
+//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_ad9361_adc_packer_2/icyradio_ad9361_adc_packer_2_sim_netlist.v
 // Design      : icyradio_ad9361_adc_packer_2
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -80,6 +80,7 @@ module icyradio_ad9361_adc_packer_2
         .reset(reset));
 endmodule
 
+(* ORIG_REF_NAME = "pack_network" *) 
 module icyradio_ad9361_adc_packer_2_pack_network
    (E,
     \fifo_wr_data_1[15] ,
@@ -1221,6 +1222,7 @@ module icyradio_ad9361_adc_packer_2_pack_network
         .O(\fifo_wr_data_1[15] [9]));
 endmodule
 
+(* ORIG_REF_NAME = "pack_shell" *) 
 module icyradio_ad9361_adc_packer_2_pack_shell
    (fifo_wr_en_0,
     \gen_pack.gen_output_buffer.sync_reg_0 ,
@@ -2040,6 +2042,7 @@ module icyradio_ad9361_adc_packer_2_pack_shell
         .R(1'b0));
 endmodule
 
+(* ORIG_REF_NAME = "util_cpack2" *) 
 module icyradio_ad9361_adc_packer_2_util_cpack2
    (packed_fifo_wr_data,
     packed_fifo_wr_en,
@@ -2090,6 +2093,7 @@ module icyradio_ad9361_adc_packer_2_util_cpack2
         .reset(reset));
 endmodule
 
+(* ORIG_REF_NAME = "util_cpack2_impl" *) 
 module icyradio_ad9361_adc_packer_2_util_cpack2_impl
    (packed_fifo_wr_data,
     packed_fifo_wr_en,

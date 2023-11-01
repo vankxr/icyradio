@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Tue Sep 19 18:33:16 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+// Date        : Fri Oct 27 00:54:34 2023
+// Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 // Command     : write_verilog -force -mode funcsim -rename_top icyradio_auto_pc_0 -prefix
 //               icyradio_auto_pc_0_ icyradio_auto_pc_0_sim_netlist.v
 // Design      : icyradio_auto_pc_0

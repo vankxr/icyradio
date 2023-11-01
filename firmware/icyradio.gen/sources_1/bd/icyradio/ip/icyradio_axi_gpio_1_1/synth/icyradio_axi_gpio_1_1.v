@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "axi_gpio,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_axi_gpio_1_1,axi_gpio,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_axi_gpio_1_1,axi_gpio,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_gpio,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,GPIO_IN_MASK_DEFAULT=0x00070077,GPIO_OUT_DEFAULT=0x00000000,NUM_CDC_STAGES=2}" *)
+(* CORE_GENERATION_INFO = "icyradio_axi_gpio_1_1,axi_gpio,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_gpio,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,GPIO_IN_MASK_DEFAULT=0x00070077,GPIO_OUT_DEFAULT=0x07000000,NUM_CDC_STAGES=2}" *)
 (* IP_DEFINITION_SOURCE = "module_ref" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_axi_gpio_1_1 (
@@ -132,7 +132,7 @@ input wire [31 : 0] gpio_in;
 
   axi_gpio #(
     .GPIO_IN_MASK_DEFAULT(32'H00070077),
-    .GPIO_OUT_DEFAULT(32'H00000000),
+    .GPIO_OUT_DEFAULT(32'H07000000),
     .NUM_CDC_STAGES(2)
   ) inst (
     .aclk(aclk),

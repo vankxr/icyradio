@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Sat Sep 30 00:23:18 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_dmac_rf_tx_2 -prefix
---               icyradio_axi_dmac_rf_tx_2_ icyradio_axi_dmac_rf_tx_2_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:55:36 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_dmac_rf_tx_2/icyradio_axi_dmac_rf_tx_2_sim_netlist.vhdl
 -- Design      : icyradio_axi_dmac_rf_tx_2
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -29,6 +29,8 @@ entity icyradio_axi_dmac_rf_tx_2_ad_mem_asym is
     m_axis_ready : in STD_LOGIC;
     m_ram_reg_1 : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_ad_mem_asym : entity is "ad_mem_asym";
 end icyradio_axi_dmac_rf_tx_2_ad_mem_asym;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_ad_mem_asym is
@@ -176,6 +178,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_address_generator is
     req_ready_reg_0 : in STD_LOGIC;
     E : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_address_generator : entity is "dmac_address_generator";
 end icyradio_axi_dmac_rf_tx_2_dmac_address_generator;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_address_generator is
@@ -1416,6 +1420,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_request_generator is
     \burst_count_reg[0]_0\ : in STD_LOGIC;
     up_dma_x_length : in STD_LOGIC_VECTOR ( 16 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_request_generator : entity is "dmac_request_generator";
 end icyradio_axi_dmac_rf_tx_2_dmac_request_generator;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_request_generator is
@@ -2332,6 +2338,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_response_generator is
     \zerodeep.s_axis_waddr_i_3_1\ : in STD_LOGIC;
     data_enabled : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_response_generator : entity is "dmac_response_generator";
 end icyradio_axi_dmac_rf_tx_2_dmac_response_generator;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_response_generator is
@@ -2496,6 +2504,8 @@ entity icyradio_axi_dmac_rf_tx_2_splitter is
     Q : in STD_LOGIC_VECTOR ( 0 to 0 );
     m_src_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_splitter : entity is "splitter";
 end icyradio_axi_dmac_rf_tx_2_splitter;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_splitter is
@@ -2613,6 +2623,8 @@ entity icyradio_axi_dmac_rf_tx_2_sync_bits is
     \FSM_onehot_state[5]_i_2_0\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \FSM_onehot_state[5]_i_2_1\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_sync_bits : entity is "sync_bits";
 end icyradio_axi_dmac_rf_tx_2_sync_bits;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_sync_bits is
@@ -3686,6 +3698,8 @@ entity icyradio_axi_dmac_rf_tx_2_up_axi is
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_up_axi : entity is "up_axi";
 end icyradio_axi_dmac_rf_tx_2_up_axi;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_up_axi is
@@ -8905,6 +8919,8 @@ entity icyradio_axi_dmac_rf_tx_2_util_axis_fifo_address_generator is
     \m_axis_raddr_reg_reg[0]_0\ : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_util_axis_fifo_address_generator : entity is "util_axis_fifo_address_generator";
 end icyradio_axi_dmac_rf_tx_2_util_axis_fifo_address_generator;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_util_axis_fifo_address_generator is
@@ -9180,6 +9196,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_burst_memory is
     \src_throttled_request_id[3]_i_4\ : in STD_LOGIC_VECTOR ( 3 downto 0 );
     SR : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_burst_memory : entity is "axi_dmac_burst_memory";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_burst_memory;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_burst_memory is
@@ -9970,6 +9988,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_reset_manager is
     \FSM_onehot_state[5]_i_2\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \FSM_onehot_state_reg[1]_0\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_reset_manager : entity is "axi_dmac_reset_manager";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_reset_manager;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_reset_manager is
@@ -10491,6 +10511,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_dest_axi_stream is
     dest_enable : in STD_LOGIC;
     \out\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_dest_axi_stream : entity is "dmac_dest_axi_stream";
 end icyradio_axi_dmac_rf_tx_2_dmac_dest_axi_stream;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_dest_axi_stream is
@@ -10742,6 +10764,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_src_mm_axi is
     m_src_axi_rvalid : in STD_LOGIC;
     \address_reg[27]\ : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_src_mm_axi : entity is "dmac_src_mm_axi";
 end icyradio_axi_dmac_rf_tx_2_dmac_src_mm_axi;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_src_mm_axi is
@@ -10943,6 +10967,8 @@ entity icyradio_axi_dmac_rf_tx_2_util_axis_fifo is
     up_partial_length_valid_reg : in STD_LOGIC_VECTOR ( 0 to 0 );
     \fifo.sync_clocks.data_reg[19]_0\ : in STD_LOGIC_VECTOR ( 23 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_util_axis_fifo : entity is "util_axis_fifo";
 end icyradio_axi_dmac_rf_tx_2_util_axis_fifo;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_util_axis_fifo is
@@ -11986,6 +12012,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap_request is
     req_gen_valid : in STD_LOGIC;
     \up_measured_transfer_length_reg[7]_0\ : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap_request : entity is "axi_dmac_regmap_request";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap_request;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap_request is
@@ -13816,6 +13844,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_response_manager is
     \zerodeep.cdc_sync_fifo_ram_reg[0]\ : in STD_LOGIC;
     up_clear_tl : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_response_manager : entity is "axi_dmac_response_manager";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_response_manager;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_response_manager is
@@ -14394,6 +14424,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 8 downto 0 );
     \up_measured_transfer_length_reg[7]\ : in STD_LOGIC_VECTOR ( 6 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap : entity is "axi_dmac_regmap";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_regmap is
@@ -15482,6 +15514,8 @@ entity icyradio_axi_dmac_rf_tx_2_dmac_request_arb is
     D : in STD_LOGIC_VECTOR ( 56 downto 0 );
     SR : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_dmac_request_arb : entity is "dmac_request_arb";
 end icyradio_axi_dmac_rf_tx_2_dmac_request_arb;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_dmac_request_arb is
@@ -16261,6 +16295,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac_transfer is
     SR : in STD_LOGIC_VECTOR ( 0 to 0 );
     D : in STD_LOGIC_VECTOR ( 56 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac_transfer : entity is "axi_dmac_transfer";
 end icyradio_axi_dmac_rf_tx_2_axi_dmac_transfer;
 
 architecture STRUCTURE of icyradio_axi_dmac_rf_tx_2_axi_dmac_transfer is
@@ -16569,6 +16605,8 @@ entity icyradio_axi_dmac_rf_tx_2_axi_dmac is
   attribute ID_WIDTH of icyradio_axi_dmac_rf_tx_2_axi_dmac : entity is 4;
   attribute MAX_BYTES_PER_BURST : integer;
   attribute MAX_BYTES_PER_BURST of icyradio_axi_dmac_rf_tx_2_axi_dmac : entity is 128;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_dmac_rf_tx_2_axi_dmac : entity is "axi_dmac";
   attribute REAL_MAX_BYTES_PER_BURST : integer;
   attribute REAL_MAX_BYTES_PER_BURST of icyradio_axi_dmac_rf_tx_2_axi_dmac : entity is 128;
   attribute SYNC_TRANSFER_START : string;

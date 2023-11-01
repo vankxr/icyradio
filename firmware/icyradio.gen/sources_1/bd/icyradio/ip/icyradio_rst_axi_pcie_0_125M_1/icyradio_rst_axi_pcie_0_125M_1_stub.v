@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sun Oct  1 16:04:36 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
-// Command     : write_verilog -force -mode synth_stub -rename_top icyradio_rst_axi_pcie_0_125M_1 -prefix
-//               icyradio_rst_axi_pcie_0_125M_1_ icyradio_rst_axi_pcie_0_125M_1_stub.v
+// Date        : Fri Oct 27 00:55:27 2023
+// Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+// Command     : write_verilog -force -mode synth_stub
+//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_rst_axi_pcie_0_125M_1/icyradio_rst_axi_pcie_0_125M_1_stub.v
 // Design      : icyradio_rst_axi_pcie_0_125M_1
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2

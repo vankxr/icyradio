@@ -1,11 +1,11 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Tue Sep 19 18:33:32 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.5 LTS
+-- Date        : Fri Oct 27 01:02:38 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_s02_data_fifo_0 -prefix
---               icyradio_s02_data_fifo_0_ icyradio_s02_data_fifo_0_stub.vhdl
--- Design      : icyradio_s02_data_fifo_0
+--               icyradio_s02_data_fifo_0_ icyradio_s00_data_fifo_23_stub.vhdl
+-- Design      : icyradio_s00_data_fifo_23
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------

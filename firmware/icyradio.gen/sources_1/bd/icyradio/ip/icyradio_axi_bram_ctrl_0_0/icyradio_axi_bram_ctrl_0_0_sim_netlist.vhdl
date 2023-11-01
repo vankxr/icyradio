@@ -1,10 +1,10 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Tue Oct  3 02:07:45 2023
--- Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_bram_ctrl_0_0 -prefix
---               icyradio_axi_bram_ctrl_0_0_ icyradio_axi_bram_ctrl_0_0_sim_netlist.vhdl
+-- Date        : Fri Oct 27 00:54:43 2023
+-- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_bram_ctrl_0_0/icyradio_axi_bram_ctrl_0_0_sim_netlist.vhdl
 -- Design      : icyradio_axi_bram_ctrl_0_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -39,6 +39,8 @@ entity icyradio_axi_bram_ctrl_0_0_SRL_FIFO is
     \FSM_onehot_GEN_WDATA_SM_NO_ECC_SNG_REG_WREADY.wr_data_sng_sm_cs_reg[2]\ : in STD_LOGIC;
     axi_wr_burst : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_SRL_FIFO : entity is "SRL_FIFO";
 end icyradio_axi_bram_ctrl_0_0_SRL_FIFO;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_SRL_FIFO is
@@ -528,6 +530,8 @@ entity icyradio_axi_bram_ctrl_0_0_sng_port_arb is
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 0 to 0 );
     s_axi_aresetn : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_sng_port_arb : entity is "sng_port_arb";
 end icyradio_axi_bram_ctrl_0_0_sng_port_arb;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_sng_port_arb is
@@ -1003,6 +1007,8 @@ entity icyradio_axi_bram_ctrl_0_0_ua_narrow is
     \GEN_NARROW_CNT.narrow_addr_int_reg[1]_3\ : in STD_LOGIC;
     \GEN_NARROW_CNT.narrow_addr_int_reg[0]_2\ : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_ua_narrow : entity is "ua_narrow";
 end icyradio_axi_bram_ctrl_0_0_ua_narrow;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_ua_narrow is
@@ -1360,6 +1366,8 @@ entity icyradio_axi_bram_ctrl_0_0_wrap_brst is
     \wrap_burst_total_reg[0]_0\ : in STD_LOGIC;
     s_axi_aclk : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_wrap_brst : entity is "wrap_brst";
 end icyradio_axi_bram_ctrl_0_0_wrap_brst;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_wrap_brst is
@@ -2926,6 +2934,8 @@ entity icyradio_axi_bram_ctrl_0_0_rd_chnl is
     \GEN_NO_RD_CMD_OPT.GEN_NARROW_CNT.narrow_addr_int_reg[1]_0\ : in STD_LOGIC;
     bram_rddata_a : in STD_LOGIC_VECTOR ( 63 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_rd_chnl : entity is "rd_chnl";
 end icyradio_axi_bram_ctrl_0_0_rd_chnl;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_rd_chnl is
@@ -7428,6 +7438,8 @@ entity icyradio_axi_bram_ctrl_0_0_wr_chnl is
     BRAM_En_B_i : in STD_LOGIC;
     s_axi_wstrb : in STD_LOGIC_VECTOR ( 7 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_wr_chnl : entity is "wr_chnl";
 end icyradio_axi_bram_ctrl_0_0_wr_chnl;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_wr_chnl is
@@ -9567,6 +9579,8 @@ entity icyradio_axi_bram_ctrl_0_0_full_axi is
     s_axi_awburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 16 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_full_axi : entity is "full_axi";
 end icyradio_axi_bram_ctrl_0_0_full_axi;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_full_axi is
@@ -10128,6 +10142,8 @@ entity icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl_top is
     s_axi_awburst : in STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 16 downto 0 )
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl_top : entity is "axi_bram_ctrl_top";
 end icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl_top;
 
 architecture STRUCTURE of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl_top is
@@ -10283,6 +10299,8 @@ entity icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl is
   attribute C_S_AXI_PROTOCOL of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl : entity is "AXI4";
   attribute C_S_AXI_SUPPORTS_NARROW_BURST : integer;
   attribute C_S_AXI_SUPPORTS_NARROW_BURST of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl : entity is "axi_bram_ctrl";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl : entity is "yes";
 end icyradio_axi_bram_ctrl_0_0_axi_bram_ctrl;

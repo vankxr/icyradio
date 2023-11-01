@@ -1,8 +1,8 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Tue Oct 10 04:49:34 2023
-// Host        : xubuntu-dev running 64-bit Ubuntu 20.04.6 LTS
+// Date        : Mon Oct 30 15:33:20 2023
+// Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_1_1/icyradio_axi_gpio_1_1_sim_netlist.v
 // Design      : icyradio_axi_gpio_1_1
@@ -1188,24 +1188,24 @@ module icyradio_axi_gpio_1_1_axi_gpio
         .D(p_7_out[23]),
         .Q(gpio_out[23]),
         .R(s_axi_awready_i_1_n_0));
-  FDRE \gpio_out_reg[24] 
+  FDSE \gpio_out_reg[24] 
        (.C(aclk),
         .CE(\gpio_out[31]_i_1_n_0 ),
         .D(p_7_out[24]),
         .Q(gpio_out[24]),
-        .R(s_axi_awready_i_1_n_0));
-  FDRE \gpio_out_reg[25] 
+        .S(s_axi_awready_i_1_n_0));
+  FDSE \gpio_out_reg[25] 
        (.C(aclk),
         .CE(\gpio_out[31]_i_1_n_0 ),
         .D(p_7_out[25]),
         .Q(gpio_out[25]),
-        .R(s_axi_awready_i_1_n_0));
-  FDRE \gpio_out_reg[26] 
+        .S(s_axi_awready_i_1_n_0));
+  FDSE \gpio_out_reg[26] 
        (.C(aclk),
         .CE(\gpio_out[31]_i_1_n_0 ),
         .D(p_7_out[26]),
         .Q(gpio_out[26]),
-        .R(s_axi_awready_i_1_n_0));
+        .S(s_axi_awready_i_1_n_0));
   FDRE \gpio_out_reg[27] 
        (.C(aclk),
         .CE(\gpio_out[31]_i_1_n_0 ),
