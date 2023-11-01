@@ -46,7 +46,7 @@ jobs:
     - name: Build CLI tool (${{matrix.arch}})
       run: |
         cd ${{github.workspace}}/software/cli
-        
+
         if [[ "${{matrix.arch}}" == "amd64" ]]; then
           # Native
           make
@@ -55,9 +55,26 @@ jobs:
           make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
         fi
 
+    - name: Make deb package (${{matrix.arch}})
+      run: |
+        mkdir deb
+
+        mkdir deb/DEBIAN
+        cp ${{github.workspace}}/software/cli/.deb/control deb/DEBIAN/
+
+        echo "Architecture: ${{matrix.arch}}" >> deb/DEBIAN/control
+        echo "" >> deb/DEBIAN/control
+
+        mkdir -p deb/usr/bin
+        cp ${{github.workspace}}/software/cli/bin/icyradio* deb/usr/bin
+
+        dpkg-deb --build --root-owner-group ./deb ${{github.workspace}}/software/cli/icyradio_${{matrix.arch}}.deb
+
     - name: Upload results
       uses: actions/upload-artifact@v3
       with:
         name: cli_tool_${{matrix.arch}}
-        path: ${{github.workspace}}/software/cli/bin/icyradio*
+        path: |
+          ${{github.workspace}}/software/cli/bin/icyradio*
+          ${{github.workspace}}/software/cli/icyradio_${{matrix.arch}}.deb
         retention-days: 30

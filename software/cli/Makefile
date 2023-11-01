@@ -1,5 +1,5 @@
 # App Config
-APP_NAME = icyradio_test
+APP_NAME = icyradio_tool
 
 # Multiprocessing
 MAX_PARALLEL =
