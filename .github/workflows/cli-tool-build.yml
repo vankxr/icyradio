@@ -60,7 +60,7 @@ jobs:
         mkdir deb
 
         mkdir deb/DEBIAN
-        cp ${{github.workspace}}/software/cli/.deb/control deb/DEBIAN/
+        cp ${{github.workspace}}/software/cli/.deb/* deb/DEBIAN/
 
         echo "Architecture: ${{matrix.arch}}" >> deb/DEBIAN/control
         echo "" >> deb/DEBIAN/control

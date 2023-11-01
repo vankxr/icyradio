@@ -132,7 +132,7 @@ jobs:
         mkdir deb
 
         mkdir deb/DEBIAN
-        cp ${{github.workspace}}/software/soapy/.deb/control deb/DEBIAN/
+        cp ${{github.workspace}}/software/soapy/.deb/* deb/DEBIAN/
 
         echo "Architecture: ${{matrix.arch}}" >> deb/DEBIAN/control
         echo "" >> deb/DEBIAN/control
