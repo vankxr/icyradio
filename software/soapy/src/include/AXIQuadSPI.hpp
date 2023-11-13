@@ -78,7 +78,7 @@ public:
         LSB_FIRST = 0,
         MSB_FIRST = 1
     };
-    enum Mode
+    enum Mode : uint8_t
     {
         MODE_0 = 0,
         MODE_1 = 1,
@@ -93,11 +93,11 @@ public:
 
     void slaveSelect(const uint32_t mask, const bool select);
 
-    uint8_t transferByte(const uint8_t data);
-    void writeByte(const uint8_t data, const bool wait = true);
-    inline uint8_t readByte()
+    uint8_t transfer(const uint8_t data);
+    void write(const uint8_t data, const bool wait = true);
+    inline uint8_t read()
     {
-        return this->transferByte(0x00);
+        return this->transfer(0x00);
     }
     inline void transfer(const uint8_t *src, uint32_t size, uint8_t *dst)
     {
@@ -108,7 +108,7 @@ public:
             throw std::invalid_argument("AXI Quad SPI: Destination buffer cannot be null, use write() if not receiving data");
 
         while(size--)
-            *dst++ = this->transferByte(*src++);
+            *dst++ = this->transfer(*src++);
     }
     inline void write(const uint8_t *src, uint32_t size, const bool wait = true)
     {
@@ -116,7 +116,7 @@ public:
             throw std::invalid_argument("AXI Quad SPI: Source buffer cannot be null");
 
         while(size--)
-            this->writeByte(*src++, wait && !size);
+            this->write(*src++, wait && !size);
     }
     inline void read(uint8_t *dst, uint32_t size, uint8_t send_data = 0x00)
     {
@@ -124,7 +124,7 @@ public:
             throw std::invalid_argument("AXI Quad SPI: Destination buffer cannot be null");
 
         while(size--)
-            *dst++ = this->transferByte(send_data);
+            *dst++ = this->transfer(send_data);
     }
 
 private:

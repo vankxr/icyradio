@@ -8,6 +8,7 @@
 #include <SoapySDR/Device.hpp>
 #include <SoapySDR/Logger.h>
 #include <SoapySDR/Types.h>
+#include "ioctl.hpp"
 #include "MappedRegion.hpp"
 #include "AXI.hpp"
 #include "AXIGPIO.hpp"
@@ -19,6 +20,8 @@
 #include "AXIRFTStamp.hpp"
 #include "AXIDNA.hpp"
 #include "AXIDMAC.hpp"
+#include "AXIPCIe.hpp"
+#include "Si5351.hpp"
 
 class SoapyIcyRadio: public SoapySDR::Device
 {
@@ -254,11 +257,14 @@ private:
     AXIGPIO *axi_gpio[AXI_GPIO_NUM_INSTANCES];
     AXIIIC *axi_iic[AXI_IIC_NUM_INSTANCES];
     AXIQuadSPI *axi_quad_spi[AXI_QUAD_SPI_NUM_INSTANCES];
-    // AXIPCIe *axi_pcie;
+    AXIPCIe *axi_pcie;
     AXII2S *axi_i2s;
     AXIXADC *axi_xadc;
     AXIRFTStamp *axi_rf_tstamp;
     AXIIRQCtrl *axi_irq_ctrl;
     AXIDNA *axi_dna;
     // AXIAD9361 *axi_ad9361;
+
+    // Peripherals
+    Si5351 *clk_mngr;
 };

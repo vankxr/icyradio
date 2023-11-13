@@ -1,12 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 #include <mutex>
 #include <unistd.h>
 #include "AXIPeripheral.hpp"
 #include "Utils.hpp"
 
-#define AXI_IIC_NUM_INSTANCES 2
+#define AXI_IIC_NUM_INSTANCES 3
 
 #define AXI_IIC_REG_GIE          0x01C
 #define AXI_IIC_REG_ISR          0x020
@@ -64,54 +65,57 @@
 #define AXI_IIC_REG_TX_FIFO_START BIT(8)
 #define AXI_IIC_REG_TX_FIFO_STOP  BIT(9)
 
-#define AXI_IIC_NORMAL 0
-#define AXI_IIC_FAST 1
-
-#define AXI_IIC_RESTART 0
-#define AXI_IIC_STOP 1
 
 class AXIIIC: public AXIPeripheral
 {
 public:
-    enum Speed
+    enum Speed : uint32_t
     {
-        NORMAL = 0, // 100 kHz
-        FAST = 1 // 400 kHz
+        NORMAL = 100000, // 100 kHz
+        FAST = 400000, // 400 kHz
+        FAST_PLUS = 1000000 // 1 MHz
     };
-    enum Stop
+    enum Stop : bool
     {
-        RESTART = 0,
-        STOP = 1
+        RESTART = false,
+        STOP = true
     };
-    enum GPOValue
-    {
-        LOW = 0,
-        HIGH = 1
-    };
+    // enum GPOValue : bool
+    // {
+    //     LOW = false,
+    //     HIGH = true
+    // };
 
+private:
+    void reinit();
+
+public:
     AXIIIC(void *base_address);
-    AXIIIC(void *base_address, uint64_t input_freq, AXIIIC::Speed speed = AXIIIC::NORMAL);
+    AXIIIC(void *base_address, uint64_t input_freq, AXIIIC::Speed speed = AXIIIC::Speed::NORMAL);
 
     void init(uint64_t input_freq, AXIIIC::Speed speed = AXIIIC::NORMAL);
 
     void lock();
     void unlock();
 
-    void transmit(uint8_t address, uint8_t *buf, uint8_t count, AXIIIC::Stop stop = AXIIIC::STOP);
+    std::vector<uint8_t> scan();
+    bool scan(uint8_t address);
 
-    inline void write(uint8_t address, uint8_t *src, uint32_t count, AXIIIC::Stop stop = AXIIIC::STOP)
+    void transmit(uint8_t address, uint8_t *buf, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP);
+
+    inline void write(uint8_t address, uint8_t *src, uint32_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) & ~0x01, src, count, stop);
     }
-    inline void read(uint8_t address, uint8_t *dst, uint32_t count, AXIIIC::Stop stop = AXIIIC::STOP)
+    inline void read(uint8_t address, uint8_t *dst, uint32_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) | 0x01, dst, count, stop);
     }
-    inline void writeByte(uint8_t address, uint8_t data, AXIIIC::Stop stop = AXIIIC::STOP)
+    inline void write(uint8_t address, uint8_t data, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) & ~0x01, &data, 1, stop);
     }
-    inline uint8_t readByte(uint8_t address, AXIIIC::Stop stop = AXIIIC::STOP)
+    inline uint8_t read(uint8_t address, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         uint8_t data;
 
@@ -120,22 +124,30 @@ public:
         return data;
     }
 
-    void setGPOValue(uint8_t gpo, AXIIIC::GPOValue value);
-    AXIIIC::GPOValue getGPOValue(uint8_t gpo);
+    /* FIXME: Disable GPOs because they are not reliable enough
+     * since the IP core has some problems that require it to be soft reset
+     * thus restoring the default GPO value, making them useless
+     */
+    // void setGPOValue(uint8_t gpo, AXIIIC::GPOValue value);
+    // inline void setGPOValue(uint8_t gpo, bool value)
+    // {
+    //     this->setGPOValue(gpo, value ? AXIIIC::GPOValue::HIGH : AXIIIC::GPOValue::LOW);
+    // }
+    // AXIIIC::GPOValue getGPOValue(uint8_t gpo);
 
 private:
     std::mutex mutex;
     std::mutex bus_mutex;
-    std::mutex gpo_mutex;
+    // std::mutex gpo_mutex;
+
+    uint32_t timing_regs[8];
 };
 
 // Instance 0 - axi_iic_0 - Audio CODEC control
 #define AXI_IIC_CODEC_INST      0
 
-#define AXI_IIC_CODEC_RSTn_BIT      0 // BIT  0: CODEC_RSTn
-
 // Instance 1 - axi_iic_1 - System control (clock manager, power manager, etc...)
 #define AXI_IIC_SYS_INST        1
 
-#define AXI_IIC_GPO_PM_I2C_EN_BIT      0 // BIT  0: PM_I2C_EN
-#define AXI_IIC_GPO_CLK_MNGR_OEn_BIT   1 // BIT  1: CLK_MNGR_OEn
+// Instance 2 - axi_iic_2 - Expansion card control
+#define AXI_IIC_EXP_INST        2

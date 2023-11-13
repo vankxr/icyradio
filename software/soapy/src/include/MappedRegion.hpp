@@ -14,11 +14,17 @@ public:
     MappedRegion(int fd, uintptr_t start, size_t size);
     ~MappedRegion();
 
-    void *get();
-private:
-    void map();         // Map the region
-    void unmap();       // Unmap the region
+    void map();
+    void unmap();
 
+    void *getVirt();
+    uintptr_t getPhys();
+
+    size_t getSize();
+
+    bool isMapped();
+
+private:
     int fd;             // File descriptor of the memory device
     uintptr_t start;    // Start address of the region (Physical address)
     size_t size;        // Size of the requested region

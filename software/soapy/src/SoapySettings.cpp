@@ -12,21 +12,24 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
     this->mm_dma_buffer = nullptr;
 
     // AXI Peripherals
-    for(int i = 0; i < AXI_DMAC_NUM_INSTANCES; i++)
+    for(uint8_t i = 0; i < AXI_DMAC_NUM_INSTANCES; i++)
         this->axi_dmac[i] = nullptr;
-    for(int i = 0; i < AXI_GPIO_NUM_INSTANCES; i++)
+    for(uint8_t i = 0; i < AXI_GPIO_NUM_INSTANCES; i++)
         this->axi_gpio[i] = nullptr;
-    for(int i = 0; i < AXI_IIC_NUM_INSTANCES; i++)
+    for(uint8_t i = 0; i < AXI_IIC_NUM_INSTANCES; i++)
         this->axi_iic[i] = nullptr;
-    for(int i = 0; i < AXI_QUAD_SPI_NUM_INSTANCES; i++)
+    for(uint8_t i = 0; i < AXI_QUAD_SPI_NUM_INSTANCES; i++)
         this->axi_quad_spi[i] = nullptr;
-    // this->axi_pcie = nullptr;
+    this->axi_pcie = nullptr;
     this->axi_i2s = nullptr;
     this->axi_xadc = nullptr;
     this->axi_rf_tstamp = nullptr;
     this->axi_irq_ctrl = nullptr;
     this->axi_dna = nullptr;
     // this->axi_ad9361 = nullptr;
+
+    // Peripherals
+    this->clk_mngr = nullptr;
 
     if(args.count("label") != 0)
         SoapySDR_logf(SOAPY_SDR_INFO, "Opening %s", args.at("label").c_str());
@@ -39,12 +42,12 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
     if(args.count("path") != 0) // Path specified (takes priority over device ID)
     {
         path = args.at("path");
-        uint32_t devID = 0;
+        uint32_t dev_id = 0;
 
-        if(sscanf(path.c_str(), "/dev/icyradio%u", &devID) != 1)
+        if(sscanf(path.c_str(), "/dev/icyradio%u", &dev_id) != 1)
             throw std::runtime_error("Invalid IcyRadio device path");
 
-        if(path.compare("/dev/icyradio" + std::to_string(devID)) != 0)
+        if(path.compare("/dev/icyradio" + std::to_string(dev_id)) != 0)
             throw std::runtime_error("Invalid IcyRadio device path");
 
         if(args.count("device_id") != 0 || args.count("serial") != 0)
@@ -70,12 +73,12 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
         for(const auto &entry : std::filesystem::directory_iterator(dev_root))
         {
             path = entry.path().string();
-            uint32_t devID = 0;
+            uint32_t dev_id = 0;
 
-            if(sscanf(path.c_str(), "/dev/icyradio%u", &devID) != 1)
+            if(sscanf(path.c_str(), "/dev/icyradio%u", &dev_id) != 1)
                 continue;
 
-            if(path.compare("/dev/icyradio" + std::to_string(devID)) != 0)
+            if(path.compare("/dev/icyradio" + std::to_string(dev_id)) != 0)
                 continue;
 
             this->fd = open(path.c_str(), O_RDWR);
@@ -83,20 +86,34 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
             if(this->fd < 0)
                 continue;
 
-            this->setupMemoryMaps();
-            this->resetSystem();
+            bool ok;
 
-            while(!this->axi_dna->ready())
-                usleep(1000);
-
-            char dna[16];
-            snprintf(dna, sizeof(dna), "%015lX", this->axi_dna->read());
-
-            if(args.at("serial") == dna)
+            try
             {
-                SoapySDR_logf(SOAPY_SDR_DEBUG, "Found device with serial %s at path %s", dna, path.c_str());
+                this->setupMemoryMaps();
+                this->resetSystem();
 
-                break;
+                ok = true;
+            }
+            catch(...)
+            {
+                ok = false;
+            }
+
+            if(ok)
+            {
+                while(!this->axi_dna->ready())
+                    usleep(1000);
+
+                char dna[16];
+                snprintf(dna, sizeof(dna), "%015lX", this->axi_dna->read());
+
+                if(args.at("serial") == dna)
+                {
+                    SoapySDR_logf(SOAPY_SDR_DEBUG, "Found device with serial %s at path %s", dna, path.c_str());
+
+                    break;
+                }
             }
 
             this->freeMemoryMaps();
@@ -117,13 +134,76 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
         if(this->fd < 0)
             throw std::runtime_error("Failed to open device (" + std::string(std::strerror(errno)) + ")");
 
-        this->setupMemoryMaps();
-        this->resetSystem();
+        try
+        {
+            this->setupMemoryMaps();
+            this->resetSystem();
+        }
+        catch(...)
+        {
+            this->freeMemoryMaps();
+
+            close(this->fd);
+
+            this->fd = -1;
+
+            throw;
+        }
     }
 
-    this->initPeripheralsPreClocks();
-    this->initClocks();
-    this->initPeripheralsPostClocks();
+    try
+    {
+        this->initPeripheralsPreClocks();
+    }
+    catch(...)
+    {
+        this->deinitPeripheralsPreClocks();
+
+        this->freeMemoryMaps();
+
+        close(this->fd);
+
+        this->fd = -1;
+
+        throw;
+    }
+
+    try
+    {
+        this->initClocks();
+    }
+    catch(...)
+    {
+        this->deinitClocks();
+        this->deinitPeripheralsPreClocks();
+
+        this->freeMemoryMaps();
+
+        close(this->fd);
+
+        this->fd = -1;
+
+        throw;
+    }
+
+    try
+    {
+        this->initPeripheralsPostClocks();
+    }
+    catch(...)
+    {
+        this->deinitPeripheralsPostClocks();
+        this->deinitClocks();
+        this->deinitPeripheralsPreClocks();
+
+        this->freeMemoryMaps();
+
+        close(this->fd);
+
+        this->fd = -1;
+
+        throw;
+    }
 }
 
 SoapyIcyRadio::~SoapyIcyRadio()

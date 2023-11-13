@@ -18,10 +18,10 @@ public:
         OUTPUT = 0,
         INPUT = 1
     };
-    enum Value
+    enum Value : bool
     {
-        LOW = 0,
-        HIGH = 1
+        LOW = false,
+        HIGH = true
     };
 
     AXIGPIO(void *base_address);
@@ -29,6 +29,10 @@ public:
     void setDirection(uint8_t gpio, AXIGPIO::Direction direction);
     AXIGPIO::Direction getDirection(uint8_t gpio);
     void setValue(uint8_t gpio, AXIGPIO::Value value);
+    inline void setValue(uint8_t gpo, bool value)
+    {
+        this->setValue(gpo, value ? AXIGPIO::Value::HIGH : AXIGPIO::Value::LOW);
+    }
     AXIGPIO::Value getValue(uint8_t gpio);
 
 private:
@@ -118,11 +122,11 @@ private:
 #define AXI_GPIO_PCIE_USER_LINK_UP_BIT                  5 // BIT  5: axi_pcie_0 user_link_up (Fixed input)
 #define AXI_GPIO_RV32_TRAPPED_BIT                       6 // BIT  6: picorv32_0 trap (Fixed input)
 // BIT  7: RSVD
-// BIT  8: RSVD
-// BIT  9: RSVD
-// BIT 10: RSVD
-// BIT 11: RSVD
-#define AXI_GPIO_CM4_WAKE_BIT                          12 // BIT 12: CM4_WAKE (Fixed output)
+#define AXI_GPIO_CM4_WAKE_BIT                           8 // BIT 8: CM4_WAKE (Fixed output)
+#define AXI_GPIO_CODEC_RSTn_BIT                         9 // BIT 9: CODEC_RSTn (Fixed output)
+#define AXI_GPIO_PM_I2C_EN_BIT                         10 // BIT 10: PM_I2C_EN (Fixed output)
+#define AXI_GPIO_CLK_MNGR_OEn_BIT                      11 // BIT 11: CLK_MNGR_OEn (Fixed output)
+// BIT 12: RSVD
 // BIT 13: RSVD
 // BIT 14: RSVD
 // BIT 15: RSVD

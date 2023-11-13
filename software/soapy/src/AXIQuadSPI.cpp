@@ -4,7 +4,7 @@ AXIQuadSPI::AXIQuadSPI(void *base_address): AXIPeripheral(base_address)
 {
     // Nothing to do here
 }
-AXIQuadSPI::AXIQuadSPI(void *base_address, AXIQuadSPI::Mode mode, AXIQuadSPI::BitOrder bit_order): AXIPeripheral(base_address)
+AXIQuadSPI::AXIQuadSPI(void *base_address, AXIQuadSPI::Mode mode, AXIQuadSPI::BitOrder bit_order): AXIQuadSPI(base_address)
 {
     this->init(mode, bit_order);
 }
@@ -38,7 +38,7 @@ void AXIQuadSPI::slaveSelect(uint32_t mask, const bool select)
         this->mutex.unlock();
 }
 
-uint8_t AXIQuadSPI::transferByte(const uint8_t data)
+uint8_t AXIQuadSPI::transfer(const uint8_t data)
 {
     this->writeReg(AXI_QUAD_SPI_REG_SPICR, this->readReg(AXI_QUAD_SPI_REG_SPICR) | AXI_QUAD_SPI_REG_SPICR_RXFIFO_RESET);
 
@@ -49,7 +49,7 @@ uint8_t AXIQuadSPI::transferByte(const uint8_t data)
 
     return (uint8_t)this->readReg(AXI_QUAD_SPI_REG_SPI_DRR);
 }
-void AXIQuadSPI::writeByte(const uint8_t data, const bool wait)
+void AXIQuadSPI::write(const uint8_t data, const bool wait)
 {
     this->writeReg(AXI_QUAD_SPI_REG_SPICR, this->readReg(AXI_QUAD_SPI_REG_SPICR) | AXI_QUAD_SPI_REG_SPICR_RXFIFO_RESET);
 

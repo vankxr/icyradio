@@ -67,7 +67,8 @@ void MappedRegion::unmap()
     this->ptr = nullptr;
     this->mapped = false;
 }
-void *MappedRegion::get()
+
+void *MappedRegion::getVirt()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 
@@ -78,4 +79,24 @@ void *MappedRegion::get()
         throw std::runtime_error("Invalid pointer");
 
     return this->ptr;
+}
+uintptr_t MappedRegion::getPhys()
+{
+    std::lock_guard<std::mutex> lock(this->mutex);
+
+    return this->start;
+}
+
+size_t MappedRegion::getSize()
+{
+    std::lock_guard<std::mutex> lock(this->mutex);
+
+    return this->size;
+}
+
+bool MappedRegion::isMapped()
+{
+    std::lock_guard<std::mutex> lock(this->mutex);
+
+    return this->mapped;
 }

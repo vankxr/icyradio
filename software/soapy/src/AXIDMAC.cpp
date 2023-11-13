@@ -108,8 +108,11 @@ AXIDMAC::AXIDMAC(void *base_address, AXIDMAC::IRQConfig irq_config): AXIPeripher
 }
 AXIDMAC::~AXIDMAC()
 {
-    if(this->irq_config.controller)
+    if(this->irq_config.controller != nullptr)
+    {
+        this->irq_config.controller->setISR(this->irq_config.irq, nullptr);
         this->irq_config.controller->setIRQEnabled(this->irq_config.irq, false);
+    }
 }
 
 void AXIDMAC::init(AXIDMAC::IRQConfig irq_config)
@@ -117,13 +120,14 @@ void AXIDMAC::init(AXIDMAC::IRQConfig irq_config)
     if(this->irq_config.controller != nullptr)
         throw std::runtime_error("AXI DMAC: Already initialized");
 
-    if(irq_config.controller == nullptr)
+    if(irq_config.controller == nullptr) // Current implementation requires IRQ support
         return;
 
     this->irq_config = irq_config;
 
     this->irq_config.controller->setISR(this->irq_config.irq, AXIDMAC::ISR, static_cast<void *>(this));
     this->irq_config.controller->setIRQEnabled(this->irq_config.irq, true);
+    this->irq_config.controller->setIRQPending(this->irq_config.irq, false);
 
     this->writeReg(AXI_DMAC_REG_IRQ_MASK, AXI_DMAC_REG_IRQ_x_IRQ_XFER_QUEUED); // Mask only the transfer queued IRQ
 }
@@ -276,10 +280,10 @@ void AXIDMAC::waitTransferCompletion(uint8_t id, uint32_t timeout_ms)
 
     AXIDMAC::Transfer *xfer = &this->transfers[id];
 
-    uint64_t timeout_us = (uint64_t)timeout_ms * 1000ULL;
+    uint64_t timeout = (uint64_t)timeout_ms * 10ULL;
 
-    while(--timeout_us && !xfer->done)
-        usleep(1);
+    while(--timeout && !xfer->done)
+        usleep(100);
 
     if(!xfer->done)
         throw std::runtime_error("AXI DMAC: Timed out waiting for transfer " + std::to_string(id));

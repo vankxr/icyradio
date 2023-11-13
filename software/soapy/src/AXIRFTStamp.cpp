@@ -2,17 +2,24 @@
 
 AXIRFTStamp::AXIRFTStamp(void *base_address, std::function<bool()> access_allowed_fn): AXIPeripheral(base_address)
 {
-    uint32_t version = this->getIPVersion();
-
-    if(AXI_CORE_VERSION_MAJOR(version) < 1)
-        throw std::runtime_error("AXI RF Timestamping Core v" + std::to_string(AXI_CORE_VERSION_MAJOR(version)) + "." + std::to_string(AXI_CORE_VERSION_MINOR(version)) + "." + std::to_string(AXI_CORE_VERSION_PATCH(version)) + " is not supported");
-
     this->init(access_allowed_fn);
 }
 
 void AXIRFTStamp::init(std::function<bool()> access_allowed_fn)
 {
+    if(this->access_allowed_fn != nullptr)
+        throw std::runtime_error("AXI RF Timestamping: Already initialized");
+
+    if(access_allowed_fn == nullptr)
+        return;
+
     this->access_allowed_fn = access_allowed_fn;
+
+    uint32_t version = this->getIPVersion();
+
+    if(AXI_CORE_VERSION_MAJOR(version) < 1)
+        throw std::runtime_error("AXI RF Timestamping Core v" + std::to_string(AXI_CORE_VERSION_MAJOR(version)) + "." + std::to_string(AXI_CORE_VERSION_MINOR(version)) + "." + std::to_string(AXI_CORE_VERSION_PATCH(version)) + " is not supported");
+
 }
 
 uint32_t AXIRFTStamp::getIPVersion()

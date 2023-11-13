@@ -27,18 +27,26 @@ void AXIIRQCtrl::handleIRQs()
 
         std::lock_guard<std::mutex> lock(this->mutex);
 
-        uint32_t pend = this->readReg(AXI_IRQ_CTRL_REG_IRQ_PEND);
-        pend &= this->mask;
-        this->writeReg(AXI_IRQ_CTRL_REG_IRQ_PEND_CLR, pend);
+        uint32_t pend = this->readReg(AXI_IRQ_CTRL_REG_IRQ_PEND) & this->mask;
 
         for(uint8_t i = 0; i < AXIIRQCtrl::IRQNumber::MAX; i++)
         {
             if(pend & BIT(i))
             {
-                if(this->isr_info[i].isr)
-                    this->isr_info[i].isr(this->isr_info[i].arg);
+                // Call ISR inside try-catch block to prevent exceptions from breaking the loop
+                try
+                {
+                    if(this->isr_info[i].isr)
+                        this->isr_info[i].isr(this->isr_info[i].arg);
+                }
+                catch(std::exception &e)
+                {
+                    // Do nothing
+                }
             }
         }
+
+        this->writeReg(AXI_IRQ_CTRL_REG_IRQ_PEND_CLR, pend);
     }
 }
 
@@ -88,14 +96,14 @@ uint32_t AXIIRQCtrl::getIPVersion()
     return this->readReg(AXI_IRQ_CTRL_REG_VERSION);
 }
 
-void AXIIRQCtrl::configIRQ(AXIIRQCtrl::IRQNumber irq, uint8_t dest, bool enable)
+void AXIIRQCtrl::configIRQ(AXIIRQCtrl::IRQNumber irq, AXIIRQCtrl::IRQMode mode, uint8_t dest, bool enable)
 {
     if(irq >= AXIIRQCtrl::IRQNumber::MAX)
         throw std::invalid_argument("AXI IRQ Controller: Invalid IRQ number");
 
     std::lock_guard<std::mutex> lock(this->mutex);
 
-    this->writeReg(AXI_IRQ_CTRL_REG_IRQ_CONFIG(irq), (enable ? AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_EN : 0) | AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST(dest));
+    this->writeReg(AXI_IRQ_CTRL_REG_IRQ_CONFIG(irq), mode | (enable ? AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_ENABLE : 0) | AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST(dest));
 }
 void AXIIRQCtrl::setISR(AXIIRQCtrl::IRQNumber irq, AXIIRQCtrl::ISR isr, void *arg)
 {

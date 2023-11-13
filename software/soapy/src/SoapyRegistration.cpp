@@ -13,12 +13,12 @@ SoapySDR::KwargsList findIcyRadio(const SoapySDR::Kwargs &args)
     for(const auto &entry : std::filesystem::directory_iterator(dev_root))
     {
         std::string path = entry.path().string();
-        uint32_t devID = 0;
+        uint32_t dev_id = 0;
 
-        if(sscanf(path.c_str(), "/dev/icyradio%u", &devID) != 1)
+        if(sscanf(path.c_str(), "/dev/icyradio%u", &dev_id) != 1)
             continue;
 
-        if(path.compare("/dev/icyradio" + std::to_string(devID)) != 0)
+        if(path.compare("/dev/icyradio" + std::to_string(dev_id)) != 0)
             continue;
 
         SoapySDR::Kwargs info;
@@ -32,15 +32,16 @@ SoapySDR::KwargsList findIcyRadio(const SoapySDR::Kwargs &args)
 
             delete dev;
         }
-        catch(const std::exception &e)
+        catch(std::exception &e)
         {
-            std::cout << "Failed to open device " << path << ": " << e.what() << std::endl;
+            SoapySDR_logf(SOAPY_SDR_DEBUG, "Failed to open device %s: %s", path.c_str(), e.what());
+
             continue;
         }
 
         info["label"] = "IcyRadio - " + info["serial"];
         info["path"] = path;
-        info["device_id"] = std::to_string(devID);
+        info["device_id"] = std::to_string(dev_id);
 
         if(args.count("serial") != 0 && info["serial"] != args.at("serial"))
             continue;

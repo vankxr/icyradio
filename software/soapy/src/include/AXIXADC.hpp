@@ -71,14 +71,16 @@
 class AXIXADC: public AXIPeripheral
 {
 private:
-    static double toTemperature(uint16_t code);
-    static uint16_t fromTemperature(double val);
+    static double ToTemperature(uint16_t code);
+    static uint16_t FromTemperature(double val);
 
-    static double toVoltage(uint16_t code);
-    static uint16_t fromVoltage(double val);
+    static double ToVoltage(uint16_t code);
+    static uint16_t FromVoltage(double val);
 
 public:
     AXIXADC(void *base_address);
+
+    // To be completed
 
     double readTemperature();
     double readVCCINT();
