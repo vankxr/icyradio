@@ -76,9 +76,14 @@ localparam PCIE_MSI_REQ_FIFO_DEPTH = 1 << PCIE_MSI_REQ_FIFO_DEPTH_W;
 
 wire        [NUM_IRQS - 1:0] irq_in;
 reg         [NUM_IRQS - 1:0] irq_in_sync [NUM_CDC_STAGES - 1:0];
+reg         [NUM_IRQS - 1:0] irq_in_q;
+reg         [NUM_IRQS - 1:0] irq_in_rising;
+reg         [NUM_IRQS - 1:0] irq_in_falling;
 reg         [NUM_IRQS - 1:0] irq_pend;
 reg         [NUM_IRQS - 1:0] irq_ack;
 reg         [NUM_IRQS - 1:0] irq_enabled;
+reg         [NUM_IRQS - 1:0] irq_inv; // 0 = normal, 1 = inverted
+reg         [NUM_IRQS - 1:0] irq_mode; // 0 = level, 1 = edge
 reg  [NUM_IRQ_DESTS_W - 1:0] irq_dest [NUM_IRQS - 1:0];
 
 reg  [31:0] cpu_irq_out;
@@ -144,6 +149,25 @@ always @(posedge aclk)
 
                 for(i = 1; i < NUM_CDC_STAGES; i = i + 1)
                     irq_in_sync[i] <= irq_in_sync[i - 1];
+            end
+    end
+
+// IRQ edge detector
+always @(posedge aclk)
+    begin
+        if(!aresetn)
+            begin
+                irq_in_q <= {NUM_IRQS{1'b0}};
+
+                irq_in_rising <= {NUM_IRQS{1'b0}};
+                irq_in_falling <= {NUM_IRQS{1'b0}};
+            end
+        else
+            begin
+                irq_in_q <= irq_in_sync[NUM_CDC_STAGES - 1];
+
+                irq_in_rising <= irq_in_sync[NUM_CDC_STAGES - 1] & ~irq_in_q;
+                irq_in_falling <= ~irq_in_sync[NUM_CDC_STAGES - 1] & irq_in_q;
             end
     end
 
@@ -250,7 +274,7 @@ always @(posedge aclk)
                                         begin
                                             pcie_msi_vector <= pcie_msi_req_fifo_rd_data;
                                             pcie_msi_request <= 1'b1;
-        
+
                                             pcie_msi_fsm_state <= 2'b10;
                                         end
                                     else
@@ -343,6 +367,8 @@ always @(posedge aclk)
                 irq_pend <= {NUM_IRQS{1'b0}};
                 irq_ack <= {NUM_IRQS{1'b0}};
                 irq_enabled <= {NUM_IRQS{1'b0}};
+                irq_inv <= {NUM_IRQS{1'b0}};
+                irq_mode <= {NUM_IRQS{1'b0}};
 
                 cpu_irq_out <= 32'h00000000;
 
@@ -354,15 +380,21 @@ always @(posedge aclk)
             end
         else
             begin
-                irq_pend <= irq_pend | irq_in_sync[NUM_CDC_STAGES - 1];
-                irq_ack <= irq_ack & irq_pend;
+                irq_ack <= irq_ack & irq_pend; // Unacknowledge interrupts that are no longer pending
 
-                cpu_irq_out <= cpu_irq_out & ~cpu_eoi_in;
+                cpu_irq_out <= cpu_irq_out & ~cpu_eoi_in; // De-assert CPU interrupts that have been acknowledged
 
                 pcie_msi_req_fifo_wr_en <= 1'b0;
 
                 for(i = 0; i < NUM_IRQS; i = i + 1)
                     begin
+                        case({irq_mode[i], irq_inv[i]})
+                            2'b00: irq_pend[i] <= irq_pend[i] | irq_in_q[i]; // High level
+                            2'b01: irq_pend[i] <= irq_pend[i] | ~irq_in_q[i]; // Low level
+                            2'b10: irq_pend[i] <= irq_pend[i] | irq_in_rising[i]; // Rising edge
+                            2'b11: irq_pend[i] <= irq_pend[i] | irq_in_falling[i]; // Falling edge
+                        endcase
+
                         if(irq_pend[i] && irq_enabled[i] && !irq_ack[i])
                             begin
                                 if(irq_dest[i] < 32) // To PCIe MSI
@@ -370,7 +402,7 @@ always @(posedge aclk)
                                         if(pcie_msi_enabled && !pcie_msi_req_fifo_full && irq_dest[i] < pcie_msi_vector_width_s)
                                             begin
                                                 irq_ack[i] <= 1'b1;
-                                                
+
                                                 pcie_msi_req_fifo_wr_en <= 1'b1;
                                                 pcie_msi_req_fifo_wr_data <= irq_dest[i][PCIE_MSI_VEC_SIZE - 1:0];
                                             end
@@ -380,7 +412,7 @@ always @(posedge aclk)
                                         if(!cpu_irq_out[irq_dest[i][4:0]])
                                             begin
                                                 irq_ack[i] <= 1'b1;
-        
+
                                                 cpu_irq_out[irq_dest[i][4:0]] <= 1'b1;
                                             end
                                     end
@@ -402,15 +434,10 @@ always @(posedge aclk)
 
                                         if(s_axi_wstrb[1] == 1'b1) // s_axi_wdata[15:8]
                                             begin
-                                                if(s_axi_wdata[9]) // Disabling takes priority over enabling
-                                                    irq_enabled[i] <= 1'b0;
-                                                else if(s_axi_wdata[8])
-                                                    irq_enabled[i] <= 1'b1;
-
-                                                if(s_axi_wdata[11]) // Clearing takes priority over setting
-                                                    irq_pend[i] <= 1'b0;
-                                                else if(s_axi_wdata[10])
-                                                    irq_pend[i] <= 1'b1;
+                                                irq_enabled[i] <= s_axi_wdata[8];
+                                                irq_pend[i] <= s_axi_wdata[9];
+                                                irq_inv[i] <= s_axi_wdata[10];
+                                                irq_mode[i] <= s_axi_wdata[11];
                                             end
 
                                         // if(s_axi_wstrb[2] == 1'b1) // s_axi_wdata[23:16]
@@ -568,7 +595,7 @@ always @(posedge aclk)
                         // Registers for this interrupt
                         if(s_axi_reg_rden && s_axi_araddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB + 5] == {{(OPT_MEM_ADDR_BITS - 5){1'b0}}, 1'b1})
                             if(s_axi_araddr_q[ADDR_LSB + 4:ADDR_LSB] == i)
-                                s_axi_rdata <= {14'd0, irq_pend[i], irq_enabled[i], 8'd0, {(8 - NUM_IRQ_DESTS_W){1'b0}}, irq_dest[i]};
+                                s_axi_rdata <= {20'd0, irq_mode[i], irq_inv[i], irq_pend[i], irq_enabled[i], {(8 - NUM_IRQ_DESTS_W){1'b0}}, irq_dest[i]};
                     end
 
                 if(s_axi_reg_rden)

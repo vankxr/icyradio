@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Fri Oct 27 00:54:26 2023
+// Date        : Sun Nov 12 22:48:03 2023
 // Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
-// Command     : write_verilog -force -mode synth_stub -rename_top icyradio_axi_irq_controller_0_0 -prefix
-//               icyradio_axi_irq_controller_0_0_ icyradio_axi_irq_controller_0_0_stub.v
+// Command     : write_verilog -force -mode synth_stub
+//               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_irq_controller_0_0/icyradio_axi_irq_controller_0_0_stub.v
 // Design      : icyradio_axi_irq_controller_0_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2
@@ -20,7 +20,7 @@ module icyradio_axi_irq_controller_0_0(aclk, aresetn, s_axi_awaddr, s_axi_awprot
   s_axi_arready, s_axi_rdata, s_axi_rresp, s_axi_rvalid, s_axi_rready, irq_in, cpu_irq_out, 
   cpu_eoi_in, pcie_msi_enabled, pcie_msi_granted, pcie_msi_vector_width, pcie_msi_request, 
   pcie_msi_vector)
-/* synthesis syn_black_box black_box_pad_pin="aclk,aresetn,s_axi_awaddr[7:0],s_axi_awprot[2:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[7:0],s_axi_arprot[2:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,irq_in[15:0],cpu_irq_out[31:0],cpu_eoi_in[31:0],pcie_msi_enabled,pcie_msi_granted,pcie_msi_vector_width[2:0],pcie_msi_request,pcie_msi_vector[4:0]" */;
+/* synthesis syn_black_box black_box_pad_pin="aclk,aresetn,s_axi_awaddr[7:0],s_axi_awprot[2:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[7:0],s_axi_arprot[2:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,irq_in[19:0],cpu_irq_out[31:0],cpu_eoi_in[31:0],pcie_msi_enabled,pcie_msi_granted,pcie_msi_vector_width[2:0],pcie_msi_request,pcie_msi_vector[4:0]" */;
   input aclk;
   input aresetn;
   input [7:0]s_axi_awaddr;
@@ -42,7 +42,7 @@ module icyradio_axi_irq_controller_0_0(aclk, aresetn, s_axi_awaddr, s_axi_awprot
   output [1:0]s_axi_rresp;
   output s_axi_rvalid;
   input s_axi_rready;
-  input [15:0]irq_in;
+  input [19:0]irq_in;
   output [31:0]cpu_irq_out;
   input [31:0]cpu_eoi_in;
   input pcie_msi_enabled;

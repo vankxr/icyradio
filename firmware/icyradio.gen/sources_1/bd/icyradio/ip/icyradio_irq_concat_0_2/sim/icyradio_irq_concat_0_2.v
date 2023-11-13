@@ -70,6 +70,10 @@ module icyradio_irq_concat_0_2 (
   In13,
   In14,
   In15,
+  In16,
+  In17,
+  In18,
+  In19,
   dout
 );
 
@@ -89,7 +93,11 @@ input wire [0 : 0] In12;
 input wire [0 : 0] In13;
 input wire [0 : 0] In14;
 input wire [0 : 0] In15;
-output wire [15 : 0] dout;
+input wire [0 : 0] In16;
+input wire [0 : 0] In17;
+input wire [0 : 0] In18;
+input wire [0 : 0] In19;
+output wire [19 : 0] dout;
 
   xlconcat_v2_1_4_xlconcat #(
     .IN0_WIDTH(1),
@@ -220,8 +228,8 @@ output wire [15 : 0] dout;
     .IN125_WIDTH(1),
     .IN126_WIDTH(1),
     .IN127_WIDTH(1),
-    .dout_width(16),
-    .NUM_PORTS(16)
+    .dout_width(20),
+    .NUM_PORTS(20)
   ) inst (
     .In0(In0),
     .In1(In1),
@@ -239,10 +247,10 @@ output wire [15 : 0] dout;
     .In13(In13),
     .In14(In14),
     .In15(In15),
-    .In16(1'B0),
-    .In17(1'B0),
-    .In18(1'B0),
-    .In19(1'B0),
+    .In16(In16),
+    .In17(In17),
+    .In18(In18),
+    .In19(In19),
     .In20(1'B0),
     .In21(1'B0),
     .In22(1'B0),

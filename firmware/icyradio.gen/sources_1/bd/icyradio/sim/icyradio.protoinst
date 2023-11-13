@@ -1755,6 +1755,30 @@
 						"WVALID": { "actual": "s_axi_wvalid"}
 					}
 				},
+				"/axi_iic_2/S_AXI": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "s_axi_aclk"},
+						"ARADDR": { "actual": "s_axi_araddr"},
+						"ARESETN": { "actual": "s_axi_aresetn"},
+						"ARREADY": { "actual": "s_axi_arready"},
+						"ARVALID": { "actual": "s_axi_arvalid"},
+						"AWADDR": { "actual": "s_axi_awaddr"},
+						"AWREADY": { "actual": "s_axi_awready"},
+						"AWVALID": { "actual": "s_axi_awvalid"},
+						"BREADY": { "actual": "s_axi_bready"},
+						"BRESP": { "actual": "s_axi_bresp"},
+						"BVALID": { "actual": "s_axi_bvalid"},
+						"RDATA": { "actual": "s_axi_rdata"},
+						"RREADY": { "actual": "s_axi_rready"},
+						"RRESP": { "actual": "s_axi_rresp"},
+						"RVALID": { "actual": "s_axi_rvalid"},
+						"WDATA": { "actual": "s_axi_wdata"},
+						"WREADY": { "actual": "s_axi_wready"},
+						"WSTRB": { "actual": "s_axi_wstrb"},
+						"WVALID": { "actual": "s_axi_wvalid"}
+					}
+				},
 				"/axi_irq_controller_0/s_axi": {
 					"interface": "xilinx.com:interface:aximm:1.0",
 					"ports": {
@@ -3758,6 +3782,30 @@
 						"WVALID": { "actual": "M18_AXI_wvalid"}
 					}
 				},
+				"/axi_peripheral_interconnect/M19_AXI": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "M19_ACLK"},
+						"ARADDR": { "actual": "M19_AXI_araddr[127:96]"},
+						"ARESETN": { "actual": "ARESETN"},
+						"ARREADY": { "actual": "M19_AXI_arready"},
+						"ARVALID": { "actual": "M19_AXI_arvalid"},
+						"AWADDR": { "actual": "M19_AXI_awaddr[127:96]"},
+						"AWREADY": { "actual": "M19_AXI_awready"},
+						"AWVALID": { "actual": "M19_AXI_awvalid"},
+						"BREADY": { "actual": "M19_AXI_bready"},
+						"BRESP": { "actual": "M19_AXI_bresp[7:6]"},
+						"BVALID": { "actual": "M19_AXI_bvalid"},
+						"RDATA": { "actual": "M19_AXI_rdata[127:96]"},
+						"RREADY": { "actual": "M19_AXI_rready"},
+						"RRESP": { "actual": "M19_AXI_rresp[7:6]"},
+						"RVALID": { "actual": "M19_AXI_rvalid"},
+						"WDATA": { "actual": "M19_AXI_wdata[127:96]"},
+						"WREADY": { "actual": "M19_AXI_wready"},
+						"WSTRB": { "actual": "M19_AXI_wstrb[15:12]"},
+						"WVALID": { "actual": "M19_AXI_wvalid"}
+					}
+				},
 				"/axi_peripheral_interconnect/S00_AXI": {
 					"interface": "xilinx.com:interface:aximm:1.0",
 					"ports": {
@@ -5058,6 +5106,54 @@
 						"WVALID": { "actual": "S_AXI_wvalid"}
 					}
 				},
+				"/axi_peripheral_interconnect/m19_couplers/M_AXI": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "M_ACLK"},
+						"ARADDR": { "actual": "M_AXI_araddr[127:96]"},
+						"ARESETN": { "actual": "M_ARESETN"},
+						"ARREADY": { "actual": "M_AXI_arready"},
+						"ARVALID": { "actual": "M_AXI_arvalid"},
+						"AWADDR": { "actual": "M_AXI_awaddr[127:96]"},
+						"AWREADY": { "actual": "M_AXI_awready"},
+						"AWVALID": { "actual": "M_AXI_awvalid"},
+						"BREADY": { "actual": "M_AXI_bready"},
+						"BRESP": { "actual": "M_AXI_bresp[7:6]"},
+						"BVALID": { "actual": "M_AXI_bvalid"},
+						"RDATA": { "actual": "M_AXI_rdata[127:96]"},
+						"RREADY": { "actual": "M_AXI_rready"},
+						"RRESP": { "actual": "M_AXI_rresp[7:6]"},
+						"RVALID": { "actual": "M_AXI_rvalid"},
+						"WDATA": { "actual": "M_AXI_wdata[127:96]"},
+						"WREADY": { "actual": "M_AXI_wready"},
+						"WSTRB": { "actual": "M_AXI_wstrb[15:12]"},
+						"WVALID": { "actual": "M_AXI_wvalid"}
+					}
+				},
+				"/axi_peripheral_interconnect/m19_couplers/S_AXI": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "S_ACLK"},
+						"ARADDR": { "actual": "S_AXI_araddr[127:96]"},
+						"ARESETN": { "actual": "S_ARESETN"},
+						"ARREADY": { "actual": "S_AXI_arready"},
+						"ARVALID": { "actual": "S_AXI_arvalid"},
+						"AWADDR": { "actual": "S_AXI_awaddr[127:96]"},
+						"AWREADY": { "actual": "S_AXI_awready"},
+						"AWVALID": { "actual": "S_AXI_awvalid"},
+						"BREADY": { "actual": "S_AXI_bready"},
+						"BRESP": { "actual": "S_AXI_bresp[7:6]"},
+						"BVALID": { "actual": "S_AXI_bvalid"},
+						"RDATA": { "actual": "S_AXI_rdata[127:96]"},
+						"RREADY": { "actual": "S_AXI_rready"},
+						"RRESP": { "actual": "S_AXI_rresp[7:6]"},
+						"RVALID": { "actual": "S_AXI_rvalid"},
+						"WDATA": { "actual": "S_AXI_wdata[127:96]"},
+						"WREADY": { "actual": "S_AXI_wready"},
+						"WSTRB": { "actual": "S_AXI_wstrb[15:12]"},
+						"WVALID": { "actual": "S_AXI_wvalid"}
+					}
+				},
 				"/axi_peripheral_interconnect/s00_couplers/M_AXI": {
 					"interface": "xilinx.com:interface:aximm:1.0",
 					"ports": {
@@ -5706,6 +5802,32 @@
 						"WREADY": { "actual": "m_axi_wready[2:2]"},
 						"WSTRB": { "actual": "m_axi_wstrb[11:8]"},
 						"WVALID": { "actual": "m_axi_wvalid[2:2]"}
+					}
+				},
+				"/axi_peripheral_interconnect/tier2_xbar_2/M03_AXI": {
+					"interface": "xilinx.com:interface:aximm:1.0",
+					"ports": {
+						"ACLK": { "actual": "aclk"},
+						"ARADDR": { "actual": "m_axi_araddr[127:96]"},
+						"ARESETN": { "actual": "aresetn"},
+						"ARPROT": { "actual": "m_axi_arprot[11:9]"},
+						"ARREADY": { "actual": "m_axi_arready[3:3]"},
+						"ARVALID": { "actual": "m_axi_arvalid[3:3]"},
+						"AWADDR": { "actual": "m_axi_awaddr[127:96]"},
+						"AWPROT": { "actual": "m_axi_awprot[11:9]"},
+						"AWREADY": { "actual": "m_axi_awready[3:3]"},
+						"AWVALID": { "actual": "m_axi_awvalid[3:3]"},
+						"BREADY": { "actual": "m_axi_bready[3:3]"},
+						"BRESP": { "actual": "m_axi_bresp[7:6]"},
+						"BVALID": { "actual": "m_axi_bvalid[3:3]"},
+						"RDATA": { "actual": "m_axi_rdata[127:96]"},
+						"RREADY": { "actual": "m_axi_rready[3:3]"},
+						"RRESP": { "actual": "m_axi_rresp[7:6]"},
+						"RVALID": { "actual": "m_axi_rvalid[3:3]"},
+						"WDATA": { "actual": "m_axi_wdata[127:96]"},
+						"WREADY": { "actual": "m_axi_wready[3:3]"},
+						"WSTRB": { "actual": "m_axi_wstrb[15:12]"},
+						"WVALID": { "actual": "m_axi_wvalid[3:3]"}
 					}
 				},
 				"/axi_peripheral_interconnect/tier2_xbar_2/S00_AXI": {

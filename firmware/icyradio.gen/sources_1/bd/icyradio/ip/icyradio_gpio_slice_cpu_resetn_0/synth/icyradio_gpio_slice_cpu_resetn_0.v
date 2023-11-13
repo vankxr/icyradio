@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "xlslice_v1_0_2_xlslice,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_gpio_slice_cpu_resetn_0,xlslice_v1_0_2_xlslice,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_gpio_slice_cpu_resetn_0,xlslice_v1_0_2_xlslice,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlslice,x_ipVersion=1.0,x_ipCoreRevision=2,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,DIN_WIDTH=32,DIN_FROM=12,DIN_TO=12}" *)
+(* CORE_GENERATION_INFO = "icyradio_gpio_slice_cpu_resetn_0,xlslice_v1_0_2_xlslice,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=xlslice,x_ipVersion=1.0,x_ipCoreRevision=2,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,DIN_WIDTH=32,DIN_FROM=8,DIN_TO=8}" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_gpio_slice_cpu_resetn_0 (
   Din,
@@ -64,8 +64,8 @@ output wire [0 : 0] Dout;
 
   xlslice_v1_0_2_xlslice #(
     .DIN_WIDTH(32),
-    .DIN_FROM(12),
-    .DIN_TO(12)
+    .DIN_FROM(8),
+    .DIN_TO(8)
   ) inst (
     .Din(Din),
     .Dout(Dout)

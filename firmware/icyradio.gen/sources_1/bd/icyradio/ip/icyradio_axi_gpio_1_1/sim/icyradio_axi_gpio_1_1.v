@@ -131,7 +131,7 @@ input wire [31 : 0] gpio_in;
 
   axi_gpio #(
     .GPIO_IN_MASK_DEFAULT(32'H00070077),
-    .GPIO_OUT_DEFAULT(32'H07000000),
+    .GPIO_OUT_DEFAULT(32'H07000800),
     .NUM_CDC_STAGES(2)
   ) inst (
     .aclk(aclk),

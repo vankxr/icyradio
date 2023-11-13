@@ -132,7 +132,7 @@ output wire s_axi_rvalid;
 RITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RREADY" *)
 input wire s_axi_rready;
-input wire [15 : 0] irq_in;
+input wire [19 : 0] irq_in;
 output wire [31 : 0] cpu_irq_out;
 input wire [31 : 0] cpu_eoi_in;
 input wire pcie_msi_enabled;
@@ -144,7 +144,7 @@ output wire [4 : 0] pcie_msi_vector;
   axi_irq_controller #(
     .PCIE_MSI_VEC_SIZE(5),
     .PCIE_MSI_REQ_FIFO_DEPTH_W(5),
-    .NUM_IRQS(16),
+    .NUM_IRQS(20),
     .NUM_CDC_STAGES(2)
   ) inst (
     .aclk(aclk),

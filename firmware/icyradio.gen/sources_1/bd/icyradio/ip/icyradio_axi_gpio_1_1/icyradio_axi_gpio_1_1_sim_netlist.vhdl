@@ -1,7 +1,7 @@
 -- Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
--- Date        : Mon Oct 30 15:33:20 2023
+-- Date        : Sun Nov 12 22:47:35 2023
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_1_1/icyradio_axi_gpio_1_1_sim_netlist.vhdl
@@ -1344,13 +1344,13 @@ begin
       Q => \^gpio_out\(10),
       R => s_axi_awready_i_1_n_0
     );
-\gpio_out_reg[11]\: unisim.vcomponents.FDRE
+\gpio_out_reg[11]\: unisim.vcomponents.FDSE
      port map (
       C => aclk,
       CE => \gpio_out[15]_i_1_n_0\,
       D => p_7_out(11),
       Q => \^gpio_out\(11),
-      R => s_axi_awready_i_1_n_0
+      S => s_axi_awready_i_1_n_0
     );
 \gpio_out_reg[12]\: unisim.vcomponents.FDRE
      port map (

@@ -58,13 +58,13 @@ module icyradio_gpio_slice_pm_i2c_en_0 (
   Dout
 );
 
-input wire [1 : 0] Din;
+input wire [31 : 0] Din;
 output wire [0 : 0] Dout;
 
   xlslice_v1_0_2_xlslice #(
-    .DIN_WIDTH(2),
-    .DIN_FROM(1),
-    .DIN_TO(1)
+    .DIN_WIDTH(32),
+    .DIN_FROM(11),
+    .DIN_TO(11)
   ) inst (
     .Din(Din),
     .Dout(Dout)

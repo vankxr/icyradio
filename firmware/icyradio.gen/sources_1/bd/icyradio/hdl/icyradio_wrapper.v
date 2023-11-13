@@ -1,7 +1,7 @@
 //Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-//Date        : Wed Nov  1 02:25:30 2023
+//Date        : Sun Nov 12 22:46:36 2023
 //Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 //Command     : generate_target icyradio_wrapper.bd
 //Design      : icyradio_wrapper
@@ -37,6 +37,8 @@ module icyradio_wrapper
     DDR3_ras_n,
     DDR3_reset_n,
     DDR3_we_n,
+    EXT_I2C_scl_io,
+    EXT_I2C_sda_io,
     FLASH_QSPI_io0_io,
     FLASH_QSPI_io1_io,
     FLASH_QSPI_io2_io,
@@ -115,6 +117,8 @@ module icyradio_wrapper
   output DDR3_ras_n;
   output DDR3_reset_n;
   output DDR3_we_n;
+  inout EXT_I2C_scl_io;
+  inout EXT_I2C_sda_io;
   inout FLASH_QSPI_io0_io;
   inout FLASH_QSPI_io1_io;
   inout FLASH_QSPI_io2_io;
@@ -200,6 +204,14 @@ module icyradio_wrapper
   wire DDR3_ras_n;
   wire DDR3_reset_n;
   wire DDR3_we_n;
+  wire EXT_I2C_scl_i;
+  wire EXT_I2C_scl_io;
+  wire EXT_I2C_scl_o;
+  wire EXT_I2C_scl_t;
+  wire EXT_I2C_sda_i;
+  wire EXT_I2C_sda_io;
+  wire EXT_I2C_sda_o;
+  wire EXT_I2C_sda_t;
   wire FLASH_QSPI_io0_i;
   wire FLASH_QSPI_io0_io;
   wire FLASH_QSPI_io0_o;
@@ -310,6 +322,16 @@ module icyradio_wrapper
         .IO(AUDIO_I2C_sda_io),
         .O(AUDIO_I2C_sda_i),
         .T(AUDIO_I2C_sda_t));
+  IOBUF EXT_I2C_scl_iobuf
+       (.I(EXT_I2C_scl_o),
+        .IO(EXT_I2C_scl_io),
+        .O(EXT_I2C_scl_i),
+        .T(EXT_I2C_scl_t));
+  IOBUF EXT_I2C_sda_iobuf
+       (.I(EXT_I2C_sda_o),
+        .IO(EXT_I2C_sda_io),
+        .O(EXT_I2C_sda_i),
+        .T(EXT_I2C_sda_t));
   IOBUF FLASH_QSPI_io0_iobuf
        (.I(FLASH_QSPI_io0_o),
         .IO(FLASH_QSPI_io0_io),
@@ -422,6 +444,12 @@ module icyradio_wrapper
         .DDR3_ras_n(DDR3_ras_n),
         .DDR3_reset_n(DDR3_reset_n),
         .DDR3_we_n(DDR3_we_n),
+        .EXT_I2C_scl_i(EXT_I2C_scl_i),
+        .EXT_I2C_scl_o(EXT_I2C_scl_o),
+        .EXT_I2C_scl_t(EXT_I2C_scl_t),
+        .EXT_I2C_sda_i(EXT_I2C_sda_i),
+        .EXT_I2C_sda_o(EXT_I2C_sda_o),
+        .EXT_I2C_sda_t(EXT_I2C_sda_t),
         .FLASH_QSPI_io0_i(FLASH_QSPI_io0_i),
         .FLASH_QSPI_io0_o(FLASH_QSPI_io0_o),
         .FLASH_QSPI_io0_t(FLASH_QSPI_io0_t),

@@ -21,24 +21,60 @@
   <key attr.name="vert_type" attr.type="string" for="node" id="VT"/>
   <graph edgedefault="undirected" id="G" parse.edgeids="canonical" parse.nodeids="canonical" parse.order="nodesfirst">
     <node id="n0">
-      <data key="BA">0x20000000</data>
+      <data key="BA">0x40012000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x3FFFFFFF</data>
+      <data key="HA">0x40013FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_mig_7series_0_memaddr</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TM">both</data>
-      <data key="SX">/mig_7series_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">memaddr</data>
-      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
-      <data key="TU">memory</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
     <node id="n1">
+      <data key="BA">0x4000A000</data>
+      <data key="BP">BASEADDR</data>
+      <data key="HA">0x4000BFFF</data>
+      <data key="HP">HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI_CTL</data>
+      <data key="SS">CTL0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n2">
+      <data key="BA">0x60000000</data>
+      <data key="BP">AXIBAR_1</data>
+      <data key="HA">0x6FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_1</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR1</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n3">
       <data key="BA">0x00000000</data>
       <data key="BP">C_S_AXI4_BASEADDR</data>
       <data key="HA">0x007FFFFF</data>
@@ -55,42 +91,6 @@
       <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
-    </node>
-    <node id="n2">
-      <data key="BA">0x40012000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n3">
-      <data key="BA">0x50000000</data>
-      <data key="BP">AXIBAR_0</data>
-      <data key="HA">0x5FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_0</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
     </node>
     <node id="n4">
       <data key="BA">0x70000000</data>
@@ -111,67 +111,13 @@
       <data key="VT">AC</data>
     </node>
     <node id="n5">
-      <data key="BA">0x40018000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40019FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_2</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n6">
-      <data key="BA">0x40022000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40023FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dna_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dna_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n7">
-      <data key="BA">0x4000E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n8">
       <data key="BA">0x70000000</data>
       <data key="BP">AXIBAR_2</data>
       <data key="HA">0x7FFFFFFF</data>
       <data key="HP">AXIBAR_HIGHADDR_2</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_pcie_0_BAR2</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -182,553 +128,49 @@
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n9">
-      <data key="BA">0x40100000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4010FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_ad9361</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n10">
-      <data key="BA">0x4000C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n11">
-      <data key="BA">0x40022000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40023FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dna_0_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dna_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n12">
-      <data key="BA">0x40004000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40005FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_0_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n13">
-      <data key="BA">0x40014000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40015FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_1</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n14">
-      <data key="BA">0x40012000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n15">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n16">
-      <data key="BA">0x4000E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n17">
-      <data key="BA">0x40016000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40017FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_iic_1_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_1</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n18">
-      <data key="BA">0x4001E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_rf_timestamping_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n19">
-      <data key="BA">0x50000000</data>
-      <data key="BP">AXIBAR_0</data>
-      <data key="HA">0x5FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_0</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n20">
-      <data key="BA">0x50000000</data>
-      <data key="BP">AXIBAR_0</data>
-      <data key="HA">0x5FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_0</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n21">
-      <data key="BA">0x40020000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n22">
-      <data key="BA">0x4000C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n23">
-      <data key="BA">0x40002000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40003FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n24">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n25">
-      <data key="BA">0x40000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40001FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n26">
-      <data key="BA">0x40020000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n27">
-      <data key="BA">0x4000E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n28">
-      <data key="BA">0x40100000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4010FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_ad9361</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n29">
-      <data key="BA">0x40014000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40015FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_1</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n30">
-      <data key="BA">0x40002000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40003FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n31">
-      <data key="BA">0x40010000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40011FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_i2s_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_i2s_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n32">
+    <node id="n6">
       <data key="BA">0x4000A000</data>
       <data key="BP">BASEADDR</data>
       <data key="HA">0x4000BFFF</data>
       <data key="HP">HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_pcie_0_CTL0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
       <data key="SX">/axi_pcie_0</data>
       <data key="SI">S_AXI_CTL</data>
       <data key="SS">CTL0</data>
       <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n33">
-      <data key="BA">0x40016000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40017FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_iic_1_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_1</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n34">
-      <data key="BA">0x50000000</data>
-      <data key="BP">AXIBAR_0</data>
-      <data key="HA">0x5FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_0</data>
+    <node id="n7">
+      <data key="BA">0x40100000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4010FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
       <data key="MA">M_AXI</data>
       <data key="MX">/picorv32_0</data>
       <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_pcie_0_BAR0</data>
+      <data key="MS">SEG_axi_ad9361_axi_lite</data>
       <data key="MV">clifford.at:user:picorv32:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n35">
-      <data key="BA">0x40022000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40023FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dna_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dna_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n36">
-      <data key="BA">0x4000C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_rx</data>
+      <data key="SX">/axi_ad9361</data>
       <data key="SI">s_axi</data>
       <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n37">
-      <data key="BA">0x01000000</data>
-      <data key="BP">C_S_AXI_BASEADDR</data>
-      <data key="HA">0x0101FFFF</data>
-      <data key="HP">C_S_AXI_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_bram_ctrl_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Mem0</data>
-      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n38">
-      <data key="BA">0x40000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40001FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n39">
+    <node id="n8">
       <data key="BA">0x40002000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40003FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -740,67 +182,49 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n40">
-      <data key="BA">0x4001A000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001BFFF</data>
-      <data key="HP">C_HIGHADDR</data>
+    <node id="n9">
+      <data key="BA">0x50000000</data>
+      <data key="BP">AXIBAR_0</data>
+      <data key="HA">0x5FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_0</data>
       <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_gpio_1_reg0</data>
+      <data key="MS">SEG_axi_pcie_0_BAR0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_gpio_1</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n41">
-      <data key="BA">0x20000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x3FFFFFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_mig_7series_0_memaddr</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/mig_7series_0</data>
+      <data key="SX">/axi_pcie_0</data>
       <data key="SI">S_AXI</data>
-      <data key="SS">memaddr</data>
-      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="SS">BAR0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n42">
-      <data key="BA">0x40014000</data>
+    <node id="n10">
+      <data key="BA">0x40100000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40015FFF</data>
+      <data key="HA">0x4010FFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MS">SEG_axi_ad9361_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_1</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="SX">/axi_ad9361</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n43">
+    <node id="n11">
       <data key="BA">0x40008000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40009FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
       <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_quad_spi_0_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -812,79 +236,43 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n44">
-      <data key="BA">0x40012000</data>
+    <node id="n12">
+      <data key="BA">0x40022000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
+      <data key="HA">0x40023FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MS">SEG_axi_dna_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="SX">/axi_dna_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n45">
-      <data key="BA">0x40012000</data>
+    <node id="n13">
+      <data key="BA">0x40020000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
+      <data key="HA">0x40021FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n46">
-      <data key="BA">0x50000000</data>
-      <data key="BP">AXIBAR_0</data>
-      <data key="HA">0x5FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_0</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR0</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n47">
-      <data key="BA">0x40100000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4010FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_ad9361</data>
+      <data key="SX">/axi_irq_controller_0</data>
       <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
       <data key="TU">register</data>
-      <data key="VT">AC</data>
+      <data key="VT">ACE</data>
     </node>
-    <node id="n48">
+    <node id="n14">
       <data key="BA">0x01000000</data>
       <data key="BP">C_S_AXI_BASEADDR</data>
       <data key="HA">0x0101FFFF</data>
@@ -902,7 +290,241 @@
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n49">
+    <node id="n15">
+      <data key="BA">0x40002000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40003FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n16">
+      <data key="BA">0x4001A000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001BFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_gpio_1_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_1</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n17">
+      <data key="BA">0x40018000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40019FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_2</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n18">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n19">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n20">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n21">
+      <data key="BA">0x4001C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_2</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n22">
+      <data key="BA">0x40014000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40015FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n23">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n24">
+      <data key="BA">0x40014000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40015FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n25">
+      <data key="BA">0x4001A000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001BFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_gpio_1_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_1</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n26">
+      <data key="BA">0x40010000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40011FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_i2s_0_reg0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_i2s_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n27">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n28">
       <data key="BA">0x4001C000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4001DFFF</data>
@@ -920,43 +542,43 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n50">
-      <data key="BA">0x01000000</data>
-      <data key="BP">C_S_AXI_BASEADDR</data>
-      <data key="HA">0x0101FFFF</data>
-      <data key="HP">C_S_AXI_HIGHADDR</data>
+    <node id="n29">
+      <data key="BA">0x40018000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40019FFF</data>
+      <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
+      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_bram_ctrl_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Mem0</data>
-      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
+      <data key="SX">/axi_quad_spi_2</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
     </node>
-    <node id="n51">
-      <data key="BA">0x60000000</data>
-      <data key="BP">AXIBAR_1</data>
-      <data key="HA">0x6FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_1</data>
+    <node id="n30">
+      <data key="BA">0x4000E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
       <data key="MA">M_AXI</data>
       <data key="MX">/picorv32_0</data>
       <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
       <data key="MV">clifford.at:user:picorv32:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR1</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
+      <data key="SX">/axi_dmac_i2s_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n52">
+    <node id="n31">
       <data key="BA">0x40022000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40023FFF</data>
@@ -974,25 +596,174 @@
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n53">
-      <data key="BA">0x4000E000</data>
+    <node id="n32">
+      <data key="BA">0x40000000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000FFFF</data>
+      <data key="HA">0x40001FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
+      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_tx</data>
+      <data key="SX">/axi_dmac_rf_rx</data>
       <data key="SI">s_axi</data>
       <data key="SS">axi_lite</data>
       <data key="SV">analog.com:user:axi_dmac:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n54">
+    <node id="n33">
+      <data key="BA">0x60000000</data>
+      <data key="BP">AXIBAR_1</data>
+      <data key="HA">0x6FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_1</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR1</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n34">
+      <data key="BA">0x4001A000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001BFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_1_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_1</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n35">
+      <data key="TU">active</data>
+      <data key="VH">2</data>
+      <data key="VT">PM</data>
+    </node>
+    <node id="n36">
+      <data key="BA">0x40020000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40021FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_irq_controller_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n37">
+      <data key="BA">0x40002000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40003FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n38">
+      <data key="BA">0x40014000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40015FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n39">
+      <data key="BA">0x40000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40001FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n40">
+      <data key="BA">0x60000000</data>
+      <data key="BP">AXIBAR_1</data>
+      <data key="HA">0x6FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_1</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR1</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n41">
+      <data key="BA">0x00000000</data>
+      <data key="BP">C_S_AXI4_BASEADDR</data>
+      <data key="HA">0x007FFFFF</data>
+      <data key="HP">C_S_AXI4_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_FULL</data>
+      <data key="SS">MEM0</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n42">
       <data key="BA">0x00000000</data>
       <data key="BP">C_S_AXI4_BASEADDR</data>
       <data key="HA">0x007FFFFF</data>
@@ -1010,7 +781,61 @@
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n55">
+    <node id="n43">
+      <data key="BA">0x4001C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_2</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n44">
+      <data key="BA">0x50000000</data>
+      <data key="BP">AXIBAR_0</data>
+      <data key="HA">0x5FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_0</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_pcie_0_BAR0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n45">
+      <data key="BA">0x40008000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40009FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n46">
       <data key="BA">0x40000000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40001FFF</data>
@@ -1028,102 +853,223 @@
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n56">
-      <data key="BA">0x4001E000</data>
+    <node id="n47">
+      <data key="BA">0x40008000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_rf_timestamping_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n57">
-      <data key="BA">0x40022000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40023FFF</data>
+      <data key="HA">0x40009FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dna_0_reg0</data>
+      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_dna_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n58">
-      <data key="BA">0x4001A000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001BFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_1_reg0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_1</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n59">
-      <data key="VH">2</data>
-      <data key="VM">icyradio</data>
-      <data key="VT">VR</data>
-    </node>
-    <node id="n60">
-      <data key="BA">0x40014000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40015FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SX">/axi_quad_spi_0</data>
       <data key="SI">AXI_LITE</data>
       <data key="SS">Reg</data>
       <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n61">
-      <data key="BA">0x00000000</data>
-      <data key="BP">C_S_AXI4_BASEADDR</data>
-      <data key="HA">0x007FFFFF</data>
-      <data key="HP">C_S_AXI4_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+    <node id="n48">
+      <data key="BA">0x4000A000</data>
+      <data key="BP">BASEADDR</data>
+      <data key="HA">0x4000BFFF</data>
+      <data key="HP">HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_FULL</data>
-      <data key="SS">MEM0</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI_CTL</data>
+      <data key="SS">CTL0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n49">
+      <data key="BA">0x40002000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40003FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n62">
+    <node id="n50">
+      <data key="BA">0x20000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x3FFFFFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_mig_7series_0_memaddr</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/mig_7series_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">memaddr</data>
+      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n51">
+      <data key="BA">0x40012000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40013FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n52">
+      <data key="BA">0x40020000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40021FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_irq_controller_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n53">
+      <data key="BA">0x40000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40001FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n54">
+      <data key="BA">0x40022000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40023FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dna_0_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dna_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n55">
+      <data key="BA">0x4000C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n56">
+      <data key="BA">0x20000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x3FFFFFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_mig_7series_0_memaddr</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/mig_7series_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">memaddr</data>
+      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n57">
+      <data key="BA">0x70000000</data>
+      <data key="BP">AXIBAR_2</data>
+      <data key="HA">0x7FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_2</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR2</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR2</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n58">
+      <data key="BA">0x40010000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40011FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_i2s_0_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_i2s_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n59">
       <data key="BA">0x20000000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x3FFFFFFF</data>
@@ -1141,157 +1087,49 @@
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n63">
-      <data key="BA">0x4000C000</data>
+    <node id="n60">
+      <data key="BA">0x40020000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n64">
-      <data key="BA">0x4000A000</data>
-      <data key="BP">BASEADDR</data>
-      <data key="HA">0x4000BFFF</data>
-      <data key="HP">HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_CTL0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI_CTL</data>
-      <data key="SS">CTL0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n65">
-      <data key="BA">0x40018000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40019FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_2</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n66">
-      <data key="BA">0x40008000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40009FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n67">
-      <data key="BA">0x40008000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40009FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n68">
-      <data key="BA">0x40016000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40017FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_iic_1_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_1</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n69">
-      <data key="BA">0x40018000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40019FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_2</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n70">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
+      <data key="HA">0x40021FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">M_AXI</data>
       <data key="MX">/axi_pcie_0</data>
       <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
       <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="SX">/axi_irq_controller_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n71">
+    <node id="n61">
+      <data key="BA">0x40012000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40013FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n62">
       <data key="BA">0x4000E000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4000FFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -1303,86 +1141,248 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n72">
-      <data key="BA">0x4001E000</data>
+    <node id="n63">
+      <data key="BA">0x40022000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001FFFF</data>
+      <data key="HA">0x40023FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MS">SEG_axi_dna_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dna_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n64">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n65">
+      <data key="BA">0x20000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x3FFFFFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_mig_7series_0_memaddr</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/mig_7series_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">memaddr</data>
+      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n66">
+      <data key="BA">0x40020000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40021FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_irq_controller_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n67">
+      <data key="BA">0x50000000</data>
+      <data key="BP">AXIBAR_0</data>
+      <data key="HA">0x5FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_0</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n68">
+      <data key="BA">0x00000000</data>
+      <data key="BP">C_S_AXI4_BASEADDR</data>
+      <data key="HA">0x007FFFFF</data>
+      <data key="HP">C_S_AXI4_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_FULL</data>
+      <data key="SS">MEM0</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n69">
+      <data key="BA">0x4000C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n70">
+      <data key="BA">0x40012000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40013FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n71">
+      <data key="BA">0x40012000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40013FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n72">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n73">
+      <data key="BA">0x4000A000</data>
+      <data key="BP">BASEADDR</data>
+      <data key="HA">0x4000BFFF</data>
+      <data key="HP">HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI_CTL</data>
+      <data key="SS">CTL0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n74">
+      <data key="BA">0x4001E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
       <data key="TM">both</data>
       <data key="SX">/axi_rf_timestamping_0</data>
       <data key="SI">s_axi</data>
       <data key="SS">reg0</data>
       <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
       <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n73">
-      <data key="BA">0x4001A000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001BFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_gpio_1_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_1</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n74">
-      <data key="BA">0x40014000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40015FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_1</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
     <node id="n75">
-      <data key="BA">0x40004000</data>
+      <data key="BA">0x40016000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40005FFF</data>
+      <data key="HA">0x40017FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_0_reg0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_1_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_gpio_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="SX">/axi_iic_1</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
       <data key="TU">register</data>
-      <data key="VT">AC</data>
+      <data key="VT">ACE</data>
     </node>
     <node id="n76">
       <data key="BA">0x60000000</data>
       <data key="BP">AXIBAR_1</data>
       <data key="HA">0x6FFFFFFF</data>
       <data key="HP">AXIBAR_HIGHADDR_1</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_pcie_0_BAR1</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -1394,124 +1394,66 @@
       <data key="VT">AC</data>
     </node>
     <node id="n77">
-      <data key="BA">0x60000000</data>
-      <data key="BP">AXIBAR_1</data>
-      <data key="HA">0x6FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_1</data>
+      <data key="BA">0x50000000</data>
+      <data key="BP">AXIBAR_0</data>
+      <data key="HA">0x5FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_0</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_i2s_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MS">SEG_axi_pcie_0_BAR0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
       <data key="SX">/axi_pcie_0</data>
       <data key="SI">S_AXI</data>
-      <data key="SS">BAR1</data>
+      <data key="SS">BAR0</data>
       <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
     <node id="n78">
-      <data key="BA">0x40016000</data>
+      <data key="BA">0x40010000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40017FFF</data>
+      <data key="HA">0x40011FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_iic_1_Reg</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_i2s_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_iic_1</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="SX">/axi_i2s_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
       <data key="TU">register</data>
-      <data key="VT">AC</data>
+      <data key="VT">ACE</data>
     </node>
     <node id="n79">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
-      <data key="HP">C_HIGHADDR</data>
+      <data key="BA">0x4000A000</data>
+      <data key="BP">BASEADDR</data>
+      <data key="HA">0x4000BFFF</data>
+      <data key="HP">HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MS">SEG_axi_pcie_0_CTL0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI_CTL</data>
+      <data key="SS">CTL0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
       <data key="VT">ACE</data>
     </node>
     <node id="n80">
-      <data key="BA">0x4001C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_2_reg0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_2</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n81">
-      <data key="BA">0x40018000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40019FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_2</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n82">
-      <data key="VM">icyradio</data>
-      <data key="VT">BC</data>
-    </node>
-    <node id="n83">
-      <data key="BA">0x4001C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_2_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_2</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n84">
       <data key="BA">0x4000E000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4000FFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -1523,68 +1465,68 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n85">
-      <data key="BA">0x40008000</data>
+    <node id="n81">
+      <data key="BA">0x40022000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40009FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n86">
-      <data key="BA">0x4001C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001DFFF</data>
+      <data key="HA">0x40023FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MS">SEG_axi_dna_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_gpio_2</data>
+      <data key="SX">/axi_dna_0</data>
       <data key="SI">s_axi</data>
       <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n87">
-      <data key="BA">0x01000000</data>
-      <data key="BP">C_S_AXI_BASEADDR</data>
-      <data key="HA">0x0101FFFF</data>
-      <data key="HP">C_S_AXI_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
+    <node id="n82">
+      <data key="BA">0x4001E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_bram_ctrl_0</data>
+      <data key="SX">/axi_rf_timestamping_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n83">
+      <data key="BA">0x20000000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x3FFFFFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_mig_7series_0_memaddr</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/mig_7series_0</data>
       <data key="SI">S_AXI</data>
-      <data key="SS">Mem0</data>
-      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
+      <data key="SS">memaddr</data>
+      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n88">
+    <node id="n84">
       <data key="BA">0x40016000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40017FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_iic_1_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -1595,7 +1537,25 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n89">
+    <node id="n85">
+      <data key="BA">0x40004000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40005FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_gpio_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n86">
       <data key="BA">0x4001E000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4001FFFF</data>
@@ -1613,175 +1573,269 @@
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n90">
-      <data key="BA">0x40012000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n91">
-      <data key="BA">0x40008000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40009FFF</data>
-      <data key="HP">C_HIGHADDR</data>
+    <node id="n87">
+      <data key="BA">0x01000000</data>
+      <data key="BP">C_S_AXI_BASEADDR</data>
+      <data key="HA">0x0101FFFF</data>
+      <data key="HP">C_S_AXI_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
+      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SX">/axi_bram_ctrl_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Mem0</data>
+      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n88">
+      <data key="BA">0x40018000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40019FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_2</data>
       <data key="SI">AXI_LITE</data>
       <data key="SS">Reg</data>
       <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
       <data key="TU">register</data>
-      <data key="VT">ACE</data>
+      <data key="VT">AC</data>
     </node>
-    <node id="n92">
-      <data key="BA">0x4001C000</data>
+    <node id="n89">
+      <data key="BA">0x40016000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001DFFF</data>
+      <data key="HA">0x40017FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MS">SEG_axi_iic_1_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_gpio_2</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="SX">/axi_iic_1</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n93">
-      <data key="BA">0x70000000</data>
-      <data key="BP">AXIBAR_2</data>
-      <data key="HA">0x7FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_2</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_pcie_0_BAR2</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR2</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n94">
-      <data key="BA">0x20000000</data>
+    <node id="n90">
+      <data key="BA">0x40000000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x3FFFFFFF</data>
+      <data key="HA">0x40001FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">M_AXI</data>
       <data key="MX">/axi_pcie_0</data>
       <data key="MI">M_AXI</data>
-      <data key="MS">SEG_mig_7series_0_memaddr</data>
+      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
       <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TM">both</data>
-      <data key="SX">/mig_7series_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">memaddr</data>
-      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
-      <data key="TU">memory</data>
+      <data key="SX">/axi_dmac_rf_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n95">
-      <data key="BA">0x20000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x3FFFFFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_mig_7series_0_memaddr</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+    <node id="n91">
+      <data key="VM">icyradio</data>
+      <data key="VT">BC</data>
+    </node>
+    <node id="n92">
+      <data key="BA">0x01000000</data>
+      <data key="BP">C_S_AXI_BASEADDR</data>
+      <data key="HA">0x0101FFFF</data>
+      <data key="HP">C_S_AXI_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/mig_7series_0</data>
+      <data key="SX">/axi_bram_ctrl_0</data>
       <data key="SI">S_AXI</data>
-      <data key="SS">memaddr</data>
-      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="SS">Mem0</data>
+      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n96">
+    <node id="n93">
       <data key="BA">0x40100000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4010FFFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
       <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
       <data key="TM">both</data>
       <data key="SX">/axi_ad9361</data>
       <data key="SI">s_axi</data>
       <data key="SS">axi_lite</data>
       <data key="SV">analog.com:user:axi_ad9361:1.0</data>
       <data key="TU">register</data>
-      <data key="VT">ACE</data>
+      <data key="VT">AC</data>
     </node>
-    <node id="n97">
+    <node id="n94">
+      <data key="BA">0x4000E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n95">
       <data key="BA">0x40010000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40011FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_i2s_0_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
       <data key="SX">/axi_i2s_0</data>
       <data key="SI">s_axi</data>
       <data key="SS">reg0</data>
       <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
       <data key="TU">register</data>
-      <data key="VT">AC</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n96">
+      <data key="BA">0x4001E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_rf_timestamping_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n97">
+      <data key="BA">0x40014000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40015FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
     </node>
     <node id="n98">
-      <data key="BA">0x40004000</data>
+      <data key="BA">0x20000000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40005FFF</data>
+      <data key="HA">0x3FFFFFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_gpio_0_reg0</data>
+      <data key="MS">SEG_mig_7series_0_memaddr</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_gpio_0</data>
+      <data key="SX">/mig_7series_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">memaddr</data>
+      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n99">
+      <data key="BA">0x40020000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40021FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_irq_controller_0</data>
       <data key="SI">s_axi</data>
       <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n99">
+    <node id="n100">
+      <data key="BA">0x40018000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40019FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_2</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n101">
+      <data key="BA">0x40024000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40025FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_2_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_2</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n102">
       <data key="BA">0x40014000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40015FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
       <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_quad_spi_1_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -1793,14 +1847,109 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n100">
+    <node id="n103">
+      <data key="BA">0x40018000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40019FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_2</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n104">
+      <data key="BA">0x40100000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4010FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_ad9361_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_ad9361</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n105">
+      <data key="BA">0x40012000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40013FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_xadc_wiz_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/xadc_wiz_0</data>
+      <data key="SI">s_axi_lite</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n106">
+      <data key="VH">2</data>
+      <data key="VM">icyradio</data>
+      <data key="VT">VR</data>
+    </node>
+    <node id="n107">
       <data key="BA">0x01000000</data>
       <data key="BP">C_S_AXI_BASEADDR</data>
       <data key="HA">0x0101FFFF</data>
       <data key="HP">C_S_AXI_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_bram_ctrl_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Mem0</data>
+      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n108">
+      <data key="BA">0x40022000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40023FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_dna_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dna_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n109">
+      <data key="BA">0x01000000</data>
+      <data key="BP">C_S_AXI_BASEADDR</data>
+      <data key="HA">0x0101FFFF</data>
+      <data key="HP">C_S_AXI_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -1811,13 +1960,301 @@
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n101">
+    <node id="n110">
+      <data key="BA">0x40004000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40005FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_0_reg0</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n111">
+      <data key="BA">0x4001E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_rf_timestamping_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n112">
+      <data key="BA">0x40016000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40017FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_1_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_1</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n113">
+      <data key="BA">0x4000E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n114">
+      <data key="BA">0x00000000</data>
+      <data key="BP">C_S_AXI4_BASEADDR</data>
+      <data key="HA">0x007FFFFF</data>
+      <data key="HP">C_S_AXI4_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_FULL</data>
+      <data key="SS">MEM0</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n115">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n116">
+      <data key="BA">0x40016000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40017FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_1_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_1</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n117">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n118">
+      <data key="BA">0x4001C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_2</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n119">
+      <data key="BA">0x4000A000</data>
+      <data key="BP">BASEADDR</data>
+      <data key="HA">0x4000BFFF</data>
+      <data key="HP">HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI_CTL</data>
+      <data key="SS">CTL0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n120">
+      <data key="BA">0x40016000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40017FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_1_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_1</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n121">
+      <data key="BA">0x40008000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40009FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n122">
+      <data key="BA">0x40004000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40005FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_gpio_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n123">
+      <data key="BA">0x40100000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4010FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_ad9361_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_ad9361</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n124">
+      <data key="BA">0x4000E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_dmac_i2s_tx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n125">
+      <data key="BA">0x70000000</data>
+      <data key="BP">AXIBAR_2</data>
+      <data key="HA">0x7FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_2</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR2</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR2</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n126">
       <data key="BA">0x40000000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40001FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
       <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -1829,79 +2266,7 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n102">
-      <data key="BA">0x40002000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40003FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n103">
-      <data key="BA">0x00000000</data>
-      <data key="BP">C_S_AXI4_BASEADDR</data>
-      <data key="HA">0x007FFFFF</data>
-      <data key="HP">C_S_AXI4_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_FULL</data>
-      <data key="SS">MEM0</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n104">
-      <data key="BA">0x00000000</data>
-      <data key="BP">C_S_AXI4_BASEADDR</data>
-      <data key="HA">0x007FFFFF</data>
-      <data key="HP">C_S_AXI4_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_FULL</data>
-      <data key="SS">MEM0</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n105">
-      <data key="BA">0x4001A000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001BFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_gpio_1_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_1</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n106">
+    <node id="n127">
       <data key="BA">0x40018000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40019FFF</data>
@@ -1919,151 +2284,169 @@
       <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n107">
-      <data key="BA">0x40002000</data>
+    <node id="n128">
+      <data key="BA">0x4000C000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40003FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_tx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n108">
-      <data key="BA">0x40000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40001FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n109">
-      <data key="BA">0x4000A000</data>
-      <data key="BP">BASEADDR</data>
-      <data key="HA">0x4000BFFF</data>
-      <data key="HP">HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_CTL0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI_CTL</data>
-      <data key="SS">CTL0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n110">
-      <data key="BA">0x40000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40001FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dmac_rf_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_rf_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n111">
-      <data key="BA">0x40020000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
+      <data key="HA">0x4000DFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
+      <data key="SX">/axi_dmac_i2s_rx</data>
       <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n112">
+    <node id="n129">
       <data key="BA">0x40100000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4010FFFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
       <data key="SX">/axi_ad9361</data>
       <data key="SI">s_axi</data>
       <data key="SS">axi_lite</data>
       <data key="SV">analog.com:user:axi_ad9361:1.0</data>
       <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n130">
+      <data key="BA">0x00000000</data>
+      <data key="BP">C_S_AXI4_BASEADDR</data>
+      <data key="HA">0x007FFFFF</data>
+      <data key="HP">C_S_AXI4_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_FULL</data>
+      <data key="SS">MEM0</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n113">
-      <data key="BA">0x20000000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x3FFFFFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_mig_7series_0_memaddr</data>
+    <node id="n131">
+      <data key="BA">0x01000000</data>
+      <data key="BP">C_S_AXI_BASEADDR</data>
+      <data key="HA">0x0101FFFF</data>
+      <data key="HP">C_S_AXI_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/mig_7series_0</data>
+      <data key="SX">/axi_bram_ctrl_0</data>
       <data key="SI">S_AXI</data>
-      <data key="SS">memaddr</data>
-      <data key="SV">xilinx.com:ip:mig_7series:4.2</data>
+      <data key="SS">Mem0</data>
+      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
       <data key="TU">memory</data>
       <data key="VT">AC</data>
     </node>
-    <node id="n114">
-      <data key="BA">0x40010000</data>
+    <node id="n132">
+      <data key="BA">0x40004000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40011FFF</data>
+      <data key="HA">0x40005FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_0_reg0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n133">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n134">
+      <data key="BA">0x4001A000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001BFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/axi_pcie_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_gpio_1_reg0</data>
+      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_1</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n135">
+      <data key="BA">0x4000C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_i2s_rx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n136">
+      <data key="BA">0x4000C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4000DFFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_rf_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_i2s_0_reg0</data>
+      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_i2s_0</data>
+      <data key="SX">/axi_dmac_i2s_rx</data>
       <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n115">
+    <node id="n137">
       <data key="BA">0x4001C000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4001DFFF</data>
@@ -2081,289 +2464,14 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n116">
-      <data key="BA">0x4001E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_rf_timestamping_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n117">
-      <data key="BA">0x60000000</data>
-      <data key="BP">AXIBAR_1</data>
-      <data key="HA">0x6FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_1</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR1</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR1</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n118">
-      <data key="TU">active</data>
-      <data key="VH">2</data>
-      <data key="VT">PM</data>
-    </node>
-    <node id="n119">
-      <data key="BA">0x4000C000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4000DFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dmac_i2s_rx</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n120">
-      <data key="BA">0x40004000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40005FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_gpio_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n121">
-      <data key="BA">0x40010000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40011FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_i2s_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_i2s_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n122">
-      <data key="BA">0x40020000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n123">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n124">
-      <data key="BA">0x40004000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40005FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_gpio_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_gpio_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n125">
-      <data key="BA">0x40006000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40007FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_iic_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n126">
-      <data key="BA">0x70000000</data>
-      <data key="BP">AXIBAR_2</data>
-      <data key="HA">0x7FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_2</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_rf_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR2</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR2</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n127">
-      <data key="BA">0x01000000</data>
-      <data key="BP">C_S_AXI_BASEADDR</data>
-      <data key="HA">0x0101FFFF</data>
-      <data key="HP">C_S_AXI_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_bram_ctrl_0_Mem0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_bram_ctrl_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Mem0</data>
-      <data key="SV">xilinx.com:ip:axi_bram_ctrl:4.1</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n128">
-      <data key="BA">0x40010000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40011FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_i2s_0_reg0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_i2s_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n129">
-      <data key="BA">0x00000000</data>
-      <data key="BP">C_S_AXI4_BASEADDR</data>
-      <data key="HA">0x007FFFFF</data>
-      <data key="HP">C_S_AXI4_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_0_MEM0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_FULL</data>
-      <data key="SS">MEM0</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n130">
-      <data key="BA">0x40012000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40013FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_xadc_wiz_0_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/xadc_wiz_0</data>
-      <data key="SI">s_axi_lite</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:xadc_wiz:3.3</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n131">
-      <data key="BA">0x40018000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40019FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_quad_spi_2_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_2</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n132">
+    <node id="n138">
       <data key="BA">0x4001A000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4001BFFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_gpio_1_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -2374,158 +2482,68 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n133">
-      <data key="BA">0x40016000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40017FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_iic_1_Reg</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_iic_1</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n134">
-      <data key="BA">0x40100000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4010FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_ad9361_axi_lite</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_ad9361</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">axi_lite</data>
-      <data key="SV">analog.com:user:axi_ad9361:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n135">
-      <data key="BA">0x40020000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n136">
-      <data key="BA">0x4000A000</data>
-      <data key="BP">BASEADDR</data>
-      <data key="HA">0x4000BFFF</data>
-      <data key="HP">HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/axi_pcie_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_pcie_0_CTL0</data>
-      <data key="MV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI_CTL</data>
-      <data key="SS">CTL0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n137">
-      <data key="BA">0x60000000</data>
-      <data key="BP">AXIBAR_1</data>
-      <data key="HA">0x6FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_1</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR1</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR1</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
-    <node id="n138">
-      <data key="BA">0x40022000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40023FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_dna_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_dna_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_dna:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
     <node id="n139">
-      <data key="BA">0x40020000</data>
+      <data key="BA">0x40008000</data>
       <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40021FFF</data>
+      <data key="HA">0x40009FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_irq_controller_0_reg0</data>
+      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_irq_controller_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_irq_controller:1.0</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
     <node id="n140">
-      <data key="BA">0x4000A000</data>
-      <data key="BP">BASEADDR</data>
-      <data key="HA">0x4000BFFF</data>
-      <data key="HP">HIGHADDR</data>
+      <data key="BA">0x40010000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40011FFF</data>
+      <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
       <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MS">SEG_axi_i2s_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI_CTL</data>
-      <data key="SS">CTL0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
+      <data key="SX">/axi_i2s_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_i2s:1.0</data>
+      <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
     <node id="n141">
+      <data key="BA">0x70000000</data>
+      <data key="BP">AXIBAR_2</data>
+      <data key="HA">0x7FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_2</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_pcie_0_BAR2</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR2</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n142">
       <data key="BA">0x40004000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40005FFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_dest_axi</data>
-      <data key="MX">/axi_dmac_i2s_rx</data>
-      <data key="MI">m_dest_axi</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_gpio_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -2536,32 +2554,14 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n142">
-      <data key="BA">0x40008000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x40009FFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">M_AXI</data>
-      <data key="MX">/picorv32_0</data>
-      <data key="MI">M_AXI</data>
-      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
-      <data key="MV">clifford.at:user:picorv32:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_quad_spi_0</data>
-      <data key="SI">AXI_LITE</data>
-      <data key="SS">Reg</data>
-      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
-      <data key="TU">register</data>
-      <data key="VT">AC</data>
-    </node>
     <node id="n143">
       <data key="BA">0x4000C000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4000DFFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_dmac_i2s_rx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -2573,12 +2573,30 @@
       <data key="VT">ACE</data>
     </node>
     <node id="n144">
+      <data key="BA">0x50000000</data>
+      <data key="BP">AXIBAR_0</data>
+      <data key="HA">0x5FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_0</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_pcie_0_BAR0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR0</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n145">
       <data key="BA">0x40002000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40003FFF</data>
       <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
       <data key="MI">m_src_axi</data>
       <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
@@ -2590,43 +2608,79 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n145">
-      <data key="BA">0x70000000</data>
-      <data key="BP">AXIBAR_2</data>
-      <data key="HA">0x7FFFFFFF</data>
-      <data key="HP">AXIBAR_HIGHADDR_2</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_pcie_0_BAR2</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI</data>
-      <data key="SS">BAR2</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
-      <data key="VT">AC</data>
-    </node>
     <node id="n146">
-      <data key="BA">0x4000A000</data>
-      <data key="BP">BASEADDR</data>
-      <data key="HA">0x4000BFFF</data>
-      <data key="HP">HIGHADDR</data>
+      <data key="BA">0x40004000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40005FFF</data>
+      <data key="HP">C_HIGHADDR</data>
       <data key="MA">m_dest_axi</data>
       <data key="MX">/axi_dmac_rf_rx</data>
       <data key="MI">m_dest_axi</data>
-      <data key="MS">SEG_axi_pcie_0_CTL0</data>
+      <data key="MS">SEG_axi_gpio_0_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
-      <data key="SX">/axi_pcie_0</data>
-      <data key="SI">S_AXI_CTL</data>
-      <data key="SS">CTL0</data>
-      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
-      <data key="TU">memory</data>
+      <data key="SX">/axi_gpio_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
     <node id="n147">
+      <data key="BA">0x4001C000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001DFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_gpio_2_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_gpio_2</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_gpio:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n148">
+      <data key="BA">0x40006000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40007FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_iic_0_Reg</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_iic_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_iic:2.1</data>
+      <data key="TU">register</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n149">
+      <data key="BA">0x40014000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40015FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_i2s_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_1_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_1</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n150">
       <data key="BA">0x40010000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x40011FFF</data>
@@ -2644,32 +2698,14 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <node id="n148">
-      <data key="BA">0x4001E000</data>
-      <data key="BP">C_BASEADDR</data>
-      <data key="HA">0x4001FFFF</data>
-      <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_i2s_tx</data>
-      <data key="MI">m_src_axi</data>
-      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
-      <data key="MV">analog.com:user:axi_dmac:1.0</data>
-      <data key="TM">both</data>
-      <data key="SX">/axi_rf_timestamping_0</data>
-      <data key="SI">s_axi</data>
-      <data key="SS">reg0</data>
-      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
-      <data key="TU">register</data>
-      <data key="VT">ACE</data>
-    </node>
-    <node id="n149">
+    <node id="n151">
       <data key="BA">0x4001A000</data>
       <data key="BP">C_BASEADDR</data>
       <data key="HA">0x4001BFFF</data>
       <data key="HP">C_HIGHADDR</data>
-      <data key="MA">m_src_axi</data>
-      <data key="MX">/axi_dmac_rf_tx</data>
-      <data key="MI">m_src_axi</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
       <data key="MS">SEG_axi_gpio_1_reg0</data>
       <data key="MV">analog.com:user:axi_dmac:1.0</data>
       <data key="TM">both</data>
@@ -2680,449 +2716,539 @@
       <data key="TU">register</data>
       <data key="VT">ACE</data>
     </node>
-    <edge id="e0" source="n82" target="n59">
+    <node id="n152">
+      <data key="BA">0x40008000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40009FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_src_axi</data>
+      <data key="MX">/axi_dmac_rf_tx</data>
+      <data key="MI">m_src_axi</data>
+      <data key="MS">SEG_axi_quad_spi_0_Reg</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_quad_spi_0</data>
+      <data key="SI">AXI_LITE</data>
+      <data key="SS">Reg</data>
+      <data key="SV">xilinx.com:ip:axi_quad_spi:3.2</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n153">
+      <data key="BA">0x60000000</data>
+      <data key="BP">AXIBAR_1</data>
+      <data key="HA">0x6FFFFFFF</data>
+      <data key="HP">AXIBAR_HIGHADDR_1</data>
+      <data key="MA">M_AXI</data>
+      <data key="MX">/picorv32_0</data>
+      <data key="MI">M_AXI</data>
+      <data key="MS">SEG_axi_pcie_0_BAR1</data>
+      <data key="MV">clifford.at:user:picorv32:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_pcie_0</data>
+      <data key="SI">S_AXI</data>
+      <data key="SS">BAR1</data>
+      <data key="SV">xilinx.com:ip:axi_pcie:2.9</data>
+      <data key="TU">memory</data>
+      <data key="VT">AC</data>
+    </node>
+    <node id="n154">
+      <data key="BA">0x4001E000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x4001FFFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_rf_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_rf_timestamping_0_reg0</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_rf_timestamping_0</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">reg0</data>
+      <data key="SV">xilinx.com:module_ref:axi_rf_timestamping:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <node id="n155">
+      <data key="BA">0x40002000</data>
+      <data key="BP">C_BASEADDR</data>
+      <data key="HA">0x40003FFF</data>
+      <data key="HP">C_HIGHADDR</data>
+      <data key="MA">m_dest_axi</data>
+      <data key="MX">/axi_dmac_i2s_rx</data>
+      <data key="MI">m_dest_axi</data>
+      <data key="MS">SEG_axi_dmac_rf_tx_axi_lite</data>
+      <data key="MV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TM">both</data>
+      <data key="SX">/axi_dmac_rf_tx</data>
+      <data key="SI">s_axi</data>
+      <data key="SS">axi_lite</data>
+      <data key="SV">analog.com:user:axi_dmac:1.0</data>
+      <data key="TU">register</data>
+      <data key="VT">ACE</data>
+    </node>
+    <edge id="e0" source="n91" target="n106">
     </edge>
-    <edge id="e1" source="n59" target="n118">
+    <edge id="e1" source="n106" target="n35">
     </edge>
-    <edge id="e2" source="n47" target="n118">
+    <edge id="e2" source="n93" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e3" source="n127" target="n118">
+    <edge id="e3" source="n107" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e4" source="n36" target="n118">
+    <edge id="e4" source="n55" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e5" source="n27" target="n118">
+    <edge id="e5" source="n94" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e6" source="n38" target="n118">
+    <edge id="e6" source="n90" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e7" source="n23" target="n118">
+    <edge id="e7" source="n49" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e8" source="n52" target="n118">
+    <edge id="e8" source="n31" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e9" source="n75" target="n118">
+    <edge id="e9" source="n132" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e10" source="n58" target="n118">
+    <edge id="e10" source="n134" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e11" source="n80" target="n118">
+    <edge id="e11" source="n21" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e12" source="n128" target="n118">
+    <edge id="e12" source="n26" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e13" source="n70" target="n118">
+    <edge id="e13" source="n133" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e14" source="n78" target="n118">
+    <edge id="e14" source="n120" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e15" source="n135" target="n118">
+    <edge id="e15" source="n119" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e16" source="n136" target="n118">
+    <edge id="e16" source="n130" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e17" source="n103" target="n118">
+    <edge id="e17" source="n121" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e18" source="n85" target="n118">
+    <edge id="e18" source="n22" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e19" source="n13" target="n118">
+    <edge id="e19" source="n127" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e20" source="n106" target="n118">
+    <edge id="e20" source="n86" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e21" source="n94" target="n118">
+    <edge id="e21" source="n50" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e22" source="n14" target="n118">
+    <edge id="e22" source="n0" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e23" source="n89" target="n118">
+    <edge id="e23" source="n60" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e24" source="n112" target="n118">
+    <edge id="e24" source="n7" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e25" source="n87" target="n118">
+    <edge id="e25" source="n92" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e26" source="n10" target="n118">
+    <edge id="e26" source="n135" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e27" source="n16" target="n118">
+    <edge id="e27" source="n30" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e28" source="n55" target="n118">
+    <edge id="e28" source="n46" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e29" source="n107" target="n118">
+    <edge id="e29" source="n37" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e30" source="n11" target="n118">
+    <edge id="e30" source="n54" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e31" source="n12" target="n118">
+    <edge id="e31" source="n110" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e32" source="n105" target="n118">
+    <edge id="e32" source="n34" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e33" source="n83" target="n118">
+    <edge id="e33" source="n43" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e34" source="n97" target="n118">
+    <edge id="e34" source="n58" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e35" source="n15" target="n118">
+    <edge id="e35" source="n148" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e36" source="n68" target="n118">
+    <edge id="e36" source="n112" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e37" source="n122" target="n118">
+    <edge id="e37" source="n44" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e38" source="n34" target="n118">
+    <edge id="e38" source="n153" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e39" source="n51" target="n118">
+    <edge id="e39" source="n141" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e40" source="n93" target="n118">
+    <edge id="e40" source="n48" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e41" source="n32" target="n118">
+    <edge id="e41" source="n42" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e42" source="n54" target="n118">
+    <edge id="e42" source="n45" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e43" source="n142" target="n118">
+    <edge id="e43" source="n24" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e44" source="n74" target="n118">
+    <edge id="e44" source="n88" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e45" source="n5" target="n118">
+    <edge id="e45" source="n74" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e46" source="n41" target="n118">
+    <edge id="e46" source="n56" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e47" source="n45" target="n118">
+    <edge id="e47" source="n51" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e48" source="n56" target="n118">
+    <edge id="e48" source="n36" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e49" source="n9" target="n118">
+    <edge id="e49" source="n104" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e50" source="n50" target="n118">
+    <edge id="e50" source="n109" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e51" source="n22" target="n118">
+    <edge id="e51" source="n143" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e52" source="n7" target="n118">
+    <edge id="e52" source="n113" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e53" source="n25" target="n118">
+    <edge id="e53" source="n126" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e54" source="n39" target="n118">
+    <edge id="e54" source="n155" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e55" source="n6" target="n118">
+    <edge id="e55" source="n81" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e56" source="n141" target="n118">
+    <edge id="e56" source="n85" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e57" source="n132" target="n118">
+    <edge id="e57" source="n25" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e58" source="n49" target="n118">
+    <edge id="e58" source="n28" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e59" source="n31" target="n118">
+    <edge id="e59" source="n78" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e60" source="n24" target="n118">
+    <edge id="e60" source="n64" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e61" source="n133" target="n118">
+    <edge id="e61" source="n75" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e62" source="n21" target="n118">
+    <edge id="e62" source="n77" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e63" source="n3" target="n118">
+    <edge id="e63" source="n2" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e64" source="n77" target="n118">
+    <edge id="e64" source="n57" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e65" source="n8" target="n118">
+    <edge id="e65" source="n1" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e66" source="n64" target="n118">
+    <edge id="e66" source="n3" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e67" source="n1" target="n118">
+    <edge id="e67" source="n11" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e68" source="n67" target="n118">
+    <edge id="e68" source="n102" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e69" source="n29" target="n118">
+    <edge id="e69" source="n103" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e70" source="n65" target="n118">
+    <edge id="e70" source="n111" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e71" source="n0" target="n118">
+    <edge id="e71" source="n65" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e72" source="n2" target="n118">
+    <edge id="e72" source="n105" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e73" source="n116" target="n118">
+    <edge id="e73" source="n52" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e74" source="n28" target="n118">
+    <edge id="e74" source="n129" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e75" source="n37" target="n118">
+    <edge id="e75" source="n131" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e76" source="n63" target="n118">
+    <edge id="e76" source="n128" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e77" source="n53" target="n118">
+    <edge id="e77" source="n124" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e78" source="n101" target="n118">
+    <edge id="e78" source="n32" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e79" source="n102" target="n118">
+    <edge id="e79" source="n8" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e80" source="n57" target="n118">
+    <edge id="e80" source="n108" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e81" source="n98" target="n118">
+    <edge id="e81" source="n146" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e82" source="n73" target="n118">
+    <edge id="e82" source="n151" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e83" source="n86" target="n118">
+    <edge id="e83" source="n147" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e84" source="n147" target="n118">
+    <edge id="e84" source="n150" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e85" source="n125" target="n118">
+    <edge id="e85" source="n117" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e86" source="n88" target="n118">
+    <edge id="e86" source="n116" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e87" source="n111" target="n118">
+    <edge id="e87" source="n67" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e88" source="n20" target="n118">
+    <edge id="e88" source="n33" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e89" source="n76" target="n118">
+    <edge id="e89" source="n125" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e90" source="n126" target="n118">
+    <edge id="e90" source="n6" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e91" source="n146" target="n118">
+    <edge id="e91" source="n41" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e92" source="n104" target="n118">
+    <edge id="e92" source="n47" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e93" source="n43" target="n118">
+    <edge id="e93" source="n38" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e94" source="n99" target="n118">
+    <edge id="e94" source="n29" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e95" source="n69" target="n118">
+    <edge id="e95" source="n154" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e96" source="n95" target="n118">
+    <edge id="e96" source="n98" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e97" source="n90" target="n118">
+    <edge id="e97" source="n71" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e98" source="n18" target="n118">
+    <edge id="e98" source="n66" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e99" source="n96" target="n118">
+    <edge id="e99" source="n123" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e100" source="n100" target="n118">
+    <edge id="e100" source="n87" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e101" source="n119" target="n118">
+    <edge id="e101" source="n69" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e102" source="n71" target="n118">
+    <edge id="e102" source="n80" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e103" source="n108" target="n118">
+    <edge id="e103" source="n53" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e104" source="n30" target="n118">
+    <edge id="e104" source="n145" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e105" source="n138" target="n118">
+    <edge id="e105" source="n12" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e106" source="n124" target="n118">
+    <edge id="e106" source="n142" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e107" source="n40" target="n118">
+    <edge id="e107" source="n138" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e108" source="n115" target="n118">
+    <edge id="e108" source="n137" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e109" source="n121" target="n118">
+    <edge id="e109" source="n140" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e110" source="n123" target="n118">
+    <edge id="e110" source="n115" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e111" source="n17" target="n118">
+    <edge id="e111" source="n84" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e112" source="n26" target="n118">
+    <edge id="e112" source="n144" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e113" source="n19" target="n118">
+    <edge id="e113" source="n76" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e114" source="n137" target="n118">
+    <edge id="e114" source="n4" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e115" source="n4" target="n118">
+    <edge id="e115" source="n73" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e116" source="n140" target="n118">
+    <edge id="e116" source="n114" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e117" source="n61" target="n118">
+    <edge id="e117" source="n139" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e118" source="n91" target="n118">
+    <edge id="e118" source="n149" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e119" source="n60" target="n118">
+    <edge id="e119" source="n100" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e120" source="n131" target="n118">
+    <edge id="e120" source="n96" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e121" source="n62" target="n118">
+    <edge id="e121" source="n59" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e122" source="n44" target="n118">
+    <edge id="e122" source="n70" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e123" source="n148" target="n118">
+    <edge id="e123" source="n99" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e124" source="n134" target="n118">
+    <edge id="e124" source="n10" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e125" source="n48" target="n118">
+    <edge id="e125" source="n14" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e126" source="n143" target="n118">
+    <edge id="e126" source="n136" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e127" source="n84" target="n118">
+    <edge id="e127" source="n62" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e128" source="n110" target="n118">
+    <edge id="e128" source="n39" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e129" source="n144" target="n118">
+    <edge id="e129" source="n15" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e130" source="n35" target="n118">
+    <edge id="e130" source="n63" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e131" source="n120" target="n118">
+    <edge id="e131" source="n122" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e132" source="n149" target="n118">
+    <edge id="e132" source="n16" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e133" source="n92" target="n118">
+    <edge id="e133" source="n118" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e134" source="n114" target="n118">
+    <edge id="e134" source="n95" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e135" source="n79" target="n118">
+    <edge id="e135" source="n20" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e136" source="n33" target="n118">
+    <edge id="e136" source="n89" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e137" source="n139" target="n118">
+    <edge id="e137" source="n9" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e138" source="n46" target="n118">
+    <edge id="e138" source="n40" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e139" source="n117" target="n118">
+    <edge id="e139" source="n5" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e140" source="n145" target="n118">
+    <edge id="e140" source="n79" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e141" source="n109" target="n118">
+    <edge id="e141" source="n68" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e142" source="n129" target="n118">
+    <edge id="e142" source="n152" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e143" source="n66" target="n118">
+    <edge id="e143" source="n97" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e144" source="n42" target="n118">
+    <edge id="e144" source="n17" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e145" source="n81" target="n118">
+    <edge id="e145" source="n82" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e146" source="n113" target="n118">
+    <edge id="e146" source="n83" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e147" source="n130" target="n118">
+    <edge id="e147" source="n61" target="n35">
       <data key="EH">2</data>
     </edge>
-    <edge id="e148" source="n72" target="n118">
+    <edge id="e148" source="n13" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e149" source="n101" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e150" source="n18" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e151" source="n23" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e152" source="n19" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e153" source="n72" target="n35">
+      <data key="EH">2</data>
+    </edge>
+    <edge id="e154" source="n27" target="n35">
       <data key="EH">2</data>
     </edge>
   </graph>
