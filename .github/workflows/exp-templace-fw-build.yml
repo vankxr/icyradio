@@ -1,0 +1,65 @@
+name: Expantion board template MCU firmware build tests
+
+on:
+  pull_request:
+    paths:
+      - "software/exp/template/**"
+    branches: [ "v2" ]
+  push:
+    paths:
+      - "software/exp/template/**"
+    branches: [ "v2" ]
+  workflow_dispatch:
+
+env:
+  ARM_LIBROOT: "/opt/arm-cmsis"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update install
+      run:
+        sudo apt-get update
+      timeout-minutes: 5
+
+    - name: Install toolchain
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
+
+    - name: Install build dependencies
+      run: |
+        # Install armmem
+        wget https://github.com/vankxr/armmem/releases/download/1.0-1/armmem_1.0-1_amd64.deb
+        sudo dpkg -i armmem_1.0-1_amd64.deb
+
+        # Install Core pack
+        git clone https://github.com/vankxr/Core-CMSIS
+        cd Core-CMSIS/build
+        chmod +x build.sh
+        ./build.sh
+        sudo mkdir -p $ARM_LIBROOT
+        sudo mv ARM.CMSIS.5.9.0 $ARM_LIBROOT/ARM.CMSIS
+
+        # Install SAMD21 pack
+        sudo mkdir -p $ARM_LIBROOT/Microchip.SAMD21_DFP
+        wget -O Microchip.SAMD21_DFP.3.6.144.zip https://packs.download.microchip.com/Microchip.SAMD21_DFP.3.6.144.atpack
+        unzip Microchip.SAMD21_DFP.3.6.144.zip -d $ARM_LIBROOT/Microchip.SAMD21_DFP
+      timeout-minutes: 5
+
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+        clean: true
+
+    - name: Build Expantion template MCU firmware
+      run: |
+        cd ${{github.workspace}}/software/exp/template
+        make
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: exp_template_firmware
+        path: ${{github.workspace}}/software/exp/template/bin/v*
+        retention-days: 30
