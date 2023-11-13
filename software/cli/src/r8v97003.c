@@ -174,7 +174,7 @@ uint8_t r8v97003_init()
     r8v97003_write_register(0x24, 0x80);
     r8v97003_write_register(0x25, 0x00);
     r8v97003_write_register(R8V97003_REG_MULT_CTL0, 0x00);
-    r8v97003_write_register(R8V97003_REG_MULT_CTL1, R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW);
+    r8v97003_write_register(R8V97003_REG_MULT_CTL1, R8V97003_REG_MULT_CTL1_MULT_MUX_ENA | R8V97003_REG_MULT_CTL1_MULT_D2S_ENA | R8V97003_REG_MULT_CTL1_MULT_CP_ENA | R8V97003_REG_MULT_CTL1_MULT_FORCE_VCLOW);
     r8v97003_write_register(R8V97003_REG_ICP_BLEEDER, 0);
     r8v97003_write_register(R8V97003_REG_PFD_PULSE_WIDTH, 0x02);
     r8v97003_write_register(0x31, 0x88);
@@ -350,7 +350,7 @@ uint8_t r8v97003_pfd_config(uint32_t ulRefFreq, uint8_t ubDiff, uint8_t ubRefDou
 
     while(usBandSelectDivider < 8192)
     {
-        if(ulBandSelectClock >= 50000UL && ulBandSelectClock <= 80000UL) // Actual range is 50-100, but we leave some margin
+        if(ulBandSelectClock >= 50000UL && ulBandSelectClock <= 100000UL)
             break;
 
         usBandSelectDivider++;
@@ -510,7 +510,7 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
 
     r8v97003_get_mixed_number(ullVCOFrequency, R8V97003_PFD_FREQ, &xMult);
 
-    // DBGPRINTLN_CTX("Mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+    DBGPRINTLN_CTX("Mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
 
     if(!xMult.ulDen) // Division by zero, should never happen, unless the previous function failed
     {
@@ -559,7 +559,7 @@ uint8_t r8v97003_set_frequency(uint64_t ullFrequency)
         xMult.ulDen = 2;
     }
 
-    // DBGPRINTLN_CTX("Maximized mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
+    DBGPRINTLN_CTX("Maximized mult: %u + (%u / %u)", xMult.ulInt, xMult.ulNum, xMult.ulDen);
 
     uint8_t ubManCtlReg = R8V97003_REG_MANUAL_CTL_FORCE_RELOCK | R8V97003_REG_MANUAL_CTL_MANUAL_RESYNC;
 

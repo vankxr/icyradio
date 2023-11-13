@@ -295,14 +295,14 @@ AD9361_RXFIRConfig rx_fir_config =
 	0, // rx_gain
 	1, // rx_dec
 	{
-		-4, -6, -37, 35, 186, 86, -284, -315,
-			107, 219, -4, 271, 558, -307, -1182, -356,
-			658, 157, 207, 1648, 790, -2525, -2553, 748,
-			865, -476, 3737, 6560, -3583, -14731, -5278, 14819,
-			14819, -5278, -14731, -3583, 6560, 3737, -476, 865,
-			748, -2553, -2525, 790, 1648, 207, 157, 658,
-			-356, -1182, -307, 558, 271, -4, 219, 107,
-			-315, -284, 86, 186, 35, -37, -6, -4,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -322,14 +322,14 @@ AD9361_TXFIRConfig tx_fir_config =
 	-6, // tx_gain
 	1, // tx_int
 	{
-		-4, -6, -37, 35, 186, 86, -284, -315,
-			107, 219, -4, 271, 558, -307, -1182, -356,
-			658, 157, 207, 1648, 790, -2525, -2553, 748,
-			865, -476, 3737, 6560, -3583, -14731, -5278, 14819,
-			14819, -5278, -14731, -3583, 6560, 3737, -476, 865,
-			748, -2553, -2525, 790, 1648, 207, 157, 658,
-			-356, -1182, -307, 558, 271, -4, 219, 107,
-			-315, -284, 86, 186, 35, -37, -6, -4,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0,
@@ -490,9 +490,10 @@ uint8_t icyradio_get_trx_datapath_delay(int32_t *plTx, int32_t *plRx)
         goto out;
     }
 
-    // Disable TX & RX
+    // Disable TX & RX and Enable counter
     axi_rf_tstamp_tx_enable(0);
     axi_rf_tstamp_rx_enable(0);
+    axi_rf_tstamp_cnt_enable(0);
 
     // Check received data
     for(uint32_t i = 0; i < (ulBufferSize >> 1); i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
@@ -552,7 +553,7 @@ out:
 // TX Timestamping delay for 2r2t = -20, for 1r1t = -17
 // RX Timestamping delay for 2r2t = +20, for 1r1t = +18
 
-void trx_test()
+void trx_test(uint8_t ubMode)
 {
 	if(ad9361_init(&trx_init) < 0)
     {
@@ -561,18 +562,102 @@ void trx_test()
         return;
     }
 
-    ad9361_set_trx_clock_chain_freq(10000000UL);
-    ad9361_set_rx_rf_bandwidth(7500000UL);
+    ad9361_set_trx_clock_chain_freq(3000000UL);
+    ad9361_set_rx_rf_bandwidth(2500000UL);
     ad9361_set_rx_rf_gain(RX1, 10);
+    ad9361_set_tx_lo_freq(3000000000ULL);
+    ad9361_set_tx_attenuation(TX1, 000);
 
     //DBGPRINTLN_CTX("gpo0 state: %hhu", ad9361_gpo_get(0));
     //ad9361_gpo_set(0, 1);
     //DBGPRINTLN_CTX("gpo0 state: %hhu", ad9361_gpo_get(0));
 
-	//ad9361_set_tx_fir_config(tx_fir_config);
+    double h[] = {
+        0.001316827447155443,
+        -0.000000000000000002,
+        -0.001961555501773550,
+        -0.002340589945428437,
+        0.000000000000000004,
+        0.003227135307199385,
+        0.003741710785562685,
+        -0.000000000000000005,
+        -0.004934663080794970,
+        -0.005623438759510543,
+        0.000000000000000006,
+        0.007218513526114398,
+        0.008141857931671510,
+        -0.000000000000000008,
+        -0.010297311277047456,
+        -0.011560752498217470,
+        0.000000000000000009,
+        0.014571058976954527,
+        0.016383583875223571,
+        -0.000000000000000010,
+        -0.020878095951042386,
+        -0.023723739599666033,
+        0.000000000000000012,
+        0.031330402087208990,
+        0.036626655524944415,
+        -0.000000000000000012,
+        -0.053154576315777934,
+        -0.067339013316153412,
+        0.000000000000000013,
+        0.137094002624492090,
+        0.275405770073961331,
+        0.333512436169847604,
+        0.275405770073961331,
+        0.137094002624492090,
+        0.000000000000000013,
+        -0.067339013316153384,
+        -0.053154576315777934,
+        -0.000000000000000012,
+        0.036626655524944415,
+        0.031330402087208990,
+        0.000000000000000012,
+        -0.023723739599666033,
+        -0.020878095951042386,
+        -0.000000000000000010,
+        0.016383583875223567,
+        0.014571058976954527,
+        0.000000000000000009,
+        -0.011560752498217470,
+        -0.010297311277047456,
+        -0.000000000000000008,
+        0.008141857931671510,
+        0.007218513526114398,
+        0.000000000000000006,
+        -0.005623438759510543,
+        -0.004934663080794970,
+        -0.000000000000000005,
+        0.003741710785562685,
+        0.003227135307199387,
+        0.000000000000000004,
+        -0.002340589945428436,
+        -0.001961555501773550,
+        -0.000000000000000002,
+        0.001316827447155443,
+    };
+
+    for(uint8_t i = 0; i < ARRAY_SIZE(h); i++)
+        tx_fir_config.tx_coef[i] = h[i] * 32767;
+
+	if(ad9361_set_tx_fir_config(tx_fir_config) < 0)
+    {
+        DBGPRINTLN_CTX("Failed to set TX FIR config");
+
+        return;
+    }
+
+    if(ad9361_set_tx_fir_en_dis(1) < 0)
+    {
+        DBGPRINTLN_CTX("Failed to enable TX FIR");
+
+        return;
+    }
+
 	//ad9361_set_rx_fir_config(rx_fir_config);
 
-    ad9361_tx_lo_powerdown(OFF);
+    // ad9361_tx_lo_powerdown(OFF);
 
     // Channel 1
     axi_ad9361_dac_dds_set_frequency(0, 0, 125000000ULL, 2000000UL);
@@ -648,32 +733,31 @@ void trx_test()
     // DBGPRINTLN_CTX("TX delay: %d", lTx);
     // DBGPRINTLN_CTX("RX delay: %d", lRx);
 
-    // Sample some data
-    uint32_t ulDescSize = 128 * 1024 * sizeof(uint16_t) * axi_ad9361_get_num_channels();
-
-	axi_dmac_transfer_t sRdXfer[2] =
+    if(ubMode == 0) // RX
     {
-        {
-            .ulSize = ulDescSize,
-            .eFlags = 0,
-            .ulDestAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE),
-            .pfCallback = NULL,
-            .pCallbackArg = NULL
-        },
-        {
-            .ulSize = ulDescSize,
-            .eFlags = 0,
-            .ulDestAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE) + ulDescSize,
-            .pfCallback = NULL,
-            .pCallbackArg = NULL
-        },
-    };
+        // Sample some data
+        uint32_t ulDescSize = 128 * 1024 * sizeof(uint16_t) * axi_ad9361_get_num_channels();
 
-    axi_rf_tstamp_cnt_rx_enable(1);
+        axi_dmac_transfer_t sRdXfer[2] =
+        {
+            {
+                .ulSize = ulDescSize,
+                .eFlags = 0,
+                .ulDestAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE),
+                .pfCallback = NULL,
+                .pCallbackArg = NULL
+            },
+            {
+                .ulSize = ulDescSize,
+                .eFlags = 0,
+                .ulDestAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE) + ulDescSize,
+                .pfCallback = NULL,
+                .pCallbackArg = NULL
+            },
+        };
 
-    void *pDummy = malloc(ulDescSize / sizeof(uint16_t) * sizeof(float));
-    if(pDummy) // Test long RX
-    {
+        void *pDummy = malloc(ulDescSize / sizeof(uint16_t) * sizeof(float));
+
         struct sockaddr_in sa;
         int s;
 
@@ -696,7 +780,7 @@ void trx_test()
         uint32_t ulSampleCount = ulDescSize / sizeof(uint16_t);
 
         int8_t bRdXferID[2];
-        uint8_t ubInfiniteSampling = 0;
+        uint8_t ubInfiniteSampling = 1;
         uint32_t ulCycles = 100;
 
         bRdXferID[0] = axi_dmac_transfer_submit(AXI_DMAC_RF_RX_INST, &sRdXfer[0]);
@@ -718,6 +802,8 @@ void trx_test()
 
             return;
         }
+
+        axi_rf_tstamp_rx_enable(1);
 
         for(uint32_t i = 0; i < ulCycles; i++)
         {
@@ -840,142 +926,283 @@ void trx_test()
             }
         }
 
+        axi_rf_tstamp_rx_enable(0);
 
 	    close(s);
         free(pDummy);
     }
 
-    int8_t bRdXferID = axi_dmac_transfer_submit(AXI_DMAC_RF_RX_INST, &sRdXfer[0]);
-
-    if(bRdXferID < 0)
+    if(ubMode == 1) // RX to file
     {
-        DBGPRINTLN_CTX("Failed to submit RX DMA transfer");
+        uint32_t ulDescSize = 128 * 1024 * sizeof(uint16_t) * axi_ad9361_get_num_channels();
 
-        return;
-    }
-
-    if(!axi_dmac_transfer_wait_completion(AXI_DMAC_RF_RX_INST, bRdXferID, 500))
-    {
-        DBGPRINTLN_CTX("RX DMA transfer did not complete in time");
-
-        return;
-    }
-
-    axi_rf_tstamp_rx_enable(0);
-
-    // Export data to a matlab file for FFT analysis
-    FILE *pFile = fopen("adc_data.m", "wb");
-
-    if(pFile == NULL)
-    {
-        printf("Unable to open file!\n");
-
-        return;
-    }
-
-    fprintf(pFile, "adc_ch0 = [");
-
-    for(uint32_t i = 0; i < sRdXfer[0].ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
-    {
-        int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i));
-
-        fprintf(pFile, "%d ", sSample);
-    }
-
-    fprintf(pFile, "];\n");
-
-    fprintf(pFile, "adc_ch1 = [");
-
-    for(uint32_t i = 0; i < sRdXfer[0].ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
-    {
-        int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 1 * sizeof(uint16_t)));
-
-        fprintf(pFile, "%d ", sSample);
-    }
-
-    fprintf(pFile, "];\n");
-
-    if(axi_ad9361_get_num_channels() > 2)
-    {
-        fprintf(pFile, "adc_ch2 = [");
-
-        for(uint32_t i = 0; i < sRdXfer[0].ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+        axi_dmac_transfer_t sRdXfer =
         {
-            int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 2 * sizeof(uint16_t)));
+            .ulSize = ulDescSize,
+            .eFlags = 0,
+            .ulDestAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE),
+            .pfCallback = NULL,
+            .pCallbackArg = NULL
+        };
+
+        int8_t bRdXferID = axi_dmac_transfer_submit(AXI_DMAC_RF_RX_INST, &sRdXfer);
+
+        if(bRdXferID < 0)
+        {
+            DBGPRINTLN_CTX("Failed to submit RX DMA transfer");
+
+            return;
+        }
+
+        axi_rf_tstamp_rx_enable(1);
+
+        if(!axi_dmac_transfer_wait_completion(AXI_DMAC_RF_RX_INST, bRdXferID, 500))
+        {
+            DBGPRINTLN_CTX("RX DMA transfer did not complete in time");
+
+            return;
+        }
+
+        axi_rf_tstamp_rx_enable(0);
+
+        // Export data to a matlab file for FFT analysis
+        FILE *pFile = fopen("adc_data.m", "wb");
+
+        if(pFile == NULL)
+        {
+            printf("Unable to open file!\n");
+
+            return;
+        }
+
+        fprintf(pFile, "adc_ch0 = [");
+
+        for(uint32_t i = 0; i < sRdXfer.ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+        {
+            int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i));
 
             fprintf(pFile, "%d ", sSample);
         }
 
         fprintf(pFile, "];\n");
 
-        fprintf(pFile, "adc_ch3 = [");
+        fprintf(pFile, "adc_ch1 = [");
 
-        for(uint32_t i = 0; i < sRdXfer[0].ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+        for(uint32_t i = 0; i < sRdXfer.ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
         {
-            int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 3 * sizeof(uint16_t)));
+            int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 1 * sizeof(uint16_t)));
 
             fprintf(pFile, "%d ", sSample);
         }
 
         fprintf(pFile, "];\n");
+
+        if(axi_ad9361_get_num_channels() > 2)
+        {
+            fprintf(pFile, "adc_ch2 = [");
+
+            for(uint32_t i = 0; i < sRdXfer.ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+            {
+                int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 2 * sizeof(uint16_t)));
+
+                fprintf(pFile, "%d ", sSample);
+            }
+
+            fprintf(pFile, "];\n");
+
+            fprintf(pFile, "adc_ch3 = [");
+
+            for(uint32_t i = 0; i < sRdXfer.ulSize; i += axi_ad9361_get_num_channels() * sizeof(uint16_t))
+            {
+                int16_t sSample = *((volatile int16_t *)((uintptr_t)pDMABufferBase + i + 3 * sizeof(uint16_t)));
+
+                fprintf(pFile, "%d ", sSample);
+            }
+
+            fprintf(pFile, "];\n");
+        }
+
+        fprintf(pFile, "\n");
+
+        fprintf(pFile, "adc_ch0 = adc_ch0 / 2048;\n");
+        fprintf(pFile, "adc_ch1 = adc_ch1 / 2048;\n");
+
+        if(axi_ad9361_get_num_channels() > 2)
+        {
+            fprintf(pFile, "adc_ch2 = adc_ch2 / 2048;\n");
+            fprintf(pFile, "adc_ch3 = adc_ch3 / 2048;\n");
+        }
+
+        fprintf(pFile, "\n");
+
+        fprintf(pFile, "trx_ch0 = adc_ch0 + j * adc_ch1;\n");
+
+        if(axi_ad9361_get_num_channels() > 2)
+            fprintf(pFile, "trx_ch1 = adc_ch2 + j * adc_ch3;\n");
+
+        fprintf(pFile, "\n");
+
+        uint32_t fs = 0;
+        ad9361_get_rx_sampling_freq(&fs);
+
+        fprintf(pFile, "fs = %u;\n", fs);
+
+        uint64_t fc = 0;
+        ad9361_get_rx_lo_freq(&fc);
+
+        fprintf(pFile, "fc = %lu;\n", fc);
+
+        fprintf(pFile, "\n");
+
+        fprintf(pFile, "X0 = fftshift(fft(trx_ch0) / length(trx_ch0));\n");
+
+        if(axi_ad9361_get_num_channels() > 2)
+            fprintf(pFile, "X1 = fftshift(fft(trx_ch1) / length(trx_ch1));\n");
+
+        fprintf(pFile, "\n");
+
+        fprintf(pFile, "f = linspace(-fs/2, fs/2, length(adc_ch0)) + fc;\n");
+
+        fprintf(pFile, "\n");
+
+        if(axi_ad9361_get_num_channels() > 2)
+        {
+            fprintf(pFile, "subplot 211\n");
+            fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
+            fprintf(pFile, "subplot 212\n");
+            fprintf(pFile, "plot(f, 10 * log10(abs(X1)));\n");
+        }
+        else
+        {
+            fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
+        }
+
+        fclose(pFile);
     }
 
-    fprintf(pFile, "\n");
-
-    fprintf(pFile, "adc_ch0 = adc_ch0 / 2048;\n");
-    fprintf(pFile, "adc_ch1 = adc_ch1 / 2048;\n");
-
-    if(axi_ad9361_get_num_channels() > 2)
+    if(ubMode == 2) // TX random data
     {
-        fprintf(pFile, "adc_ch2 = adc_ch2 / 2048;\n");
-        fprintf(pFile, "adc_ch3 = adc_ch3 / 2048;\n");
+        uint32_t ulDescSize = 128 * 1024 * sizeof(uint16_t) * axi_ad9361_get_num_channels();
+
+        // Populate buffer with random data
+        for(uint32_t i = 0; i < 2 * ulDescSize; i += sizeof(uint16_t))
+        {
+            volatile uint16_t r = rand() % 65536;
+
+            *((volatile int16_t *)((uintptr_t)pDMABufferBase + i)) = *(volatile int16_t *)&r;
+        }
+
+        axi_dmac_transfer_t sWrXfer[2] =
+        {
+            {
+                .ulSize = ulDescSize,
+                .eFlags = 0,
+                .ulSrcAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE),
+                .pfCallback = NULL,
+                .pCallbackArg = NULL
+            },
+            {
+                .ulSize = ulDescSize,
+                .eFlags = 0,
+                .ulSrcAddress = (uintptr_t)((ullDMABufferPhys & 0x0FFFFFFF) | AXI_PCIE_BAR1_MM_BASE) + ulDescSize,
+                .pfCallback = NULL,
+                .pCallbackArg = NULL
+            },
+        };
+
+        int8_t bWrXferID[2];
+        uint8_t ubInfiniteSampling = 1;
+        uint32_t ulCycles = 100;
+
+        bWrXferID[0] = axi_dmac_transfer_submit(AXI_DMAC_RF_TX_INST, &sWrXfer[0]);
+
+        if(bWrXferID[0] < 0)
+        {
+            DBGPRINTLN_CTX("Failed to submit TX DMA transfer");
+
+            return;
+        }
+
+        bWrXferID[1] = axi_dmac_transfer_submit(AXI_DMAC_RF_TX_INST, &sWrXfer[1]);
+
+        if(bWrXferID[1] < 0)
+        {
+            DBGPRINTLN_CTX("Failed to submit TX DMA transfer");
+
+            return;
+        }
+
+        axi_ad9361_dac_set_data_sel(0, AXI_DAC_DATA_SEL_DMA);
+        axi_ad9361_dac_set_data_sel(1, AXI_DAC_DATA_SEL_DMA);
+
+        axi_rf_tstamp_tx_enable(1);
+
+        for(uint32_t i = 0; i < ulCycles; i++)
+        {
+            if(ubInfiniteSampling && i == ulCycles - 1)
+                i = 1;
+
+            // DBGPRINTLN_CTX("Cycle %u", i);
+
+            // DBGPRINTLN_CTX("  Wait xfer 0");
+            if(!axi_dmac_transfer_wait_completion(AXI_DMAC_RF_TX_INST, bWrXferID[0], 500))
+            {
+                DBGPRINTLN_CTX("Cycle %u: TX DMA transfer did not complete in time", i);
+
+                break;
+            }
+
+            if(i < ulCycles - 1)
+            {
+                if(axi_dmac_idle(AXI_DMAC_RF_TX_INST) && i != 0)
+                {
+                    DBGPRINTLN_CTX("Cycle %u: TX DMA controller is idle, software can't keep up", i);
+
+                    //break;
+                }
+
+                // DBGPRINTLN_CTX("  Submit xfer 0");
+                bWrXferID[0] = axi_dmac_transfer_submit(AXI_DMAC_RF_TX_INST, &sWrXfer[0]);
+
+                if(bWrXferID[0] < 0)
+                {
+                    DBGPRINTLN_CTX("Cycle %u: Failed to submit TX DMA transfer", i);
+
+                    break;
+                }
+            }
+
+            // DBGPRINTLN_CTX("  Wait xfer 1");
+            if(!axi_dmac_transfer_wait_completion(AXI_DMAC_RF_TX_INST, bWrXferID[1], 500))
+            {
+                DBGPRINTLN_CTX("Cycle %u: TX DMA transfer did not complete in time", i);
+
+                break;
+            }
+
+            if(i < ulCycles - 1)
+            {
+                if(axi_dmac_idle(AXI_DMAC_RF_TX_INST) && i != 0)
+                {
+                    DBGPRINTLN_CTX("Cycle %u: TX DMA controller is idle, software can't keep up", i);
+
+                    //break;
+                }
+
+                // DBGPRINTLN_CTX("  Submit xfer 1");
+                bWrXferID[1] = axi_dmac_transfer_submit(AXI_DMAC_RF_TX_INST, &sWrXfer[1]);
+
+                if(bWrXferID[1] < 0)
+                {
+                    DBGPRINTLN_CTX("Cycle %u: Failed to submit TX DMA transfer", i);
+
+                    break;
+                }
+            }
+        }
+
+        axi_rf_tstamp_tx_enable(0);
     }
-
-    fprintf(pFile, "\n");
-
-    fprintf(pFile, "trx_ch0 = adc_ch0 + j * adc_ch1;\n");
-
-    if(axi_ad9361_get_num_channels() > 2)
-        fprintf(pFile, "trx_ch1 = adc_ch2 + j * adc_ch3;\n");
-
-    fprintf(pFile, "\n");
-
-    uint32_t fs = 0;
-    ad9361_get_rx_sampling_freq(&fs);
-
-    fprintf(pFile, "fs = %u;\n", fs);
-
-    uint64_t fc = 0;
-    ad9361_get_rx_lo_freq(&fc);
-
-    fprintf(pFile, "fc = %lu;\n", fc);
-
-    fprintf(pFile, "\n");
-
-    fprintf(pFile, "X0 = fftshift(fft(trx_ch0) / length(trx_ch0));\n");
-
-    if(axi_ad9361_get_num_channels() > 2)
-        fprintf(pFile, "X1 = fftshift(fft(trx_ch1) / length(trx_ch1));\n");
-
-    fprintf(pFile, "\n");
-
-    fprintf(pFile, "f = linspace(-fs/2, fs/2, length(adc_ch0)) + fc;\n");
-
-    fprintf(pFile, "\n");
-
-    if(axi_ad9361_get_num_channels() > 2)
-    {
-        fprintf(pFile, "subplot 211\n");
-        fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
-        fprintf(pFile, "subplot 212\n");
-        fprintf(pFile, "plot(f, 10 * log10(abs(X1)));\n");
-    }
-    else
-    {
-        fprintf(pFile, "plot(f, 10 * log10(abs(X0)));\n");
-    }
-
-    fclose(pFile);
 
     int32_t temp;
 
@@ -1014,6 +1241,8 @@ void trx_test()
 void rv_test()
 {
     #include "firmware.bin.h"
+
+    *(volatile uint32_t*)((uintptr_t)pDMABufferBase) = 0x12345678;
 
     DBGPRINTLN_CTX("dma buf start: 0x%08X", *(volatile uint32_t*)((uintptr_t)pDMABufferBase));
     DBGPRINTLN_CTX("picorv32 reset: %s", axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RV32_RESETN_BIT) ? "no" : "yes");
@@ -1180,6 +1409,7 @@ uint8_t icyradio_setup_mmaps()
     pAXIRFTstampBase =   (void *)((uintptr_t)pAXIPeriphBase + (AXI_RF_TSTAMP_BASE - AXI_PERIPH_BASE));
     pAXIIRQCtrlBase =    (void *)((uintptr_t)pAXIPeriphBase + (AXI_IRQ_CTRL_BASE - AXI_PERIPH_BASE));
     pAXIDNABase =        (void *)((uintptr_t)pAXIPeriphBase + (AXI_DNA_BASE - AXI_PERIPH_BASE));
+    pAXIIICBase[2] =     (void *)((uintptr_t)pAXIPeriphBase + (AXI_IIC2_BASE - AXI_PERIPH_BASE));
 
     pAXIAD9361Base =     (void *)((uintptr_t)pAXIPeriphBase + (AXI_AD9361_BASE - AXI_PERIPH_BASE));
 
@@ -1300,7 +1530,7 @@ uint8_t icyradio_init_clocks()
     si5351_xtal_config(26000000, 10); // fPFD = XTAL, CLoad = 10 pF
 
     uint8_t ubStatus = si5351_read_status();
-    uint32_t ulTimeout = 2000;
+    uint32_t ulTimeout = 500;
 
     while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_XO_LOS))
     {
@@ -1323,9 +1553,9 @@ uint8_t icyradio_init_clocks()
     si5351_clkin_config(10000000, 1); // fPFD = CLKIN / 1
 
     ubStatus = si5351_read_status();
-    ulTimeout = 2000;
+    ulTimeout = 500;
 
-    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_XO_LOS))
+    while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_CLKIN_LOS))
     {
         usleep(1000);
 
@@ -1352,7 +1582,7 @@ uint8_t icyradio_init_clocks()
     si5351_pll_set_freq(SI5351_PLLA, 650000000);
 
     ubStatus = si5351_read_status();
-    ulTimeout = 2000;
+    ulTimeout = 500;
 
     while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_LOL_A))
     {
@@ -1380,7 +1610,7 @@ uint8_t icyradio_init_clocks()
     si5351_pll_set_freq(SI5351_PLLB, 800000000);
 
     ubStatus = si5351_read_status();
-    ulTimeout = 2000;
+    ulTimeout = 500;
 
     while(--ulTimeout && (ubStatus & SI5351_REG_STATUS_LOL_B))
     {
@@ -1551,7 +1781,7 @@ uint8_t icyradio_init_clocks()
     DBGPRINTLN_CTX("CLK%hhu Clock: %.3f MHz", SI5351_EXT_CLK_2_3, (float)SI5351_CLK_FREQ[SI5351_EXT_CLK_2_3] / 1000000);
 
     si5351_clock_power_up(SI5351_EXT_CLK_2_3); // Power the output stage up
-    si5351_clock_enable(SI5351_EXT_CLK_2_3); // Software enable the clock output
+    //si5351_clock_enable(SI5351_EXT_CLK_2_3); // Software enable the clock output
 
     //// External clock output (on u.FL connector)
     DBGPRINTLN_CTX("---- MS #%hhu (EXT_CLK_OUT) ----", SI5351_EXT_CLK_OUT);
@@ -1574,12 +1804,14 @@ uint8_t icyradio_init_clocks()
     //si5351_clock_enable(SI5351_EXT_CLK_OUT); // Software enable the clock output
 
     DBGPRINTLN_CTX("Waiting for all clocks to stabilize...");
-    usleep(100000);
+    usleep(50000);
 
     //// Global output enable
-    axi_iic_gpo_set_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 0);
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_MNGR_OEn_BIT, 0);
 
-    DBGPRINTLN_CTX("Clock manager global output enabled: %s", axi_iic_gpo_get_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT) ? "no" : "yes");
+    DBGPRINTLN_CTX("Clock manager global output enabled: %s", axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_MNGR_OEn_BIT) ? "no" : "yes");
+
+    usleep(50000);
 
     // Check clk_wiz_0 lock
     ulTimeout = 2000;
@@ -1598,6 +1830,8 @@ uint8_t icyradio_init_clocks()
         DBGPRINTLN_CTX("FPGA clk_wiz_0 MMCM locked!");
     }
 
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_CLK_WIZ0_250M_AUX_RESET_IN_BIT, 0); // De-assert DDR3 core reset
+
     // Check DDR3 controller MMCM lock
     ulTimeout = 2000;
 
@@ -1613,6 +1847,44 @@ uint8_t icyradio_init_clocks()
     else
     {
         DBGPRINTLN_CTX("FPGA DDR3 MMCM locked!");
+    }
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_MIG_166M_AUX_RESET_IN_BIT, 0); // De-assert DDR3 AXI interface reset
+
+    // Check DDR3 AXI interface reset release
+    ulTimeout = 2000;
+
+    while(--ulTimeout && !axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_MIG_166M_PERI_ARESETn_BIT))
+        usleep(1000);
+
+    if(!axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_MIG_166M_PERI_ARESETn_BIT))
+    {
+        DBGPRINTLN_CTX("FPGA DDR3 AXI interface did not come out of reset, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("FPGA DDR3 AXI interface reset released!");
+    }
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_FPGA_CLK1_49M152_AUX_RESET_IN_BIT, 0); // De-assert I2S Core reset
+
+    // Check I2S core reset release
+    ulTimeout = 2000;
+
+    while(--ulTimeout && !axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_FPGA_CLK1_49M152_PERI_ARESETn_BIT))
+        usleep(1000);
+
+    if(!axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_FPGA_CLK1_49M152_PERI_ARESETn_BIT))
+    {
+        DBGPRINTLN_CTX("FPGA I2S Core did not come out of reset, aborting!");
+
+        return 0;
+    }
+    else
+    {
+        DBGPRINTLN_CTX("FPGA I2S Core reset released!");
     }
 
     // Check PCIe MMCM lock
@@ -1705,7 +1977,7 @@ uint8_t icyradio_deinit_clocks()
     }
 
     // Disable clock manager output
-    axi_iic_gpo_set_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1);
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_MNGR_OEn_BIT, 1);
 
     DBGPRINTLN_CTX("Clock manager global output disabled, clk_wiz_0 MMCM is %s!", axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_WIZ0_LOCKED_BIT) ? "locked (how?)" : "unlocked");
 
@@ -1714,7 +1986,7 @@ uint8_t icyradio_deinit_clocks()
 
 uint8_t icyradio_system_reset()
 {
-    uint8_t ubCLKMngrOutStatus = !axi_iic_gpo_get_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT);
+    uint8_t ubCLKMngrOutStatus = !axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_MNGR_OEn_BIT);
     uint8_t ubCLKWIZ0Locked = axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_WIZ0_LOCKED_BIT);
     uint8_t ubDDRSrcStatus = axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_CLK_WIZ0_250M_PERI_ARESETn_BIT);
     uint8_t ubDDR3MMCMLocked = axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_MIG_MMCM_LOCKED_BIT);
@@ -1734,21 +2006,8 @@ uint8_t icyradio_system_reset()
 
                 return 0;
             }
-
-            DBGPRINTLN_CTX("Initiating system reset...");
-
-            // This will clear the two DDR3 reset bits set previously!
-            axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_SYS_AUX_RESET_BIT, 1);
-            usleep(100000); // Do not access anything while it's resetting, otherwise the ENTIRE SYSTEM will hang!
-
-            if(axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_MIG_166M_AUX_RESET_IN_BIT) || axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_RST_CLK_WIZ0_250M_AUX_RESET_IN_BIT))
-            {
-                DBGPRINTLN_CTX("DDR3 reset bits did not de-assert (how?), system reset failed, aborting!");
-
-                return 0;
-            }
         }
-        else
+        else if(!ubDDR3MMCMLocked && ubDDRAXIStatus)
         {
             DBGPRINTLN_CTX("DDR3 is not correctly out of reset, looks like the system was left in an invalid state (clk_mngr_oe: %s, clk_wiz_0: %s, rst_clk_wiz_0_250M: %s, mig_mmcm: %s, rst_mig_166M: %s), aborting!", ubCLKMngrOutStatus ? "yes" : "no", ubCLKWIZ0Locked ? "locked" : "unlocked", ubDDRSrcStatus ? "de-asserted" : "asserted", ubDDR3MMCMLocked ? "locked" : "unlocked", ubDDRAXIStatus ? "de-asserted" : "asserted");
             DBGPRINTLN_CTX("Please perform a power cycle to properly reset the system");
@@ -1761,19 +2020,8 @@ uint8_t icyradio_system_reset()
         if(!ubCLKWIZ0Locked && !ubDDRSrcStatus && !ubDDR3MMCMLocked && !ubDDRAXIStatus)
         {
             DBGPRINTLN_CTX("DDR3 is properly reset, looks like the system was left uninitialized");
-            DBGPRINTLN_CTX("Initiating system reset...");
-
-            axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_SYS_AUX_RESET_BIT, 1);
-            usleep(100000); // Do not access anything while it's resetting, otherwise the ENTIRE SYSTEM will hang!
-
-            if(axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_SYS_AUX_RESET_BIT))
-            {
-                DBGPRINTLN_CTX("System reset bit did not de-assert (how?), system reset failed, aborting!");
-
-                return 0;
-            }
         }
-        else if(!ubCLKWIZ0Locked && !ubDDR3MMCMLocked)
+        else if(!ubDDR3MMCMLocked && ubDDRAXIStatus)
         {
             DBGPRINTLN_CTX("DDR3 clocks are not locked and resets are not properly asserted, looks like the system was left in an invalid state (clk_mngr_oe: %s, clk_wiz_0: %s, rst_clk_wiz_0_250M: %s, mig_mmcm: %s, rst_mig_166M: %s), aborting!", ubCLKMngrOutStatus ? "yes" : "no", ubCLKWIZ0Locked ? "locked" : "unlocked", ubDDRSrcStatus ? "de-asserted" : "asserted", ubDDR3MMCMLocked ? "locked" : "unlocked", ubDDRAXIStatus ? "de-asserted" : "asserted");
             DBGPRINTLN_CTX("Please perform a power cycle to properly reset the system");
@@ -1782,10 +2030,23 @@ uint8_t icyradio_system_reset()
         }
     }
 
+    DBGPRINTLN_CTX("Initiating system reset...");
+
+    // This will clear the two DDR3 reset bits set previously!
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_SYS_AUX_RESET_BIT, 1);
+    usleep(100000); // Do not access anything while it's resetting, otherwise the ENTIRE SYSTEM will hang!
+
+    if(axi_gpio_get_value(AXI_GPIO_SYS_INST, AXI_GPIO2_SYS_AUX_RESET_BIT))
+    {
+        DBGPRINTLN_CTX("System reset bit did not de-assert (how?), system reset failed, aborting!");
+
+        return 0;
+    }
+
     return 1;
 }
 
-uint8_t icyradio_ddr3_memtest(uint8_t ubFull)
+uint8_t icyradio_ddr3_memtest(uint8_t ubMode)
 {
     uint32_t ulTimeout = 10000;
 
@@ -1812,6 +2073,9 @@ uint8_t icyradio_ddr3_memtest(uint8_t ubFull)
 
     DBGPRINTLN_CTX("DDR First Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + 0x00000000));
     DBGPRINTLN_CTX("DDR Last Word: 0x%08X", *(volatile uint32_t*)((uintptr_t)pAXIDDRBase + AXI_MIG_DDR3_SIZE - 4));
+
+    if(ubMode < 1)
+        return 1;
 
     clock_t start, end;
     uint32_t sum = 0;
@@ -1847,7 +2111,7 @@ uint8_t icyradio_ddr3_memtest(uint8_t ubFull)
     DBGPRINTLN_CTX("Speed test - Read Words 32 MB took %f seconds (%f Mbps)", (double)(end - start) / CLOCKS_PER_SEC, (32.f * 1024 * 1024 * 8) / ((double)(end - start) / CLOCKS_PER_SEC) / 1000000.f);
 
     // Full memory read/write
-    if(!ubFull)
+    if(ubMode < 2)
         return 1;
 
     DBGPRINTLN_CTX("Memory test - 1st stage");
@@ -1965,6 +2229,8 @@ int main(int argc, char *argv[])
     DBGPRINTLN_CTX("bar2h = 0x%08X", bar2h);
     DBGPRINTLN_CTX("bar2l = 0x%08X", bar2l);
 
+    *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x208) = (ullDMABufferPhys >> 32) & 0xFFFFFFFF; // FIX FOR RV32
+    *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x20C) = (ullDMABufferPhys >> 0) & 0xFFFFFFFF; // FIX FOR RV32
     *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x210) = (ullDMABufferPhys >> 32) & 0xFFFFFFFF;
     *(volatile uint32_t*)((uintptr_t)pAXIPCIeBase + 0x214) = (ullDMABufferPhys >> 0) & 0xFFFFFFFF;
 
@@ -1991,11 +2257,40 @@ int main(int argc, char *argv[])
     // Init interfaces
     axi_iic_init(AXI_IIC_CODEC_INST, 125000000UL, AXI_IIC_FAST);
     axi_iic_init(AXI_IIC_SYS_INST, 125000000UL, AXI_IIC_FAST);
+    axi_iic_init(AXI_IIC_EXP_INST, 125000000UL, AXI_IIC_FAST);
     //axi_quad_spi_init(AXI_QUAD_SPI_FLASH_INST, AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST); // Quad PI 0 is used for flash XIP
     axi_quad_spi_init(AXI_QUAD_SPI_TRX_INST, AXI_QUAD_SPI_MODE_1, AXI_QUAD_SPI_MSB_FIRST);
     axi_quad_spi_init(AXI_QUAD_SPI_SYNTH_INST, AXI_QUAD_SPI_MODE_0, AXI_QUAD_SPI_MSB_FIRST);
 
     DBGPRINTLN_CTX("Interfaces successfully initialized");
+
+    // Scan I2C buses
+    DBGPRINTLN_CTX("Scanning CODEC I2C bus...");
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CODEC_RSTn_BIT, 1);
+
+    for(uint8_t a = 0x08; a < 0x78; a++)
+        if(axi_iic_write(AXI_IIC_CODEC_INST, a, NULL, 0, AXI_IIC_STOP))
+            DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CODEC_RSTn_BIT, 0);
+
+    DBGPRINTLN_CTX("Scanning SYS I2C bus...");
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_PM_I2C_EN_BIT, 1);
+
+    for(uint8_t a = 0x08; a < 0x78; a++)
+        if(axi_iic_write(AXI_IIC_SYS_INST, a, NULL, 0, AXI_IIC_STOP))
+            DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
+
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_PM_I2C_EN_BIT, 0);
+
+    DBGPRINTLN_CTX("Scanning EXP I2C bus...");
+
+    for(uint8_t a = 0x08; a < 0x78; a++)
+        if(axi_iic_write(AXI_IIC_EXP_INST, a, NULL, 0, AXI_IIC_STOP))
+            DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
+
 
     // Init Si5351 clock manager
     if(!icyradio_init_clocks())
@@ -2131,10 +2426,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_RF_RX, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
-    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_RF_TX, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
-    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_I2S_RX, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
-    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_I2S_TX, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
+    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_RF_RX, AXI_IRQ_CTRL_IRQ_MODE_EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
+    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_RF_TX, AXI_IRQ_CTRL_IRQ_MODE_EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
+    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_I2S_RX, AXI_IRQ_CTRL_IRQ_MODE_EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
+    axi_irq_ctrl_irq_config(AXI_IRQ_CTRL_IRQ_NUM_AXI_DMAC_I2S_TX, AXI_IRQ_CTRL_IRQ_MODE_EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), 1);
 
     if(!axi_i2s_init())
     {
@@ -2147,7 +2442,7 @@ int main(int argc, char *argv[])
     }
 
     // DDR3
-    // icyradio_ddr3_memtest(0);
+    // icyradio_ddr3_memtest(1);
 
     // rv_test();
 
@@ -2156,7 +2451,7 @@ int main(int argc, char *argv[])
     {
         r8v97003_power_up(R8V97003_PWR_ALL); // Power the chip up
 
-        r8v97003_ld_config(1, 1, R8V97003_LD_PIN_MODE_LD, R8V97003_LD_PREC_6p4ns);
+        r8v97003_ld_config(1, 1, R8V97003_LD_PIN_MODE_LD, R8V97003_LD_PREC_0p5ns);
         r8v97003_pfd_config(SI5351_CLK_FREQ[SI5351_SYNTH_REF_CLK], 0, 1, 5, 1, R8V97003_PFD_PW_260ps); // 25 MHz * 2 * 5 = 250 MHz PFD
 
         DBGPRINTLN_CTX("mmWave Synth Ref: %.3f MHz", (float)R8V97003_REF_FREQ / 1000000);
@@ -2180,12 +2475,12 @@ int main(int argc, char *argv[])
         axi_gpio_set_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_MUTE_BIT, 0);
         DBGPRINTLN_CTX("mmWave Synth Muted: %s", axi_gpio_get_value(AXI_GPIO_SYNTH_INST, AXI_GPIO1_SYNTH_MUTE_BIT) ? "yes" : "no");
 
-        usleep(2000000);
+        // usleep(2000000);
 
-        r8v97003_power_down(R8V97003_PWR_ALL); // Power the chip down
+        // r8v97003_power_down(R8V97003_PWR_ALL); // Power the chip down
     }
 
-    // trx_test();
+    trx_test(2);
 
     /*
     DBGPRINTLN_CTX("--- Flash SPI Test ---");
@@ -2279,7 +2574,9 @@ int main(int argc, char *argv[])
     // axi_iic_gpo_set_value(AXI_IIC_CODEC_INST, 0, 0);
     */
 
-    usleep(2000000);
+    // usleep(2000000);
+
+    ioctl(iDeviceFile, ICYRADIO_IOCTL_IRQ_FLUSH); // Ask kernel to flush IRQs (this will cause the poll() call to return with POLLHUP)
 
     icyradio_deinit_clocks();
     icyradio_free_mmaps();

@@ -149,6 +149,8 @@ uint8_t axi_dmac_init(uint8_t ubInst)
         return 0;
     }
 
+    axi_irq_ctrl_irq_set_pend(eAXIDMACIRQNum[ubInst], 0);
+
     axi_dmac_reg_write(ubInst, AXI_DMAC_REG_IRQ_MASK, AXI_DMAC_REG_IRQ_x_IRQ_XFER_QUEUED); // Mask only the transfer queued IRQ
 
     return 1;
@@ -336,12 +338,12 @@ uint8_t axi_dmac_transfer_wait_completion(uint8_t ubInst, uint8_t ubTransferID, 
     //     return 1;
 
     // uint32_t ulReg = axi_dmac_reg_read(ubInst, AXI_DMAC_REG_XFER_DONE);
-    uint64_t ullTimeoutUs = (uint64_t)ulTimeoutMs * 1000ULL;
+    uint64_t ullTimeout = (uint64_t)ulTimeoutMs * 10ULL;
 
     // while(--ullTimeoutUs && !(ulReg & AXI_DMAC_REG_XFER_DONE_XFER_n_DONE(ubTransferID)))
-    while(--ullTimeoutUs && !pXfer->ubDone)
+    while(--ullTimeout && !pXfer->ubDone)
     {
-        usleep(1);
+        usleep(100);
 
         // ulReg = axi_dmac_reg_read(ubInst, AXI_DMAC_REG_XFER_DONE);
     }

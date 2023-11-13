@@ -27,15 +27,15 @@ static void *axi_irq_ctrl_poll_thread(void *pParam)
         if(poll(&tPollFD, 1, -1) < 0)
             break;
 
+        if(tPollFD.revents & (POLLERR | POLLHUP))
+            break;
+
+        if(!(tPollFD.revents & POLLIN))
+            continue;
+
         pthread_mutex_lock(&tIRQPendMutex);
 
-        uint32_t ulPend = axi_irq_ctrl_reg_read(AXI_IRQ_CTRL_REG_IRQ_PEND);
-
-        ulPend &= ulIRQMask;
-
-        axi_irq_ctrl_reg_write(AXI_IRQ_CTRL_REG_IRQ_PEND_CLR, ulPend);
-
-        pthread_mutex_unlock(&tIRQPendMutex);
+        uint32_t ulPend = axi_irq_ctrl_reg_read(AXI_IRQ_CTRL_REG_IRQ_PEND) & ulIRQMask;
 
         for(uint8_t i = 0; i < AXI_IRQ_CTRL_IRQ_NUM_MAX; i++)
         {
@@ -45,6 +45,10 @@ static void *axi_irq_ctrl_poll_thread(void *pParam)
                     sISRInfo[i].pISR(sISRInfo[i].pArg);
             }
         }
+
+        axi_irq_ctrl_reg_write(AXI_IRQ_CTRL_REG_IRQ_PEND_CLR, ulPend);
+
+        pthread_mutex_unlock(&tIRQPendMutex);
     }
 
     return NULL;
@@ -52,6 +56,9 @@ static void *axi_irq_ctrl_poll_thread(void *pParam)
 
 uint8_t axi_irq_ctrl_init(int iDeviceFile)
 {
+    if(iDeviceFile < 0)
+        return 0;
+
     uint32_t ulVersion = axi_irq_ctrl_get_core_version();
 
     DBGPRINTLN_CTX("Found AXI IRQ Controller Core v%d.%d.%d", AXI_CORE_VERSION_MAJOR(ulVersion), AXI_CORE_VERSION_MINOR(ulVersion), AXI_CORE_VERSION_PATCH(ulVersion));
@@ -71,7 +78,12 @@ uint8_t axi_irq_ctrl_init(int iDeviceFile)
     for(uint8_t i = 0; i < AXI_IRQ_CTRL_IRQ_NUM_MAX; i++)
         sISRInfo[i].pISR = NULL;
 
-    if(pthread_create(&tPollThread, NULL, axi_irq_ctrl_poll_thread, &iDeviceFile) < 0)
+    static int s_iDeviceFile = -1;
+
+    if(s_iDeviceFile < 0)
+        s_iDeviceFile = iDeviceFile;
+
+    if(pthread_create(&tPollThread, NULL, axi_irq_ctrl_poll_thread, &s_iDeviceFile) < 0)
     {
         DBGPRINTLN_CTX("Failed to create IRQ poll thread");
 
@@ -86,12 +98,12 @@ uint32_t axi_irq_ctrl_get_core_version()
     return axi_irq_ctrl_reg_read(AXI_IRQ_CTRL_REG_VERSION);
 }
 
-uint8_t axi_irq_ctrl_irq_config(enum axi_irq_ctrl_irq_num eIRQNum, uint8_t ubDest, uint8_t ubEnable)
+uint8_t axi_irq_ctrl_irq_config(enum axi_irq_ctrl_irq_num eIRQNum, enum axi_irq_ctrl_irq_mode eMode, uint8_t ubDest, uint8_t ubEnable)
 {
     if(eIRQNum >= AXI_IRQ_CTRL_IRQ_NUM_MAX)
         return 0;
 
-    axi_irq_ctrl_reg_write(AXI_IRQ_CTRL_REG_IRQ_CONFIG(eIRQNum), (ubEnable ? AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_EN : 0) | AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST(ubDest));
+    axi_irq_ctrl_reg_write(AXI_IRQ_CTRL_REG_IRQ_CONFIG(eIRQNum), eMode | (ubEnable ? AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_ENABLE : 0) | AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST(ubDest));
 
     return 1;
 }

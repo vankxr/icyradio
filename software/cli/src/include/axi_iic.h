@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include "utils.h"
 
-#define AXI_IIC_NUM_INSTANCES 2
+#define AXI_IIC_NUM_INSTANCES 3
 
 #define AXI_IIC_REG_GIE          0x01C
 #define AXI_IIC_REG_ISR          0x020
@@ -97,18 +97,21 @@ static inline uint8_t axi_iic_read_byte(uint8_t ubInst, uint8_t ubAddress, uint8
 
     return ubData;
 }
-void axi_iic_gpo_set_value(uint8_t ubInst, uint8_t ubGPO, uint8_t ubValue);
-uint8_t axi_iic_gpo_get_value(uint8_t ubInst, uint8_t ubGPO);
+
+/* FIXME: Disable GPOs because they are not reliable enough
+ * since the IP core has some problems that require it to be soft reset
+ * thus restoring the default GPO value, making them useless
+ */
+// void axi_iic_gpo_set_value(uint8_t ubInst, uint8_t ubGPO, uint8_t ubValue);
+// uint8_t axi_iic_gpo_get_value(uint8_t ubInst, uint8_t ubGPO);
 
 // Instance 0 - axi_iic_0 - Audio CODEC control
 #define AXI_IIC_CODEC_INST      0
 
-#define AXI_IIC0_CODEC_RSTn_BIT      0 // BIT  0: CODEC_RSTn
-
 // Instance 1 - axi_iic_1 - System control (clock manager, power manager, etc...)
 #define AXI_IIC_SYS_INST        1
 
-#define AXI_IIC1_GPO_PM_I2C_EN_BIT      0 // BIT  0: PM_I2C_EN
-#define AXI_IIC1_GPO_CLK_MNGR_OEn_BIT   1 // BIT  1: CLK_MNGR_OEn
+// Instance 2 - axi_iic_2 - Expansion card control
+#define AXI_IIC_EXP_INST        2
 
 #endif // __AXI_IIC_H__

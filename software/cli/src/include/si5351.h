@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include "axi_iic.h"
+#include "axi_gpio.h"
 #include "debug_macros.h"
 
 #define SI5351_I2C_ADDR 0x60

@@ -63,7 +63,7 @@ static void si5351_rmw_register(uint8_t ubRegister, uint8_t ubMask, uint8_t ubVa
 
 uint8_t si5351_init()
 {
-    if(!axi_iic_write_byte(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, SI5351_REG_STATUS, AXI_IIC_STOP))
+    if(!axi_iic_write(AXI_IIC_SYS_INST, SI5351_I2C_ADDR, NULL, 0, AXI_IIC_STOP))
     {
         DBGPRINTLN_CTX("I2C write failed (is the device present?), aborting");
 
@@ -80,7 +80,7 @@ uint8_t si5351_init()
     si5351_write_register(SI5351_REG_CLK_OEB, 0xFF); // Disable all outputs by software
     si5351_write_register(SI5351_REG_OEB_MASK, 0x00); // Control all output enables via the OEB pad
 
-    axi_iic_gpo_set_value(AXI_IIC_SYS_INST, AXI_IIC1_GPO_CLK_MNGR_OEn_BIT, 1); // Disable all outputs by hardware
+    axi_gpio_set_value(AXI_GPIO_SYS_INST, AXI_GPIO2_CLK_MNGR_OEn_BIT, 1); // Disable all outputs by hardware
 
     si5351_write_register(SI5351_REG_IRQ_MASK, 0x00);
     si5351_write_register(SI5351_REG_IRQ_FLAGS, 0x00); // Clear all IRQs
@@ -227,6 +227,9 @@ uint8_t si5351_pll_reset(uint8_t ubPLL)
     while(si5351_read_register(SI5351_REG_PLL_RST) & (!ubPLL ? SI5351_REG_PLL_RST_PLLA_RESET : SI5351_REG_PLL_RST_PLLB_RESET))
         usleep(0);
 
+    while(si5351_read_status() & SI5351_REG_STATUS_SYS_INIT) // Somehow the SYS_INIT bit gets set when the PLLs are reset
+        usleep(0);
+
     return 1;
 }
 uint8_t si5351_pll_set_source(uint8_t ubPLL, uint8_t ubSource)
@@ -311,8 +314,8 @@ uint8_t si5351_pll_set_freq(uint8_t ubPLL, uint32_t ulFreq)
         return 0;
     }
 
-    uint32_t ulP1 = 128 * xMult.ulInt + (uint32_t)((128 * xMult.ulNum) / xMult.ulDen) - 512;
-    uint32_t ulP2 = 128 * xMult.ulNum - xMult.ulDen * (uint32_t)((128 * xMult.ulNum) / xMult.ulDen);
+    uint32_t ulP1 = 128 * xMult.ulInt + ((128 * xMult.ulNum) / xMult.ulDen) - 512;
+    uint32_t ulP2 = 128 * xMult.ulNum - xMult.ulDen * ((128 * xMult.ulNum) / xMult.ulDen);
     uint32_t ulP3 = xMult.ulDen;
 
     if(!xMult.ulNum && !(xMult.ulInt & 1)) // If multiplier is an even integer, turn on integer mode
@@ -417,9 +420,9 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
     }
     else
     {
-        if(xDiv.ulInt < 4 || xDiv.ulInt > 900) // Integer limits
+        if(xDiv.ulInt < 4 || xDiv.ulInt > 2048) // Integer limits
         {
-            DBGPRINTLN_CTX("Invalid integer divider (%u, Valid: 4-900)", xDiv.ulInt);
+            DBGPRINTLN_CTX("Invalid integer divider (%u, Valid: 4-2048)", xDiv.ulInt);
 
             return 0;
         }
@@ -438,7 +441,7 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
             return 0;
         }
 
-        if(xDiv.ulInt == 900 && xDiv.ulNum) // Fractional limits
+        if(xDiv.ulInt == 2048 && xDiv.ulNum) // Fractional limits
         {
             DBGPRINTLN_CTX("Invalid divider (%u + (%u / %u), Valid: 4, 6, 8-900 + (0 / 1))", xDiv.ulInt, xDiv.ulNum, xDiv.ulDen);
 
@@ -452,8 +455,8 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
             return 0;
         }
 
-        uint32_t ulP1 = 128 * xDiv.ulInt + (uint32_t)((128 * xDiv.ulNum) / xDiv.ulDen) - 512;
-        uint32_t ulP2 = 128 * xDiv.ulNum - xDiv.ulDen * (uint32_t)((128 * xDiv.ulNum) / xDiv.ulDen);
+        uint32_t ulP1 = 128 * xDiv.ulInt + ((128 * xDiv.ulNum) / xDiv.ulDen) - 512;
+        uint32_t ulP2 = 128 * xDiv.ulNum - xDiv.ulDen * ((128 * xDiv.ulNum) / xDiv.ulDen);
         uint32_t ulP3 = xDiv.ulDen;
 
         float fPhase = si5351_multisynth_get_phase_offset(ubMS);
@@ -465,7 +468,7 @@ uint8_t si5351_multisynth_set_freq(uint8_t ubMS, uint32_t ulFreq)
 
         si5351_write_register(SI5351_REG_MSn_P3_MID(ubMS), (ulP3 >> 8) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_LSB(ubMS), (ulP3 >> 0) & 0xFF);
-        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((xDiv.ulNum == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
+        si5351_write_register(SI5351_REG_MSn_P1_MSB_DIV(ubMS), ((xDiv.ulInt == 4) ? SI5351_REG_MSn_P1_MSB_DIV_MSn_DIV4 : 0x00) | ((ulP1 >> 16) & 0x03));
         si5351_write_register(SI5351_REG_MSn_P1_MID(ubMS), (ulP1 >> 8) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P1_LSB(ubMS), (ulP1 >> 0) & 0xFF);
         si5351_write_register(SI5351_REG_MSn_P3_2_MSB(ubMS), ((ulP3 >> 12) & 0xF0) | ((ulP2 >> 16) & 0x0F));
