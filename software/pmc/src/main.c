@@ -508,10 +508,30 @@ int main()
 
         if(usStatus != 0x0000)
         {
+            uint8_t ubStatusVOUT = lt7182s_get_status_vout(i);
+            uint8_t ubStatusIOUT = lt7182s_get_status_iout(i);
+            uint8_t ubStatusInput = lt7182s_get_status_input(i);
+            uint8_t ubStatusTemperature = lt7182s_get_status_temperature();
+            uint8_t ubStatusCML = lt7182s_get_status_cml();
+            uint8_t ubStatusMFRSpecific = lt7182s_get_status_mfr_specific(i);
+            uint8_t ubStatusMFRCommon = lt7182s_get_status_mfr_common();
+            uint16_t usStatusMFRPads = lt7182s_get_status_mfr_pads();
+            uint8_t ubStatusMFRPinConfig = lt7182s_get_status_mfr_pin_config();
+
             lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
             lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
 
             DBGPRINTLN_CTX("LT7182S Channel #%hhu failed to turn on! Status word: 0x%04X", i, usStatus);
+
+            DBGPRINTLN_CTX("  VOUT Status: 0x%02X", ubStatusVOUT);
+            DBGPRINTLN_CTX("  IOUT Status: 0x%02X", ubStatusIOUT);
+            DBGPRINTLN_CTX("  Input Status: 0x%02X", ubStatusInput);
+            DBGPRINTLN_CTX("  Temperature Status: 0x%02X", ubStatusTemperature);
+            DBGPRINTLN_CTX("  CML Status: 0x%02X", ubStatusCML);
+            DBGPRINTLN_CTX("  MFR Specific Status: 0x%02X", ubStatusMFRSpecific);
+            DBGPRINTLN_CTX("  MFR Common Status: 0x%02X", ubStatusMFRCommon);
+            DBGPRINTLN_CTX("  MFR Pads Status: 0x%04X", usStatusMFRPads);
+            DBGPRINTLN_CTX("  MFR Pin Config Status: 0x%02X", ubStatusMFRPinConfig);
 
             // TODO: Further investigate status bits to determine the cause
 
@@ -580,18 +600,26 @@ int main()
 
             if(ubCM4CheckCount > 3)
             {
-                DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
+                // DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
 
                 CM4_GLOBAL_DISABLE();
-                FPGA_INIT_ASSERT();
-                lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
-                lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
-                delay_ms(50);
-                VEXT_DISABLE();
-                PCIE_12V0_DISABLE();
-                VBUS_SNK_DISABLE();
+                // FPGA_INIT_ASSERT();
+                // lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
+                // lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
+                // delay_ms(50);
+                // VEXT_DISABLE();
+                // PCIE_12V0_DISABLE();
+                // VBUS_SNK_DISABLE();
 
-                DBGPRINTLN_CTX("Done!");
+                // DBGPRINTLN_CTX("Done!");
+
+                // TODO: Remove below
+                wdt_disable();
+                delay_ms(2000);
+                CM4_GLOBAL_ENABLE();
+                while(!CM4_RUNNING());
+                wdt_feed();
+                wdt_enable();
             }
         }
 
