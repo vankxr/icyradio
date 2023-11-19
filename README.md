@@ -30,16 +30,16 @@ The goal of this project is to develop a flexible and feature rich SDR platform 
  - [SoapySDR](https://github.com/pothosware/SoapySDR) - Vendor and platform neutral SDR support library
 
 ## Software build instructions
-TODO
+TODO (In the meantime, check the github workflows)
 ### Kernel driver
 TODO
 ### SoapySDR device driver
 TODO
 
 ## Errata
- - The WP pin of the LT7182S regulator was left floating, with a placeholder resistor for pulling it up later, assuming it had an internal pulldown. Turns out it is floating, and thus it can be sampled internally as 1, write-protecting the device and forbidding configuration commands. A quick fix is to scrape a tiny bit of the ground plane near the WP resistor (R1120) pad, ans shunting it to GND there with a blob of solder. The figure below exemplifies the process. The solder blob is marked in blue.
+ - The WP pin of the LT7182S regulator was left floating, with a placeholder resistor for pulling it up later, assuming it had an internal pulldown. Turns out it is floating, and thus it can be sampled internally as 1, write-protecting the device and forbidding configuration commands. A quick fix is to scrape a tiny bit of the ground plane near the WP resistor (R1120) pad, and shunting it to GND there with a blob of solder. The figure below exemplifies the process. The solder blob is marked in blue.
 ![](https://github.com/vankxr/icyradio/blob/v2/docs/errata/vin_reg_wp.png)
- - The FPGA INIT and DONE LED markings on the PCB are swapped (oops). In the picture below, it can be seen that D202 connects to the FPGA_DONE signal, yet its labelled INIT. The FPGA_INIT signal connects to D201, and it is labelled as DONE. It is merely an aesthetic problem, and does not affect functionality at all!
+ - The FPGA INIT and DONE LED markings on the PCB are swapped (oops). In the picture below, it can be seen that D202 connects to the FPGA_DONE signal, yet it's labelled INIT. The FPGA_INIT signal connects to D201, and is labelled as DONE. It is merely an aesthetic problem, and does not affect functionality at all!
 ![](https://github.com/vankxr/icyradio/blob/v2/docs/errata/fpga_init_done_leds.png)
 
 ## Authors
