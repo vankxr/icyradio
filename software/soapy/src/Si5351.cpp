@@ -284,7 +284,7 @@ void Si5351::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
         return;
 
     if(src == nullptr)
-        throw std::runtime_error("Si5351: Invalid destination buffer");
+        throw std::runtime_error("Si5351: Invalid source buffer");
 
     uint8_t buf[256];
 
@@ -317,6 +317,17 @@ Si5351::Si5351(Si5351::IICConfig iic, Si5351::GPIOConfig oe_gpio, Si5351::IRQCon
     this->ms_div[Si5351::MultiSynth::MS5] = {0, 0, 0};
     this->ms_div[Si5351::MultiSynth::MS6] = {0, 0, 0};
     this->ms_div[Si5351::MultiSynth::MS7] = {0, 0, 0};
+
+    if(this->iic.controller == nullptr)
+        throw std::runtime_error("Si5351: IIC not initialized");
+
+    if(!this->iic.controller->scan(this->iic.addr))
+        throw std::runtime_error("Si5351: Device not found on IIC bus");
+
+    uint8_t rev = this->getRevisionID();
+
+    if(rev < 1)
+        throw std::runtime_error("Si5351 Rev" + std::to_string(rev) + " is not supported");
 }
 Si5351::~Si5351()
 {
@@ -325,22 +336,24 @@ Si5351::~Si5351()
         this->irq_config.controller->setISR(this->irq_config.irq, nullptr);
         this->irq_config.controller->setIRQEnabled(this->irq_config.irq, false);
     }
+
+    this->globalOutputDisable();
+
+    this->writeReg(SI5351_REG_CLK_OEB, 0xFF);
+
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK0);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK1);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK2);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK3);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK4);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK5);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK6);
+    this->powerDownClockOutput(Si5351::ClockOutput::CLK7);
 }
 
 void Si5351::init()
 {
-    if(this->iic.controller == nullptr)
-        throw std::runtime_error("Si5351: IIC not initialized");
-
-    if(!this->iic.controller->scan(this->iic.addr))
-        throw std::runtime_error("Si5351: Device not found on IIC bus");
-
-    uint8_t rev = this->readRevisionID();
-
-    if(rev < 1)
-        throw std::runtime_error("Si5351 Rev" + std::to_string(rev) + " is not supported");
-
-    while(this->readStatus() & SI5351_REG_STATUS_SYS_INIT)
+    while(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_SYS_INIT)
         usleep(10);
 
     this->writeReg(SI5351_REG_CLK_OEB, 0xFF); // Disable all outputs by software
@@ -382,13 +395,9 @@ void Si5351::init()
     this->powerDownClockOutput(Si5351::ClockOutput::CLK7);
 }
 
-uint8_t Si5351::readRevisionID()
+uint8_t Si5351::getRevisionID()
 {
     return this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_REVID;
-}
-uint8_t Si5351::readStatus()
-{
-    return this->readReg(SI5351_REG_STATUS) & 0xF8;
 }
 
 bool Si5351::isGlobalOutputEnabled()
@@ -525,7 +534,7 @@ bool Si5351::isPLLLocked(Si5351::PLL pll)
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
 
-    uint8_t status = this->readStatus();
+    uint8_t status = this->readReg(SI5351_REG_STATUS);
 
     return !(status & mask);
 }
@@ -550,7 +559,7 @@ void Si5351::_resetPLL(Si5351::PLL pll)
     while(this->readReg(SI5351_REG_PLL_RST) & val)
         usleep(10);
 
-    while(this->readStatus() & SI5351_REG_STATUS_SYS_INIT) // Somehow the SYS_INIT bit gets set when the PLLs are reset
+    while(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_SYS_INIT) // Somehow the SYS_INIT bit gets set when the PLLs are reset
         usleep(10);
 }
 void Si5351::_configPLL(Si5351::PLL pll, uint32_t freq, Si5351::PLLSource src)
@@ -1159,8 +1168,11 @@ void Si5351::_setMultiSynthPhaseOffset(Si5351::MultiSynth ms, float phase)
             throw std::invalid_argument("Si5351: Invalid MultiSynth");
     }
 
-    if(phase < 0.f || phase >= 360.f)
-        throw std::invalid_argument("Si5351: Invalid phase offset (Valid: 0-360)");
+    while(phase >= 360.f)
+        phase -= 360.f;
+
+    while(phase < 0.f)
+        phase += 360.f;
 
     float time = (phase / 360.f) * 1000000.f / this->_getMultiSynthFrequency(ms); // In microsseconds
     float code = (this->_getMultiSynthSourceFrequency(ms) * 4.f / 1000000.f) * time;
@@ -1717,6 +1729,25 @@ void Si5351::_enableClockOutput(Si5351::ClockOutput clk, bool enable)
 
     this->rmwReg(SI5351_REG_CLK_OEB, ~BIT(clk), enable ? 0x00 : BIT(clk));
 }
+void Si5351::_setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard)
+{
+    switch(clk)
+    {
+        case Si5351::ClockOutput::CLK0:
+        case Si5351::ClockOutput::CLK1:
+        case Si5351::ClockOutput::CLK2:
+        case Si5351::ClockOutput::CLK3:
+        case Si5351::ClockOutput::CLK4:
+        case Si5351::ClockOutput::CLK5:
+        case Si5351::ClockOutput::CLK6:
+        case Si5351::ClockOutput::CLK7:
+        break;
+        default:
+            throw std::invalid_argument("Si5351: Invalid clock output");
+    }
+
+    this->rmwReg(SI5351_REG_OEB_MASK, ~BIT(clk), hard ? 0x00 : BIT(clk));
+}
 
 void Si5351::configClock(Si5351::ClockOutput clk, uint32_t freq, float phase, Si5351::PLL src)
 {
@@ -1864,6 +1895,12 @@ void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    while(phase >= 360.f)
+        phase -= 360.f;
+
+    while(phase < 0.f)
+        phase += 360.f;
 
     Si5351::MultiSynth src_ms;
 

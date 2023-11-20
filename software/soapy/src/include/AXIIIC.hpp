@@ -103,11 +103,11 @@ public:
 
     void transmit(uint8_t address, uint8_t *buf, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP);
 
-    inline void write(uint8_t address, uint8_t *src, uint32_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
+    inline void write(uint8_t address, uint8_t *src, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) & ~0x01, src, count, stop);
     }
-    inline void read(uint8_t address, uint8_t *dst, uint32_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
+    inline void read(uint8_t address, uint8_t *dst, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) | 0x01, dst, count, stop);
     }

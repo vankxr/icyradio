@@ -8,6 +8,7 @@
 #include "AXIIIC.hpp"
 #include "AXIGPIO.hpp"
 #include "AXIIRQCtrl.hpp"
+#include "Utils.hpp"
 
 #define SI5351_I2C_ADDR 0x60
 
@@ -334,14 +335,14 @@ private:
     void _powerUpClockOutput(Si5351::ClockOutput clk, bool power_up = true);
     bool _isClockOutputEnabled(Si5351::ClockOutput clk);
     void _enableClockOutput(Si5351::ClockOutput clk, bool enable = true);
+    void _setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard = true);
 public:
     Si5351(Si5351::IICConfig iic, Si5351::GPIOConfig oe_gpio = {nullptr, 0, false}, Si5351::IRQConfig irq_config = {nullptr, AXIIRQCtrl::IRQNumber::MAX});
     ~Si5351();
 
     void init();
 
-    uint8_t readRevisionID();
-    uint8_t readStatus();
+    uint8_t getRevisionID();
 
     bool isGlobalOutputEnabled();
     void globalOutputEnable(bool enable = true);
@@ -350,9 +351,9 @@ public:
         this->globalOutputEnable(false);
     }
 
-    inline bool isCLKINDetected()
+    bool isCLKINDetected()
     {
-        return !(this->readStatus() & SI5351_REG_STATUS_CLKIN_LOS);
+        return !(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_CLKIN_LOS);
     }
     inline void configCLKIN(uint32_t freq, Si5351::CLKINDivider divider = Si5351::CLKINDivider::CLKIN_DIV_AUTO)
     {
@@ -375,7 +376,7 @@ public:
 
     inline bool isXTALDetected()
     {
-        return !(this->readStatus() & SI5351_REG_STATUS_XO_LOS);
+        return !(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_XO_LOS);
     }
     inline void configXTAL(uint32_t freq, Si5351::XTALCapacitance cap)
     {
@@ -601,6 +602,12 @@ public:
     inline void disableClockOutput(Si5351::ClockOutput clk)
     {
         this->enableClockOutput(clk, false);
+    }
+    inline void setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard = true)
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
+
+        this->_setClockOutputEnableMode(clk, hard);
     }
 
     // Convenience methods that abstract the internal clock tree (MS -> Output Buffer mapping, output dividers for lower frequencies, etc...)

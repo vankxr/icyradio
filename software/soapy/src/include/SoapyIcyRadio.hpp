@@ -3,11 +3,12 @@
 #include <cstdlib>
 #include <cstdint>
 #include <string>
+#include <sstream>
 #include <filesystem>
 #include <fcntl.h>
 #include <SoapySDR/Device.hpp>
-#include <SoapySDR/Logger.h>
-#include <SoapySDR/Types.h>
+#include <SoapySDR/Logger.hpp>
+#include <SoapySDR/Types.hpp>
 #include "ioctl.hpp"
 #include "MappedRegion.hpp"
 #include "AXI.hpp"
@@ -21,7 +22,11 @@
 #include "AXIDNA.hpp"
 #include "AXIDMAC.hpp"
 #include "AXIPCIe.hpp"
+#include "PMC.hpp"
+#include "LT7182S.hpp"
 #include "Si5351.hpp"
+#include "IDT8V97003.hpp"
+#include "ExpansionCard.hpp"
 
 class SoapyIcyRadio: public SoapySDR::Device
 {
@@ -266,5 +271,9 @@ private:
     // AXIAD9361 *axi_ad9361;
 
     // Peripherals
+    PMC *pmc;
+    LT7182S *vin_reg;
     Si5351 *clk_mngr;
+    IDT8V97003 *mmw_synth;
+    ExpansionCard *exp_card;
 };

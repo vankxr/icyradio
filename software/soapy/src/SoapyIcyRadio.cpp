@@ -208,6 +208,8 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
     this->axi_irq_ctrl->configIRQ(AXIIRQCtrl::IRQNumber::AXI_DMAC_RF_TX, AXIIRQCtrl::IRQMode::EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), false);
     this->axi_irq_ctrl->configIRQ(AXIIRQCtrl::IRQNumber::AXI_DMAC_I2S_RX, AXIIRQCtrl::IRQMode::EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), false);
     this->axi_irq_ctrl->configIRQ(AXIIRQCtrl::IRQNumber::AXI_DMAC_I2S_TX, AXIIRQCtrl::IRQMode::EDGE_RISING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), false);
+    // this->axi_irq_ctrl->configIRQ(AXIIRQCtrl::IRQNumber::VIN_REG_ALERTn, AXIIRQCtrl::IRQMode::EDGE_FALLING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), false);
+    // this->axi_irq_ctrl->configIRQ(AXIIRQCtrl::IRQNumber::CLK_MNGR_IRQn, AXIIRQCtrl::IRQMode::EDGE_FALLING, AXI_IRQ_CTRL_REG_IRQ_CONFIG_IRQ_DEST_PCIE_MSI(0), false);
 
     // DMA Controllers
     this->axi_dmac[AXI_DMAC_RF_RX_INST]->init(
@@ -275,7 +277,7 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
     SoapySDR_logf(SOAPY_SDR_DEBUG, "Scanning CODEC I2C bus...");
 
     this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_CODEC_RSTn_BIT, AXIGPIO::Value::HIGH);
-    usleep(50000);
+    usleep(500);
     addrs = this->axi_iic[AXI_IIC_CODEC_INST]->scan();
     this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_CODEC_RSTn_BIT, AXIGPIO::Value::LOW);
 
@@ -285,7 +287,7 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
     SoapySDR_logf(SOAPY_SDR_DEBUG, "Scanning SYS I2C bus...");
 
     this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_PM_I2C_EN_BIT, AXIGPIO::Value::HIGH);
-    usleep(50000);
+    usleep(500);
     addrs = this->axi_iic[AXI_IIC_SYS_INST]->scan();
     this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_PM_I2C_EN_BIT, AXIGPIO::Value::LOW);
 
@@ -299,6 +301,36 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
     SoapySDR_logf(SOAPY_SDR_DEBUG, "%s", addrs_to_str(addrs).c_str());
 
     // Peripherals
+    this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_PM_I2C_EN_BIT, AXIGPIO::Value::HIGH);
+    usleep(500);
+
+    this->pmc = new PMC(
+        {
+            .controller = this->axi_iic[AXI_IIC_SYS_INST],
+            .addr = PMC_I2C_ADDR,
+        }
+    );
+
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "PMC Unique ID: %s", this->pmc->getUniqueID().c_str());
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "PMC Firmware Version: v%hu", this->pmc->getFirmwareVersion());
+
+    this->vin_reg = new LT7182S(
+        {
+            .controller = this->axi_iic[AXI_IIC_SYS_INST],
+            .addr = LT7182S_I2C_ADDR,
+        }/*,
+        {
+            .controller = this->axi_irq_ctrl,
+            .irq = AXIIRQCtrl::IRQNumber::VIN_REG_ALERTn,
+        }*/
+    );
+
+    this->vin_reg->init();
+
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "VIN Regulator P/N: %s %s", this->vin_reg->readManufacturerID().c_str(), this->vin_reg->readManufacturerModel().c_str());
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "VIN Regulator Revision: %hhu", this->vin_reg->readManufacturerRevision());
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "VIN Regulator Serial: %s", this->vin_reg->readManufacturerSerial().c_str());
+
     this->clk_mngr = new Si5351(
         {
             .controller = this->axi_iic[AXI_IIC_SYS_INST],
@@ -308,17 +340,83 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
             .controller = this->axi_gpio[AXI_GPIO_SYS_INST],
             .gpio = AXI_GPIO_CLK_MNGR_OEn_BIT,
             .invert = false,
+        }/*,
+        {
+            .controller = this->axi_irq_ctrl,
+            .irq = AXIIRQCtrl::IRQNumber::CLK_MNGR_IRQn,
+        }*/
+    );
+
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "Si5351 Revision: %hhu", this->clk_mngr->getRevisionID());
+
+    this->mmw_synth = new IDT8V97003(
+        {
+            .controller = this->axi_quad_spi[AXI_QUAD_SPI_SYNTH_INST],
+            .ss_mask = AXI_QUAD_SPI_SYNTH_SS,
+        },
+        {
+            .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],
+            .gpio = AXI_GPIO_SYNTH_CE_BIT,
+            .invert = false,
+        },
+        {
+            .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],
+            .gpio = AXI_GPIO_SYNTH_MUTE_BIT,
+            .invert = false,
+        },
+        {
+            .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],
+            .gpio = AXI_GPIO_SYNTH_SYNC_BIT,
+            .invert = false,
+        },
+        {
+            .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],
+            .gpio = AXI_GPIO_SYNTH_LD_BIT,
+            .invert = false,
+        },
+        {
+            .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],
+            .gpio = AXI_GPIO_SYNTH_RESETn_BIT,
+            .invert = false,
         }
     );
+
+    this->mmw_synth->powerDown();
+
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "8V97003 Revision: %hhu", this->mmw_synth->getChipVersion());
+    SoapySDR_logf(SOAPY_SDR_DEBUG, "8V97003 Option: %hhu", this->mmw_synth->getChipOption());
 }
 void SoapyIcyRadio::deinitPeripheralsPreClocks()
 {
+    if(this->mmw_synth != nullptr)
+    {
+        delete this->mmw_synth;
+
+        this->mmw_synth = nullptr;
+    }
+
     if(this->clk_mngr != nullptr)
     {
         delete this->clk_mngr;
 
         this->clk_mngr = nullptr;
     }
+
+    if(this->vin_reg != nullptr)
+    {
+        delete this->vin_reg;
+
+        this->vin_reg = nullptr;
+    }
+
+    if(this->pmc != nullptr)
+    {
+        delete this->pmc;
+
+        this->pmc = nullptr;
+    }
+
+    this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_PM_I2C_EN_BIT, AXIGPIO::Value::LOW);
 }
 
 void SoapyIcyRadio::initPeripheralsPostClocks()
@@ -340,10 +438,23 @@ void SoapyIcyRadio::initPeripheralsPostClocks()
     //         return this->axi_gpio[AXI_GPIO_TRX_INST]->getValue(AXI_GPIO_RST_AD9361_61M44_PERI_ARESETn_BIT);
     //     }
     // );
+
+    // Probe expansion cards
+    // Enable mmWave Synth if present
+    // this->mmw_synth->powerUp();
+    // this->mmw_synth->init();
 }
 void SoapyIcyRadio::deinitPeripheralsPostClocks()
 {
+    this->mmw_synth->mute();
+    this->mmw_synth->powerDown();
 
+    if(this->exp_card != nullptr)
+    {
+        delete this->exp_card;
+
+        this->exp_card = nullptr;
+    }
 }
 
 void SoapyIcyRadio::initClocks()
@@ -419,6 +530,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_FPGA_CLK0, 50000000UL, 0.f, Si5351::PLL::PLLA);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_FPGA_CLK0, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_FPGA_CLK0, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_FPGA_CLK0, true); // Controlled by OE pin
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_FPGA_CLK0);
     this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_FPGA_CLK0);
@@ -433,6 +545,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_FPGA_CLK1, 49152000UL, 0.f, Si5351::PLL::PLLA);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_FPGA_CLK1, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_FPGA_CLK1, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_FPGA_CLK1, true); // Controlled by OE pin
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_FPGA_CLK1);
     this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_FPGA_CLK1);
@@ -447,6 +560,7 @@ void SoapyIcyRadio::initClocks()
     // this->clk_mngr->configClock(Si5351::ClockOutput::CLK_FPGA_CLK2, FREQ, 0.f, Si5351::PLL::PLLA);
     // this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_FPGA_CLK2, Si5351::ClockOutputDisableState::LOW);
     // this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_FPGA_CLK2, Si5351::ClockOutputDriveCurrent::I_8mA);
+    // this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_FPGA_CLK2, true); // Controlled by OE pin
 
     // this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_FPGA_CLK2);
     // this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_FPGA_CLK2);
@@ -461,6 +575,7 @@ void SoapyIcyRadio::initClocks()
     // this->clk_mngr->configClock(Si5351::ClockOutput::CLK_FPGA_CLK3, FREQ, 0.f, Si5351::PLL::PLLA);
     // this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_FPGA_CLK3, Si5351::ClockOutputDisableState::LOW);
     // this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_FPGA_CLK3, Si5351::ClockOutputDriveCurrent::I_8mA);
+    // this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_FPGA_CLK3, true); // Controlled by OE pin
 
     // this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_FPGA_CLK3);
     // this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_FPGA_CLK3);
@@ -475,6 +590,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_TRX_REF_CLK, 40000000UL, 0.f, Si5351::PLL::PLLB);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_TRX_REF_CLK, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_TRX_REF_CLK, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_TRX_REF_CLK, true); // Controlled by OE pin
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_TRX_REF_CLK);
     this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_TRX_REF_CLK);
@@ -489,6 +605,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_SYNTH_REF_CLK, 25000000UL, 0.f, Si5351::PLL::PLLA);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_SYNTH_REF_CLK, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_SYNTH_REF_CLK, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_SYNTH_REF_CLK, true); // Controlled by OE pin
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_SYNTH_REF_CLK);
     this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_SYNTH_REF_CLK);
@@ -503,6 +620,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_EXT_CLK_2_3, 10000000UL, 0.f, Si5351::PLL::PLLB);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_EXT_CLK_2_3, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_EXT_CLK_2_3, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_EXT_CLK_2_3, true); // Controlled by OE pin
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_EXT_CLK_2_3);
     // this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_EXT_CLK_2_3);
@@ -517,6 +635,7 @@ void SoapyIcyRadio::initClocks()
     this->clk_mngr->configClock(Si5351::ClockOutput::CLK_EXT_CLK_OUT, 10000000UL, 0.f, Si5351::PLL::PLLB);
     this->clk_mngr->setClockDisableState(Si5351::ClockOutput::CLK_EXT_CLK_OUT, Si5351::ClockOutputDisableState::LOW);
     this->clk_mngr->setClockDriveCurrent(Si5351::ClockOutput::CLK_EXT_CLK_OUT, Si5351::ClockOutputDriveCurrent::I_8mA);
+    this->clk_mngr->setClockOutputEnableMode(Si5351::ClockOutput::CLK_EXT_CLK_OUT, false); // Controlled via software enable only
 
     this->clk_mngr->powerUpClock(Si5351::ClockOutput::CLK_EXT_CLK_OUT);
     // this->clk_mngr->enableClock(Si5351::ClockOutput::CLK_EXT_CLK_OUT);
