@@ -19,6 +19,26 @@
 // Structs
 
 // Helper macros
+#define I2C_SLAVE_ADDRESS                           0x26
+#define I2C_SLAVE_REGISTER_COUNT                    256
+#define I2C_SLAVE_REGISTER(t, a)                    (*(t *)&ubI2CRegister[(a)])
+#define I2C_SLAVE_REGISTER_WRITE_MASK(t, a)         (*(t *)&ubI2CRegisterWriteMask[(a)])
+#define I2C_SLAVE_REGISTER_READ_MASK(t, a)          (*(t *)&ubI2CRegisterReadMask[(a)])
+#define I2C_SLAVE_REGISTER_STATUS                   0x00 // 8-bit
+#define I2C_SLAVE_REGISTER_CONFIG                   0x01 // 8-bit
+#define I2C_SLAVE_REGISTER_VIN_VOLTAGE              0xB0 // 32-bit
+#define I2C_SLAVE_REGISTER_VEXT_VOLTAGE             0xB4 // 32-bit
+#define I2C_SLAVE_REGISTER_12V0_VOLTAGE             0xB8 // 32-bit
+#define I2C_SLAVE_REGISTER_VBUS_VOLTAGE             0xBC // 32-bit
+#define I2C_SLAVE_REGISTER_IOVDD_VOLTAGE            0xC0 // 32-bit
+#define I2C_SLAVE_REGISTER_CORE_VOLTAGE             0xC4 // 32-bit
+#define I2C_SLAVE_REGISTER_TEMP                     0xD0 // 32-bit
+#define I2C_SLAVE_REGISTER_UPTIME                   0xE0 // 64-bit
+#define I2C_SLAVE_REGISTER_SW_VERSION               0xE8 // 16-bit
+#define I2C_SLAVE_REGISTER_DEV_UID0                 0xF0 // 32-bit
+#define I2C_SLAVE_REGISTER_DEV_UID1                 0xF4 // 32-bit
+#define I2C_SLAVE_REGISTER_DEV_UID2                 0xF8 // 32-bit
+#define I2C_SLAVE_REGISTER_DEV_UID3                 0xFC // 32-bit
 
 // Forward declarations
 static void reset() __attribute__((noreturn));
@@ -34,7 +54,25 @@ static void wdt_warning_isr();
 
 static uint8_t pmc_check_input_voltages();
 
+static void i2c_slave_register_init();
+static uint8_t i2c_slave_addr_isr(uint8_t ubRnW);
+static uint8_t i2c_slave_tx_data_isr();
+static uint8_t i2c_slave_rx_data_isr(uint8_t ubData);
+
 // Variables
+volatile uint8_t ubI2CRegister[I2C_SLAVE_REGISTER_COUNT];
+volatile uint8_t ubI2CRegisterWriteMask[I2C_SLAVE_REGISTER_COUNT];
+volatile uint8_t ubI2CRegisterReadMask[I2C_SLAVE_REGISTER_COUNT];
+volatile uint8_t ubI2CBuffer[I2C_SLAVE_REGISTER_COUNT];
+volatile uint8_t ubI2CRegisterPointer = 0x00;
+volatile uint8_t ubI2CByteCount = 0;
+volatile uint8_t ubI2CReadSize = 0;
+volatile uint8_t ubI2CChecksum = 0;
+volatile uint8_t ubI2CChecksumOK = 0;
+uint32_t ulVIN = 0;
+uint32_t ulVEXT = 0;
+uint32_t ul12V0 = 0;
+uint32_t ulVBUS = 0;
 
 // ISRs
 
@@ -161,10 +199,10 @@ void wdt_warning_isr()
 
 uint8_t pmc_check_input_voltages()
 {
-    float fVIN = adc_get_vin();
-    float fVEXT = adc_get_vext();
+    ulVIN = adc_get_vin();
+    ulVEXT = adc_get_vext();
 
-    if(!VEXT_STATUS() && fVEXT > 7000.f && fVEXT > fVIN)
+    if(!VEXT_STATUS() && ulVEXT > 7000 && ulVEXT > ulVIN)
     {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
         {
@@ -177,9 +215,9 @@ uint8_t pmc_check_input_voltages()
         return 1;
     }
 
-    float f12V0 = adc_get_12v0();
+    ul12V0 = adc_get_12v0();
 
-    if(!PCIE_12V0_STATUS() && f12V0 > 7000.f && f12V0 > fVIN)
+    if(!PCIE_12V0_STATUS() && ul12V0 > 7000 && ul12V0 > ulVIN)
     {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
         {
@@ -192,9 +230,9 @@ uint8_t pmc_check_input_voltages()
         return 1;
     }
 
-    float fVBUS = adc_get_vbus();
+    ulVBUS = adc_get_vbus();
 
-    if(!VBUS_SNK_STATUS() && fVBUS > 7000.f && fVBUS > fVIN)
+    if(!VBUS_SNK_STATUS() && ulVBUS > 7000 && ulVBUS > ulVIN)
     {
         ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
         {
@@ -208,6 +246,171 @@ uint8_t pmc_check_input_voltages()
     }
 
     return 0;
+}
+
+void i2c_slave_register_init()
+{
+    uint32_t ulUniqueID[4];
+
+    nvmctrl_get_unique_id(ulUniqueID);
+
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        I2C_SLAVE_REGISTER              (uint8_t,  I2C_SLAVE_REGISTER_STATUS)                   = 0x00;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint8_t,  I2C_SLAVE_REGISTER_STATUS)                   = 0x00;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint8_t,  I2C_SLAVE_REGISTER_STATUS)                   = 0xFF;
+        I2C_SLAVE_REGISTER              (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0x00;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0xFF;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0xFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_VIN_VOLTAGE)              = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_VIN_VOLTAGE)              = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_VIN_VOLTAGE)              = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_VEXT_VOLTAGE)             = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_VEXT_VOLTAGE)             = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_VEXT_VOLTAGE)             = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_12V0_VOLTAGE)             = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_12V0_VOLTAGE)             = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_12V0_VOLTAGE)             = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_VBUS_VOLTAGE)             = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_VBUS_VOLTAGE)             = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_VBUS_VOLTAGE)             = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint64_t, I2C_SLAVE_REGISTER_UPTIME)                   = g_ullSystemTick / 1000;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint64_t, I2C_SLAVE_REGISTER_UPTIME)                   = 0x0000000000000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint64_t, I2C_SLAVE_REGISTER_UPTIME)                   = 0xFFFFFFFFFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint16_t, I2C_SLAVE_REGISTER_SW_VERSION)               = BUILD_VERSION;
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint16_t, I2C_SLAVE_REGISTER_SW_VERSION)               = 0x0000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint16_t, I2C_SLAVE_REGISTER_SW_VERSION)               = 0xFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_DEV_UID0)                 = ulUniqueID[0];
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_DEV_UID0)                 = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_DEV_UID0)                 = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_DEV_UID1)                 = ulUniqueID[1];
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_DEV_UID1)                 = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_DEV_UID1)                 = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_DEV_UID2)                 = ulUniqueID[2];
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_DEV_UID2)                 = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_DEV_UID2)                 = 0xFFFFFFFF;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_DEV_UID3)                 = ulUniqueID[3];
+        I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_DEV_UID3)                 = 0x00000000;
+        I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_DEV_UID3)                 = 0xFFFFFFFF;
+    }
+}
+uint8_t i2c_slave_addr_isr(uint8_t ubAddress)
+{
+    ubI2CByteCount = 0;
+    ubI2CChecksum = I2C_SLAVE_ADDRESS;
+
+    // Hardware address comparator already verifies if the address matches
+    // This is only called if address is valid
+    // All we need to do is ACK
+
+    return 1; // ACK
+}
+uint8_t i2c_slave_tx_data_isr()
+{
+    if(!ubI2CChecksumOK)
+        return 0xFF;
+
+    if(ubI2CByteCount > ubI2CReadSize + 1)
+        return 0xFF;
+
+    ubI2CByteCount++;
+
+    if(ubI2CByteCount == ubI2CReadSize + 1)
+    {
+        ubI2CChecksumOK = 0;
+        ubI2CReadSize = 0;
+
+        return (0xFF - ubI2CChecksum) + 1;
+    }
+
+    uint8_t ubData = ubI2CRegister[ubI2CRegisterPointer] & ubI2CRegisterReadMask[ubI2CRegisterPointer];
+    ubI2CRegisterPointer++;
+
+    ubI2CChecksum += ubData;
+
+    // switch(ubI2CRegisterPointer)
+    // {
+    //     case I2C_SLAVE_REGISTER_RF_OUT_PWR_STATUS + sizeof(uint8_t):
+    //     {
+    //         if(ubI2CByteCount < sizeof(uint8_t))
+    //             break;
+
+    //         I2C_SLAVE_REGISTER(uint8_t, I2C_SLAVE_REGISTER_RF_OUT_PWR_STATUS) &= ~BIT(0); // Clear on read
+    //     }
+    //     break;
+    // }
+
+    return ubData;
+}
+uint8_t i2c_slave_rx_data_isr(uint8_t ubData)
+{
+    ubI2CBuffer[ubI2CByteCount++] = ubData;
+    ubI2CChecksum += ubData;
+
+    if(ubI2CByteCount < 2)
+        return 1; // ACK
+
+    uint8_t ubExpectedLength = 3;
+
+    if(ubI2CBuffer[1] > I2C_SLAVE_REGISTER_COUNT - 3)
+        ubExpectedLength++;
+    else
+        ubExpectedLength += ubI2CBuffer[1];
+
+    if(ubI2CByteCount < ubExpectedLength)
+        return 1; // ACK
+
+    ubI2CChecksum -= ubData;
+    ubI2CChecksum = (0xFF - ubI2CChecksum) + 1;
+
+    if(ubI2CChecksum != ubI2CBuffer[ubI2CByteCount - 1])
+    {
+        ubI2CByteCount = 0;
+        ubI2CChecksum = I2C_SLAVE_ADDRESS;
+
+        return 0; // NAK
+    }
+
+    ubI2CByteCount = 0;
+    ubI2CChecksum = I2C_SLAVE_ADDRESS;
+    ubI2CRegisterPointer = ubI2CBuffer[0];
+
+    if(ubI2CBuffer[1] > I2C_SLAVE_REGISTER_COUNT - 3)
+    {
+        ubI2CChecksumOK = 1;
+        ubI2CReadSize = ubI2CBuffer[2];
+
+        return 1; // ACK
+    }
+
+    for(uint8_t i = 0; i < ubI2CBuffer[1]; i++)
+    {
+        ubI2CRegister[ubI2CRegisterPointer] = (ubI2CRegister[ubI2CRegisterPointer] & ~ubI2CRegisterWriteMask[ubI2CRegisterPointer]) | (ubI2CBuffer[2 + i] & ubI2CRegisterWriteMask[ubI2CRegisterPointer]);
+        ubI2CRegisterPointer++;
+
+        switch(ubI2CRegisterPointer)
+        {
+            // case REG + sizeof(uint8_t):
+            // {
+            //     if(ubI2CBuffer[1] < sizeof(uint8_t))
+            //         break;
+
+            //     var |= I2C_SLAVE_REGISTER(uint8_t, REG);
+            // }
+            // break;
+        }
+    }
+
+    return 1; // ACK
 }
 
 int init()
@@ -226,14 +429,14 @@ int init()
     port_init(); // Init GPIOs
     adc_init(); // Init ADC
 
-    sercom0_init(1000000, 0, SERCOM_SPI_MSB_FIRST, 0, 2);
-    sercom1_init(SERCOM_I2C_FAST);
-    sercom3_init(500000, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
+    sercom0_spi_init(1000000, 0, SERCOM_SPI_MSB_FIRST, 0, 2);
+    sercom1_i2c_master_init(SERCOM_I2C_FAST);
+    sercom3_uart_init(500000, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
 
-    // i2c0_init(I2C_SLAVE_ADDRESS, 4, 4);
-    // i2c0_set_slave_addr_isr(i2c_slave_addr_isr);
-    // i2c0_set_slave_tx_data_isr(i2c_slave_tx_data_isr);
-    // i2c0_set_slave_rx_data_isr(i2c_slave_rx_data_isr);
+    // sercom1_i2c_slave_init(I2C_SLAVE_ADDRESS); // Initialized as slave later, after LT7182S startup is done
+    sercom1_i2c_slave_set_addr_isr(i2c_slave_addr_isr);
+    sercom1_i2c_slave_set_tx_data_isr(i2c_slave_tx_data_isr);
+    sercom1_i2c_slave_set_rx_data_isr(i2c_slave_rx_data_isr);
 
     char szDeviceCoreName[32];
     char szDeviceName[32];
@@ -246,7 +449,7 @@ int init()
     printf("\x1B[2J\x1B[2J\x1B[2J\x1B[2J"); // Clear the screen
     printf("\x1B[H"); // Move cursor to top left corner
 
-    DBGPRINTLN_CTX("IcyRadio PMU v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
+    DBGPRINTLN_CTX("IcyRadio PMC v%lu (%s %s)!", BUILD_VERSION, __DATE__, __TIME__);
     DBGPRINTLN_CTX("Core: %s", szDeviceCoreName);
     DBGPRINTLN_CTX("Device: %s", szDeviceName);
     DBGPRINTLN_CTX("Device Revision: %hhu", get_device_revision());
@@ -258,13 +461,13 @@ int init()
 
     DBGPRINTLN_CTX("RMU - Reset cause: %s", pm_get_reset_reason_string(pm_get_reset_reason()));
 
-    DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f mV", adc_get_iovdd());
-    DBGPRINTLN_CTX("ADC - Core Voltage: %.2f mV", adc_get_corevdd());
-    DBGPRINTLN_CTX("ADC - VBUS Voltage: %.2f mV", adc_get_vbus());
-    DBGPRINTLN_CTX("ADC - VIN Voltage: %.2f mV", adc_get_vin());
-    DBGPRINTLN_CTX("ADC - 12V0 Voltage: %.2f mV", adc_get_12v0());
-    DBGPRINTLN_CTX("ADC - VEXT Voltage: %.2f mV", adc_get_vext());
-    DBGPRINTLN_CTX("ADC - Temperature: %.2f C", adc_get_temperature());
+    DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f (%u) mV", adc_getf_iovdd(), adc_get_iovdd());
+    DBGPRINTLN_CTX("ADC - Core Voltage: %.2f (%u) mV", adc_getf_corevdd(), adc_get_corevdd());
+    DBGPRINTLN_CTX("ADC - VIN Voltage: %.2f (%u) mV", adc_getf_vin(), adc_get_vin());
+    DBGPRINTLN_CTX("ADC - VEXT Voltage: %.2f (%u) mV", adc_getf_vext(), adc_get_vext());
+    DBGPRINTLN_CTX("ADC - 12V0 Voltage: %.2f (%u) mV", adc_getf_12v0(), adc_get_12v0());
+    DBGPRINTLN_CTX("ADC - VBUS Voltage: %.2f (%u) mV", adc_getf_vbus(), adc_get_vbus());
+    DBGPRINTLN_CTX("ADC - Temperature: %.2f (%u / 1000) C", adc_getf_temperature(), adc_get_temperature());
 
     nvmctrl_config_waitstates(PM_CPU_CLOCK_FREQ, adc_get_iovdd()); // Optimize flash wait states for frequency and voltage
 
@@ -284,7 +487,7 @@ int init()
     DBGPRINTLN_CTX("Scanning I2C bus 1...");
 
     for(uint8_t a = 0x08; a < 0x78; a++)
-        if(sercom1_i2c_write(a, NULL, 0, SERCOM_I2C_STOP))
+        if(sercom1_i2c_master_write(a, NULL, 0, SERCOM_I2C_STOP))
             DBGPRINTLN_CTX("  Address 0x%02X ACKed!", a);
 
     if(lt7182s_init())
@@ -296,6 +499,9 @@ int init()
 }
 int main()
 {
+    // I2C Slave Register block
+    i2c_slave_register_init();
+
     char szMFRBuf[8];
     uint8_t ubMFRBuf[16];
     uint8_t ubMFRLen = 0;
@@ -543,6 +749,11 @@ int main()
         }
     }
 
+    // Done with I2C master, switch to slave
+    DBGPRINTLN_CTX("Switching I2C bus 1 to slave mode...");
+
+    sercom1_i2c_slave_init(I2C_SLAVE_ADDRESS);
+
     DBGPRINTLN_CTX("Configuring FPGA in 500 ms...");
     delay_ms(500);
 
@@ -572,6 +783,21 @@ int main()
 
         if(!NO_VOLTAGE_ENABLED() && pmc_check_input_voltages())
             DBGPRINTLN_CTX("Power source changed to: %s", VEXT_STATUS() ? "VEXT" : PCIE_12V0_STATUS() ? "PCIe 12V0" : VBUS_SNK_STATUS() ? "VBUS" : "UNKNOWN");
+
+        // if(I2C_SLAVE_REGISTER(uint8_t, I2C_SLAVE_REGISTER_CONFIG) & BIT(7))
+        // {
+        //     delay_ms(20);
+
+        //     reset();
+        // }
+
+        if(I2C_SLAVE_REGISTER(uint64_t, I2C_SLAVE_REGISTER_UPTIME) != g_ullSystemTick / 1000)
+        {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                I2C_SLAVE_REGISTER(uint64_t, I2C_SLAVE_REGISTER_UPTIME) = g_ullSystemTick / 1000;
+            }
+        }
 
         static uint64_t ullLastHeartBeat = 0;
         static uint64_t ullLastCM4Check = 0;
@@ -626,6 +852,39 @@ int main()
         if((g_ullSystemTick > 0 && ullLastTelemetryUpdate == 0) || g_ullSystemTick - ullLastTelemetryUpdate > 5000)
         {
             ullLastTelemetryUpdate = g_ullSystemTick;
+
+            // System Temperatures
+            uint32_t ulTemp = adc_get_temperature();
+
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_TEMP) = ulTemp;
+            }
+
+            // DBGPRINTLN_CTX("----------------------------------");
+            // DBGPRINTLN_CTX("Temperature: %lu.%02lu C", ulTemp / 1000, ulTemp % 1000);
+
+            // System Voltages/Currents
+            uint32_t ulIOVDD = adc_get_iovdd();
+            uint32_t ulCoreVDD = adc_get_corevdd();
+
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_VIN_VOLTAGE) = ulVIN;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_VEXT_VOLTAGE) = ulVEXT;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_12V0_VOLTAGE) = ul12V0;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_VBUS_VOLTAGE) = ulVBUS;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE) = ulIOVDD;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE) = ulCoreVDD;
+            }
+
+            // DBGPRINTLN_CTX("----------------------------------");
+            // DBGPRINTLN_CTX("IOVDD Voltage: %u mV", ulIOVDD);
+            // DBGPRINTLN_CTX("Core Voltage: %u mV", ulCoreVDD);
+            // DBGPRINTLN_CTX("VIN Voltage: %u mV", ulVIN);
+            // DBGPRINTLN_CTX("VEXT Voltage: %u mV", ulVEXT);
+            // DBGPRINTLN_CTX("12V0 Voltage: %u mV", ul12V0);
+            // DBGPRINTLN_CTX("VBUS Voltage: %u mV", ulVBUS);
 
             // DBGPRINTLN_CTX("------------------------------");
             // DBGPRINTLN_CTX("LT7182S Channel #0 VIN: %.3f V (Peak: %.3f V)", lt7182s_read_vin(0), lt7182s_read_vin_peak(0));

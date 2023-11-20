@@ -19,13 +19,50 @@
 #define SERCOM_SPI_LSB_FIRST 0
 #define SERCOM_SPI_MSB_FIRST 1
 
-//#define SERCOM0_MODE_I2C                   // Define for I2C
+typedef uint8_t (* sercom_i2c_slave_addr_isr_t)(uint8_t);
+typedef uint8_t (* sercom_i2c_slave_tx_data_isr_t)();
+typedef uint8_t (* sercom_i2c_slave_rx_data_isr_t)(uint8_t);
+
+
+// #define SERCOM0_MODE_I2C_MASTER            // Define for Master I2C support
+// #define SERCOM0_MODE_I2C_SLAVE             // Define for Slave I2C support
 #define SERCOM0_MODE_SPI                   // Define for SPI
-//#define SERCOM0_MODE_UART                  // Define for UART
+// #define SERCOM0_MODE_UART                  // Define for UART
 #define SERCOM0_FIFO_SIZE            256   // Only relevant when in UART mode
 
-#if defined(SERCOM0_MODE_SPI) && !defined(SERCOM0_MODE_I2C) && !defined(SERCOM0_MODE_UART)
-void sercom0_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
+#ifdef SERCOM0_MODE_I2C_MASTER
+void sercom0_i2c_master_init(uint8_t ubMode);
+uint8_t sercom0_i2c_master_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
+static inline uint8_t sercom0_i2c_master_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+{
+    return sercom0_i2c_master_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
+}
+static inline uint8_t sercom0_i2c_master_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+{
+    return sercom0_i2c_master_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+}
+static inline uint8_t sercom0_i2c_master_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+{
+    return sercom0_i2c_master_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+}
+static inline uint8_t sercom0_i2c_master_read_byte(uint8_t ubAddress, uint8_t ubStop)
+{
+    uint8_t ubData;
+
+    if(!sercom0_i2c_master_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+        return 0;
+
+    return ubData;
+}
+#endif // SERCOM0_MODE_I2C_MASTER
+#ifdef SERCOM0_MODE_I2C_SLAVE
+void sercom0_i2c_slave_init(uint8_t ubAddress);
+void sercom0_i2c_slave_set_addr_isr(sercom_i2c_slave_addr_isr_t pfISR);
+void sercom0_i2c_slave_set_tx_data_isr(sercom_i2c_slave_tx_data_isr_t pfISR);
+void sercom0_i2c_slave_set_rx_data_isr(sercom_i2c_slave_rx_data_isr_t pfISR);
+#endif // SERCOM0_MODE_I2C_SLAVE
+#ifdef SERCOM0_MODE_SPI
+void sercom0_spi_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
 uint8_t sercom0_spi_transfer_byte(const uint8_t ubData);
 void sercom0_spi_write_byte(const uint8_t ubData, const uint8_t ubWait);
 static inline void sercom0_spi_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
@@ -55,55 +92,65 @@ static inline void sercom0_spi_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ub
     while(ulSize--)
         *pubDst++ = sercom0_spi_transfer_byte(ubSendData);
 }
-#elif !defined(SERCOM0_MODE_SPI) && defined(SERCOM0_MODE_I2C) && !defined(SERCOM0_MODE_UART)
-void sercom0_init(uint8_t ubMode);
-uint8_t sercom0_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
-static inline uint8_t sercom0_i2c_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+#endif // SERCOM0_MODE_SPI
+#ifdef SERCOM0_MODE_UART
+void sercom0_uart_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
+void sercom0_uart_write_byte(const uint8_t ubData);
+uint8_t sercom0_uart_read_byte();
+uint32_t sercom0_uart_available();
+void sercom0_uart_flush();
+static inline void sercom0_uart_write(const uint8_t *pubSrc, uint32_t ulSize)
 {
-    return sercom0_i2c_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
+    while(ulSize--)
+        sercom0_uart_write_byte(*pubSrc++);
 }
-static inline uint8_t sercom0_i2c_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+static inline void sercom0_uart_read(uint8_t *pubDst, uint32_t ulSize)
 {
-    return sercom0_i2c_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+    while(ulSize--)
+        *pubDst++ = sercom0_uart_read_byte();
 }
-static inline uint8_t sercom0_i2c_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+#endif // SERCOM0_MODE_UART
+
+
+#define SERCOM1_MODE_I2C_MASTER            // Define for Master I2C support
+#define SERCOM1_MODE_I2C_SLAVE             // Define for Slave I2C support
+// #define SERCOM1_MODE_SPI                   // Define for SPI
+// #define SERCOM1_MODE_UART                  // Define for UART
+#define SERCOM1_FIFO_SIZE            256   // Only relevant when in UART mode
+
+#ifdef SERCOM1_MODE_I2C_MASTER
+void sercom1_i2c_master_init(uint8_t ubMode);
+uint8_t sercom1_i2c_master_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
+static inline uint8_t sercom1_i2c_master_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
 {
-    return sercom0_i2c_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+    return sercom1_i2c_master_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
 }
-static inline uint8_t sercom0_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
+static inline uint8_t sercom1_i2c_master_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+{
+    return sercom1_i2c_master_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+}
+static inline uint8_t sercom1_i2c_master_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+{
+    return sercom1_i2c_master_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+}
+static inline uint8_t sercom1_i2c_master_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    if(!sercom0_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+    if(!sercom1_i2c_master_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
         return 0;
 
     return ubData;
 }
-#elif !defined(SERCOM0_MODE_SPI) && !defined(SERCOM0_MODE_I2C) && defined(SERCOM0_MODE_UART)
-void sercom0_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
-void sercom0_write_byte(const uint8_t ubData);
-uint8_t sercom0_read_byte();
-uint32_t sercom0_available();
-void sercom0_flush();
-static inline void sercom0_write(const uint8_t *pubSrc, uint32_t ulSize)
-{
-    while(ulSize--)
-        sercom0_write_byte(*pubSrc++);
-}
-static inline void sercom0_read(uint8_t *pubDst, uint32_t ulSize)
-{
-    while(ulSize--)
-        *pubDst++ = sercom0_read_byte();
-}
-#endif  // SERCOM0_MODE
-
-#define SERCOM1_MODE_I2C                   // Define for I2C
-//#define SERCOM1_MODE_SPI                   // Define for SPI
-//#define SERCOM1_MODE_UART                  // Define for UART
-#define SERCOM1_FIFO_SIZE            256   // Only relevant when in UART mode
-
-#if defined(SERCOM1_MODE_SPI) && !defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
-void sercom1_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
+#endif // SERCOM1_MODE_I2C_MASTER
+#ifdef SERCOM1_MODE_I2C_SLAVE
+void sercom1_i2c_slave_init(uint8_t ubAddress);
+void sercom1_i2c_slave_set_addr_isr(sercom_i2c_slave_addr_isr_t pfISR);
+void sercom1_i2c_slave_set_tx_data_isr(sercom_i2c_slave_tx_data_isr_t pfISR);
+void sercom1_i2c_slave_set_rx_data_isr(sercom_i2c_slave_rx_data_isr_t pfISR);
+#endif // SERCOM1_MODE_I2C_SLAVE
+#ifdef SERCOM1_MODE_SPI
+void sercom1_spi_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
 uint8_t sercom1_spi_transfer_byte(const uint8_t ubData);
 void sercom1_spi_write_byte(const uint8_t ubData, const uint8_t ubWait);
 static inline void sercom1_spi_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
@@ -133,55 +180,65 @@ static inline void sercom1_spi_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ub
     while(ulSize--)
         *pubDst++ = sercom1_spi_transfer_byte(ubSendData);
 }
-#elif !defined(SERCOM1_MODE_SPI) && defined(SERCOM1_MODE_I2C) && !defined(SERCOM1_MODE_UART)
-void sercom1_init(uint8_t ubMode);
-uint8_t sercom1_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
-static inline uint8_t sercom1_i2c_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+#endif // SERCOM1_MODE_SPI
+#ifdef SERCOM1_MODE_UART
+void sercom1_uart_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
+void sercom1_uart_write_byte(const uint8_t ubData);
+uint8_t sercom1_uart_read_byte();
+uint32_t sercom1_uart_available();
+void sercom1_uart_flush();
+static inline void sercom1_uart_write(const uint8_t *pubSrc, uint32_t ulSize)
 {
-    return sercom1_i2c_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
+    while(ulSize--)
+        sercom1_uart_write_byte(*pubSrc++);
 }
-static inline uint8_t sercom1_i2c_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+static inline void sercom1_uart_read(uint8_t *pubDst, uint32_t ulSize)
 {
-    return sercom1_i2c_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+    while(ulSize--)
+        *pubDst++ = sercom1_uart_read_byte();
 }
-static inline uint8_t sercom1_i2c_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+#endif // SERCOM1_MODE_UART
+
+
+// #define SERCOM2_MODE_I2C_MASTER            // Define for Master I2C support
+// #define SERCOM2_MODE_I2C_SLAVE             // Define for Slave I2C support
+// #define SERCOM2_MODE_SPI                   // Define for SPI
+// #define SERCOM2_MODE_UART                  // Define for UART
+#define SERCOM2_FIFO_SIZE            256   // Only relevant when in UART mode
+
+#ifdef SERCOM2_MODE_I2C_MASTER
+void sercom2_i2c_master_init(uint8_t ubMode);
+uint8_t sercom2_i2c_master_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
+static inline uint8_t sercom2_i2c_master_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
 {
-    return sercom1_i2c_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+    return sercom2_i2c_master_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
 }
-static inline uint8_t sercom1_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
+static inline uint8_t sercom2_i2c_master_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+{
+    return sercom2_i2c_master_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+}
+static inline uint8_t sercom2_i2c_master_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+{
+    return sercom2_i2c_master_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+}
+static inline uint8_t sercom2_i2c_master_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    if(!sercom1_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+    if(!sercom2_i2c_master_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
         return 0;
 
     return ubData;
 }
-#elif !defined(SERCOM1_MODE_SPI) && !defined(SERCOM1_MODE_I2C) && defined(SERCOM1_MODE_UART)
-void sercom1_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
-void sercom1_write_byte(const uint8_t ubData);
-uint8_t sercom1_read_byte();
-uint32_t sercom1_available();
-void sercom1_flush();
-static inline void sercom1_write(const uint8_t *pubSrc, uint32_t ulSize)
-{
-    while(ulSize--)
-        sercom1_write_byte(*pubSrc++);
-}
-static inline void sercom1_read(uint8_t *pubDst, uint32_t ulSize)
-{
-    while(ulSize--)
-        *pubDst++ = sercom1_read_byte();
-}
-#endif  // SERCOM1_MODE
-
-//#define SERCOM2_MODE_I2C                   // Define for I2C
-//#define SERCOM2_MODE_SPI                   // Define for SPI
-//#define SERCOM2_MODE_UART                  // Define for UART
-#define SERCOM2_FIFO_SIZE            256   // Only relevant when in UART mode
-
-#if defined(SERCOM2_MODE_SPI) && !defined(SERCOM2_MODE_I2C) && !defined(SERCOM2_MODE_UART)
-void sercom2_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
+#endif // SERCOM2_MODE_I2C_MASTER
+#ifdef SERCOM2_MODE_I2C_SLAVE
+void sercom2_i2c_slave_init(uint8_t ubAddress);
+void sercom2_i2c_slave_set_addr_isr(sercom_i2c_slave_addr_isr_t pfISR);
+void sercom2_i2c_slave_set_tx_data_isr(sercom_i2c_slave_tx_data_isr_t pfISR);
+void sercom2_i2c_slave_set_rx_data_isr(sercom_i2c_slave_rx_data_isr_t pfISR);
+#endif // SERCOM2_MODE_I2C_SLAVE
+#ifdef SERCOM2_MODE_SPI
+void sercom2_spi_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
 uint8_t sercom2_spi_transfer_byte(const uint8_t ubData);
 void sercom2_spi_write_byte(const uint8_t ubData, const uint8_t ubWait);
 static inline void sercom2_spi_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
@@ -211,55 +268,65 @@ static inline void sercom2_spi_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ub
     while(ulSize--)
         *pubDst++ = sercom2_spi_transfer_byte(ubSendData);
 }
-#elif !defined(SERCOM2_MODE_SPI) && defined(SERCOM2_MODE_I2C) && !defined(SERCOM2_MODE_UART)
-void sercom2_init(uint8_t ubMode);
-uint8_t sercom2_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
-static inline uint8_t sercom2_i2c_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
+#endif // SERCOM2_MODE_SPI
+#ifdef SERCOM2_MODE_UART
+void sercom2_uart_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
+void sercom2_uart_write_byte(const uint8_t ubData);
+uint8_t sercom2_uart_read_byte();
+uint32_t sercom2_uart_available();
+void sercom2_uart_flush();
+static inline void sercom2_uart_write(const uint8_t *pubSrc, uint32_t ulSize)
 {
-    return sercom2_i2c_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
+    while(ulSize--)
+        sercom2_uart_write_byte(*pubSrc++);
 }
-static inline uint8_t sercom2_i2c_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+static inline void sercom2_uart_read(uint8_t *pubDst, uint32_t ulSize)
 {
-    return sercom2_i2c_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+    while(ulSize--)
+        *pubDst++ = sercom2_uart_read_byte();
 }
-static inline uint8_t sercom2_i2c_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+#endif // SERCOM2_MODE_UART
+
+
+// #define SERCOM3_MODE_I2C_MASTER            // Define for Master I2C support
+// #define SERCOM3_MODE_I2C_SLAVE             // Define for Slave I2C support
+// #define SERCOM3_MODE_SPI                   // Define for SPI
+#define SERCOM3_MODE_UART                  // Define for UART
+#define SERCOM3_FIFO_SIZE            256   // Only relevant when in UART mode
+
+#ifdef SERCOM3_MODE_I2C_MASTER
+void sercom3_i2c_master_init(uint8_t ubMode);
+uint8_t sercom3_i2c_master_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
+static inline uint8_t sercom3_i2c_master_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
 {
-    return sercom2_i2c_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+    return sercom3_i2c_master_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
 }
-static inline uint8_t sercom2_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
+static inline uint8_t sercom3_i2c_master_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
+{
+    return sercom3_i2c_master_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
+}
+static inline uint8_t sercom3_i2c_master_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
+{
+    return sercom3_i2c_master_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
+}
+static inline uint8_t sercom3_i2c_master_read_byte(uint8_t ubAddress, uint8_t ubStop)
 {
     uint8_t ubData;
 
-    if(!sercom2_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
+    if(!sercom3_i2c_master_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
         return 0;
 
     return ubData;
 }
-#elif !defined(SERCOM2_MODE_SPI) && !defined(SERCOM2_MODE_I2C) && defined(SERCOM2_MODE_UART)
-void sercom2_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
-void sercom2_write_byte(const uint8_t ubData);
-uint8_t sercom2_read_byte();
-uint32_t sercom2_available();
-void sercom2_flush();
-static inline void sercom2_write(const uint8_t *pubSrc, uint32_t ulSize)
-{
-    while(ulSize--)
-        sercom2_write_byte(*pubSrc++);
-}
-static inline void sercom2_read(uint8_t *pubDst, uint32_t ulSize)
-{
-    while(ulSize--)
-        *pubDst++ = sercom2_read_byte();
-}
-#endif  // SERCOM2_MODE
-
-//#define SERCOM3_MODE_I2C                   // Define for I2C
-//#define SERCOM3_MODE_SPI                   // Define for SPI
-#define SERCOM3_MODE_UART                  // Define for UART
-#define SERCOM3_FIFO_SIZE            256   // Only relevant when in UART mode
-
-#if defined(SERCOM3_MODE_SPI) && !defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)
-void sercom3_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
+#endif // SERCOM3_MODE_I2C_MASTER
+#ifdef SERCOM3_MODE_I2C_SLAVE
+void sercom3_i2c_slave_init(uint8_t ubAddress);
+void sercom3_i2c_slave_set_addr_isr(sercom_i2c_slave_addr_isr_t pfISR);
+void sercom3_i2c_slave_set_tx_data_isr(sercom_i2c_slave_tx_data_isr_t pfISR);
+void sercom3_i2c_slave_set_rx_data_isr(sercom_i2c_slave_rx_data_isr_t pfISR);
+#endif // SERCOM3_MODE_I2C_SLAVE
+#ifdef SERCOM3_MODE_SPI
+void sercom3_spi_init(uint32_t ulBaud, uint8_t ubMode, uint8_t ubBitMode, uint8_t ubDIPO, uint8_t ubDOPO);
 uint8_t sercom3_spi_transfer_byte(const uint8_t ubData);
 void sercom3_spi_write_byte(const uint8_t ubData, const uint8_t ubWait);
 static inline void sercom3_spi_transfer(const uint8_t *pubSrc, uint32_t ulSize, uint8_t *pubDst)
@@ -289,46 +356,23 @@ static inline void sercom3_spi_read(uint8_t *pubDst, uint32_t ulSize, uint8_t ub
     while(ulSize--)
         *pubDst++ = sercom3_spi_transfer_byte(ubSendData);
 }
-#elif !defined(SERCOM3_MODE_SPI) && defined(SERCOM3_MODE_I2C) && !defined(SERCOM3_MODE_UART)
-void sercom3_init(uint8_t ubMode);
-uint8_t sercom3_i2c_transmit(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop);
-static inline uint8_t sercom3_i2c_write(uint8_t ubAddress, uint8_t *pubSrc, uint32_t ulCount, uint8_t ubStop)
-{
-    return sercom3_i2c_transmit((ubAddress << 1) & ~0x01, pubSrc, ulCount, ubStop);
-}
-static inline uint8_t sercom3_i2c_read(uint8_t ubAddress, uint8_t *pubDst, uint32_t ulCount, uint8_t ubStop)
-{
-    return sercom3_i2c_transmit((ubAddress << 1) | 0x01, pubDst, ulCount, ubStop);
-}
-static inline uint8_t sercom3_i2c_write_byte(uint8_t ubAddress, uint8_t ubData, uint8_t ubStop)
-{
-    return sercom3_i2c_transmit((ubAddress << 1) & ~0x01, &ubData, 1, ubStop);
-}
-static inline uint8_t sercom3_i2c_read_byte(uint8_t ubAddress, uint8_t ubStop)
-{
-    uint8_t ubData;
-
-    if(!sercom3_i2c_transmit((ubAddress << 1) | 0x01, &ubData, 1, ubStop))
-        return 0;
-
-    return ubData;
-}
-#elif !defined(SERCOM3_MODE_SPI) && !defined(SERCOM3_MODE_I2C) && defined(SERCOM3_MODE_UART)
-void sercom3_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
-void sercom3_write_byte(const uint8_t ubData);
-uint8_t sercom3_read_byte();
-uint32_t sercom3_available();
-void sercom3_flush();
-static inline void sercom3_write(const uint8_t *pubSrc, uint32_t ulSize)
+#endif // SERCOM3_MODE_SPI
+#ifdef SERCOM3_MODE_UART
+void sercom3_uart_init(uint32_t ulBaud, uint32_t ulFrameSettings, uint8_t ubRXPO, uint8_t ubTXPO);
+void sercom3_uart_write_byte(const uint8_t ubData);
+uint8_t sercom3_uart_read_byte();
+uint32_t sercom3_uart_available();
+void sercom3_uart_flush();
+static inline void sercom3_uart_write(const uint8_t *pubSrc, uint32_t ulSize)
 {
     while(ulSize--)
-        sercom3_write_byte(*pubSrc++);
+        sercom3_uart_write_byte(*pubSrc++);
 }
-static inline void sercom3_read(uint8_t *pubDst, uint32_t ulSize)
+static inline void sercom3_uart_read(uint8_t *pubDst, uint32_t ulSize)
 {
     while(ulSize--)
-        *pubDst++ = sercom3_read_byte();
+        *pubDst++ = sercom3_uart_read_byte();
 }
-#endif  // SERCOM3_MODE
+#endif // SERCOM3_MODE_UART
 
 #endif  // __SERCOM_H__

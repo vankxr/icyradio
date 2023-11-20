@@ -2,7 +2,7 @@
 
 uint32_t GCLK_IN_CLOCK_FREQ[8];
 uint32_t GCLK_GEN_CLOCK_FREQ[8];
-uint32_t GCLK_CLOCK_FREQ[0x1C];
+uint32_t GCLK_CLOCK_FREQ[GCLK_NUM_GCLKS];
 
 void gclk_init()
 {

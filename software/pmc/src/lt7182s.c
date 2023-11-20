@@ -77,7 +77,7 @@ static uint8_t lt7182s_pmbus_send_command(uint8_t ubCommand)
 {
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -92,7 +92,7 @@ static uint8_t lt7182s_pmbus_write_byte(uint8_t ubCommand, uint8_t ubData)
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write(LT7182S_I2C_ADDR, ubTemp, 2, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_write(LT7182S_I2C_ADDR, ubTemp, 2, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -108,7 +108,7 @@ static uint8_t lt7182s_pmbus_write_word(uint8_t ubCommand, uint16_t usData)
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write(LT7182S_I2C_ADDR, ubTemp, 3, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_write(LT7182S_I2C_ADDR, ubTemp, 3, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -154,10 +154,10 @@ static uint8_t lt7182s_pmbus_read_byte(uint8_t ubCommand)
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
+        if(!sercom1_i2c_master_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
             return 0;
 
-        if(!sercom1_i2c_read(LT7182S_I2C_ADDR, &ubTemp, 1, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_read(LT7182S_I2C_ADDR, &ubTemp, 1, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -169,10 +169,10 @@ static uint16_t lt7182s_pmbus_read_word(uint8_t ubCommand)
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
+        if(!sercom1_i2c_master_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
             return 0;
 
-        if(!sercom1_i2c_read(LT7182S_I2C_ADDR, ubTemp, 2, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_read(LT7182S_I2C_ADDR, ubTemp, 2, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -206,10 +206,10 @@ static uint8_t lt7182s_pmbus_read_block(uint8_t ubCommand, uint8_t *pubBuffer, u
 
     ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
     {
-        if(!sercom1_i2c_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
+        if(!sercom1_i2c_master_write_byte(LT7182S_I2C_ADDR, ubCommand, SERCOM_I2C_RESTART))
             return 0;
 
-        if(!sercom1_i2c_read(LT7182S_I2C_ADDR, ubTemp, ubBufferMaxSize + 1, SERCOM_I2C_STOP))
+        if(!sercom1_i2c_master_read(LT7182S_I2C_ADDR, ubTemp, ubBufferMaxSize + 1, SERCOM_I2C_STOP))
             return 0;
     }
 
@@ -241,7 +241,7 @@ static uint8_t lt7182s_select_page(uint8_t ubPage)
 
 uint8_t lt7182s_init()
 {
-    if(!sercom1_i2c_write(LT7182S_I2C_ADDR, NULL, 0, SERCOM_I2C_STOP)) // Check ACK from the expected address
+    if(!sercom1_i2c_master_write(LT7182S_I2C_ADDR, NULL, 0, SERCOM_I2C_STOP)) // Check ACK from the expected address
         return 0;
 
     if(!lt7182s_pmbus_send_command(0xFD)) // Reset
