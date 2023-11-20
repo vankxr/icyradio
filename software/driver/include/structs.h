@@ -9,6 +9,7 @@
 typedef struct
 {
     uint32_t ulDevID;
+    uint64_t ullSerialNumber;
     struct pci_dev *pPCIDev;
     struct file *pFile;
     struct cdev sCharDev;

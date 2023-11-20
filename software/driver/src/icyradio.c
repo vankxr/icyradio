@@ -26,6 +26,9 @@
 #define ICYRADIO_PCIE_BAR1_AXI_XLATE 0x20000000 // DDR3, 512 MB (End at 0x3FFFFFFF)
 #define ICYRADIO_PCIE_BAR2_AXI_XLATE 0x00000000 // SPI Flash & BRAM, 32 MB (End at 0x01FFFFFF)
 
+#define ICYRADIO_AXI_DNA_BASE        0x40022000
+#define ICYRADIO_AXI_DNA_OFFSET      (ICYRADIO_AXI_DNA_BASE - ICYRADIO_PCIE_BAR0_AXI_XLATE)
+
 
 static dev_t icyradio_dev_num;
 static struct class *icyradio_class = NULL;
@@ -194,6 +197,8 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
             pDev->pDMAVirtAddr = pVirtAddr;
             pDev->ulDMAPhysAddr = ulPhysAddr;
             pDev->ulDMABufSize = (uint32_t)ullSize;
+
+            pci_set_master(pDev->pPCIDev); // Set as bus master so it can initiate DMA transfers
         }
         break;
         case ICYRADIO_IOCTL_DMA_QUERY:
@@ -206,6 +211,8 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
                 return -ENODEV;
             }
+
+            DBGPRINTLN_CTX("DMA buffer of size 0x%08X for device %u is at virt 0x%016lX and phys 0x%016llX", pDev->ulDMABufSize, pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
 
             sQuery.ullPhysAddr = (uint64_t)pDev->ulDMAPhysAddr;
             sQuery.ulBufSize = pDev->ulDMABufSize;
@@ -228,6 +235,8 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
             }
 
             DBGPRINTLN_CTX("Freeing DMA buffer for device %u at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+
+            pci_clear_master(pDev->pPCIDev); // Clear bus master so it can't initiate DMA transfers
 
             dma_free_coherent(&pDev->pPCIDev->dev, pDev->ulDMABufSize, pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
 
@@ -279,6 +288,27 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             wake_up_interruptible(&pDev->sIRQWaitQueue);
         }
+        break;
+
+        case ICYRADIO_IOCTL_SERIAL_QUERY:
+        {
+            DBGPRINTLN_CTX("Serial number query for device %u (%015llX)", pDev->ulDevID, pDev->ullSerialNumber);
+
+            if(copy_to_user((void __user *)ulArg, &pDev->ullSerialNumber, sizeof(uint64_t)))
+            {
+                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+
+                return -EFAULT;
+            }
+        }
+        break;
+        default:
+        {
+            DBGPRINTLN_CTX("Invalid IOCTL command, aborting");
+
+            return -EINVAL;
+        }
+        break;
     }
 
     return 0;
@@ -448,6 +478,8 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     uint32_t ulDevID = 0;
     icyradio_dev_t *pDev;
     struct device *pUDevDevice;
+    void *pBAR;
+    uint32_t ulTimeout;
 
     DBGPRINTLN_CTX("Probing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
 
@@ -471,6 +503,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     DBGPRINTLN_CTX("Found free device ID %u", ulDevID);
 
+    // Allocate and initialize device struct
     pDev = (icyradio_dev_t *)kzalloc(sizeof(icyradio_dev_t), GFP_KERNEL);
 
     if(!pDev)
@@ -483,47 +516,17 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     pDev->ulDevID = ulDevID;
     pDev->pPCIDev = pPCIDev;
 
-    cdev_init(&pDev->sCharDev, &icyradio_fops);
-    pDev->sCharDev.owner = THIS_MODULE;
-
-    ulDevNum = MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ulDevID);
-
-    DBGPRINTLN_CTX("Registering device with major %u and minor %u", MAJOR(ulDevNum), MINOR(ulDevNum));
-
-    if(cdev_add(&pDev->sCharDev, ulDevNum, 1))
-    {
-        DBGPRINTLN_CTX("Can't add cdev device, aborting");
-
-        kfree(pDev);
-
-        return -ENODEV;
-    }
-
-    pUDevDevice = device_create(icyradio_class, &pPCIDev->dev, ulDevNum, pDev, "%s%u", ICYRADIO_DEV_NAME, ulDevID);
-
-    if(IS_ERR(pUDevDevice))
-    {
-        DBGPRINTLN_CTX("Can't create udev device, aborting");
-
-        cdev_del(&pDev->sCharDev);
-        kfree(pDev);
-
-        return PTR_ERR(pUDevDevice);
-    }
-
-    DBGPRINTLN_CTX("Device created at /dev/%s%u", ICYRADIO_DEV_NAME, ulDevID);
-
+    // Enable device
     if(pci_enable_device(pPCIDev))
     {
         DBGPRINTLN_CTX("Can't enable PCI device, aborting");
 
-        device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
     }
 
+    // Enumerate PCI resources
     DBGPRINTLN_CTX("BARs:");
 
     for(int i = 0; i < ICYRADIO_PCIE_NUM_BARS; i++)
@@ -531,21 +534,60 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         if(!pci_resource_len(pPCIDev, i))
             continue;
 
-        DBGPRINTLN_CTX("  BAR %d: start: 0x%08llX, end: 0x%08llX, AXI start: 0x%08X, AXI end: 0x%08llX, len: 0x%08llX, flags: 0x%08lX", i, pci_resource_start(pPCIDev, i), pci_resource_end(pPCIDev, i), icyradio_pci_bar_axi_xlate[i], icyradio_pci_bar_axi_xlate[i] + pci_resource_len(pPCIDev, i) - 1, pci_resource_len(pPCIDev, i), pci_resource_flags(pPCIDev, i));
+        DBGPRINTLN_CTX("  BAR #%d: start: 0x%08llX, end: 0x%08llX, AXI start: 0x%08X, AXI end: 0x%08llX, len: 0x%08llX, flags: 0x%08lX", i, pci_resource_start(pPCIDev, i), pci_resource_end(pPCIDev, i), icyradio_pci_bar_axi_xlate[i], icyradio_pci_bar_axi_xlate[i] + pci_resource_len(pPCIDev, i) - 1, pci_resource_len(pPCIDev, i), pci_resource_flags(pPCIDev, i));
     }
 
+    // Request PCI resources
     if(pci_request_regions(pPCIDev, "icyradio"))
     {
         DBGPRINTLN_CTX("Can't request PCI regions, aborting");
 
         pci_disable_device(pPCIDev);
-        device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
     }
 
+    // Query the serial number (FPGA DNA)
+    pBAR = pci_iomap(pPCIDev, 0, 0);
+
+    if(!pBAR)
+    {
+        DBGPRINTLN_CTX("Can't map BAR #0, aborting");
+
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        kfree(pDev);
+
+        return -EFAULT;
+    }
+
+    DBGPRINTLN_CTX("BAR0 mapped at %p", pBAR);
+
+    ulTimeout = 100;
+    while(--ulTimeout && !(ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x04)) & BIT(31))) // Wait for the DNA to be ready
+        udelay(10);
+
+    if(!ulTimeout)
+    {
+        DBGPRINTLN_CTX("Timed out waiting for DNA to be ready, aborting");
+
+        pci_iounmap(pPCIDev, pBAR);
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        kfree(pDev);
+
+        return -EFAULT;
+    }
+
+    pDev->ullSerialNumber = (uint64_t)(ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x04)) & 0x01FFFFFF) << 32;
+    pDev->ullSerialNumber |= (uint64_t)ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x00));
+
+    DBGPRINTLN_CTX("Device serial number: %015llX", pDev->ullSerialNumber);
+
+    pci_iounmap(pPCIDev, pBAR);
+
+    // Set DMA mask
     if(dma_set_mask_and_coherent(&pPCIDev->dev, DMA_BIT_MASK(48)))
     {
         DBGPRINTLN_CTX("Can't set DMA mask to 48 bits, trying 32 bits");
@@ -556,27 +598,29 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
-            device_destroy(icyradio_class, ulDevNum);
-            cdev_del(&pDev->sCharDev);
             kfree(pDev);
 
             return -EFAULT;
         }
+        else
+        {
+            DBGPRINTLN_CTX("DMA mask set to 32 bits");
+        }
 	}
+    else
+    {
+        DBGPRINTLN_CTX("DMA mask set to 48 bits");
+    }
 
-    DBGPRINTLN_CTX("DMA mask set to 48 bits");
-
-    pci_set_master(pPCIDev); // Set as bus master so it can initiate DMA transfers
-
+    // Setup interrupts
     pDev->iNumIRQs = pci_alloc_irq_vectors(pPCIDev, 1, 32, PCI_IRQ_MSI | PCI_IRQ_MSIX | PCI_IRQ_AFFINITY); // Allocate up to 32 MSI-X vectors
+
     if(pDev->iNumIRQs < 0)
     {
         DBGPRINTLN_CTX("Can't allocate MSI-X vectors, aborting");
 
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
-        device_destroy(icyradio_class, ulDevNum);
-        cdev_del(&pDev->sCharDev);
         kfree(pDev);
 
         return -EFAULT;
@@ -600,51 +644,76 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
             pci_free_irq_vectors(pPCIDev);
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
-            device_destroy(icyradio_class, ulDevNum);
-            cdev_del(&pDev->sCharDev);
             kfree(pDev);
 
             return -EFAULT;
         }
     }
 
+    // Initialize character device
+    cdev_init(&pDev->sCharDev, &icyradio_fops);
+    pDev->sCharDev.owner = THIS_MODULE;
+
+    ulDevNum = MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ulDevID);
+
+    DBGPRINTLN_CTX("Registering device with major %u and minor %u", MAJOR(ulDevNum), MINOR(ulDevNum));
+
+    if(cdev_add(&pDev->sCharDev, ulDevNum, 1))
+    {
+        DBGPRINTLN_CTX("Can't add cdev device, aborting");
+
+        for(int i = 0; i < pDev->iNumIRQs; i++)
+            free_irq(pci_irq_vector(pPCIDev, i), pDev);
+
+        pci_free_irq_vectors(pPCIDev);
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        kfree(pDev);
+
+        return -ENODEV;
+    }
+
+    pUDevDevice = device_create(icyradio_class, &pPCIDev->dev, ulDevNum, pDev, "%s%u", ICYRADIO_DEV_NAME, ulDevID);
+
+    if(IS_ERR(pUDevDevice))
+    {
+        DBGPRINTLN_CTX("Can't create udev device, aborting");
+
+        cdev_del(&pDev->sCharDev);
+
+        for(int i = 0; i < pDev->iNumIRQs; i++)
+            free_irq(pci_irq_vector(pPCIDev, i), pDev);
+
+        pci_free_irq_vectors(pPCIDev);
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        kfree(pDev);
+
+        return PTR_ERR(pUDevDevice);
+    }
+
+    DBGPRINTLN_CTX("Device created at /dev/%s%u", ICYRADIO_DEV_NAME, ulDevID);
+
     // After all configuration is successful, register the device in the array and set its drvdata
     icyradio_devs[ulDevID] = pDev;
     pci_set_drvdata(pPCIDev, pDev);
 
-    //void *pBAR0;
-    // pBAR0 = pci_iomap(pPCIDev, 0, 0);
-
-    // if(!pBAR0)
-    // {
-    //     DBGPRINTLN_CTX("Can't map BAR0, aborting");
-
-    //     return -EFAULT;
-    // }
-
-    // DBGPRINTLN_CTX("BAR0 mapped at %p", pBAR0);
-
-    // DBGPRINTLN_CTX("AXI SPI #0 - SPICR: 0x%08X", ioread32(pBAR0 + 0x00008000 + 0x60));
+    DBGPRINTLN_CTX("IcyRadio device %u probed", ulDevID);
 
     return 0;
 }
 static void icyradio_pci_remove(struct pci_dev *pPCIDev)
 {
     icyradio_dev_t *pDev = pci_get_drvdata(pPCIDev);
-
-    if(pDev->pDMAVirtAddr)
-        dmam_free_coherent(&pPCIDev->dev, pDev->ulDMABufSize, pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
-
-    for(int i = 0; i < pDev->iNumIRQs; i++)
-        free_irq(pci_irq_vector(pPCIDev, i), pDev);
-
-    pci_free_irq_vectors(pPCIDev);
-    pci_clear_master(pPCIDev);
-    pci_release_regions(pPCIDev);
-    pci_disable_device(pPCIDev);
+    int iDevID = -1;
 
     if(pDev)
     {
+        iDevID = pDev->ulDevID;
+
+        if(pDev->pDMAVirtAddr)
+            dmam_free_coherent(&pPCIDev->dev, pDev->ulDMABufSize, pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+
         if(pDev->pPCIDev != pPCIDev)
             DBGPRINTLN_CTX("PCI Device ptr mismatch");
 
@@ -660,9 +729,15 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
         DBGPRINTLN_CTX("Can't find IcyRadio device struct");
     }
 
-    DBGPRINTLN_CTX("IcyRadio device removed");
+    for(int i = 0; i < pDev->iNumIRQs; i++)
+        free_irq(pci_irq_vector(pPCIDev, i), pDev);
 
-    return;
+    pci_free_irq_vectors(pPCIDev);
+    pci_clear_master(pPCIDev);
+    pci_release_regions(pPCIDev);
+    pci_disable_device(pPCIDev);
+
+    DBGPRINTLN_CTX("IcyRadio device %d removed", iDevID);
 }
 
 static struct pci_driver icyradio_pci_driver = {
