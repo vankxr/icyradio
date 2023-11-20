@@ -200,13 +200,13 @@ void i2c_slave_register_init()
         I2C_SLAVE_REGISTER              (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0x00;
         I2C_SLAVE_REGISTER_WRITE_MASK   (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0xFF;
         I2C_SLAVE_REGISTER_READ_MASK    (uint8_t,  I2C_SLAVE_REGISTER_CONFIG)                   = 0xFF;
-        I2C_SLAVE_REGISTER              (float,    I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = -1.f;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0;
         I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0x00000000;
         I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE)            = 0xFFFFFFFF;
-        I2C_SLAVE_REGISTER              (float,    I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = -1.f;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0;
         I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0x00000000;
         I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE)             = 0xFFFFFFFF;
-        I2C_SLAVE_REGISTER              (float,    I2C_SLAVE_REGISTER_TEMP)                     = -1.f;
+        I2C_SLAVE_REGISTER              (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0;
         I2C_SLAVE_REGISTER_WRITE_MASK   (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0x00000000;
         I2C_SLAVE_REGISTER_READ_MASK    (uint32_t, I2C_SLAVE_REGISTER_TEMP)                     = 0xFFFFFFFF;
         I2C_SLAVE_REGISTER              (uint64_t, I2C_SLAVE_REGISTER_UPTIME)                   = g_ullSystemTick / 1000;
@@ -355,12 +355,12 @@ int init()
     port_init(); // Init GPIOs
     adc_init(); // Init ADC
 
-    sercom3_init(500000, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
+    sercom3_uart_init(500000, SERCOM_USART_INT_CTRLA_DORD_LSB | SERCOM_USART_INT_CTRLA_FORM_USART_FRAME_NO_PARITY | SERCOM_USART_INT_CTRLB_SBMODE_1_BIT | SERCOM_SPIM_CTRLB_CHSIZE_8_BIT, 0, 1);
 
-    sercom1_init(I2C_SLAVE_ADDRESS);
-    sercom1_set_slave_addr_isr(i2c_slave_addr_isr);
-    sercom1_set_slave_tx_data_isr(i2c_slave_tx_data_isr);
-    sercom1_set_slave_rx_data_isr(i2c_slave_rx_data_isr);
+    sercom1_i2c_slave_init(I2C_SLAVE_ADDRESS);
+    sercom1_i2c_slave_set_addr_isr(i2c_slave_addr_isr);
+    sercom1_i2c_slave_set_tx_data_isr(i2c_slave_tx_data_isr);
+    sercom1_i2c_slave_set_rx_data_isr(i2c_slave_rx_data_isr);
 
     char szDeviceCoreName[32];
     char szDeviceName[32];
@@ -385,9 +385,9 @@ int init()
 
     DBGPRINTLN_CTX("RMU - Reset cause: %s", pm_get_reset_reason_string(pm_get_reset_reason()));
 
-    DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f mV", adc_get_iovdd());
-    DBGPRINTLN_CTX("ADC - Core Voltage: %.2f mV", adc_get_corevdd());
-    DBGPRINTLN_CTX("ADC - Temperature: %.2f C", adc_get_temperature());
+    DBGPRINTLN_CTX("ADC - IOVDD Voltage: %.2f (%u) mV", adc_getf_iovdd(), adc_get_iovdd());
+    DBGPRINTLN_CTX("ADC - Core Voltage: %.2f (%u) mV", adc_getf_corevdd(), adc_get_corevdd());
+    DBGPRINTLN_CTX("ADC - Temperature: %.2f (%u / 1000) C", adc_getf_temperature(), adc_get_temperature());
 
     nvmctrl_config_waitstates(PM_CPU_CLOCK_FREQ, adc_get_iovdd()); // Optimize flash wait states for frequency and voltage
 
@@ -423,6 +423,21 @@ int main()
     {
         wdt_feed();
 
+        if(I2C_SLAVE_REGISTER(uint8_t, I2C_SLAVE_REGISTER_CONFIG) & BIT(7))
+        {
+            delay_ms(20);
+
+            reset();
+        }
+
+        if(I2C_SLAVE_REGISTER(uint64_t, I2C_SLAVE_REGISTER_UPTIME) != g_ullSystemTick / 1000)
+        {
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+            {
+                I2C_SLAVE_REGISTER(uint64_t, I2C_SLAVE_REGISTER_UPTIME) = g_ullSystemTick / 1000;
+            }
+        }
+
         static uint64_t ullLastHeartBeat = 0;
         static uint64_t ullLastTelemetryUpdate = 0;
 
@@ -441,29 +456,29 @@ int main()
             ullLastTelemetryUpdate = g_ullSystemTick;
 
             // System Temperatures
-            float fTemp = adc_get_temperature();
+            uint32_t ulTemp = adc_get_temperature();
 
             ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
             {
-                I2C_SLAVE_REGISTER(float, I2C_SLAVE_REGISTER_TEMP) = fTemp;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_TEMP) = ulTemp;
             }
 
             DBGPRINTLN_CTX("----------------------------------");
-            DBGPRINTLN_CTX("Temperature: %.2f C", fTemp);
+            DBGPRINTLN_CTX("Temperature: %lu.%02lu C", ulTemp / 1000, ulTemp % 1000);
 
             // System Voltages/Currents
-            float fIOVDD = adc_get_iovdd();
-            float fCoreVDD = adc_get_corevdd();
+            uint32_t ulIOVDD = adc_get_iovdd();
+            uint32_t ulCoreVDD = adc_get_corevdd();
 
             ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
             {
-                I2C_SLAVE_REGISTER(float, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE) = fIOVDD;
-                I2C_SLAVE_REGISTER(float, I2C_SLAVE_REGISTER_CORE_VOLTAGE) = fCoreVDD;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_IOVDD_VOLTAGE) = ulIOVDD;
+                I2C_SLAVE_REGISTER(uint32_t, I2C_SLAVE_REGISTER_CORE_VOLTAGE) = ulCoreVDD;
             }
 
             DBGPRINTLN_CTX("----------------------------------");
-            DBGPRINTLN_CTX("IOVDD Voltage: %.2f mV", fIOVDD);
-            DBGPRINTLN_CTX("Core Voltage: %.2f mV", fCoreVDD);
+            DBGPRINTLN_CTX("IOVDD Voltage: %u mV", ulIOVDD);
+            DBGPRINTLN_CTX("Core Voltage: %u mV", ulCoreVDD);
         }
     }
 

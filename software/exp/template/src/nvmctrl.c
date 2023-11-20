@@ -6,9 +6,9 @@ void nvmctrl_init()
     NVMCTRL_REGS->NVMCTRL_CTRLB = NVMCTRL_CTRLB_READMODE_NO_MISS_PENALTY | NVMCTRL_CTRLB_SLEEPPRM_WAKEUPINSTANT | NVMCTRL_CTRLB_MANW_Msk | NVMCTRL_CTRLB_RWS(3);
 }
 
-void nvmctrl_config_waitstates(uint32_t ulFrequency, float fVoltage)
+void nvmctrl_config_waitstates(uint32_t ulFrequency, uint32_t ulVoltage)
 {
-    if(fVoltage < 2700.f)
+    if(ulVoltage < 2700)
     {
         if(ulFrequency <= 14000000UL)
             NVMCTRL_REGS->NVMCTRL_CTRLB = (NVMCTRL_REGS->NVMCTRL_CTRLB & ~NVMCTRL_CTRLB_RWS_Msk) | NVMCTRL_CTRLB_RWS(0);
@@ -41,5 +41,5 @@ void nvmctrl_get_unique_id(uint32_t *pulID)
     pulID[0] = *(volatile uint32_t *)0x0080A00C;
     pulID[1] = *(volatile uint32_t *)0x0080A040;
     pulID[2] = *(volatile uint32_t *)0x0080A044;
-    pulID[2] = *(volatile uint32_t *)0x0080A048;
+    pulID[3] = *(volatile uint32_t *)0x0080A048;
 }

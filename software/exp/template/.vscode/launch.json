@@ -12,7 +12,7 @@
             "type": "cortex-debug",
             "preLaunchTask": "Build",
             "servertype": "jlink",
-            "device": "ATSAMD21E18",
+            "device": "ATSAMD21E18A",
             "svdFile": "${env:ARM_LIBROOT}/Microchip.SAMD21_DFP/samd21a/svd/ATSAMD21E18A.svd",
             "interface": "swd",
             "breakAfterReset": true,

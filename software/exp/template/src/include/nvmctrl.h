@@ -5,7 +5,7 @@
 
 void nvmctrl_init();
 
-void nvmctrl_config_waitstates(uint32_t ulFrequency, float fVoltage);
+void nvmctrl_config_waitstates(uint32_t ulFrequency, uint32_t ulVoltage);
 
 uint32_t nvmctrl_get_flash_size();
 

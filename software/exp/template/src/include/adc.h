@@ -6,9 +6,12 @@
 
 void adc_init();
 
-float adc_get_iovdd();
-float adc_get_corevdd();
+uint32_t adc_get_iovdd();
+float adc_getf_iovdd();
+uint32_t adc_get_corevdd();
+float adc_getf_corevdd();
 
-float adc_get_temperature();
+uint32_t adc_get_temperature();
+float adc_getf_temperature();
 
 #endif // __ADC_H__

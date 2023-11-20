@@ -28,7 +28,7 @@ void adc_init()
     while(ADC_REGS->ADC_STATUS & ADC_STATUS_SYNCBUSY_Msk);
 }
 
-float adc_get_iovdd()
+static uint16_t adc_read_iovdd()
 {
     ADC_REGS->ADC_INPUTCTRL = ADC_INPUTCTRL_GAIN_1X | ADC_INPUTCTRL_MUXNEG_IOGND | ADC_INPUTCTRL_MUXPOS_SCALEDIOVCC;
     ADC_REGS->ADC_SAMPCTRL = ADC_SAMPCTRL_SAMPLEN(0x3F);
@@ -40,11 +40,23 @@ float adc_get_iovdd()
     while(!(ADC_REGS->ADC_INTFLAG & ADC_INTFLAG_RESRDY_Msk));
 
     uint16_t usResult = ADC_REGS->ADC_RESULT;
+
+    return usResult;
+}
+uint32_t adc_get_iovdd()
+{
+    uint16_t usResult = adc_read_iovdd();
+
+    return (uint32_t)usResult * 1000UL * 4UL / 4095UL;
+}
+float adc_getf_iovdd()
+{
+    uint16_t usResult = adc_read_iovdd();
     static const float fCorr = 1000.f / 4095.f * 4.f;
 
     return (float)usResult * fCorr;
 }
-float adc_get_corevdd()
+static uint16_t adc_read_corevdd()
 {
     ADC_REGS->ADC_INPUTCTRL = ADC_INPUTCTRL_GAIN_1X | ADC_INPUTCTRL_MUXNEG_GND | ADC_INPUTCTRL_MUXPOS_SCALEDCOREVCC;
     ADC_REGS->ADC_SAMPCTRL = ADC_SAMPCTRL_SAMPLEN(0x3F);
@@ -56,12 +68,24 @@ float adc_get_corevdd()
     while(!(ADC_REGS->ADC_INTFLAG & ADC_INTFLAG_RESRDY_Msk));
 
     uint16_t usResult = ADC_REGS->ADC_RESULT;
+
+    return usResult;
+}
+uint32_t adc_get_corevdd()
+{
+    uint16_t usResult = adc_read_corevdd();
+
+    return (uint32_t)usResult * 1000UL * 4UL / 4095UL;
+}
+float adc_getf_corevdd()
+{
+    uint16_t usResult = adc_read_corevdd();
     static const float fCorr = 1000.f / 4095.f * 4.f;
 
     return (float)usResult * fCorr;
 }
 
-float adc_get_temperature()
+static uint16_t adc_read_temperature()
 {
     ADC_REGS->ADC_INPUTCTRL = ADC_INPUTCTRL_GAIN_1X | ADC_INPUTCTRL_MUXNEG_GND | ADC_INPUTCTRL_MUXPOS_TEMP;
     ADC_REGS->ADC_SAMPCTRL = ADC_SAMPCTRL_SAMPLEN(0x3F);
@@ -74,6 +98,55 @@ float adc_get_temperature()
 
     uint16_t usResult = ADC_REGS->ADC_RESULT;
 
+    return usResult;
+}
+uint32_t adc_get_temperature()
+{
+    static uint8_t ubCalibInit = 0;
+    static uint32_t ulRoomTemp;
+    static uint32_t ulRoom1V0;
+    static uint32_t ulRoomVoltage;
+    static uint32_t ulHotTemp;
+    static uint32_t ulHot1V0;
+    static uint32_t ulHotVoltage;
+
+    if(!ubCalibInit)
+    {
+        uint8_t ubRoomTempInt = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_ROOM_TEMP_VAL_INT_Msk) >> FUSES_TEMP_LOG_WORD_0_ROOM_TEMP_VAL_INT_Pos;
+        uint8_t ubRoomTempDec = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_ROOM_TEMP_VAL_DEC_Msk) >> FUSES_TEMP_LOG_WORD_0_ROOM_TEMP_VAL_DEC_Pos;
+        ulRoomTemp = (uint32_t)ubRoomTempInt * 1000UL + (uint32_t)ubRoomTempDec * 100UL;
+
+        int8_t bRoom1V0 = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_ROOM_INT1V_VAL_Msk) >> FUSES_TEMP_LOG_WORD_0_ROOM_INT1V_VAL_Pos;
+        ulRoom1V0 = 1000UL - bRoom1V0;
+
+        uint16_t usRoomADCCode = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_1 & FUSES_TEMP_LOG_WORD_1_ROOM_ADC_VAL_Msk) >> FUSES_TEMP_LOG_WORD_1_ROOM_ADC_VAL_Pos;
+        ulRoomVoltage = (uint32_t)usRoomADCCode * ulRoom1V0 / 4095UL;
+
+        uint8_t ubHotTempInt = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_HOT_TEMP_VAL_INT_Msk) >> FUSES_TEMP_LOG_WORD_0_HOT_TEMP_VAL_INT_Pos;
+        uint8_t ubHotTempDec = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_0 & FUSES_TEMP_LOG_WORD_0_HOT_TEMP_VAL_DEC_Msk) >> FUSES_TEMP_LOG_WORD_0_HOT_TEMP_VAL_DEC_Pos;
+        ulHotTemp = (uint32_t)ubHotTempInt * 1000UL + (uint32_t)ubHotTempDec * 100UL;
+
+        int8_t bHot1V0 = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_1 & FUSES_TEMP_LOG_WORD_1_HOT_INT1V_VAL_Msk) >> FUSES_TEMP_LOG_WORD_1_HOT_INT1V_VAL_Pos;
+        ulHot1V0 = 1000UL - bHot1V0;
+
+        uint16_t usHotADCCode = (TEMP_LOG_FUSES_REGS->FUSES_TEMP_LOG_WORD_1 & FUSES_TEMP_LOG_WORD_1_HOT_ADC_VAL_Msk) >> FUSES_TEMP_LOG_WORD_1_HOT_ADC_VAL_Pos;
+        ulHotVoltage = (uint32_t)usHotADCCode * ulHot1V0 / 4095UL;
+
+        ubCalibInit = 1;
+    }
+
+    uint16_t usResult = adc_read_temperature();
+
+    uint32_t ulCoarseVoltage = (uint32_t)usResult * 1000UL / 4095UL;
+    uint32_t ulCoarseTemp = (ulCoarseVoltage - ulRoomVoltage) * (ulHotTemp - ulRoomTemp) / (ulHotVoltage - ulRoomVoltage) + ulRoomTemp;
+    uint32_t ul1V0 = (ulHot1V0 - ulRoom1V0) * (ulCoarseTemp - ulRoomTemp) / (ulHotTemp - ulRoomTemp) + ulRoom1V0;
+    uint32_t ulFineVoltage = (uint32_t)usResult * ul1V0 / 4095UL;
+    uint32_t ulFineTemp = (ulFineVoltage - ulRoomVoltage) * (ulHotTemp - ulRoomTemp) / (ulHotVoltage - ulRoomVoltage) + ulRoomTemp;
+
+    return ulFineTemp;
+}
+float adc_getf_temperature()
+{
     static uint8_t ubCalibInit = 0;
     static float fRoomTemp;
     static float fRoom1V0;
@@ -106,6 +179,8 @@ float adc_get_temperature()
 
         ubCalibInit = 1;
     }
+
+    uint16_t usResult = adc_read_temperature();
 
     float fCoarseVoltage = (float)usResult * 1.f / 4095.f;
     float fCoarseTemp = (fCoarseVoltage - fRoomVoltage) * (fHotTemp - fRoomTemp) / (fHotVoltage - fRoomVoltage) + fRoomTemp;
