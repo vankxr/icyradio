@@ -17,6 +17,10 @@
 #include "lt7182s.h"
 
 // Structs
+typedef struct __attribute((__packed__))
+{
+    uint8_t ubTest[2];
+} i2c_rom_t;
 
 // Helper macros
 #define I2C_SLAVE_ADDRESS                           0x26
@@ -60,6 +64,10 @@ static uint8_t i2c_slave_tx_data_isr();
 static uint8_t i2c_slave_rx_data_isr(uint8_t ubData);
 
 // Variables
+const i2c_rom_t sI2CROM0 =
+{
+    .ubTest = {0x55, 0xAA},
+};
 volatile uint8_t ubI2CRegister[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterWriteMask[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterReadMask[I2C_SLAVE_REGISTER_COUNT];
@@ -67,6 +75,7 @@ volatile uint8_t ubI2CBuffer[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterPointer = 0x00;
 volatile uint8_t ubI2CByteCount = 0;
 volatile uint8_t ubI2CReadSize = 0;
+volatile uint8_t ubI2CReadSrc = 0; // 0 = Registers, 1 = ROM
 volatile uint8_t ubI2CChecksum = 0;
 volatile uint8_t ubI2CChecksumOK = 0;
 uint32_t ulVIN = 0;
@@ -328,11 +337,18 @@ uint8_t i2c_slave_tx_data_isr()
     {
         ubI2CChecksumOK = 0;
         ubI2CReadSize = 0;
+        ubI2CReadSrc = 0;
 
         return (0xFF - ubI2CChecksum) + 1;
     }
 
-    uint8_t ubData = ubI2CRegister[ubI2CRegisterPointer] & ubI2CRegisterReadMask[ubI2CRegisterPointer];
+    uint8_t ubData = 0xFF;
+
+    if(ubI2CReadSrc == 0)
+        ubData = ubI2CRegister[ubI2CRegisterPointer] & ubI2CRegisterReadMask[ubI2CRegisterPointer];
+    else if(ubI2CRegisterPointer < sizeof(sI2CROM0))
+        ubData = ((const uint8_t *)&sI2CROM0)[ubI2CRegisterPointer];
+
     ubI2CRegisterPointer++;
 
     ubI2CChecksum += ubData;
@@ -388,6 +404,11 @@ uint8_t i2c_slave_rx_data_isr(uint8_t ubData)
     {
         ubI2CChecksumOK = 1;
         ubI2CReadSize = ubI2CBuffer[2];
+
+        if(ubI2CBuffer[1] == I2C_SLAVE_REGISTER_COUNT - 2)
+            ubI2CReadSrc = 1;
+        else
+            ubI2CReadSrc = 0;
 
         return 1; // ACK
     }
@@ -763,7 +784,7 @@ int main()
     delay_ms(50);
     FPGA_INIT_DEASSERT();
 
-    if(VEXT_STATUS() && !PCIE_12V0_STATUS() && !VBUS_SNK_STATUS())
+    if(!PCIE_12V0_STATUS()) // CM4 supported only when not using the PCIe slot
     {
         DBGPRINTLN_CTX("Turning CM4 ON in 500 ms...");
         delay_ms(500);
@@ -772,7 +793,26 @@ int main()
         //CM4_BTLDR_ENABLE();
         CM4_GLOBAL_ENABLE();
 
-        while(!CM4_RUNNING());
+        DBGPRINTLN_CTX("Waiting for CM4 to be running...");
+
+        uint64_t ullCM4StartTime = g_ullSystemTick;
+
+        while(!CM4_RUNNING() && g_ullSystemTick - ullCM4StartTime < 5000);
+
+        if(!CM4_RUNNING())
+        {
+            DBGPRINTLN_CTX("CM4 failed to start, assuming it is not present");
+
+            CM4_GLOBAL_DISABLE();
+        }
+        else
+        {
+            DBGPRINTLN_CTX("CM4 is running!");
+        }
+    }
+    else
+    {
+        DBGPRINTLN_CTX("Board is powered via PCIe 12V, CM4 is not supported in this configuration");
     }
 
     wdt_enable();
@@ -826,26 +866,24 @@ int main()
 
             if(ubCM4CheckCount > 3)
             {
-                // DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
+                DBGPRINTLN_CTX("RPi CM4 is OFF, shutting system down...");
 
                 CM4_GLOBAL_DISABLE();
-                // FPGA_INIT_ASSERT();
+                FPGA_INIT_ASSERT();
                 // lt7182s_set_operation(0, LT7182S_OPERATION_TURN_OFF_IMMED);
                 // lt7182s_set_operation(1, LT7182S_OPERATION_TURN_OFF_IMMED);
                 // delay_ms(50);
-                // VEXT_DISABLE();
-                // PCIE_12V0_DISABLE();
-                // VBUS_SNK_DISABLE();
+                VOLTAGE_DISABLE_ALL();
 
-                // DBGPRINTLN_CTX("Done!");
+                DBGPRINTLN_CTX("Done!");
 
                 // TODO: Remove below
-                wdt_disable();
-                delay_ms(2000);
-                CM4_GLOBAL_ENABLE();
-                while(!CM4_RUNNING());
-                wdt_feed();
-                wdt_enable();
+                // wdt_disable();
+                // delay_ms(2000);
+                // CM4_GLOBAL_ENABLE();
+                // while(!CM4_RUNNING());
+                // wdt_feed();
+                // wdt_enable();
             }
         }
 
