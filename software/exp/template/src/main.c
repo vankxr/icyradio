@@ -16,6 +16,10 @@
 #include "wdt.h"
 
 // Structs
+typedef struct __attribute((__packed__))
+{
+    uint8_t ubTest[2];
+} i2c_rom_t;
 
 // Helper macros
 #define I2C_SLAVE_ADDRESS                           0x22
@@ -53,6 +57,10 @@ static uint8_t i2c_slave_tx_data_isr();
 static uint8_t i2c_slave_rx_data_isr(uint8_t ubData);
 
 // Variables
+const i2c_rom_t sI2CROM0 =
+{
+    .ubTest = {0x55, 0xAA},
+};
 volatile uint8_t ubI2CRegister[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterWriteMask[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterReadMask[I2C_SLAVE_REGISTER_COUNT];
@@ -60,6 +68,7 @@ volatile uint8_t ubI2CBuffer[I2C_SLAVE_REGISTER_COUNT];
 volatile uint8_t ubI2CRegisterPointer = 0x00;
 volatile uint8_t ubI2CByteCount = 0;
 volatile uint8_t ubI2CReadSize = 0;
+volatile uint8_t ubI2CReadSrc = 0; // 0 = Registers, 1 = ROM
 volatile uint8_t ubI2CChecksum = 0;
 volatile uint8_t ubI2CChecksumOK = 0;
 
@@ -254,11 +263,18 @@ uint8_t i2c_slave_tx_data_isr()
     {
         ubI2CChecksumOK = 0;
         ubI2CReadSize = 0;
+        ubI2CReadSrc = 0;
 
         return (0xFF - ubI2CChecksum) + 1;
     }
 
-    uint8_t ubData = ubI2CRegister[ubI2CRegisterPointer] & ubI2CRegisterReadMask[ubI2CRegisterPointer];
+    uint8_t ubData = 0xFF;
+
+    if(ubI2CReadSrc == 0)
+        ubData = ubI2CRegister[ubI2CRegisterPointer] & ubI2CRegisterReadMask[ubI2CRegisterPointer];
+    else if(ubI2CRegisterPointer < sizeof(sI2CROM0))
+        ubData = ((const uint8_t *)&sI2CROM0)[ubI2CRegisterPointer];
+
     ubI2CRegisterPointer++;
 
     ubI2CChecksum += ubData;
@@ -314,6 +330,11 @@ uint8_t i2c_slave_rx_data_isr(uint8_t ubData)
     {
         ubI2CChecksumOK = 1;
         ubI2CReadSize = ubI2CBuffer[2];
+
+        if(ubI2CBuffer[1] == I2C_SLAVE_REGISTER_COUNT - 2)
+            ubI2CReadSrc = 1;
+        else
+            ubI2CReadSrc = 0;
 
         return 1; // ACK
     }
