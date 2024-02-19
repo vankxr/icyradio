@@ -88,6 +88,8 @@ uint8_t si5351_init()
     for(uint8_t i = 0; i < 8; i++) // Power down all clocks
         si5351_clock_power_down(i);
 
+    si5351_write_register(SI5351_REG_FANOUT_EN, SI5351_REG_FANOUT_EN_CLKIN_EN | SI5351_REG_FANOUT_EN_XO_EN | SI5351_REG_FANOUT_EN_MS_EN);
+
     return 1;
 }
 void si5351_isr()
