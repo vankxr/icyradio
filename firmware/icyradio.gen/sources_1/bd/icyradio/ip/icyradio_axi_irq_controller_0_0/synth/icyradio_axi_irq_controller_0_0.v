@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "axi_irq_controller,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_axi_irq_controller_0_0,axi_irq_controller,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_axi_irq_controller_0_0,axi_irq_controller,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_irq_controller,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,PCIE_MSI_VEC_SIZE=5,PCIE_MSI_REQ_FIFO_DEPTH_W=5,NUM_IRQS=20,NUM_CDC_STAGES=2}" *)
+(* CORE_GENERATION_INFO = "icyradio_axi_irq_controller_0_0,axi_irq_controller,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_irq_controller,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=VERILOG,PCIE_MSI_VEC_SIZE=5,PCIE_MSI_REQ_FIFO_DEPTH_W=5,NUM_IRQS=20,NUM_CDC_STAGES=2}" *)
 (* IP_DEFINITION_SOURCE = "module_ref" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_axi_irq_controller_0_0 (

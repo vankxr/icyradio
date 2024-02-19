@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Fri Oct 27 00:54:29 2023
+// Date        : Fri Dec  1 20:32:02 2023
 // Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_dna_0_0/icyradio_axi_dna_0_0_sim_netlist.v
@@ -74,17 +74,18 @@ module icyradio_axi_dna_0_0
   wire s_axi_awready;
   wire s_axi_awvalid;
   wire s_axi_bready;
+  wire [1:1]\^s_axi_bresp ;
   wire s_axi_bvalid;
   wire [31:0]s_axi_rdata;
   wire s_axi_rready;
   wire s_axi_rvalid;
-  wire s_axi_wready;
   wire s_axi_wvalid;
 
-  assign s_axi_bresp[1] = \<const0> ;
+  assign s_axi_bresp[1] = \^s_axi_bresp [1];
   assign s_axi_bresp[0] = \<const0> ;
   assign s_axi_rresp[1] = \<const0> ;
   assign s_axi_rresp[0] = \<const0> ;
+  assign s_axi_wready = s_axi_awready;
   GND GND
        (.G(\<const0> ));
   icyradio_axi_dna_0_0_axi_dna inst
@@ -95,49 +96,49 @@ module icyradio_axi_dna_0_0
         .s_axi_araddr(s_axi_araddr[2]),
         .s_axi_arready(s_axi_arready),
         .s_axi_arvalid(s_axi_arvalid),
-        .s_axi_awready(s_axi_awready),
         .s_axi_awvalid(s_axi_awvalid),
         .s_axi_bready(s_axi_bready),
+        .s_axi_bresp(\^s_axi_bresp ),
         .s_axi_bvalid(s_axi_bvalid),
         .s_axi_rdata(s_axi_rdata),
         .s_axi_rready(s_axi_rready),
         .s_axi_rvalid_reg_0(s_axi_rvalid),
-        .s_axi_wready(s_axi_wready),
+        .s_axi_wready(s_axi_awready),
         .s_axi_wvalid(s_axi_wvalid));
 endmodule
 
 (* ORIG_REF_NAME = "axi_dna" *) 
 module icyradio_axi_dna_0_0_axi_dna
-   (dna_ready_reg_0,
+   (s_axi_rvalid_reg_0,
     s_axi_wready,
-    s_axi_awready,
-    s_axi_arready,
     dna,
     s_axi_rdata,
-    s_axi_rvalid_reg_0,
     s_axi_bvalid,
-    aclk,
-    s_axi_awvalid,
-    s_axi_wvalid,
+    dna_ready_reg_0,
+    s_axi_arready,
+    s_axi_bresp,
     s_axi_arvalid,
-    aresetn,
+    aclk,
     s_axi_bready,
+    s_axi_wvalid,
+    s_axi_awvalid,
+    aresetn,
     s_axi_rready,
     s_axi_araddr);
-  output dna_ready_reg_0;
+  output s_axi_rvalid_reg_0;
   output s_axi_wready;
-  output s_axi_awready;
-  output s_axi_arready;
   output [56:0]dna;
   output [31:0]s_axi_rdata;
-  output s_axi_rvalid_reg_0;
   output s_axi_bvalid;
-  input aclk;
-  input s_axi_awvalid;
-  input s_axi_wvalid;
+  output dna_ready_reg_0;
+  output s_axi_arready;
+  output [0:0]s_axi_bresp;
   input s_axi_arvalid;
-  input aresetn;
+  input aclk;
   input s_axi_bready;
+  input s_axi_wvalid;
+  input s_axi_awvalid;
+  input aresetn;
   input s_axi_rready;
   input [0:0]s_axi_araddr;
 
@@ -147,30 +148,27 @@ module icyradio_axi_dna_0_0_axi_dna
   wire [56:0]dna;
   wire dna0__4;
   wire \dna[56]_i_1_n_0 ;
-  wire \dna[56]_i_2_n_0 ;
   wire dna_clk;
   wire \dna_clk_div_cnt[2]_i_1_n_0 ;
   wire \dna_clk_div_cnt[3]_i_1_n_0 ;
   wire [3:0]dna_clk_div_cnt_reg;
   wire dna_clk_i_1_n_0;
+  wire dna_clk_toggle;
   wire dna_dout;
   wire dna_ready_i_1_n_0;
   wire dna_ready_reg_0;
   wire [5:0]dna_shift_cnt_reg;
-  wire [5:0]p_0_in;
-  wire [3:0]p_0_in__0;
-  wire p_0_in__1;
+  wire [31:30]p_0_in;
+  wire [5:0]p_0_in__0;
+  wire [3:0]p_0_in__1;
   wire [0:0]s_axi_araddr;
-  wire \s_axi_araddr_q[2]_i_1_n_0 ;
   wire s_axi_arready;
-  wire s_axi_arready0;
   wire s_axi_arvalid;
-  wire s_axi_aw_en_i_1_n_0;
-  wire s_axi_aw_en_reg_n_0;
-  wire s_axi_awready;
   wire s_axi_awready0__0;
   wire s_axi_awvalid;
   wire s_axi_bready;
+  wire [0:0]s_axi_bresp;
+  wire \s_axi_bresp[1]_i_1_n_0 ;
   wire s_axi_bvalid;
   wire s_axi_bvalid_i_1_n_0;
   wire [31:0]s_axi_rdata;
@@ -197,9 +195,9 @@ module icyradio_axi_dna_0_0_axi_dna
   wire \s_axi_rdata[28]_i_1_n_0 ;
   wire \s_axi_rdata[29]_i_1_n_0 ;
   wire \s_axi_rdata[2]_i_1_n_0 ;
-  wire \s_axi_rdata[30]_i_1_n_0 ;
   wire \s_axi_rdata[30]_i_2_n_0 ;
   wire \s_axi_rdata[31]_i_2_n_0 ;
+  wire \s_axi_rdata[31]_i_3_n_0 ;
   wire \s_axi_rdata[3]_i_1_n_0 ;
   wire \s_axi_rdata[4]_i_1_n_0 ;
   wire \s_axi_rdata[5]_i_1_n_0 ;
@@ -207,12 +205,10 @@ module icyradio_axi_dna_0_0_axi_dna
   wire \s_axi_rdata[7]_i_1_n_0 ;
   wire \s_axi_rdata[8]_i_1_n_0 ;
   wire \s_axi_rdata[9]_i_1_n_0 ;
-  wire s_axi_reg_rden;
   wire s_axi_rready;
   wire s_axi_rvalid_i_1_n_0;
   wire s_axi_rvalid_reg_0;
   wire s_axi_wready;
-  wire s_axi_wready0__0;
   wire s_axi_wvalid;
 
   (* BOX_TYPE = "PRIMITIVE" *) 
@@ -224,22 +220,23 @@ module icyradio_axi_dna_0_0_axi_dna
         .DOUT(dna_dout),
         .READ(READ0),
         .SHIFT(1'b1));
-  LUT2 #(
-    .INIT(4'h8)) 
+  LUT4 #(
+    .INIT(16'h0400)) 
     \dna[56]_i_1 
-       (.I0(\dna[56]_i_2_n_0 ),
-        .I1(dna0__4),
-        .O(\dna[56]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000010000000)) 
-    \dna[56]_i_2 
        (.I0(dna_ready_reg_0),
-        .I1(dna_clk_div_cnt_reg[3]),
-        .I2(dna_clk_div_cnt_reg[2]),
-        .I3(dna_clk_div_cnt_reg[1]),
-        .I4(dna_clk_div_cnt_reg[0]),
-        .I5(dna_clk),
-        .O(\dna[56]_i_2_n_0 ));
+        .I1(dna_clk_toggle),
+        .I2(dna_clk),
+        .I3(dna0__4),
+        .O(\dna[56]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT4 #(
+    .INIT(16'h4000)) 
+    \dna[56]_i_2 
+       (.I0(dna_clk_div_cnt_reg[3]),
+        .I1(dna_clk_div_cnt_reg[2]),
+        .I2(dna_clk_div_cnt_reg[1]),
+        .I3(dna_clk_div_cnt_reg[0]),
+        .O(dna_clk_toggle));
   LUT6 #(
     .INIT(64'h01FFFFFFFFFFFFFF)) 
     \dna[56]_i_3 
@@ -250,20 +247,19 @@ module icyradio_axi_dna_0_0_axi_dna
         .I4(dna_shift_cnt_reg[5]),
         .I5(dna_shift_cnt_reg[3]),
         .O(dna0__4));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
   LUT1 #(
     .INIT(2'h1)) 
     \dna_clk_div_cnt[0]_i_1 
        (.I0(dna_clk_div_cnt_reg[0]),
-        .O(p_0_in__0[0]));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+        .O(p_0_in__1[0]));
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \dna_clk_div_cnt[1]_i_1 
        (.I0(dna_clk_div_cnt_reg[0]),
         .I1(dna_clk_div_cnt_reg[1]),
-        .O(p_0_in__0[1]));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+        .O(p_0_in__1[1]));
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT3 #(
     .INIT(8'h78)) 
     \dna_clk_div_cnt[2]_i_1 
@@ -288,17 +284,17 @@ module icyradio_axi_dna_0_0_axi_dna
         .I1(dna_clk_div_cnt_reg[1]),
         .I2(dna_clk_div_cnt_reg[2]),
         .I3(dna_clk_div_cnt_reg[3]),
-        .O(p_0_in__0[3]));
+        .O(p_0_in__1[3]));
   FDRE \dna_clk_div_cnt_reg[0] 
        (.C(aclk),
         .CE(1'b1),
-        .D(p_0_in__0[0]),
+        .D(p_0_in__1[0]),
         .Q(dna_clk_div_cnt_reg[0]),
         .R(\dna_clk_div_cnt[3]_i_1_n_0 ));
   FDRE \dna_clk_div_cnt_reg[1] 
        (.C(aclk),
         .CE(1'b1),
-        .D(p_0_in__0[1]),
+        .D(p_0_in__1[1]),
         .Q(dna_clk_div_cnt_reg[1]),
         .R(\dna_clk_div_cnt[3]_i_1_n_0 ));
   FDRE \dna_clk_div_cnt_reg[2] 
@@ -310,7 +306,7 @@ module icyradio_axi_dna_0_0_axi_dna
   FDRE \dna_clk_div_cnt_reg[3] 
        (.C(aclk),
         .CE(1'b1),
-        .D(p_0_in__0[3]),
+        .D(p_0_in__1[3]),
         .Q(dna_clk_div_cnt_reg[3]),
         .R(\dna_clk_div_cnt[3]_i_1_n_0 ));
   LUT6 #(
@@ -329,13 +325,14 @@ module icyradio_axi_dna_0_0_axi_dna
         .D(dna_clk_i_1_n_0),
         .Q(dna_clk),
         .R(1'b0));
-  LUT4 #(
-    .INIT(16'h0C88)) 
+  LUT5 #(
+    .INIT(32'h888888A8)) 
     dna_ready_i_1
-       (.I0(dna_ready_reg_0),
-        .I1(aresetn),
-        .I2(dna0__4),
-        .I3(\dna[56]_i_2_n_0 ),
+       (.I0(aresetn),
+        .I1(dna_ready_reg_0),
+        .I2(dna_clk_toggle),
+        .I3(dna_clk),
+        .I4(dna0__4),
         .O(dna_ready_i_1_n_0));
   (* X_INTERFACE_IGNORE = "true" *) 
   FDRE dna_ready_reg
@@ -747,14 +744,14 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(2'h1)) 
     \dna_shift_cnt[0]_i_1 
        (.I0(dna_shift_cnt_reg[0]),
-        .O(p_0_in[0]));
+        .O(p_0_in__0[0]));
   (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \dna_shift_cnt[1]_i_1 
        (.I0(dna_shift_cnt_reg[0]),
         .I1(dna_shift_cnt_reg[1]),
-        .O(p_0_in[1]));
+        .O(p_0_in__0[1]));
   (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT3 #(
     .INIT(8'h78)) 
@@ -762,8 +759,8 @@ module icyradio_axi_dna_0_0_axi_dna
        (.I0(dna_shift_cnt_reg[0]),
         .I1(dna_shift_cnt_reg[1]),
         .I2(dna_shift_cnt_reg[2]),
-        .O(p_0_in[2]));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+        .O(p_0_in__0[2]));
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT4 #(
     .INIT(16'h7F80)) 
     \dna_shift_cnt[3]_i_1 
@@ -771,8 +768,8 @@ module icyradio_axi_dna_0_0_axi_dna
         .I1(dna_shift_cnt_reg[0]),
         .I2(dna_shift_cnt_reg[2]),
         .I3(dna_shift_cnt_reg[3]),
-        .O(p_0_in[3]));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+        .O(p_0_in__0[3]));
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
   LUT5 #(
     .INIT(32'h7FFF8000)) 
     \dna_shift_cnt[4]_i_1 
@@ -781,7 +778,7 @@ module icyradio_axi_dna_0_0_axi_dna
         .I2(dna_shift_cnt_reg[1]),
         .I3(dna_shift_cnt_reg[3]),
         .I4(dna_shift_cnt_reg[4]),
-        .O(p_0_in[4]));
+        .O(p_0_in__0[4]));
   LUT6 #(
     .INIT(64'h7FFFFFFF80000000)) 
     \dna_shift_cnt[5]_i_1 
@@ -791,95 +788,58 @@ module icyradio_axi_dna_0_0_axi_dna
         .I3(dna_shift_cnt_reg[2]),
         .I4(dna_shift_cnt_reg[4]),
         .I5(dna_shift_cnt_reg[5]),
-        .O(p_0_in[5]));
+        .O(p_0_in__0[5]));
   FDRE \dna_shift_cnt_reg[0] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[0]),
+        .D(p_0_in__0[0]),
         .Q(dna_shift_cnt_reg[0]),
         .R(READ0));
   FDRE \dna_shift_cnt_reg[1] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[1]),
+        .D(p_0_in__0[1]),
         .Q(dna_shift_cnt_reg[1]),
         .R(READ0));
   FDRE \dna_shift_cnt_reg[2] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[2]),
+        .D(p_0_in__0[2]),
         .Q(dna_shift_cnt_reg[2]),
         .R(READ0));
   FDRE \dna_shift_cnt_reg[3] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[3]),
+        .D(p_0_in__0[3]),
         .Q(dna_shift_cnt_reg[3]),
         .R(READ0));
   FDRE \dna_shift_cnt_reg[4] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[4]),
+        .D(p_0_in__0[4]),
         .Q(dna_shift_cnt_reg[4]),
         .R(READ0));
   FDRE \dna_shift_cnt_reg[5] 
        (.C(aclk),
         .CE(\dna[56]_i_1_n_0 ),
-        .D(p_0_in[5]),
+        .D(p_0_in__0[5]),
         .Q(dna_shift_cnt_reg[5]),
         .R(READ0));
-  LUT4 #(
-    .INIT(16'hFB08)) 
-    \s_axi_araddr_q[2]_i_1 
-       (.I0(s_axi_araddr),
-        .I1(s_axi_arvalid),
-        .I2(s_axi_arready),
-        .I3(p_0_in__1),
-        .O(\s_axi_araddr_q[2]_i_1_n_0 ));
-  FDRE \s_axi_araddr_q_reg[2] 
-       (.C(aclk),
-        .CE(1'b1),
-        .D(\s_axi_araddr_q[2]_i_1_n_0 ),
-        .Q(p_0_in__1),
-        .R(READ0));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    s_axi_arready_i_1
-       (.I0(s_axi_arvalid),
-        .I1(s_axi_arready),
-        .O(s_axi_arready0));
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARREADY" *) 
-  FDRE s_axi_arready_reg
-       (.C(aclk),
-        .CE(1'b1),
-        .D(s_axi_arready0),
-        .Q(s_axi_arready),
-        .R(READ0));
-  LUT6 #(
-    .INIT(64'hDFFF8AAA8AAA8AAA)) 
-    s_axi_aw_en_i_1
-       (.I0(s_axi_aw_en_reg_n_0),
-        .I1(s_axi_awready),
-        .I2(s_axi_wvalid),
-        .I3(s_axi_awvalid),
-        .I4(s_axi_bready),
-        .I5(s_axi_bvalid),
-        .O(s_axi_aw_en_i_1_n_0));
-  FDSE s_axi_aw_en_reg
-       (.C(aclk),
-        .CE(1'b1),
-        .D(s_axi_aw_en_i_1_n_0),
-        .Q(s_axi_aw_en_reg_n_0),
-        .S(READ0));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT4 #(
-    .INIT(16'h0800)) 
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  LUT1 #(
+    .INIT(2'h1)) 
+    s_axi_arready_INST_0
+       (.I0(s_axi_rvalid_reg_0),
+        .O(s_axi_arready));
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT5 #(
+    .INIT(32'h0B000000)) 
     s_axi_awready0
-       (.I0(s_axi_awvalid),
-        .I1(s_axi_wvalid),
-        .I2(s_axi_awready),
-        .I3(s_axi_aw_en_reg_n_0),
+       (.I0(s_axi_bready),
+        .I1(s_axi_bvalid),
+        .I2(s_axi_wready),
+        .I3(s_axi_wvalid),
+        .I4(s_axi_awvalid),
         .O(s_axi_awready0__0));
   LUT1 #(
     .INIT(2'h1)) 
@@ -891,17 +851,29 @@ module icyradio_axi_dna_0_0_axi_dna
        (.C(aclk),
         .CE(1'b1),
         .D(s_axi_awready0__0),
-        .Q(s_axi_awready),
+        .Q(s_axi_wready),
         .R(READ0));
-  LUT6 #(
-    .INIT(64'h0000FFFF80008000)) 
-    s_axi_bvalid_i_1
-       (.I0(s_axi_awready),
+  LUT3 #(
+    .INIT(8'hDC)) 
+    \s_axi_bresp[1]_i_1 
+       (.I0(s_axi_bready),
         .I1(s_axi_wready),
-        .I2(s_axi_awvalid),
-        .I3(s_axi_wvalid),
-        .I4(s_axi_bready),
-        .I5(s_axi_bvalid),
+        .I2(s_axi_bresp),
+        .O(\s_axi_bresp[1]_i_1_n_0 ));
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BRESP" *) 
+  FDRE \s_axi_bresp_reg[1] 
+       (.C(aclk),
+        .CE(1'b1),
+        .D(\s_axi_bresp[1]_i_1_n_0 ),
+        .Q(s_axi_bresp),
+        .R(READ0));
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  LUT3 #(
+    .INIT(8'hBA)) 
+    s_axi_bvalid_i_1
+       (.I0(s_axi_wready),
+        .I1(s_axi_bready),
+        .I2(s_axi_bvalid),
         .O(s_axi_bvalid_i_1_n_0));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BVALID" *) 
   FDRE s_axi_bvalid_reg
@@ -915,7 +887,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[0]_i_1 
        (.I0(dna[32]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[0]),
         .O(\s_axi_rdata[0]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair10" *) 
@@ -923,7 +895,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[10]_i_1 
        (.I0(dna[42]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[10]),
         .O(\s_axi_rdata[10]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair10" *) 
@@ -931,7 +903,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[11]_i_1 
        (.I0(dna[43]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[11]),
         .O(\s_axi_rdata[11]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair11" *) 
@@ -939,7 +911,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[12]_i_1 
        (.I0(dna[44]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[12]),
         .O(\s_axi_rdata[12]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair11" *) 
@@ -947,7 +919,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[13]_i_1 
        (.I0(dna[45]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[13]),
         .O(\s_axi_rdata[13]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair12" *) 
@@ -955,7 +927,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[14]_i_1 
        (.I0(dna[46]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[14]),
         .O(\s_axi_rdata[14]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair12" *) 
@@ -963,7 +935,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[15]_i_1 
        (.I0(dna[47]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[15]),
         .O(\s_axi_rdata[15]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair13" *) 
@@ -971,7 +943,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[16]_i_1 
        (.I0(dna[48]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[16]),
         .O(\s_axi_rdata[16]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair13" *) 
@@ -979,7 +951,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[17]_i_1 
        (.I0(dna[49]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[17]),
         .O(\s_axi_rdata[17]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair14" *) 
@@ -987,7 +959,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[18]_i_1 
        (.I0(dna[50]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[18]),
         .O(\s_axi_rdata[18]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair14" *) 
@@ -995,7 +967,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[19]_i_1 
        (.I0(dna[51]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[19]),
         .O(\s_axi_rdata[19]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair5" *) 
@@ -1003,7 +975,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[1]_i_1 
        (.I0(dna[33]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[1]),
         .O(\s_axi_rdata[1]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair15" *) 
@@ -1011,7 +983,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[20]_i_1 
        (.I0(dna[52]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[20]),
         .O(\s_axi_rdata[20]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair15" *) 
@@ -1019,7 +991,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[21]_i_1 
        (.I0(dna[53]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[21]),
         .O(\s_axi_rdata[21]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair16" *) 
@@ -1027,7 +999,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[22]_i_1 
        (.I0(dna[54]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[22]),
         .O(\s_axi_rdata[22]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair16" *) 
@@ -1035,7 +1007,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[23]_i_1 
        (.I0(dna[55]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[23]),
         .O(\s_axi_rdata[23]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair17" *) 
@@ -1043,7 +1015,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[24]_i_1 
        (.I0(dna[56]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[24]),
         .O(\s_axi_rdata[24]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair21" *) 
@@ -1051,81 +1023,88 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(4'h2)) 
     \s_axi_rdata[25]_i_1 
        (.I0(dna[25]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[25]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair21" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \s_axi_rdata[26]_i_1 
        (.I0(dna[26]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[26]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \s_axi_rdata[27]_i_1 
        (.I0(dna[27]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[27]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair20" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \s_axi_rdata[28]_i_1 
        (.I0(dna[28]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[28]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \s_axi_rdata[29]_i_1 
        (.I0(dna[29]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[29]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \s_axi_rdata[2]_i_1 
        (.I0(dna[34]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[2]),
         .O(\s_axi_rdata[2]_i_1_n_0 ));
   LUT5 #(
-    .INIT(32'h2000FFFF)) 
+    .INIT(32'hBA8AFFFF)) 
     \s_axi_rdata[30]_i_1 
-       (.I0(s_axi_arvalid),
+       (.I0(s_axi_rready),
         .I1(s_axi_rvalid_reg_0),
-        .I2(s_axi_arready),
-        .I3(p_0_in__1),
+        .I2(s_axi_arvalid),
+        .I3(s_axi_araddr),
         .I4(aresetn),
-        .O(\s_axi_rdata[30]_i_1_n_0 ));
+        .O(p_0_in[30]));
   (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \s_axi_rdata[30]_i_2 
        (.I0(dna[30]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .O(\s_axi_rdata[30]_i_2_n_0 ));
-  LUT3 #(
-    .INIT(8'h20)) 
+  LUT4 #(
+    .INIT(16'hD0FF)) 
     \s_axi_rdata[31]_i_1 
        (.I0(s_axi_arvalid),
         .I1(s_axi_rvalid_reg_0),
-        .I2(s_axi_arready),
-        .O(s_axi_reg_rden));
+        .I2(s_axi_rready),
+        .I3(aresetn),
+        .O(p_0_in[31]));
+  LUT2 #(
+    .INIT(4'h2)) 
+    \s_axi_rdata[31]_i_2 
+       (.I0(s_axi_arvalid),
+        .I1(s_axi_rvalid_reg_0),
+        .O(\s_axi_rdata[31]_i_2_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair17" *) 
   LUT3 #(
     .INIT(8'hB8)) 
-    \s_axi_rdata[31]_i_2 
+    \s_axi_rdata[31]_i_3 
        (.I0(dna_ready_reg_0),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[31]),
-        .O(\s_axi_rdata[31]_i_2_n_0 ));
+        .O(\s_axi_rdata[31]_i_3_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \s_axi_rdata[3]_i_1 
        (.I0(dna[35]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[3]),
         .O(\s_axi_rdata[3]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair7" *) 
@@ -1133,7 +1112,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[4]_i_1 
        (.I0(dna[36]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[4]),
         .O(\s_axi_rdata[4]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair7" *) 
@@ -1141,7 +1120,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[5]_i_1 
        (.I0(dna[37]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[5]),
         .O(\s_axi_rdata[5]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair8" *) 
@@ -1149,7 +1128,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[6]_i_1 
        (.I0(dna[38]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[6]),
         .O(\s_axi_rdata[6]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair8" *) 
@@ -1157,7 +1136,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[7]_i_1 
        (.I0(dna[39]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[7]),
         .O(\s_axi_rdata[7]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair9" *) 
@@ -1165,7 +1144,7 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[8]_i_1 
        (.I0(dna[40]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[8]),
         .O(\s_axi_rdata[8]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair9" *) 
@@ -1173,241 +1152,240 @@ module icyradio_axi_dna_0_0_axi_dna
     .INIT(8'hB8)) 
     \s_axi_rdata[9]_i_1 
        (.I0(dna[41]),
-        .I1(p_0_in__1),
+        .I1(s_axi_araddr),
         .I2(dna[9]),
         .O(\s_axi_rdata[9]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[0] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[0]_i_1_n_0 ),
         .Q(s_axi_rdata[0]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[10] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[10]_i_1_n_0 ),
         .Q(s_axi_rdata[10]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[11] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[11]_i_1_n_0 ),
         .Q(s_axi_rdata[11]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[12] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[12]_i_1_n_0 ),
         .Q(s_axi_rdata[12]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[13] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[13]_i_1_n_0 ),
         .Q(s_axi_rdata[13]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[14] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[14]_i_1_n_0 ),
         .Q(s_axi_rdata[14]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[15] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[15]_i_1_n_0 ),
         .Q(s_axi_rdata[15]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[16] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[16]_i_1_n_0 ),
         .Q(s_axi_rdata[16]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[17] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[17]_i_1_n_0 ),
         .Q(s_axi_rdata[17]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[18] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[18]_i_1_n_0 ),
         .Q(s_axi_rdata[18]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[19] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[19]_i_1_n_0 ),
         .Q(s_axi_rdata[19]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[1] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[1]_i_1_n_0 ),
         .Q(s_axi_rdata[1]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[20] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[20]_i_1_n_0 ),
         .Q(s_axi_rdata[20]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[21] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[21]_i_1_n_0 ),
         .Q(s_axi_rdata[21]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[22] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[22]_i_1_n_0 ),
         .Q(s_axi_rdata[22]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[23] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[23]_i_1_n_0 ),
         .Q(s_axi_rdata[23]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[24] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[24]_i_1_n_0 ),
         .Q(s_axi_rdata[24]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[25] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[25]_i_1_n_0 ),
         .Q(s_axi_rdata[25]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[26] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[26]_i_1_n_0 ),
         .Q(s_axi_rdata[26]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[27] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[27]_i_1_n_0 ),
         .Q(s_axi_rdata[27]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[28] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[28]_i_1_n_0 ),
         .Q(s_axi_rdata[28]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[29] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[29]_i_1_n_0 ),
         .Q(s_axi_rdata[29]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[2] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[2]_i_1_n_0 ),
         .Q(s_axi_rdata[2]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[30] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[30]_i_2_n_0 ),
         .Q(s_axi_rdata[30]),
-        .R(\s_axi_rdata[30]_i_1_n_0 ));
+        .R(p_0_in[30]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[31] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
-        .D(\s_axi_rdata[31]_i_2_n_0 ),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
+        .D(\s_axi_rdata[31]_i_3_n_0 ),
         .Q(s_axi_rdata[31]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[3] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[3]_i_1_n_0 ),
         .Q(s_axi_rdata[3]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[4] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[4]_i_1_n_0 ),
         .Q(s_axi_rdata[4]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[5] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[5]_i_1_n_0 ),
         .Q(s_axi_rdata[5]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[6] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[6]_i_1_n_0 ),
         .Q(s_axi_rdata[6]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[7] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[7]_i_1_n_0 ),
         .Q(s_axi_rdata[7]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[8] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[8]_i_1_n_0 ),
         .Q(s_axi_rdata[8]),
-        .R(READ0));
+        .R(p_0_in[31]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[9] 
        (.C(aclk),
-        .CE(s_axi_reg_rden),
+        .CE(\s_axi_rdata[31]_i_2_n_0 ),
         .D(\s_axi_rdata[9]_i_1_n_0 ),
         .Q(s_axi_rdata[9]),
-        .R(READ0));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT4 #(
-    .INIT(16'h08F8)) 
+        .R(p_0_in[31]));
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  LUT3 #(
+    .INIT(8'h4E)) 
     s_axi_rvalid_i_1
-       (.I0(s_axi_arready),
+       (.I0(s_axi_rvalid_reg_0),
         .I1(s_axi_arvalid),
-        .I2(s_axi_rvalid_reg_0),
-        .I3(s_axi_rready),
+        .I2(s_axi_rready),
         .O(s_axi_rvalid_i_1_n_0));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RVALID" *) 
   FDRE s_axi_rvalid_reg
@@ -1415,22 +1393,6 @@ module icyradio_axi_dna_0_0_axi_dna
         .CE(1'b1),
         .D(s_axi_rvalid_i_1_n_0),
         .Q(s_axi_rvalid_reg_0),
-        .R(READ0));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT4 #(
-    .INIT(16'h0800)) 
-    s_axi_wready0
-       (.I0(s_axi_awvalid),
-        .I1(s_axi_wvalid),
-        .I2(s_axi_wready),
-        .I3(s_axi_aw_en_reg_n_0),
-        .O(s_axi_wready0__0));
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WREADY" *) 
-  FDRE s_axi_wready_reg
-       (.C(aclk),
-        .CE(1'b1),
-        .D(s_axi_wready0__0),
-        .Q(s_axi_wready),
         .R(READ0));
 endmodule
 `ifndef GLBL

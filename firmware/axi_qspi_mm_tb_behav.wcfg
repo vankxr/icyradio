@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="axi_qspi_mm_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_qspi_mm_tb" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="49,161.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="50,493.001 ns"></ZoomEndTime>
+      <Cursor1Time time="50,271.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="267"></NameColumnWidth>
+      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="7" />
+   <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/aclk">
+      <obj_property name="ElementShortName">aclk</obj_property>
+      <obj_property name="ObjectShortName">aclk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/aresetn">
+      <obj_property name="ElementShortName">aresetn</obj_property>
+      <obj_property name="ObjectShortName">aresetn</obj_property>
+   </wvobject>
+   <wvobject type="group" fp_name="group343">
+      <obj_property name="label">AXI Lite</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awaddr">
+         <obj_property name="ElementShortName">s_axi_lite_awaddr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_awaddr[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awprot">
+         <obj_property name="ElementShortName">s_axi_lite_awprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_awprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awvalid">
+         <obj_property name="ElementShortName">s_axi_lite_awvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_awvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awready">
+         <obj_property name="ElementShortName">s_axi_lite_awready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_awready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_wdata">
+         <obj_property name="ElementShortName">s_axi_lite_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_wstrb">
+         <obj_property name="ElementShortName">s_axi_lite_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_wvalid">
+         <obj_property name="ElementShortName">s_axi_lite_wvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_wvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_wready">
+         <obj_property name="ElementShortName">s_axi_lite_wready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_wready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_bresp">
+         <obj_property name="ElementShortName">s_axi_lite_bresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_bresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_bvalid">
+         <obj_property name="ElementShortName">s_axi_lite_bvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_bvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_bready">
+         <obj_property name="ElementShortName">s_axi_lite_bready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_bready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_araddr">
+         <obj_property name="ElementShortName">s_axi_lite_araddr[4:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_araddr[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_arprot">
+         <obj_property name="ElementShortName">s_axi_lite_arprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_arprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_arvalid">
+         <obj_property name="ElementShortName">s_axi_lite_arvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_arvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_arready">
+         <obj_property name="ElementShortName">s_axi_lite_arready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_arready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_rdata">
+         <obj_property name="ElementShortName">s_axi_lite_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_rresp">
+         <obj_property name="ElementShortName">s_axi_lite_rresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_rresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_rvalid">
+         <obj_property name="ElementShortName">s_axi_lite_rvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_rvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_rready">
+         <obj_property name="ElementShortName">s_axi_lite_rready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_rready</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_wr_en">
+         <obj_property name="ElementShortName">s_axi_lite_wr_en</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_wr_en</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_rd_en">
+         <obj_property name="ElementShortName">s_axi_lite_rd_en</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_rd_en</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group197">
+      <obj_property name="label">SPI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sck_o">
+         <obj_property name="ElementShortName">spi_sck_o</obj_property>
+         <obj_property name="ObjectShortName">spi_sck_o</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_ss_o">
+         <obj_property name="ElementShortName">spi_ss_o[0:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_ss_o[0:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io0_i">
+         <obj_property name="ElementShortName">spi_io0_i</obj_property>
+         <obj_property name="ObjectShortName">spi_io0_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io0_o">
+         <obj_property name="ElementShortName">spi_io0_o</obj_property>
+         <obj_property name="ObjectShortName">spi_io0_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io0_t">
+         <obj_property name="ElementShortName">spi_io0_t</obj_property>
+         <obj_property name="ObjectShortName">spi_io0_t</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io1_i">
+         <obj_property name="ElementShortName">spi_io1_i</obj_property>
+         <obj_property name="ObjectShortName">spi_io1_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io1_o">
+         <obj_property name="ElementShortName">spi_io1_o</obj_property>
+         <obj_property name="ObjectShortName">spi_io1_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io1_t">
+         <obj_property name="ElementShortName">spi_io1_t</obj_property>
+         <obj_property name="ObjectShortName">spi_io1_t</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io2_i">
+         <obj_property name="ElementShortName">spi_io2_i</obj_property>
+         <obj_property name="ObjectShortName">spi_io2_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io2_o">
+         <obj_property name="ElementShortName">spi_io2_o</obj_property>
+         <obj_property name="ObjectShortName">spi_io2_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io2_t">
+         <obj_property name="ElementShortName">spi_io2_t</obj_property>
+         <obj_property name="ObjectShortName">spi_io2_t</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io3_i">
+         <obj_property name="ElementShortName">spi_io3_i</obj_property>
+         <obj_property name="ObjectShortName">spi_io3_i</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io3_o">
+         <obj_property name="ElementShortName">spi_io3_o</obj_property>
+         <obj_property name="ObjectShortName">spi_io3_o</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io3_t">
+         <obj_property name="ElementShortName">spi_io3_t</obj_property>
+         <obj_property name="ObjectShortName">spi_io3_t</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group211">
+      <obj_property name="label">SPI FSM</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_fsm_state">
+         <obj_property name="ElementShortName">spi_fsm_state[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_fsm_state[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_rd_req">
+         <obj_property name="ElementShortName">spi_rd_req</obj_property>
+         <obj_property name="ObjectShortName">spi_rd_req</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_rd_req_ack">
+         <obj_property name="ElementShortName">spi_rd_req_ack</obj_property>
+         <obj_property name="ObjectShortName">spi_rd_req_ack</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_sr_bit_cnt">
+         <obj_property name="ElementShortName">spi_sr_bit_cnt[4:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_bit_cnt[4:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_sr">
+         <obj_property name="ElementShortName">spi_sr[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_sr[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sr_in_buf_valid">
+         <obj_property name="ElementShortName">spi_sr_in_buf_valid</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_in_buf_valid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sr_in_buf_ready">
+         <obj_property name="ElementShortName">spi_sr_in_buf_ready</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_in_buf_ready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_sr_in_buf">
+         <obj_property name="ElementShortName">spi_sr_in_buf[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_in_buf[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sr_out_buf_valid">
+         <obj_property name="ElementShortName">spi_sr_out_buf_valid</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_out_buf_valid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sr_out_buf_ready">
+         <obj_property name="ElementShortName">spi_sr_out_buf_ready</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_out_buf_ready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_sr_out_buf">
+         <obj_property name="ElementShortName">spi_sr_out_buf[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_sr_out_buf[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sck_oe">
+         <obj_property name="ElementShortName">spi_sck_oe</obj_property>
+         <obj_property name="ObjectShortName">spi_sck_oe</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sck_int">
+         <obj_property name="ElementShortName">spi_sck_int</obj_property>
+         <obj_property name="ObjectShortName">spi_sck_int</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group332">
+      <obj_property name="label">SPI MMIO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_en">
+         <obj_property name="ElementShortName">spi_mmio_en</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_en</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_en_req">
+         <obj_property name="ElementShortName">spi_mmio_en_req</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_en_req</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_fsm_state">
+         <obj_property name="ElementShortName">spi_mmio_fsm_state[3:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_fsm_state[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_addr_size">
+         <obj_property name="ElementShortName">spi_mmio_addr_size[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_addr_size[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_addr_rem">
+         <obj_property name="ElementShortName">spi_mmio_addr_rem[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_addr_rem[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_mode_bits">
+         <obj_property name="ElementShortName">spi_mmio_mode_bits[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_mode_bits[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_dummy_size">
+         <obj_property name="ElementShortName">spi_mmio_dummy_size[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_dummy_size[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_dummy_rem">
+         <obj_property name="ElementShortName">spi_mmio_dummy_rem[1:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_dummy_rem[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_cs_size">
+         <obj_property name="ElementShortName">spi_mmio_cs_size[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_cs_size[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_cs_rem">
+         <obj_property name="ElementShortName">spi_mmio_cs_rem[7:0]</obj_property>
+         <obj_property name="ObjectShortName">spi_mmio_cs_rem[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group344">
+      <obj_property name="label">AXI Full</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awaddr">
+         <obj_property name="ElementShortName">s_axi_full_awaddr[23:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awaddr[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awlen">
+         <obj_property name="ElementShortName">s_axi_full_awlen[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awlen[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awsize">
+         <obj_property name="ElementShortName">s_axi_full_awsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awburst">
+         <obj_property name="ElementShortName">s_axi_full_awburst[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awburst[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awlock">
+         <obj_property name="ElementShortName">s_axi_full_awlock</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awlock</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awcache">
+         <obj_property name="ElementShortName">s_axi_full_awcache[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awcache[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awprot">
+         <obj_property name="ElementShortName">s_axi_full_awprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awqos">
+         <obj_property name="ElementShortName">s_axi_full_awqos[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awqos[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awvalid">
+         <obj_property name="ElementShortName">s_axi_full_awvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_awready">
+         <obj_property name="ElementShortName">s_axi_full_awready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_awready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wdata">
+         <obj_property name="ElementShortName">s_axi_full_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wstrb">
+         <obj_property name="ElementShortName">s_axi_full_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wlast">
+         <obj_property name="ElementShortName">s_axi_full_wlast</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wlast</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wvalid">
+         <obj_property name="ElementShortName">s_axi_full_wvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wready">
+         <obj_property name="ElementShortName">s_axi_full_wready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_bresp">
+         <obj_property name="ElementShortName">s_axi_full_bresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_bresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_bvalid">
+         <obj_property name="ElementShortName">s_axi_full_bvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_bvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_bready">
+         <obj_property name="ElementShortName">s_axi_full_bready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_bready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_araddr">
+         <obj_property name="ElementShortName">s_axi_full_araddr[23:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_araddr[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arlen">
+         <obj_property name="ElementShortName">s_axi_full_arlen[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arlen[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arsize">
+         <obj_property name="ElementShortName">s_axi_full_arsize[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arsize[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arburst">
+         <obj_property name="ElementShortName">s_axi_full_arburst[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arburst[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arlock">
+         <obj_property name="ElementShortName">s_axi_full_arlock</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arlock</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arcache">
+         <obj_property name="ElementShortName">s_axi_full_arcache[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arcache[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arprot">
+         <obj_property name="ElementShortName">s_axi_full_arprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arqos">
+         <obj_property name="ElementShortName">s_axi_full_arqos[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arqos[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arvalid">
+         <obj_property name="ElementShortName">s_axi_full_arvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arready">
+         <obj_property name="ElementShortName">s_axi_full_arready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rdata">
+         <obj_property name="ElementShortName">s_axi_full_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rresp">
+         <obj_property name="ElementShortName">s_axi_full_rresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rlast">
+         <obj_property name="ElementShortName">s_axi_full_rlast</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rlast</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rvalid">
+         <obj_property name="ElementShortName">s_axi_full_rvalid</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rvalid</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rready">
+         <obj_property name="ElementShortName">s_axi_full_rready</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rready</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_araddr_q">
+         <obj_property name="ElementShortName">s_axi_full_araddr_q[23:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_araddr_q[23:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arlen_q">
+         <obj_property name="ElementShortName">s_axi_full_arlen_q[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arlen_q[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arsize_q">
+         <obj_property name="ElementShortName">s_axi_full_arsize_q[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arsize_q[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_arburst_q">
+         <obj_property name="ElementShortName">s_axi_full_arburst_q[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_arburst_q[1:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_read_beat_complete">
+         <obj_property name="ElementShortName">s_axi_full_read_beat_complete</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_read_beat_complete</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

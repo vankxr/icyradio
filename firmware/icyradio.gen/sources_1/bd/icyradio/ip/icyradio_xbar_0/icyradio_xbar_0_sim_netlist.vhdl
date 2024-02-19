@@ -3,8 +3,8 @@
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
 -- Date        : Sun Nov 12 22:47:38 2023
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_xbar_0/icyradio_xbar_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_xbar_0 -prefix
+--               icyradio_xbar_0_ icyradio_xbar_0_sim_netlist.vhdl
 -- Design      : icyradio_xbar_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -69,8 +69,6 @@ entity icyradio_xbar_0_axi_crossbar_v2_1_25_addr_arbiter_sasd is
     mi_bvalid : in STD_LOGIC_VECTOR ( 0 to 0 );
     mi_wready : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_0_axi_crossbar_v2_1_25_addr_arbiter_sasd : entity is "axi_crossbar_v2_1_25_addr_arbiter_sasd";
 end icyradio_xbar_0_axi_crossbar_v2_1_25_addr_arbiter_sasd;
 
 architecture STRUCTURE of icyradio_xbar_0_axi_crossbar_v2_1_25_addr_arbiter_sasd is
@@ -1537,8 +1535,6 @@ entity icyradio_xbar_0_axi_crossbar_v2_1_25_decerr_slave is
     \gen_axilite.s_axi_bvalid_i_reg_2\ : in STD_LOGIC;
     \gen_axilite.s_axi_rvalid_i_reg_1\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_0_axi_crossbar_v2_1_25_decerr_slave : entity is "axi_crossbar_v2_1_25_decerr_slave";
 end icyradio_xbar_0_axi_crossbar_v2_1_25_decerr_slave;
 
 architecture STRUCTURE of icyradio_xbar_0_axi_crossbar_v2_1_25_decerr_slave is
@@ -1753,8 +1749,6 @@ entity icyradio_xbar_0_axi_crossbar_v2_1_25_splitter is
     \m_ready_d_reg[2]_2\ : in STD_LOGIC;
     aclk : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_0_axi_crossbar_v2_1_25_splitter : entity is "axi_crossbar_v2_1_25_splitter";
 end icyradio_xbar_0_axi_crossbar_v2_1_25_splitter;
 
 architecture STRUCTURE of icyradio_xbar_0_axi_crossbar_v2_1_25_splitter is
@@ -1965,8 +1959,6 @@ entity icyradio_xbar_0_axi_crossbar_v2_1_25_crossbar_sasd is
     s_axi_araddr : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axi_awaddr : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_0_axi_crossbar_v2_1_25_crossbar_sasd : entity is "axi_crossbar_v2_1_25_crossbar_sasd";
 end icyradio_xbar_0_axi_crossbar_v2_1_25_crossbar_sasd;
 
 architecture STRUCTURE of icyradio_xbar_0_axi_crossbar_v2_1_25_crossbar_sasd is
@@ -2806,8 +2798,6 @@ entity icyradio_xbar_0_axi_crossbar_v2_1_25_axi_crossbar is
   attribute C_S_AXI_WRITE_ACCEPTANCE of icyradio_xbar_0_axi_crossbar_v2_1_25_axi_crossbar : entity is 1;
   attribute DowngradeIPIdentifiedWarnings : string;
   attribute DowngradeIPIdentifiedWarnings of icyradio_xbar_0_axi_crossbar_v2_1_25_axi_crossbar : entity is "yes";
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_0_axi_crossbar_v2_1_25_axi_crossbar : entity is "axi_crossbar_v2_1_25_axi_crossbar";
   attribute P_ADDR_DECODE : integer;
   attribute P_ADDR_DECODE of icyradio_xbar_0_axi_crossbar_v2_1_25_axi_crossbar : entity is 1;
   attribute P_AXI3 : integer;

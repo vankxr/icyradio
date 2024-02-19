@@ -3,8 +3,8 @@
 -- Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
 -- Date        : Sun Nov 12 22:47:38 2023
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
--- Command     : write_vhdl -force -mode synth_stub
---               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_tier2_xbar_2_0/icyradio_tier2_xbar_2_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_tier2_xbar_2_0 -prefix
+--               icyradio_tier2_xbar_2_0_ icyradio_tier2_xbar_2_0_stub.vhdl
 -- Design      : icyradio_tier2_xbar_2_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2

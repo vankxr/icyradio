@@ -5,9 +5,7 @@ module axi_dna
     parameter DNA_CLK_DIV = 8, // DNA clock divider (max 16)
 
     localparam S_AXI_DSZ = 32,
-    localparam S_AXI_ASZ = 3, // ceil(log2(<number of 32-bit registers>)) + 2
-    localparam ADDR_LSB = (S_AXI_DSZ / 32) + 1,
-    localparam OPT_MEM_ADDR_BITS = S_AXI_ASZ - 3
+    localparam S_AXI_ASZ = 3 // ceil(log2(<number of 32-bit registers>)) + 2
 )
 (
     input aclk,
@@ -60,6 +58,8 @@ module axi_dna
     output        dna_ready
 );
 
+localparam S_AXI_ADDR_LSB = 2;
+
 reg [56:0] dna;
 wire       dna_dout;
 reg        dna_clk;
@@ -83,30 +83,31 @@ DNA_PORT_inst
 );
 
 wire       [S_AXI_ASZ - 1:0] s_axi_awaddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_awaddr_q;
 wire                   [2:0] s_axi_awprot;
 wire                         s_axi_awvalid;
 reg                          s_axi_awready;
 wire       [S_AXI_DSZ - 1:0] s_axi_wdata;
 wire [(S_AXI_DSZ / 8) - 1:0] s_axi_wstrb;
 wire                         s_axi_wvalid;
-reg                          s_axi_wready;
+wire                         s_axi_wready;
 reg                    [1:0] s_axi_bresp;
 reg                          s_axi_bvalid;
 wire                         s_axi_bready;
 wire       [S_AXI_ASZ - 1:0] s_axi_araddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_araddr_q;
 wire                   [2:0] s_axi_arprot;
 wire                         s_axi_arvalid;
-reg                          s_axi_arready;
+wire                         s_axi_arready;
 reg        [S_AXI_DSZ - 1:0] s_axi_rdata;
 reg                    [1:0] s_axi_rresp;
 reg                          s_axi_rvalid;
 wire                         s_axi_rready;
-reg	                         s_axi_aw_en;
-wire	                     s_axi_reg_rden = s_axi_arready & s_axi_arvalid & ~s_axi_rvalid;
+wire                         s_axi_wr_en; // Internal write enable
+wire                         s_axi_rd_en; // Internal read enable
 
-integer i;
+assign s_axi_wready = s_axi_awready;
+assign s_axi_arready = !s_axi_rvalid;
+assign s_axi_wr_en = s_axi_awready;
+assign s_axi_rd_en = s_axi_arready && s_axi_arvalid;
 
 // Clock generation
 always @(posedge aclk)
@@ -156,165 +157,61 @@ always @(posedge aclk)
             end
     end
 
-//// AXI Memory map register space logic
-// Implement AWREADY generation
-// AWREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// AWREADY is de-asserted when reset is low.
+// AXI-Lite logic
 always @(posedge aclk)
     begin
         if(!aresetn)
             begin
+                // AXI-Lite signals
                 s_axi_awready <= 1'b0;
-                s_axi_aw_en <= 1'b1;
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en)
-                    begin
-                        s_axi_awready <= 1'b1;
-                        s_axi_aw_en <= 1'b0;
-                    end
-                else if(s_axi_bready && s_axi_bvalid)
-                    begin
-                        s_axi_aw_en <= 1'b1;
-                        s_axi_awready <= 1'b0;
-                    end
-                else
-                    begin
-                        s_axi_awready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement AWADDR latching
-// This process is used to latch the address when both AWVALID and WVALID are valid.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_awaddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en) // Write Address latching
-                    s_axi_awaddr_q <= s_axi_awaddr;
-            end
-    end
-
-// Implement WREADY generation
-// WREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// WREADY is de-asserted when reset is low.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_wready <= 1'b0;
-            end
-        else
-            begin
-                if(~s_axi_wready && s_axi_wvalid && s_axi_awvalid && s_axi_aw_en)
-                    s_axi_wready <= 1'b1;
-                else
-                    s_axi_wready <= 1'b0;
-            end
-    end
-
-// Implement write response logic generation
-// The write response and response valid signals are asserted by the slave when WREADY, WVALID, WREADY and WVALID are asserted.
-// This marks the acceptance of address and indicates the status of write transaction.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_bvalid <= 1'b0;
                 s_axi_bresp <= 2'b00;
-            end
-        else
-            begin
-                if(s_axi_awready && s_axi_awvalid && ~s_axi_bvalid && s_axi_wready && s_axi_wvalid)
-                    begin
-                        s_axi_bvalid <= 1'b1;
-                        s_axi_bresp <= 2'b00; // 'OKAY' response
-                    end
-                else
-                    begin
-                        if(s_axi_bready && s_axi_bvalid)
-                            s_axi_bvalid <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARREADY generation
-// ARREADY is asserted for one aclk clock cycle when ARVALID is asserted.
-// AWREADY is de-asserted when reset (active low) is asserted.
-// The read address is also latched when ARVALID is asserted.
-// ARADDR is reset to zero on reset assertion.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_arready <= 1'b0;
-                s_axi_araddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_arready && s_axi_arvalid)
-                    begin
-                        s_axi_arready <= 1'b1;
-                        s_axi_araddr_q <= s_axi_araddr;
-                    end
-                else
-                    begin
-                        s_axi_arready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARVALID generation
-// RVALID is asserted for one ACLK clock cycle when both ARVALID and ARREADY are asserted.
-// The slave registers data are available on the RDATA bus at this instance.
-// The assertion of RVALID marks the validity of read data on the bus and RRESP indicates the status of read transaction.
-// RVALID is deasserted on reset (active low).
-// RRESP and RDATA are cleared to zero on reset (active low).
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rvalid <= 0;
+                s_axi_bvalid <= 1'b0;
+                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                 s_axi_rresp <= 2'b00;
+                s_axi_rvalid <= 1'b0;
             end
         else
             begin
-                if(s_axi_arready && s_axi_arvalid && ~s_axi_rvalid)
+                // Write address ready generation
+                s_axi_awready <= !s_axi_awready && (s_axi_awvalid && s_axi_wvalid) && (!s_axi_bvalid || s_axi_bready);
+
+                // Clear the write response valid when the master acknowledges it
+                if(s_axi_bready)
                     begin
-                        s_axi_rvalid <= 1'b1;
-                        s_axi_rresp  <= 2'b00; // 'OKAY' response
+                        s_axi_bvalid <= 1'b0;
+                        s_axi_bresp <= 2'b00;
                     end
-                else if(s_axi_rvalid && s_axi_rready)
+
+                // Clear the read data valid when the master acknowledges it
+                if(s_axi_rready)
                     begin
                         s_axi_rvalid <= 1'b0;
+                        s_axi_rresp <= 2'b00;
+                        s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                     end
-            end
-    end
 
-// Implement memory mapped register select and read logic generation
-// Slave register read enable is asserted when valid address is available and the slave is ready to accept the read address.
-// Output register or memory read data
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
-            end
-        else
-            begin
-                if(s_axi_reg_rden)
+                // Read data
+                if(s_axi_rd_en)
                     begin
-                        case(s_axi_araddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB])
+                        s_axi_rvalid <= 1'b1;
+                        s_axi_rresp <= 2'b00; // Always respond OKAY
+
+                        case(s_axi_araddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
                             1'h0:    s_axi_rdata <= {dna[31:0]};
                             1'h1:    s_axi_rdata <= {dna_ready, 6'd0, dna[56:32]};
                             default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                         endcase
+                    end
+
+                // Write data
+                if(s_axi_wr_en)
+                    begin
+                        s_axi_bvalid <= 1'b1;
+                        s_axi_bresp <= 2'b10; // Always respond SLVERR
+
+                        // case(s_axi_awaddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
+
+                        // endcase
                     end
             end
     end

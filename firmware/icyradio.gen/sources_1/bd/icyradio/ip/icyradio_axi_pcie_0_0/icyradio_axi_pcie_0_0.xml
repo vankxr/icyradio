@@ -1396,7 +1396,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>NUM_READ_OUTSTANDING</spirit:name>
-          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_READ_OUTSTANDING">2</spirit:value>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_READ_OUTSTANDING">1</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -1405,7 +1405,7 @@
         </spirit:parameter>
         <spirit:parameter>
           <spirit:name>NUM_WRITE_OUTSTANDING</spirit:name>
-          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_WRITE_OUTSTANDING">2</spirit:value>
+          <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="BUSIFPARAM_VALUE.S_AXI_CTL.NUM_WRITE_OUTSTANDING">1</spirit:value>
           <spirit:vendorExtensions>
             <xilinx:parameterInfo>
               <xilinx:parameterUsage>none</xilinx:parameterUsage>
@@ -5064,13 +5064,31 @@ RP- Read and  writable
   <spirit:model>
     <spirit:views>
       <spirit:view>
+        <spirit:name>xilinx_externalfiles</spirit:name>
+        <spirit:displayName>External Files</spirit:displayName>
+        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:parameters>
+          <spirit:parameter>
+            <spirit:name>GENtimestamp</spirit:name>
+            <spirit:value>Wed Dec 27 15:11:25 UTC 2023</spirit:value>
+          </spirit:parameter>
+          <spirit:parameter>
+            <spirit:name>outputProductCRC</spirit:name>
+            <spirit:value>9:a911ad7d</spirit:value>
+          </spirit:parameter>
+        </spirit:parameters>
+      </spirit:view>
+      <spirit:view>
         <spirit:name>xilinx_elaboratesubcores</spirit:name>
         <spirit:displayName>Elaborate Sub-Cores</spirit:displayName>
         <spirit:envIdentifier>:vivado.xilinx.com:elaborate.subcores</spirit:envIdentifier>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:b110e5e1</spirit:value>
+            <spirit:value>9:6aad95b2</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5100,11 +5118,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
+            <spirit:value>Wed Dec 27 15:11:23 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:daa9e957</spirit:value>
+            <spirit:value>9:bae192af</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5115,7 +5133,7 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:daa9e957</spirit:value>
+            <spirit:value>9:bae192af</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5131,11 +5149,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
+            <spirit:value>Wed Dec 27 15:11:23 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:daa9e957</spirit:value>
+            <spirit:value>9:bae192af</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5165,11 +5183,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
+            <spirit:value>Wed Dec 27 15:11:23 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:af3caec2</spirit:value>
+            <spirit:value>9:9dea98b0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -5185,29 +5203,11 @@ RP- Read and  writable
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sun Oct 08 18:57:18 UTC 2023</spirit:value>
+            <spirit:value>Wed Dec 27 15:11:23 UTC 2023</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:af3caec2</spirit:value>
-          </spirit:parameter>
-        </spirit:parameters>
-      </spirit:view>
-      <spirit:view>
-        <spirit:name>xilinx_externalfiles</spirit:name>
-        <spirit:displayName>External Files</spirit:displayName>
-        <spirit:envIdentifier>:vivado.xilinx.com:external.files</spirit:envIdentifier>
-        <spirit:fileSetRef>
-          <spirit:localName>xilinx_externalfiles_view_fileset</spirit:localName>
-        </spirit:fileSetRef>
-        <spirit:parameters>
-          <spirit:parameter>
-            <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Fri Oct 27 00:03:08 UTC 2023</spirit:value>
-          </spirit:parameter>
-          <spirit:parameter>
-            <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:daa9e957</spirit:value>
+            <spirit:value>9:9dea98b0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -9494,7 +9494,7 @@ RP- Read and  writable
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="std_logic_vector (0 to 23)">
         <spirit:name>C_CLASS_CODE</spirit:name>
-        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_CLASS_CODE" spirit:order="62" spirit:bitStringLength="24">0x058000</spirit:value>
+        <spirit:value spirit:format="bitString" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_CLASS_CODE" spirit:order="62" spirit:bitStringLength="24">0x0D1000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="INTEGER">
         <spirit:name>C_REF_CLK_FREQ</spirit:name>
@@ -10114,15 +10114,20 @@ RP- Read and  writable
       <spirit:enumeration spirit:text="Satellite communication controllers">Satellite_communication_controllers</spirit:enumeration>
     </spirit:choice>
     <spirit:choice>
-      <spirit:name>choice_pairs_c98117c0</spirit:name>
-      <spirit:enumeration spirit:text="RAM">RAM</spirit:enumeration>
-      <spirit:enumeration spirit:text="Other memory controller">Other_memory_controller</spirit:enumeration>
-      <spirit:enumeration spirit:text="Flash">Flash</spirit:enumeration>
-    </spirit:choice>
-    <spirit:choice>
       <spirit:name>choice_pairs_d06c0498</spirit:name>
       <spirit:enumeration spirit:text="2.5 GT/s">2.5_GT/s</spirit:enumeration>
       <spirit:enumeration spirit:text="5.0 GT/s">5.0_GT/s</spirit:enumeration>
+    </spirit:choice>
+    <spirit:choice>
+      <spirit:name>choice_pairs_d6a33352</spirit:name>
+      <spirit:enumeration spirit:text="Ethernet(802.11b-2.4 GHz)">Ethernet(802.11b-2.4_GHz)</spirit:enumeration>
+      <spirit:enumeration spirit:text="Ethernet(802.11a-5 GHz)">Ethernet(802.11a-5_GHz)</spirit:enumeration>
+      <spirit:enumeration spirit:text="Broadband">Broadband</spirit:enumeration>
+      <spirit:enumeration spirit:text="Consumer IR controller">Consumer_IR_controller</spirit:enumeration>
+      <spirit:enumeration spirit:text="Bluetooth">Bluetooth</spirit:enumeration>
+      <spirit:enumeration spirit:text="iRDA compatible controller">iRDA_compatible_controller</spirit:enumeration>
+      <spirit:enumeration spirit:text="Other type of wireless controller">Other_type_of_wireless_controller</spirit:enumeration>
+      <spirit:enumeration spirit:text="RF controller">RF_controller</spirit:enumeration>
     </spirit:choice>
     <spirit:choice>
       <spirit:name>choice_pairs_db3c9fca</spirit:name>
@@ -10131,6 +10136,42 @@ RP- Read and  writable
     </spirit:choice>
   </spirit:choices>
   <spirit:fileSets>
+    <spirit:fileSet>
+      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
+      <spirit:file>
+        <spirit:name>icyradio_axi_pcie_0_0.dcp</spirit:name>
+        <spirit:userFileType>dcp</spirit:userFileType>
+        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>icyradio_axi_pcie_0_0_stub.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>icyradio_axi_pcie_0_0_stub.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>icyradio_axi_pcie_0_0_sim_netlist.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>icyradio_axi_pcie_0_0_sim_netlist.vhdl</spirit:name>
+        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
+        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
+        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
+      </spirit:file>
+    </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_lib_pkg_1_0__ref_view_fileset</spirit:name>
       <spirit:file>
@@ -10423,42 +10464,6 @@ RP- Read and  writable
         <spirit:logicalName>xil_defaultlib</spirit:logicalName>
       </spirit:file>
     </spirit:fileSet>
-    <spirit:fileSet>
-      <spirit:name>xilinx_externalfiles_view_fileset</spirit:name>
-      <spirit:file>
-        <spirit:name>icyradio_axi_pcie_0_0.dcp</spirit:name>
-        <spirit:userFileType>dcp</spirit:userFileType>
-        <spirit:userFileType>USED_IN_implementation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_synthesis</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>icyradio_axi_pcie_0_0_stub.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>icyradio_axi_pcie_0_0_stub.vhdl</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_synth_blackbox_stub</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>icyradio_axi_pcie_0_0_sim_netlist.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>icyradio_axi_pcie_0_0_sim_netlist.vhdl</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_simulation</spirit:userFileType>
-        <spirit:userFileType>USED_IN_single_language</spirit:userFileType>
-        <spirit:logicalName>xil_defaultlib</spirit:logicalName>
-      </spirit:file>
-    </spirit:fileSet>
   </spirit:fileSets>
   <spirit:description>The Advanced eXtensible Interface (AXI) Root Port/Endpoint (RP/EP) Bridge for PCI Express is an interface between the AXI4 and PCI Express</spirit:description>
   <spirit:parameters>
@@ -10516,15 +10521,15 @@ RP- Read and  writable
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>CLASS_CODE</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.CLASS_CODE" spirit:order="11100" spirit:configGroups="1 UnGrouped" spirit:bitStringLength="24">0x058000</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.CLASS_CODE" spirit:order="11100" spirit:configGroups="1 UnGrouped" spirit:bitStringLength="24">0x0D1000</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>BASE_CLASS_MENU</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.BASE_CLASS_MENU" spirit:choiceRef="choice_pairs_af5809be" spirit:order="11200" spirit:configGroups="1 UnGrouped">Memory_controller</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.BASE_CLASS_MENU" spirit:choiceRef="choice_pairs_af5809be" spirit:order="11200" spirit:configGroups="1 UnGrouped">Wireless_controller</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>SUB_CLASS_INTERFACE_MENU</spirit:name>
-      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.SUB_CLASS_INTERFACE_MENU" spirit:choiceRef="choice_pairs_c98117c0" spirit:order="11300" spirit:configGroups="1 UnGrouped">Other_memory_controller</spirit:value>
+      <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.SUB_CLASS_INTERFACE_MENU" spirit:choiceRef="choice_pairs_d6a33352" spirit:order="11300" spirit:configGroups="1 UnGrouped">RF_controller</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>BAR0_ENABLED</spirit:name>
@@ -10962,6 +10967,8 @@ RP- Read and  writable
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BAR2_TYPE" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BAR_64BIT" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BASEADDR" xilinx:valueSource="propagated"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.BASE_CLASS_MENU" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.CLASS_CODE" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.DEVICE_ID" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.HIGHADDR" xilinx:valueSource="propagated"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.MAX_LINK_SPEED" xilinx:valueSource="user"/>
@@ -10971,6 +10978,7 @@ RP- Read and  writable
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PCIEBAR2AXIBAR_0" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PCIEBAR2AXIBAR_1" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.PCIEBAR2AXIBAR_2" xilinx:valueSource="user"/>
+        <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.SUB_CLASS_INTERFACE_MENU" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.S_AXI_DATA_WIDTH" xilinx:valueSource="user"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.S_AXI_ID_WIDTH" xilinx:valueSource="propagated" xilinx:valuePermission="bd"/>
         <xilinx:configElementInfo xilinx:referenceId="PARAM_VALUE.S_AXI_SUPPORTS_NARROW_BURST" xilinx:valueSource="user"/>

@@ -1,7 +1,7 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Sun Nov 12 22:47:35 2023
+// Date        : Fri Dec  1 23:07:10 2023
 // Host        : node4-dev running 64-bit Ubuntu 22.04.3 LTS
 // Command     : write_verilog -force -mode synth_stub
 //               /home/joao/icyradio/firmware/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_gpio_1_1/icyradio_axi_gpio_1_1_stub.v
@@ -17,11 +17,11 @@
 module icyradio_axi_gpio_1_1(aclk, aresetn, s_axi_awaddr, s_axi_awprot, 
   s_axi_awvalid, s_axi_awready, s_axi_wdata, s_axi_wstrb, s_axi_wvalid, s_axi_wready, 
   s_axi_bresp, s_axi_bvalid, s_axi_bready, s_axi_araddr, s_axi_arprot, s_axi_arvalid, 
-  s_axi_arready, s_axi_rdata, s_axi_rresp, s_axi_rvalid, s_axi_rready, gpio_out, gpio_in)
-/* synthesis syn_black_box black_box_pad_pin="aclk,aresetn,s_axi_awaddr[2:0],s_axi_awprot[2:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[2:0],s_axi_arprot[2:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,gpio_out[31:0],gpio_in[31:0]" */;
+  s_axi_arready, s_axi_rdata, s_axi_rresp, s_axi_rvalid, s_axi_rready, gpio_i, gpio_o, gpio_t)
+/* synthesis syn_black_box black_box_pad_pin="aclk,aresetn,s_axi_awaddr[4:0],s_axi_awprot[2:0],s_axi_awvalid,s_axi_awready,s_axi_wdata[31:0],s_axi_wstrb[3:0],s_axi_wvalid,s_axi_wready,s_axi_bresp[1:0],s_axi_bvalid,s_axi_bready,s_axi_araddr[4:0],s_axi_arprot[2:0],s_axi_arvalid,s_axi_arready,s_axi_rdata[31:0],s_axi_rresp[1:0],s_axi_rvalid,s_axi_rready,gpio_i[31:0],gpio_o[31:0],gpio_t[31:0]" */;
   input aclk;
   input aresetn;
-  input [2:0]s_axi_awaddr;
+  input [4:0]s_axi_awaddr;
   input [2:0]s_axi_awprot;
   input s_axi_awvalid;
   output s_axi_awready;
@@ -32,7 +32,7 @@ module icyradio_axi_gpio_1_1(aclk, aresetn, s_axi_awaddr, s_axi_awprot,
   output [1:0]s_axi_bresp;
   output s_axi_bvalid;
   input s_axi_bready;
-  input [2:0]s_axi_araddr;
+  input [4:0]s_axi_araddr;
   input [2:0]s_axi_arprot;
   input s_axi_arvalid;
   output s_axi_arready;
@@ -40,6 +40,7 @@ module icyradio_axi_gpio_1_1(aclk, aresetn, s_axi_awaddr, s_axi_awprot,
   output [1:0]s_axi_rresp;
   output s_axi_rvalid;
   input s_axi_rready;
-  output [31:0]gpio_out;
-  input [31:0]gpio_in;
+  input [31:0]gpio_i;
+  output [31:0]gpio_o;
+  output [31:0]gpio_t;
 endmodule

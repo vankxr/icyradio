@@ -159,7 +159,11 @@ output wire i2s_sdata_out;
 (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 i2s SDATA_IN" *)
 input wire i2s_sdata_in;
 
-  axi_i2s inst (
+  axi_i2s #(
+    .MCLK_DIV_SZ(8),
+    .BCLK_DIV_SZ(8),
+    .LRCLK_DIV_SZ(16)
+  ) inst (
     .aclk(aclk),
     .aresetn(aresetn),
     .s_axi_awaddr(s_axi_awaddr),

@@ -1,1 +1,1 @@
-set_false_path -through [get_pins -hier -filter {NAME =~ "*axi_gpio_*/gpio_in*" && NAME !~ "*axi_gpio_*/gpio_in_*"}]
+set_false_path -through [get_pins -hier -filter {NAME =~ "*axi_gpio_*/gpio_i*" && NAME !~ "*axi_gpio_*/gpio_i_*"}]

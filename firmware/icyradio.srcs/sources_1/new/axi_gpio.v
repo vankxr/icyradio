@@ -2,14 +2,13 @@
 
 module axi_gpio
 #(
-    parameter GPIO_IN_MASK_DEFAULT = 32'hFFFFFFFF,
+    parameter NUM_GPIOS = 32,
+    parameter GPIO_TRI_DEFAULT = 32'hFFFFFFFF,
     parameter GPIO_OUT_DEFAULT = 32'h00000000,
     parameter NUM_CDC_STAGES = 2,
 
     localparam S_AXI_DSZ = 32,
-    localparam S_AXI_ASZ = 3, // ceil(log2(<number of 32-bit registers>)) + 2
-    localparam ADDR_LSB = (S_AXI_DSZ / 32) + 1,
-    localparam OPT_MEM_ADDR_BITS = S_AXI_ASZ - 3
+    localparam S_AXI_ASZ = 5 // ceil(log2(<number of 32-bit registers>)) + 2
 )
 (
     input aclk,
@@ -56,40 +55,49 @@ module axi_gpio
     input                         s_axi_rready,
 
     // GPIO
-    output [31:0] gpio_out,
-    input  [31:0] gpio_in
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gpio_rtl:1.0 gpio TRI_I" *)
+    input  [NUM_GPIOS - 1:0] gpio_i,
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gpio_rtl:1.0 gpio TRI_O" *)
+    output [NUM_GPIOS - 1:0] gpio_o,
+    (* X_INTERFACE_INFO = "xilinx.com:interface:gpio_rtl:1.0 gpio TRI_T" *)
+    output [NUM_GPIOS - 1:0] gpio_t
 );
 
-reg [31:0] gpio_out;
-reg [31:0] gpio_in_mask;
-reg [31:0] gpio_in_sync [NUM_CDC_STAGES - 1:0];
+localparam S_AXI_ADDR_LSB = 2;
+
+wire [NUM_GPIOS - 1:0] gpio_i;
+reg  [NUM_GPIOS - 1:0] gpio_o;
+reg  [NUM_GPIOS - 1:0] gpio_t;
+reg  [NUM_GPIOS - 1:0] gpio_i_sync [NUM_CDC_STAGES - 1:0];
+
+integer i;
 
 wire       [S_AXI_ASZ - 1:0] s_axi_awaddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_awaddr_q;
 wire                   [2:0] s_axi_awprot;
 wire                         s_axi_awvalid;
 reg                          s_axi_awready;
 wire       [S_AXI_DSZ - 1:0] s_axi_wdata;
 wire [(S_AXI_DSZ / 8) - 1:0] s_axi_wstrb;
 wire                         s_axi_wvalid;
-reg                          s_axi_wready;
+wire                         s_axi_wready;
 reg                    [1:0] s_axi_bresp;
 reg                          s_axi_bvalid;
 wire                         s_axi_bready;
 wire       [S_AXI_ASZ - 1:0] s_axi_araddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_araddr_q;
 wire                   [2:0] s_axi_arprot;
 wire                         s_axi_arvalid;
-reg                          s_axi_arready;
+wire                         s_axi_arready;
 reg        [S_AXI_DSZ - 1:0] s_axi_rdata;
 reg                    [1:0] s_axi_rresp;
 reg                          s_axi_rvalid;
 wire                         s_axi_rready;
-reg	                         s_axi_aw_en;
-wire	                     s_axi_reg_rden = s_axi_arready & s_axi_arvalid & ~s_axi_rvalid;
-wire	                     s_axi_reg_wren = s_axi_wready & s_axi_wvalid & s_axi_awready & s_axi_awvalid;
+wire                         s_axi_wr_en; // Internal write enable
+wire                         s_axi_rd_en; // Internal read enable
 
-integer i;
+assign s_axi_wready = s_axi_awready;
+assign s_axi_arready = !s_axi_rvalid;
+assign s_axi_wr_en = s_axi_awready;
+assign s_axi_rd_en = s_axi_arready && s_axi_arvalid;
 
 // IRQ CDC synchronizer
 always @(posedge aclk)
@@ -97,225 +105,273 @@ always @(posedge aclk)
         if(!aresetn)
             begin
                 for(i = 0; i < NUM_CDC_STAGES; i = i + 1)
-                    gpio_in_sync[i] <= 32'd0;
+                    gpio_i_sync[i] <= 32'd0;
             end
         else
             begin
-                gpio_in_sync[0] <= gpio_in;
+                gpio_i_sync[0] <= gpio_i;
 
                 for(i = 1; i < NUM_CDC_STAGES; i = i + 1)
-                    gpio_in_sync[i] <= gpio_in_sync[i - 1];
+                    gpio_i_sync[i] <= gpio_i_sync[i - 1];
             end
     end
 
-//// AXI Memory map register space logic
-// Implement AWREADY generation
-// AWREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// AWREADY is de-asserted when reset is low.
+// AXI-Lite logic
 always @(posedge aclk)
     begin
         if(!aresetn)
             begin
+                gpio_t <= GPIO_TRI_DEFAULT;
+                gpio_o <= GPIO_OUT_DEFAULT;
+
+                // AXI-Lite signals
                 s_axi_awready <= 1'b0;
-                s_axi_aw_en <= 1'b1;
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en)
-                    begin
-                        s_axi_awready <= 1'b1;
-                        s_axi_aw_en <= 1'b0;
-                    end
-                else if(s_axi_bready && s_axi_bvalid)
-                    begin
-                        s_axi_aw_en <= 1'b1;
-                        s_axi_awready <= 1'b0;
-                    end
-                else
-                    begin
-                        s_axi_awready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement AWADDR latching
-// This process is used to latch the address when both AWVALID and WVALID are valid.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_awaddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en) // Write Address latching
-                    s_axi_awaddr_q <= s_axi_awaddr;
-            end
-    end
-
-// Implement WREADY generation
-// WREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// WREADY is de-asserted when reset is low.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_wready <= 1'b0;
-            end
-        else
-            begin
-                if(~s_axi_wready && s_axi_wvalid && s_axi_awvalid && s_axi_aw_en)
-                    s_axi_wready <= 1'b1;
-                else
-                    s_axi_wready <= 1'b0;
-            end
-    end
-
-// Implement memory mapped register select and write logic generation
-// The write data is accepted and written to memory mapped registers when AWREADY, WVALID, WREADY and WVALID are asserted.
-// Write strobes are used to select byte enables of slave registers while writing.
-// These registers are cleared when reset (active low) is applied.
-// Slave register write enable is asserted when valid address and data are available and the slave is ready to accept the write address and write data.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                gpio_in_mask <= GPIO_IN_MASK_DEFAULT;
-                gpio_out <= GPIO_OUT_DEFAULT & ~GPIO_IN_MASK_DEFAULT;
-            end
-        else
-            begin
-                if(s_axi_reg_wren)
-                    begin
-                        case(s_axi_awaddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB])
-                            1'h0: // Register 0 - Output Data
-                                begin
-                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
-                                        gpio_out[7:0] <= s_axi_wdata[7:0] & ~gpio_in_mask[7:0];
-
-                                    if(s_axi_wstrb[1] == 1'b1) // s_axi_wdata[15:8]
-                                        gpio_out[15:8] <= s_axi_wdata[15:8] & ~gpio_in_mask[15:8];
-
-                                    if(s_axi_wstrb[2] == 1'b1) // s_axi_wdata[23:16]
-                                        gpio_out[23:16] <= s_axi_wdata[23:16] & ~gpio_in_mask[23:16];
-
-                                    if(s_axi_wstrb[3] == 1'b1) // s_axi_wdata[31:24]
-                                        gpio_out[31:24] <= s_axi_wdata[31:24] & ~gpio_in_mask[31:24];
-                                end
-                            1'h1: // Register 1 - Input Mask
-                                begin
-                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
-                                        gpio_in_mask[7:0] <= s_axi_wdata[7:0];
-
-                                    if(s_axi_wstrb[1] == 1'b1) // s_axi_wdata[15:8]
-                                        gpio_in_mask[15:8] <= s_axi_wdata[15:8];
-
-                                    if(s_axi_wstrb[2] == 1'b1) // s_axi_wdata[23:16]
-                                        gpio_in_mask[23:16] <= s_axi_wdata[23:16];
-
-                                    if(s_axi_wstrb[3] == 1'b1) // s_axi_wdata[31:24]
-                                        gpio_in_mask[31:24] <= s_axi_wdata[31:24];
-                                end
-                        endcase
-                    end
-            end
-    end
-
-// Implement write response logic generation
-// The write response and response valid signals are asserted by the slave when WREADY, WVALID, WREADY and WVALID are asserted.
-// This marks the acceptance of address and indicates the status of write transaction.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_bvalid <= 1'b0;
                 s_axi_bresp <= 2'b00;
-            end
-        else
-            begin
-                if(s_axi_awready && s_axi_awvalid && ~s_axi_bvalid && s_axi_wready && s_axi_wvalid)
-                    begin
-                        s_axi_bvalid <= 1'b1;
-                        s_axi_bresp <= 2'b00; // 'OKAY' response
-                    end
-                else
-                    begin
-                        if(s_axi_bready && s_axi_bvalid)
-                            s_axi_bvalid <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARREADY generation
-// ARREADY is asserted for one aclk clock cycle when ARVALID is asserted.
-// AWREADY is de-asserted when reset (active low) is asserted.
-// The read address is also latched when ARVALID is asserted.
-// ARADDR is reset to zero on reset assertion.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_arready <= 1'b0;
-                s_axi_araddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_arready && s_axi_arvalid)
-                    begin
-                        s_axi_arready <= 1'b1;
-                        s_axi_araddr_q <= s_axi_araddr;
-                    end
-                else
-                    begin
-                        s_axi_arready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARVALID generation
-// RVALID is asserted for one ACLK clock cycle when both ARVALID and ARREADY are asserted.
-// The slave registers data are available on the RDATA bus at this instance.
-// The assertion of RVALID marks the validity of read data on the bus and RRESP indicates the status of read transaction.
-// RVALID is deasserted on reset (active low).
-// RRESP and RDATA are cleared to zero on reset (active low).
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rvalid <= 0;
+                s_axi_bvalid <= 1'b0;
+                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                 s_axi_rresp <= 2'b00;
+                s_axi_rvalid <= 1'b0;
             end
         else
             begin
-                if(s_axi_arready && s_axi_arvalid && ~s_axi_rvalid)
+                // Write address ready generation
+                s_axi_awready <= !s_axi_awready && (s_axi_awvalid && s_axi_wvalid) && (!s_axi_bvalid || s_axi_bready);
+
+                // Clear the write response valid when the master acknowledges it
+                if(s_axi_bready)
                     begin
-                        s_axi_rvalid <= 1'b1;
-                        s_axi_rresp  <= 2'b00; // 'OKAY' response
+                        s_axi_bvalid <= 1'b0;
+                        s_axi_bresp <= 2'b00;
                     end
-                else if(s_axi_rvalid && s_axi_rready)
+
+                // Clear the read data valid when the master acknowledges it
+                if(s_axi_rready)
                     begin
                         s_axi_rvalid <= 1'b0;
+                        s_axi_rresp <= 2'b00;
+                        s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                     end
-            end
-    end
 
-// Implement memory mapped register select and read logic generation
-// Slave register read enable is asserted when valid address is available and the slave is ready to accept the read address.
-// Output register or memory read data
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
-            end
-        else
-            begin
-                if(s_axi_reg_rden)
+                // Read data
+                if(s_axi_rd_en)
                     begin
-                        case(s_axi_araddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB])
-                            1'h0:    s_axi_rdata <= {(gpio_in_sync[NUM_CDC_STAGES - 1] & gpio_in_mask) | (gpio_out & ~gpio_in_mask)};
-                            1'h1:    s_axi_rdata <= {gpio_in_mask};
+                        s_axi_rvalid <= 1'b1;
+                        s_axi_rresp <= 2'b00; // Always respond OKAY
+
+                        case(s_axi_araddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
+                            3'h0:    s_axi_rdata <= {16'd1, 8'd0, 8'd0}; // IP Version
+                            3'h1:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_t}; // GPIO Direction
+                            3'h2:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_t}; // GPIO Direction (write 1 to set as input (set))
+                            3'h3:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_t}; // GPIO Direction (write 1 to set as output (clear))
+                            3'h4:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_o}; // GPIO Output
+                            3'h5:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_o}; // GPIO Output (write 1 to set)
+                            3'h6:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_o}; // GPIO Output (write 1 to clear)
+                            3'h7:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_GPIOS){1'b0}}, gpio_i_sync[NUM_CDC_STAGES - 1]}; // GPIO Input
                             default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
+                        endcase
+                    end
+
+                // Write data
+                if(s_axi_wr_en)
+                    begin
+                        s_axi_bvalid <= 1'b1;
+                        s_axi_bresp <= 2'b00; // Always respond OKAY
+
+                        case(s_axi_awaddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
+                            3'h0: // Register 0
+                                begin
+                                    // IP Version is not writable
+                                end
+                            3'h1: // Register 1
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_t[7:0] <= s_axi_wdata[7:0];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:0] <= s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_t[15:8] <= s_axi_wdata[15:8];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:8] <= s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_t[23:16] <= s_axi_wdata[23:16];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:16] <= s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_t[NUM_GPIOS - 1:24] <= s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h2: // Register 2
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_t[7:0] <= gpio_t[7:0] | s_axi_wdata[7:0];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:0] <= gpio_t[NUM_GPIOS - 1:0] | s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_t[15:8] <= gpio_t[15:8] | s_axi_wdata[15:8];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:8] <= gpio_t[NUM_GPIOS - 1:8] | s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_t[23:16] <= gpio_t[23:16] | s_axi_wdata[23:16];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:16] <= gpio_t[NUM_GPIOS - 1:16] | s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_t[NUM_GPIOS - 1:24] <= gpio_t[NUM_GPIOS - 1:24] | s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h3: // Register 3
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_t[7:0] <= gpio_t[7:0] & ~s_axi_wdata[7:0];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:0] <= gpio_t[NUM_GPIOS - 1:0] & ~s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_t[15:8] <= gpio_t[15:8] & ~s_axi_wdata[15:8];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:8] <= gpio_t[NUM_GPIOS - 1:8] & ~s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_t[23:16] <= gpio_t[23:16] & ~s_axi_wdata[23:16];
+                                            else
+                                                gpio_t[NUM_GPIOS - 1:16] <= gpio_t[NUM_GPIOS - 1:16] & ~s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_t[NUM_GPIOS - 1:24] <= gpio_t[NUM_GPIOS - 1:24] & ~s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h4: // Register 4
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_o[7:0] <= s_axi_wdata[7:0];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:0] <= s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_o[15:8] <= s_axi_wdata[15:8];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:8] <= s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_o[23:16] <= s_axi_wdata[23:16];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:16] <= s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_o[NUM_GPIOS - 1:24] <= s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h5: // Register 5
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_o[7:0] <= gpio_o[7:0] | s_axi_wdata[7:0];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:0] <= gpio_o[NUM_GPIOS - 1:0] | s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_o[15:8] <= gpio_o[15:8] | s_axi_wdata[15:8];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:8] <= gpio_o[NUM_GPIOS - 1:8] | s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_o[23:16] <= gpio_o[23:16] | s_axi_wdata[23:16];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:16] <= gpio_o[NUM_GPIOS - 1:16] | s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_o[NUM_GPIOS - 1:24] <= gpio_o[NUM_GPIOS - 1:24] | s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h6: // Register 6
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_GPIOS > 8)
+                                                gpio_o[7:0] <= gpio_o[7:0] & ~s_axi_wdata[7:0];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:0] <= gpio_o[NUM_GPIOS - 1:0] & ~s_axi_wdata[NUM_GPIOS - 1:0];
+                                        end
+
+                                    if(NUM_GPIOS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_GPIOS > 16)
+                                                gpio_o[15:8] <= gpio_o[15:8] & ~s_axi_wdata[15:8];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:8] <= gpio_o[NUM_GPIOS - 1:8] & ~s_axi_wdata[NUM_GPIOS - 1:8];
+                                        end
+
+                                    if(NUM_GPIOS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_GPIOS > 24)
+                                                gpio_o[23:16] <= gpio_o[23:16] & ~s_axi_wdata[23:16];
+                                            else
+                                                gpio_o[NUM_GPIOS - 1:16] <= gpio_o[NUM_GPIOS - 1:16] & ~s_axi_wdata[NUM_GPIOS - 1:16];
+                                        end
+
+                                    if(NUM_GPIOS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            gpio_o[NUM_GPIOS - 1:24] <= gpio_o[NUM_GPIOS - 1:24] & ~s_axi_wdata[NUM_GPIOS - 1:24];
+                                        end
+                                end
+                            3'h7: // Register 7
+                                begin
+                                    // GPIO Input is not writable
+                                end
                         endcase
                     end
             end

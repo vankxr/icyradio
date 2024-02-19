@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "axi_i2s,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_axi_i2s_0_0,axi_i2s,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_axi_i2s_0_0,axi_i2s,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_i2s,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED}" *)
+(* CORE_GENERATION_INFO = "icyradio_axi_i2s_0_0,axi_i2s,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_i2s,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=VERILOG,MCLK_DIV_SZ=8,BCLK_DIV_SZ=8,LRCLK_DIV_SZ=16}" *)
 (* IP_DEFINITION_SOURCE = "module_ref" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_axi_i2s_0_0 (
@@ -160,7 +160,11 @@ output wire i2s_sdata_out;
 (* X_INTERFACE_INFO = "analog.com:interface:i2s:1.0 i2s SDATA_IN" *)
 input wire i2s_sdata_in;
 
-  axi_i2s inst (
+  axi_i2s #(
+    .MCLK_DIV_SZ(8),
+    .BCLK_DIV_SZ(8),
+    .LRCLK_DIV_SZ(16)
+  ) inst (
     .aclk(aclk),
     .aresetn(aresetn),
     .s_axi_awaddr(s_axi_awaddr),

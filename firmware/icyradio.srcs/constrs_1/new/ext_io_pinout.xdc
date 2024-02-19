@@ -3,11 +3,13 @@
 #set_property IOSTANDARD LVCMOS33 [get_ports EXT_IO_1_1]
 #set_property PACKAGE_PIN AA9 [get_ports EXT_IO_1_1]
 set_property IOSTANDARD LVCMOS33 [get_ports EXT_I2C_scl_io]
+set_property PULLUP true [get_ports EXT_I2C_scl_io]
 set_property PACKAGE_PIN AA9 [get_ports EXT_I2C_scl_io]
 ## EXT_IO_1_2
 #set_property IOSTANDARD LVCMOS33 [get_ports EXT_IO_1_2]
 #set_property PACKAGE_PIN AA11 [get_ports EXT_IO_1_2]
 set_property IOSTANDARD LVCMOS33 [get_ports EXT_I2C_sda_io]
+set_property PULLUP true [get_ports EXT_I2C_sda_io]
 set_property PACKAGE_PIN AA11 [get_ports EXT_I2C_sda_io]
 ## EXT_IO_1_3
 #set_property IOSTANDARD LVCMOS33 [get_ports EXT_IO_1_3]

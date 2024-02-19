@@ -35,13 +35,6 @@
 
   <dci_cascade>0</dci_cascade>
 
-  <FPGADevice>
-    <selected>7a/xc7a35t-fgg484</selected>
-    <selected>7a/xc7a50t-fgg484</selected>
-    <selected>7a/xc7a75t-fgg484</selected>
-    <selected>7a/xc7a15t-fgg484</selected>
-  </FPGADevice>
-
   <Controller number="0">
     <MemoryDevice>DDR3_SDRAM/Components/MT41K256M16XX-125</MemoryDevice>
     <TimePeriod>3000</TimePeriod>

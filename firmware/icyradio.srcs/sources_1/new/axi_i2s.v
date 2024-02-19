@@ -2,10 +2,12 @@
 
 module axi_i2s
 #(
+    parameter MCLK_DIV_SZ = 8,
+    parameter BCLK_DIV_SZ = 8,
+    parameter LRCLK_DIV_SZ = 16,
+
     localparam S_AXI_DSZ = 32,
-    localparam S_AXI_ASZ = 5, // ceil(log2(<number of 32-bit registers>)) + 2
-    localparam ADDR_LSB = (S_AXI_DSZ / 32) + 1,
-    localparam OPT_MEM_ADDR_BITS = S_AXI_ASZ - 3
+    localparam S_AXI_ASZ = 5 // ceil(log2(<number of 32-bit registers>)) + 2
 )
 (
     input aclk,
@@ -69,14 +71,12 @@ module axi_i2s
     input  i2s_sdata_in
 );
 
-localparam MCLK_DIV_SZ = 8;
-localparam BCLK_DIV_SZ = 8;
-localparam LRCLK_DIV_SZ = 16;
+localparam S_AXI_ADDR_LSB = 2;
 
 localparam I2S_FSM_STATE_RESET = 3'd0;
 localparam I2S_FSM_STATE_RD_FIRST = 3'd1;
 localparam I2S_FSM_STATE_WAIT_LRCLK_SYNC = 3'd2;
-localparam I2S_FSM_STATE_WAIT_BCLK_SYNC = 23'd3;
+localparam I2S_FSM_STATE_WAIT_BCLK_SYNC = 3'd3;
 localparam I2S_FSM_STATE_ACTIVE = 3'd4;
 
 wire        m_axis_tready;
@@ -126,31 +126,31 @@ wire                     i2s_lrclk_rising = i2s_lrclk_toggle & ~i2s_lrclk; // Le
 wire                     i2s_lrclk_falling = i2s_lrclk_toggle & i2s_lrclk; // Left/right clock falling edge will happen on next aclk cycle
 
 wire       [S_AXI_ASZ - 1:0] s_axi_awaddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_awaddr_q;
 wire                   [2:0] s_axi_awprot;
 wire                         s_axi_awvalid;
 reg                          s_axi_awready;
 wire       [S_AXI_DSZ - 1:0] s_axi_wdata;
 wire [(S_AXI_DSZ / 8) - 1:0] s_axi_wstrb;
 wire                         s_axi_wvalid;
-reg                          s_axi_wready;
+wire                         s_axi_wready;
 reg                    [1:0] s_axi_bresp;
 reg                          s_axi_bvalid;
 wire                         s_axi_bready;
 wire       [S_AXI_ASZ - 1:0] s_axi_araddr;
-reg        [S_AXI_ASZ - 1:0] s_axi_araddr_q;
 wire                   [2:0] s_axi_arprot;
 wire                         s_axi_arvalid;
-reg                          s_axi_arready;
+wire                         s_axi_arready;
 reg        [S_AXI_DSZ - 1:0] s_axi_rdata;
 reg                    [1:0] s_axi_rresp;
 reg                          s_axi_rvalid;
 wire                         s_axi_rready;
-reg	                         s_axi_aw_en;
-wire	                     s_axi_reg_rden = s_axi_arready & s_axi_arvalid & ~s_axi_rvalid;
-wire	                     s_axi_reg_wren = s_axi_wready & s_axi_wvalid & s_axi_awready & s_axi_awvalid;
+wire                         s_axi_wr_en; // Internal write enable
+wire                         s_axi_rd_en; // Internal read enable
 
-integer i;
+assign s_axi_wready = s_axi_awready;
+assign s_axi_arready = !s_axi_rvalid;
+assign s_axi_wr_en = s_axi_awready;
+assign s_axi_rd_en = s_axi_arready && s_axi_arvalid;
 
 // Clock generation
 always @(posedge aclk)
@@ -167,9 +167,9 @@ always @(posedge aclk)
             end
         else
             begin
-                i2s_mclk_div_cnt = i2s_mclk_div_cnt + 1;
-                i2s_bclk_div_cnt = i2s_bclk_div_cnt + 1;
-                i2s_lrclk_div_cnt = i2s_lrclk_div_cnt + 1;
+                i2s_mclk_div_cnt <= i2s_mclk_div_cnt + 1;
+                i2s_bclk_div_cnt <= i2s_bclk_div_cnt + 1;
+                i2s_lrclk_div_cnt <= i2s_lrclk_div_cnt + 1;
 
                 if(i2s_mclk_toggle)
                     begin
@@ -268,7 +268,7 @@ always @(posedge aclk)
                         end
                     I2S_FSM_STATE_RD_FIRST: // Read first data from S-AXIS
                         begin
-                            if(!s_axis_tready && ~|i2s_sdata_out_sr_bit_cnt) // Trigger S-AXIS read if we have't already and got no data
+                            if(!s_axis_tready && ~|i2s_sdata_out_sr_bit_cnt) // Trigger S-AXIS read if we haven't already and got no data
                                 s_axis_tready <= 1'b1;
 
                             if(m_axis_tready && |i2s_sdata_out_sr_bit_cnt) // If M-AXIS is ready and we have data to TX, move on
@@ -289,7 +289,6 @@ always @(posedge aclk)
                     I2S_FSM_STATE_ACTIVE:
                         begin
                             // In this state, the falling edge always happens first, so we can use that to determine what to do
-
                             if(i2s_bclk_falling) // Setup new data on falling BCLK edge
                                 begin
                                     // Current channel incrementation happens at the rising edge, because it comes last
@@ -373,74 +372,7 @@ always @(posedge aclk)
             end
     end
 
-//// AXI Memory map register space logic
-// Implement AWREADY generation
-// AWREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// AWREADY is de-asserted when reset is low.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_awready <= 1'b0;
-                s_axi_aw_en <= 1'b1;
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en)
-                    begin
-                        s_axi_awready <= 1'b1;
-                        s_axi_aw_en <= 1'b0;
-                    end
-                else if(s_axi_bready && s_axi_bvalid)
-                    begin
-                        s_axi_aw_en <= 1'b1;
-                        s_axi_awready <= 1'b0;
-                    end
-                else
-                    begin
-                        s_axi_awready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement AWADDR latching
-// This process is used to latch the address when both AWVALID and WVALID are valid.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_awaddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_awready && s_axi_awvalid && s_axi_wvalid && s_axi_aw_en) // Write Address latching
-                    s_axi_awaddr_q <= s_axi_awaddr;
-            end
-    end
-
-// Implement WREADY generation
-// WREADY is asserted for one ACLK clock cycle when both AWVALID and WVALID are asserted.
-// WREADY is de-asserted when reset is low.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_wready <= 1'b0;
-            end
-        else
-            begin
-                if(~s_axi_wready && s_axi_wvalid && s_axi_awvalid && s_axi_aw_en)
-                    s_axi_wready <= 1'b1;
-                else
-                    s_axi_wready <= 1'b0;
-            end
-    end
-
-// Implement memory mapped register select and write logic generation
-// The write data is accepted and written to memory mapped registers when AWREADY, WVALID, WREADY and WVALID are asserted.
-// Write strobes are used to select byte enables of slave registers while writing.
-// These registers are cleared when reset (active low) is applied.
-// Slave register write enable is asserted when valid address and data are available and the slave is ready to accept the write address and write data.
+// AXI-Lite logic
 always @(posedge aclk)
     begin
         if(!aresetn)
@@ -451,16 +383,63 @@ always @(posedge aclk)
                 i2s_chan_en <= 8'b00000000;
                 i2s_chan_max <= 3'd0;
                 i2s_chan_bit_sz <= 1'b0;
+
                 i2s_clk_div_en <= 1'b0;
                 i2s_mclk_div <= {MCLK_DIV_SZ{1'b0}};
                 i2s_bclk_div <= {BCLK_DIV_SZ{1'b0}};
                 i2s_lrclk_div <= {LRCLK_DIV_SZ{1'b0}};
+
+                // AXI-Lite signals
+                s_axi_awready <= 1'b0;
+                s_axi_bresp <= 2'b00;
+                s_axi_bvalid <= 1'b0;
+                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
+                s_axi_rresp <= 2'b00;
+                s_axi_rvalid <= 1'b0;
             end
         else
             begin
-                if(s_axi_reg_wren)
+                // Write address ready generation
+                s_axi_awready <= !s_axi_awready && (s_axi_awvalid && s_axi_wvalid) && (!s_axi_bvalid || s_axi_bready);
+
+                // Clear the write response valid when the master acknowledges it
+                if(s_axi_bready)
                     begin
-                        case(s_axi_awaddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB])
+                        s_axi_bvalid <= 1'b0;
+                        s_axi_bresp <= 2'b00;
+                    end
+
+                // Clear the read data valid when the master acknowledges it
+                if(s_axi_rready)
+                    begin
+                        s_axi_rvalid <= 1'b0;
+                        s_axi_rresp <= 2'b00;
+                        s_axi_rdata <= {S_AXI_DSZ{1'b0}};
+                    end
+
+                // Read data
+                if(s_axi_rd_en)
+                    begin
+                        s_axi_rvalid <= 1'b1;
+                        s_axi_rresp <= 2'b00; // Always respond OKAY
+
+                        case(s_axi_araddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
+                            3'h0:    s_axi_rdata <= {16'd1, 8'd0, 8'd0}; // IP Version
+                            3'h1:    s_axi_rdata <= {11'd0, i2s_chan_bit_sz, 1'd0, i2s_chan_max, i2s_chan_en, 3'd0, i2s_lb_en, i2s_paused, i2s_pause, i2s_en, i2s_clk_div_en};
+                            3'h2:    s_axi_rdata <= {{(S_AXI_DSZ - MCLK_DIV_SZ){1'b0}}, i2s_mclk_div};
+                            3'h3:    s_axi_rdata <= {{(S_AXI_DSZ - BCLK_DIV_SZ){1'b0}}, i2s_bclk_div};
+                            3'h4:    s_axi_rdata <= {{(S_AXI_DSZ - LRCLK_DIV_SZ){1'b0}}, i2s_lrclk_div};
+                            default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
+                        endcase
+                    end
+
+                // Write data
+                if(s_axi_wr_en)
+                    begin
+                        s_axi_bvalid <= 1'b1;
+                        s_axi_bresp <= 2'b00; // Always respond OKAY
+
+                        case(s_axi_awaddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
                             3'h0: // Register 0
                                 begin
                                     // IP Version is not writable
@@ -603,109 +582,6 @@ always @(posedge aclk)
                                                 end
                                         end
                                 end
-                        endcase
-                    end
-            end
-    end
-
-// Implement write response logic generation
-// The write response and response valid signals are asserted by the slave when WREADY, WVALID, WREADY and WVALID are asserted.
-// This marks the acceptance of address and indicates the status of write transaction.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_bvalid <= 1'b0;
-                s_axi_bresp <= 2'b00;
-            end
-        else
-            begin
-                if(s_axi_awready && s_axi_awvalid && ~s_axi_bvalid && s_axi_wready && s_axi_wvalid)
-                    begin
-                        s_axi_bvalid <= 1'b1;
-                        s_axi_bresp <= 2'b00; // 'OKAY' response
-                    end
-                else
-                    begin
-                        if(s_axi_bready && s_axi_bvalid)
-                            s_axi_bvalid <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARREADY generation
-// ARREADY is asserted for one aclk clock cycle when ARVALID is asserted.
-// AWREADY is de-asserted when reset (active low) is asserted.
-// The read address is also latched when ARVALID is asserted.
-// ARADDR is reset to zero on reset assertion.
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_arready <= 1'b0;
-                s_axi_araddr_q <= {S_AXI_ASZ{1'b0}};
-            end
-        else
-            begin
-                if(~s_axi_arready && s_axi_arvalid)
-                    begin
-                        s_axi_arready <= 1'b1;
-                        s_axi_araddr_q <= s_axi_araddr;
-                    end
-                else
-                    begin
-                        s_axi_arready <= 1'b0;
-                    end
-            end
-    end
-
-// Implement ARVALID generation
-// RVALID is asserted for one ACLK clock cycle when both ARVALID and ARREADY are asserted.
-// The slave registers data are available on the RDATA bus at this instance.
-// The assertion of RVALID marks the validity of read data on the bus and RRESP indicates the status of read transaction.
-// RVALID is deasserted on reset (active low).
-// RRESP and RDATA are cleared to zero on reset (active low).
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rvalid <= 0;
-                s_axi_rresp <= 2'b00;
-            end
-        else
-            begin
-                if(s_axi_arready && s_axi_arvalid && ~s_axi_rvalid)
-                    begin
-                        s_axi_rvalid <= 1'b1;
-                        s_axi_rresp  <= 2'b00; // 'OKAY' response
-                    end
-                else if(s_axi_rvalid && s_axi_rready)
-                    begin
-                        s_axi_rvalid <= 1'b0;
-                    end
-            end
-    end
-
-// Implement memory mapped register select and read logic generation
-// Slave register read enable is asserted when valid address is available and the slave is ready to accept the read address.
-// Output register or memory read data
-always @(posedge aclk)
-    begin
-        if(!aresetn)
-            begin
-                s_axi_rdata <= {S_AXI_DSZ{1'b0}};
-            end
-        else
-            begin
-                if(s_axi_reg_rden)
-                    begin
-                        case(s_axi_araddr_q[ADDR_LSB + OPT_MEM_ADDR_BITS:ADDR_LSB])
-                            3'h0:    s_axi_rdata <= {16'd1, 8'd0, 8'd0}; // IP Version
-                            3'h1:    s_axi_rdata <= {11'd0, i2s_chan_bit_sz, 1'd0, i2s_chan_max, i2s_chan_en, 3'd0, i2s_lb_en, i2s_paused, i2s_pause, i2s_en, i2s_clk_div_en};
-                            3'h2:    s_axi_rdata <= {{(S_AXI_DSZ - MCLK_DIV_SZ){1'b0}}, i2s_mclk_div};
-                            3'h3:    s_axi_rdata <= {{(S_AXI_DSZ - BCLK_DIV_SZ){1'b0}}, i2s_bclk_div};
-                            3'h4:    s_axi_rdata <= {{(S_AXI_DSZ - LRCLK_DIV_SZ){1'b0}}, i2s_lrclk_div};
-                            default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                         endcase
                     end
             end

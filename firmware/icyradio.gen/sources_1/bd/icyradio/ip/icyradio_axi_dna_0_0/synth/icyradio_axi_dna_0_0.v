@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "axi_dna,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_axi_dna_0_0,axi_dna,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_axi_dna_0_0,axi_dna,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_dna,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,DNA_CLK_DIV=8}" *)
+(* CORE_GENERATION_INFO = "icyradio_axi_dna_0_0,axi_dna,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_dna,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=VERILOG,DNA_CLK_DIV=8}" *)
 (* IP_DEFINITION_SOURCE = "module_ref" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_axi_dna_0_0 (

@@ -52,7 +52,7 @@
 
 (* X_CORE_INFO = "axi_rf_timestamping,Vivado 2021.1" *)
 (* CHECK_LICENSE_TYPE = "icyradio_axi_rf_timestamping_0_0,axi_rf_timestamping,{}" *)
-(* CORE_GENERATION_INFO = "icyradio_axi_rf_timestamping_0_0,axi_rf_timestamping,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_rf_timestamping,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED}" *)
+(* CORE_GENERATION_INFO = "icyradio_axi_rf_timestamping_0_0,axi_rf_timestamping,{x_ipProduct=Vivado 2021.1,x_ipVendor=xilinx.com,x_ipLibrary=module_ref,x_ipName=axi_rf_timestamping,x_ipVersion=1.0,x_ipCoreRevision=1,x_ipLanguage=VERILOG,x_ipSimLanguage=VERILOG}" *)
 (* IP_DEFINITION_SOURCE = "module_ref" *)
 (* DowngradeIPIdentifiedWarnings = "yes" *)
 module icyradio_axi_rf_timestamping_0_0 (

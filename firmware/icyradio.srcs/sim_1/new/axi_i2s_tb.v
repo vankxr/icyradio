@@ -144,9 +144,9 @@ initial
         #12;
 
         // Configure registers
-        axi_write(32'h08, 1); // MCLK divider - 1
-        axi_write(32'h0C, 3); // BCLK divider - 1
-        axi_write(32'h10, 255); // LRCLK divider - 1
+        axi_write(32'h08, 0); // (MCLK divider) / 2 - 1
+        axi_write(32'h0C, 1); // (BCLK divider) / 2 - 1
+        axi_write(32'h10, 127); // (LRCLK divider) / 2 - 1
         axi_write(32'h04, (0 << 20) | (3 << 16) | (5 << 8) | (1 << 1) | (1 << 0)); // 16-bit samples, 2 channels, channel 0 and 1 enabled, enable clock & serdes
     end
 
