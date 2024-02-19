@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <unistd.h>
 #include <mutex>
-#include "AXIQuadSPI.hpp"
+#include "AXISPI.hpp"
 #include "AXIGPIO.hpp"
 #include "Utils.hpp"
 
@@ -2596,7 +2596,7 @@ public:
 
     struct SPIConfig
     {
-        AXIQuadSPI *controller;
+        AXISPI *controller;
         uint32_t ss_mask;
     };
     struct GPIOConfig

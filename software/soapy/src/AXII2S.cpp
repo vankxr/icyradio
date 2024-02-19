@@ -8,7 +8,7 @@ AXII2S::AXII2S(void *base_address, std::function<bool()> access_allowed_fn): AXI
 void AXII2S::init(std::function<bool()> access_allowed_fn)
 {
     if(this->access_allowed_fn != nullptr)
-        throw std::runtime_error("AXI RF Timestamping: Already initialized");
+        throw std::runtime_error("AXI I2S: Already initialized");
 
     if(access_allowed_fn == nullptr)
         return;
@@ -20,6 +20,20 @@ void AXII2S::init(std::function<bool()> access_allowed_fn)
     if(AXI_CORE_VERSION_MAJOR(version) < 1)
         throw std::runtime_error("AXI I2S Core v" + std::to_string(AXI_CORE_VERSION_MAJOR(version)) + "." + std::to_string(AXI_CORE_VERSION_MINOR(version)) + "." + std::to_string(AXI_CORE_VERSION_PATCH(version)) + " is not supported");
 
+    // Determine the maximum clock divider values
+    if(this->enabled())
+        this->disable();
+
+    if(this->clocksEnabled())
+        this->disableClocks();
+
+    this->writeReg(AXI_I2S_REG_MCLK_DIV, 0xFFFFFFFF);
+    this->writeReg(AXI_I2S_REG_BCLK_DIV, 0xFFFFFFFF);
+    this->writeReg(AXI_I2S_REG_LRCLK_DIV, 0xFFFFFFFF);
+
+    this->max_mclk_div = ((uint64_t)this->readReg(AXI_I2S_REG_MCLK_DIV) + 1) << 1;
+    this->max_bclk_div = ((uint64_t)this->readReg(AXI_I2S_REG_BCLK_DIV) + 1) << 1;
+    this->max_lrclk_div = ((uint64_t)this->readReg(AXI_I2S_REG_LRCLK_DIV) + 1) << 1;
 }
 
 uint32_t AXII2S::getIPVersion()
@@ -27,36 +41,45 @@ uint32_t AXII2S::getIPVersion()
     return this->readReg(AXI_I2S_REG_VERSION);
 }
 
-void AXII2S::configClockDividers(uint32_t mclk_div, uint32_t bclk_div, uint32_t lrclk_div)
+void AXII2S::configClockDividers(uint64_t mclk_div, uint64_t bclk_div, uint64_t lrclk_div)
 {
+    if(mclk_div < 2 || mclk_div > this->max_mclk_div)
+        throw std::invalid_argument("AXI I2S: MCLK divider must be between 2 and " + std::to_string(this->max_mclk_div));
+
+    if(mclk_div & 1)
+        throw std::invalid_argument("AXI I2S: MCLK divider must be even");
+
+    if(bclk_div < 2 || bclk_div > this->max_bclk_div)
+        throw std::invalid_argument("AXI I2S: BCLK divider must be between 2 and " + std::to_string(this->max_bclk_div));
+
+    if(bclk_div & 1)
+        throw std::invalid_argument("AXI I2S: BCLK divider must be even");
+
+    if(lrclk_div < 2 || lrclk_div > this->max_lrclk_div)
+        throw std::invalid_argument("AXI I2S: LRCLK divider must be between 2 and " + std::to_string(this->max_lrclk_div));
+
+    if(lrclk_div & 1)
+        throw std::invalid_argument("AXI I2S: LRCLK divider must be even");
+
     if(this->clocksEnabled())
         throw std::runtime_error("AXI I2S: Cannot configure clock dividers while enabled");
 
-    if(!mclk_div || mclk_div > 256)
-        throw std::invalid_argument("AXI I2S: MCLK divider must be between 1 and 256");
-
-    if(!bclk_div || bclk_div > 256)
-        throw std::invalid_argument("AXI I2S: BCLK divider must be between 1 and 256");
-
-    if(!lrclk_div || lrclk_div > 65536)
-        throw std::invalid_argument("AXI I2S: LRCLK divider must be between 1 and 65536");
-
-    this->writeReg(AXI_I2S_REG_MCLK_DIV, mclk_div - 1);
-    this->writeReg(AXI_I2S_REG_BCLK_DIV, bclk_div - 1);
-    this->writeReg(AXI_I2S_REG_LRCLK_DIV, lrclk_div - 1);
+    this->writeReg(AXI_I2S_REG_MCLK_DIV, (mclk_div >> 1) - 1);
+    this->writeReg(AXI_I2S_REG_BCLK_DIV, (bclk_div >> 1) - 1);
+    this->writeReg(AXI_I2S_REG_LRCLK_DIV, (lrclk_div >> 1) - 1);
 }
-void AXII2S::configClocks(uint32_t input_freq, uint32_t mclk_freq, uint32_t bclk_freq, uint32_t lrclk_freq)
+void AXII2S::configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t bclk_freq, uint64_t lrclk_freq)
 {
-    uint32_t mclk_div = input_freq / mclk_freq;
-    uint32_t bclk_div = mclk_freq / bclk_freq;
-    uint32_t lrclk_div = bclk_freq / lrclk_freq;
+    uint64_t mclk_div = input_freq / mclk_freq;
+    uint64_t bclk_div = input_freq / bclk_freq;
+    uint64_t lrclk_div = input_freq / lrclk_freq;
 
     this->configClockDividers(mclk_div, bclk_div, lrclk_div);
 }
-uint32_t AXII2S::autoConfigClocks(uint32_t input_freq, uint32_t mclk_freq, uint32_t samp_rate)
+uint64_t AXII2S::configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t samp_rate)
 {
     // Determine BCLK based on the sample rate, number of channels and channel bit size
-    uint32_t bclk_freq = samp_rate;
+    uint64_t bclk_freq = samp_rate;
 
     switch(this->getSampleSize())
     {

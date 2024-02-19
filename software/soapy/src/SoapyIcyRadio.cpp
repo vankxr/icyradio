@@ -6,7 +6,7 @@ void SoapyIcyRadio::setupMemoryMaps()
         throw std::runtime_error("Invalid file descriptor");
 
     // Map AXI address space
-    this->mm_axi_flash = new MappedRegion(this->fd, AXI_QUAD_SPI0_XIP_BASE, AXI_QUAD_SPI0_XIP_SIZE);
+    this->mm_axi_flash = new MappedRegion(this->fd, AXI_FLASH_XIP_BASE, AXI_FLASH_XIP_SIZE);
     this->mm_axi_bram = new MappedRegion(this->fd, AXI_BRAM_BASE, AXI_BRAM_SIZE);
     this->mm_axi_ddr = new MappedRegion(this->fd, AXI_MIG_DDR3_BASE, AXI_MIG_DDR3_SIZE);
     this->mm_axi_periph = new MappedRegion(this->fd, AXI_PERIPH_BASE, AXI_PERIPH_SIZE);
@@ -21,15 +21,15 @@ void SoapyIcyRadio::setupMemoryMaps()
     this->axi_dmac[1] = new AXIDMAC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_DMAC_RF_TX_BASE - AXI_PERIPH_BASE)));
     this->axi_gpio[0] = new AXIGPIO(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_GPIO0_BASE - AXI_PERIPH_BASE)));
     this->axi_iic[0] = new AXIIIC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_IIC0_BASE - AXI_PERIPH_BASE)));
-    this->axi_quad_spi[0] = new AXIQuadSPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_QUAD_SPI0_BASE - AXI_PERIPH_BASE)));
+    this->axi_spi[0] = new AXISPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_QUAD_SPI_MM0_BASE - AXI_PERIPH_BASE)));
     this->axi_pcie = new AXIPCIe(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_PCIE0_BASE - AXI_PERIPH_BASE)));
     this->axi_dmac[2] = new AXIDMAC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_DMAC_I2S_RX_BASE - AXI_PERIPH_BASE)));
     this->axi_dmac[3] = new AXIDMAC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_DMAC_I2S_TX_BASE - AXI_PERIPH_BASE)));
     this->axi_i2s = new AXII2S(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_I2S_BASE - AXI_PERIPH_BASE)));
     this->axi_xadc = new AXIXADC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_XADC_WIZ_BASE - AXI_PERIPH_BASE)));
-    this->axi_quad_spi[1] = new AXIQuadSPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_QUAD_SPI1_BASE - AXI_PERIPH_BASE)));
+    this->axi_spi[1] = new AXISPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_SPI0_BASE - AXI_PERIPH_BASE)));
     this->axi_iic[1] = new AXIIIC(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_IIC1_BASE - AXI_PERIPH_BASE)));
-    this->axi_quad_spi[2] = new AXIQuadSPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_QUAD_SPI2_BASE - AXI_PERIPH_BASE)));
+    this->axi_spi[2] = new AXISPI(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_SPI1_BASE - AXI_PERIPH_BASE)));
     this->axi_gpio[1] = new AXIGPIO(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_GPIO1_BASE - AXI_PERIPH_BASE)));
     this->axi_gpio[2] = new AXIGPIO(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_GPIO2_BASE - AXI_PERIPH_BASE)));
     this->axi_rf_tstamp = new AXIRFTStamp(reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->mm_axi_periph->getVirt()) + (AXI_RF_TSTAMP_BASE - AXI_PERIPH_BASE)));
@@ -86,13 +86,13 @@ void SoapyIcyRadio::freeMemoryMaps()
         }
     }
 
-    for(uint8_t i = 0; i < AXI_QUAD_SPI_NUM_INSTANCES; i++)
+    for(uint8_t i = 0; i < AXI_SPI_NUM_INSTANCES; i++)
     {
-        if(this->axi_quad_spi[i] != nullptr)
+        if(this->axi_spi[i] != nullptr)
         {
-            delete this->axi_quad_spi[i];
+            delete this->axi_spi[i];
 
-            this->axi_quad_spi[i] = nullptr;
+            this->axi_spi[i] = nullptr;
         }
     }
 
@@ -239,11 +239,31 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
 
     // Communication interfaces
     this->axi_iic[AXI_IIC_CODEC_INST]->init(125000000UL, AXIIIC::Speed::FAST);
+
     this->axi_iic[AXI_IIC_SYS_INST]->init(125000000UL, AXIIIC::Speed::FAST);
+
     this->axi_iic[AXI_IIC_EXP_INST]->init(125000000UL, AXIIIC::Speed::FAST);
-    //this->axi_quad_spi[AXI_QUAD_SPI_FLASH_INST]->init(AXIQuadSPI::Mode::MODE_0, AXIQuadSPI::BitOrder::MSB_FIRST); // Quad SPI 0 is used for flash XIP
-    this->axi_quad_spi[AXI_QUAD_SPI_TRX_INST]->init(AXIQuadSPI::Mode::MODE_1, AXIQuadSPI::BitOrder::MSB_FIRST);
-    this->axi_quad_spi[AXI_QUAD_SPI_SYNTH_INST]->init(AXIQuadSPI::Mode::MODE_0, AXIQuadSPI::BitOrder::MSB_FIRST);
+
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->setMode(AXISPI::Mode::MODE_0);
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->setBitOrder(AXISPI::BitOrder::MSB_FIRST);
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->setIOMode(AXISPI::IOMode::SINGLE);
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->configClock(125000000UL, 31250000UL);
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->enableClock();
+    this->axi_spi[AXI_QUAD_SPI_MM0_FLASH_INST]->enable();
+
+    this->axi_spi[AXI_SPI_TRX_INST]->setMode(AXISPI::Mode::MODE_1);
+    this->axi_spi[AXI_SPI_TRX_INST]->setBitOrder(AXISPI::BitOrder::MSB_FIRST);
+    this->axi_spi[AXI_SPI_TRX_INST]->setIOMode(AXISPI::IOMode::SINGLE);
+    this->axi_spi[AXI_SPI_TRX_INST]->configClock(125000000UL, 31250000UL);
+    this->axi_spi[AXI_SPI_TRX_INST]->enableClock();
+    this->axi_spi[AXI_SPI_TRX_INST]->enable();
+
+    this->axi_spi[AXI_SPI_SYNTH_INST]->setMode(AXISPI::Mode::MODE_0);
+    this->axi_spi[AXI_SPI_SYNTH_INST]->setBitOrder(AXISPI::BitOrder::MSB_FIRST);
+    this->axi_spi[AXI_SPI_SYNTH_INST]->setIOMode(AXISPI::IOMode::SINGLE);
+    this->axi_spi[AXI_SPI_SYNTH_INST]->configClock(125000000UL, 15625000UL);
+    this->axi_spi[AXI_SPI_SYNTH_INST]->enableClock();
+    this->axi_spi[AXI_SPI_SYNTH_INST]->enable();
 
     // I2C Scan
     std::vector<uint8_t> addrs;
@@ -300,6 +320,30 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
 
     SoapySDR_logf(SOAPY_SDR_DEBUG, "%s", addrs_to_str(addrs).c_str());
 
+    ///////////////// EXP TEST
+    if(addrs.size() > 0 && addrs.at(0) == 0x22)
+    {
+        AuxMCU *exp = new AuxMCU(
+            {
+                .controller = this->axi_iic[AXI_IIC_EXP_INST],
+                .addr = 0x22,
+            }
+        );
+
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "reg0 before %02X", exp->readReg(0x00));
+        exp->writeReg(0x00, 0x01);
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "reg0 after %02X", exp->readReg(0x00));
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "reg1 before %02X", exp->readReg(0x01));
+        exp->writeReg(0x01, 0x01);
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "reg1 after %02X", exp->readReg(0x01));
+
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "rom0 %02X", exp->readROM(0x00));
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "rom1 %02X", exp->readROM(0x01));
+
+        delete exp;
+    }
+    ///////////////// EXP TEST
+
     // Peripherals
     this->axi_gpio[AXI_GPIO_SYS_INST]->setValue(AXI_GPIO_PM_I2C_EN_BIT, AXIGPIO::Value::HIGH);
     usleep(500);
@@ -351,8 +395,8 @@ void SoapyIcyRadio::initPeripheralsPreClocks()
 
     this->mmw_synth = new IDT8V97003(
         {
-            .controller = this->axi_quad_spi[AXI_QUAD_SPI_SYNTH_INST],
-            .ss_mask = AXI_QUAD_SPI_SYNTH_SS,
+            .controller = this->axi_spi[AXI_SPI_SYNTH_INST],
+            .ss_mask = AXI_SPI1_SYNTH_SS,
         },
         {
             .controller = this->axi_gpio[AXI_GPIO_SYNTH_INST],

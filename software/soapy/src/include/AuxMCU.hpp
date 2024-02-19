@@ -8,7 +8,7 @@
 
 class AuxMCU
 {
-protected:
+public:
     struct IICConfig
     {
         AXIIIC *controller;
@@ -22,11 +22,27 @@ private:
         return this->calcChecksum(data, count) == 0;
     }
 
-protected:
+    void readMem(bool rom, uint8_t addr, uint8_t *dst, uint8_t count, bool check = true);
+public:
     AuxMCU(AuxMCU::IICConfig iic);
     ~AuxMCU();
 
-    void readReg(uint8_t reg, uint8_t *dst, uint8_t count, bool check = true);
+    inline void readROM(uint8_t addr, uint8_t *dst, uint8_t count, bool check = true)
+    {
+        this->readMem(true, addr, dst, count, check);
+    }
+    inline uint8_t readROM(uint8_t addr, bool check = true)
+    {
+        uint8_t val;
+
+        this->readROM(addr, &val, 1, check);
+
+        return val;
+    }
+    inline void readReg(uint8_t reg, uint8_t *dst, uint8_t count, bool check = true)
+    {
+        this->readMem(false, reg, dst, count, check);
+    }
     inline uint8_t readReg(uint8_t reg, bool check = true)
     {
         uint8_t val;

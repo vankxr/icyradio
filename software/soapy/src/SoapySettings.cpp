@@ -18,8 +18,8 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
         this->axi_gpio[i] = nullptr;
     for(uint8_t i = 0; i < AXI_IIC_NUM_INSTANCES; i++)
         this->axi_iic[i] = nullptr;
-    for(uint8_t i = 0; i < AXI_QUAD_SPI_NUM_INSTANCES; i++)
-        this->axi_quad_spi[i] = nullptr;
+    for(uint8_t i = 0; i < AXI_SPI_NUM_INSTANCES; i++)
+        this->axi_spi[i] = nullptr;
     this->axi_pcie = nullptr;
     this->axi_i2s = nullptr;
     this->axi_xadc = nullptr;
@@ -116,7 +116,6 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
         throw;
     }
 }
-
 SoapyIcyRadio::~SoapyIcyRadio()
 {
     this->deinitPeripheralsPostClocks();
@@ -160,6 +159,10 @@ SoapySDR::Kwargs SoapyIcyRadio::getHardwareInfo() const
 
     // Clock manager info
     info["clk_mngr_rev_id"] = std::to_string(this->clk_mngr->getRevisionID());
+
+    // mmWave Synth info
+    info["mmw_synth_rev_id"] = std::to_string(this->mmw_synth->getChipVersion());
+    info["mmw_synth_chip_opt"] = std::to_string(this->mmw_synth->getChipOption());
 
     return info;
 }

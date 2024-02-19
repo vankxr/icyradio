@@ -10,16 +10,13 @@ uint8_t AuxMCU::calcChecksum(uint8_t *data, uint8_t count)
     return (0xFF - cs) + 1;
 }
 
-void AuxMCU::readReg(uint8_t reg, uint8_t *dst, uint8_t count, bool check)
+void AuxMCU::readMem(bool rom, uint8_t addr, uint8_t *dst, uint8_t count, bool check)
 {
     if(this->iic.controller == nullptr)
         throw std::runtime_error("AuxMCU: IIC not initialized");
 
     if(!count)
         return;
-
-    if(count > 256 - 2)
-        throw std::runtime_error("AuxMCU: Read too long");
 
     if(dst == nullptr)
         throw std::runtime_error("AuxMCU: Invalid destination buffer");
@@ -28,8 +25,8 @@ void AuxMCU::readReg(uint8_t reg, uint8_t *dst, uint8_t count, bool check)
 
     uint8_t buf[256];
 
-    buf[0] = reg;
-    buf[1] = 0xFF;
+    buf[0] = addr;
+    buf[1] = rom ? 0xFE : 0xFF;
     buf[2] = count;
     buf[3] = this->calcChecksum(buf, 3);
 

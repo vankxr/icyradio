@@ -108,12 +108,10 @@ SoapySDR::Device *makeIcyRadio(const SoapySDR::Kwargs &args)
     // For now, the remaining identification method is serial, so we need to loop through all devices
     SoapySDR::KwargsList devices = findIcyRadio(args);
 
-    // If no devices found, return nullptr
+    // If no devices found, throw
     if(devices.size() == 0)
     {
-        SoapySDR_logf(SOAPY_SDR_DEBUG, "No IcyRadio devices found with given arguments");
-
-        return nullptr;
+        throw std::runtime_error("No IcyRadio devices found with given arguments");
     }
     else if(devices.size() > 1)
     {

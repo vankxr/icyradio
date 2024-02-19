@@ -1,8 +1,8 @@
 #pragma once
 
 // SPI Flash XIP Memory Mapped
-#define AXI_QUAD_SPI0_XIP_BASE  0x00000000
-#define AXI_QUAD_SPI0_XIP_SIZE  (8 * 1024 * 1024) // 8 MB
+#define AXI_FLASH_XIP_BASE      0x00000000
+#define AXI_FLASH_XIP_SIZE      (8 * 1024 * 1024) // 8 MB
 
 // BRAM
 #define AXI_BRAM_BASE           0x01000000
@@ -20,15 +20,15 @@
 #define AXI_DMAC_RF_TX_BASE     0x40002000
 #define AXI_GPIO0_BASE          0x40004000
 #define AXI_IIC0_BASE           0x40006000
-#define AXI_QUAD_SPI0_BASE      0x40008000
+#define AXI_QUAD_SPI_MM0_BASE   0x40008000
 #define AXI_PCIE0_BASE          0x4000A000
 #define AXI_DMAC_I2S_RX_BASE    0x4000C000
 #define AXI_DMAC_I2S_TX_BASE    0x4000E000
 #define AXI_I2S_BASE            0x40010000
 #define AXI_XADC_WIZ_BASE       0x40012000
-#define AXI_QUAD_SPI1_BASE      0x40014000
+#define AXI_SPI0_BASE           0x40014000
 #define AXI_IIC1_BASE           0x40016000
-#define AXI_QUAD_SPI2_BASE      0x40018000
+#define AXI_SPI1_BASE           0x40018000
 #define AXI_GPIO1_BASE          0x4001A000
 #define AXI_GPIO2_BASE          0x4001C000
 #define AXI_RF_TSTAMP_BASE      0x4001E000

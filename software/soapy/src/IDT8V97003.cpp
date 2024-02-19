@@ -40,7 +40,7 @@ void IDT8V97003::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
 
     this->spi.controller->write(0x00, false);
     this->spi.controller->write(reg, false);
-    this->spi.controller->write(src, count);
+    this->spi.controller->write(src, count, true);
 
     this->spi.controller->slaveSelect(this->spi.ss_mask, false); // This unlocks mutex
 }
@@ -370,31 +370,62 @@ double IDT8V97003::getTemperature()
     // TODO
     return 0.0;
 
-    // this->writeReg(IDT8V97003_REG_PTAT_PWR_CONFIG, IDT8V97003_REG_PTAT_PWR_CONFIG_PTAT_MODE_HIGH_I | IDT8V97003_REG_PTAT_PWR_CONFIG_SENSOR_POWER | BIT(0));
-    // uint16_t temp = this->readReg16(IDT8V97003_REG_TEMP_LOW);
+    // static bool once = false;
 
-    // while(!(temp & 0x2000))
+    // if(!once)
     // {
-    //     usleep(10);
+    //     this->init();
+    //     this->powerUp();
 
-    //     temp = this->readReg16(IDT8V97003_REG_TEMP_LOW);
+    //     this->configReferenceInput(25000000UL);
+    //     this->configPFD(250000000UL);
+    //     this->setLockDetectPrecision(IDT8V97003::LDPrecision::LD_PREC_6p4ns);
+    //     this->enableAutoRecal();
+    //     this->enableLockDetect();
+    //     this->setChargePumpPositiveCurrent(9);
+    //     this->setChargePumpNegativeCurrent(9);
+    //     this->setFrequency(1000000000ULL);
+    // }
+
+    // once = true;
+
+    // this->writeReg(IDT8V97003_REG_PTAT_PWR_CONFIG, IDT8V97003_REG_PTAT_PWR_CONFIG_SENSOR_POWER | BIT(0));
+    // uint16_t temp = this->readReg(IDT8V97003_REG_TEMP_HIGH);
+
+    // uint32_t to = 10000;
+    // while(--to && !(temp & 0x20))
+    // {
+    //     usleep(1000);
+
+    //     temp = this->readReg(IDT8V97003_REG_TEMP_HIGH);
     // }
 
     // temp = this->readReg16(IDT8V97003_REG_TEMP_LOW);
 
-    // this->writeReg(IDT8V97003_REG_PTAT_PWR_CONFIG, IDT8V97003_REG_PTAT_PWR_CONFIG_PTAT_MODE_HIGH_I | IDT8V97003_REG_PTAT_PWR_CONFIG_SENSOR_POWER);
+    // this->writeReg(IDT8V97003_REG_PTAT_PWR_CONFIG, IDT8V97003_REG_PTAT_PWR_CONFIG_SENSOR_POWER);
+    // this->writeReg(IDT8V97003_REG_PTAT_PWR_CONFIG, IDT8V97003_REG_PTAT_PWR_CONFIG_SENSOR_POWER | BIT(0));
 
-    // this->powerUp();
+    // if(!to)
+    //     return -1;
 
-    // temp &= 0xFFF;
+    // // static bool once = false;
 
-    // if(temp & 0x08000)
-    //     temp |= 0xF000;
+    // // if(once)
+    // //     this->powerUp();
+    // // else
+    // //     this->powerDown();
 
-    // int16_t stemp;
-    // *((uint16_t *)&stemp) = temp;
+    // // once = !once;
 
-    // return (double)stemp; // TODO: Calibrate
+    // // temp &= 0xFFF;
+
+    // // if(temp & 0x08000)
+    // //     temp |= 0xF000;
+
+    // // int16_t stemp;
+    // // *((uint16_t *)&stemp) = temp;
+
+    // return (double)(temp & 0x3FF); // TODO: Calibrate
 }
 
 IDT8V97003::VCOBand IDT8V97003::getCurrentVCOBand()
@@ -636,7 +667,7 @@ uint32_t IDT8V97003::_getReferenceDividerInputFrequency()
 }
 uint32_t IDT8V97003::_getReferenceDividerOutputFrequency()
 {
-    uint16_t r_div = this->readReg16(IDT8V97003_REG_RDIV_LOW);
+    uint16_t r_div = this->readReg16(IDT8V97003_REG_RDIV_LOW) & 0x3FF;
 
     if(!r_div)
         r_div = 1;

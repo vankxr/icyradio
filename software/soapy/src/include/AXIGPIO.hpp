@@ -7,8 +7,14 @@
 
 #define AXI_GPIO_NUM_INSTANCES 3
 
-#define AXI_GPIO_REG_GPIO_DATA      0x00
-#define AXI_GPIO_REG_GPIO_IN_MASK   0x04
+#define AXI_GPIO_REG_VERSION        0x00
+#define AXI_GPIO_REG_GPIO_DIR       0x04
+#define AXI_GPIO_REG_GPIO_DIR_SET   0x08
+#define AXI_GPIO_REG_GPIO_DIR_CLR   0x0C
+#define AXI_GPIO_REG_GPIO_OUT       0x10
+#define AXI_GPIO_REG_GPIO_OUT_SET   0x14
+#define AXI_GPIO_REG_GPIO_OUT_CLR   0x18
+#define AXI_GPIO_REG_GPIO_IN        0x1C
 
 class AXIGPIO: public AXIPeripheral
 {
@@ -26,12 +32,14 @@ public:
 
     AXIGPIO(void *base_address);
 
+    uint32_t getIPVersion();
+
     void setDirection(uint8_t gpio, AXIGPIO::Direction direction);
     AXIGPIO::Direction getDirection(uint8_t gpio);
     void setValue(uint8_t gpio, AXIGPIO::Value value);
-    inline void setValue(uint8_t gpo, bool value)
+    inline void setValue(uint8_t gpio, bool value)
     {
-        this->setValue(gpo, value ? AXIGPIO::Value::HIGH : AXIGPIO::Value::LOW);
+        this->setValue(gpio, value ? AXIGPIO::Value::HIGH : AXIGPIO::Value::LOW);
     }
     AXIGPIO::Value getValue(uint8_t gpio);
 

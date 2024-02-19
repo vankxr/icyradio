@@ -38,23 +38,43 @@ public:
 
     uint32_t getIPVersion();
 
-    void configClockDividers(uint32_t mclk_div, uint32_t bclk_div, uint32_t lrclk_div);
-    void configClocks(uint32_t input_freq, uint32_t mclk_freq, uint32_t bclk_freq, uint32_t lrclk_freq);
-    uint32_t autoConfigClocks(uint32_t input_freq, uint32_t mclk_freq, uint32_t samp_rate);
+    void configClockDividers(uint64_t mclk_div, uint64_t bclk_div, uint64_t lrclk_div);
+    void configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t bclk_freq, uint64_t lrclk_freq);
+    uint64_t configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t samp_rate);
 
-    void enableClocks(bool enable);
+    void enableClocks(bool enable = true);
+    inline void disableClocks()
+    {
+        this->enableClocks(false);
+    }
     bool clocksEnabled();
-    void enable(bool enable);
+    void enable(bool enable = true);
+    inline void disable()
+    {
+        this->enable(false);
+    }
     bool enabled();
-    void pause(bool pause);
+    void pause(bool pause = true);
+    inline void unpause()
+    {
+        this->pause(false);
+    }
     bool paused();
-    void enableLoopback(bool enable);
+    void enableLoopback(bool enable = true);
+    inline void disableLoopback()
+    {
+        this->enableLoopback(false);
+    }
     bool loopbackEnabled();
 
     void setNumChannels(uint8_t num_chans);
     uint8_t getNumChannels();
 
-    void enableChannel(uint8_t chan, bool enable);
+    void enableChannel(uint8_t chan, bool enable = true);
+    inline void disableChannel(uint8_t chan)
+    {
+        this->enableChannel(chan, false);
+    }
     bool channelEnabled(uint8_t chan);
 
     void setSampleSize(enum AXII2S::ChannelBitSize bit_sz);
@@ -70,4 +90,8 @@ protected:
 private:
     std::mutex mutex;
     std::function<bool()> access_allowed_fn;
+
+    uint64_t max_mclk_div;
+    uint64_t max_bclk_div;
+    uint64_t max_lrclk_div;
 };

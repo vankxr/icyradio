@@ -13,7 +13,7 @@
 #include "MappedRegion.hpp"
 #include "AXI.hpp"
 #include "AXIGPIO.hpp"
-#include "AXIQuadSPI.hpp"
+#include "AXISPI.hpp"
 #include "AXIIIC.hpp"
 #include "AXIXADC.hpp"
 #include "AXIIRQCtrl.hpp"
@@ -261,7 +261,7 @@ private:
     AXIDMAC *axi_dmac[AXI_DMAC_NUM_INSTANCES];
     AXIGPIO *axi_gpio[AXI_GPIO_NUM_INSTANCES];
     AXIIIC *axi_iic[AXI_IIC_NUM_INSTANCES];
-    AXIQuadSPI *axi_quad_spi[AXI_QUAD_SPI_NUM_INSTANCES];
+    AXISPI *axi_spi[AXI_SPI_NUM_INSTANCES];
     AXIPCIe *axi_pcie;
     AXII2S *axi_i2s;
     AXIXADC *axi_xadc;
