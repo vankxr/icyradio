@@ -13,7 +13,7 @@ on:
 
 env:
   KERNEL_ROOT: "/opt/linux"
-  KERNEL_BRANCH: "stable_20231030" # Raspberry Pi kernel branch when building for arm64
+  KERNEL_BRANCH: "stable_20240124" # Raspberry Pi kernel branch when building for arm64
 
 jobs:
   build:

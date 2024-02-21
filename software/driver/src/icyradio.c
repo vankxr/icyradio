@@ -362,7 +362,11 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         pVMA->vm_pgoff = ulOffset >> PAGE_SHIFT;
         pVMA->vm_page_prot = pgprot_noncached(pVMA->vm_page_prot);
+#if(LINUX_VERSION_CODE < KERNEL_VERSION(6, 3, 0))
         pVMA->vm_flags |= VM_IO;
+#else
+        vm_flags_set(pVMA, VM_IO);
+#endif
 
         if(io_remap_pfn_range(pVMA, pVMA->vm_start, pVMA->vm_pgoff, ulLength, pVMA->vm_page_prot))
 #endif
@@ -406,7 +410,11 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         pVMA->vm_pgoff = ulOffset >> PAGE_SHIFT;
         pVMA->vm_page_prot = pgprot_noncached(pVMA->vm_page_prot);
+#if(LINUX_VERSION_CODE < KERNEL_VERSION(6, 3, 0))
         pVMA->vm_flags |= VM_IO;
+#else
+        vm_flags_set(pVMA, VM_IO);
+#endif
 
         if(io_remap_pfn_range(pVMA, pVMA->vm_start, pVMA->vm_pgoff, ulLength, pVMA->vm_page_prot))
         {
@@ -752,7 +760,11 @@ static int __init icyradio_init(void)
 {
     int status;
 
+#if(LINUX_VERSION_CODE < KERNEL_VERSION(6, 4, 0))
     icyradio_class = class_create(THIS_MODULE, ICYRADIO_CLASS_NAME);
+#else
+    icyradio_class = class_create(ICYRADIO_CLASS_NAME);
+#endif
 
     if(IS_ERR(icyradio_class))
     {

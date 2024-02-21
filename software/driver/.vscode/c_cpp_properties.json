@@ -4,10 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/joao/linux/include",
-                "/home/joao/linux/arch/arm64/include",
-                "/home/joao/linux/arch/arm64/include/generated",
-                "/home/joao/linux/include/uapi"
+                "/home/joao/Development/linux/include",
+                "/home/joao/Development/linux/arch/arm64/include",
+                "/home/joao/Development/linux/arch/arm64/include/generated",
+                "/home/joao/Development/linux/include/uapi"
             ],
             "defines": [
                 "__KERNEL__",
