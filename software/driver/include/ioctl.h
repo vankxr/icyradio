@@ -14,6 +14,7 @@ typedef struct
 #define ICYRADIO_IOCTL_DMA_FREE     _IO('B', 66)
 #define ICYRADIO_IOCTL_IRQ_QUERY    _IOR('B', 67, uint8_t *)
 #define ICYRADIO_IOCTL_IRQ_FLUSH    _IO('B', 68)
+#define ICYRADIO_IOCTL_IRQ_NOFLUSH  _IO('B', 69)
 
 #define ICYRADIO_IOCTL_SERIAL_QUERY _IOR('B', 96, uint64_t *)
 

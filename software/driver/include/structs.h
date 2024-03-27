@@ -5,9 +5,12 @@
 #include <linux/pci.h>
 #include <linux/cdev.h>
 #include <linux/fs.h>
+#include <linux/spinlock.h>
+#include <linux/mutex.h>
 
 typedef struct
 {
+    struct mutex sMutex;
     uint32_t ulDevID;
     uint64_t ullSerialNumber;
     struct pci_dev *pPCIDev;
@@ -18,6 +21,7 @@ typedef struct
     uint32_t ulDMABufSize;
     int iNumIRQs;
     wait_queue_head_t sIRQWaitQueue;
+    spinlock_t sIRQLock;
     uint64_t ullIRQCount;
     uint8_t ubIRQFlush;
 } icyradio_dev_t;

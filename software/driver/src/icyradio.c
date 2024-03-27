@@ -7,8 +7,11 @@
 #include <linux/cdev.h>
 #include <linux/fs.h>
 #include <linux/poll.h>
+#include <linux/spinlock.h>
+#include <linux/mutex.h>
 #include "structs.h"
 #include "ioctl.h"
+#include "dna.h"
 #include "debug_macros.h"
 #include "utils.h"
 
@@ -24,14 +27,11 @@
 #define ICYRADIO_PCIE_NUM_BARS       3
 #define ICYRADIO_PCIE_BAR0_AXI_XLATE 0x40000000 // Registers, 2 MB (End at 0x401FFFFF)
 #define ICYRADIO_PCIE_BAR1_AXI_XLATE 0x20000000 // DDR3, 512 MB (End at 0x3FFFFFFF)
-#define ICYRADIO_PCIE_BAR2_AXI_XLATE 0x00000000 // SPI Flash & BRAM, 32 MB (End at 0x01FFFFFF)
-
-#define ICYRADIO_AXI_DNA_BASE        0x40022000
-#define ICYRADIO_AXI_DNA_OFFSET      (ICYRADIO_AXI_DNA_BASE - ICYRADIO_PCIE_BAR0_AXI_XLATE)
-
+#define ICYRADIO_PCIE_BAR2_AXI_XLATE 0x00000000 // SPI Flash + BRAM + DNA (ROM), 32 MB (End at 0x01FFFFFF)
 
 static dev_t icyradio_dev_num;
 static struct class *icyradio_class = NULL;
+static struct mutex icyradio_devs_mutex;
 static icyradio_dev_t *icyradio_devs[ICYRADIO_MAX_DEVICES] = { NULL };
 static const uint32_t icyradio_pci_bar_axi_xlate[ICYRADIO_PCIE_NUM_BARS] = {
     ICYRADIO_PCIE_BAR0_AXI_XLATE,
@@ -55,8 +55,11 @@ static const struct pci_device_id icyradio_pci_tbl[] = {
 static irqreturn_t icyradio_irq_handler(int iIRQ, void *pArg)
 {
     icyradio_dev_t *pDev = (icyradio_dev_t *)pArg;
+    unsigned long ulIRQFlags;
 
+    spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
     pDev->ullIRQCount++;
+    spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
     // DBGPRINTLN_CTX("IRQ for device %u Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
 
@@ -88,10 +91,23 @@ static unsigned int icyradio_poll(struct file *pFile, poll_table *pPollTable)
 {
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
     unsigned int ulMask = 0;
+    unsigned long ulIRQFlags;
+
+    spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
 
     // DBGPRINTLN_CTX("Polling device %u IRQ Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
 
     poll_wait(pFile, &pDev->sIRQWaitQueue, pPollTable);
+
+    if(pDev->ubIRQFlush)
+        ulMask |= POLLHUP;
+
+    if(ulMask)
+    {
+        spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
+
+        return ulMask;
+    }
 
     if(pDev->ullIRQCount)
     {
@@ -100,12 +116,7 @@ static unsigned int icyradio_poll(struct file *pFile, poll_table *pPollTable)
         ulMask |= POLLIN | POLLRDNORM;
     }
 
-    if(pDev->ubIRQFlush)
-    {
-        pDev->ubIRQFlush = 0;
-
-        ulMask |= POLLHUP;
-    }
+    spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
     return ulMask;
 }
@@ -172,7 +183,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             DBGPRINTLN_CTX("Allocating DMA buffer of size 0x%08X", (uint32_t)ullSize);
 
-            pVirtAddr = dma_alloc_coherent(&pDev->pPCIDev->dev, (uint32_t)ullSize, &ulPhysAddr, GFP_USER | GFP_ATOMIC);
+            pVirtAddr = dma_alloc_coherent(&pDev->pPCIDev->dev, (uint32_t)ullSize, &ulPhysAddr, GFP_USER | GFP_ATOMIC | GFP_DMA);
 
             if(!pVirtAddr)
             {
@@ -268,6 +279,8 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
         break;
         case ICYRADIO_IOCTL_IRQ_FLUSH:
         {
+            unsigned long ulIRQFlags;
+
             if(pDev->iNumIRQs <= 0)
             {
                 DBGPRINTLN_CTX("No IRQs allocated, aborting");
@@ -275,16 +288,53 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
                 return -ENODEV;
             }
 
+            spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
+
             if(pDev->ubIRQFlush)
             {
                 DBGPRINTLN_CTX("IRQ flush already pending, aborting");
 
+                spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
+
                 return -EBUSY;
             }
 
-            DBGPRINTLN_CTX("Set IRQ flush pending for device %u and waking up wait queue", pDev->ulDevID);
+            DBGPRINTLN_CTX("Set IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
 
             pDev->ubIRQFlush = 1;
+
+            spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
+
+            wake_up_interruptible(&pDev->sIRQWaitQueue);
+        }
+        break;
+        case ICYRADIO_IOCTL_IRQ_NOFLUSH:
+        {
+            unsigned long ulIRQFlags;
+
+            if(pDev->iNumIRQs <= 0)
+            {
+                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+
+                return -ENODEV;
+            }
+
+            spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
+
+            if(!pDev->ubIRQFlush)
+            {
+                DBGPRINTLN_CTX("IRQ flush already not pending, aborting");
+
+                spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
+
+                return -EBUSY;
+            }
+
+            DBGPRINTLN_CTX("Unset IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
+
+            pDev->ubIRQFlush = 0;
+
+            spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
             wake_up_interruptible(&pDev->sIRQWaitQueue);
         }
@@ -429,6 +479,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 static int icyradio_open(struct inode *pInode, struct file *pFile)
 {
     icyradio_dev_t *pDev = container_of(pInode->i_cdev, icyradio_dev_t, sCharDev);
+    unsigned long ulIRQFlags;
 
     if(!pDev)
     {
@@ -439,9 +490,18 @@ static int icyradio_open(struct inode *pInode, struct file *pFile)
 
     DBGPRINTLN_CTX("Opening device %u", pDev->ulDevID);
 
+    if(mutex_lock_interruptible(&pDev->sMutex))
+    {
+        DBGPRINTLN_CTX("Can't lock device mutex, aborting");
+
+        return -EINTR;
+    }
+
     if(pDev->pFile)
     {
         DBGPRINTLN_CTX("Device file already open, aborting");
+
+        mutex_unlock(&pDev->sMutex);
 
         return -EBUSY;
     }
@@ -451,8 +511,14 @@ static int icyradio_open(struct inode *pInode, struct file *pFile)
 
     init_waitqueue_head(&pDev->sIRQWaitQueue);
 
+    spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
+
     pDev->ullIRQCount = 0;
     pDev->ubIRQFlush = 0;
+
+    spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
+
+    mutex_unlock(&pDev->sMutex);
 
     return 0;
 }
@@ -462,8 +528,20 @@ static int icyradio_release(struct inode *pInode, struct file *pFile)
 
     DBGPRINTLN_CTX("Releasing device %u", pDev->ulDevID);
 
+    if(mutex_lock_interruptible(&pDev->sMutex))
+    {
+        DBGPRINTLN_CTX("Can't lock device mutex, aborting");
+
+        return -EINTR;
+    }
+
+    if(!pDev->pFile)
+        DBGPRINTLN_CTX("Releasing device while not open");
+
     pDev->pFile = NULL;
     pFile->private_data = NULL;
+
+    mutex_unlock(&pDev->sMutex);
 
     return 0;
 }
@@ -487,6 +565,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     icyradio_dev_t *pDev;
     struct device *pUDevDevice;
     void *pBAR;
+    void *pDNABase;
+    char szDesignID[9];
+    uint32_t ulDesignVersion;
     uint32_t ulTimeout;
 
     DBGPRINTLN_CTX("Probing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
@@ -498,6 +579,14 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return -EINVAL;
     }
 
+    // Lock the device table mutex
+    if(mutex_lock_interruptible(&icyradio_devs_mutex))
+    {
+        DBGPRINTLN_CTX("Can't lock device table mutex, aborting");
+
+        return -EINTR;
+    }
+
     // Find a free device ID
     while(ulDevID < ICYRADIO_MAX_DEVICES && icyradio_devs[ulDevID])
         ulDevID++;
@@ -505,6 +594,8 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     if(ulDevID == ICYRADIO_MAX_DEVICES)
     {
         DBGPRINTLN_CTX("Too many IcyRadio devices, aborting");
+
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -ENOMEM;
     }
@@ -521,6 +612,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return -ENOMEM;
     }
 
+    mutex_init(&pDev->sMutex);
+    mutex_lock(&pDev->sMutex); // Use non-interruptible lock since it should never block
+
     pDev->ulDevID = ulDevID;
     pDev->pPCIDev = pPCIDev;
 
@@ -529,7 +623,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     {
         DBGPRINTLN_CTX("Can't enable PCI device, aborting");
 
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -EFAULT;
     }
@@ -551,29 +647,74 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         DBGPRINTLN_CTX("Can't request PCI regions, aborting");
 
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -EFAULT;
     }
 
-    // Query the serial number (FPGA DNA)
-    pBAR = pci_iomap(pPCIDev, 0, 0);
+    // Query the DNA (ROM) info
+    pBAR = pci_iomap(pPCIDev, 2, 0); // Map BAR #2 (ROM)
 
     if(!pBAR)
     {
-        DBGPRINTLN_CTX("Can't map BAR #0, aborting");
+        DBGPRINTLN_CTX("Can't map BAR #2, aborting");
 
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -EFAULT;
     }
 
-    DBGPRINTLN_CTX("BAR0 mapped at %p", pBAR);
+    pDNABase = (void *)((uintptr_t)pBAR + (AXI_DNA_BASE - ICYRADIO_PCIE_BAR2_AXI_XLATE));
+
+    icyradio_axi_dna_get_design_id(pDNABase, szDesignID);
+
+    DBGPRINTLN_CTX("Device design ID: %s", szDesignID);
+
+    if(strcmp(szDesignID, "ICYRADIO"))
+    {
+        DBGPRINTLN_CTX("Not an IcyRadio device, aborting");
+
+        pci_iounmap(pPCIDev, pBAR);
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
+        kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
+
+        return -EINVAL;
+    }
+
+    ulDesignVersion = icyradio_axi_dna_get_design_version(pDNABase);
+
+    DBGPRINTLN_CTX("Device design version: v%u.%u.%u", AXI_DNA_DESIGN_VERSION_MAJOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_MINOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_PATCH(ulDesignVersion));
+
+    if(ulDesignVersion < AXI_DNA_DESIGN_VERSION(1, 0, 0))
+    {
+        DBGPRINTLN_CTX("Unsupported design version, aborting");
+
+        pci_iounmap(pPCIDev, pBAR);
+        pci_release_regions(pPCIDev);
+        pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
+        kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
+
+        return -EINVAL;
+    }
+
+    DBGPRINTLN_CTX("Device info: 0x%08X", icyradio_axi_dna_get_device_info(pDNABase));
+    DBGPRINTLN_CTX("Device User Access: 0x%08X", icyradio_axi_dna_get_usr_access(pDNABase));
+    DBGPRINTLN_CTX("Device EFUSE USR: 0x%08X", icyradio_axi_dna_get_efuse_usr(pDNABase));
 
     ulTimeout = 100;
-    while(--ulTimeout && !(ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x04)) & BIT(31))) // Wait for the DNA to be ready
+
+    while(--ulTimeout && !icyradio_axi_dna_get_dna_ready(pDNABase)) // Wait for the DNA to be ready
         udelay(10);
 
     if(!ulTimeout)
@@ -583,17 +724,20 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         pci_iounmap(pPCIDev, pBAR);
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -EFAULT;
     }
 
-    pDev->ullSerialNumber = (uint64_t)(ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x04)) & 0x01FFFFFF) << 32;
-    pDev->ullSerialNumber |= (uint64_t)ioread32((void *)((uintptr_t)pBAR + ICYRADIO_AXI_DNA_OFFSET + 0x00));
+    pDev->ullSerialNumber = icyradio_axi_dna_get_dna(pDNABase);
 
     DBGPRINTLN_CTX("Device serial number: %015llX", pDev->ullSerialNumber);
 
+    pDNABase = NULL;
     pci_iounmap(pPCIDev, pBAR);
+    pBAR = NULL;
 
     // Set DMA mask
     if(dma_set_mask_and_coherent(&pPCIDev->dev, DMA_BIT_MASK(48)))
@@ -606,7 +750,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
+            mutex_unlock(&pDev->sMutex);
             kfree(pDev);
+            mutex_unlock(&icyradio_devs_mutex);
 
             return -EFAULT;
         }
@@ -629,12 +775,16 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -EFAULT;
     }
 
     DBGPRINTLN_CTX("Allocated %d MSI-X vectors", pDev->iNumIRQs);
+
+    spin_lock_init(&pDev->sIRQLock);
 
     for(int i = 0; i < pDev->iNumIRQs; i++)
     {
@@ -652,7 +802,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
             pci_free_irq_vectors(pPCIDev);
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
+            mutex_unlock(&pDev->sMutex);
             kfree(pDev);
+            mutex_unlock(&icyradio_devs_mutex);
 
             return -EFAULT;
         }
@@ -676,7 +828,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         pci_free_irq_vectors(pPCIDev);
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return -ENODEV;
     }
@@ -695,7 +849,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         pci_free_irq_vectors(pPCIDev);
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
+        mutex_unlock(&pDev->sMutex);
         kfree(pDev);
+        mutex_unlock(&icyradio_devs_mutex);
 
         return PTR_ERR(pUDevDevice);
     }
@@ -708,6 +864,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     DBGPRINTLN_CTX("IcyRadio device %u probed", ulDevID);
 
+    mutex_unlock(&pDev->sMutex);
+    mutex_unlock(&icyradio_devs_mutex);
+
     return 0;
 }
 static void icyradio_pci_remove(struct pci_dev *pPCIDev)
@@ -715,30 +874,55 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
     icyradio_dev_t *pDev = pci_get_drvdata(pPCIDev);
     int iDevID = -1;
 
+    DBGPRINTLN_CTX("Removing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
+
+    if(pPCIDev->vendor != ICYRADIO_PCI_VENDOR_ID || pPCIDev->device != ICYRADIO_PCI_DEVICE_ID)
+    {
+        DBGPRINTLN_CTX("Not an IcyRadio device, aborting");
+
+        return;
+    }
+
     if(pDev)
     {
-        iDevID = pDev->ulDevID;
-
-        if(pDev->pDMAVirtAddr)
-            dmam_free_coherent(&pPCIDev->dev, pDev->ulDMABufSize, pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+        DBGPRINTLN_CTX("Device ID is %u", pDev->ulDevID);
 
         if(pDev->pPCIDev != pPCIDev)
             DBGPRINTLN_CTX("PCI Device ptr mismatch");
 
+        iDevID = pDev->ulDevID;
+
+        mutex_lock(&pDev->sMutex); // Use non-interruptible lock since we can't return an error from here
+
+        if(pDev->pFile)
+            DBGPRINTLN_CTX("Device file still open, processes may be using it");
+
+        // Free IRQs first so that we don't try to access the device in the ISR after it's removed
+        for(int i = 0; i < pDev->iNumIRQs; i++)
+            free_irq(pci_irq_vector(pPCIDev, i), pDev);
+
+        if(pDev->pDMAVirtAddr)
+            dmam_free_coherent(&pPCIDev->dev, pDev->ulDMABufSize, pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+
         device_destroy(icyradio_class, MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + pDev->ulDevID));
         cdev_del(&pDev->sCharDev);
 
+        mutex_lock(&icyradio_devs_mutex);
         icyradio_devs[pDev->ulDevID] = NULL;
+        mutex_unlock(&icyradio_devs_mutex);
+
+        mutex_unlock(&pDev->sMutex);
 
         kfree(pDev);
     }
     else
     {
         DBGPRINTLN_CTX("Can't find IcyRadio device struct");
-    }
 
-    for(int i = 0; i < pDev->iNumIRQs; i++)
-        free_irq(pci_irq_vector(pPCIDev, i), pDev);
+        // Free IRQs anway
+        for(int i = 0; i < pDev->iNumIRQs; i++)
+            free_irq(pci_irq_vector(pPCIDev, i), pDev);
+    }
 
     pci_free_irq_vectors(pPCIDev);
     pci_clear_master(pPCIDev);
@@ -759,6 +943,8 @@ static struct pci_driver icyradio_pci_driver = {
 static int __init icyradio_init(void)
 {
     int status;
+
+    mutex_init(&icyradio_devs_mutex);
 
 #if(LINUX_VERSION_CODE < KERNEL_VERSION(6, 4, 0))
     icyradio_class = class_create(THIS_MODULE, ICYRADIO_CLASS_NAME);
@@ -781,7 +967,7 @@ static int __init icyradio_init(void)
 
         class_destroy(icyradio_class);
 
-        return -1;
+        return status;
     }
 
     DBGPRINTLN_CTX("Allocated major number %d, minor numbers %d-%d", MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ICYRADIO_MAX_DEVICES - 1);
