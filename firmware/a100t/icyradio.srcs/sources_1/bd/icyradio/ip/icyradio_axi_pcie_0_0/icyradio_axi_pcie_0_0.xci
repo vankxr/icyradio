@@ -1,0 +1,1733 @@
+{
+  "schema": "xilinx.com:schema:json_instance:1.0",
+  "ip_inst": {
+    "xci_name": "icyradio_axi_pcie_0_0",
+    "cell_name": "axi_pcie_0",
+    "component_reference": "xilinx.com:ip:axi_pcie:2.9",
+    "ip_revision": "10",
+    "gen_directory": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_pcie_0_0",
+    "parameters": {
+      "component_parameters": {
+        "Component_Name": [ { "value": "icyradio_axi_pcie_0_0", "resolve_type": "user", "usage": "all" } ],
+        "INCLUDE_RC": [ { "value": "PCI_Express_Endpoint_device", "resolve_type": "user", "usage": "all" } ],
+        "REF_CLK_FREQ": [ { "value": "100_MHz", "resolve_type": "user", "usage": "all" } ],
+        "SLOT_CLOCK_CONFIG": [ { "value": "true", "resolve_type": "user", "usage": "all" } ],
+        "PCIE_USE_MODE": [ { "value": "GES_and_Production", "resolve_type": "user", "usage": "all" } ],
+        "NO_OF_LANES": [ { "value": "X2", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "MAX_LINK_SPEED": [ { "value": "5.0_GT/s", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "VENDOR_ID": [ { "value": "0x10EE", "resolve_type": "user", "usage": "all" } ],
+        "DEVICE_ID": [ { "value": "0x7021", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "REV_ID": [ { "value": "0x00", "resolve_type": "user", "usage": "all" } ],
+        "SUBSYSTEM_VENDOR_ID": [ { "value": "0x10EE", "resolve_type": "user", "usage": "all" } ],
+        "SUBSYSTEM_ID": [ { "value": "0x0007", "resolve_type": "user", "usage": "all" } ],
+        "ENABLE_CLASS_CODE": [ { "value": "true", "resolve_type": "user", "usage": "all" } ],
+        "CLASS_CODE": [ { "value": "0x0D1000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BASE_CLASS_MENU": [ { "value": "Wireless_controller", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "SUB_CLASS_INTERFACE_MENU": [ { "value": "RF_controller", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR0_ENABLED": [ { "value": "true", "resolve_type": "user", "usage": "all" } ],
+        "BAR1_ENABLED": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR2_ENABLED": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR0_TYPE": [ { "value": "Memory", "resolve_type": "user", "usage": "all" } ],
+        "BAR1_TYPE": [ { "value": "Memory", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR2_TYPE": [ { "value": "Memory", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR0_SCALE": [ { "value": "Megabytes", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR1_SCALE": [ { "value": "Megabytes", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR2_SCALE": [ { "value": "Megabytes", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR0_SIZE": [ { "value": "2", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "BAR1_SIZE": [ { "value": "512", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "BAR2_SIZE": [ { "value": "32", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_0": [ { "value": "0x40000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_1": [ { "value": "0x20000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_2": [ { "value": "0x00000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_1_SEC": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_0_SEC": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "PCIEBAR2AXIBAR_2_SEC": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "INTERRUPT_PIN": [ { "value": "false", "resolve_type": "user", "usage": "all" } ],
+        "MSI_DECODE_ENABLED": [ { "value": "true", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "NUM_MSI_REQ": [ { "value": "5", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "INT_FIFO_DEPTH": [ { "value": "16", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "COMP_TIMEOUT": [ { "value": "50us", "resolve_type": "user", "usage": "all" } ],
+        "INCLUDE_BAROFFSET_REG": [ { "value": "true", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_0": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_1": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_2": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_3": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_4": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_AS_5": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_0": [ { "value": "0x50000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_1": [ { "value": "0x58000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_2": [ { "value": "0x60000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_3": [ { "value": "0x68000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_4": [ { "value": "0x70000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_5": [ { "value": "0x78000000", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_0": [ { "value": "0x57FFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_1": [ { "value": "0x5FFFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_2": [ { "value": "0x67FFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_3": [ { "value": "0x6FFFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_4": [ { "value": "0x77FFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_HIGHADDR_5": [ { "value": "0x7FFFFFFF", "value_src": "propagated", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_0": [ { "value": "0x00000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_1": [ { "value": "0x00000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_2": [ { "value": "0x00000000", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_3": [ { "value": "0x00000000", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_4": [ { "value": "0x00000000", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR2PCIEBAR_5": [ { "value": "0x00000000", "resolve_type": "user", "usage": "all" } ],
+        "BASEADDR": [ { "value": "0x00001000", "resolve_type": "user", "usage": "all" } ],
+        "HIGHADDR": [ { "value": "0x4000AFFF", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "S_AXI_ID_WIDTH": [ { "value": "3", "value_src": "propagated", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "S_AXI_ADDR_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "S_AXI_DATA_WIDTH": [ { "value": "64", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "M_AXI_ADDR_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "M_AXI_DATA_WIDTH": [ { "value": "64", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "S_AXI_SUPPORTS_NARROW_BURST": [ { "value": "true", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "BAR_64BIT": [ { "value": "false", "value_src": "user", "resolve_type": "user", "usage": "all" } ],
+        "XLNX_REF_BOARD": [ { "value": "None", "resolve_type": "user", "usage": "all" } ],
+        "PCIE_BLK_LOCN": [ { "value": "X0Y0", "resolve_type": "user", "usage": "all" } ],
+        "AXIBAR_NUM": [ { "value": "6", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "en_ext_clk": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "en_ext_gt_common": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "en_ext_ch_gt_drp": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "shared_logic_in_core": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "en_transceiver_status_ports": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "en_ext_pipe_interface": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "axi_aclk_loopback": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "no_slv_err": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "rp_bar_hide": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "enable_jtag_dbg": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "c_axibar_chk_slv_err": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ],
+        "reduce_oob_freq": [ { "value": "false", "resolve_type": "user", "format": "bool", "usage": "all" } ]
+      },
+      "model_parameters": {
+        "C_FAMILY": [ { "value": "artix7", "resolve_type": "generated", "usage": "all" } ],
+        "C_INSTANCE": [ { "value": "icyradio_axi_pcie_0_0", "resolve_type": "generated", "usage": "all" } ],
+        "C_S_AXI_ID_WIDTH": [ { "value": "3", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_S_AXI_ADDR_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_S_AXI_DATA_WIDTH": [ { "value": "64", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_M_AXI_ADDR_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_M_AXI_DATA_WIDTH": [ { "value": "64", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_NO_OF_LANES": [ { "value": "2", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_MAX_LINK_SPEED": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIE_USE_MODE": [ { "value": "1.0", "resolve_type": "generated", "usage": "all" } ],
+        "C_DEVICE_ID": [ { "value": "0x7021", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_VENDOR_ID": [ { "value": "0x10EE", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_CLASS_CODE": [ { "value": "0x0D1000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_REF_CLK_FREQ": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_REV_ID": [ { "value": "0x00", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_SUBSYSTEM_ID": [ { "value": "0x0007", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_SUBSYSTEM_VENDOR_ID": [ { "value": "0x10EE", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_PCIE_CAP_SLOT_IMPLEMENTED": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_SLOT_CLOCK_CONFIG": [ { "value": "TRUE", "resolve_type": "generated", "usage": "all" } ],
+        "C_MSI_DECODE_ENABLE": [ { "value": "TRUE", "resolve_type": "generated", "usage": "all" } ],
+        "C_INT_FIFO_DEPTH": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_NUM_MSI_REQ": [ { "value": "5", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_INTERRUPT_PIN": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_COMP_TIMEOUT": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_INCLUDE_RC": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_S_AXI_SUPPORTS_NARROW_BURST": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_INCLUDE_BAROFFSET_REG": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_BASEADDR": [ { "value": "0x00001000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_HIGHADDR": [ { "value": "0x4000AFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_NUM": [ { "value": "6", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_0": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_1": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_2": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_3": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_4": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR2PCIEBAR_5": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_AS_0": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_AS_1": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_AS_2": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_AS_3": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_AS_4": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_AS_5": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_AXIBAR_0": [ { "value": "0x50000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_0": [ { "value": "0x57FFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_1": [ { "value": "0x58000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_1": [ { "value": "0x5FFFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_2": [ { "value": "0x60000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_2": [ { "value": "0x67FFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_3": [ { "value": "0x68000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_3": [ { "value": "0x6FFFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_4": [ { "value": "0x70000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_4": [ { "value": "0x77FFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_5": [ { "value": "0x78000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_AXIBAR_HIGHADDR_5": [ { "value": "0x7FFFFFFF", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_PCIEBAR_NUM": [ { "value": "3", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR_AS": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR_LEN_0": [ { "value": "21", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_0": [ { "value": "0x40000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_0_SEC": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR_LEN_1": [ { "value": "29", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_1": [ { "value": "0x20000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_1_SEC": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR_LEN_2": [ { "value": "25", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_2": [ { "value": "0x00000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_PCIEBAR2AXIBAR_2_SEC": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_PCIE_BLK_LOCN": [ { "value": "0", "resolve_type": "generated", "usage": "all" } ],
+        "C_XLNX_REF_BOARD": [ { "value": "NONE", "resolve_type": "generated", "usage": "all" } ],
+        "PCIE_EXT_CLK": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "PCIE_EXT_GT_COMMON": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "EXT_CH_GT_DRP": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "SHARED_LOGIC_IN_CORE": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "TRANSCEIVER_CTRL_STATUS_PORTS": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "EXT_PIPE_INTERFACE": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "C_DEVICE": [ { "value": "xc7a100t", "resolve_type": "generated", "usage": "all" } ],
+        "C_SPEED": [ { "value": "-2", "resolve_type": "generated", "usage": "all" } ],
+        "AXI_ACLK_LOOPBACK": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "NO_SLV_ERR": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "C_RP_BAR_HIDE": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "ENABLE_JTAG_DBG": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "C_AXIBAR_CHK_SLV_ERR": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ],
+        "REDUCE_OOB_FREQ": [ { "value": "FALSE", "resolve_type": "generated", "usage": "all" } ]
+      },
+      "project_parameters": {
+        "ARCHITECTURE": [ { "value": "artix7" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BOARD_CONNECTIONS": [ { "value": "" } ],
+        "DEVICE": [ { "value": "xc7a100t" } ],
+        "PACKAGE": [ { "value": "fgg484" } ],
+        "PREFHDL": [ { "value": "VERILOG" } ],
+        "SILICON_REVISION": [ { "value": "" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
+        "SPEEDGRADE": [ { "value": "-2" } ],
+        "STATIC_POWER": [ { "value": "" } ],
+        "TEMPERATURE_GRADE": [ { "value": "" } ]
+      },
+      "runtime_parameters": {
+        "IPCONTEXT": [ { "value": "IP_Integrator" } ],
+        "IPREVISION": [ { "value": "10" } ],
+        "MANAGED": [ { "value": "TRUE" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_pcie_0_0" } ],
+        "SELECTEDSIMMODEL": [ { "value": "" } ],
+        "SHAREDDIR": [ { "value": "../../ipshared" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
+        "SYNTHESISFLOW": [ { "value": "OUT_OF_CONTEXT" } ]
+      }
+    },
+    "boundary": {
+      "ports": {
+        "axi_aresetn": [ { "direction": "in" } ],
+        "user_link_up": [ { "direction": "out" } ],
+        "axi_aclk_out": [ { "direction": "out" } ],
+        "axi_ctl_aclk_out": [ { "direction": "out" } ],
+        "mmcm_lock": [ { "direction": "out", "driver_value": "0x1" } ],
+        "interrupt_out": [ { "direction": "out" } ],
+        "INTX_MSI_Request": [ { "direction": "in", "driver_value": "0" } ],
+        "INTX_MSI_Grant": [ { "direction": "out" } ],
+        "MSI_enable": [ { "direction": "out" } ],
+        "MSI_Vector_Num": [ { "direction": "in", "size_left": "4", "size_right": "0", "driver_value": "00000" } ],
+        "MSI_Vector_Width": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "s_axi_awid": [ { "direction": "in", "size_left": "2", "size_right": "0", "driver_value": "0x0" } ],
+        "s_axi_awaddr": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0x0000" } ],
+        "s_axi_awregion": [ { "direction": "in", "size_left": "3", "size_right": "0", "driver_value": "0x0" } ],
+        "s_axi_awlen": [ { "direction": "in", "size_left": "7", "size_right": "0", "driver_value": "0x00" } ],
+        "s_axi_awsize": [ { "direction": "in", "size_left": "2", "size_right": "0", "driver_value": "000" } ],
+        "s_axi_awburst": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "00" } ],
+        "s_axi_awvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_awready": [ { "direction": "out" } ],
+        "s_axi_wdata": [ { "direction": "in", "size_left": "63", "size_right": "0", "driver_value": "0x0000000000000000" } ],
+        "s_axi_wstrb": [ { "direction": "in", "size_left": "7", "size_right": "0", "driver_value": "0x00" } ],
+        "s_axi_wlast": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_wvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_wready": [ { "direction": "out" } ],
+        "s_axi_bid": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "s_axi_bresp": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "s_axi_bvalid": [ { "direction": "out" } ],
+        "s_axi_bready": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_arid": [ { "direction": "in", "size_left": "2", "size_right": "0", "driver_value": "0x0" } ],
+        "s_axi_araddr": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0x00000000" } ],
+        "s_axi_arregion": [ { "direction": "in", "size_left": "3", "size_right": "0", "driver_value": "0x0" } ],
+        "s_axi_arlen": [ { "direction": "in", "size_left": "7", "size_right": "0", "driver_value": "0x00" } ],
+        "s_axi_arsize": [ { "direction": "in", "size_left": "2", "size_right": "0", "driver_value": "000" } ],
+        "s_axi_arburst": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "00" } ],
+        "s_axi_arvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_arready": [ { "direction": "out" } ],
+        "s_axi_rid": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "s_axi_rdata": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
+        "s_axi_rresp": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "s_axi_rlast": [ { "direction": "out" } ],
+        "s_axi_rvalid": [ { "direction": "out" } ],
+        "s_axi_rready": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_awaddr": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "m_axi_awlen": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
+        "m_axi_awsize": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "m_axi_awburst": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "m_axi_awprot": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "m_axi_awvalid": [ { "direction": "out" } ],
+        "m_axi_awready": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_awlock": [ { "direction": "out" } ],
+        "m_axi_awcache": [ { "direction": "out", "size_left": "3", "size_right": "0" } ],
+        "m_axi_wdata": [ { "direction": "out", "size_left": "63", "size_right": "0" } ],
+        "m_axi_wstrb": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
+        "m_axi_wlast": [ { "direction": "out" } ],
+        "m_axi_wvalid": [ { "direction": "out" } ],
+        "m_axi_wready": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_bresp": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "00" } ],
+        "m_axi_bvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_bready": [ { "direction": "out" } ],
+        "m_axi_araddr": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "m_axi_arlen": [ { "direction": "out", "size_left": "7", "size_right": "0" } ],
+        "m_axi_arsize": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "m_axi_arburst": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "m_axi_arprot": [ { "direction": "out", "size_left": "2", "size_right": "0" } ],
+        "m_axi_arvalid": [ { "direction": "out" } ],
+        "m_axi_arready": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_arlock": [ { "direction": "out" } ],
+        "m_axi_arcache": [ { "direction": "out", "size_left": "3", "size_right": "0" } ],
+        "m_axi_rdata": [ { "direction": "in", "size_left": "63", "size_right": "0", "driver_value": "0x0000000000000000" } ],
+        "m_axi_rresp": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "00" } ],
+        "m_axi_rlast": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_rvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "m_axi_rready": [ { "direction": "out" } ],
+        "pci_exp_txp": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "pci_exp_txn": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "pci_exp_rxp": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "0" } ],
+        "pci_exp_rxn": [ { "direction": "in", "size_left": "1", "size_right": "0", "driver_value": "0" } ],
+        "REFCLK": [ { "direction": "in" } ],
+        "s_axi_ctl_awaddr": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0x00000000" } ],
+        "s_axi_ctl_awvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_ctl_awready": [ { "direction": "out" } ],
+        "s_axi_ctl_wdata": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0x00000000" } ],
+        "s_axi_ctl_wstrb": [ { "direction": "in", "size_left": "3", "size_right": "0", "driver_value": "0x0" } ],
+        "s_axi_ctl_wvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_ctl_wready": [ { "direction": "out" } ],
+        "s_axi_ctl_bresp": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "s_axi_ctl_bvalid": [ { "direction": "out" } ],
+        "s_axi_ctl_bready": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_ctl_araddr": [ { "direction": "in", "size_left": "31", "size_right": "0", "driver_value": "0x00000000" } ],
+        "s_axi_ctl_arvalid": [ { "direction": "in", "driver_value": "0" } ],
+        "s_axi_ctl_arready": [ { "direction": "out" } ],
+        "s_axi_ctl_rdata": [ { "direction": "out", "size_left": "31", "size_right": "0" } ],
+        "s_axi_ctl_rresp": [ { "direction": "out", "size_left": "1", "size_right": "0" } ],
+        "s_axi_ctl_rvalid": [ { "direction": "out" } ],
+        "s_axi_ctl_rready": [ { "direction": "in", "driver_value": "0" } ]
+      },
+      "interfaces": {
+        "M_AXI": {
+          "vlnv": "xilinx.com:interface:aximm:1.0",
+          "abstraction_type": "xilinx.com:interface:aximm_rtl:1.0",
+          "mode": "master",
+          "address_space_ref": "M_AXI",
+          "parameters": {
+            "NUM_READ_OUTSTANDING": [ { "value": "4", "value_src": "constant", "value_permission": "bd", "format": "long", "usage": "all" } ],
+            "NUM_WRITE_OUTSTANDING": [ { "value": "4", "value_src": "constant", "value_permission": "bd", "format": "long", "usage": "all" } ],
+            "HAS_BURST": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "format": "long", "usage": "all" } ],
+            "HAS_BURST.VALUE_SRC": [ { "value": "CONSTANT", "value_src": "constant", "value_permission": "bd", "usage": "all" } ],
+            "DATA_WIDTH": [ { "value": "64", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PROTOCOL": [ { "value": "AXI4", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "FREQ_HZ": [ { "value": "125000000", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ID_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ADDR_WIDTH": [ { "value": "32", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "AWUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ARUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "BUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "READ_WRITE_MODE": [ { "value": "READ_WRITE", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_LOCK": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_PROT": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_CACHE": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_QOS": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_REGION": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_WSTRB": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_BRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_RRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "SUPPORTS_NARROW_BURST": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "MAX_BURST_LENGTH": [ { "value": "256", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_axi_pcie_0_0_axi_aclk_out", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_READ_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_WRITE_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "ARADDR": [ { "physical_name": "m_axi_araddr" } ],
+            "ARBURST": [ { "physical_name": "m_axi_arburst" } ],
+            "ARCACHE": [ { "physical_name": "m_axi_arcache" } ],
+            "ARLEN": [ { "physical_name": "m_axi_arlen" } ],
+            "ARLOCK": [ { "physical_name": "m_axi_arlock" } ],
+            "ARPROT": [ { "physical_name": "m_axi_arprot" } ],
+            "ARREADY": [ { "physical_name": "m_axi_arready" } ],
+            "ARSIZE": [ { "physical_name": "m_axi_arsize" } ],
+            "ARVALID": [ { "physical_name": "m_axi_arvalid" } ],
+            "AWADDR": [ { "physical_name": "m_axi_awaddr" } ],
+            "AWBURST": [ { "physical_name": "m_axi_awburst" } ],
+            "AWCACHE": [ { "physical_name": "m_axi_awcache" } ],
+            "AWLEN": [ { "physical_name": "m_axi_awlen" } ],
+            "AWLOCK": [ { "physical_name": "m_axi_awlock" } ],
+            "AWPROT": [ { "physical_name": "m_axi_awprot" } ],
+            "AWREADY": [ { "physical_name": "m_axi_awready" } ],
+            "AWSIZE": [ { "physical_name": "m_axi_awsize" } ],
+            "AWVALID": [ { "physical_name": "m_axi_awvalid" } ],
+            "BREADY": [ { "physical_name": "m_axi_bready" } ],
+            "BRESP": [ { "physical_name": "m_axi_bresp" } ],
+            "BVALID": [ { "physical_name": "m_axi_bvalid" } ],
+            "RDATA": [ { "physical_name": "m_axi_rdata" } ],
+            "RLAST": [ { "physical_name": "m_axi_rlast" } ],
+            "RREADY": [ { "physical_name": "m_axi_rready" } ],
+            "RRESP": [ { "physical_name": "m_axi_rresp" } ],
+            "RVALID": [ { "physical_name": "m_axi_rvalid" } ],
+            "WDATA": [ { "physical_name": "m_axi_wdata" } ],
+            "WLAST": [ { "physical_name": "m_axi_wlast" } ],
+            "WREADY": [ { "physical_name": "m_axi_wready" } ],
+            "WSTRB": [ { "physical_name": "m_axi_wstrb" } ],
+            "WVALID": [ { "physical_name": "m_axi_wvalid" } ]
+          }
+        },
+        "S_AXI": {
+          "vlnv": "xilinx.com:interface:aximm:1.0",
+          "abstraction_type": "xilinx.com:interface:aximm_rtl:1.0",
+          "mode": "slave",
+          "memory_map_ref": "S_AXI",
+          "parameters": {
+            "NUM_READ_OUTSTANDING": [ { "value": "8", "value_src": "constant", "value_permission": "bd", "format": "long", "usage": "all" } ],
+            "NUM_WRITE_OUTSTANDING": [ { "value": "2", "value_src": "constant", "value_permission": "bd", "format": "long", "usage": "all" } ],
+            "SUPPORTS_NARROW_BURST": [ { "value": "0", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+            "DATA_WIDTH": [ { "value": "64", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PROTOCOL": [ { "value": "AXI4", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "FREQ_HZ": [ { "value": "125000000", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ID_WIDTH": [ { "value": "3", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ADDR_WIDTH": [ { "value": "32", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "AWUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ARUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "BUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "READ_WRITE_MODE": [ { "value": "READ_WRITE", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_BURST": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_LOCK": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_PROT": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_CACHE": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_QOS": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_REGION": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_WSTRB": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_BRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_RRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "MAX_BURST_LENGTH": [ { "value": "16", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_axi_pcie_0_0_axi_aclk_out", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_READ_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_WRITE_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "ARADDR": [ { "physical_name": "s_axi_araddr" } ],
+            "ARBURST": [ { "physical_name": "s_axi_arburst" } ],
+            "ARID": [ { "physical_name": "s_axi_arid" } ],
+            "ARLEN": [ { "physical_name": "s_axi_arlen" } ],
+            "ARREADY": [ { "physical_name": "s_axi_arready" } ],
+            "ARREGION": [ { "physical_name": "s_axi_arregion" } ],
+            "ARSIZE": [ { "physical_name": "s_axi_arsize" } ],
+            "ARVALID": [ { "physical_name": "s_axi_arvalid" } ],
+            "AWADDR": [ { "physical_name": "s_axi_awaddr" } ],
+            "AWBURST": [ { "physical_name": "s_axi_awburst" } ],
+            "AWID": [ { "physical_name": "s_axi_awid" } ],
+            "AWLEN": [ { "physical_name": "s_axi_awlen" } ],
+            "AWREADY": [ { "physical_name": "s_axi_awready" } ],
+            "AWREGION": [ { "physical_name": "s_axi_awregion" } ],
+            "AWSIZE": [ { "physical_name": "s_axi_awsize" } ],
+            "AWVALID": [ { "physical_name": "s_axi_awvalid" } ],
+            "BID": [ { "physical_name": "s_axi_bid" } ],
+            "BREADY": [ { "physical_name": "s_axi_bready" } ],
+            "BRESP": [ { "physical_name": "s_axi_bresp" } ],
+            "BVALID": [ { "physical_name": "s_axi_bvalid" } ],
+            "RDATA": [ { "physical_name": "s_axi_rdata" } ],
+            "RID": [ { "physical_name": "s_axi_rid" } ],
+            "RLAST": [ { "physical_name": "s_axi_rlast" } ],
+            "RREADY": [ { "physical_name": "s_axi_rready" } ],
+            "RRESP": [ { "physical_name": "s_axi_rresp" } ],
+            "RVALID": [ { "physical_name": "s_axi_rvalid" } ],
+            "WDATA": [ { "physical_name": "s_axi_wdata" } ],
+            "WLAST": [ { "physical_name": "s_axi_wlast" } ],
+            "WREADY": [ { "physical_name": "s_axi_wready" } ],
+            "WSTRB": [ { "physical_name": "s_axi_wstrb" } ],
+            "WVALID": [ { "physical_name": "s_axi_wvalid" } ]
+          }
+        },
+        "S_AXI_CTL": {
+          "vlnv": "xilinx.com:interface:aximm:1.0",
+          "abstraction_type": "xilinx.com:interface:aximm_rtl:1.0",
+          "mode": "slave",
+          "memory_map_ref": "S_AXI_CTL",
+          "parameters": {
+            "DATA_WIDTH": [ { "value": "32", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PROTOCOL": [ { "value": "AXI4LITE", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "FREQ_HZ": [ { "value": "125000000", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ID_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ADDR_WIDTH": [ { "value": "32", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "AWUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "ARUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "BUSER_WIDTH": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "READ_WRITE_MODE": [ { "value": "READ_WRITE", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_BURST": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_LOCK": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_PROT": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_CACHE": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_QOS": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_REGION": [ { "value": "0", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_WSTRB": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_BRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "HAS_RRESP": [ { "value": "1", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "SUPPORTS_NARROW_BURST": [ { "value": "0", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_READ_OUTSTANDING": [ { "value": "2", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_WRITE_OUTSTANDING": [ { "value": "2", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "MAX_BURST_LENGTH": [ { "value": "1", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_axi_pcie_0_0_axi_aclk_out", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_READ_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "NUM_WRITE_THREADS": [ { "value": "1", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "RUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "WUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "ARADDR": [ { "physical_name": "s_axi_ctl_araddr" } ],
+            "ARREADY": [ { "physical_name": "s_axi_ctl_arready" } ],
+            "ARVALID": [ { "physical_name": "s_axi_ctl_arvalid" } ],
+            "AWADDR": [ { "physical_name": "s_axi_ctl_awaddr" } ],
+            "AWREADY": [ { "physical_name": "s_axi_ctl_awready" } ],
+            "AWVALID": [ { "physical_name": "s_axi_ctl_awvalid" } ],
+            "BREADY": [ { "physical_name": "s_axi_ctl_bready" } ],
+            "BRESP": [ { "physical_name": "s_axi_ctl_bresp" } ],
+            "BVALID": [ { "physical_name": "s_axi_ctl_bvalid" } ],
+            "RDATA": [ { "physical_name": "s_axi_ctl_rdata" } ],
+            "RREADY": [ { "physical_name": "s_axi_ctl_rready" } ],
+            "RRESP": [ { "physical_name": "s_axi_ctl_rresp" } ],
+            "RVALID": [ { "physical_name": "s_axi_ctl_rvalid" } ],
+            "WDATA": [ { "physical_name": "s_axi_ctl_wdata" } ],
+            "WREADY": [ { "physical_name": "s_axi_ctl_wready" } ],
+            "WSTRB": [ { "physical_name": "s_axi_ctl_wstrb" } ],
+            "WVALID": [ { "physical_name": "s_axi_ctl_wvalid" } ]
+          }
+        },
+        "CLK.axi_aclk_out": {
+          "vlnv": "xilinx.com:signal:clock:1.0",
+          "abstraction_type": "xilinx.com:signal:clock_rtl:1.0",
+          "mode": "master",
+          "parameters": {
+            "ASSOCIATED_BUSIF": [ { "value": "M_AXI:S_AXI", "value_src": "constant", "value_permission": "bd", "usage": "all" } ],
+            "FREQ_HZ": [ { "value": "125000000", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "usage": "all" } ],
+            "FREQ_TOLERANCE_HZ": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_axi_pcie_0_0_axi_aclk_out", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_PORT": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_RESET": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "CLK": [ { "physical_name": "axi_aclk_out" } ]
+          }
+        },
+        "RST.axi_aresetn": {
+          "vlnv": "xilinx.com:signal:reset:1.0",
+          "abstraction_type": "xilinx.com:signal:reset_rtl:1.0",
+          "mode": "slave",
+          "parameters": {
+            "POLARITY": [ { "value": "ACTIVE_LOW", "value_src": "constant", "value_permission": "bd", "usage": "all" } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "RST": [ { "physical_name": "axi_aresetn" } ]
+          }
+        },
+        "CLK.axi_ctl_aclk_out": {
+          "vlnv": "xilinx.com:signal:clock:1.0",
+          "abstraction_type": "xilinx.com:signal:clock_rtl:1.0",
+          "mode": "master",
+          "parameters": {
+            "ASSOCIATED_BUSIF": [ { "value": "S_AXI_CTL", "value_src": "constant", "value_permission": "bd", "usage": "all" } ],
+            "FREQ_HZ": [ { "value": "125000000", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "usage": "all" } ],
+            "FREQ_TOLERANCE_HZ": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_axi_pcie_0_0_axi_aclk_out", "value_src": "user", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_PORT": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_RESET": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "CLK": [ { "physical_name": "axi_ctl_aclk_out" } ]
+          }
+        },
+        "INTERRUPT.interrupt_out": {
+          "vlnv": "xilinx.com:signal:interrupt:1.0",
+          "abstraction_type": "xilinx.com:signal:interrupt_rtl:1.0",
+          "mode": "master",
+          "parameters": {
+            "SENSITIVITY": [ { "value": "LEVEL_HIGH", "value_src": "constant", "value_permission": "bd", "usage": "all" } ],
+            "PortWidth": [ { "value": "1", "value_src": "default_prop", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "INTERRUPT": [ { "physical_name": "interrupt_out" } ]
+          }
+        },
+        "CLK.REFCLK": {
+          "vlnv": "xilinx.com:signal:clock:1.0",
+          "abstraction_type": "xilinx.com:signal:clock_rtl:1.0",
+          "mode": "slave",
+          "parameters": {
+            "FREQ_HZ": [ { "value": "100000000", "value_src": "ip_propagated", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "FREQ_TOLERANCE_HZ": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
+            "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "icyradio_util_ds_buf_0_0_IBUF_OUT", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_BUSIF": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_PORT": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "ASSOCIATED_RESET": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
+          },
+          "port_maps": {
+            "CLK": [ { "physical_name": "REFCLK" } ]
+          }
+        },
+        "pcie_7x_mgt": {
+          "vlnv": "xilinx.com:interface:pcie_7x_mgt:1.0",
+          "abstraction_type": "xilinx.com:interface:pcie_7x_mgt_rtl:1.0",
+          "mode": "master",
+          "port_maps": {
+            "rxn": [ { "physical_name": "pci_exp_rxn" } ],
+            "rxp": [ { "physical_name": "pci_exp_rxp" } ],
+            "txn": [ { "physical_name": "pci_exp_txn" } ],
+            "txp": [ { "physical_name": "pci_exp_txp" } ]
+          }
+        }
+      },
+      "address_spaces": {
+        "M_AXI": {
+          "range": "4G",
+          "width": "32"
+        }
+      },
+      "memory_maps": {
+        "S_AXI_CTL": {
+          "address_blocks": {
+            "CTL0": {
+              "base_address": "0",
+              "range": "256M",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "BASEADDR" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "HIGHADDR" } ]
+              },
+              "registers": {
+                "PCIe_cfg_space_header": {
+                  "address_offset": "0x000",
+                  "size": 32,
+                  "display_name": "PCIe cfg space header",
+                  "description": "Accessing The PCIe configuring space,",
+                  "access": "read-only"
+                },
+                "VSEC_Capability_Register": {
+                  "address_offset": "0x128",
+                  "size": 32,
+                  "display_name": "VSEC Capability Register",
+                  "description": "Provides capability ID version and next capability Offset,",
+                  "access": "read-only",
+                  "fields": {
+                    "VSEC_Capability_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "VSEC Capability ID",
+                      "description": "PCI-SIG Defined ID identitfying this enhanced capability as a vendor-specific capability. Hardcoded to 0x000B.\n",
+                      "access": "read-only"
+                    },
+                    "Capability_Version": {
+                      "bit_offset": 16,
+                      "bit_width": 4,
+                      "display_name": "Capability Version",
+                      "description": "Version of this capability structure. Hardcoded to 0x1.\n",
+                      "access": "read-only"
+                    },
+                    "Next_Capability_Offset": {
+                      "bit_offset": 20,
+                      "bit_width": 12,
+                      "display_name": "Next Capability Offset",
+                      "description": "Offset to next capability. Hardcoded to 0x0200.\n",
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "VSEC_Header_Register": {
+                  "address_offset": "0x12C",
+                  "size": 32,
+                  "display_name": "VSEC Header Register",
+                  "description": "Provides unique identifier for the layout and contents of the VSEC structure, as its revision and length.",
+                  "access": "read-only",
+                  "fields": {
+                    "VSEC_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "VSEC ID",
+                      "description": "ID value uniquely identifying the nature and format of this VSEC structure. Hardcoded to 0x0001.\n",
+                      "access": "read-only"
+                    },
+                    "VSEC_REV": {
+                      "bit_offset": 16,
+                      "bit_width": 4,
+                      "display_name": "VSEC Revision",
+                      "description": "Version of this this capability structure. Hardcoded to 0x0.\n",
+                      "access": "read-only"
+                    },
+                    "VSEC_Length": {
+                      "bit_offset": 20,
+                      "bit_width": 12,
+                      "display_name": "VSEC Length",
+                      "description": "Length of the entire VSEC capability structure, in bytes, including the VSEC capability register.  Hardcoded to 0x038.\n",
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "Bridge_info": {
+                  "address_offset": "0x130",
+                  "size": 32,
+                  "display_name": "Bridge info",
+                  "description": "Provides general configuration information about AXI4-Stream Bridge.",
+                  "access": "read-only",
+                  "fields": {
+                    "gen2_capable": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "gen2 capable",
+                      "description": "If set, underlying integrated block supports GEN2 speed\n",
+                      "access": "read-only"
+                    },
+                    "root_port_present": {
+                      "bit_offset": 1,
+                      "bit_width": 1,
+                      "display_name": "root port present",
+                      "description": "Indicates the underlying integrated block is a Root Port when this bit is set.\n",
+                      "access": "read-only"
+                    },
+                    "up_config_capable": {
+                      "bit_offset": 3,
+                      "bit_width": 1,
+                      "display_name": "Up config capable",
+                      "description": "Indicates the underlying integrated block is capable when this bit is set.\n",
+                      "access": "read-only"
+                    },
+                    "ECAM_size": {
+                      "bit_offset": 16,
+                      "bit_width": 3,
+                      "display_name": "ECAM size",
+                      "description": "Size of the Enhanced configuration Access Mechanism (ECAM) Bus Number field, in number of bits. If ECAM window is present, value is between 1 and 8. if not present, value is 0.",
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "Bridge_status_control": {
+                  "address_offset": "0x134",
+                  "size": 32,
+                  "display_name": "Bridge status and control",
+                  "description": "Provides info how read and writes to the core config access aperture are handled",
+                  "access": "read-only",
+                  "fields": {
+                    "ECAM_Busy": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "ECAM Busy",
+                      "description": "Indicates an ECAM access is in progress. This bit is tied to 0.",
+                      "access": "read-only"
+                    },
+                    "global_disable": {
+                      "bit_offset": 8,
+                      "bit_width": 1,
+                      "display_name": "global disable",
+                      "description": "when set disables interrupts line from being asserted. doesn't prevents bits in interrupt decode register from being set.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Read_Write_1_to_clear_as_Read_Write": {
+                      "bit_offset": 16,
+                      "bit_width": 1,
+                      "display_name": "RW1C as RW",
+                      "description": "When set, allows writing to the core registers which are normally Read and Write 1 to clear.",
+                      "access": "read-write"
+                    },
+                    "Read_only_as_Read_Write": {
+                      "bit_offset": 17,
+                      "bit_width": 1,
+                      "display_name": "RO as RW",
+                      "description": "When set, allows writing to the certain registers which are normally Read only. only for 7 series and zynq-7000 device cores.",
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "interrupt_decode_register": {
+                  "address_offset": "0x138",
+                  "size": 32,
+                  "display_name": "interrupt decode register",
+                  "description": "provide info where Host processor ISR can determine what cause interrupt to be asserted and how to clear it.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Link_down": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "Link down",
+                      "description": "show link-up on PCIe Link was lost. not asserted unless linkup had previously been seen.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "ECRC_Error": {
+                      "bit_offset": 1,
+                      "bit_width": 1,
+                      "display_name": "ECRC Error",
+                      "description": "Indicates the received packet failed the ECRC check.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Straming_Error": {
+                      "bit_offset": 2,
+                      "bit_width": 1,
+                      "display_name": "Streaming Error",
+                      "description": "Indicates a gap was encountered in a streamed packet on the Tx interface.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Hot_Reset": {
+                      "bit_offset": 3,
+                      "bit_width": 1,
+                      "display_name": "Hot Reset",
+                      "description": "indicates a hot reset was detected.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Cfg_Completion_Status": {
+                      "bit_offset": 5,
+                      "bit_width": 3,
+                      "display_name": "Cfg Completion Status",
+                      "description": "indicates Cfg Completion Status.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Cfg_Timeout": {
+                      "bit_offset": 8,
+                      "bit_width": 1,
+                      "display_name": "Cfg timeout",
+                      "description": "indicates timeout on an ECAM mechanism access. applicable for RP only.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Correctable": {
+                      "bit_offset": 9,
+                      "bit_width": 1,
+                      "display_name": "Correctable",
+                      "description": "indicates correctable error msg was received. Applicable for RP only\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Non_Fatal": {
+                      "bit_offset": 10,
+                      "bit_width": 1,
+                      "display_name": "Non Fatal",
+                      "description": "indicates Non-Fatal error msg was received. Applicable for RP only\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Fatal": {
+                      "bit_offset": 11,
+                      "bit_width": 1,
+                      "display_name": "Fatal",
+                      "description": "indicates Fatal error msg was received. Applicable for RP only\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Intx_interrupt_received": {
+                      "bit_offset": 16,
+                      "bit_width": 1,
+                      "display_name": "Intx interrupt received",
+                      "description": "indicates Intx interrupt was received. Applicable for RP only\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "MSI_interrupt_received": {
+                      "bit_offset": 17,
+                      "bit_width": 1,
+                      "display_name": "MSI interrupt received",
+                      "description": "indicates MSI(x) interrupt was received. Applicable for RP only\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Unsupported_request": {
+                      "bit_offset": 20,
+                      "bit_width": 1,
+                      "display_name": "Slave Unsupported request",
+                      "description": "indicates that a completion TLP was received with status 0b001- unsupported request.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Unexpected_completion": {
+                      "bit_offset": 21,
+                      "bit_width": 1,
+                      "display_name": "Slave Unexpected completion",
+                      "description": "indicates that a completion TLP was received that was unexpected.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Completion_timeout": {
+                      "bit_offset": 22,
+                      "bit_width": 1,
+                      "display_name": "Slave Completion timeout",
+                      "description": "indicates that a completion TLP for a read request for PCIe was not returned within C_COMP_TIMEOUT parameter.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Error_poison": {
+                      "bit_offset": 23,
+                      "bit_width": 1,
+                      "display_name": "Slave Error Poison",
+                      "description": "indicates that error poison[EP] bit was set in a completion TLP.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_completer_abort": {
+                      "bit_offset": 24,
+                      "bit_width": 1,
+                      "display_name": "Slave completer abort",
+                      "description": "indicates that  completion TLP was received with status of 0b100-completer abort.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Illegal_burst": {
+                      "bit_offset": 25,
+                      "bit_width": 1,
+                      "display_name": "Slave Illegal Burst",
+                      "description": "indicates that Burst type other than INCR was requested by AXI master.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Decerr": {
+                      "bit_offset": 26,
+                      "bit_width": 1,
+                      "display_name": "Master Decerr",
+                      "description": "Indicates a Decoder Error response was received.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Slverr": {
+                      "bit_offset": 27,
+                      "bit_width": 1,
+                      "display_name": "Master Slverr",
+                      "description": "Indicates a slaveError response was received.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Error_Poison": {
+                      "bit_offset": 28,
+                      "bit_width": 1,
+                      "display_name": "Master Error poison",
+                      "description": "Indicates an EP bit was set in a Memory Write TLP from PCIe.\n",
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "Interrupt_mask_register": {
+                  "address_offset": "0x13C",
+                  "size": 32,
+                  "display_name": "Interrupt mask register",
+                  "description": "control whether interrupt source can cause the interrupt line to be asserted.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Link_down": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "Link down",
+                      "description": "enables interrupt for Link down events when bit is set.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "ECRC_Error": {
+                      "bit_offset": 1,
+                      "bit_width": 1,
+                      "display_name": "ECRC Error",
+                      "description": "Enables interrupts for ECRC Error events when bit is set. \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Straming_Error": {
+                      "bit_offset": 2,
+                      "bit_width": 1,
+                      "display_name": "Streaming Error",
+                      "description": "Enables interrupts for Streaming Error events when bit is set. \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Hot_Reset": {
+                      "bit_offset": 3,
+                      "bit_width": 1,
+                      "display_name": "Hot Reset",
+                      "description": "enables interrupt for hot reset events when bit is set[writable for EP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Cfg_Completion_Status": {
+                      "bit_offset": 5,
+                      "bit_width": 3,
+                      "display_name": "Cfg Completion Status",
+                      "description": "enables interrupt for Cfg Completion Status events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Cfg_Timeout": {
+                      "bit_offset": 8,
+                      "bit_width": 1,
+                      "display_name": "Cfg timeout",
+                      "description": "enables interrupt for cfg timeout events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Correctable": {
+                      "bit_offset": 9,
+                      "bit_width": 1,
+                      "display_name": "Correctable",
+                      "description": "enables interrupt for correctable events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Non_Fatal": {
+                      "bit_offset": 10,
+                      "bit_width": 1,
+                      "display_name": "Non Fatal",
+                      "description": "enables interrupt for non-fatal events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Fatal": {
+                      "bit_offset": 11,
+                      "bit_width": 1,
+                      "display_name": "Fatal",
+                      "description": "enables interrupt for fatal events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Intx_interrupt_received": {
+                      "bit_offset": 16,
+                      "bit_width": 1,
+                      "display_name": "Intx interrupt received",
+                      "description": "enables interrupt for intx interrupt events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "MSI_interrupt_received": {
+                      "bit_offset": 17,
+                      "bit_width": 1,
+                      "display_name": "MSI interrupt received",
+                      "description": "enables interrupt for MSI interrupt events when bit is set[writable for RP else =0]\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Slave_Unsupported_request": {
+                      "bit_offset": 20,
+                      "bit_width": 1,
+                      "display_name": "Slave Unsupported request",
+                      "description": "enables the slave unsupported request interrupt events when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Unexpected_completion": {
+                      "bit_offset": 21,
+                      "bit_width": 1,
+                      "display_name": "Slave Unexpected completion",
+                      "description": "enables the slave unexpected completion interrupt when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Completion_timeout": {
+                      "bit_offset": 22,
+                      "bit_width": 1,
+                      "display_name": "Slave Completion timeout",
+                      "description": "enables the slave completion timeout interrupt when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Error_poison": {
+                      "bit_offset": 23,
+                      "bit_width": 1,
+                      "display_name": "Slave Error Poison",
+                      "description": "enables the slave completion poison interrupt when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_completer_abort": {
+                      "bit_offset": 24,
+                      "bit_width": 1,
+                      "display_name": "Slave completer abort",
+                      "description": "enables the slave completion abort interrupt when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Slave_Illegal_burst": {
+                      "bit_offset": 25,
+                      "bit_width": 1,
+                      "display_name": "Slave Illegal Burst",
+                      "description": "enables the slave illegal burst interrupt when bit is set\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Decerr": {
+                      "bit_offset": 26,
+                      "bit_width": 1,
+                      "display_name": "Master Decerr",
+                      "description": "enables a master DECERR interrupt when bit is set.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Slverr": {
+                      "bit_offset": 27,
+                      "bit_width": 1,
+                      "display_name": "Master Slverr",
+                      "description": "enables a master SLVERR interrupt when bit is set.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Master_Error_Poison": {
+                      "bit_offset": 27,
+                      "bit_width": 1,
+                      "display_name": "Master Error Poison",
+                      "description": "Enables a master Error Poison interrupt when bit is set.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "bus_location_register": {
+                  "address_offset": "0x140",
+                  "size": 32,
+                  "display_name": "bus location register",
+                  "description": "report the busdevice and function number and the port number for PCIe port.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "function_number": {
+                      "bit_offset": 0,
+                      "bit_width": 3,
+                      "display_name": "function number",
+                      "description": "function number for the port for PCIe. hard wired to 0.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Device_number": {
+                      "bit_offset": 3,
+                      "bit_width": 5,
+                      "display_name": "device number",
+                      "description": "device number of port for pcie for EP and this is set by RP.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Bus_number": {
+                      "bit_offset": 8,
+                      "bit_width": 8,
+                      "display_name": "Bus number",
+                      "description": "bus number for the port for PCIe. this is set by RP.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Port_number": {
+                      "bit_offset": 16,
+                      "bit_width": 8,
+                      "display_name": "Port number",
+                      "description": "sets the port number field  of the link capabilities register\nEP- Read only on all devices except for Spartan-6 FPGA\nRP- Read and  writable\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Phy_status_control_register": {
+                  "address_offset": "0x144",
+                  "size": 32,
+                  "display_name": "Phy status control register",
+                  "description": "provide the status current PHY state as well as control of speed and rate switching for gen2 capable.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Link_Rate": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "Link Rate",
+                      "description": "Reports the current link rate.\n  0 - 2.5 GT/s \n  1 - 5.0 GT/s \n",
+                      "access": "read-only"
+                    },
+                    "Link_Width": {
+                      "bit_offset": 1,
+                      "bit_width": 2,
+                      "display_name": "Link Width",
+                      "description": "Reports the current link width. 00 = x1, 01 =x2, 10 =x4, 11 =x8.  \n",
+                      "access": "read-only"
+                    },
+                    "Ltssm_State": {
+                      "bit_offset": 3,
+                      "bit_width": 6,
+                      "display_name": "Ltssm State",
+                      "description": "Report the current LTSSM state.   \n",
+                      "access": "read-only"
+                    },
+                    "Lane_Reversal": {
+                      "bit_offset": 9,
+                      "bit_width": 2,
+                      "display_name": "Lane Reversal",
+                      "description": "Report the current lane reversal mode.\n  00b - no lane reversal\n  01b - Lane 1:0 reversed\n  10b - Lane 3:0 reversed\n  11b - Lane 7:0 reversed\n",
+                      "access": "read-only"
+                    },
+                    "Link_Up": {
+                      "bit_offset": 11,
+                      "bit_width": 1,
+                      "display_name": "Link Up",
+                      "description": "Reports the current PHY link up state. 1 = link up, 0 = link down  \n",
+                      "access": "read-only"
+                    },
+                    "Directed_Link_Width": {
+                      "bit_offset": 16,
+                      "bit_width": 2,
+                      "display_name": "Directed Link Width",
+                      "description": "Specifies the completer link width for a directed link change operation. Only acted on when Directed link change specifies a width change.  00 = x1, 01 =x2, 10 =x4, 11 =x8.  \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Directed_Link_Speed": {
+                      "bit_offset": 18,
+                      "bit_width": 1,
+                      "display_name": "Directed Link Speed",
+                      "description": "Specifies the completer speed width for a directed link change operation. Only acted on when Directed link change specifies a width change.  0b = 2.5 GT/s, 1b = 5.0 GT/s.  \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Directed_Link_Autonomous": {
+                      "bit_offset": 19,
+                      "bit_width": 1,
+                      "display_name": "Directed Link Autonomous",
+                      "description": "Specifies width reliability or autonomous for a directed link change operation.  0b = Link Reliability, 1b = Autonomous.  \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Directed_Link_Change": {
+                      "bit_offset": 20,
+                      "bit_width": 2,
+                      "display_name": "Directed Link Change",
+                      "description": "Directs LTSSM to initiate a link width or speed change.\n  00b - No change.\n  01b - Force link width.\n  10b - Force link speed.\n  11b - Force link width and speed. \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_status_control_register": {
+                  "address_offset": "0x148",
+                  "size": 32,
+                  "display_name": "Root Port status control register",
+                  "description": "provide the access to the RP specific status and control. applicable for RP for non-RP cores it return 0 and writes are ignored.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Bridge_Enable": {
+                      "bit_offset": 0,
+                      "bit_width": 1,
+                      "display_name": "Bridge Enable",
+                      "description": "when set allows read/write to axibar. RP software nned to write 1 to this bit when enumeration is done. Bridge clear this when Link up to Link down tarnsition. Default is set to 0. \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Error_FIFO_not_empty": {
+                      "bit_offset": 16,
+                      "bit_width": 1,
+                      "display_name": "Error FIFO not empty",
+                      "description": "Indicates that the Root port error FIFO has data to read. \n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Error_FIFO_overflow": {
+                      "bit_offset": 17,
+                      "bit_width": 1,
+                      "display_name": "Error FIFO overflow",
+                      "description": "Indicates that the Root port error FIFO overflowed and an error msg was dropped.  writing 1 clears the overflow status.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Interrupt_FIFO_not_empty": {
+                      "bit_offset": 18,
+                      "bit_width": 1,
+                      "display_name": "Interrupt FIFO not empty",
+                      "description": "Indicates that the Root port interrupt FIFO has data to read.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Interrupt_FIFO_overflow": {
+                      "bit_offset": 19,
+                      "bit_width": 1,
+                      "display_name": "Interrupt FIFO overflow",
+                      "description": "Indicates that the Root port interrupt FIFO overflowed and an interrupt msg was dropped. writting 1 to clear the overflow status.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_MSI_base_register_1": {
+                  "address_offset": "0x14C",
+                  "size": 32,
+                  "display_name": "Root Port MSI base register 1",
+                  "description": "provide the access to the RP specific status and control. applicable for RP for non-RP cores it return 0 and writes are ignored.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "MSI_Base": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "MSI Base",
+                      "description": "4Kb alligned address for MSI interrupt. In case of 32 bit MSI, it returns 0 but captures upper 32 bits of the MSI address in case of 64 bit MSI. \n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_MSI_base_register_2": {
+                  "address_offset": "0x150",
+                  "size": 32,
+                  "display_name": "Root Port MSI base register 2",
+                  "description": "sets the address window in RP cores used for MSI interrupts. MemWr TLP to address in this range are interpreted as MSI interrupt.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "MSI_Base": {
+                      "bit_offset": 12,
+                      "bit_width": 20,
+                      "display_name": "MSI Base",
+                      "description": "4K alligned address for MSI interrupt.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_error_FIFO_read_register": {
+                  "address_offset": "0x154",
+                  "size": 32,
+                  "display_name": "Root Port error FIFO read register",
+                  "description": "reads from this location return a queued error(correctable/Non-fatal/Fatal) messages.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Requester_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "Requester ID",
+                      "description": "Requester ID belonging to the requester of the error message\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Error_Type": {
+                      "bit_offset": 16,
+                      "bit_width": 2,
+                      "display_name": "Error Type",
+                      "description": "Indicates the type of error 00b: correctable, 01b: Non-fatal, 10b: Fatal.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Error_Valid": {
+                      "bit_offset": 16,
+                      "bit_width": 2,
+                      "display_name": "Error Valid",
+                      "description": "Indicates whether read succeeded 1b: success, 0b: no message to read.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_interrupt_FIFO_read_register_1": {
+                  "address_offset": "0x158",
+                  "size": 32,
+                  "display_name": "Root Port interrupt FIFO read register 1",
+                  "description": "Read from this location return queued interrupt msg. for MSI interrupt payload present in RP interrupt FIFO read 2 register.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Requester_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "Requester ID",
+                      "description": "Requester ID belonging to the requester of the error message\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "MSI_Address": {
+                      "bit_offset": 16,
+                      "bit_width": 11,
+                      "display_name": "MSI Address",
+                      "description": "for MSI interrupts, contain address bits 12:2 from TLP address field.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Interrupt_Line": {
+                      "bit_offset": 27,
+                      "bit_width": 2,
+                      "display_name": "Interrupt Line",
+                      "description": "Indicate interrupt line is used. 00b = INTA, 01b = INTB, 10b = INTC, 11b = INTD. For MSI this field is set to 00b.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Interrupt_Assert": {
+                      "bit_offset": 29,
+                      "bit_width": 1,
+                      "display_name": "Interrupt Assert",
+                      "description": "Interrupt Assert or deassert for INTx. 1b = assert, 0b = deassert\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "MSI_Interrupt": {
+                      "bit_offset": 30,
+                      "bit_width": 1,
+                      "display_name": "MSI Interrupt",
+                      "description": "indicates whether interrupt is MSI or INTx. 1b =  MSI, 0b = INTx\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    },
+                    "Interrupt_Valid": {
+                      "bit_offset": 31,
+                      "bit_width": 1,
+                      "display_name": "Interrupt Valid",
+                      "description": "indicates whether read succeeded. 1b: success, 0b: no interrupt to read\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "Root_Port_interrupt_FIFO_read_register_2": {
+                  "address_offset": "0x15C",
+                  "size": 32,
+                  "display_name": "Root Port interrupt FIFO read register 2",
+                  "description": "Read from this location return queued interrupt msg. for MSI interrupt payload present in RP in this register.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Message_Data": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "Message Data",
+                      "description": "payload for MSI messages\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "VSEC_Capability_register_2": {
+                  "address_offset": "0x200",
+                  "size": 32,
+                  "display_name": "VSEC_Capability_register_2",
+                  "description": "VSEC capability register allows the memory space for the core to appear as though it is part of underlying PCIe configuration space.",
+                  "is_volatile": true,
+                  "access": "read-only",
+                  "fields": {
+                    "VSEC_Capability_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "VSEC Capability ID",
+                      "description": "PCI-SG defined ID identifying this enhanced capability as a Vendor-specific cabalility. HARDCODED to 0x000b\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Capability_Version": {
+                      "bit_offset": 16,
+                      "bit_width": 4,
+                      "display_name": "Capability Version",
+                      "description": "Version of this capability structure. HARDCODED to 0x01b\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "Next_Capability_offset": {
+                      "bit_offset": 20,
+                      "bit_width": 12,
+                      "display_name": "Next Capability offset",
+                      "description": "offset of next capabilties.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "VSEC_Header_register_2": {
+                  "address_offset": "0x204",
+                  "size": 32,
+                  "display_name": "VSEC_Header_register_2",
+                  "description": "provides a unique identifier for the layout and contents of the VSEC structure as well as revision and length.",
+                  "is_volatile": true,
+                  "access": "read-only",
+                  "fields": {
+                    "VSEC_ID": {
+                      "bit_offset": 0,
+                      "bit_width": 16,
+                      "display_name": "VSEC Capability",
+                      "description": "ID value identifying the nature and format of this VSEC structure.\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "VSEC_REV": {
+                      "bit_offset": 16,
+                      "bit_width": 4,
+                      "display_name": "VSEC REV",
+                      "description": "Version of this capability structure. Hardcoded to 0x0\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    },
+                    "VSEC_Lenght": {
+                      "bit_offset": 20,
+                      "bit_width": 11,
+                      "display_name": "VSEC Lenght",
+                      "description": "Length of entire VSEC structure in bytes. Hardcoded to 0x038\n",
+                      "is_volatile": true,
+                      "access": "read-only"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_0U": {
+                  "address_offset": "0x210",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_0U",
+                  "description": "When BAR is 64 bit address space, then most significant 32 bits are written into it for BAR 1.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Upper_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Upper Address",
+                      "description": "To create address for PCIe- this is the value substituted for the most significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_0L": {
+                  "address_offset": "0x214",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_0L",
+                  "description": "When BAR is 32 bit address space, then address translation vector is placed nto it for BAR 1.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Lower_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Lower Address",
+                      "description": "To create address for PCIe- this is the value substituted for the least significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_2U": {
+                  "address_offset": "0x218",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_2U",
+                  "description": "When BAR is 64 bit address space, then most significant 32 bits are written into it for BAR 2.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Upper_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Upper Address",
+                      "description": "To create address for PCIe- this is the value substituted for the most significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_2L": {
+                  "address_offset": "0x21C",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_2L",
+                  "description": "When BAR is 32 bit address space, then address translation vector is placed nto it for BAR 2.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Lower_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Lower Address",
+                      "description": "To create address for PCIe- this is the value substituted for the least significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_3U": {
+                  "address_offset": "0x220",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_3U",
+                  "description": "When BAR is 64 bit address space, then most significant 32 bits are written into it for BAR 3.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Upper_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Upper Address",
+                      "description": "To create address for PCIe- this is the value substituted for the most significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_3L": {
+                  "address_offset": "0x224",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_3L",
+                  "description": "When BAR is 32 bit address space, then address translation vector is placed nto it for BAR 3.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Lower_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Lower Address",
+                      "description": "To create address for PCIe- this is the value substituted for the least significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_4U": {
+                  "address_offset": "0x228",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_4U",
+                  "description": "When BAR is 64 bit address space, then most significant 32 bits are written into it for BAR 4.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Upper_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Upper Address",
+                      "description": "To create address for PCIe- this is the value substituted for the most significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_4L": {
+                  "address_offset": "0x22C",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_4L",
+                  "description": "When BAR is 32 bit address space, then address translation vector is placed nto it for BAR 4.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Lower_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Lower Address",
+                      "description": "To create address for PCIe- this is the value substituted for the least significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_5U": {
+                  "address_offset": "0x230",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_5U",
+                  "description": "When BAR is 64 bit address space, then most significant 32 bits are written into it for BAR 5.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Upper_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Upper Address",
+                      "description": "To create address for PCIe- this is the value substituted for the most significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                },
+                "AXIBAR2PCIEBAR_5L": {
+                  "address_offset": "0x234",
+                  "size": 32,
+                  "display_name": "AXIBAR2PCIEBAR_5L",
+                  "description": "When BAR is 32 bit address space, then address translation vector is placed nto it for BAR 5.",
+                  "is_volatile": true,
+                  "access": "read-write",
+                  "fields": {
+                    "Lower_Address": {
+                      "bit_offset": 0,
+                      "bit_width": 32,
+                      "display_name": "Lower Address",
+                      "description": "To create address for PCIe- this is the value substituted for the least significant 32 bits for the AXI address.\n",
+                      "is_volatile": true,
+                      "access": "read-write"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "S_AXI": {
+          "address_blocks": {
+            "BAR0": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_0" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_0" } ]
+              }
+            },
+            "BAR1": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_1" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_1" } ]
+              }
+            },
+            "BAR2": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_2" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_2" } ]
+              }
+            },
+            "BAR3": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_3" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_3" } ]
+              }
+            },
+            "BAR4": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_4" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_4" } ]
+              }
+            },
+            "BAR5": {
+              "base_address": "0",
+              "range": "4G",
+              "usage": "memory",
+              "access": "read-write",
+              "parameters": {
+                "OFFSET_BASE_PARAM": [ { "value": "AXIBAR_5" } ],
+                "OFFSET_HIGH_PARAM": [ { "value": "AXIBAR_HIGHADDR_5" } ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

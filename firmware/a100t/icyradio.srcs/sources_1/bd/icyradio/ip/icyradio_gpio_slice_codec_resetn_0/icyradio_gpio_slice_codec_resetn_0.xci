@@ -1,0 +1,53 @@
+{
+  "schema": "xilinx.com:schema:json_instance:1.0",
+  "ip_inst": {
+    "xci_name": "icyradio_gpio_slice_codec_resetn_0",
+    "cell_name": "gpio_slice_codec_resetn",
+    "component_reference": "xilinx.com:ip:xlslice:1.0",
+    "ip_revision": "3",
+    "gen_directory": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_gpio_slice_codec_resetn_0",
+    "parameters": {
+      "component_parameters": {
+        "Component_Name": [ { "value": "icyradio_gpio_slice_codec_resetn_0", "resolve_type": "user", "usage": "all" } ],
+        "DIN_TO": [ { "value": "9", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "DIN_FROM": [ { "value": "9", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "DIN_WIDTH": [ { "value": "32", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "DOUT_WIDTH": [ { "value": "1", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ]
+      },
+      "model_parameters": {
+        "DIN_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "DIN_FROM": [ { "value": "9", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "DIN_TO": [ { "value": "9", "resolve_type": "generated", "format": "long", "usage": "all" } ]
+      },
+      "project_parameters": {
+        "ARCHITECTURE": [ { "value": "artix7" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BOARD_CONNECTIONS": [ { "value": "" } ],
+        "DEVICE": [ { "value": "xc7a100t" } ],
+        "PACKAGE": [ { "value": "fgg484" } ],
+        "PREFHDL": [ { "value": "VERILOG" } ],
+        "SILICON_REVISION": [ { "value": "" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
+        "SPEEDGRADE": [ { "value": "-2" } ],
+        "STATIC_POWER": [ { "value": "" } ],
+        "TEMPERATURE_GRADE": [ { "value": "" } ]
+      },
+      "runtime_parameters": {
+        "IPCONTEXT": [ { "value": "IP_Integrator" } ],
+        "IPREVISION": [ { "value": "3" } ],
+        "MANAGED": [ { "value": "TRUE" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_gpio_slice_codec_resetn_0" } ],
+        "SELECTEDSIMMODEL": [ { "value": "" } ],
+        "SHAREDDIR": [ { "value": "../../ipshared" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
+        "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
+      }
+    },
+    "boundary": {
+      "ports": {
+        "Din": [ { "direction": "in", "size_left": "31", "size_right": "0" } ],
+        "Dout": [ { "direction": "out", "size_left": "0", "size_right": "0" } ]
+      }
+    }
+  }
+}

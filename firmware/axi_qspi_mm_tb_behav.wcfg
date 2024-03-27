@@ -11,12 +11,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="49,161.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="50,493.001 ns"></ZoomEndTime>
-      <Cursor1Time time="50,271.000 ns"></Cursor1Time>
+      <ZoomStartTime time="56,181.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="57,421.001 ns"></ZoomEndTime>
+      <Cursor1Time time="54,495.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="267"></NameColumnWidth>
+      <NameColumnWidth column_width="263"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="7" />
@@ -32,8 +32,8 @@
       <obj_property name="label">AXI Lite</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awaddr">
-         <obj_property name="ElementShortName">s_axi_lite_awaddr[4:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axi_lite_awaddr[4:0]</obj_property>
+         <obj_property name="ElementShortName">s_axi_lite_awaddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_awaddr[5:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_awprot">
          <obj_property name="ElementShortName">s_axi_lite_awprot[2:0]</obj_property>
@@ -76,8 +76,8 @@
          <obj_property name="ObjectShortName">s_axi_lite_bready</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_araddr">
-         <obj_property name="ElementShortName">s_axi_lite_araddr[4:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axi_lite_araddr[4:0]</obj_property>
+         <obj_property name="ElementShortName">s_axi_lite_araddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_lite_araddr[5:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_lite_arprot">
          <obj_property name="ElementShortName">s_axi_lite_arprot[2:0]</obj_property>
@@ -119,6 +119,7 @@
    <wvobject type="group" fp_name="group197">
       <obj_property name="label">SPI</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_sck_o">
          <obj_property name="ElementShortName">spi_sck_o</obj_property>
          <obj_property name="ObjectShortName">spi_sck_o</obj_property>
@@ -126,6 +127,8 @@
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_ss_o">
          <obj_property name="ElementShortName">spi_ss_o[0:0]</obj_property>
          <obj_property name="ObjectShortName">spi_ss_o[0:0]</obj_property>
+         <obj_property name="Radix">BINARYRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/spi_io0_i">
          <obj_property name="ElementShortName">spi_io0_i</obj_property>
@@ -268,10 +271,6 @@
          <obj_property name="ElementShortName">spi_mmio_dummy_rem[1:0]</obj_property>
          <obj_property name="ObjectShortName">spi_mmio_dummy_rem[1:0]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_cs_size">
-         <obj_property name="ElementShortName">spi_mmio_cs_size[7:0]</obj_property>
-         <obj_property name="ObjectShortName">spi_mmio_cs_size[7:0]</obj_property>
-      </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/spi_mmio_cs_rem">
          <obj_property name="ElementShortName">spi_mmio_cs_rem[7:0]</obj_property>
          <obj_property name="ObjectShortName">spi_mmio_cs_rem[7:0]</obj_property>
@@ -321,12 +320,12 @@
          <obj_property name="ObjectShortName">s_axi_full_awready</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wdata">
-         <obj_property name="ElementShortName">s_axi_full_wdata[31:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axi_full_wdata[31:0]</obj_property>
+         <obj_property name="ElementShortName">s_axi_full_wdata[63:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wdata[63:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wstrb">
-         <obj_property name="ElementShortName">s_axi_full_wstrb[3:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axi_full_wstrb[3:0]</obj_property>
+         <obj_property name="ElementShortName">s_axi_full_wstrb[7:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_wstrb[7:0]</obj_property>
       </wvobject>
       <wvobject type="logic" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_wlast">
          <obj_property name="ElementShortName">s_axi_full_wlast</obj_property>
@@ -393,8 +392,8 @@
          <obj_property name="ObjectShortName">s_axi_full_arready</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rdata">
-         <obj_property name="ElementShortName">s_axi_full_rdata[31:0]</obj_property>
-         <obj_property name="ObjectShortName">s_axi_full_rdata[31:0]</obj_property>
+         <obj_property name="ElementShortName">s_axi_full_rdata[63:0]</obj_property>
+         <obj_property name="ObjectShortName">s_axi_full_rdata[63:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/axi_qspi_mm_tb/uut/s_axi_full_rresp">
          <obj_property name="ElementShortName">s_axi_full_rresp[1:0]</obj_property>

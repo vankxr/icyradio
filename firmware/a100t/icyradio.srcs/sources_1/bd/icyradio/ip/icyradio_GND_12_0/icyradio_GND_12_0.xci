@@ -1,0 +1,49 @@
+{
+  "schema": "xilinx.com:schema:json_instance:1.0",
+  "ip_inst": {
+    "xci_name": "icyradio_GND_12_0",
+    "cell_name": "GND_12",
+    "component_reference": "xilinx.com:ip:xlconstant:1.1",
+    "ip_revision": "8",
+    "gen_directory": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_GND_12_0",
+    "parameters": {
+      "component_parameters": {
+        "Component_Name": [ { "value": "icyradio_GND_12_0", "resolve_type": "user", "usage": "all" } ],
+        "CONST_WIDTH": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "CONST_VAL": [ { "value": "0", "value_src": "user", "resolve_type": "user", "usage": "all" } ]
+      },
+      "model_parameters": {
+        "CONST_WIDTH": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "CONST_VAL": [ { "value": "0x0", "resolve_type": "generated", "format": "bitString", "usage": "all" } ]
+      },
+      "project_parameters": {
+        "ARCHITECTURE": [ { "value": "artix7" } ],
+        "BASE_BOARD_PART": [ { "value": "" } ],
+        "BOARD_CONNECTIONS": [ { "value": "" } ],
+        "DEVICE": [ { "value": "xc7a100t" } ],
+        "PACKAGE": [ { "value": "fgg484" } ],
+        "PREFHDL": [ { "value": "VERILOG" } ],
+        "SILICON_REVISION": [ { "value": "" } ],
+        "SIMULATOR_LANGUAGE": [ { "value": "MIXED" } ],
+        "SPEEDGRADE": [ { "value": "-2" } ],
+        "STATIC_POWER": [ { "value": "" } ],
+        "TEMPERATURE_GRADE": [ { "value": "" } ]
+      },
+      "runtime_parameters": {
+        "IPCONTEXT": [ { "value": "IP_Integrator" } ],
+        "IPREVISION": [ { "value": "8" } ],
+        "MANAGED": [ { "value": "TRUE" } ],
+        "OUTPUTDIR": [ { "value": "../../../../../../icyradio.gen/sources_1/bd/icyradio/ip/icyradio_GND_12_0" } ],
+        "SELECTEDSIMMODEL": [ { "value": "" } ],
+        "SHAREDDIR": [ { "value": "../../ipshared" } ],
+        "SWVERSION": [ { "value": "2023.2" } ],
+        "SYNTHESISFLOW": [ { "value": "GLOBAL" } ]
+      }
+    },
+    "boundary": {
+      "ports": {
+        "dout": [ { "direction": "out", "size_left": "0", "size_right": "0" } ]
+      }
+    }
+  }
+}
