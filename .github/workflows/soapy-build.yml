@@ -140,6 +140,9 @@ jobs:
         mkdir -p deb/usr/lib/${{matrix.lib-arch}}-linux-gnu/SoapySDR/modules${SOAPY_VERSION}
         cp ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so deb/usr/lib/${{matrix.lib-arch}}-linux-gnu/SoapySDR/modules${SOAPY_VERSION}
 
+        mkdir -p deb/usr/bin
+        cp ${{github.workspace}}/software/soapy/build/IcyRadioTool deb/usr/bin
+
         dpkg-deb --build --root-owner-group ./deb ${{github.workspace}}/software/soapy/soapysdr-module-icyradio_${{matrix.arch}}.deb
 
     - name: Upload results
@@ -148,5 +151,6 @@ jobs:
         name: soapy_module_${{matrix.arch}}
         path: |
           ${{github.workspace}}/software/soapy/build/libIcyRadioSupport.so
+          ${{github.workspace}}/software/soapy/build/IcyRadioTool
           ${{github.workspace}}/software/soapy/soapysdr-module-icyradio_${{matrix.arch}}.deb
         retention-days: 30
