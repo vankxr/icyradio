@@ -1,13 +1,17 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <vector>
 #include <unistd.h>
+#include <thread>
 #include <mutex>
+#include <atomic>
 #include "AXIPeripheral.hpp"
 #include "AXIIRQCtrl.hpp"
 #include "Utils.hpp"
 
-#define AXI_DMAC_NUM_INSTANCES 4
+#define AXI_DMAC_NUM_INSTANCES 6
 #define AXI_DMAC_NUM_TRANSFERS 4
 
 #define AXI_DMAC_REG_VERSION                0x000
@@ -58,28 +62,28 @@
 #define AXI_DMAC_REG_XFER_DONE_XFER_n_DONE(n)       BIT(n)
 #define AXI_DMAC_REG_XFER_DONE_PARTIAL_XFER_DONE    BIT(31)
 
-class AXIDMAC : public AXIPeripheral
+class AXIDMAC: public AXIPeripheral
 {
 public:
     struct Transfer
     {
-        typedef void (* Callback)(const AXIDMAC::Transfer);
+        typedef void (* Callback)(void *);
 
         enum Flags
         {
+            NONE = 0,
             CYCLIC = AXI_DMAC_REG_FLAGS_CYCLIC,
             TLAST = AXI_DMAC_REG_FLAGS_TLAST,
             PARTIAL_REPORTING_EN = AXI_DMAC_REG_FLAGS_PARTIAL_REPORTING_EN,
         };
 
         uint8_t id;
-        volatile bool done;
         uint32_t size;
         AXIDMAC::Transfer::Flags flags;
         uint32_t src_addr;
         uint32_t dest_addr;
-        AXIDMAC::Transfer::Callback callback;
-        void *arg;
+        AXIDMAC::Transfer::Callback cb;
+        void *cb_arg;
     };
     enum InterfaceType
     {
@@ -113,9 +117,27 @@ public:
         AXIIRQCtrl::IRQNumber irq;  // The IRQ number to use
     };
 
+public:
+    static inline std::string InterfaceTypeToString(AXIDMAC::InterfaceType type)
+    {
+        switch(type)
+        {
+            case AXIDMAC::InterfaceType::AXI_MM:
+                return "AXI Memory Mapped";
+            case AXIDMAC::InterfaceType::AXI_STREAM:
+                return "AXI Stream";
+            case AXIDMAC::InterfaceType::FIFO:
+                return "FIFO";
+            default:
+                return "Unknown";
+        }
+    }
+
 private:
     static void ISR(void *_this);
+
     void handleIRQ();
+    void callTransferCallback(AXIDMAC::Transfer xfer);
 
 public:
     AXIDMAC(void *base_address, AXIDMAC::IRQConfig irq_config = {nullptr, AXIIRQCtrl::IRQNumber::MAX});
@@ -124,33 +146,57 @@ public:
     void init(AXIDMAC::IRQConfig irq_config = {nullptr, AXIIRQCtrl::IRQNumber::MAX});
 
     uint32_t getIPVersion();
+    uint32_t getPeripheralID();
 
     AXIDMAC::Capabilities getCapabilities();
 
-    void enable(bool enable);
+    void enable(bool enable = true);
+    inline void disable()
+    {
+        this->enable(false);
+    }
     bool enabled();
-    void pause(bool pause);
+    void pause(bool pause = true);
+    inline void unpause()
+    {
+        this->pause(false);
+    }
     bool paused();
     bool idle();
+    void waitIdle(uint32_t timeout_ms = 0);
 
-    uint8_t submitTransfer(AXIDMAC::Transfer transfer);
+    void setTransferCallback(uint8_t id, AXIDMAC::Transfer::Callback callback, void *arg = nullptr);
+    inline void clearTransferCallback(uint8_t id)
+    {
+        this->setTransferCallback(id, nullptr);
+    }
+    void submitTransfer(AXIDMAC::Transfer &transfer);
     void waitTransferCompletion(uint8_t id, uint32_t timeout_ms = 0);
 
 private:
     AXIDMAC::IRQConfig irq_config;
     AXIDMAC::Capabilities capabilities;
     AXIDMAC::Transfer transfers[AXI_DMAC_NUM_TRANSFERS];
-    std::mutex mutex;
+    std::atomic<bool> transfer_done[AXI_DMAC_NUM_TRANSFERS];
+    std::atomic<bool> transfer_callback_done[AXI_DMAC_NUM_TRANSFERS];
+
+    std::recursive_mutex mutex;
 };
 
-// Instance 0 - axi_dmac_rf_rx - AXI DMA Controller for RF RX
-#define AXI_DMAC_RF_RX_INST 0
+// Instance 0 - axi_dmac_rf_tx0 - AXI DMA Controller for RF TX channel 0
+#define AXI_DMAC_RF_TX0_INST 0
 
-// Instance 1 - axi_dmac_rf_tx - AXI DMA Controller for RF TX
-#define AXI_DMAC_RF_TX_INST 1
+// Instance 1 - axi_dmac_rf_tx1 - AXI DMA Controller for RF TX channel 1
+#define AXI_DMAC_RF_TX1_INST 1
 
-// Instance 2 - axi_dmac_i2s_rx - AXI DMA Controller for I2S RX
-#define AXI_DMAC_I2S_RX_INST 2
+// Instance 2 - axi_dmac_rf_rx0 - AXI DMA Controller for RF RX channel 0
+#define AXI_DMAC_RF_RX0_INST 2
 
-// Instance 3 - axi_dmac_i2s_tx - AXI DMA Controller for I2S TX
-#define AXI_DMAC_I2S_TX_INST 3
+// Instance 3 - axi_dmac_rf_rx1 - AXI DMA Controller for RF RX channel 1
+#define AXI_DMAC_RF_RX1_INST 3
+
+// Instance 4 - axi_dmac_i2s_tx - AXI DMA Controller for I2S TX
+#define AXI_DMAC_I2S_TX_INST 4
+
+// Instance 5 - axi_dmac_i2s_rx - AXI DMA Controller for I2S RX
+#define AXI_DMAC_I2S_RX_INST 5

@@ -418,24 +418,6 @@ private:
         this->writeReg(IDT8V97003_REG_BUF_TRANSFER, IDT8V97003_REG_BUF_TRANSFER_TRANSFER_ON);
     }
 
-    bool _isMuted(IDT8V97003::RFOutput output);
-    void _mute(IDT8V97003::RFOutput output, bool mute = true);
-
-    uint32_t _getReferenceDoublerInputFrequency();
-    inline uint32_t _getReferenceDoublerOutputFrequency()
-    {
-        return this->_getReferenceDoublerInputFrequency() * 2;
-    }
-    uint32_t _getReferenceMultiplierInputFrequency();
-    uint32_t _getReferenceMultiplierOutputFrequency();
-    uint32_t _getReferenceDividerInputFrequency();
-    uint32_t _getReferenceDividerOutputFrequency();
-    inline uint32_t _getPFDFrequency()
-    {
-        return this->_getReferenceDividerOutputFrequency();
-    }
-
-    uint64_t _getVCOFrequency();
 public:
     IDT8V97003(IDT8V97003::SPIConfig spi, IDT8V97003::GPIOConfig ce_gpio = {nullptr, 0, false}, IDT8V97003::GPIOConfig mute_gpio = {nullptr, 0, false}, IDT8V97003::GPIOConfig sync_gpio = {nullptr, 0, false}, IDT8V97003::GPIOConfig ld_gpio = {nullptr, 0, false}, IDT8V97003::GPIOConfig reset_gpio = {nullptr, 0, false});
     ~IDT8V97003();
@@ -457,27 +439,18 @@ public:
     void powerDown(IDT8V97003::PowerFlags flags = IDT8V97003::PowerFlags::PWR_ALL);
 
     bool isMuted();
+    bool isMuted(IDT8V97003::RFOutput output);
     void mute(bool mute = true);
     inline void unmute()
     {
         this->mute(false);
     }
-    inline bool isMuted(IDT8V97003::RFOutput output)
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_isMuted(output);
-    }
-    inline void mute(IDT8V97003::RFOutput output, bool mute = true)
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        this->_mute(output, mute);
-    }
+    void mute(IDT8V97003::RFOutput output, bool mute = true);
     inline void unmute(IDT8V97003::RFOutput output)
     {
         this->mute(output, false);
     }
+
     bool getMuteUntilLocked()
     {
         return !!(this->readReg(IDT8V97003_REG_RFOUTA_ENA) & IDT8V97003_REG_RFOUTA_ENA_MUTE_UNTIL_LD);
@@ -517,55 +490,29 @@ public:
     void configReferenceInput(uint32_t freq, bool diff = false);
     void configPFD(uint32_t freq, IDT8V97003::PFDPulseWidth pw = IDT8V97003::PFDPulseWidth::PFD_PW_260ps);
     void configPFD(IDT8V97003::RefPathConfig ref_cfg, IDT8V97003::PFDPulseWidth pw = IDT8V97003::PFDPulseWidth::PFD_PW_260ps);
-    inline uint32_t getReferenceFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
 
-        return this->ref_freq;
-    }
-    inline uint32_t getReferenceDoublerInputFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getReferenceDoublerInputFrequency();
-    }
+    uint32_t getReferenceDoublerInputFrequency();
     inline uint32_t getReferenceDoublerOutputFrequency()
     {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getReferenceDoublerOutputFrequency();
+        return this->getReferenceDoublerInputFrequency() * 2;
     }
-    inline uint32_t getReferenceMultiplierInputFrequency()
+    uint32_t getReferenceMultiplierInputFrequency();
+    uint32_t getReferenceMultiplierOutputFrequency();
+    uint32_t getReferenceDividerInputFrequency();
+    uint32_t getReferenceDividerOutputFrequency();
+    inline uint32_t getReferenceFrequency()
     {
-        std::lock_guard<std::mutex> lock(this->mutex);
+        std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-        return this->_getReferenceMultiplierInputFrequency();
-    }
-    inline uint32_t getReferenceMultiplierOutputFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getReferenceMultiplierOutputFrequency();
-    }
-    inline uint32_t getReferenceDividerInputFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getReferenceDividerInputFrequency();
-    }
-    inline uint32_t getReferenceDividerOutputFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getReferenceDividerOutputFrequency();
+        return this->ref_freq;
     }
     inline uint32_t getPFDFrequency()
     {
         return this->getReferenceDividerOutputFrequency();
     }
 
-    void configChargePump(IDT8V97003::ChargePumpConfig cfg);
     IDT8V97003::ChargePumpConfig getChargePumpConfig();
+    void setChargePumpConfig(IDT8V97003::ChargePumpConfig cfg);
     double getChargePumpPositiveCurrent();
     void setChargePumpPositiveCurrent(double current);
     double getChargePumpNegativeCurrent();
@@ -588,12 +535,7 @@ public:
     IDT8V97003::LDPinMode getLockDetectPinMode();
     void setLockDetectPinMode(IDT8V97003::LDPinMode mode);
 
-    inline uint64_t getVCOFrequency()
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-
-        return this->_getVCOFrequency();
-    }
+    uint64_t getVCOFrequency();
     uint64_t getFrequency();
     void setFrequency(uint64_t freq, int32_t cal_timeout = 5000, int32_t lock_timeout = 5000);
 
@@ -607,7 +549,8 @@ private:
     IDT8V97003::GPIOConfig sync_gpio;
     IDT8V97003::GPIOConfig ld_gpio;
     IDT8V97003::GPIOConfig reset_gpio;
-    std::mutex mutex;
+
+    std::recursive_mutex mutex;
 
     uint32_t ref_freq;
 

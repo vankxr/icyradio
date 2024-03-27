@@ -2,7 +2,7 @@
 # Project setup -- only needed if device support is a stand-alone build
 # We recommend that the support module be built in-tree with the driver.
 ########################################################################
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 3.5)
 project(SoapyIcyRadio CXX)
 
 #select the release build type by default to get optimization flags
@@ -20,6 +20,7 @@ file(GLOB ICYRADIO_SRCS
      "src/include/*.hpp"
      "src/*.cpp"
 )
+list(REMOVE_ITEM ICYRADIO_SRCS "src/IcyRadioTool.cpp")
 list(APPEND ICYRADIO_INCLUDE_DIRS "src/include/")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -59,6 +60,13 @@ SOAPY_SDR_MODULE_UTIL(
     LIBRARIES
         ${ICYRADIO_LIBRARIES}
 )
+
+########################################################################
+# Build CLI Tool
+########################################################################
+add_executable(IcyRadioTool ${ICYRADIO_SRCS} src/IcyRadioTool.cpp)
+target_link_libraries(IcyRadioTool ${ICYRADIO_LIBRARIES} ${SoapySDR_LIBRARIES})
+install(TARGETS IcyRadioTool DESTINATION bin)
 
 ########################################################################
 # uninstall target

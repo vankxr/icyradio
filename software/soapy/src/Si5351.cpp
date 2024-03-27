@@ -248,7 +248,7 @@ void Si5351::ISR(void *_this)
 }
 void Si5351::handleIRQ()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t flags = this->readReg(SI5351_REG_IRQ_FLAGS);
     this->writeReg(SI5351_REG_IRQ_FLAGS, 0x00);
@@ -266,14 +266,14 @@ void Si5351::readReg(uint8_t reg, uint8_t *dst, uint8_t count)
         return;
 
     if(dst == nullptr)
-        throw std::runtime_error("Si5351: Invalid destination buffer");
+        throw std::invalid_argument("Si5351: Invalid destination buffer");
 
-    this->iic.controller->lock(); // Lock the I2C bus so the next two transactions are not interrupted
+    this->iic.controller->startAtomicTransaction(); // Lock the I2C bus so the next two transactions are not interrupted
 
     this->iic.controller->write(this->iic.addr, reg, AXIIIC::Stop::RESTART);
     this->iic.controller->read(this->iic.addr, dst, count, AXIIIC::Stop::STOP);
 
-    this->iic.controller->unlock(); // Unlock the I2C bus
+    this->iic.controller->endAtomicTransaction(); // Unlock the I2C bus
 }
 void Si5351::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
 {
@@ -284,7 +284,7 @@ void Si5351::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
         return;
 
     if(src == nullptr)
-        throw std::runtime_error("Si5351: Invalid source buffer");
+        throw std::invalid_argument("Si5351: Invalid source buffer");
 
     uint8_t buf[256];
 
@@ -321,7 +321,22 @@ Si5351::Si5351(Si5351::IICConfig iic, Si5351::GPIOConfig oe_gpio, Si5351::IRQCon
     if(this->iic.controller == nullptr)
         throw std::runtime_error("Si5351: IIC not initialized");
 
-    if(!this->iic.controller->scan(this->iic.addr))
+    bool found = false;
+    uint32_t timeout = 1000UL;
+
+    while(--timeout)
+    {
+        if(this->iic.controller->scan(this->iic.addr))
+        {
+            found = true;
+
+            break;
+        }
+
+        usleep(1000);
+    }
+
+    if(!found)
         throw std::runtime_error("Si5351: Device not found on IIC bus");
 
     uint8_t rev = this->getRevisionID();
@@ -353,6 +368,8 @@ Si5351::~Si5351()
 
 void Si5351::init()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     while(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_SYS_INIT)
         usleep(10);
 
@@ -395,15 +412,12 @@ void Si5351::init()
     this->powerDownClockOutput(Si5351::ClockOutput::CLK7);
 }
 
-uint8_t Si5351::getRevisionID()
-{
-    return this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_REVID;
-}
-
 bool Si5351::isGlobalOutputEnabled()
 {
     if(this->oe_gpio.controller == nullptr)
         throw std::runtime_error("Si5351: OE GPIO not initialized");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     bool val = this->oe_gpio.controller->getValue(this->oe_gpio.gpio);
 
@@ -417,13 +431,15 @@ void Si5351::globalOutputEnable(bool enable)
     if(this->oe_gpio.controller == nullptr)
         throw std::runtime_error("Si5351: OE GPIO not initialized");
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     if(this->oe_gpio.invert)
         enable = !enable;
 
     this->oe_gpio.controller->setValue(this->oe_gpio.gpio, !enable);
 }
 
-void Si5351::_configCLKIN(uint32_t freq, Si5351::CLKINDivider divider)
+void Si5351::configCLKIN(uint32_t freq, Si5351::CLKINDivider divider)
 {
     if(divider == Si5351::CLKINDivider::CLKIN_DIV_AUTO)
     {
@@ -465,12 +481,16 @@ void Si5351::_configCLKIN(uint32_t freq, Si5351::CLKINDivider divider)
             throw std::invalid_argument("Si5351: Invalid CLKIN divider (Valid: 1, 2, 4, 8)");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(SI5351_REG_PLL_SRC, (uint8_t)~0xC0, val);
 
     this->clkin_freq = freq;
 }
-uint32_t Si5351::_getDividedCLKINFrequency()
+uint32_t Si5351::getDividedCLKINFrequency()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t val = this->readReg(SI5351_REG_PLL_SRC) & 0xC0;
 
     switch(val)
@@ -488,7 +508,7 @@ uint32_t Si5351::_getDividedCLKINFrequency()
     }
 }
 
-void Si5351::_configXTAL(uint32_t freq, Si5351::XTALCapacitance cap)
+void Si5351::configXTAL(uint32_t freq, Si5351::XTALCapacitance cap)
 {
     if(freq < 25000000UL)
         throw std::invalid_argument("Si5351: XTAL frequency too low (Valid: 25-27 MHz)");
@@ -513,6 +533,8 @@ void Si5351::_configXTAL(uint32_t freq, Si5351::XTALCapacitance cap)
             throw std::invalid_argument("Si5351: Invalid XTAL capacitance (Valid: 6, 8, 10 pF)");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->writeReg(SI5351_REG_XTAL_CL, val);
 
     this->xtal_freq = freq;
@@ -534,11 +556,13 @@ bool Si5351::isPLLLocked(Si5351::PLL pll)
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t status = this->readReg(SI5351_REG_STATUS);
 
     return !(status & mask);
 }
-void Si5351::_resetPLL(Si5351::PLL pll)
+void Si5351::resetPLL(Si5351::PLL pll)
 {
     uint8_t val;
 
@@ -554,6 +578,8 @@ void Si5351::_resetPLL(Si5351::PLL pll)
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->writeReg(SI5351_REG_PLL_RST, val);
 
     while(this->readReg(SI5351_REG_PLL_RST) & val)
@@ -562,7 +588,7 @@ void Si5351::_resetPLL(Si5351::PLL pll)
     while(this->readReg(SI5351_REG_STATUS) & SI5351_REG_STATUS_SYS_INIT) // Somehow the SYS_INIT bit gets set when the PLLs are reset
         usleep(10);
 }
-void Si5351::_configPLL(Si5351::PLL pll, uint32_t freq, Si5351::PLLSource src)
+void Si5351::configPLL(Si5351::PLL pll, uint32_t freq, Si5351::PLLSource src)
 {
     switch(pll)
     {
@@ -579,12 +605,14 @@ void Si5351::_configPLL(Si5351::PLL pll, uint32_t freq, Si5351::PLLSource src)
     if(freq > 900000000UL)
         throw std::invalid_argument("Si5351: VCO frequency too high (Valid: 600-900 MHz)");
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     if(src == Si5351::PLLSource::PLL_SRC_AUTO)
     {
         do
         {
             uint32_t xtal_freq = this->xtal_freq;
-            uint32_t clkin_freq = this->_getDividedCLKINFrequency();
+            uint32_t clkin_freq = this->getDividedCLKINFrequency();
 
             // Find out if both sources are configured
             if(!xtal_freq && !clkin_freq)
@@ -693,10 +721,10 @@ void Si5351::_configPLL(Si5351::PLL pll, uint32_t freq, Si5351::PLLSource src)
             src = Si5351::PLLSource::PLL_SRC_XTAL;
     }
 
-    this->_setPLLSource(pll, src);
-    this->_setPLLFrequency(pll, freq);
+    this->setPLLSource(pll, src);
+    this->setPLLFrequency(pll, freq);
 }
-void Si5351::_setPLLSource(Si5351::PLL pll, Si5351::PLLSource src)
+void Si5351::setPLLSource(Si5351::PLL pll, Si5351::PLLSource src)
 {
     uint8_t mask;
 
@@ -711,6 +739,8 @@ void Si5351::_setPLLSource(Si5351::PLL pll, Si5351::PLLSource src)
         default:
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     switch(src)
     {
@@ -724,7 +754,7 @@ void Si5351::_setPLLSource(Si5351::PLL pll, Si5351::PLLSource src)
             throw std::invalid_argument("Si5351: Invalid PLL source");
     }
 }
-Si5351::PLLSource Si5351::_getPLLSource(Si5351::PLL pll)
+Si5351::PLLSource Si5351::getPLLSource(Si5351::PLL pll)
 {
     uint8_t mask;
 
@@ -740,6 +770,8 @@ Si5351::PLLSource Si5351::_getPLLSource(Si5351::PLL pll)
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t val = this->readReg(SI5351_REG_PLL_SRC) & mask;
 
     if(val == mask)
@@ -747,19 +779,21 @@ Si5351::PLLSource Si5351::_getPLLSource(Si5351::PLL pll)
 
     return Si5351::PLLSource::PLL_SRC_XTAL;
 }
-uint32_t Si5351::_getPLLSourceFrequency(Si5351::PLL pll)
+uint32_t Si5351::getPLLSourceFrequency(Si5351::PLL pll)
 {
-    switch(this->_getPLLSource(pll))
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    switch(this->getPLLSource(pll))
     {
         case Si5351::PLLSource::PLL_SRC_XTAL:
             return this->xtal_freq;
         case Si5351::PLLSource::PLL_SRC_CLKIN:
-            return this->_getDividedCLKINFrequency();
+            return this->getDividedCLKINFrequency();
         default:
             throw std::runtime_error("Si5351: Invalid PLL source");
     }
 }
-void Si5351::_setPLLFrequency(Si5351::PLL pll, uint32_t freq)
+void Si5351::setPLLFrequency(Si5351::PLL pll, uint32_t freq)
 {
     switch(pll)
     {
@@ -776,7 +810,9 @@ void Si5351::_setPLLFrequency(Si5351::PLL pll, uint32_t freq)
     if(freq > 900000000UL)
         throw std::invalid_argument("Si5351: VCO frequency too high (Valid: 600-900 MHz)");
 
-    Si5351::MultiSynthDivider div = Si5351::CalculateMSDivider(freq, this->_getPLLSourceFrequency(pll));
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    Si5351::MultiSynthDivider div = Si5351::CalculateMSDivider(freq, this->getPLLSourceFrequency(pll));
 
     Si5351::ValidatePLLMSDivider(div);
 
@@ -802,11 +838,11 @@ void Si5351::_setPLLFrequency(Si5351::PLL pll, uint32_t freq)
 
     this->writeReg(SI5351_REG_MSNn_P3_MID(pll), buf, 8);
 
-    this->_resetPLL(pll);
+    this->resetPLL(pll);
 
     this->pll_fb_div[pll] = div;
 }
-uint32_t Si5351::_getPLLFrequency(Si5351::PLL pll)
+uint32_t Si5351::getPLLFrequency(Si5351::PLL pll)
 {
     switch(pll)
     {
@@ -817,6 +853,8 @@ uint32_t Si5351::_getPLLFrequency(Si5351::PLL pll)
             throw std::invalid_argument("Si5351: Invalid PLL");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     Si5351::MultiSynthDivider div = this->pll_fb_div[pll];
 
     if(!div.a && !div.b) // If multiplier is zero, return zero
@@ -825,12 +863,12 @@ uint32_t Si5351::_getPLLFrequency(Si5351::PLL pll)
     if(!div.c) // Division by zero
         throw std::runtime_error("Si5351: Invalid PLL divider");
 
-    uint64_t src_freq = this->_getPLLSourceFrequency(pll);
+    uint64_t src_freq = this->getPLLSourceFrequency(pll);
 
     return src_freq * div.a + ((src_freq * div.b) / div.c);
 }
 
-void Si5351::_configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase, Si5351::PLL src)
+void Si5351::configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase, Si5351::PLL src)
 {
     bool integer;
 
@@ -858,6 +896,8 @@ void Si5351::_configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase
     if(freq > 200000000UL)
         throw std::invalid_argument("Si5351: Frequency too high (Valid: 0.5-200 MHz)");
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     if(src == Si5351::PLL::PLL_AUTO)
     {
         do
@@ -868,7 +908,7 @@ void Si5351::_configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase
             // Find out if both sources are configured
             try
             {
-                plla_freq = this->_getPLLFrequency(Si5351::PLL::PLLA);
+                plla_freq = this->getPLLFrequency(Si5351::PLL::PLLA);
             }
             catch(...)
             {
@@ -877,7 +917,7 @@ void Si5351::_configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase
 
             try
             {
-                pllb_freq = this->_getPLLFrequency(Si5351::PLL::PLLB);
+                pllb_freq = this->getPLLFrequency(Si5351::PLL::PLLB);
             }
             catch(...)
             {
@@ -982,11 +1022,11 @@ void Si5351::_configMultiSynth(Si5351::MultiSynth ms, uint32_t freq, float phase
             src = Si5351::PLL::PLLA;
     }
 
-    this->_setMultiSynthSource(ms, src);
-    this->_setMultiSynthFrequency(ms, freq);
-    this->_setMultiSynthPhaseOffset(ms, phase);
+    this->setMultiSynthSource(ms, src);
+    this->setMultiSynthFrequency(ms, freq);
+    this->setMultiSynthPhaseOffset(ms, phase);
 }
-void Si5351::_setMultiSynthSource(Si5351::MultiSynth ms, Si5351::PLL src)
+void Si5351::setMultiSynthSource(Si5351::MultiSynth ms, Si5351::PLL src)
 {
     switch(ms)
     {
@@ -1002,6 +1042,8 @@ void Si5351::_setMultiSynthSource(Si5351::MultiSynth ms, Si5351::PLL src)
         default:
             throw std::invalid_argument("Si5351: Invalid MultiSynth");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     switch(src)
     {
@@ -1015,7 +1057,7 @@ void Si5351::_setMultiSynthSource(Si5351::MultiSynth ms, Si5351::PLL src)
             throw std::invalid_argument("Si5351: Invalid MultiSynth source");
     }
 }
-Si5351::PLL Si5351::_getMultiSynthSource(Si5351::MultiSynth ms)
+Si5351::PLL Si5351::getMultiSynthSource(Si5351::MultiSynth ms)
 {
     switch(ms)
     {
@@ -1032,6 +1074,8 @@ Si5351::PLL Si5351::_getMultiSynthSource(Si5351::MultiSynth ms)
             throw std::invalid_argument("Si5351: Invalid MultiSynth");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t val = this->readReg(SI5351_REG_CLKn_CFG(ms)) & SI5351_REG_CLKn_CFG_MS_SRC_PLLB;
 
     if(val == SI5351_REG_CLKn_CFG_MS_SRC_PLLB)
@@ -1039,11 +1083,13 @@ Si5351::PLL Si5351::_getMultiSynthSource(Si5351::MultiSynth ms)
 
     return Si5351::PLL::PLLA;
 }
-uint32_t Si5351::_getMultiSynthSourceFrequency(Si5351::MultiSynth ms)
+uint32_t Si5351::getMultiSynthSourceFrequency(Si5351::MultiSynth ms)
 {
-    return this->_getPLLFrequency(this->_getMultiSynthSource(ms));
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    return this->getPLLFrequency(this->getMultiSynthSource(ms));
 }
-void Si5351::_setMultiSynthFrequency(Si5351::MultiSynth ms, uint32_t freq)
+void Si5351::setMultiSynthFrequency(Si5351::MultiSynth ms, uint32_t freq)
 {
     bool integer;
 
@@ -1074,7 +1120,9 @@ void Si5351::_setMultiSynthFrequency(Si5351::MultiSynth ms, uint32_t freq)
     if(integer && freq > 150000000UL)
         throw std::invalid_argument("Si5351: Frequency too high (Valid: 0.5-150 MHz)");
 
-    Si5351::MultiSynthDivider div = Si5351::CalculateMSDivider(this->_getMultiSynthSourceFrequency(ms), freq);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    Si5351::MultiSynthDivider div = Si5351::CalculateMSDivider(this->getMultiSynthSourceFrequency(ms), freq);
 
     if(integer)
     {
@@ -1117,7 +1165,7 @@ void Si5351::_setMultiSynthFrequency(Si5351::MultiSynth ms, uint32_t freq)
 
     this->ms_div[ms] = div;
 }
-uint32_t Si5351::_getMultiSynthFrequency(Si5351::MultiSynth ms)
+uint32_t Si5351::getMultiSynthFrequency(Si5351::MultiSynth ms)
 {
     switch(ms)
     {
@@ -1134,6 +1182,8 @@ uint32_t Si5351::_getMultiSynthFrequency(Si5351::MultiSynth ms)
             throw std::invalid_argument("Si5351: Invalid MultiSynth");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     Si5351::MultiSynthDivider div = this->ms_div[ms];
 
     if(!div.a && !div.b) // If multiplier is zero, return zero
@@ -1142,11 +1192,11 @@ uint32_t Si5351::_getMultiSynthFrequency(Si5351::MultiSynth ms)
     if(!div.c) // Division by zero
         throw std::runtime_error("Si5351: Invalid MultiSynth divider");
 
-    uint64_t src_freq = this->_getMultiSynthSourceFrequency(ms);
+    uint64_t src_freq = this->getMultiSynthSourceFrequency(ms);
 
     return (src_freq * div.c) / (((uint64_t)div.a * div.c) + div.b);
 }
-void Si5351::_setMultiSynthPhaseOffset(Si5351::MultiSynth ms, float phase)
+void Si5351::setMultiSynthPhaseOffset(Si5351::MultiSynth ms, float phase)
 {
     switch(ms)
     {
@@ -1174,18 +1224,22 @@ void Si5351::_setMultiSynthPhaseOffset(Si5351::MultiSynth ms, float phase)
     while(phase < 0.f)
         phase += 360.f;
 
-    float time = (phase / 360.f) * 1000000.f / this->_getMultiSynthFrequency(ms); // In microsseconds
-    float code = (this->_getMultiSynthSourceFrequency(ms) * 4.f / 1000000.f) * time;
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    float time = (phase / 360.f) * 1000000.f / this->getMultiSynthFrequency(ms); // In microsseconds
+    float code = (this->getMultiSynthSourceFrequency(ms) * 4.f / 1000000.f) * time;
 
     code += 0.5f; // Round to nearest
 
-    if(code > 127)
+    uint8_t _code = (uint8_t)code;
+
+    if(_code > 127)
         throw std::runtime_error("Si5351: Cannot achieve requested phase offset");
 
     this->rmwReg(SI5351_REG_CLKn_CFG(ms), ~SI5351_REG_CLKn_CFG_MS_INT, SI5351_REG_CLKn_CFG_MS_FRAC); // Fractional mode is required to use phase offsets
-    this->writeReg(SI5351_REG_CLKn_PHOFF(ms), (uint8_t)code);
+    this->writeReg(SI5351_REG_CLKn_PHOFF(ms), _code);
 }
-float Si5351::_getMultiSynthPhaseOffset(Si5351::MultiSynth ms)
+float Si5351::getMultiSynthPhaseOffset(Si5351::MultiSynth ms)
 {
     switch(ms)
     {
@@ -1204,13 +1258,15 @@ float Si5351::_getMultiSynthPhaseOffset(Si5351::MultiSynth ms)
             throw std::invalid_argument("Si5351: Invalid MultiSynth");
     }
 
-    float code = this->readReg(SI5351_REG_CLKn_PHOFF(ms));
-    float time = code / (this->_getMultiSynthSourceFrequency(ms) * 4.f / 1000000.f);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    return time * 360.f / (1000000.f / this->_getMultiSynthFrequency(ms));
+    float code = this->readReg(SI5351_REG_CLKn_PHOFF(ms));
+    float time = code / (this->getMultiSynthSourceFrequency(ms) * 4.f / 1000000.f);
+
+    return time * 360.f / (1000000.f / this->getMultiSynthFrequency(ms));
 }
 
-void Si5351::_setClockOutputSource(Si5351::ClockOutput clk, Si5351::ClockOutputSource src)
+void Si5351::setClockOutputSource(Si5351::ClockOutput clk, Si5351::ClockOutputSource src)
 {
     switch(clk)
     {
@@ -1250,9 +1306,11 @@ void Si5351::_setClockOutputSource(Si5351::ClockOutput clk, Si5351::ClockOutputS
             throw std::invalid_argument("Si5351: Invalid clock output source");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(SI5351_REG_CLKn_CFG(clk), ~SI5351_REG_CLKn_CFG_SRC_MSYNTHn, val);
 }
-Si5351::ClockOutputSource Si5351::_getClockOutputSource(Si5351::ClockOutput clk)
+Si5351::ClockOutputSource Si5351::getClockOutputSource(Si5351::ClockOutput clk)
 {
     switch(clk)
     {
@@ -1268,6 +1326,8 @@ Si5351::ClockOutputSource Si5351::_getClockOutputSource(Si5351::ClockOutput clk)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t val = this->readReg(SI5351_REG_CLKn_CFG(clk)) & SI5351_REG_CLKn_CFG_SRC_MSYNTHn;
 
@@ -1285,7 +1345,7 @@ Si5351::ClockOutputSource Si5351::_getClockOutputSource(Si5351::ClockOutput clk)
             throw std::runtime_error("Si5351: Invalid clock output source");
     }
 }
-void Si5351::_setClockOutputDivider(Si5351::ClockOutput clk, Si5351::ClockOutputDivider divider)
+void Si5351::setClockOutputDivider(Si5351::ClockOutput clk, Si5351::ClockOutputDivider divider)
 {
     uint8_t reg;
     uint8_t shift;
@@ -1345,9 +1405,11 @@ void Si5351::_setClockOutputDivider(Si5351::ClockOutput clk, Si5351::ClockOutput
             throw std::invalid_argument("Si5351: Invalid clock output divider");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(reg, ~(SI5351_REG_MSn_P1_MSB_DIV_Rn_DIV_DIV128 >> shift), val >> shift);
 }
-Si5351::ClockOutputDivider Si5351::_getClockOutputDivider(Si5351::ClockOutput clk)
+Si5351::ClockOutputDivider Si5351::getClockOutputDivider(Si5351::ClockOutput clk)
 {
     uint8_t reg;
     uint8_t shift;
@@ -1375,6 +1437,8 @@ Si5351::ClockOutputDivider Si5351::_getClockOutputDivider(Si5351::ClockOutput cl
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t val = this->readReg(reg) & (SI5351_REG_MSn_P1_MSB_DIV_Rn_DIV_DIV128 >> shift);
 
     val <<= shift;
@@ -1401,7 +1465,7 @@ Si5351::ClockOutputDivider Si5351::_getClockOutputDivider(Si5351::ClockOutput cl
             throw std::runtime_error("Si5351: Invalid clock output divider");
     }
 }
-void Si5351::_setClockOutputInvert(Si5351::ClockOutput clk, bool invert)
+void Si5351::setClockOutputInvert(Si5351::ClockOutput clk, bool invert)
 {
     switch(clk)
     {
@@ -1418,9 +1482,11 @@ void Si5351::_setClockOutputInvert(Si5351::ClockOutput clk, bool invert)
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(SI5351_REG_CLKn_CFG(clk), ~SI5351_REG_CLKn_CFG_CLK_INV, invert ? SI5351_REG_CLKn_CFG_CLK_INV : 0x00);
 }
-bool Si5351::_getClockOutputInvert(Si5351::ClockOutput clk)
+bool Si5351::getClockOutputInvert(Si5351::ClockOutput clk)
 {
     switch(clk)
     {
@@ -1436,6 +1502,8 @@ bool Si5351::_getClockOutputInvert(Si5351::ClockOutput clk)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t val = this->readReg(SI5351_REG_CLKn_CFG(clk)) & SI5351_REG_CLKn_CFG_CLK_INV;
 
@@ -1445,7 +1513,7 @@ bool Si5351::_getClockOutputInvert(Si5351::ClockOutput clk)
     return false;
 
 }
-void Si5351::_setClockOutputDriveCurrent(Si5351::ClockOutput clk, Si5351::ClockOutputDriveCurrent current)
+void Si5351::setClockOutputDriveCurrent(Si5351::ClockOutput clk, Si5351::ClockOutputDriveCurrent current)
 {
     switch(clk)
     {
@@ -1482,9 +1550,11 @@ void Si5351::_setClockOutputDriveCurrent(Si5351::ClockOutput clk, Si5351::ClockO
             throw std::invalid_argument("Si5351: Invalid clock output drive current");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(SI5351_REG_CLKn_CFG(clk), ~SI5351_REG_CLKn_CFG_IDRV_8MA, val);
 }
-Si5351::ClockOutputDriveCurrent Si5351::_getClockOutputDriveCurrent(Si5351::ClockOutput clk)
+Si5351::ClockOutputDriveCurrent Si5351::getClockOutputDriveCurrent(Si5351::ClockOutput clk)
 {
     switch(clk)
     {
@@ -1500,6 +1570,8 @@ Si5351::ClockOutputDriveCurrent Si5351::_getClockOutputDriveCurrent(Si5351::Cloc
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t val = this->readReg(SI5351_REG_CLKn_CFG(clk)) & SI5351_REG_CLKn_CFG_IDRV_8MA;
 
@@ -1517,7 +1589,7 @@ Si5351::ClockOutputDriveCurrent Si5351::_getClockOutputDriveCurrent(Si5351::Cloc
             throw std::runtime_error("Si5351: Invalid clock output drive current");
     }
 }
-void Si5351::_setClockOutputDisableState(Si5351::ClockOutput clk, Si5351::ClockOutputDisableState state)
+void Si5351::setClockOutputDisableState(Si5351::ClockOutput clk, Si5351::ClockOutputDisableState state)
 {
     uint8_t reg;
     uint8_t shift;
@@ -1580,9 +1652,11 @@ void Si5351::_setClockOutputDisableState(Si5351::ClockOutput clk, Si5351::ClockO
             throw std::invalid_argument("Si5351: Invalid clock output disable state");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(reg, ~(SI5351_REG_CLKm_n_DIS_DISn_NODIS << shift), val << shift);
 }
-Si5351::ClockOutputDisableState Si5351::_getClockOutputDisableState(Si5351::ClockOutput clk)
+Si5351::ClockOutputDisableState Si5351::getClockOutputDisableState(Si5351::ClockOutput clk)
 {
     uint8_t reg;
     uint8_t shift;
@@ -1625,6 +1699,8 @@ Si5351::ClockOutputDisableState Si5351::_getClockOutputDisableState(Si5351::Cloc
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t val = this->readReg(reg) & (SI5351_REG_CLKm_n_DIS_DISn_NODIS << shift);
 
     val >>= shift;
@@ -1643,7 +1719,7 @@ Si5351::ClockOutputDisableState Si5351::_getClockOutputDisableState(Si5351::Cloc
             throw std::runtime_error("Si5351: Invalid clock output disable state");
     }
 }
-bool Si5351::_isClockOutputPoweredUp(Si5351::ClockOutput clk)
+bool Si5351::isClockOutputPoweredUp(Si5351::ClockOutput clk)
 {
     switch(clk)
     {
@@ -1659,6 +1735,8 @@ bool Si5351::_isClockOutputPoweredUp(Si5351::ClockOutput clk)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t val = this->readReg(SI5351_REG_CLKn_CFG(clk)) & SI5351_REG_CLKn_CFG_POWER_DOWN;
 
@@ -1667,7 +1745,7 @@ bool Si5351::_isClockOutputPoweredUp(Si5351::ClockOutput clk)
 
     return true;
 }
-void Si5351::_powerUpClockOutput(Si5351::ClockOutput clk, bool power_up)
+void Si5351::powerUpClockOutput(Si5351::ClockOutput clk, bool power_up)
 {
     switch(clk)
     {
@@ -1683,10 +1761,12 @@ void Si5351::_powerUpClockOutput(Si5351::ClockOutput clk, bool power_up)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(SI5351_REG_CLKn_CFG(clk), (uint8_t)~SI5351_REG_CLKn_CFG_POWER_DOWN, power_up ? SI5351_REG_CLKn_CFG_POWER_UP : SI5351_REG_CLKn_CFG_POWER_DOWN);
 }
-bool Si5351::_isClockOutputEnabled(Si5351::ClockOutput clk)
+bool Si5351::isClockOutputEnabled(Si5351::ClockOutput clk)
 {
     switch(clk)
     {
@@ -1703,14 +1783,16 @@ bool Si5351::_isClockOutputEnabled(Si5351::ClockOutput clk)
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
 
-    uint8_t val = this->readReg(SI5351_REG_CLK_OEB) & BIT(clk);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    if(val == BIT(clk))
+    uint8_t val = this->readReg(SI5351_REG_CLK_OEB);
+
+    if(val & BIT(clk))
         return false;
 
     return true;
 }
-void Si5351::_enableClockOutput(Si5351::ClockOutput clk, bool enable)
+void Si5351::enableClockOutput(Si5351::ClockOutput clk, bool enable)
 {
     switch(clk)
     {
@@ -1727,9 +1809,11 @@ void Si5351::_enableClockOutput(Si5351::ClockOutput clk, bool enable)
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->rmwReg(SI5351_REG_CLK_OEB, ~BIT(clk), enable ? 0x00 : BIT(clk));
 }
-void Si5351::_setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard)
+void Si5351::setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard)
 {
     switch(clk)
     {
@@ -1745,14 +1829,14 @@ void Si5351::_setClockOutputEnableMode(Si5351::ClockOutput clk, bool hard)
         default:
             throw std::invalid_argument("Si5351: Invalid clock output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(SI5351_REG_OEB_MASK, ~BIT(clk), hard ? 0x00 : BIT(clk));
 }
 
 void Si5351::configClock(Si5351::ClockOutput clk, uint32_t freq, float phase, Si5351::PLL src)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     switch(clk)
     {
         case Si5351::ClockOutput::CLK0:
@@ -1787,15 +1871,15 @@ void Si5351::configClock(Si5351::ClockOutput clk, uint32_t freq, float phase, Si
         invert = true;
     }
 
-    this->_configMultiSynth(static_cast<Si5351::MultiSynth>(clk), freq, phase, src);
-    this->_setClockOutputSource(clk, Si5351::ClockOutputSource::CLK_SRC_MSn);
-    this->_setClockOutputDivider(clk, out_div);
-    this->_setClockOutputInvert(clk, invert);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->configMultiSynth(static_cast<Si5351::MultiSynth>(clk), freq, phase, src);
+    this->setClockOutputSource(clk, Si5351::ClockOutputSource::CLK_SRC_MSn);
+    this->setClockOutputDivider(clk, out_div);
+    this->setClockOutputInvert(clk, invert);
 }
 void Si5351::setClockFrequency(Si5351::ClockOutput clk, uint32_t freq)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     switch(clk)
     {
         case Si5351::ClockOutput::CLK0:
@@ -1822,14 +1906,14 @@ void Si5351::setClockFrequency(Si5351::ClockOutput clk, uint32_t freq)
     if(freq < 500000UL)
         throw std::invalid_argument("Si5351: Frequency too low");
 
-    this->_setMultiSynthFrequency(static_cast<Si5351::MultiSynth>(clk), freq);
-    this->_setClockOutputSource(clk, Si5351::ClockOutputSource::CLK_SRC_MSn);
-    this->_setClockOutputDivider(clk, out_div);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->setMultiSynthFrequency(static_cast<Si5351::MultiSynth>(clk), freq);
+    this->setClockOutputSource(clk, Si5351::ClockOutputSource::CLK_SRC_MSn);
+    this->setClockOutputDivider(clk, out_div);
 }
 uint32_t Si5351::getClockFrequency(Si5351::ClockOutput clk)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     Si5351::MultiSynth fanout_ms;
 
     switch(clk)
@@ -1852,30 +1936,30 @@ uint32_t Si5351::getClockFrequency(Si5351::ClockOutput clk)
 
     uint32_t src_freq;
 
-    switch(this->_getClockOutputSource(clk))
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    switch(this->getClockOutputSource(clk))
     {
         case Si5351::ClockOutputSource::CLK_SRC_XTAL:
             src_freq = this->xtal_freq;
         break;
         case Si5351::ClockOutputSource::CLK_SRC_CLKIN:
-            src_freq = this->_getDividedCLKINFrequency(); // TODO: Check if CLKIN or the divided version is routed to output buffer
+            src_freq = this->getDividedCLKINFrequency(); // TODO: Check if CLKIN or the divided version is routed to output buffer
         break;
         case Si5351::ClockOutputSource::CLK_SRC_MS0_MS4:
-            src_freq = this->_getMultiSynthFrequency(fanout_ms);
+            src_freq = this->getMultiSynthFrequency(fanout_ms);
         break;
         case Si5351::ClockOutputSource::CLK_SRC_MSn:
-            src_freq = this->_getMultiSynthFrequency(static_cast<Si5351::MultiSynth>(clk));
+            src_freq = this->getMultiSynthFrequency(static_cast<Si5351::MultiSynth>(clk));
         break;
         default:
             throw std::runtime_error("Si5351: Invalid clock output source");
     }
 
-    return src_freq / this->_getClockOutputDivider(clk);
+    return src_freq / this->getClockOutputDivider(clk);
 }
 void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     Si5351::MultiSynth fanout_ms;
 
     switch(clk)
@@ -1904,14 +1988,16 @@ void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
 
     Si5351::MultiSynth src_ms;
 
-    switch(this->_getClockOutputSource(clk))
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    switch(this->getClockOutputSource(clk))
     {
         case Si5351::ClockOutputSource::CLK_SRC_XTAL:
         {
             if(phase == 0.f)
-                this->_setClockOutputInvert(clk, false);
+                this->setClockOutputInvert(clk, false);
             else if(phase == 180.f)
-                this->_setClockOutputInvert(clk, true);
+                this->setClockOutputInvert(clk, true);
             else
                 throw std::runtime_error("Si5351: Cannot set phase offset of XTAL source");
 
@@ -1921,9 +2007,9 @@ void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
         case Si5351::ClockOutputSource::CLK_SRC_CLKIN:
         {
             if(phase == 0.f)
-                this->_setClockOutputInvert(clk, false);
+                this->setClockOutputInvert(clk, false);
             else if(phase == 180.f)
-                this->_setClockOutputInvert(clk, true);
+                this->setClockOutputInvert(clk, true);
             else
                 throw std::runtime_error("Si5351: Cannot set phase offset of CLKIN source");
 
@@ -1938,9 +2024,9 @@ void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
             if(clk == Si5351::ClockOutput::CLK6 || clk == Si5351::ClockOutput::CLK7)
             {
                 if(phase == 0.f)
-                    this->_setClockOutputInvert(clk, false);
+                    this->setClockOutputInvert(clk, false);
                 else if(phase == 180.f)
-                    this->_setClockOutputInvert(clk, true);
+                    this->setClockOutputInvert(clk, true);
                 else
                     throw std::invalid_argument("Si5351: MultiSynth does not support phase offset");
 
@@ -1963,13 +2049,11 @@ void Si5351::setClockPhaseOffset(Si5351::ClockOutput clk, float phase)
         invert = true;
     }
 
-    this->_setMultiSynthPhaseOffset(src_ms, phase);
-    this->_setClockOutputInvert(clk, invert);
+    this->setMultiSynthPhaseOffset(src_ms, phase);
+    this->setClockOutputInvert(clk, invert);
 }
 float Si5351::getClockPhaseOffset(Si5351::ClockOutput clk)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     Si5351::MultiSynth fanout_ms;
 
     switch(clk)
@@ -1992,12 +2076,14 @@ float Si5351::getClockPhaseOffset(Si5351::ClockOutput clk)
 
     Si5351::MultiSynth src_ms;
 
-    switch(this->_getClockOutputSource(clk))
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    switch(this->getClockOutputSource(clk))
     {
         case Si5351::ClockOutputSource::CLK_SRC_XTAL:
         case Si5351::ClockOutputSource::CLK_SRC_CLKIN:
         {
-            if(this->_getClockOutputInvert(clk))
+            if(this->getClockOutputInvert(clk))
                 return 180.f;
 
             return 0.f;
@@ -2010,7 +2096,7 @@ float Si5351::getClockPhaseOffset(Si5351::ClockOutput clk)
         {
             if(clk == Si5351::ClockOutput::CLK6 || clk == Si5351::ClockOutput::CLK7)
             {
-                if(this->_getClockOutputInvert(clk))
+                if(this->getClockOutputInvert(clk))
                     return 180.f;
 
                 return 0.f;
@@ -2023,9 +2109,9 @@ float Si5351::getClockPhaseOffset(Si5351::ClockOutput clk)
             throw std::runtime_error("Si5351: Invalid clock output source");
     }
 
-    float phase = this->_getMultiSynthPhaseOffset(src_ms);
+    float phase = this->getMultiSynthPhaseOffset(src_ms);
 
-    if(this->_getClockOutputInvert(clk))
+    if(this->getClockOutputInvert(clk))
         phase += 180.f;
 
     return phase;

@@ -7,6 +7,13 @@ AXISPI::AXISPI(void *base_address): AXIPeripheral(base_address)
     if(AXI_CORE_VERSION_MAJOR(version) < 1)
         throw std::runtime_error("AXI SPI Core v" + std::to_string(AXI_CORE_VERSION_MAJOR(version)) + "." + std::to_string(AXI_CORE_VERSION_MINOR(version)) + "." + std::to_string(AXI_CORE_VERSION_PATCH(version)) + " is not supported");
 
+    this->writeReg(AXI_SPI_REG_CTRL, 0x00000000);
+
+    while(this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_MMIO_EN)
+        std::this_thread::yield();
+
+    this->writeReg(AXI_SPI_REG_CTRL, 0x00000000);
+
     // Detect max number of slaves
     this->writeReg(AXI_SPI_REG_SLAVE_SEL, 0xFFFFFFFF);
 
@@ -47,6 +54,11 @@ AXISPI::AXISPI(void *base_address): AXIPeripheral(base_address)
 uint32_t AXISPI::getIPVersion()
 {
     return this->readReg(AXI_SPI_REG_VERSION);
+}
+
+AXISPI::Capabilities AXISPI::getCapabilities()
+{
+    return this->capabilities;
 }
 
 void AXISPI::setMode(AXISPI::Mode mode)
@@ -147,9 +159,6 @@ void AXISPI::setIOMode(AXISPI::IOMode io_mode)
             throw std::invalid_argument("AXI SPI: Invalid IO mode");
     }
 
-    if(this->enabled())
-        throw std::runtime_error("AXI SPI: Cannot configure IO mode while enabled");
-
     this->writeReg(AXI_SPI_REG_CTRL, (this->readReg(AXI_SPI_REG_CTRL) & ~(AXI_SPI_REG_CTRL_IO_MODE_QUAD | AXI_SPI_REG_CTRL_IO_MODE_DUAL | AXI_SPI_REG_CTRL_IO_MODE_SINGLE)) | val);
 }
 AXISPI::IOMode AXISPI::getIOMode()
@@ -167,27 +176,143 @@ AXISPI::IOMode AXISPI::getIOMode()
     }
 }
 
-void AXISPI::configMMIOMode(uint8_t addr_bytes, uint8_t dummy_bytes, uint8_t mode_bits, uint8_t cs_high_wait)
+void AXISPI::configMMIOMode(AXISPI::MMIOConfig &config)
 {
     if(!this->capabilities.mmio_supported)
         throw std::runtime_error("AXI SPI: MMIO mode not supported");
 
-    if(addr_bytes < 1 || addr_bytes > 4)
-        throw std::invalid_argument("AXI SPI: Address bytes must be between 1 and 4");
-
-    if(dummy_bytes > 3)
-        throw std::invalid_argument("AXI SPI: Dummy bytes must be between 0 and 3");
-
     if(this->MMIOenabled())
         throw std::runtime_error("AXI SPI: Cannot configure MMIO mode while MMIO enabled");
 
-    this->writeReg(AXI_SPI_REG_MMIO_CTRL, AXI_SPI_REG_MMIO_CTRL_ADDR_SIZE(addr_bytes - 1) | AXI_SPI_REG_MMIO_CTRL_DUMMY_SIZE(dummy_bytes) | AXI_SPI_REG_MMIO_CTRL_MODE_BITS(mode_bits) | AXI_SPI_REG_MMIO_CTRL_CS_HIGH_WAIT(cs_high_wait));
+    uint32_t ctrl1 = 0;
+    uint32_t ctrl2 = 0;
+
+    switch(config.rd_instr_io_mode)
+    {
+        case AXISPI::IOMode::SINGLE:
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_SINGLE;
+        break;
+        case AXISPI::IOMode::DUAL:
+            if(!this->capabilities.dual_io_supported)
+                throw std::invalid_argument("AXI SPI: Dual IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_DUAL;
+        break;
+        case AXISPI::IOMode::QUAD:
+            if(!this->capabilities.quad_io_supported)
+                throw std::invalid_argument("AXI SPI: Quad IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_QUAD;
+        break;
+        default:
+            throw std::invalid_argument("AXI SPI: Invalid read instruction IO mode");
+    }
+
+    ctrl1 |= AXI_SPI_REG_MMIO_CTRL_1_RD_INSTR(config.rd_instr);
+
+    switch(config.addr_io_mode)
+    {
+        case AXISPI::IOMode::SINGLE:
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_SINGLE;
+        break;
+        case AXISPI::IOMode::DUAL:
+            if(!this->capabilities.dual_io_supported)
+                throw std::invalid_argument("AXI SPI: Dual IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_DUAL;
+        break;
+        case AXISPI::IOMode::QUAD:
+            if(!this->capabilities.quad_io_supported)
+                throw std::invalid_argument("AXI SPI: Quad IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_QUAD;
+        break;
+        default:
+            throw std::invalid_argument("AXI SPI: Invalid address IO mode");
+    }
+
+    if(config.addr_bytes < 1 || config.addr_bytes > 4)
+        throw std::invalid_argument("AXI SPI: Address bytes must be between 1 and 4");
+
+    ctrl1 |= AXI_SPI_REG_MMIO_CTRL_1_ADDR_SIZE(config.addr_bytes - 1);
+    ctrl1 |= AXI_SPI_REG_MMIO_CTRL_1_MODE_BITS(config.mode_bits);
+    ctrl1 |= config.mode_bits_en ? AXI_SPI_REG_MMIO_CTRL_1_MODE_BITS_EN : 0;
+    ctrl1 |= config.cont_read_en ? AXI_SPI_REG_MMIO_CTRL_1_CONT_READ_EN : 0;
+
+    switch(config.dummy_io_mode)
+    {
+        case AXISPI::IOMode::SINGLE:
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_SINGLE;
+        break;
+        case AXISPI::IOMode::DUAL:
+            if(!this->capabilities.dual_io_supported)
+                throw std::invalid_argument("AXI SPI: Dual IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_DUAL;
+        break;
+        case AXISPI::IOMode::QUAD:
+            if(!this->capabilities.quad_io_supported)
+                throw std::invalid_argument("AXI SPI: Quad IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_QUAD;
+        break;
+        default:
+            throw std::invalid_argument("AXI SPI: Invalid dummy IO mode");
+    }
+
+    if(config.dummy_bytes > 3)
+        throw std::invalid_argument("AXI SPI: Dummy bytes must be between 0 and 3");
+
+    ctrl1 |= AXI_SPI_REG_MMIO_CTRL_1_DUMMY_SIZE(config.dummy_bytes);
+
+    switch(config.data_io_mode)
+    {
+        case AXISPI::IOMode::SINGLE:
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_SINGLE;
+        break;
+        case AXISPI::IOMode::DUAL:
+            if(!this->capabilities.dual_io_supported)
+                throw std::invalid_argument("AXI SPI: Dual IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_DUAL;
+        break;
+        case AXISPI::IOMode::QUAD:
+            if(!this->capabilities.quad_io_supported)
+                throw std::invalid_argument("AXI SPI: Quad IO mode not supported");
+
+            ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_QUAD;
+        break;
+        default:
+            throw std::invalid_argument("AXI SPI: Invalid data IO mode");
+    }
+
+    ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_CS_HIGH_WAIT(config.cs_high_wait);
+    ctrl2 |= AXI_SPI_REG_MMIO_CTRL_2_CS_LOW_WAIT(config.cs_low_wait);
+
+    if(config.cs_mask & ~this->ss_mask)
+        throw std::invalid_argument("AXI SPI: Invalid chip select mask");
+
+    this->writeReg(AXI_SPI_REG_MMIO_CTRL_1, ctrl1);
+    this->writeReg(AXI_SPI_REG_MMIO_CTRL_2, ctrl2);
+    this->writeReg(AXI_SPI_REG_MMIO_CS_MASK, config.cs_mask);
+}
+AXISPI::MMIOStats AXISPI::getMMIOStats()
+{
+    if(!this->capabilities.mmio_supported)
+        throw std::runtime_error("AXI SPI: MMIO mode not supported");
+
+    AXISPI::MMIOStats stats;
+
+    stats.rd_req_cnt = this->readReg(AXI_SPI_REG_MMIO_RD_REQ_CNT);
+    stats.cont_rd_req_cnt = this->readReg(AXI_SPI_REG_MMIO_CONT_RD_REQ_CNT);
+
+    return stats;
 }
 
-void AXISPI::configClockDivider(uint64_t sck_div)
+void AXISPI::setClockDivider(uint64_t sck_div)
 {
-    if(sck_div < 2 || sck_div > this->max_sck_div)
-        throw std::invalid_argument("AXI SPI: SCK divider must be between 2 and " + std::to_string(this->max_sck_div));
+    if(sck_div < 4 || sck_div > this->max_sck_div)
+        throw std::invalid_argument("AXI SPI: SCK divider must be between 4 and " + std::to_string(this->max_sck_div));
 
     if(sck_div & 1)
         throw std::invalid_argument("AXI SPI: SCK divider must be even");
@@ -197,22 +322,24 @@ void AXISPI::configClockDivider(uint64_t sck_div)
 
     this->writeReg(AXI_SPI_REG_SCK_DIV, (sck_div >> 1) - 1);
 }
-void AXISPI::configClock(uint64_t input_freq, uint64_t sck_freq)
+uint64_t AXISPI::getClockDivider()
+{
+    return (((uint64_t)this->readReg(AXI_SPI_REG_SCK_DIV) + 1) << 1);
+}
+void AXISPI::setClockFrequency(uint64_t input_freq, uint64_t sck_freq)
 {
     uint64_t sck_div = input_freq / sck_freq;
 
-    this->configClockDivider(sck_div);
+    this->setClockDivider(sck_div);
+}
+uint64_t AXISPI::getClockFrequency(uint64_t input_freq)
+{
+    return input_freq / this->getClockDivider();
 }
 
 void AXISPI::enableClock(bool enable)
 {
     uint32_t ctrl = this->readReg(AXI_SPI_REG_CTRL);
-
-    if(enable && (ctrl & AXI_SPI_REG_CTRL_SCK_DIV_EN)) // Already enabled
-        throw std::runtime_error("AXI SPI: Already enabled");
-
-    if(!enable && !(ctrl & AXI_SPI_REG_CTRL_SCK_DIV_EN)) // Already disabled
-        throw std::runtime_error("AXI SPI: Already disabled");
 
     if(!enable && (ctrl & AXI_SPI_REG_CTRL_SPI_EN)) // SPI enabled, can't disable clock
         throw std::runtime_error("AXI SPI: Cannot disable clock while SPI is enabled");
@@ -232,12 +359,6 @@ void AXISPI::enable(bool enable)
 {
     uint32_t ctrl = this->readReg(AXI_SPI_REG_CTRL);
 
-    if(enable && (ctrl & AXI_SPI_REG_CTRL_SPI_EN)) // Already enabled
-        throw std::runtime_error("AXI SPI: Already enabled");
-
-    if(!enable && !(ctrl & AXI_SPI_REG_CTRL_SPI_EN)) // Already disabled
-        throw std::runtime_error("AXI SPI: Already disabled");
-
     if(enable && !(ctrl & AXI_SPI_REG_CTRL_SCK_DIV_EN)) // Clock disabled, can't enable SPI
         throw std::runtime_error("AXI SPI: Cannot enable SPI while clock is disabled");
 
@@ -255,15 +376,16 @@ bool AXISPI::enabled()
 {
     return this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_SPI_EN;
 }
+bool AXISPI::idle()
+{
+    return this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_SPI_IDLE;
+}
 void AXISPI::enableMMIO(bool enable)
 {
+    if(!this->capabilities.mmio_supported)
+        throw std::runtime_error("AXI SPI: MMIO mode not supported");
+
     uint32_t ctrl = this->readReg(AXI_SPI_REG_CTRL);
-
-    if(enable && (ctrl & AXI_SPI_REG_CTRL_MMIO_EN_REQ)) // Already requested to be enabled
-        throw std::runtime_error("AXI SPI: Already requested to be enabled");
-
-    if(!enable && !(ctrl & AXI_SPI_REG_CTRL_MMIO_EN_REQ)) // Already requested to be disabled
-        throw std::runtime_error("AXI SPI: Already requested to be disabled");
 
     if(enable && !(ctrl & AXI_SPI_REG_CTRL_SPI_EN)) // SPI disabled, can't enable MMIO
         throw std::runtime_error("AXI SPI: Cannot enable MMIO while SPI is disabled");
@@ -277,13 +399,19 @@ void AXISPI::enableMMIO(bool enable)
 }
 bool AXISPI::MMIOenabled()
 {
+    if(!this->capabilities.mmio_supported)
+        return false;
+
     return this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_MMIO_EN;
 }
 
-void AXISPI::slaveSelect(uint32_t mask, const bool select)
+void AXISPI::selectSlave(uint32_t mask, const bool select)
 {
     if(!mask)
         return; // Nothing to do
+
+    if(this->MMIOenabled())
+        throw std::runtime_error("AXI SPI: Cannot select slave while MMIO is enabled");
 
     if(select) // Always take the mutex when selecting a slave
         this->mutex.lock();
@@ -300,11 +428,15 @@ void AXISPI::slaveSelect(uint32_t mask, const bool select)
     if(reg_value == this->ss_mask) // Only release the lock if all slaves are deselected
         this->mutex.unlock();
 }
+uint32_t AXISPI::getSelectedSlaveMask()
+{
+    return this->readReg(AXI_SPI_REG_SLAVE_SEL);
+}
 
 uint8_t AXISPI::transfer(const uint8_t data)
 {
     while(this->readReg(AXI_SPI_REG_RD_DATA) & AXI_SPI_REG_RD_DATA_VALID)
-        usleep(0);
+        std::this_thread::yield();
 
     this->writeReg(AXI_SPI_REG_CMD, AXI_SPI_REG_CMD_START_WRITE | AXI_SPI_REG_CMD_WR_DATA(data));
 
@@ -312,7 +444,7 @@ uint8_t AXISPI::transfer(const uint8_t data)
 
     while(!(rd_data & AXI_SPI_REG_RD_DATA_VALID))
     {
-        usleep(0);
+        std::this_thread::yield();
 
         rd_data = this->readReg(AXI_SPI_REG_RD_DATA);
     }
@@ -322,17 +454,17 @@ uint8_t AXISPI::transfer(const uint8_t data)
 void AXISPI::write(const uint8_t data, const bool wait)
 {
     while(this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_OUT_BUF_VALID)
-        usleep(0);
+        std::this_thread::yield();
 
     this->writeReg(AXI_SPI_REG_CMD, AXI_SPI_REG_CMD_START_WRITE | AXI_SPI_REG_CMD_WR_DATA(data));
 
-    while(wait && !(this->readReg(AXI_SPI_REG_CTRL) & AXI_SPI_REG_CTRL_SPI_IDLE))
-        usleep(0);
+    while(wait && !this->idle())
+        std::this_thread::yield();
 }
 uint8_t AXISPI::read()
 {
     while(this->readReg(AXI_SPI_REG_RD_DATA) & AXI_SPI_REG_RD_DATA_VALID)
-        usleep(0);
+        std::this_thread::yield();
 
     this->writeReg(AXI_SPI_REG_CMD, AXI_SPI_REG_CMD_START_READ);
 
@@ -340,7 +472,7 @@ uint8_t AXISPI::read()
 
     while(!(rd_data & AXI_SPI_REG_RD_DATA_VALID))
     {
-        usleep(0);
+        std::this_thread::yield();
 
         rd_data = this->readReg(AXI_SPI_REG_RD_DATA);
     }

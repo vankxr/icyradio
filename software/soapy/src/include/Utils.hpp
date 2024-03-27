@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+#include <utility>
+#include <cstddef>
 
 // AXI Core versioning
 #define AXI_CORE_VERSION(maj, min, patch)   (((maj) << 16) | ((min) << 8) | (patch))
@@ -95,4 +98,47 @@ namespace Utils
 
     uint32_t IntSqrt(uint32_t x);
     int32_t Ilog2(int32_t x);
+
+    uint16_t IntToSIF1_1_14(int32_t val); // Fractional part is in micro units
+    uint16_t ToSIF1_1_14(double val);
+    int32_t IntFromSIF1_1_14(uint16_t val); // Fractional part is in micro units
+    double FromSIF1_1_14(uint16_t val);
+
+    template<typename T>
+    std::pair<size_t, size_t> FindLongestSequence(std::vector<T> &vec, T value)
+    {
+        size_t cnt = 0;
+        size_t max_cnt = 0;
+        size_t start = 0;
+        size_t max_start = 0;
+
+        for(size_t i = 0; i < vec.size(); i++)
+        {
+            if(vec[i] == value)
+            {
+                if(cnt == 0)
+                    start = i;
+
+                cnt++;
+            }
+            else
+            {
+                if(cnt > max_cnt)
+                {
+                    max_cnt = cnt;
+                    max_start = start;
+                }
+
+                cnt = 0;
+            }
+        }
+
+        if(cnt > max_cnt)
+        {
+            max_cnt = cnt;
+            max_start = start;
+        }
+
+        return std::make_pair(max_start, max_cnt);
+    }
 }

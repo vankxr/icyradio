@@ -75,11 +75,11 @@ private:
 #define AXI_GPIO_ADC_R1_MODE_BIT                   22 // BIT 22: axi_ad9361 adc_r1_mode (Fixed input)
 #define AXI_GPIO_DAC_R1_MODE_BIT                   23 // BIT 23: axi_ad9361 dac_r1_mode (Fixed input)
 // BIT 24: RSVD
-// BIT 25: RSVD
-#define AXI_GPIO_RST_AD9361_61M44_PERI_ARESETn_BIT 26 // BIT 26: rst_axi_ad9361_61M44 peripheral_aresetn (Fixed input)
+#define AXI_GPIO_RST_AD9361_61M44_PERI_ARESETn_BIT 25 // BIT 25: rst_axi_ad9361_61M44 peripheral_aresetn (Fixed input)
+// BIT 26: RSVD
 // BIT 27: RSVD
 // BIT 28: RSVD
-// BIT 29: RSVD
+#define AXI_GPIO_RST_AD9361_61M44_AUX_RESET_IN_BIT 29 // BIT 29: rst_axi_ad9361_61M44 aux_reset_in (Fixed output) - Asserting this will reset all the RF logic
 // BIT 30: RSVD
 #define AXI_GPIO_TRX_RESETn_BIT                    31 // BIT 31: TRX_RESETn (Fixed output)
 
@@ -152,5 +152,5 @@ private:
 // BIT 27: RSVD
 // BIT 28: RSVD
 // BIT 29: RSVD
-#define AXI_GPIO_RV32_RESETN_BIT                       30 // BIT 30: picorv32_0 resetn (Fixed output) - Asserting this will reset the PicoRV32 CPU
+#define AXI_GPIO_RV32_RESETn_BIT                       30 // BIT 30: picorv32_0 resetn (Fixed output) - Asserting this will reset the PicoRV32 CPU
 #define AXI_GPIO_SYS_AUX_RESET_BIT                     31 // BIT 31: sys_aux_reset (Fixed output) - Asserting this will reset the entire system, including the DDR3 controller since the 250 MHz DDR3 source clock MMCM is reset

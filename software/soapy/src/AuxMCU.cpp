@@ -19,9 +19,9 @@ void AuxMCU::readMem(bool rom, uint8_t addr, uint8_t *dst, uint8_t count, bool c
         return;
 
     if(dst == nullptr)
-        throw std::runtime_error("AuxMCU: Invalid destination buffer");
+        throw std::invalid_argument("AuxMCU: Invalid destination buffer");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t buf[256];
 
@@ -30,12 +30,12 @@ void AuxMCU::readMem(bool rom, uint8_t addr, uint8_t *dst, uint8_t count, bool c
     buf[2] = count;
     buf[3] = this->calcChecksum(buf, 3);
 
-    this->iic.controller->lock(); // Lock the I2C bus so the next two transactions are not interrupted
+    this->iic.controller->startAtomicTransaction(); // Lock the I2C bus so the next two transactions are not interrupted
 
     this->iic.controller->write(this->iic.addr, buf, 4, AXIIIC::Stop::RESTART);
     this->iic.controller->read(this->iic.addr, buf, count + 1, AXIIIC::Stop::STOP);
 
-    this->iic.controller->unlock(); // Unlock the I2C bus
+    this->iic.controller->endAtomicTransaction(); // Unlock the I2C bus
 
     if(check && !this->checkChecksum(buf, count + 1))
         throw std::runtime_error("AuxMCU: Checksum mismatch");
@@ -52,12 +52,12 @@ void AuxMCU::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
         return;
 
     if(src == nullptr)
-        throw std::runtime_error("AuxMCU: Invalid source buffer");
+        throw std::invalid_argument("AuxMCU: Invalid source buffer");
 
     if(count > 256 - 3)
-        throw std::runtime_error("AuxMCU: Data too long");
+        throw std::invalid_argument("AuxMCU: Data too long");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t buf[256];
 
@@ -80,7 +80,22 @@ AuxMCU::AuxMCU(AuxMCU::IICConfig iic)
     if(this->iic.controller == nullptr)
         throw std::runtime_error("AuxMCU: IIC not initialized");
 
-    if(!this->iic.controller->scan(this->iic.addr))
+    bool found = false;
+    uint32_t timeout = 1000UL;
+
+    while(--timeout)
+    {
+        if(this->iic.controller->scan(this->iic.addr))
+        {
+            found = true;
+
+            break;
+        }
+
+        usleep(1000);
+    }
+
+    if(!found)
         throw std::runtime_error("AuxMCU: Device not found on IIC bus");
 }
 AuxMCU::~AuxMCU()

@@ -63,5 +63,6 @@ public:
 
 private:
     AuxMCU::IICConfig iic;
-    std::mutex mutex;
+
+    std::recursive_mutex mutex;
 };

@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <unistd.h>
 #include <mutex>
-#include <functional>
 #include "AXIPeripheral.hpp"
 #include "Utils.hpp"
 
@@ -21,6 +20,7 @@
 #define AXI_I2S_REG_CTRL_I2S_CHAN_EN(n)     BIT((n) + 8)
 #define AXI_I2S_REG_CTRL_I2S_CHAN_MAX(n)    (((n) & 0x07) << 16)
 #define AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ    BIT(20)
+#define AXI_I2S_REG_CTRL_I2S_SRC_RESETN     BIT(31)
 
 class AXII2S: public AXIPeripheral
 {
@@ -32,15 +32,25 @@ public:
         BIT_SZ_32 = 1,
     };
 
-    AXII2S(void *base_address, std::function<bool()> access_allowed_fn = nullptr);
-
-    void init(std::function<bool()> access_allowed_fn);
+    AXII2S(void *base_address);
 
     uint32_t getIPVersion();
 
-    void configClockDividers(uint64_t mclk_div, uint64_t bclk_div, uint64_t lrclk_div);
-    void configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t bclk_freq, uint64_t lrclk_freq);
-    uint64_t configClocks(uint64_t input_freq, uint64_t mclk_freq, uint64_t samp_rate);
+    void setMCLKClockDivider(uint64_t mclk_div);
+    uint64_t getMCLKClockDivider();
+    void setMCLKClockFrequency(uint64_t input_freq, uint64_t mclk_freq);
+    uint64_t getMCLKClockFrequency(uint64_t input_freq);
+    void setBCLKClockDivider(uint64_t bclk_div);
+    uint64_t getBCLKClockDivider();
+    void setBCLKClockFrequency(uint64_t input_freq, uint64_t bclk_freq);
+    uint64_t getBCLKClockFrequency(uint64_t input_freq);
+    void setLRCLKClockDivider(uint64_t lrclk_div);
+    uint64_t getLRCLKClockDivider();
+    void setLRCLKClockFrequency(uint64_t input_freq, uint64_t lrclk_freq);
+    uint64_t getLRCLKClockFrequency(uint64_t input_freq);
+    void setClockDividers(uint64_t mclk_div, uint64_t bclk_div, uint64_t lrclk_div);
+    void setClockFrequencies(uint64_t input_freq, uint64_t mclk_freq, uint64_t bclk_freq, uint64_t lrclk_freq);
+    uint64_t setClockFrequencies(uint64_t input_freq, uint64_t mclk_freq, uint64_t samp_rate);
 
     void enableClocks(bool enable = true);
     inline void disableClocks()
@@ -80,16 +90,8 @@ public:
     void setSampleSize(enum AXII2S::ChannelBitSize bit_sz);
     enum AXII2S::ChannelBitSize getSampleSize();
 
-protected:
-    // Overload these functions to implement custom access control
-    uint32_t readReg(uint32_t offset);
-    uint64_t readReg64(uint32_t offset);
-    void writeReg(uint32_t offset, uint32_t value);
-    void writeReg64(uint32_t offset, uint64_t value);
-
 private:
-    std::mutex mutex;
-    std::function<bool()> access_allowed_fn;
+    std::recursive_mutex mutex;
 
     uint64_t max_mclk_div;
     uint64_t max_bclk_div;

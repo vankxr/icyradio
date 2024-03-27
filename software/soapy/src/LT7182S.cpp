@@ -111,7 +111,7 @@ void LT7182S::ISR(void *_this)
 }
 void LT7182S::handleIRQ()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     // TODO:
 }
@@ -189,12 +189,12 @@ uint8_t LT7182S::readByte(uint8_t cmd)
 
     uint8_t buf[1];
 
-    this->iic.controller->lock(); // Lock the I2C bus so the next two transactions are not interrupted
+    this->iic.controller->startAtomicTransaction(); // Lock the I2C bus so the next two transactions are not interrupted
 
     this->iic.controller->write(this->iic.addr, cmd, AXIIIC::Stop::RESTART);
     this->iic.controller->read(this->iic.addr, buf, 1, AXIIIC::Stop::STOP);
 
-    this->iic.controller->unlock(); // Unlock the I2C bus
+    this->iic.controller->endAtomicTransaction(); // Unlock the I2C bus
 
     return buf[0];
 }
@@ -205,12 +205,12 @@ uint16_t LT7182S::readWord(uint8_t cmd)
 
     uint8_t buf[2];
 
-    this->iic.controller->lock(); // Lock the I2C bus so the next two transactions are not interrupted
+    this->iic.controller->startAtomicTransaction(); // Lock the I2C bus so the next two transactions are not interrupted
 
     this->iic.controller->write(this->iic.addr, cmd, AXIIIC::Stop::RESTART);
     this->iic.controller->read(this->iic.addr, buf, 2, AXIIIC::Stop::STOP);
 
-    this->iic.controller->unlock(); // Unlock the I2C bus
+    this->iic.controller->endAtomicTransaction(); // Unlock the I2C bus
 
     return (((uint16_t)buf[1]) << 8) | buf[0];
 }
@@ -246,12 +246,12 @@ uint8_t LT7182S::readBlock(uint8_t cmd, uint8_t *buf, uint8_t max_size)
 
     uint8_t _buf[255];
 
-    this->iic.controller->lock(); // Lock the I2C bus so the next two transactions are not interrupted
+    this->iic.controller->startAtomicTransaction(); // Lock the I2C bus so the next two transactions are not interrupted
 
     this->iic.controller->write(this->iic.addr, cmd, AXIIIC::Stop::RESTART);
     this->iic.controller->read(this->iic.addr, _buf, max_size + 1, AXIIIC::Stop::STOP);
 
-    this->iic.controller->unlock(); // Unlock the I2C bus
+    this->iic.controller->endAtomicTransaction(); // Unlock the I2C bus
 
     uint8_t size = _buf[0];
 
@@ -272,7 +272,22 @@ LT7182S::LT7182S(LT7182S::IICConfig iic, LT7182S::IRQConfig irq_config)
     if(this->iic.controller == nullptr)
         throw std::runtime_error("LT7182S: IIC not initialized");
 
-    if(!this->iic.controller->scan(this->iic.addr))
+    bool found = false;
+    uint32_t timeout = 1000UL;
+
+    while(--timeout)
+    {
+        if(this->iic.controller->scan(this->iic.addr))
+        {
+            found = true;
+
+            break;
+        }
+
+        usleep(1000);
+    }
+
+    if(!found)
         throw std::runtime_error("LT7182S: Device not found on IIC bus");
 
     if(this->readManufacturerSpecialID() != 0x1C1D)
@@ -301,7 +316,7 @@ void LT7182S::reset()
     // Disabled to prevent accidental resets
     return;
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeCommand(0xFD);
 
@@ -338,7 +353,7 @@ void LT7182S::selectChannel(LT7182S::Chan ch)
             throw std::invalid_argument("LT7182S: Invalid channel");
     }
 
-    std::lock_guard<std::mutex> lock(this->lock_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->lock_mutex);
 
     this->_selectChannel(ch);
 }
@@ -365,19 +380,19 @@ void LT7182S::unlockChannelSelection()
 
 std::string LT7182S::readManufacturerID()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readString(0x99);
 }
 std::string LT7182S::readManufacturerModel()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readString(0x9A);
 }
 uint8_t LT7182S::readManufacturerRevision()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t rev;
 
@@ -387,7 +402,7 @@ uint8_t LT7182S::readManufacturerRevision()
 }
 std::string LT7182S::readManufacturerSerial()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t buf[255];
     uint8_t size = this->readBlock(0x9E, buf, 255);
@@ -401,14 +416,14 @@ std::string LT7182S::readManufacturerSerial()
 }
 uint16_t LT7182S::readManufacturerSpecialID()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readWord(0xE7);
 }
 
 uint8_t LT7182S::getStatusByte(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -416,7 +431,7 @@ uint8_t LT7182S::getStatusByte(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusByte(uint8_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -424,7 +439,7 @@ void LT7182S::clearStatusByte(uint8_t mask, LT7182S::Chan ch)
 }
 uint16_t LT7182S::getStatusWord(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -432,7 +447,7 @@ uint16_t LT7182S::getStatusWord(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusWord(uint16_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -440,7 +455,7 @@ void LT7182S::clearStatusWord(uint16_t mask, LT7182S::Chan ch)
 }
 uint8_t LT7182S::getStatusVOUT(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -448,7 +463,7 @@ uint8_t LT7182S::getStatusVOUT(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusVOUT(uint8_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -456,7 +471,7 @@ void LT7182S::clearStatusVOUT(uint8_t mask, LT7182S::Chan ch)
 }
 uint8_t LT7182S::getStatusIOUT(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -464,7 +479,7 @@ uint8_t LT7182S::getStatusIOUT(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusIOUT(uint8_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -472,7 +487,7 @@ void LT7182S::clearStatusIOUT(uint8_t mask, LT7182S::Chan ch)
 }
 uint8_t LT7182S::getStatusInput(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -480,7 +495,7 @@ uint8_t LT7182S::getStatusInput(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusInput(uint8_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -488,31 +503,31 @@ void LT7182S::clearStatusInput(uint8_t mask, LT7182S::Chan ch)
 }
 uint8_t LT7182S::getStatusTemperature()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readByte(0x7D);
 }
 void LT7182S::clearStatusTemperature(uint8_t mask)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeByte(0x7D, mask);
 }
 uint8_t LT7182S::getStatusCML()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readByte(0x7E);
 }
 void LT7182S::clearStatusCML(uint8_t mask)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeByte(0x7E, mask);
 }
 uint8_t LT7182S::getStatusManufacturerSpecific(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -520,7 +535,7 @@ uint8_t LT7182S::getStatusManufacturerSpecific(LT7182S::Chan ch)
 }
 void LT7182S::clearStatusManufacturerSpecific(uint8_t mask, LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -528,39 +543,39 @@ void LT7182S::clearStatusManufacturerSpecific(uint8_t mask, LT7182S::Chan ch)
 }
 uint8_t LT7182S::getStatusManufacturerCommon()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readByte(0xEF);
 }
 uint16_t LT7182S::getStatusManufacturerPads()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readWord(0xE5);
 }
 uint8_t LT7182S::getStatusManufacturerPinConfig()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readByte(0xF7);
 }
 
 void LT7182S::clearFaults()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeCommand(0x03);
 }
 void LT7182S::clearPeaks()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeCommand(0xE3);
 }
 
 LT7182S::ChanState LT7182S::getChannelState(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -588,7 +603,7 @@ LT7182S::ChanState LT7182S::getChannelState(LT7182S::Chan ch)
 }
 LT7182S::ChanOperation LT7182S::getChannelOperation(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -624,7 +639,7 @@ void LT7182S::setChannelOperation(LT7182S::ChanOperation op, LT7182S::Chan ch)
             throw std::invalid_argument("LT7182S: Invalid channel operation");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -633,7 +648,7 @@ void LT7182S::setChannelOperation(LT7182S::ChanOperation op, LT7182S::Chan ch)
 
 LT7182S::ChanOnOffConfig LT7182S::getChannelOnOffConfig(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -661,7 +676,7 @@ void LT7182S::setChannelOnOffConfig(LT7182S::ChanOnOffConfig config, LT7182S::Ch
     if(config.immed_shutdown)
         reg |= BIT(0);
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -669,7 +684,7 @@ void LT7182S::setChannelOnOffConfig(LT7182S::ChanOnOffConfig config, LT7182S::Ch
 }
 LT7182S::ChanPWMConfig LT7182S::getChannelPWMConfig(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -723,7 +738,7 @@ void LT7182S::setChannelPWMConfig(LT7182S::ChanPWMConfig config, LT7182S::Chan c
     reg |= (LT7182S::FindClosest(config.pos_ilim, Pos_ILim_LUT, 4) << 9) & 0x0600;
     reg |= (LT7182S::FindClosest(config.ea_gm, EAmp_GM_LUT[config.low_vout_mode ? 1 : 0], 8) << 11) & 0x3800;
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -731,7 +746,7 @@ void LT7182S::setChannelPWMConfig(LT7182S::ChanPWMConfig config, LT7182S::Chan c
 }
 float LT7182S::getChannelPWMPhase(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -742,7 +757,7 @@ void LT7182S::setChannelPWMPhase(float phase, LT7182S::Chan ch)
     while(phase >= 360.f)
         phase -= 360.f;
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -750,7 +765,7 @@ void LT7182S::setChannelPWMPhase(float phase, LT7182S::Chan ch)
 }
 float LT7182S::getPWMFrequency()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0x33) * 1000.f;
 }
@@ -762,14 +777,14 @@ void LT7182S::setPWMFrequency(float freq)
     if((uint32_t)(freq / 100000.f) != (freq / 100000.f))
         throw std::runtime_error("LT7182S: Invalid PWM frequency (must be multiple of 100 KHz)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeL11(0x33, freq / 1000.f);
 }
 
 float LT7182S::readChannelInputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -777,7 +792,7 @@ float LT7182S::readChannelInputVoltage(LT7182S::Chan ch)
 }
 float LT7182S::readChannelPeakInputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -785,7 +800,7 @@ float LT7182S::readChannelPeakInputVoltage(LT7182S::Chan ch)
 }
 float LT7182S::getChannelOnInputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -796,7 +811,7 @@ void LT7182S::setChannelOnInputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 1.4f || voltage > 20.f)
         throw std::runtime_error("LT7182S: Invalid input ON voltage (1.4 V - 20 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -804,7 +819,7 @@ void LT7182S::setChannelOnInputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelOffInputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -815,7 +830,7 @@ void LT7182S::setChannelOffInputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 1.35f || voltage > 20.f)
         throw std::runtime_error("LT7182S: Invalid input OFF voltage (1.35 V - 20 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -823,7 +838,7 @@ void LT7182S::setChannelOffInputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelInputUnderVoltageWarn(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -834,7 +849,7 @@ void LT7182S::setChannelInputUnderVoltageWarn(float voltage, LT7182S::Chan ch)
     if(voltage < -1.f || voltage > 22.f)
         throw std::runtime_error("LT7182S: Invalid input under voltage warning (-1 V - 22 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -843,7 +858,7 @@ void LT7182S::setChannelInputUnderVoltageWarn(float voltage, LT7182S::Chan ch)
 
 float LT7182S::readChannelInputCurrent(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -851,7 +866,7 @@ float LT7182S::readChannelInputCurrent(LT7182S::Chan ch)
 }
 float LT7182S::getChannelInputOverCurrentWarn(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -862,7 +877,7 @@ void LT7182S::setChannelInputOverCurrentWarn(float current, LT7182S::Chan ch)
     if(current < 0.f || current > 20.f)
         throw std::runtime_error("LT7182S: Invalid input over current warning (0 A - 20 A)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -871,7 +886,7 @@ void LT7182S::setChannelInputOverCurrentWarn(float current, LT7182S::Chan ch)
 
 float LT7182S::readChannelOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -879,7 +894,7 @@ float LT7182S::readChannelOutputVoltage(LT7182S::Chan ch)
 }
 float LT7182S::readChannelPeakOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -887,7 +902,7 @@ float LT7182S::readChannelPeakOutputVoltage(LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -898,7 +913,7 @@ void LT7182S::setChannelOutputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 0.4f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid output voltage (0.4 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -906,7 +921,7 @@ void LT7182S::setChannelOutputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelMaxOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -917,7 +932,7 @@ void LT7182S::setChannelMaxOutputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 0.4f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid maximum output voltage (0.4 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -925,7 +940,7 @@ void LT7182S::setChannelMaxOutputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelHighMarginOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -936,7 +951,7 @@ void LT7182S::setChannelHighMarginOutputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 0.4f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid high margin output voltage (0.4 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -944,7 +959,7 @@ void LT7182S::setChannelHighMarginOutputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelLowMarginOutputVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -955,7 +970,7 @@ void LT7182S::setChannelLowMarginOutputVoltage(float voltage, LT7182S::Chan ch)
     if(voltage < 0.4f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid low margin output voltage (0.4 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -963,7 +978,7 @@ void LT7182S::setChannelLowMarginOutputVoltage(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputVoltageTransitionRate(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -974,7 +989,7 @@ void LT7182S::setChannelOutputVoltageTransitionRate(float rate, LT7182S::Chan ch
     if(rate < 0.01f || rate > 25.f)
         throw std::runtime_error("LT7182S: Invalid output voltage transition rate (0.01 V/ms - 25 V/ms)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -982,7 +997,7 @@ void LT7182S::setChannelOutputVoltageTransitionRate(float rate, LT7182S::Chan ch
 }
 float LT7182S::getChannelOutputOverVoltageFault(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -993,7 +1008,7 @@ void LT7182S::setChannelOutputOverVoltageFault(float voltage, LT7182S::Chan ch)
     if(voltage < 0.4f || voltage > 6.f)
         throw std::runtime_error("LT7182S: Invalid output over voltage fault (0.4 V - 6 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1001,7 +1016,7 @@ void LT7182S::setChannelOutputOverVoltageFault(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputOverVoltageWarn(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1012,7 +1027,7 @@ void LT7182S::setChannelOutputOverVoltageWarn(float voltage, LT7182S::Chan ch)
     if(voltage < 0.f || voltage > 6.f)
         throw std::runtime_error("LT7182S: Invalid output over voltage warning (0 V - 6 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1020,7 +1035,7 @@ void LT7182S::setChannelOutputOverVoltageWarn(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputUnderVoltageFault(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1031,7 +1046,7 @@ void LT7182S::setChannelOutputUnderVoltageFault(float voltage, LT7182S::Chan ch)
     if(voltage < 0.36f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid output under voltage fault (0 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1039,7 +1054,7 @@ void LT7182S::setChannelOutputUnderVoltageFault(float voltage, LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputUnderVoltageWarn(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1050,7 +1065,7 @@ void LT7182S::setChannelOutputUnderVoltageWarn(float voltage, LT7182S::Chan ch)
     if(voltage < 0.f || voltage > 5.5f)
         throw std::runtime_error("LT7182S: Invalid output under voltage warning (0 V - 5.5 V)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1059,7 +1074,7 @@ void LT7182S::setChannelOutputUnderVoltageWarn(float voltage, LT7182S::Chan ch)
 
 float LT7182S::readChannelOutputCurrent(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1067,7 +1082,7 @@ float LT7182S::readChannelOutputCurrent(LT7182S::Chan ch)
 }
 float LT7182S::readChannelPeakOutputCurrent(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1075,7 +1090,7 @@ float LT7182S::readChannelPeakOutputCurrent(LT7182S::Chan ch)
 }
 float LT7182S::getChannelOutputOverCurrentWarn(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1086,7 +1101,7 @@ void LT7182S::setChannelOutputOverCurrentWarn(float current, LT7182S::Chan ch)
     if(current < 0.f || current > 20.f)
         throw std::runtime_error("LT7182S: Invalid output over current warning (0 A - 20 A)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1095,7 +1110,7 @@ void LT7182S::setChannelOutputOverCurrentWarn(float current, LT7182S::Chan ch)
 
 float LT7182S::readChannelFrequency(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1103,7 +1118,7 @@ float LT7182S::readChannelFrequency(LT7182S::Chan ch)
 }
 float LT7182S::readChannelOutputPower(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1111,7 +1126,7 @@ float LT7182S::readChannelOutputPower(LT7182S::Chan ch)
 }
 float LT7182S::readChannelITHVoltage(LT7182S::Chan ch)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->selectChannel(ch);
 
@@ -1120,25 +1135,25 @@ float LT7182S::readChannelITHVoltage(LT7182S::Chan ch)
 
 float LT7182S::readExternalVCCVoltage()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0xCD);
 }
 float LT7182S::readTemperature()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0x8D);
 }
 float LT7182S::readPeakTemperature()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0xDF);
 }
 float LT7182S::getOverTemperatureFault()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0x4F);
 }
@@ -1147,13 +1162,13 @@ void LT7182S::setOverTemperatureFault(float temp)
     if(temp < -60.f || temp > 160.f)
         throw std::runtime_error("LT7182S: Invalid over temperature fault (-60 C - 160 C)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeL11(0x4F, temp);
 }
 float LT7182S::getOverTemperatureWarn()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     return this->readL11(0x51);
 }
@@ -1162,7 +1177,7 @@ void LT7182S::setOverTemperatureWarn(float temp)
     if(temp < -60.f || temp > 160.f)
         throw std::runtime_error("LT7182S: Invalid over temperature warning (-60 C - 160 C)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeL11(0x51, temp);
 }

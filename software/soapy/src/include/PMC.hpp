@@ -28,7 +28,7 @@
 #define PMC_REG_DEV_UID2                0xF8
 #define PMC_REG_DEV_UID3                0xFC
 
-class PMC : private AuxMCU
+class PMC: private AuxMCU
 {
 private:
     double getVoltage(uint8_t reg);
@@ -68,5 +68,5 @@ public:
     double getTemperature();
 
 private:
-    std::mutex mutex;
+    std::recursive_mutex mutex;
 };

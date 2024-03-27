@@ -2,26 +2,33 @@
 
 #include <cstdint>
 #include <mutex>
-#include <unistd.h>
+#include <thread>
 #include "AXIPeripheral.hpp"
 #include "Utils.hpp"
 
 #define AXI_SPI_NUM_INSTANCES 3
 
-#define AXI_SPI_REG_VERSION     0x00
-#define AXI_SPI_REG_CTRL        0x04
-#define AXI_SPI_REG_SCK_DIV     0x08
-#define AXI_SPI_REG_MMIO_CTRL   0x0C
-#define AXI_SPI_REG_CMD         0x10
-#define AXI_SPI_REG_RD_DATA     0x14
-#define AXI_SPI_REG_SR_PEEK     0x18
-#define AXI_SPI_REG_SLAVE_SEL   0x1C
+#define AXI_SPI_REG_VERSION                 0x00
+#define AXI_SPI_REG_CTRL                    0x04
+#define AXI_SPI_REG_IRQ_ENABLE              0x08
+#define AXI_SPI_REG_IRQ_PENDING             0x0C
+#define AXI_SPI_REG_SCK_DIV                 0x10
+#define AXI_SPI_REG_CMD                     0x14
+#define AXI_SPI_REG_RD_DATA                 0x18
+#define AXI_SPI_REG_SR_PEEK                 0x1C
+#define AXI_SPI_REG_SLAVE_SEL               0x20
+#define AXI_SPI_REG_MMIO_CTRL_1             0x24
+#define AXI_SPI_REG_MMIO_CTRL_2             0x28
+#define AXI_SPI_REG_MMIO_CTRL_3             0x2C
+#define AXI_SPI_REG_MMIO_CS_MASK            0x30
+#define AXI_SPI_REG_MMIO_RD_REQ_CNT         0x34
+#define AXI_SPI_REG_MMIO_CONT_RD_REQ_CNT    0x38
 
 #define AXI_SPI_REG_CTRL_SCK_DIV_EN                 BIT(0)
 #define AXI_SPI_REG_CTRL_SPI_EN                     BIT(1)
 #define AXI_SPI_REG_CTRL_CPHA                       BIT(2)
 #define AXI_SPI_REG_CTRL_CPOL                       BIT(3)
-#define AXI_SPI_REG_CTRL_SPI_MODE(n)                (((n) & 0x03) << 2)
+#define AXI_SPI_REG_CTRL_SPI_MODE(n)                (((uint32_t)(n) & 0x03) << 2)
 #define AXI_SPI_REG_CTRL_IO_MODE_SINGLE             BIT(4)
 #define AXI_SPI_REG_CTRL_IO_MODE_DUAL               BIT(5)
 #define AXI_SPI_REG_CTRL_IO_MODE_QUAD               BIT(6)
@@ -33,16 +40,44 @@
 #define AXI_SPI_REG_CTRL_SPI_IDLE                   BIT(20)
 #define AXI_SPI_REG_CTRL_SPI_DIR                    BIT(21)
 
-#define AXI_SPI_REG_MMIO_CTRL_ADDR_SIZE(n)          ((((n) - 1) & 0x03) << 0)
-#define AXI_SPI_REG_MMIO_CTRL_DUMMY_SIZE(n)         (((n) & 0x03) << 4)
-#define AXI_SPI_REG_MMIO_CTRL_MODE_BITS(n)          (((n) & 0xFF) << 8)
-#define AXI_SPI_REG_MMIO_CTRL_CS_HIGH_WAIT(n)       ((((n) - 1) & 0xFF) << 16)
+#define AXI_SPI_REG_IRQ_x_IRQ_SPI_IDLE              BIT(0)
+#define AXI_SPI_REG_IRQ_x_IRQ_SPI_IN_BUF_VALID      BIT(1)
+#define AXI_SPI_REG_IRQ_x_IRQ_SPI_OUT_BUF_NVALID    BIT(2)
 
-#define AXI_SPI_REG_CMD_WR_DATA(n)                  (((n) & 0xFF) << 0)
+#define AXI_SPI_REG_CMD_WR_DATA(n)                  (((uint32_t)(n) & 0xFF) << 0)
 #define AXI_SPI_REG_CMD_START_WRITE                 BIT(8)
 #define AXI_SPI_REG_CMD_START_READ                  BIT(9)
 
 #define AXI_SPI_REG_RD_DATA_VALID                   BIT(31)
+
+#define AXI_SPI_REG_MMIO_CTRL_1_RD_INSTR(n)         (((uint32_t)(n) & 0xFF) << 0)
+#define AXI_SPI_REG_MMIO_CTRL_1_ADDR_SIZE(n)        (((uint32_t)(n) & 0x03) << 8)
+#define AXI_SPI_REG_MMIO_CTRL_1_ADDR_REM(r)         (((uint32_t)(r) >> 10) & 0x03)
+#define AXI_SPI_REG_MMIO_CTRL_1_DUMMY_SIZE(n)       (((uint32_t)(n) & 0x03) << 12)
+#define AXI_SPI_REG_MMIO_CTRL_1_DUMMY_REM(r)        (((uint32_t)(r) >> 14) & 0x03)
+#define AXI_SPI_REG_MMIO_CTRL_1_MODE_BITS(n)        (((uint32_t)(n) & 0xFF) << 16)
+#define AXI_SPI_REG_MMIO_CTRL_1_MODE_BITS_EN        BIT(24)
+#define AXI_SPI_REG_MMIO_CTRL_1_CONT_READ_EN        BIT(25)
+#define AXI_SPI_REG_MMIO_CTRL_1_CONT_READ_READY     BIT(26)
+
+#define AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_SINGLE     BIT(0)
+#define AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_DUAL       BIT(1)
+#define AXI_SPI_REG_MMIO_CTRL_2_RD_INSTR_IO_MODE_QUAD       BIT(2)
+#define AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_SINGLE         BIT(4)
+#define AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_DUAL           BIT(5)
+#define AXI_SPI_REG_MMIO_CTRL_2_ADDR_IO_MODE_QUAD           BIT(6)
+#define AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_SINGLE        BIT(8)
+#define AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_DUAL          BIT(9)
+#define AXI_SPI_REG_MMIO_CTRL_2_DUMMY_IO_MODE_QUAD          BIT(10)
+#define AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_SINGLE         BIT(12)
+#define AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_DUAL           BIT(13)
+#define AXI_SPI_REG_MMIO_CTRL_2_DATA_IO_MODE_QUAD           BIT(14)
+#define AXI_SPI_REG_MMIO_CTRL_2_CS_HIGH_WAIT(n)             (((uint32_t)(n) & 0xFF) << 16)
+#define AXI_SPI_REG_MMIO_CTRL_2_CS_LOW_WAIT(n)              (((uint32_t)(n) & 0xFF) << 24)
+
+#define AXI_SPI_REG_MMIO_CTRL_3_CS_WAIT_REM(r)              (((uint32_t)(r) >> 0) & 0xFF)
+#define AXI_SPI_REG_MMIO_CTRL_3_SPI_MMIO_FSM_STATE(r)       (((uint32_t)(r) >> 24) & 0x0F)
+#define AXI_SPI_REG_MMIO_CTRL_3_SPI_MMIO_FSM_STATE_NEXT(r)  (((uint32_t)(r) >> 28) & 0x0F)
 
 class AXISPI: public AXIPeripheral
 {
@@ -71,10 +106,33 @@ public:
         bool quad_io_supported;
         bool mmio_supported;
     };
+    struct MMIOConfig
+    {
+        AXISPI::IOMode rd_instr_io_mode; // IO mode to use during the read instruction phase
+        uint8_t rd_instr; // Read instruction
+        AXISPI::IOMode addr_io_mode; // IO mode to use during the address phase (+ mode bits)
+        uint8_t addr_bytes; // Number of address bytes (1-4)
+        uint8_t mode_bits; // Mode bits to use
+        bool mode_bits_en; // Enable mode bits
+        bool cont_read_en; // Enable continuous read mode (Note: mode bits should be correctly configured)
+        AXISPI::IOMode dummy_io_mode; // IO mode to use during the dummy phase
+        uint8_t dummy_bytes; // Number of dummy bytes (0-3)
+        AXISPI::IOMode data_io_mode; // IO mode to use during the data phase
+        uint8_t cs_high_wait; // ACLK cycles to wait after CS goes high, before lowering again
+        uint8_t cs_low_wait; // ACLK cycles to wait after CS goes low, before sending data
+        uint32_t cs_mask; // Chip select mask
+    };
+    struct MMIOStats
+    {
+        uint32_t rd_req_cnt;
+        uint32_t cont_rd_req_cnt;
+    };
 
     AXISPI(void *base_address);
 
     uint32_t getIPVersion();
+
+    AXISPI::Capabilities getCapabilities();
 
     void setMode(AXISPI::Mode mode);
     AXISPI::Mode getMode();
@@ -85,10 +143,13 @@ public:
     void setIOMode(AXISPI::IOMode io_mode);
     AXISPI::IOMode getIOMode();
 
-    void configMMIOMode(uint8_t addr_bytes, uint8_t dummy_bytes, uint8_t mode_bits, uint8_t cs_high_wait);
+    void configMMIOMode(AXISPI::MMIOConfig &config);
+    AXISPI::MMIOStats getMMIOStats();
 
-    void configClockDivider(uint64_t sck_div);
-    void configClock(uint64_t input_freq, uint64_t sck_freq);
+    void setClockDivider(uint64_t sck_div);
+    uint64_t getClockDivider();
+    void setClockFrequency(uint64_t input_freq, uint64_t sck_freq);
+    uint64_t getClockFrequency(uint64_t input_freq);
 
     void enableClock(bool enable = true);
     inline void disableClock()
@@ -102,6 +163,7 @@ public:
         this->enable(false);
     }
     bool enabled();
+    bool idle();
     void enableMMIO(bool enable = true);
     inline void disableMMIO()
     {
@@ -109,7 +171,16 @@ public:
     }
     bool MMIOenabled();
 
-    void slaveSelect(const uint32_t mask, const bool select);
+    void selectSlave(const uint32_t mask, const bool select = true);
+    inline void deselectSlave(const uint32_t mask)
+    {
+        this->selectSlave(mask, false);
+    }
+    uint32_t getSelectedSlaveMask();
+    inline bool isAnySlaveSelected()
+    {
+        return this->getSelectedSlaveMask() != this->ss_mask;
+    }
 
     uint8_t transfer(const uint8_t data);
     inline void transfer(const uint8_t *src, uint32_t size, uint8_t *dst)

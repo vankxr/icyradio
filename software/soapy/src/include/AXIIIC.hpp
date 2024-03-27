@@ -95,14 +95,19 @@ public:
 
     void init(uint64_t input_freq, AXIIIC::Speed speed = AXIIIC::NORMAL);
 
-    void lock();
-    void unlock();
+    inline void startAtomicTransaction()
+    {
+        this->mutex.lock();
+    }
+    inline void endAtomicTransaction()
+    {
+        this->mutex.unlock();
+    }
 
     std::vector<uint8_t> scan();
     bool scan(uint8_t address);
 
     void transmit(uint8_t address, uint8_t *buf, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP);
-
     inline void write(uint8_t address, uint8_t *src, uint8_t count, AXIIIC::Stop stop = AXIIIC::Stop::STOP)
     {
         this->transmit((address << 1) & ~0x01, src, count, stop);
@@ -136,9 +141,8 @@ public:
     // AXIIIC::GPOValue getGPOValue(uint8_t gpo);
 
 private:
-    std::mutex mutex;
-    std::mutex bus_mutex;
-    // std::mutex gpo_mutex;
+    std::recursive_mutex mutex;
+    // std::recursive_mutex gpo_mutex;
 
     uint32_t timing_regs[8];
 };

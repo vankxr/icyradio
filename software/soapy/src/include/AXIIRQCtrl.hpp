@@ -5,6 +5,7 @@
 #include <sys/poll.h>
 #include <thread>
 #include <mutex>
+#include <atomic>
 #include "ioctl.hpp"
 #include "AXIPeripheral.hpp"
 #include "Utils.hpp"
@@ -35,27 +36,27 @@ public:
 
     enum IRQNumber
     {
-        AXI_DMAC_RF_RX = 0,
-        AXI_DMAC_RF_TX = 1,
+        AXI_DMAC_RF_TX0 = 0,
+        AXI_DMAC_RF_TX1 = 1,
+        AXI_DMAC_RF_RX0 = 2,
+        AXI_DMAC_RF_RX1 = 3,
+        AXI_DMAC_I2S_TX = 4,
+        AXI_DMAC_I2S_RX = 5,
+        AXI_IIC0 = 6,
+        AXI_IIC1 = 7,
+        AXI_IIC2 = 8,
+        AXI_QUAD_SPI_MM0 = 9,
+        AXI_SPI0 = 10,
+        AXI_SPI1 = 11,
 
-        AXI_IIC0 = 3,
-        AXI_QUAD_SPI0 = 4,
-        AXI_PCIE0 = 5,
-        AXI_DMAC_I2S_RX = 6,
-        AXI_DMAC_I2S_TX = 7,
+        AXI_PCIE0 = 15,
+        AXI_RF_TSTAMP = 16,
 
-        AXI_XADC_WIZ = 9,
-        AXI_QUAD_SPI1 = 10,
-        AXI_IIC1 = 11,
-        AXI_QUAD_SPI2 = 12,
-        VIN_REG_ALERTn = 13,
-        CLK_MNGR_IRQn = 14,
-        AXI_AD9361_GPS_PPS = 15,
+        AXI_XADC_WIZ = 19,
+        CLK_MNGR_IRQn = 20,
+        VIN_REG_ALERTn = 21,
 
-        AXI_DNA_READY = 18,
-        AXI_IIC2 = 19,
-
-        MAX = 20,
+        MAX = 22,
     };
     enum IRQMode
     {
@@ -71,13 +72,14 @@ private:
         void *arg;
     };
 
-    static void PollThreadEntry(AXIIRQCtrl *_this);
-    void handleIRQs();
+    void handleIRQ(AXIIRQCtrl::IRQNumber irq, AXIIRQCtrl::ISRInfo isr_info);
+    void handleIRQs(size_t thread_id);
+
 public:
-    AXIIRQCtrl(void *base_address, int fd = -1);
+    AXIIRQCtrl(void *base_address, size_t nthreads = 4, int fd = -1);
     ~AXIIRQCtrl();
 
-    void init(int fd = -1);
+    void init(int fd);
 
     uint32_t getIPVersion();
 
@@ -87,10 +89,15 @@ public:
     void setIRQPending(AXIIRQCtrl::IRQNumber irq, bool pending);
     bool isIRQEnabled(AXIIRQCtrl::IRQNumber irq);
     void setIRQEnabled(AXIIRQCtrl::IRQNumber irq, bool enabled);
+    bool isIRQBeingHandled(AXIIRQCtrl::IRQNumber irq);
+
 private:
     int fd;
     uint32_t mask;
     AXIIRQCtrl::ISRInfo isr_info[AXIIRQCtrl::IRQNumber::MAX];
-    std::thread poll_thread;
-    std::mutex mutex;
+    std::vector<std::thread> poll_threads;
+    size_t nthreads;
+    std::atomic<uint32_t> busy_mask;
+
+    std::recursive_mutex mutex;
 };

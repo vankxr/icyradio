@@ -217,6 +217,6 @@ public:
 private:
     LT7182S::IICConfig iic;
     LT7182S::IRQConfig irq_config;
-    std::mutex mutex;
-    std::mutex lock_mutex;
+    std::recursive_mutex mutex;
+    std::recursive_mutex lock_mutex;
 };

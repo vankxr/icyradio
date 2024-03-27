@@ -80,11 +80,51 @@ void *MappedRegion::getVirt()
 
     return this->ptr;
 }
+void *MappedRegion::getVirt(const uintptr_t phys)
+{
+    std::lock_guard<std::mutex> lock(this->mutex);
+
+    if(!this->mapped)
+        throw std::runtime_error("Region is not mapped");
+
+    if(this->ptr == nullptr)
+        throw std::runtime_error("Invalid pointer");
+
+    if(phys < this->start)
+        throw std::runtime_error("Physical address is out of range");
+
+    uintptr_t offset = phys - this->start;
+
+    if(offset >= this->size)
+        throw std::runtime_error("Physical address is out of range");
+
+    return reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(this->ptr) + offset);
+}
 uintptr_t MappedRegion::getPhys()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 
     return this->start;
+}
+uintptr_t MappedRegion::getPhys(const void *virt)
+{
+    std::lock_guard<std::mutex> lock(this->mutex);
+
+    if(!this->mapped)
+        throw std::runtime_error("Region is not mapped");
+
+    if(this->ptr == nullptr)
+        throw std::runtime_error("Invalid pointer");
+
+    if(virt < this->ptr)
+        throw std::runtime_error("Virtual address is out of range");
+
+    uintptr_t offset = reinterpret_cast<uintptr_t>(virt) - reinterpret_cast<uintptr_t>(this->ptr);
+
+    if(offset >= this->size)
+        throw std::runtime_error("Virtual address is out of range");
+
+    return this->start + offset;
 }
 
 size_t MappedRegion::getSize()

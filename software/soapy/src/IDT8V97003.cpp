@@ -6,21 +6,21 @@ void IDT8V97003::readReg(uint8_t reg, uint8_t *dst, uint8_t count)
         throw std::runtime_error("8V97003: SPI not initialized");
 
     if(reg + count > 0x49)
-        throw std::runtime_error("8V97003: Invalid register address");
+        throw std::invalid_argument("8V97003: Invalid register address");
 
     if(!count)
         return;
 
     if(dst == nullptr)
-        throw std::runtime_error("8V97003: Invalid destination buffer");
+        throw std::invalid_argument("8V97003: Invalid destination buffer");
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, true); // This locks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, true); // This locks mutex
 
     this->spi.controller->write(BIT(7), false);
     this->spi.controller->write(reg, true);
     this->spi.controller->read(dst, count);
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, false); // This unlocks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, false); // This unlocks mutex
 }
 void IDT8V97003::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
 {
@@ -28,21 +28,21 @@ void IDT8V97003::writeReg(uint8_t reg, uint8_t *src, uint8_t count)
         throw std::runtime_error("8V97003: SPI not initialized");
 
     if(reg + count > 0x49)
-        throw std::runtime_error("8V97003: Invalid register address");
+        throw std::invalid_argument("8V97003: Invalid register address");
 
     if(!count)
         return;
 
     if(src == nullptr)
-        throw std::runtime_error("8V97003: Invalid source buffer");
+        throw std::invalid_argument("8V97003: Invalid source buffer");
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, true); // This locks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, true); // This locks mutex
 
     this->spi.controller->write(0x00, false);
     this->spi.controller->write(reg, false);
     this->spi.controller->write(src, count, true);
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, false); // This unlocks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, false); // This unlocks mutex
 }
 
 IDT8V97003::IDT8V97003(IDT8V97003::SPIConfig spi, IDT8V97003::GPIOConfig ce_gpio, IDT8V97003::GPIOConfig mute_gpio, IDT8V97003::GPIOConfig sync_gpio, IDT8V97003::GPIOConfig ld_gpio, IDT8V97003::GPIOConfig reset_gpio)
@@ -60,6 +60,8 @@ IDT8V97003::IDT8V97003(IDT8V97003::SPIConfig spi, IDT8V97003::GPIOConfig ce_gpio
 
     if(this->spi.controller == nullptr)
         throw std::runtime_error("8V97003: SPI not initialized");
+
+    this->reset();
 
     this->writeReg(IDT8V97003_REG_INTF_CONFIG, IDT8V97003_REG_INTF_CONFIG_ADDR_ASC | IDT8V97003_REG_INTF_CONFIG_SDO_ACTIVE);
 
@@ -86,6 +88,8 @@ IDT8V97003::~IDT8V97003()
 
 void IDT8V97003::init()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     this->reset();
 
     this->writeReg(IDT8V97003_REG_INTF_CONFIG, IDT8V97003_REG_INTF_CONFIG_ADDR_ASC | IDT8V97003_REG_INTF_CONFIG_SDO_ACTIVE);
@@ -119,24 +123,25 @@ void IDT8V97003::init()
 
 void IDT8V97003::reset()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     if(this->reset_gpio.controller != nullptr) // Hardware reset
     {
         this->reset_gpio.controller->setValue(this->reset_gpio.gpio, this->reset_gpio.invert ? true : false);
         usleep(1000);
         this->reset_gpio.controller->setValue(this->reset_gpio.gpio, this->reset_gpio.invert ? false : true);
+        usleep(1000);
 
         return;
     }
 
     this->writeReg(IDT8V97003_REG_INTF_CONFIG, IDT8V97003_REG_INTF_CONFIG_SOFT_RESET);
-
-    while(this->readReg(IDT8V97003_REG_INTF_CONFIG) & IDT8V97003_REG_INTF_CONFIG_SOFT_RESET)
-        usleep(1000);
+    usleep(1000);
 }
 
 void IDT8V97003::powerUp(IDT8V97003::PowerFlags flags)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if((flags & IDT8V97003::PowerFlags::PWR_CHIP_ENABLE) && this->ce_gpio.controller != nullptr)
         this->ce_gpio.controller->setValue(this->ce_gpio.gpio, this->ce_gpio.invert ? false : true);
@@ -155,7 +160,7 @@ void IDT8V97003::powerUp(IDT8V97003::PowerFlags flags)
 }
 void IDT8V97003::powerDown(IDT8V97003::PowerFlags flags)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_PWR_CTL);
 
@@ -175,7 +180,7 @@ void IDT8V97003::powerDown(IDT8V97003::PowerFlags flags)
 
 bool IDT8V97003::isMuted()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if(this->mute_gpio.controller != nullptr)
     {
@@ -188,11 +193,11 @@ bool IDT8V97003::isMuted()
             return true;
     }
 
-    return this->_isMuted(IDT8V97003::RFOutput::RFOUT_A) && this->_isMuted(IDT8V97003::RFOutput::RFOUT_B);
+    return this->isMuted(IDT8V97003::RFOutput::RFOUT_A) && this->isMuted(IDT8V97003::RFOutput::RFOUT_B);
 }
 void IDT8V97003::mute(bool mute)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if(this->mute_gpio.controller != nullptr)
     {
@@ -204,10 +209,10 @@ void IDT8V97003::mute(bool mute)
         return;
     }
 
-    this->_mute(IDT8V97003::RFOutput::RFOUT_A, mute);
-    this->_mute(IDT8V97003::RFOutput::RFOUT_B, mute);
+    this->mute(IDT8V97003::RFOutput::RFOUT_A, mute);
+    this->mute(IDT8V97003::RFOutput::RFOUT_B, mute);
 }
-bool IDT8V97003::_isMuted(IDT8V97003::RFOutput output)
+bool IDT8V97003::isMuted(IDT8V97003::RFOutput output)
 {
     uint8_t reg;
 
@@ -222,6 +227,8 @@ bool IDT8V97003::_isMuted(IDT8V97003::RFOutput output)
         default:
             throw std::runtime_error("8V97003: Invalid RF output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if(this->mute_gpio.controller != nullptr)
     {
@@ -241,7 +248,7 @@ bool IDT8V97003::_isMuted(IDT8V97003::RFOutput output)
 
     return false;
 }
-void IDT8V97003::_mute(IDT8V97003::RFOutput output, bool mute)
+void IDT8V97003::mute(IDT8V97003::RFOutput output, bool mute)
 {
     uint8_t reg;
 
@@ -256,6 +263,8 @@ void IDT8V97003::_mute(IDT8V97003::RFOutput output, bool mute)
         default:
             throw std::runtime_error("8V97003: Invalid RF output");
     }
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if(mute && this->cached_rfout_pwr[output])
         return; // Already muted
@@ -289,7 +298,7 @@ void IDT8V97003::_mute(IDT8V97003::RFOutput output, bool mute)
 }
 void IDT8V97003::setMuteUntilLocked(bool mute)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(IDT8V97003_REG_RFOUTA_ENA, IDT8V97003_REG_RFOUTA_ENA_MUTE_UNTIL_LD, mute ? IDT8V97003_REG_RFOUTA_ENA_MUTE_UNTIL_LD : 0);
 }
@@ -310,7 +319,7 @@ void IDT8V97003::enableRFOutput(IDT8V97003::RFOutput output, bool enable)
             throw std::runtime_error("8V97003: Invalid RF output");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(reg, IDT8V97003_REG_RFOUTA_ENA_RFOUTA_ENA, enable ? IDT8V97003_REG_RFOUTA_ENA_RFOUTA_ENA : 0);
 }
@@ -333,7 +342,7 @@ void IDT8V97003::setRFOutputPower(IDT8V97003::RFOutput output, uint8_t power)
             throw std::runtime_error("8V97003: Invalid RF output");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeReg(reg, power & 0x0F);
 
@@ -355,7 +364,7 @@ uint8_t IDT8V97003::getRFOutputPower(IDT8V97003::RFOutput output)
             throw std::runtime_error("8V97003: Invalid RF output");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t pwr = this->readReg(reg) & 0x0F;
 
@@ -367,6 +376,8 @@ uint8_t IDT8V97003::getRFOutputPower(IDT8V97003::RFOutput output)
 
 double IDT8V97003::getTemperature()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     // TODO
     return 0.0;
 
@@ -430,7 +441,7 @@ double IDT8V97003::getTemperature()
 
 IDT8V97003::VCOBand IDT8V97003::getCurrentVCOBand()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t buf[2];
 
@@ -443,6 +454,8 @@ IDT8V97003::VCOBand IDT8V97003::getCurrentVCOBand()
 }
 void IDT8V97003::forceVCOBand(bool force, IDT8V97003::VCOBand band)
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     // TODO
 }
 
@@ -454,7 +467,7 @@ void IDT8V97003::configReferenceInput(uint32_t freq, bool diff)
     if(freq > 1600000000UL)
         throw std::runtime_error("8V97003: Reference frequency too high (Valid: <= 1600 MHz)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(IDT8V97003_REG_RDIV_HIGH, (uint8_t)~(IDT8V97003_REG_RDIV_HIGH_REF_DBL_DELAY | IDT8V97003_REG_RDIV_HIGH_INPUT_TYPE), ((freq < 50000000UL) ? IDT8V97003_REG_RDIV_HIGH_REF_DBL_DELAY : 0) | (diff ? IDT8V97003_REG_RDIV_HIGH_INPUT_TYPE : 0));
 
@@ -470,6 +483,8 @@ void IDT8V97003::configPFD(uint32_t freq, IDT8V97003::PFDPulseWidth pw)
 
     bool found = false;
     IDT8V97003::RefPathConfig ref_cfg;
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     for(uint8_t dbl = 2; dbl > 0; dbl--) // First try with the doubler enabled
     {
@@ -534,6 +549,8 @@ void IDT8V97003::configPFD(IDT8V97003::RefPathConfig ref_cfg, IDT8V97003::PFDPul
             throw std::runtime_error("8V97003: Invalid PFD pulse width");
     }
 
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     if(this->ref_freq < 10000000UL)
         throw std::runtime_error("8V97003: Reference frequency too low (Valid: >= 10 MHz)");
 
@@ -572,8 +589,6 @@ void IDT8V97003::configPFD(IDT8V97003::RefPathConfig ref_cfg, IDT8V97003::PFDPul
     if(band_sel_div >= 8192)
         throw std::runtime_error("8V97003: Could not find a suitable band select clock divider");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     if(ref_cfg.mult > 1)
     {
         // Multiplier enabled, enable and reset
@@ -601,8 +616,10 @@ void IDT8V97003::configPFD(IDT8V97003::RefPathConfig ref_cfg, IDT8V97003::PFDPul
 
     this->rmwReg(IDT8V97003_REG_PFD_PULSE_WIDTH, ~0x0C, (pw_val & 0x0C));
 }
-uint32_t IDT8V97003::_getReferenceDoublerInputFrequency()
+uint32_t IDT8V97003::getReferenceDoublerInputFrequency()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t reg = this->readReg(IDT8V97003_REG_RDIV_HIGH);
 
     if(!(reg & IDT8V97003_REG_RDIV_HIGH_REF_DBL_EN))
@@ -610,9 +627,11 @@ uint32_t IDT8V97003::_getReferenceDoublerInputFrequency()
 
     return this->ref_freq;
 }
-uint32_t IDT8V97003::_getReferenceMultiplierInputFrequency()
+uint32_t IDT8V97003::getReferenceMultiplierInputFrequency()
 {
     uint8_t reg[2];
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->readReg(IDT8V97003_REG_MULT_CTL0, reg, 2);
 
@@ -637,45 +656,65 @@ uint32_t IDT8V97003::_getReferenceMultiplierInputFrequency()
     if(reg[0] & IDT8V97003_REG_MULT_CTL0_MULT_RESET)
         return 0;
 
-    uint32_t mult_in = this->_getReferenceDoublerOutputFrequency();
+    uint32_t mult_in = this->getReferenceDoublerOutputFrequency();
 
     if(!mult_in)
         mult_in = this->ref_freq;
 
     return mult_in;
 }
-uint32_t IDT8V97003::_getReferenceMultiplierOutputFrequency()
+uint32_t IDT8V97003::getReferenceMultiplierOutputFrequency()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint8_t mult = this->readReg(IDT8V97003_REG_MULT_CTL0) & 0x3F;
 
     if(!mult)
         return 0;
 
-    return this->_getReferenceMultiplierInputFrequency() * mult;
+    return this->getReferenceMultiplierInputFrequency() * mult;
 }
-uint32_t IDT8V97003::_getReferenceDividerInputFrequency()
+uint32_t IDT8V97003::getReferenceDividerInputFrequency()
 {
-    uint32_t ref_div_in = this->_getReferenceMultiplierOutputFrequency();
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    uint32_t ref_div_in = this->getReferenceMultiplierOutputFrequency();
 
     if(!ref_div_in)
-        ref_div_in = this->_getReferenceDoublerOutputFrequency();
+        ref_div_in = this->getReferenceDoublerOutputFrequency();
 
     if(!ref_div_in)
         ref_div_in = this->ref_freq;
 
     return ref_div_in;
 }
-uint32_t IDT8V97003::_getReferenceDividerOutputFrequency()
+uint32_t IDT8V97003::getReferenceDividerOutputFrequency()
 {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
     uint16_t r_div = this->readReg16(IDT8V97003_REG_RDIV_LOW) & 0x3FF;
 
     if(!r_div)
         r_div = 1;
 
-    return this->_getReferenceDividerInputFrequency() / r_div;
+    return this->getReferenceDividerInputFrequency() / r_div;
 }
 
-void IDT8V97003::configChargePump(IDT8V97003::ChargePumpConfig cfg)
+IDT8V97003::ChargePumpConfig IDT8V97003::getChargePumpConfig()
+{
+    uint8_t buf[3];
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->readReg(IDT8V97003_REG_ICP_PMOS, buf, 3);
+
+    return {
+        .icp_pmos = (double)(buf[0] & 0x3F) / 6.0 + 1,
+        .icp_nmos = (double)(buf[1] & 0x3F) / 6.0 + 1,
+        .icp_bleeder = (double)(buf[2] & 0x7F) * 0.02
+    };
+}
+void IDT8V97003::setChargePumpConfig(IDT8V97003::ChargePumpConfig cfg)
 {
     cfg.icp_pmos = cfg.icp_pmos * 6.0 - 1;
 
@@ -698,27 +737,13 @@ void IDT8V97003::configChargePump(IDT8V97003::ChargePumpConfig cfg)
     buf[1] = (uint8_t)cfg.icp_nmos & 0x3F;
     buf[2] = (uint8_t)cfg.icp_bleeder & 0x7F;
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeReg(IDT8V97003_REG_ICP_PMOS, buf, 3);
 }
-IDT8V97003::ChargePumpConfig IDT8V97003::getChargePumpConfig()
-{
-    uint8_t buf[3];
-
-    std::lock_guard<std::mutex> lock(this->mutex);
-
-    this->readReg(IDT8V97003_REG_ICP_PMOS, buf, 3);
-
-    return {
-        .icp_pmos = (double)(buf[0] & 0x3F) / 6.0 + 1,
-        .icp_nmos = (double)(buf[1] & 0x3F) / 6.0 + 1,
-        .icp_bleeder = (double)(buf[2] & 0x7F) * 0.02
-    };
-}
 double IDT8V97003::getChargePumpPositiveCurrent()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_ICP_PMOS);
 
@@ -731,13 +756,13 @@ void IDT8V97003::setChargePumpPositiveCurrent(double current)
     if(current < 0 || current > 63)
         throw std::invalid_argument("8V97003: Invalid PMOS charge pump current (Valid: 0.167-10.67 mA)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeReg(IDT8V97003_REG_ICP_PMOS, (uint8_t)current & 0x3F);
 }
 double IDT8V97003::getChargePumpNegativeCurrent()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_ICP_NMOS);
 
@@ -750,13 +775,13 @@ void IDT8V97003::setChargePumpNegativeCurrent(double current)
     if(current < 0 || current > 63)
         throw std::invalid_argument("8V97003: Invalid NMOS charge pump current (Valid: 0.167-10.67 mA)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeReg(IDT8V97003_REG_ICP_NMOS, (uint8_t)current & 0x3F);
 }
 double IDT8V97003::getChargePumpBleederCurrent()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_ICP_BLEEDER);
 
@@ -769,27 +794,27 @@ void IDT8V97003::setChargePumpBleederCurrent(double current)
     if(current < 0 || current > 127)
         throw std::invalid_argument("8V97003: Invalid bleeder charge pump current (Valid: 0-2.54 mA)");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->writeReg(IDT8V97003_REG_ICP_BLEEDER, (uint8_t)current & 0x7F);
 }
 
 void IDT8V97003::enableLockDetect(bool enable)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     // Yes, it looks like it is inverted (DISABLE = 1 is actually enabled...)
     this->rmwReg(IDT8V97003_REG_LD_CTL0, (uint8_t)~IDT8V97003_REG_LD_CTL0_LD_DISABLE, enable ? IDT8V97003_REG_LD_CTL0_LD_DISABLE : 0);
 }
 void IDT8V97003::enableAutoRecal(bool enable)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(IDT8V97003_REG_LD_CTL0, (uint8_t)~IDT8V97003_REG_LD_CTL0_AUTO_RECAL_EN, enable ? IDT8V97003_REG_LD_CTL0_AUTO_RECAL_EN : 0);
 }
 IDT8V97003::LDPrecision IDT8V97003::getLockDetectPrecision()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_LD_CTL1) & 0x07;
 
@@ -847,13 +872,13 @@ void IDT8V97003::setLockDetectPrecision(IDT8V97003::LDPrecision prec)
             throw std::runtime_error("8V97003: Invalid lock detect precision");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(IDT8V97003_REG_LD_CTL1, ~0x07, reg);
 }
 IDT8V97003::LDPinMode IDT8V97003::getLockDetectPinMode()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint8_t reg = this->readReg(IDT8V97003_REG_LD_CTL1) & 0x30;
 
@@ -897,14 +922,16 @@ void IDT8V97003::setLockDetectPinMode(IDT8V97003::LDPinMode mode)
             throw std::runtime_error("8V97003: Invalid lock detect pin mode");
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     this->rmwReg(IDT8V97003_REG_LD_CTL1, ~0x30, reg);
 }
 
-uint64_t IDT8V97003::_getVCOFrequency()
+uint64_t IDT8V97003::getVCOFrequency()
 {
-    uint64_t pfd_freq = this->_getPFDFrequency();
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    uint64_t pfd_freq = this->getPFDFrequency();
 
     if(!pfd_freq)
         return 0;
@@ -921,9 +948,9 @@ uint64_t IDT8V97003::_getVCOFrequency()
 }
 uint64_t IDT8V97003::getFrequency()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    uint64_t vco_freq = this->_getVCOFrequency();
+    uint64_t vco_freq = this->getVCOFrequency();
 
     if(!vco_freq)
         return 0;
@@ -987,9 +1014,9 @@ void IDT8V97003::setFrequency(uint64_t freq, int32_t cal_timeout, int32_t lock_t
         vco_freq = freq;
     }
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    uint32_t pfd_freq = this->_getPFDFrequency();
+    uint32_t pfd_freq = this->getPFDFrequency();
 
     if(!pfd_freq)
         throw std::runtime_error("8V97003: Invalid PFD frequency (Did you configure the PFD first?)");
@@ -1131,7 +1158,7 @@ void IDT8V97003::setFrequency(uint64_t freq, int32_t cal_timeout, int32_t lock_t
 
 double IDT8V97003::getPhase()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint32_t b = this->readReg32(IDT8V97003_REG_NFRAC_LOW);
 
@@ -1162,7 +1189,7 @@ void IDT8V97003::setPhase(double phase)
     while(phase < 0.0)
         phase += 360.0;
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint32_t b = this->readReg32(IDT8V97003_REG_NFRAC_LOW);
 

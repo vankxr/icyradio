@@ -7,9 +7,10 @@ void AXIDMAC::ISR(void *_this)
 
     (static_cast<AXIDMAC *>(_this))->handleIRQ();
 }
+
 void AXIDMAC::handleIRQ()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::unique_lock<std::recursive_mutex> lock(this->mutex);
 
     uint32_t pend = this->readReg(AXI_DMAC_REG_IRQ_PENDING);
     this->writeReg(AXI_DMAC_REG_IRQ_PENDING, pend); // Clear pending IRQs
@@ -21,14 +22,30 @@ void AXIDMAC::handleIRQ()
 
     for(uint8_t i = 0; i < AXI_DMAC_NUM_TRANSFERS; i++)
     {
-        if((done & AXI_DMAC_REG_XFER_DONE_XFER_n_DONE(i)) && !this->transfers[i].done)
+        if((done & AXI_DMAC_REG_XFER_DONE_XFER_n_DONE(i)) && !this->transfer_done[i].exchange(true))
         {
-            this->transfers[i].done = true;
+            if(this->transfer_callback_done[i].exchange(false))
+            {
+                std::thread t(&AXIDMAC::callTransferCallback, this, this->transfers[i]);
 
-            if(this->transfers[i].callback)
-                this->transfers[i].callback(this->transfers[i]);
+                t.detach();
+            }
         }
     }
+}
+void AXIDMAC::callTransferCallback(AXIDMAC::Transfer xfer)
+{
+    try
+    {
+        if(xfer.cb != nullptr)
+            xfer.cb(xfer.cb_arg);
+    }
+    catch(...)
+    {
+        // Do nothing
+    }
+
+    this->transfer_callback_done[xfer.id] = true;
 }
 
 AXIDMAC::AXIDMAC(void *base_address, AXIDMAC::IRQConfig irq_config): AXIPeripheral(base_address)
@@ -38,10 +55,12 @@ AXIDMAC::AXIDMAC(void *base_address, AXIDMAC::IRQConfig irq_config): AXIPeripher
     if(AXI_CORE_VERSION_MAJOR(version) < 4)
         throw std::runtime_error("AXI DMAC Core v" + std::to_string(AXI_CORE_VERSION_MAJOR(version)) + "." + std::to_string(AXI_CORE_VERSION_MINOR(version)) + "." + std::to_string(AXI_CORE_VERSION_PATCH(version)) + " is not supported");
 
-    this->irq_config = irq_config;
-
     for(uint8_t i = 0; i < AXI_DMAC_NUM_TRANSFERS; i++)
-        this->transfers[i].done = true;
+    {
+        this->transfers[i].cb = nullptr;
+        this->transfer_done[i] = true;
+        this->transfer_callback_done[i] = true;
+    }
 
     // Detect capabilities
     uint32_t caps = this->readReg(AXI_DMAC_REG_INTF_DESC);
@@ -104,6 +123,8 @@ AXIDMAC::AXIDMAC(void *base_address, AXIDMAC::IRQConfig irq_config): AXIPeripher
 
     this->capabilities.transfer_mode = (AXIDMAC::TransferMode)mode;
 
+    this->irq_config.controller = nullptr;
+
     this->init(irq_config);
 }
 AXIDMAC::~AXIDMAC()
@@ -112,6 +133,19 @@ AXIDMAC::~AXIDMAC()
     {
         this->irq_config.controller->setISR(this->irq_config.irq, nullptr);
         this->irq_config.controller->setIRQEnabled(this->irq_config.irq, false);
+    }
+
+    if(this->enabled())
+    {
+        this->unpause();
+        this->waitIdle();
+        this->disable();
+    }
+
+    for(uint8_t i = 0; i < AXI_DMAC_NUM_TRANSFERS; i++)
+    {
+        while(!this->transfer_callback_done[i].load())
+            std::this_thread::yield();
     }
 }
 
@@ -129,12 +163,17 @@ void AXIDMAC::init(AXIDMAC::IRQConfig irq_config)
     this->irq_config.controller->setIRQEnabled(this->irq_config.irq, true);
     this->irq_config.controller->setIRQPending(this->irq_config.irq, false);
 
+    this->writeReg(AXI_DMAC_REG_IRQ_PENDING, 0xFFFFFFFF); // Clear all IRQs
     this->writeReg(AXI_DMAC_REG_IRQ_MASK, AXI_DMAC_REG_IRQ_x_IRQ_XFER_QUEUED); // Mask only the transfer queued IRQ
 }
 
 uint32_t AXIDMAC::getIPVersion()
 {
     return this->readReg(AXI_DMAC_REG_VERSION);
+}
+uint32_t AXIDMAC::getPeripheralID()
+{
+    return this->readReg(AXI_DMAC_REG_PERI_ID);
 }
 
 AXIDMAC::Capabilities AXIDMAC::getCapabilities()
@@ -144,74 +183,100 @@ AXIDMAC::Capabilities AXIDMAC::getCapabilities()
 
 void AXIDMAC::enable(bool enable)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint32_t ctrl = this->readReg(AXI_DMAC_REG_CONTROL);
 
     if(enable)
-    {
-        if(ctrl & AXI_DMAC_REG_CONTROL_ENABLE)
-            throw std::runtime_error("AXI DMAC: Already enabled");
-
         ctrl |= AXI_DMAC_REG_CONTROL_ENABLE;
-    }
     else
-    {
-        if(!(ctrl & AXI_DMAC_REG_CONTROL_ENABLE))
-            throw std::runtime_error("AXI DMAC: Already disabled");
-
-        ctrl &= ~AXI_DMAC_REG_CONTROL_ENABLE;
-    }
+        ctrl &= ~(AXI_DMAC_REG_CONTROL_PAUSE | AXI_DMAC_REG_CONTROL_ENABLE);
 
     this->writeReg(AXI_DMAC_REG_CONTROL, ctrl);
+
+    if(!enable)
+    {
+        for(uint8_t i = 0; i < AXI_DMAC_NUM_TRANSFERS; i++)
+            this->transfer_done[i] = true;
+    }
 }
 bool AXIDMAC::enabled()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     return !!(this->readReg(AXI_DMAC_REG_CONTROL) & AXI_DMAC_REG_CONTROL_ENABLE);
 }
 void AXIDMAC::pause(bool pause)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint32_t ctrl = this->readReg(AXI_DMAC_REG_CONTROL);
 
     if(pause)
-    {
-        if(ctrl & AXI_DMAC_REG_CONTROL_PAUSE)
-            throw std::runtime_error("AXI DMAC: Already paused");
-
         ctrl |= AXI_DMAC_REG_CONTROL_PAUSE;
-    }
     else
-    {
-        if(!(ctrl & AXI_DMAC_REG_CONTROL_PAUSE))
-            throw std::runtime_error("AXI DMAC: Already unpaused");
-
         ctrl &= ~AXI_DMAC_REG_CONTROL_PAUSE;
-    }
 
     this->writeReg(AXI_DMAC_REG_CONTROL, ctrl);
 }
 bool AXIDMAC::paused()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-
     return !!(this->readReg(AXI_DMAC_REG_CONTROL) & AXI_DMAC_REG_CONTROL_PAUSE);
 }
 bool AXIDMAC::idle()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    if(this->readReg(AXI_DMAC_REG_XFER_SUBMIT)) // No transfer slots available, means it is certainly not idle
+        return false;
 
     return this->readReg(AXI_DMAC_REG_ACT_XFER_ID) == this->readReg(AXI_DMAC_REG_XFER_ID);
 }
-
-uint8_t AXIDMAC::submitTransfer(AXIDMAC::Transfer transfer)
+void AXIDMAC::waitIdle(uint32_t timeout_ms)
 {
-    if(!this->enabled())
-        throw std::runtime_error("AXI DMAC: Cannot submit transfer while disabled");
+    uint64_t timeout = (uint64_t)timeout_ms * 10ULL;
 
+    while(--timeout && !this->idle())
+        usleep(100);
+
+    if(!this->idle())
+        throw std::runtime_error("AXI DMAC: Timed out waiting for controller to be idle");
+
+    // Wait for all transfer callbacks to complete
+    bool all_complete = false;
+
+    while(--timeout && !all_complete)
+    {
+        all_complete = true;
+
+        for(uint8_t i = 0; i < AXI_DMAC_NUM_TRANSFERS; i++)
+        {
+            if(!this->transfer_callback_done[i].load())
+            {
+                all_complete = false;
+
+                break;
+            }
+        }
+
+        if(all_complete)
+            break;
+
+        usleep(100);
+    }
+
+    if(!all_complete)
+        throw std::runtime_error("AXI DMAC: Timed out waiting for transfer callbacks to complete");
+}
+
+void AXIDMAC::setTransferCallback(uint8_t id, AXIDMAC::Transfer::Callback callback, void *arg)
+{
+    if(id >= AXI_DMAC_NUM_TRANSFERS)
+        throw std::invalid_argument("AXI DMAC: Invalid transfer ID");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->transfers[id].cb = callback;
+    this->transfers[id].cb_arg = arg;
+}
+void AXIDMAC::submitTransfer(AXIDMAC::Transfer &transfer)
+{
     if(transfer.flags & AXIDMAC::Transfer::Flags::CYCLIC)
     {
         if(!this->capabilities.cyclic_support)
@@ -230,27 +295,35 @@ uint8_t AXIDMAC::submitTransfer(AXIDMAC::Transfer transfer)
     if(transfer.size > this->capabilities.max_transfer_size)
         throw std::runtime_error("AXI DMAC: Transfer length " + std::to_string(transfer.size) + " is out of range (max: " + std::to_string(this->capabilities.max_transfer_size) + ")");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    bool available = !!this->readReg(AXI_DMAC_REG_XFER_SUBMIT);
+    if(!this->enabled())
+        throw std::runtime_error("AXI DMAC: Cannot submit transfer while disabled");
+
+    bool available = !this->readReg(AXI_DMAC_REG_XFER_SUBMIT);
 
     if(!available)
         throw std::runtime_error("AXI DMAC: No available transfer slots");
 
     uint8_t id = this->readReg(AXI_DMAC_REG_XFER_ID);
+
+    if(!this->transfer_callback_done[id].load())
+        throw std::runtime_error("AXI DMAC: Transfer callback for transfer " + std::to_string(id) + " is still running");
+
     AXIDMAC::Transfer *xfer = &this->transfers[id];
 
-    if(!xfer->done)
+    if(!this->transfer_done[id].load())
         throw std::runtime_error("AXI DMAC: Coherency error: transfer " + std::to_string(id) + " was not marked done in software");
 
+    this->transfer_done[id] = false;
+
     xfer->id = id;
-    xfer->done = false;
     xfer->size = transfer.size;
     xfer->flags = transfer.flags;
     xfer->src_addr = transfer.src_addr;
     xfer->dest_addr = transfer.dest_addr;
-    xfer->callback = transfer.callback;
-    xfer->arg = transfer.arg;
+    xfer->cb = transfer.cb;
+    xfer->cb_arg = transfer.cb_arg;
 
     this->writeReg(AXI_DMAC_REG_FLAGS, transfer.flags);
 
@@ -271,20 +344,24 @@ uint8_t AXIDMAC::submitTransfer(AXIDMAC::Transfer transfer)
 
     this->writeReg(AXI_DMAC_REG_XFER_SUBMIT, 1); // Submit the transfer
 
-    return id;
+    transfer.id = id;
 }
 void AXIDMAC::waitTransferCompletion(uint8_t id, uint32_t timeout_ms)
 {
     if(id >= AXI_DMAC_NUM_TRANSFERS)
         throw std::invalid_argument("AXI DMAC: Invalid transfer ID");
 
-    AXIDMAC::Transfer *xfer = &this->transfers[id];
+    uint64_t timeout = (uint64_t)timeout_ms * 1000ULL;
 
-    uint64_t timeout = (uint64_t)timeout_ms * 10ULL;
+    bool done = this->transfer_done[id].load();
 
-    while(--timeout && !xfer->done)
-        usleep(100);
+    while(--timeout && !done)
+    {
+        usleep(1);
 
-    if(!xfer->done)
+        done = this->transfer_done[id].load();
+    }
+
+    if(!done)
         throw std::runtime_error("AXI DMAC: Timed out waiting for transfer " + std::to_string(id));
 }

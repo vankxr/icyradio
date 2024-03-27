@@ -18,7 +18,9 @@ public:
     void unmap();
 
     void *getVirt();
+    void *getVirt(const uintptr_t phys);
     uintptr_t getPhys();
+    uintptr_t getPhys(const void *virt);
 
     size_t getSize();
 
@@ -32,5 +34,6 @@ private:
     void* map_ptr;      // Pointer to the start of the mapped region (Virtual address)
     void* ptr;          // Pointer to the start of the requested region (Virtual address)
     bool mapped;        // Whether the region is mapped
+
     std::mutex mutex;
 };

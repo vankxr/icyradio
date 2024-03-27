@@ -26,13 +26,13 @@
 #define AXI_PCIE_REG_BARn_XLATE_LO(n)   (0x20C + (n) * 8)
 
 
-class AXIPCIe: public AXIPeripheral
+class AXIPCIe : public AXIPeripheral
 {
 private:
-    void _setBARAddress(uint8_t bar, uint64_t address);
+    void validateBARConfiguration(uint8_t bar);
 
 public:
-    AXIPCIe(void *base_address);
+    AXIPCIe(void* base_address);
 
     inline uint8_t getNumBARs()
     {
@@ -44,18 +44,27 @@ public:
         return this->bar_64bit[bar];
     }
 
-    bool isBARLocked(uint8_t bar);
-    void lockBAR(uint8_t bar);
-    void lockBAR(uint8_t bar, uint64_t address);
-    void unlockBAR(uint8_t bar);
+    void setBARPCIeAddress(uint8_t bar, uint64_t addr);
+    void setBARPCIeAddress(uint8_t bar, uint64_t addr, uint32_t size);
+    uint64_t getBARPCIeAddress(uint8_t bar);
+    uint64_t getBARPCIeAddress(uint8_t bar, const uint32_t axi_addr);
+    void setBARPCIeSize(uint8_t bar, uint32_t size);
+    uint32_t getBARPCIeSize(uint8_t bar);
+    void setBARAXIAddress(uint8_t bar, uint32_t addr);
+    void setBARAXIAddress(uint8_t bar, uint32_t addr, uint32_t size);
+    uint32_t getBARAXIAddress(uint8_t bar);
+    uint32_t getBARAXIAddress(uint8_t bar, const uint64_t pcie_addr);
+    void setBARAXISize(uint8_t bar, uint32_t size);
+    uint32_t getBARAXISize(uint8_t bar);
 
-    void setBARAddress(uint8_t bar, uint64_t address);
-    uint64_t getBARAddress(uint8_t bar);
+    uint32_t getBARSize(uint8_t bar);
 
 private:
-    std::mutex mutex;
+    std::recursive_mutex mutex;
 
-    bool bar_locked[6];
     bool bar_64bit[6];
+    uint32_t bar_axi_addr[6];
+    uint32_t bar_axi_size[6];
+    uint32_t bar_pcie_size[6];
     uint8_t num_bars;
 };

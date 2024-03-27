@@ -627,26 +627,28 @@ void AD9361::readReg(uint16_t reg, uint8_t *dst, uint8_t count)
         throw std::runtime_error("AD9361: SPI not initialized");
 
     if(reg > 0x3FF)
-        throw std::runtime_error("AD9361: Invalid register address");
+        throw std::invalid_argument("AD9361: Invalid register address");
 
     if(!count)
         return;
 
     if(dst == nullptr)
-        throw std::runtime_error("AD9361: Invalid destination buffer");
+        throw std::invalid_argument("AD9361: Invalid destination buffer");
 
-    if(count > MAX_MBYTE_SPI)
-        throw std::runtime_error("AD9361: Max SPI size exceeded");
+    if(count > 8)
+        throw std::invalid_argument("AD9361: Max SPI size exceeded");
 
-    uint16_t cmd = AD_READ | AD_CNT(count) | AD_ADDR(reg);
+    uint16_t cmd = 0; // Read command
+    cmd |= (count - 1) << 12; // Number of bytes to read
+    cmd |= reg; // Register address
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, true); // This locks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, true); // This locks mutex
 
     this->spi.controller->write(cmd >> 8, false);
     this->spi.controller->write(cmd & 0xFF, true);
     this->spi.controller->read(dst, count);
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, false); // This unlocks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, false); // This unlocks mutex
 }
 uint8_t AD9361::readRegField(uint16_t reg, uint8_t mask, int8_t offset)
 {
@@ -666,26 +668,33 @@ void AD9361::writeReg(uint16_t reg, uint8_t *src, uint8_t count)
         throw std::runtime_error("AD9361: SPI not initialized");
 
     if(reg > 0x3FF)
-        throw std::runtime_error("AD9361: Invalid register address");
+        throw std::invalid_argument("AD9361: Invalid register address");
 
     if(!count)
         return;
 
     if(src == nullptr)
-        throw std::runtime_error("AD9361: Invalid source buffer");
+        throw std::invalid_argument("AD9361: Invalid source buffer");
 
-    if(count > MAX_MBYTE_SPI)
-        throw std::runtime_error("AD9361: Max SPI size exceeded");
+    if(count > 8)
+        throw std::invalid_argument("AD9361: Max SPI size exceeded");
 
-    uint16_t cmd = AD_WRITE | AD_CNT(count) | AD_ADDR(reg);
+    // SoapySDR_logf(SOAPY_SDR_DEBUG, "AD9361: Writing %d bytes to register 0x%03X", count, reg);
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, true); // This locks mutex
+    // for(uint8_t i = 0; i < count; i++)
+    //     SoapySDR_logf(SOAPY_SDR_DEBUG, "AD9361: 0x%02X", src[i] & 0xFF);
+
+    uint16_t cmd = BIT(15); // Write command
+    cmd |= (count - 1) << 12; // Number of bytes to read
+    cmd |= reg; // Register address
+
+    this->spi.controller->selectSlave(this->spi.ss_mask, true); // This locks mutex
 
     this->spi.controller->write(cmd >> 8, false);
     this->spi.controller->write(cmd & 0xFF, false);
     this->spi.controller->write(src, count, true);
 
-    this->spi.controller->slaveSelect(this->spi.ss_mask, false); // This unlocks mutex
+    this->spi.controller->selectSlave(this->spi.ss_mask, false); // This unlocks mutex
 }
 void AD9361::writeRegField(uint16_t reg, uint8_t mask, uint8_t val, int8_t offset)
 {
@@ -703,6 +712,357 @@ void AD9361::writeRegField(uint16_t reg, uint8_t mask, uint8_t val, int8_t offse
     this->writeReg(reg, tmp);
 }
 
+
+AD9361::AD9361(AD9361::SPIConfig spi, AD9361::GPIOConfig reset_gpio, AD9361::GPIOConfig sync_gpio)
+{
+    this->spi = spi;
+    this->reset_gpio = reset_gpio;
+    this->sync_gpio = sync_gpio;
+
+    if(this->spi.controller == nullptr)
+        throw std::runtime_error("AD9361: SPI not initialized");
+
+    for(uint8_t i = 0; i < NUM_AD9361_CLKS; i++)
+    {
+        this->clks[i] = nullptr;
+        this->ref_clk_scale[i] = nullptr;
+    }
+
+    this->pdata = new AD9361::PlatformData;
+    this->gt_info = nullptr;
+
+    this->reset();
+
+    this->writeReg(AD9361_REG_SPI_CONF, 0);
+
+    uint8_t pid = this->readReg(AD9361_REG_PRODUCT_ID);
+
+    if((pid & PRODUCT_ID_MASK) != PRODUCT_ID_9361)
+        throw std::runtime_error("AD9361: Product ID mismatch (" + std::to_string(pid) + " != " + std::to_string(PRODUCT_ID_9361) + ")");
+}
+AD9361::~AD9361()
+{
+    //TODO: Implement graceful shutdown
+
+    this->unregisterClocks();
+
+    delete this->pdata;
+}
+
+void AD9361::init()
+{
+    /* Device selection */
+    this->dev_sel = ID_AD9361;
+
+    /* Reference Clock */
+    this->clk_refin = 40000000UL; // TODO: Auto
+
+    /* Base Configuration */
+    this->pdata->fdd = true;
+    this->pdata->fdd_independent_mode = false;
+    this->pdata->rx2tx2 = true;
+    this->pdata->rx1tx1_mode_use_rx_num = 1;
+    this->pdata->rx1tx1_mode_use_tx_num = 1;
+    this->pdata->tdd_use_dual_synth = false;
+    this->pdata->tdd_skip_vco_cal = false;
+    this->pdata->rx_fastlock_delay_ns = 0;
+    this->pdata->tx_fastlock_delay_ns = 0;
+    this->pdata->trx_fastlock_pinctrl_en[0] = false;
+    this->pdata->trx_fastlock_pinctrl_en[1] = false;
+
+    if(this->dev_sel == ID_AD9363A)
+    {
+        this->pdata->use_ext_rx_lo = false;
+        this->pdata->use_ext_tx_lo = false;
+    }
+    else
+    {
+        this->pdata->use_ext_rx_lo = false; // TODO: Auto
+        this->pdata->use_ext_tx_lo = false; // TODO: Auto
+    }
+
+    this->pdata->dc_offset_update_events = 0x05;
+    this->pdata->dc_offset_attenuation_high = 6;
+    this->pdata->dc_offset_attenuation_low = 5;
+    this->pdata->rf_dc_offset_count_high = 0x28;
+    this->pdata->rf_dc_offset_count_low = 0x32;
+    this->pdata->split_gt = false;
+    this->pdata->trx_synth_max_fref = MAX_SYNTH_FREF;
+    this->pdata->qec_tracking_slow_mode_en = false;
+
+    /* ENSM Control */
+    this->pdata->ensm_pin_pulse_mode = false;
+    this->pdata->ensm_pin_ctrl = false;
+
+    /* LO Control */
+    this->pdata->rx_synth_freq = 98000000UL; // TODO: Auto
+    this->pdata->tx_synth_freq = 100000000UL; // TODO: Auto
+    this->pdata->lo_powerdown_managed_en = true;
+
+    /* Rate & BW Control */
+    this->pdata->rx_clocks[BBPLL_FREQ] = 983040000UL; // TODO: Auto
+    this->pdata->rx_clocks[ADC_FREQ] = 245760000UL; // TODO: Auto
+    this->pdata->rx_clocks[R2_FREQ] = 122880000UL; // TODO: Auto
+    this->pdata->rx_clocks[R1_FREQ] = 61440000UL; // TODO: Auto
+    this->pdata->rx_clocks[CLKRF_FREQ] = 30720000UL; // TODO: Auto
+    this->pdata->rx_clocks[RX_SAMPL_FREQ] = 30720000UL; // TODO: Auto
+
+    this->pdata->tx_clocks[BBPLL_FREQ] = 983040000UL; // TODO: Auto
+    this->pdata->tx_clocks[DAC_FREQ] = 122880000UL; // TODO: Auto
+    this->pdata->tx_clocks[T2_FREQ] = 122880000UL; // TODO: Auto
+    this->pdata->tx_clocks[T1_FREQ] = 61440000UL; // TODO: Auto
+    this->pdata->tx_clocks[CLKTF_FREQ] = 30720000UL; // TODO: Auto
+    this->pdata->tx_clocks[TX_SAMPL_FREQ] = 30720000UL; // TODO: Auto
+
+    this->pdata->rf_rx_bandwidth_Hz = 56000000UL; // TODO: Auto
+    this->pdata->rf_tx_bandwidth_Hz = 56000000UL; // TODO: Auto
+
+    /* RF Port Control */
+    this->pdata->rf_rx_input_sel = 0;
+    this->pdata->rf_tx_output_sel = 0;
+
+    /* TX Attenuation Control */
+    this->pdata->tx_atten = 10000;
+    this->pdata->update_tx_gain_via_alert = false;
+
+    /* Reference Clock Control */
+    if(this->dev_sel == ID_AD9363A)
+    {
+        this->pdata->use_extclk = true;
+    }
+    else
+    {
+        this->pdata->use_extclk = true; // TODO: Auto
+    }
+
+    this->pdata->dcxo_coarse = 0;
+    this->pdata->dcxo_fine = 0;
+    this->pdata->clkout_mode = AD9361::ClkOutMode::DISABLE;
+
+    /* Gain Control */
+    this->pdata->gain_ctrl.rx1_mode = AD9361::RFGainCtrlMode::RF_GAIN_SLOWATTACK_AGC;
+    this->pdata->gain_ctrl.rx2_mode = AD9361::RFGainCtrlMode::RF_GAIN_SLOWATTACK_AGC;
+    this->pdata->gain_ctrl.adc_large_overload_thresh = 58;
+    this->pdata->gain_ctrl.adc_ovr_sample_size = 4;
+    this->pdata->gain_ctrl.adc_small_overload_thresh = 47;
+    this->pdata->gain_ctrl.dec_pow_measuremnt_duration = 8192;
+    this->pdata->gain_ctrl.dig_gain_en = false;
+    this->pdata->gain_ctrl.lmt_overload_high_thresh = 800;
+    this->pdata->gain_ctrl.lmt_overload_low_thresh = 704;
+    this->pdata->gain_ctrl.low_power_thresh = 24;
+    this->pdata->gain_ctrl.max_dig_gain = 15;
+    this->pdata->gain_ctrl.use_rx_fir_out_for_dec_pwr_meas = false;
+
+    /* Gain MGC Control */
+    this->pdata->gain_ctrl.mgc_dec_gain_step = 2;
+    this->pdata->gain_ctrl.mgc_inc_gain_step = 2;
+    this->pdata->gain_ctrl.mgc_rx1_ctrl_inp_en = 0;
+    this->pdata->gain_ctrl.mgc_rx2_ctrl_inp_en = 0;
+    this->pdata->gain_ctrl.mgc_split_table_ctrl_inp_gain_mode = 0;
+
+    /* Gain AGC Control */
+    this->pdata->gain_ctrl.adc_large_overload_exceed_counter = 10;
+    this->pdata->gain_ctrl.adc_large_overload_inc_steps = 2;
+    this->pdata->gain_ctrl.adc_lmt_small_overload_prevent_gain_inc = false;
+    this->pdata->gain_ctrl.adc_small_overload_exceed_counter = 10;
+    this->pdata->gain_ctrl.dig_gain_step_size = 4;
+    this->pdata->gain_ctrl.dig_saturation_exceed_counter = 3;
+    this->pdata->gain_ctrl.gain_update_interval_us = 1000;
+    this->pdata->gain_ctrl.immed_gain_change_if_large_adc_overload = false;
+    this->pdata->gain_ctrl.immed_gain_change_if_large_lmt_overload = false;
+    this->pdata->gain_ctrl.agc_inner_thresh_high = 10;
+    this->pdata->gain_ctrl.agc_inner_thresh_high_dec_steps = 1;
+    this->pdata->gain_ctrl.agc_inner_thresh_low = 12;
+    this->pdata->gain_ctrl.agc_inner_thresh_low_inc_steps = 1;
+    this->pdata->gain_ctrl.lmt_overload_large_exceed_counter = 10;
+    this->pdata->gain_ctrl.lmt_overload_large_inc_steps = 2;
+    this->pdata->gain_ctrl.lmt_overload_small_exceed_counter = 10;
+    this->pdata->gain_ctrl.agc_outer_thresh_high = 5;
+    this->pdata->gain_ctrl.agc_outer_thresh_high_dec_steps = 2;
+    this->pdata->gain_ctrl.agc_outer_thresh_low = 18;
+    this->pdata->gain_ctrl.agc_outer_thresh_low_inc_steps = 2;
+    this->pdata->gain_ctrl.agc_attack_delay_extra_margin_us = 1;
+    this->pdata->gain_ctrl.sync_for_gain_counter_en = false;
+
+    /* Fast AGC */
+    this->pdata->gain_ctrl.f_agc_dec_pow_measuremnt_duration = 64;
+    this->pdata->gain_ctrl.f_agc_state_wait_time_ns = 260;
+    /* Fast AGC - Low Power */
+    this->pdata->gain_ctrl.f_agc_allow_agc_gain_increase = 0;
+    this->pdata->gain_ctrl.f_agc_lp_thresh_increment_time = 5;
+    this->pdata->gain_ctrl.f_agc_lp_thresh_increment_steps = 1;
+    /* Fast AGC - Lock Level (Lock Level is set via slow AGC inner high threshold) */
+    this->pdata->gain_ctrl.f_agc_lock_level_lmt_gain_increase_en = true;
+    this->pdata->gain_ctrl.f_agc_lock_level_gain_increase_upper_limit = 5;
+    /* Fast AGC - Peak Detectors and Final Settling */
+    this->pdata->gain_ctrl.f_agc_lpf_final_settling_steps = 1;
+    this->pdata->gain_ctrl.f_agc_lmt_final_settling_steps = 1;
+    this->pdata->gain_ctrl.f_agc_final_overrange_count = 3;
+    /* Fast AGC - Final Power Test */
+    this->pdata->gain_ctrl.f_agc_gain_increase_after_gain_lock_en = false;
+    /* Fast AGC - Unlocking the Gain */
+    this->pdata->gain_ctrl.f_agc_gain_index_type_after_exit_rx_mode = AD9361::FastAGCTargetGainIndexType::MAX_GAIN;
+    this->pdata->gain_ctrl.f_agc_use_last_lock_level_for_set_gain_en = true;
+    this->pdata->gain_ctrl.f_agc_rst_gla_stronger_sig_thresh_exceeded_en = true;
+    this->pdata->gain_ctrl.f_agc_optimized_gain_offset = 5;
+    this->pdata->gain_ctrl.f_agc_rst_gla_stronger_sig_thresh_above_ll = 10;
+    this->pdata->gain_ctrl.f_agc_rst_gla_engergy_lost_sig_thresh_exceeded_en = true;
+    this->pdata->gain_ctrl.f_agc_rst_gla_engergy_lost_goto_optim_gain_en = true;
+    this->pdata->gain_ctrl.f_agc_rst_gla_engergy_lost_sig_thresh_below_ll = 10;
+    this->pdata->gain_ctrl.f_agc_energy_lost_stronger_sig_gain_lock_exit_cnt = 8;
+    this->pdata->gain_ctrl.f_agc_rst_gla_large_adc_overload_en = true;
+    this->pdata->gain_ctrl.f_agc_rst_gla_large_lmt_overload_en = true;
+    this->pdata->gain_ctrl.f_agc_rst_gla_en_agc_pulled_high_en = false;
+    this->pdata->gain_ctrl.f_agc_rst_gla_if_en_agc_pulled_high_mode = AD9361::FastAGCTargetGainIndexType::MAX_GAIN;
+    this->pdata->gain_ctrl.f_agc_power_measurement_duration_in_state5 = 64;
+    this->pdata->gain_ctrl.f_agc_large_overload_inc_steps = 2;
+
+    /* RSSI Control */
+    this->pdata->rssi_ctrl.rssi_delay = 1;
+    this->pdata->rssi_ctrl.rssi_duration = 1000;
+    this->pdata->rssi_ctrl.restart_mode = AD9361::RSSIRestartMode::GAIN_CHANGE_OCCURS;
+    this->pdata->rssi_ctrl.rssi_unit_is_rx_samples = 0;
+    this->pdata->rssi_ctrl.rssi_wait = 1;
+
+    /* Aux ADC Control */
+    this->pdata->auxadc_ctrl.auxadc_decimation = 256;
+    this->pdata->auxadc_ctrl.auxadc_clock_rate = 40000000UL;
+
+    /* AuxDAC Control */
+    this->pdata->auxdac_ctrl.auxdac_manual_mode_en = true;
+    this->pdata->auxdac_ctrl.dac1_default_value = 0;
+    this->pdata->auxdac_ctrl.dac1_in_rx_en = false;
+    this->pdata->auxdac_ctrl.dac1_in_tx_en = false;
+    this->pdata->auxdac_ctrl.dac1_in_alert_en = false;
+    this->pdata->auxdac_ctrl.dac1_rx_delay_us = 0;
+    this->pdata->auxdac_ctrl.dac1_tx_delay_us = 0;
+    this->pdata->auxdac_ctrl.dac2_default_value = 0;
+    this->pdata->auxdac_ctrl.dac2_in_rx_en = false;
+    this->pdata->auxdac_ctrl.dac2_in_tx_en = false;
+    this->pdata->auxdac_ctrl.dac2_in_alert_en = false;
+    this->pdata->auxdac_ctrl.dac2_rx_delay_us = 0;
+    this->pdata->auxdac_ctrl.dac2_tx_delay_us = 0;
+
+    /* Temperature Sensor Control */
+    this->pdata->auxadc_ctrl.temp_sensor_decimation = 256;
+    this->pdata->auxadc_ctrl.temp_time_inteval_ms = 1000;
+    this->pdata->auxadc_ctrl.offset = -38;
+    this->pdata->auxadc_ctrl.periodic_temp_measuremnt = true;
+
+    /* Control Out Setup */
+    this->pdata->ctrl_outs_ctrl.en_mask = 0xFF;
+    this->pdata->ctrl_outs_ctrl.index = 0;
+
+    /* External LNA Control */
+    this->pdata->elna_ctrl.settling_delay_ns = 0;
+    this->pdata->elna_ctrl.gain_mdB = 0;
+    this->pdata->elna_ctrl.bypass_loss_mdB = 0;
+    this->pdata->elna_ctrl.elna_1_control_en = false;
+    this->pdata->elna_ctrl.elna_2_control_en = false;
+    this->pdata->elna_ctrl.elna_in_gaintable_all_index_en = false;
+
+    /* Digital Interface Control */
+    this->pdata->dig_interface_tune_skipmode = 2; // Set to 0 and let calibration run
+    this->pdata->dig_interface_tune_fir_disable = 1;
+    this->pdata->port_ctrl.pp_conf[0] = 0;
+    this->pdata->port_ctrl.pp_conf[0] |= BIT(7); // pp_tx_swap_enable
+    this->pdata->port_ctrl.pp_conf[0] |= BIT(6); // pp_rx_swap_enable
+    // this->pdata->port_ctrl.pp_conf[0] |= BIT(5); // tx_channel_swap_enable
+    // this->pdata->port_ctrl.pp_conf[0] |= BIT(4); // rx_channel_swap_enable
+    this->pdata->port_ctrl.pp_conf[0] |= BIT(3); // rx_frame_pulse_mode_enable
+    // this->pdata->port_ctrl.pp_conf[0] |= BIT(2); // two_t_two_r_timing_enable
+    // this->pdata->port_ctrl.pp_conf[0] |= BIT(1); // invert_data_bus_enable
+    // this->pdata->port_ctrl.pp_conf[0] |= BIT(0); // invert_data_clk_enable
+    this->pdata->port_ctrl.pp_conf[1] = 0;
+    // this->pdata->port_ctrl.pp_conf[1] |= BIT(7); // fdd_alt_word_order_enable
+    // this->pdata->port_ctrl.pp_conf[1] |= BIT(2); // invert_rx_frame_enable
+    // this->pdata->port_ctrl.pp_conf[1] |= 0 & 0x03; // delay_rx_data
+    this->pdata->port_ctrl.pp_conf[2] = 0;
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(7); // fdd_rx_rate_2tx_enable
+    this->pdata->port_ctrl.pp_conf[2] |= BIT(6); // swap_ports_enable
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(5); // single_data_rate_enable
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(4); // lvds_mode_enable
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(3); // half_duplex_mode_enable
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(2); // single_port_mode_enable
+    this->pdata->port_ctrl.pp_conf[2] |= BIT(1); // full_port_enable
+    // this->pdata->port_ctrl.pp_conf[2] |= BIT(0); // full_duplex_swap_bits_enable
+    this->pdata->port_ctrl.rx_clk_data_delay = DATA_CLK_DELAY(9) | RX_DATA_DELAY(0);
+    this->pdata->port_ctrl.tx_clk_data_delay = FB_CLK_DELAY(10) | TX_DATA_DELAY(0);
+    this->pdata->port_ctrl.lvds_bias_ctrl = ((150 - 75) / 75) & 0x7;
+    this->pdata->port_ctrl.digital_io_ctrl = 0;
+    this->pdata->port_ctrl.lvds_invert[0] = 0x00;
+    this->pdata->port_ctrl.lvds_invert[1] = 0x00;
+    // this->pdata->port_ctrl.lvds_bias_ctrl |= BIT(5); // lvds_rx_onchip_termination_enable
+    this->pdata->rx1rx2_phase_inversion_en = false;
+
+    /* GPO Control */
+    this->pdata->gpo_ctrl.gpo_manual_mode_en = true;
+    this->pdata->gpo_ctrl.gpo_manual_mode_enable_mask = 0x00;
+    this->pdata->gpo_ctrl.gpo0_inactive_state_high_en = false;
+    this->pdata->gpo_ctrl.gpo1_inactive_state_high_en = false;
+    this->pdata->gpo_ctrl.gpo2_inactive_state_high_en = false;
+    this->pdata->gpo_ctrl.gpo3_inactive_state_high_en = false;
+
+    this->pdata->gpo_ctrl.gpo0_slave_rx_en = false;
+    this->pdata->gpo_ctrl.gpo0_slave_tx_en = false;
+    this->pdata->gpo_ctrl.gpo1_slave_rx_en = false;
+    this->pdata->gpo_ctrl.gpo1_slave_tx_en = false;
+    this->pdata->gpo_ctrl.gpo2_slave_rx_en = false;
+    this->pdata->gpo_ctrl.gpo2_slave_tx_en = false;
+    this->pdata->gpo_ctrl.gpo3_slave_rx_en = false;
+    this->pdata->gpo_ctrl.gpo3_slave_tx_en = false;
+
+    this->pdata->gpo_ctrl.gpo0_rx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo0_tx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo1_rx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo1_tx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo2_rx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo2_tx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo3_rx_delay_us = 0;
+    this->pdata->gpo_ctrl.gpo3_tx_delay_us = 0;
+
+    /* Tx Monitor Control */
+    this->pdata->txmon_ctrl.low_high_gain_threshold_mdB = 37000;
+    this->pdata->txmon_ctrl.low_gain_dB = 0;
+    this->pdata->txmon_ctrl.high_gain_dB = 24;
+    this->pdata->txmon_ctrl.tx_mon_track_en = false;
+    this->pdata->txmon_ctrl.one_shot_mode_en = false;
+    this->pdata->txmon_ctrl.tx_mon_delay = 511;
+    this->pdata->txmon_ctrl.tx_mon_duration = 8192;
+    this->pdata->txmon_ctrl.tx1_mon_front_end_gain = 2;
+    this->pdata->txmon_ctrl.tx2_mon_front_end_gain = 2;
+    this->pdata->txmon_ctrl.tx1_mon_lo_cm = 48;
+    this->pdata->txmon_ctrl.tx2_mon_lo_cm = 48;
+
+    if(this->dev_sel == ID_AD9364)
+    {
+        this->pdata->rx2tx2 = false;
+        this->pdata->rx1tx1_mode_use_rx_num = 1;
+        this->pdata->rx1tx1_mode_use_tx_num = 1;
+    }
+
+    this->rx_eq_2tx = false;
+
+    this->current_table = -1;
+    this->bypass_tx_fir = true;
+    this->bypass_rx_fir = true;
+    this->rate_governor = 1;
+    this->rfdc_track_en = true;
+    this->bbdc_track_en = true;
+    this->quad_track_en = true;
+
+    this->gt_info = adi_gt_info;
+
+    // this->rfpll_ext_recalc_rate = init_param->ad9361_rfpll_ext_recalc_rate;
+    // this->ad9361_rfpll_ext_round_rate = init_param->ad9361_rfpll_ext_round_rate;
+    // this->ad9361_rfpll_ext_set_rate = init_param->ad9361_rfpll_ext_set_rate;
+
+    this->registerClocks();
+
+    this->clear();
+    this->setup();
+}
+
 void AD9361::reset()
 {
     if(this->reset_gpio.controller == nullptr)
@@ -718,13 +1078,46 @@ void AD9361::reset()
      * Please specify a RESET GPIO.
      */
 
-    // this->writeReg(REG_SPI_CONF, SOFT_RESET | _SOFT_RESET);
-    // this->writeReg(REG_SPI_CONF, 0x0);
+    // this->writeReg(AD9361_REG_SPI_CONF, SOFT_RESET | _SOFT_RESET);
+    // this->writeReg(AD9361_REG_SPI_CONF, 0x0);
     // DBGPRINTLN_CTX("Reset by SPI, this may cause unpredicted behavior!");
 
     // return -ENODEV;
 }
+void AD9361::clear()
+{
+    this->current_table = -1;
+    this->bypass_tx_fir = true;
+    this->bypass_rx_fir = true;
+    this->rate_governor = 1;
+    this->rfdc_track_en = true;
+    this->bbdc_track_en = true;
+    this->quad_track_en = true;
+    this->prev_ensm_state = 0;
+    this->curr_ensm_state = 0;
+    this->auto_cal_en = false;
+    this->manual_tx_quad_cal_en = false;
+    this->last_tx_quad_cal_freq = 0;
+    this->flags = 0;
+    this->current_rx_bw_Hz = 0;
+    this->current_tx_bw_Hz = 0;
+    this->rxbbf_div = 0;
+    this->tx_fir_int = 0;
+    this->tx_fir_ntaps = 0;
+    this->rx_fir_dec = 0;
+    this->rx_fir_ntaps = 0;
+    this->ensm_pin_ctl_en = false;
+    this->txmon_tdd_en = 0;
+    this->current_tx_lo_freq = 0;
+    this->current_rx_lo_freq = 0;
+    this->current_tx_use_tdd_table = false;
+    this->current_rx_use_tdd_table = false;
+    this->cached_synth_pd[0] = 0;
+    this->cached_synth_pd[1] = 0;
 
+    this->fastlock.current_profile[0] = 0;
+    this->fastlock.current_profile[1] = 0;
+}
 void AD9361::setup()
 {
     this->pdata->rf_rx_bandwidth_Hz = this->clampRFBandwidth(this->pdata->rf_rx_bandwidth_Hz);
@@ -747,25 +1140,26 @@ void AD9361::setup()
     if(this->pdata->port_ctrl.pp_conf[2] & FDD_RX_RATE_2TX_RATE)
         this->rx_eq_2tx = true;
 
-    this->writeReg(REG_CTRL, CTRL_ENABLE);
-    this->writeReg(REG_BANDGAP_CONFIG0, MASTER_BIAS_TRIM(0x0E)); // Enable Master Bias
-    this->writeReg(REG_BANDGAP_CONFIG1, BANDGAP_TEMP_TRIM(0x0E)); // Set Bandgap Trim
+    this->writeReg(AD9361_REG_CTRL, CTRL_ENABLE);
+    this->writeReg(AD9361_REG_BANDGAP_CONFIG0, MASTER_BIAS_TRIM(0x0E)); // Enable Master Bias
+    this->writeReg(AD9361_REG_BANDGAP_CONFIG1, BANDGAP_TEMP_TRIM(0x0E)); // Set Bandgap Trim
 
-    this->setDCXOTune(this->pdata->dcxo_coarse, this->pdata->dcxo_fine);
+    if(!this->pdata->use_extclk)
+        this->setDCXOTune(this->pdata->dcxo_coarse, this->pdata->dcxo_fine);
 
-    uint32_t ref_freq = this->maxReferenceFreq(this->clk_refin->rate, MAX_BBPLL_FREF);
+    uint32_t ref_freq = this->maxReferenceFreq(this->clk_refin, MAX_BBPLL_FREF);
 
-    this->writeRegField(REG_REF_DIVIDE_CONFIG_1, RX_REF_RESET_BAR, 1);
-    this->writeRegField(REG_REF_DIVIDE_CONFIG_2, TX_REF_RESET_BAR, 1);
-    this->writeRegField(REG_REF_DIVIDE_CONFIG_2, TX_REF_DOUBLER_FB_DELAY(~0), 3); // FB DELAY
-    this->writeRegField(REG_REF_DIVIDE_CONFIG_2, RX_REF_DOUBLER_FB_DELAY(~0), 3); // FB DELAY
+    this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_1, RX_REF_RESET_BAR, 1);
+    this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, TX_REF_RESET_BAR, 1);
+    this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, TX_REF_DOUBLER_FB_DELAY(~0), 3); // FB DELAY
+    this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, RX_REF_DOUBLER_FB_DELAY(~0), 3); // FB DELAY
 
-    this->writeReg(REG_CLOCK_ENABLE, DIGITAL_POWER_UP | CLOCK_ENABLE_DFLT | BBPLL_ENABLE | (this->pdata->use_extclk ? XO_BYPASS : 0)); // Enable Clocks
+    this->writeReg(AD9361_REG_CLOCK_ENABLE, DIGITAL_POWER_UP | CLOCK_ENABLE_DFLT | BBPLL_ENABLE | (this->pdata->use_extclk ? XO_BYPASS : 0)); // Enable Clocks
 
     this->setClockRate(this->ref_clk_scale[BB_REFCLK], ref_freq);
 
-    this->writeReg(REG_FRACT_BB_FREQ_WORD_2, 0x12);
-    this->writeReg(REG_FRACT_BB_FREQ_WORD_3, 0x34);
+    this->writeReg(AD9361_REG_FRACT_BB_FREQ_WORD_2, 0x12);
+    this->writeReg(AD9361_REG_FRACT_BB_FREQ_WORD_3, 0x34);
 
     this->setClockChain(this->pdata->rx_clocks, this->pdata->tx_clocks);
 
@@ -788,7 +1182,7 @@ void AD9361::setup()
 
     this->setupAuxADC(&this->pdata->auxadc_ctrl);
     this->setupControlOutBus(&this->pdata->ctrl_outs_ctrl);
-    this->writeReg(REG_REFERENCE_CLOCK_CYCLES, REFERENCE_CLOCK_CYCLES_PER_US((this->clk_refin->rate / 1000000UL) - 1));
+    this->writeReg(AD9361_REG_REFERENCE_CLOCK_CYCLES, REFERENCE_CLOCK_CYCLES_PER_US((this->clk_refin / 1000000UL) - 1));
     this->setupExternalLNA(&this->pdata->elna_ctrl);
 
     /*
@@ -797,7 +1191,7 @@ void AD9361::setup()
      */
     this->pdata->trx_synth_max_fref = CLAMP_T(uint32_t, this->pdata->trx_synth_max_fref, MIN_SYNTH_FREF, MAX_SYNTH_FREF);
 
-    ref_freq = this->maxReferenceFreq(this->clk_refin->rate, this->pdata->trx_synth_max_fref);
+    ref_freq = this->maxReferenceFreq(this->clk_refin, this->pdata->trx_synth_max_fref);
 
     this->setClockRate(this->ref_clk_scale[RX_REFCLK], ref_freq);
     this->setClockRate(this->ref_clk_scale[TX_REFCLK], ref_freq);
@@ -846,7 +1240,7 @@ void AD9361::setup()
 
     this->setENSMMode(this->pdata->fdd, this->pdata->ensm_pin_ctrl);
 
-    this->writeRegField(REG_TX_ATTEN_OFFSET, MASK_CLR_ATTEN_UPDATE, 0);
+    this->writeRegField(AD9361_REG_TX_ATTEN_OFFSET, MASK_CLR_ATTEN_UPDATE, 0);
 
     this->setTXAttenuation(this->pdata->tx_atten, this->pdata->rx2tx2 ? true : this->pdata->rx1tx1_mode_use_tx_num == 1, this->pdata->rx2tx2 ? true : this->pdata->rx1tx1_mode_use_tx_num == 2, true);
 
@@ -858,12 +1252,151 @@ void AD9361::setup()
     this->controlClockOutput(this->pdata->clkout_mode);
     this->setupTXMonitor(&this->pdata->txmon_ctrl);
 
-    this->curr_ensm_state = this->readRegField(REG_STATE, ENSM_STATE(~0));
+    this->curr_ensm_state = this->readRegField(AD9361_REG_STATE, ENSM_STATE(~0));
 
     this->setENSMState(this->pdata->fdd ? ENSM_STATE_FDD : ENSM_STATE_RX, this->pdata->ensm_pin_ctrl);
 
     this->auto_cal_en = true;
     this->cal_threshold_freq = 100000000ULL; // 100 MHz
+}
+
+uint8_t AD9361::getChipRevision()
+{
+    return this->readReg(AD9361_REG_PRODUCT_ID) & REV_MASK;
+}
+
+void AD9361::setBISTConfig(AD9361::BISTConfig cfg)
+{
+    if(!cfg.enable)
+    {
+        this->writeReg(AD9361_REG_BIST_CONFIG, 0x00);
+        this->writeReg(AD9361_REG_BIST_AND_DATA_PORT_TEST_CONFIG, 0x00);
+
+        return;
+    }
+
+    uint8_t bist_cfg0 = BIST_ENABLE;
+    uint8_t bist_cfg2 = cfg.mask & (BIST_MASK_CHANNEL_1_I_DATA | BIST_MASK_CHANNEL_1_Q_DATA | BIST_MASK_CHANNEL_2_I_DATA | BIST_MASK_CHANNEL_2_Q_DATA);
+
+    switch(cfg.injection_point)
+    {
+        case AD9361::BISTConfig::InjectionPoint::INJ_TX:
+            bist_cfg0 |= BIST_CTRL_POINT(0);
+        break;
+        case AD9361::BISTConfig::InjectionPoint::INJ_RX:
+            bist_cfg0 |= BIST_CTRL_POINT(2);
+        break;
+        default:
+            throw std::invalid_argument("AD9361: Invalid BIST injection point");
+        break;
+    }
+
+    switch(cfg.mode)
+    {
+        case AD9361::BISTConfig::Mode::PRBS:
+            // All done
+        break;
+        case AD9361::BISTConfig::Mode::TONE:
+            bist_cfg0 |= TONE_PRBS;
+
+            switch(cfg.tone_freq)
+            {
+                case AD9361::BISTConfig::ToneFrequency::CLK_DIV_32:
+                    bist_cfg0 |= TONE_FREQ(0);
+                break;
+                case AD9361::BISTConfig::ToneFrequency::CLK_DIV_16:
+                    bist_cfg0 |= TONE_FREQ(1);
+                break;
+                case AD9361::BISTConfig::ToneFrequency::CLK_DIV_10p67:
+                    bist_cfg0 |= TONE_FREQ(2);
+                break;
+                case AD9361::BISTConfig::ToneFrequency::CLK_DIV_8:
+                    bist_cfg0 |= TONE_FREQ(3);
+                break;
+                default:
+                    throw std::invalid_argument("AD9361: Invalid BIST tone frequency");
+                break;
+            }
+
+            switch(cfg.tone_level)
+            {
+                case AD9361::BISTConfig::ToneLevel::FS:
+                    bist_cfg0 |= TONE_LEVEL(0);
+                break;
+                case AD9361::BISTConfig::ToneLevel::FS_DIV_2:
+                    bist_cfg0 |= TONE_LEVEL(1);
+                break;
+                case AD9361::BISTConfig::ToneLevel::FS_DIV_4:
+                    bist_cfg0 |= TONE_LEVEL(2);
+                break;
+                case AD9361::BISTConfig::ToneLevel::FS_DIV_8:
+                    bist_cfg0 |= TONE_LEVEL(3);
+                break;
+                default:
+                    throw std::invalid_argument("AD9361: Invalid BIST tone level");
+                break;
+            }
+        break;
+        default:
+            throw std::invalid_argument("AD9361: Invalid BIST mode");
+        break;
+    }
+
+    this->writeReg(AD9361_REG_BIST_CONFIG, bist_cfg0);
+    this->writeReg(AD9361_REG_BIST_AND_DATA_PORT_TEST_CONFIG, bist_cfg2);
+}
+AD9361::BISTConfig AD9361::getBISTConfig()
+{
+    uint8_t bist_cfg0 = this->readReg(AD9361_REG_BIST_CONFIG);
+    uint8_t bist_cfg2 = this->readReg(AD9361_REG_BIST_AND_DATA_PORT_TEST_CONFIG);
+
+    return {
+        .enable = !!(bist_cfg0 & BIST_ENABLE),
+        .mode = (bist_cfg0 & TONE_PRBS) ? AD9361::BISTConfig::Mode::TONE : AD9361::BISTConfig::Mode::PRBS,
+        .injection_point = (AD9361::BISTConfig::InjectionPoint)((bist_cfg0 & BIST_CTRL_POINT(~0)) >> 2),
+        .mask = (AD9361::BISTConfig::Mask)(bist_cfg2 & (BIST_MASK_CHANNEL_1_I_DATA | BIST_MASK_CHANNEL_1_Q_DATA | BIST_MASK_CHANNEL_2_I_DATA | BIST_MASK_CHANNEL_2_Q_DATA)),
+        .tone_freq = (AD9361::BISTConfig::ToneFrequency)((bist_cfg0 & TONE_FREQ(~0)) >> 6),
+        .tone_level = (AD9361::BISTConfig::ToneLevel)((bist_cfg0 & TONE_LEVEL(~0)) >> 4),
+    };
+}
+
+void AD9361::setTXInterfaceDelay(AD9361::InterfaceDelay delay)
+{
+    if(delay.data > 15)
+        throw std::invalid_argument("AD9361: TX data delay must be between 0 and 15");
+
+    if(delay.clk > 15)
+        throw std::invalid_argument("AD9361: TX clock delay must be between 0 and 15");
+
+    this->writeReg(AD9361_REG_TX_CLOCK_DATA_DELAY, TX_DATA_DELAY(delay.data) | FB_CLK_DELAY(delay.clk));
+}
+AD9361::InterfaceDelay AD9361::getTXInterfaceDelay()
+{
+    uint8_t reg = this->readReg(AD9361_REG_TX_CLOCK_DATA_DELAY);
+
+    return {
+        .data = (uint8_t)((reg >> 0) & 0x0F),
+        .clk = (uint8_t)((reg >> 4) & 0x0F),
+    };
+}
+void AD9361::setRXInterfaceDelay(AD9361::InterfaceDelay delay)
+{
+    if(delay.data > 15)
+        throw std::invalid_argument("AD9361: RX data delay must be between 0 and 15");
+
+    if(delay.clk > 15)
+        throw std::invalid_argument("AD9361: RX clock delay must be between 0 and 15");
+
+    this->writeReg(AD9361_REG_RX_CLOCK_DATA_DELAY, RX_DATA_DELAY(delay.data) | DATA_CLK_DELAY(delay.clk));
+}
+AD9361::InterfaceDelay AD9361::getRXInterfaceDelay()
+{
+    uint8_t reg = this->readReg(AD9361_REG_RX_CLOCK_DATA_DELAY);
+
+    return {
+        .data = (uint8_t)((reg >> 0) & 0x0F),
+        .clk = (uint8_t)((reg >> 4) & 0x0F),
+    };
 }
 
 void AD9361::setDCXOTune(uint8_t coarse, uint16_t fine)
@@ -877,9 +1410,9 @@ void AD9361::setDCXOTune(uint8_t coarse, uint16_t fine)
     if(fine >= 8192)
         throw std::invalid_argument("AD9361: DCXO fine tune value must be between 0 and 8191");
 
-    this->writeReg(REG_DCXO_COARSE_TUNE, DCXO_TUNE_COARSE(coarse));
-    this->writeReg(REG_DCXO_FINE_TUNE_LOW, DCXO_TUNE_FINE_LOW(fine));
-    this->writeReg(REG_DCXO_FINE_TUNE_HIGH, DCXO_TUNE_FINE_HIGH(fine));
+    this->writeReg(AD9361_REG_DCXO_COARSE_TUNE, DCXO_TUNE_COARSE(coarse));
+    this->writeReg(AD9361_REG_DCXO_FINE_TUNE_LOW, DCXO_TUNE_FINE_LOW(fine));
+    this->writeReg(AD9361_REG_DCXO_FINE_TUNE_HIGH, DCXO_TUNE_FINE_HIGH(fine));
 }
 
 void AD9361::setupGPO(AD9361::GPOControl *ctrl)
@@ -887,37 +1420,37 @@ void AD9361::setupGPO(AD9361::GPOControl *ctrl)
     if(ctrl == nullptr)
         throw std::invalid_argument("AD9361: GPO control structure is null");
 
-    std::lock_guard<std::mutex> lock(this->gpo_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->gpo_mutex);
 
-    this->writeReg(REG_AUTO_GPO, GPO_ENABLE_AUTO_RX(ctrl->gpo0_slave_rx_en | (ctrl->gpo1_slave_rx_en << 1) | (ctrl->gpo2_slave_rx_en << 2) | (ctrl->gpo3_slave_rx_en << 3)) | GPO_ENABLE_AUTO_TX(ctrl->gpo0_slave_tx_en | (ctrl->gpo1_slave_tx_en << 1) | (ctrl->gpo2_slave_tx_en << 2) | (ctrl->gpo3_slave_tx_en << 3)));
+    this->writeReg(AD9361_REG_AUTO_GPO, GPO_ENABLE_AUTO_RX(ctrl->gpo0_slave_rx_en | (ctrl->gpo1_slave_rx_en << 1) | (ctrl->gpo2_slave_rx_en << 2) | (ctrl->gpo3_slave_rx_en << 3)) | GPO_ENABLE_AUTO_TX(ctrl->gpo0_slave_tx_en | (ctrl->gpo1_slave_tx_en << 1) | (ctrl->gpo2_slave_tx_en << 2) | (ctrl->gpo3_slave_tx_en << 3)));
 
-    this->writeReg(REG_GPO_FORCE_AND_INIT, GPO_MANUAL_CTRL(ctrl->gpo_manual_mode_enable_mask) | GPO_INIT_STATE(ctrl->gpo0_inactive_state_high_en | (ctrl->gpo1_inactive_state_high_en << 1) | (ctrl->gpo2_inactive_state_high_en << 2) | (ctrl->gpo3_inactive_state_high_en << 3)));
+    this->writeReg(AD9361_REG_GPO_FORCE_AND_INIT, GPO_MANUAL_CTRL(ctrl->gpo_manual_mode_enable_mask) | GPO_INIT_STATE(ctrl->gpo0_inactive_state_high_en | (ctrl->gpo1_inactive_state_high_en << 1) | (ctrl->gpo2_inactive_state_high_en << 2) | (ctrl->gpo3_inactive_state_high_en << 3)));
 
-    this->writeReg(REG_GPO0_RX_DELAY, ctrl->gpo0_rx_delay_us);
-    this->writeReg(REG_GPO0_TX_DELAY, ctrl->gpo0_tx_delay_us);
+    this->writeReg(AD9361_REG_GPO0_RX_DELAY, ctrl->gpo0_rx_delay_us);
+    this->writeReg(AD9361_REG_GPO0_TX_DELAY, ctrl->gpo0_tx_delay_us);
 
-    this->writeReg(REG_GPO1_RX_DELAY, ctrl->gpo1_rx_delay_us);
-    this->writeReg(REG_GPO1_TX_DELAY, ctrl->gpo1_tx_delay_us);
+    this->writeReg(AD9361_REG_GPO1_RX_DELAY, ctrl->gpo1_rx_delay_us);
+    this->writeReg(AD9361_REG_GPO1_TX_DELAY, ctrl->gpo1_tx_delay_us);
 
-    this->writeReg(REG_GPO2_RX_DELAY, ctrl->gpo2_rx_delay_us);
-    this->writeReg(REG_GPO2_TX_DELAY, ctrl->gpo2_tx_delay_us);
+    this->writeReg(AD9361_REG_GPO2_RX_DELAY, ctrl->gpo2_rx_delay_us);
+    this->writeReg(AD9361_REG_GPO2_TX_DELAY, ctrl->gpo2_tx_delay_us);
 
-    this->writeReg(REG_GPO3_RX_DELAY, ctrl->gpo3_rx_delay_us);
-    this->writeReg(REG_GPO3_TX_DELAY, ctrl->gpo3_tx_delay_us);
+    this->writeReg(AD9361_REG_GPO3_RX_DELAY, ctrl->gpo3_rx_delay_us);
+    this->writeReg(AD9361_REG_GPO3_TX_DELAY, ctrl->gpo3_tx_delay_us);
 
-    this->writeRegField(REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT, ctrl->gpo_manual_mode_en);
+    this->writeRegField(AD9361_REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT, ctrl->gpo_manual_mode_en);
 }
 void AD9361::setGPOValue(uint8_t gpo, AD9361::GPOValue value)
 {
     if(gpo > 3)
         throw std::invalid_argument("AD9361: GPO number must be between 0 and 3");
 
-    std::lock_guard<std::mutex> lock(this->gpo_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->gpo_mutex);
 
-    if(!this->readRegField(REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT))
+    if(!this->readRegField(AD9361_REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT))
         throw std::runtime_error("AD9361: GPOs are enslaved to the ENSM");
 
-    this->writeRegField(REG_GPO_FORCE_AND_INIT, BIT(4 + gpo), value == AD9361::GPOValue::HIGH ? 1 : 0);
+    this->writeRegField(AD9361_REG_GPO_FORCE_AND_INIT, BIT(4 + gpo), value == AD9361::GPOValue::HIGH ? 1 : 0);
 
     if(value == AD9361::GPOValue::HIGH)
         this->pdata->gpo_ctrl.gpo_manual_mode_enable_mask |= BIT(gpo);
@@ -929,12 +1462,12 @@ AD9361::GPOValue AD9361::getGPOValue(uint8_t gpo)
     if(gpo > 3)
         throw std::invalid_argument("AD9361: GPO number must be between 0 and 3");
 
-    std::lock_guard<std::mutex> lock(this->gpo_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->gpo_mutex);
 
-    if(!this->readRegField(REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT))
+    if(!this->readRegField(AD9361_REG_EXTERNAL_LNA_CTRL, GPO_MANUAL_SELECT))
         throw std::runtime_error("AD9361: GPOs are enslaved to the ENSM");
 
-    return this->readRegField(REG_GPO_FORCE_AND_INIT, BIT(4 + gpo)) ? AD9361::GPOValue::HIGH : AD9361::GPOValue::LOW;
+    return this->readRegField(AD9361_REG_GPO_FORCE_AND_INIT, BIT(4 + gpo)) ? AD9361::GPOValue::HIGH : AD9361::GPOValue::LOW;
 }
 
 void AD9361::setupAuxDAC(AD9361::AUXDACControl *ctrl)
@@ -942,18 +1475,18 @@ void AD9361::setupAuxDAC(AD9361::AUXDACControl *ctrl)
     if(ctrl == nullptr)
         throw std::invalid_argument("AD9361: AuxDAC control structure is null");
 
-    std::lock_guard<std::mutex> lock(this->auxdac_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->auxdac_mutex);
 
     this->setAuxDACValue(1, ctrl->dac1_default_value);
     this->setAuxDACValue(2, ctrl->dac2_default_value);
 
-    this->writeRegField(REG_AUXDAC_ENABLE_CTRL, AUXDAC_AUTO_TX_BAR(~0) | AUXDAC_AUTO_RX_BAR(~0) | AUXDAC_INIT_BAR(~0), ~(AUXDAC_AUTO_TX_BAR(ctrl->dac2_in_tx_en << 1 | ctrl->dac1_in_tx_en) | AUXDAC_AUTO_RX_BAR(ctrl->dac2_in_rx_en << 1 | ctrl->dac1_in_rx_en) | AUXDAC_INIT_BAR(ctrl->dac2_in_alert_en << 1 | ctrl->dac1_in_alert_en))); // Auto Control
+    this->writeRegField(AD9361_REG_AUXDAC_ENABLE_CTRL, AUXDAC_AUTO_TX_BAR(~0) | AUXDAC_AUTO_RX_BAR(~0) | AUXDAC_INIT_BAR(~0), ~(AUXDAC_AUTO_TX_BAR(ctrl->dac2_in_tx_en << 1 | ctrl->dac1_in_tx_en) | AUXDAC_AUTO_RX_BAR(ctrl->dac2_in_rx_en << 1 | ctrl->dac1_in_rx_en) | AUXDAC_INIT_BAR(ctrl->dac2_in_alert_en << 1 | ctrl->dac1_in_alert_en))); // Auto Control
 
-    this->writeRegField(REG_EXTERNAL_LNA_CTRL, AUXDAC_MANUAL_SELECT, ctrl->auxdac_manual_mode_en);
-    this->writeReg(REG_AUXDAC1_RX_DELAY, ctrl->dac1_rx_delay_us);
-    this->writeReg(REG_AUXDAC1_TX_DELAY, ctrl->dac1_tx_delay_us);
-    this->writeReg(REG_AUXDAC2_RX_DELAY, ctrl->dac2_rx_delay_us);
-    this->writeReg(REG_AUXDAC2_TX_DELAY, ctrl->dac2_tx_delay_us);
+    this->writeRegField(AD9361_REG_EXTERNAL_LNA_CTRL, AUXDAC_MANUAL_SELECT, ctrl->auxdac_manual_mode_en);
+    this->writeReg(AD9361_REG_AUXDAC1_RX_DELAY, ctrl->dac1_rx_delay_us);
+    this->writeReg(AD9361_REG_AUXDAC1_TX_DELAY, ctrl->dac1_tx_delay_us);
+    this->writeReg(AD9361_REG_AUXDAC2_RX_DELAY, ctrl->dac2_rx_delay_us);
+    this->writeReg(AD9361_REG_AUXDAC2_TX_DELAY, ctrl->dac2_tx_delay_us);
 }
 void AD9361::setAuxDACValue(uint8_t dac, double value)
 {
@@ -963,10 +1496,10 @@ void AD9361::setAuxDACValue(uint8_t dac, double value)
     if(value < 0)
         throw std::invalid_argument("AD9361: AuxDAC value must be positive");
 
-    std::lock_guard<std::mutex> lock(this->auxdac_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->auxdac_mutex);
 
     // Disable DAC if val == 0, Ignored in ENSM Auto Mode
-    this->writeRegField(REG_AUXDAC_ENABLE_CTRL, AUXDAC_MANUAL_BAR(dac), (value > 0) ? 0 : 1);
+    this->writeRegField(AD9361_REG_AUXDAC_ENABLE_CTRL, AUXDAC_MANUAL_BAR(dac), (value > 0) ? 0 : 1);
 
     if(value < 306)
         value = 306;
@@ -990,14 +1523,14 @@ void AD9361::setAuxDACValue(uint8_t dac, double value)
     switch(dac)
     {
         case 1:
-            this->writeReg(REG_AUXDAC_1_WORD, val >> 2);
-            this->writeReg(REG_AUXDAC_1_CONFIG, AUXDAC_1_WORD_LSB(val) | ref);
+            this->writeReg(AD9361_REG_AUXDAC_1_WORD, val >> 2);
+            this->writeReg(AD9361_REG_AUXDAC_1_CONFIG, AUXDAC_1_WORD_LSB(val) | ref);
 
             this->auxdac1_value = value;
         break;
         case 2:
-            this->writeReg(REG_AUXDAC_2_WORD, val >> 2);
-            this->writeReg(REG_AUXDAC_2_CONFIG, AUXDAC_2_WORD_LSB(val) | ref);
+            this->writeReg(AD9361_REG_AUXDAC_2_WORD, val >> 2);
+            this->writeReg(AD9361_REG_AUXDAC_2_CONFIG, AUXDAC_2_WORD_LSB(val) | ref);
 
             this->auxdac2_value = value;
         break;
@@ -1008,7 +1541,7 @@ double AD9361::getAuxDACValue(uint8_t dac)
     if(dac < 1 || dac > 2)
         throw std::invalid_argument("AD9361: DAC number must 1 or 2");
 
-    std::lock_guard<std::mutex> lock(this->auxdac_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->auxdac_mutex);
 
     // TODO: Get actual value from registers
 
@@ -1027,20 +1560,20 @@ void AD9361::setupAuxADC(AD9361::AUXADCControl *ctrl)
 {
     uint32_t bbpll_freq = this->getClockRate(this->ref_clk_scale[BBPLL_CLK]);
 
-    this->writeReg(REG_TEMP_OFFSET, ctrl->offset);
-    this->writeReg(REG_START_TEMP_READING, 0x00);
-    this->writeReg(REG_TEMP_SENSE2, MEASUREMENT_TIME_INTERVAL(DIV_ROUND(ctrl->temp_time_inteval_ms * (bbpll_freq / 1000UL), (1 << 29))) | (ctrl->periodic_temp_measuremnt ? TEMP_SENSE_PERIODIC_ENABLE : 0));
-    this->writeReg(REG_TEMP_SENSOR_CONFIG, TEMP_SENSOR_DECIMATION(Utils::Ilog2(ctrl->temp_sensor_decimation) - 8));
-    this->writeReg(REG_AUXADC_CLOCK_DIVIDER, bbpll_freq / ctrl->auxadc_clock_rate);
-    this->writeReg(REG_AUXADC_CONFIG, AUX_ADC_DECIMATION(Utils::Ilog2(ctrl->auxadc_decimation) - 8));
+    this->writeReg(AD9361_REG_TEMP_OFFSET, ctrl->offset);
+    this->writeReg(AD9361_REG_START_TEMP_READING, 0x00);
+    this->writeReg(AD9361_REG_TEMP_SENSE2, MEASUREMENT_TIME_INTERVAL(DIV_ROUND(ctrl->temp_time_inteval_ms * (bbpll_freq / 1000UL), (1 << 29))) | (ctrl->periodic_temp_measuremnt ? TEMP_SENSE_PERIODIC_ENABLE : 0));
+    this->writeReg(AD9361_REG_TEMP_SENSOR_CONFIG, TEMP_SENSOR_DECIMATION(Utils::Ilog2(ctrl->temp_sensor_decimation) - 8));
+    this->writeReg(AD9361_REG_AUXADC_CLOCK_DIVIDER, bbpll_freq / ctrl->auxadc_clock_rate);
+    this->writeReg(AD9361_REG_AUXADC_CONFIG, AUX_ADC_DECIMATION(Utils::Ilog2(ctrl->auxadc_decimation) - 8));
 }
 double AD9361::getAuxADCValue()
 {
     uint8_t buf[2];
 
-    this->writeRegField(REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 1);
-    this->readReg(REG_AUXADC_LSB, buf, 2);
-    this->writeRegField(REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 0);
+    this->writeRegField(AD9361_REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 1);
+    this->readReg(AD9361_REG_AUXADC_LSB, buf, 2);
+    this->writeRegField(AD9361_REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 0);
 
     uint16_t code = (buf[1] << 4) | AUXADC_WORD_LSB(buf[0]);
 
@@ -1049,30 +1582,30 @@ double AD9361::getAuxADCValue()
 
 void AD9361::setupTXMonitor(AD9361::TXMonitorControl *ctrl)
 {
-    this->writeReg(REG_TPM_MODE_ENABLE, (ctrl->one_shot_mode_en ? ONE_SHOT_MODE : 0) | TX_MON_DURATION(Utils::Ilog2(ctrl->tx_mon_duration / 16)));
-    this->writeReg(REG_TX_MON_DELAY, ctrl->tx_mon_delay & 0xFF);
-    this->writeRegField(REG_TX_LEVEL_THRESH, TX_MON_DELAY_COUNTER(~0), ctrl->tx_mon_delay >> 8);
-    this->writeReg(REG_TX_MON_1_CONFIG, TX_MON_1_LO_CM(ctrl->tx1_mon_lo_cm) | TX_MON_1_GAIN(ctrl->tx1_mon_front_end_gain));
-    this->writeReg(REG_TX_MON_2_CONFIG, TX_MON_2_LO_CM(ctrl->tx2_mon_lo_cm) | TX_MON_2_GAIN(ctrl->tx2_mon_front_end_gain));
-    this->writeReg(REG_TX_ATTEN_THRESH, ctrl->low_high_gain_threshold_mdB / 250);
-    this->writeReg(REG_TX_MON_HIGH_GAIN, TX_MON_HIGH_GAIN(ctrl->high_gain_dB));
-    this->writeReg(REG_TX_MON_LOW_GAIN, (ctrl->tx_mon_track_en ? TX_MON_TRACK : 0) | TX_MON_LOW_GAIN(ctrl->low_gain_dB));
+    this->writeReg(AD9361_REG_TPM_MODE_ENABLE, (ctrl->one_shot_mode_en ? ONE_SHOT_MODE : 0) | TX_MON_DURATION(Utils::Ilog2(ctrl->tx_mon_duration / 16)));
+    this->writeReg(AD9361_REG_TX_MON_DELAY, ctrl->tx_mon_delay & 0xFF);
+    this->writeRegField(AD9361_REG_TX_LEVEL_THRESH, TX_MON_DELAY_COUNTER(~0), ctrl->tx_mon_delay >> 8);
+    this->writeReg(AD9361_REG_TX_MON_1_CONFIG, TX_MON_1_LO_CM(ctrl->tx1_mon_lo_cm) | TX_MON_1_GAIN(ctrl->tx1_mon_front_end_gain));
+    this->writeReg(AD9361_REG_TX_MON_2_CONFIG, TX_MON_2_LO_CM(ctrl->tx2_mon_lo_cm) | TX_MON_2_GAIN(ctrl->tx2_mon_front_end_gain));
+    this->writeReg(AD9361_REG_TX_ATTEN_THRESH, ctrl->low_high_gain_threshold_mdB / 250);
+    this->writeReg(AD9361_REG_TX_MON_HIGH_GAIN, TX_MON_HIGH_GAIN(ctrl->high_gain_dB));
+    this->writeReg(AD9361_REG_TX_MON_LOW_GAIN, (ctrl->tx_mon_track_en ? TX_MON_TRACK : 0) | TX_MON_LOW_GAIN(ctrl->low_gain_dB));
 }
 void AD9361::controlTXMonitor(uint8_t en)
 {
-    this->writeRegField(REG_ANALOG_POWER_DOWN_OVERRIDE, TX_MONITOR_POWER_DOWN(~0), ~en);
+    this->writeRegField(AD9361_REG_ANALOG_POWER_DOWN_OVERRIDE, TX_MONITOR_POWER_DOWN(~0), ~en);
 
-    this->writeRegField(REG_TPM_MODE_ENABLE, TX1_MON_ENABLE, !!(en & TX_1));
-    this->writeRegField(REG_TPM_MODE_ENABLE, TX2_MON_ENABLE, !!(en & TX_2));
+    this->writeRegField(AD9361_REG_TPM_MODE_ENABLE, TX1_MON_ENABLE, !!(en & TX_1));
+    this->writeRegField(AD9361_REG_TPM_MODE_ENABLE, TX2_MON_ENABLE, !!(en & TX_2));
 }
 
 void AD9361::setupExternalLNA(AD9361::ExtLNAControl *ctrl)
 {
-    this->writeRegField(REG_EXTERNAL_LNA_CTRL, EXTERNAL_LNA1_CTRL, ctrl->elna_1_control_en);
-    this->writeRegField(REG_EXTERNAL_LNA_CTRL, EXTERNAL_LNA2_CTRL, ctrl->elna_2_control_en);
+    this->writeRegField(AD9361_REG_EXTERNAL_LNA_CTRL, EXTERNAL_LNA1_CTRL, ctrl->elna_1_control_en);
+    this->writeRegField(AD9361_REG_EXTERNAL_LNA_CTRL, EXTERNAL_LNA2_CTRL, ctrl->elna_2_control_en);
 
-    this->writeReg(REG_EXT_LNA_HIGH_GAIN, EXT_LNA_HIGH_GAIN(ctrl->gain_mdB / 500));
-    this->writeReg(REG_EXT_LNA_LOW_GAIN, EXT_LNA_LOW_GAIN(ctrl->bypass_loss_mdB / 500));
+    this->writeReg(AD9361_REG_EXT_LNA_HIGH_GAIN, EXT_LNA_HIGH_GAIN(ctrl->gain_mdB / 500));
+    this->writeReg(AD9361_REG_EXT_LNA_LOW_GAIN, EXT_LNA_LOW_GAIN(ctrl->bypass_loss_mdB / 500));
 }
 
 void AD9361::setupRFPort(bool tx_out, uint8_t rx_inputs, uint8_t tx_outputs)
@@ -1098,12 +1631,12 @@ void AD9361::setupRFPort(bool tx_out, uint8_t rx_inputs, uint8_t tx_outputs)
     if(tx_outputs)
         val |= TX_OUTPUT; // Select TX1B, TX2B
 
-    return this->writeReg(REG_INPUT_SELECT, val);
+    return this->writeReg(AD9361_REG_INPUT_SELECT, val);
 }
 void AD9361::setupParallelPort(bool restore_c3)
 {
     if(restore_c3)
-        return this->writeReg(REG_PARALLEL_PORT_CONF_3, this->pdata->port_ctrl.pp_conf[2]);
+        return this->writeReg(AD9361_REG_PARALLEL_PORT_CONF_3, this->pdata->port_ctrl.pp_conf[2]);
 
     // Sanity check
     if(this->pdata->port_ctrl.pp_conf[2] & LVDS_MODE)
@@ -1112,28 +1645,62 @@ void AD9361::setupParallelPort(bool restore_c3)
     if(this->pdata->port_ctrl.pp_conf[2] & FULL_PORT)
         this->pdata->port_ctrl.pp_conf[2] &= ~(HALF_DUPLEX_MODE | SINGLE_PORT_MODE);
 
-    this->writeReg(REG_PARALLEL_PORT_CONF_1, this->pdata->port_ctrl.pp_conf[0]);
-    this->writeReg(REG_PARALLEL_PORT_CONF_2, this->pdata->port_ctrl.pp_conf[1]);
-    this->writeReg(REG_PARALLEL_PORT_CONF_3, this->pdata->port_ctrl.pp_conf[2]);
-    this->writeReg(REG_RX_CLOCK_DATA_DELAY, this->pdata->port_ctrl.rx_clk_data_delay);
-    this->writeReg(REG_TX_CLOCK_DATA_DELAY, this->pdata->port_ctrl.tx_clk_data_delay);
+    this->writeReg(AD9361_REG_PARALLEL_PORT_CONF_1, this->pdata->port_ctrl.pp_conf[0]);
+    this->writeReg(AD9361_REG_PARALLEL_PORT_CONF_2, this->pdata->port_ctrl.pp_conf[1]);
+    this->writeReg(AD9361_REG_PARALLEL_PORT_CONF_3, this->pdata->port_ctrl.pp_conf[2]);
+    this->writeReg(AD9361_REG_RX_CLOCK_DATA_DELAY, this->pdata->port_ctrl.rx_clk_data_delay);
+    this->writeReg(AD9361_REG_TX_CLOCK_DATA_DELAY, this->pdata->port_ctrl.tx_clk_data_delay);
 
-    this->writeReg(REG_LVDS_BIAS_CTRL, this->pdata->port_ctrl.lvds_bias_ctrl);
-    //this->writeReg(REG_DIGITAL_IO_CTRL, this->pdata->port_ctrl.digital_io_ctrl);
-    this->writeReg(REG_LVDS_INVERT_CTRL1, this->pdata->port_ctrl.lvds_invert[0]);
-    this->writeReg(REG_LVDS_INVERT_CTRL2, this->pdata->port_ctrl.lvds_invert[1]);
+    this->writeReg(AD9361_REG_LVDS_BIAS_CTRL, this->pdata->port_ctrl.lvds_bias_ctrl);
+    //this->writeReg(AD9361_REG_DIGITAL_IO_CTRL, this->pdata->port_ctrl.digital_io_ctrl);
+    this->writeReg(AD9361_REG_LVDS_INVERT_CTRL1, this->pdata->port_ctrl.lvds_invert[0]);
+    this->writeReg(AD9361_REG_LVDS_INVERT_CTRL2, this->pdata->port_ctrl.lvds_invert[1]);
 
     if(this->pdata->rx1rx2_phase_inversion_en || (this->pdata->port_ctrl.pp_conf[1] & INVERT_RX2))
     {
-        this->writeRegField(REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 1);
-        this->writeRegField(REG_INVERT_BITS, INVERT_RX2_RF_DC_CGOUT_WORD, 0);
+        this->writeRegField(AD9361_REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 1);
+        this->writeRegField(AD9361_REG_INVERT_BITS, INVERT_RX2_RF_DC_CGOUT_WORD, 0);
     }
+}
+void AD9361::enableParallelPortLoopback(bool enable)
+{
+    uint8_t reg = this->readReg(AD9361_REG_OBSERVE_CONFIG);
+
+    if(enable)
+    {
+        // Loopback works only TX1->RX1 or RX2->RX2
+        if(!this->pdata->rx2tx2 && this->pdata->rx1tx1_mode_use_rx_num != this->pdata->rx1tx1_mode_use_tx_num)
+            this->enableTX(TX_1 | TX_2, this->pdata->rx1tx1_mode_use_rx_num);
+
+        reg |= DATA_PORT_LOOP_TEST_ENABLE;
+
+        uint8_t pp3 = this->readReg(AD9361_REG_PARALLEL_PORT_CONF_3);
+
+        if((pp3 & SINGLE_PORT_MODE) && (pp3 & HALF_DUPLEX_MODE))
+            reg |= DATA_PORT_SP_HD_LOOP_TEST_OE;
+        else
+            reg &= ~DATA_PORT_SP_HD_LOOP_TEST_OE;
+    }
+    else
+    {
+        // Loopback works only TX1->RX1 or RX2->RX2
+        if(!this->pdata->rx2tx2 && this->pdata->rx1tx1_mode_use_rx_num != this->pdata->rx1tx1_mode_use_tx_num)
+            return this->enableTX(TX_1 | TX_2, this->pdata->rx1tx1_mode_use_tx_num);
+
+        reg &= ~(DATA_PORT_SP_HD_LOOP_TEST_OE | DATA_PORT_LOOP_TEST_ENABLE);
+    }
+
+    this->writeReg(AD9361_REG_OBSERVE_CONFIG, reg);
+}
+bool AD9361::isParallelPortLoopbackEnabled()
+{
+    return !!(this->readReg(AD9361_REG_OBSERVE_CONFIG) & DATA_PORT_LOOP_TEST_ENABLE);
 }
 
 void AD9361::setupControlOutBus(AD9361::CtrlOutControl *ctrl)
 {
-    this->writeReg(REG_CTRL_OUTPUT_POINTER, ctrl->index);
-    this->writeReg(REG_CTRL_OUTPUT_ENABLE, ctrl->en_mask);
+    this->writeReg(AD9361_REG_CTRL_OUTPUT_POINTER, ctrl->index);
+    this->writeReg(AD9361_REG_CTRL_OUTPUT_ENABLE, ctrl->en_mask);
 }
 
 void AD9361::setupGainControl(AD9361::GainControl *ctrl)
@@ -1148,12 +1715,12 @@ void AD9361::setupGainControl(AD9361::GainControl *ctrl)
     this->agc_mode[0] = ctrl->rx1_mode;
     this->agc_mode[1] = ctrl->rx2_mode;
 
-    this->writeReg(REG_AGC_CONFIG_1, reg); // Gain Control Mode Select
+    this->writeReg(AD9361_REG_AGC_CONFIG_1, reg); // Gain Control Mode Select
 
     // AGC_USE_FULL_GAIN_TABLE handled in this->loadGainTable()
-    this->writeRegField(REG_AGC_CONFIG_2, MAN_GAIN_CTRL_RX1, ctrl->mgc_rx1_ctrl_inp_en);
-    this->writeRegField(REG_AGC_CONFIG_2, MAN_GAIN_CTRL_RX2, ctrl->mgc_rx2_ctrl_inp_en);
-    this->writeRegField(REG_AGC_CONFIG_2, DIG_GAIN_EN, ctrl->dig_gain_en);
+    this->writeRegField(AD9361_REG_AGC_CONFIG_2, MAN_GAIN_CTRL_RX1, ctrl->mgc_rx1_ctrl_inp_en);
+    this->writeRegField(AD9361_REG_AGC_CONFIG_2, MAN_GAIN_CTRL_RX2, ctrl->mgc_rx2_ctrl_inp_en);
+    this->writeRegField(AD9361_REG_AGC_CONFIG_2, DIG_GAIN_EN, ctrl->dig_gain_en);
 
     ctrl->adc_ovr_sample_size = CLAMP_T(uint8_t, ctrl->adc_ovr_sample_size, 1U, 8U);
     reg = ADC_OVERRANGE_SAMPLE_SIZE(ctrl->adc_ovr_sample_size - 1);
@@ -1176,167 +1743,167 @@ void AD9361::setupGainControl(AD9361::GainControl *ctrl)
 
     ctrl->mgc_inc_gain_step = CLAMP_T(uint8_t, ctrl->mgc_inc_gain_step, 1U, 8U);
     reg |= MANUAL_INCR_STEP_SIZE(ctrl->mgc_inc_gain_step - 1);
-    this->writeReg(REG_AGC_CONFIG_3, reg); // Incr Step Size, ADC Overrange Size
+    this->writeReg(AD9361_REG_AGC_CONFIG_3, reg); // Incr Step Size, ADC Overrange Size
 
     ctrl->mgc_dec_gain_step = CLAMP_T(uint8_t, ctrl->mgc_dec_gain_step, 1U, 8U);
     reg = MANUAL_CTRL_IN_DECR_GAIN_STP_SIZE(ctrl->mgc_dec_gain_step - 1);
-    this->writeReg(REG_PEAK_WAIT_TIME, reg); // Decr Step Size, Peak Overload Time
+    this->writeReg(AD9361_REG_PEAK_WAIT_TIME, reg); // Decr Step Size, Peak Overload Time
 
     if(ctrl->dig_gain_en)
-        this->writeReg(REG_DIGITAL_GAIN, MAXIMUM_DIGITAL_GAIN(ctrl->max_dig_gain) | DIG_GAIN_STP_SIZE(ctrl->dig_gain_step_size));
+        this->writeReg(AD9361_REG_DIGITAL_GAIN, MAXIMUM_DIGITAL_GAIN(ctrl->max_dig_gain) | DIG_GAIN_STP_SIZE(ctrl->dig_gain_step_size));
 
     if(ctrl->adc_large_overload_thresh >= ctrl->adc_small_overload_thresh)
     {
-        this->writeReg(REG_ADC_SMALL_OVERLOAD_THRESH, ctrl->adc_small_overload_thresh); // ADC Small Overload Threshold
-        this->writeReg(REG_ADC_LARGE_OVERLOAD_THRESH, ctrl->adc_large_overload_thresh); // ADC Large Overload Threshold
+        this->writeReg(AD9361_REG_ADC_SMALL_OVERLOAD_THRESH, ctrl->adc_small_overload_thresh); // ADC Small Overload Threshold
+        this->writeReg(AD9361_REG_ADC_LARGE_OVERLOAD_THRESH, ctrl->adc_large_overload_thresh); // ADC Large Overload Threshold
     }
     else
     {
-        this->writeReg(REG_ADC_SMALL_OVERLOAD_THRESH, ctrl->adc_large_overload_thresh); // ADC Small Overload Threshold
-        this->writeReg(REG_ADC_LARGE_OVERLOAD_THRESH, ctrl->adc_small_overload_thresh); // ADC Large Overload Threshold
+        this->writeReg(AD9361_REG_ADC_SMALL_OVERLOAD_THRESH, ctrl->adc_large_overload_thresh); // ADC Small Overload Threshold
+        this->writeReg(AD9361_REG_ADC_LARGE_OVERLOAD_THRESH, ctrl->adc_small_overload_thresh); // ADC Large Overload Threshold
     }
 
     reg = (ctrl->lmt_overload_high_thresh / 16) - 1;
     reg = CLAMP(reg, 0U, 63U);
-    this->writeReg(REG_LARGE_LMT_OVERLOAD_THRESH, reg);
+    this->writeReg(AD9361_REG_LARGE_LMT_OVERLOAD_THRESH, reg);
     reg = (ctrl->lmt_overload_low_thresh / 16) - 1;
     reg = CLAMP(reg, 0U, 63U);
-    this->writeRegField(REG_SMALL_LMT_OVERLOAD_THRESH, SMALL_LMT_OVERLOAD_THRESH(~0), reg);
+    this->writeRegField(AD9361_REG_SMALL_LMT_OVERLOAD_THRESH, SMALL_LMT_OVERLOAD_THRESH(~0), reg);
 
     if(this->pdata->split_gt)
     {
         // REVIST
-        this->writeReg(REG_RX1_MANUAL_LPF_GAIN, 0x58); // Rx1 LPF Gain Index
-        this->writeReg(REG_RX2_MANUAL_LPF_GAIN, 0x18); // Rx2 LPF Gain Index
-        this->writeReg(REG_FAST_INITIAL_LMT_GAIN_LIMIT, 0x27); // Initial LMT Gain Limit
+        this->writeReg(AD9361_REG_RX1_MANUAL_LPF_GAIN, 0x58); // Rx1 LPF Gain Index
+        this->writeReg(AD9361_REG_RX2_MANUAL_LPF_GAIN, 0x18); // Rx2 LPF Gain Index
+        this->writeReg(AD9361_REG_FAST_INITIAL_LMT_GAIN_LIMIT, 0x27); // Initial LMT Gain Limit
     }
 
-    this->writeReg(REG_RX1_MANUAL_DIGITALFORCED_GAIN, 0x00); // Rx1 Digital Gain Index
-    this->writeReg(REG_RX2_MANUAL_DIGITALFORCED_GAIN, 0x00); // Rx2 Digital Gain Index
+    this->writeReg(AD9361_REG_RX1_MANUAL_DIGITALFORCED_GAIN, 0x00); // Rx1 Digital Gain Index
+    this->writeReg(AD9361_REG_RX2_MANUAL_DIGITALFORCED_GAIN, 0x00); // Rx2 Digital Gain Index
 
     reg = CLAMP_T(uint8_t, ctrl->low_power_thresh, 0U, 64U) * 2;
-    this->writeReg(REG_FAST_LOW_POWER_THRESH, reg); // Low Power Threshold
-    this->writeReg(REG_TX_SYMBOL_ATTEN_CONFIG, 0x00); // Tx Symbol Gain Control
+    this->writeReg(AD9361_REG_FAST_LOW_POWER_THRESH, reg); // Low Power Threshold
+    this->writeReg(AD9361_REG_TX_SYMBOL_ATTEN_CONFIG, 0x00); // Tx Symbol Gain Control
 
-    this->writeRegField(REG_DEC_POWER_MEASURE_DURATION_0, USE_HB1_OUT_FOR_DEC_PWR_MEAS, !ctrl->use_rx_fir_out_for_dec_pwr_meas); // USE HB1 or FIR output for power measurements
+    this->writeRegField(AD9361_REG_DEC_POWER_MEASURE_DURATION_0, USE_HB1_OUT_FOR_DEC_PWR_MEAS, !ctrl->use_rx_fir_out_for_dec_pwr_meas); // USE HB1 or FIR output for power measurements
 
-    this->writeRegField(REG_DEC_POWER_MEASURE_DURATION_0, ENABLE_DEC_PWR_MEAS, 1); // Power Measurement Duration
+    this->writeRegField(AD9361_REG_DEC_POWER_MEASURE_DURATION_0, ENABLE_DEC_PWR_MEAS, 1); // Power Measurement Duration
 
     if(ctrl->rx1_mode == RF_GAIN_FASTATTACK_AGC || ctrl->rx2_mode == RF_GAIN_FASTATTACK_AGC)
         reg = Utils::Ilog2(ctrl->f_agc_dec_pow_measuremnt_duration / 16);
     else
         reg = Utils::Ilog2(ctrl->dec_pow_measuremnt_duration / 16);
 
-    this->writeRegField(REG_DEC_POWER_MEASURE_DURATION_0, DEC_POWER_MEASUREMENT_DURATION(~0), reg); // Power Measurement Duration
+    this->writeRegField(AD9361_REG_DEC_POWER_MEASURE_DURATION_0, DEC_POWER_MEASUREMENT_DURATION(~0), reg); // Power Measurement Duration
 
     // AGC
     uint8_t tmp1 = reg = CLAMP_T(uint8_t, ctrl->agc_inner_thresh_high, 0U, 127U);
-    this->writeRegField(REG_AGC_LOCK_LEVEL, AGC_LOCK_LEVEL_FAST_AGC_INNER_HIGH_THRESH_SLOW(~0), reg);
+    this->writeRegField(AD9361_REG_AGC_LOCK_LEVEL, AGC_LOCK_LEVEL_FAST_AGC_INNER_HIGH_THRESH_SLOW(~0), reg);
 
     uint8_t tmp2 = reg = CLAMP_T(uint8_t, ctrl->agc_inner_thresh_low, 0U, 127U);
     reg |= (ctrl->adc_lmt_small_overload_prevent_gain_inc ? PREVENT_GAIN_INC : 0);
-    this->writeReg(REG_AGC_INNER_LOW_THRESH, reg);
+    this->writeReg(AD9361_REG_AGC_INNER_LOW_THRESH, reg);
 
     reg = AGC_OUTER_HIGH_THRESH(tmp1 - ctrl->agc_outer_thresh_high) | AGC_OUTER_LOW_THRESH(ctrl->agc_outer_thresh_low - tmp2);
-    this->writeReg(REG_OUTER_POWER_THRESHS, reg);
+    this->writeReg(AD9361_REG_OUTER_POWER_THRESHS, reg);
 
     reg = AGC_OUTER_HIGH_THRESH_EXED_STP_SIZE(ctrl->agc_outer_thresh_high_dec_steps) | AGC_OUTER_LOW_THRESH_EXED_STP_SIZE(ctrl->agc_outer_thresh_low_inc_steps);
-    this->writeReg(REG_GAIN_STP_2, reg);
+    this->writeReg(AD9361_REG_GAIN_STP_2, reg);
 
     reg = ((ctrl->immed_gain_change_if_large_adc_overload) ? IMMED_GAIN_CHANGE_IF_LG_ADC_OVERLOAD : 0) | ((ctrl->immed_gain_change_if_large_lmt_overload) ? IMMED_GAIN_CHANGE_IF_LG_LMT_OVERLOAD : 0) | AGC_INNER_HIGH_THRESH_EXED_STP_SIZE(ctrl->agc_inner_thresh_high_dec_steps) | AGC_INNER_LOW_THRESH_EXED_STP_SIZE(ctrl->agc_inner_thresh_low_inc_steps);
-    this->writeReg(REG_GAIN_STP1, reg);
+    this->writeReg(AD9361_REG_GAIN_STP1, reg);
 
     reg = LARGE_ADC_OVERLOAD_EXED_COUNTER(ctrl->adc_large_overload_exceed_counter) | SMALL_ADC_OVERLOAD_EXED_COUNTER(ctrl->adc_small_overload_exceed_counter);
-    this->writeReg(REG_ADC_OVERLOAD_COUNTERS, reg);
+    this->writeReg(AD9361_REG_ADC_OVERLOAD_COUNTERS, reg);
 
     reg = DECREMENT_STP_SIZE_FOR_SMALL_LPF_GAIN_CHANGE(ctrl->f_agc_large_overload_inc_steps) | LARGE_LPF_GAIN_STEP(ctrl->adc_large_overload_inc_steps);
-    this->writeReg(REG_GAIN_STP_CONFIG_2, reg);
+    this->writeReg(AD9361_REG_GAIN_STP_CONFIG_2, reg);
 
     reg = LARGE_LMT_OVERLOAD_EXED_COUNTER(ctrl->lmt_overload_large_exceed_counter) | SMALL_LMT_OVERLOAD_EXED_COUNTER(ctrl->lmt_overload_small_exceed_counter);
-    this->writeReg(REG_LMT_OVERLOAD_COUNTERS, reg);
+    this->writeReg(AD9361_REG_LMT_OVERLOAD_COUNTERS, reg);
 
-    this->writeRegField(REG_GAIN_STP_CONFIG1, DEC_STP_SIZE_FOR_LARGE_LMT_OVERLOAD(~0), ctrl->lmt_overload_large_inc_steps);
+    this->writeRegField(AD9361_REG_GAIN_STP_CONFIG1, DEC_STP_SIZE_FOR_LARGE_LMT_OVERLOAD(~0), ctrl->lmt_overload_large_inc_steps);
 
     reg = DIG_SATURATION_EXED_COUNTER(ctrl->dig_saturation_exceed_counter) | (ctrl->sync_for_gain_counter_en ? ENABLE_SYNC_FOR_GAIN_COUNTER : 0);
-    this->writeReg(REG_DIGITAL_SAT_COUNTER, reg);
+    this->writeReg(AD9361_REG_DIGITAL_SAT_COUNTER, reg);
 
     // Fast AGC
 
     // Fast AGC - Low Power
-    this->writeRegField(REG_FAST_CONFIG_1, ENABLE_INCR_GAIN, ctrl->f_agc_allow_agc_gain_increase);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, ENABLE_INCR_GAIN, ctrl->f_agc_allow_agc_gain_increase);
 
-    this->writeReg(REG_FAST_INCREMENT_TIME, ctrl->f_agc_lp_thresh_increment_time);
+    this->writeReg(AD9361_REG_FAST_INCREMENT_TIME, ctrl->f_agc_lp_thresh_increment_time);
 
     reg = ctrl->f_agc_lp_thresh_increment_steps - 1;
     reg = CLAMP_T(uint32_t, reg, 0U, 7U);
-    this->writeRegField(REG_FAST_ENERGY_DETECT_COUNT, INCREMENT_GAIN_STP_LPFLMT(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_ENERGY_DETECT_COUNT, INCREMENT_GAIN_STP_LPFLMT(~0), reg);
 
     // Fast AGC - Lock Level
     // Dual use see also agc_inner_thresh_high
-    this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, ENABLE_LMT_GAIN_INC_FOR_LOCK_LEVEL, ctrl->f_agc_lock_level_lmt_gain_increase_en);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, ENABLE_LMT_GAIN_INC_FOR_LOCK_LEVEL, ctrl->f_agc_lock_level_lmt_gain_increase_en);
 
     reg = ctrl->f_agc_lock_level_gain_increase_upper_limit;
     reg = CLAMP_T(uint32_t, reg, 0U, 63U);
-    this->writeRegField(REG_FAST_AGCLL_UPPER_LIMIT, AGCLL_MAX_INCREASE(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_AGCLL_UPPER_LIMIT, AGCLL_MAX_INCREASE(~0), reg);
 
     // Fast AGC - Peak Detectors and Final Settling
     reg = ctrl->f_agc_lpf_final_settling_steps;
     reg = CLAMP_T(uint32_t, reg, 0U, 3U);
-    this->writeRegField(REG_FAST_ENERGY_LOST_THRESH, POST_LOCK_LEVEL_STP_SIZE_FOR_LPF_TABLE_FULL_TABLE(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_ENERGY_LOST_THRESH, POST_LOCK_LEVEL_STP_SIZE_FOR_LPF_TABLE_FULL_TABLE(~0), reg);
 
     reg = ctrl->f_agc_lmt_final_settling_steps;
     reg = CLAMP_T(uint32_t, reg, 0U, 3U);
-    this->writeRegField(REG_FAST_STRONGER_SIGNAL_THRESH, POST_LOCK_LEVEL_STP_FOR_LMT_TABLE(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_STRONGER_SIGNAL_THRESH, POST_LOCK_LEVEL_STP_FOR_LMT_TABLE(~0), reg);
 
     reg = ctrl->f_agc_final_overrange_count;
     reg = CLAMP_T(uint32_t, reg, 0U, 7U);
-    this->writeRegField(REG_FAST_FINAL_OVER_RANGE_AND_OPT_GAIN, FINAL_OVER_RANGE_COUNT(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_FINAL_OVER_RANGE_AND_OPT_GAIN, FINAL_OVER_RANGE_COUNT(~0), reg);
 
     // Fast AGC - Final Power Test
-    this->writeRegField(REG_FAST_CONFIG_1, ENABLE_GAIN_INC_AFTER_GAIN_LOCK, ctrl->f_agc_gain_increase_after_gain_lock_en);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, ENABLE_GAIN_INC_AFTER_GAIN_LOCK, ctrl->f_agc_gain_increase_after_gain_lock_en);
 
     // Fast AGC - Unlocking the Gain
     // 0 = MAX Gain, 1 = Optimized Gain, 2 = Set Gain
     reg = ctrl->f_agc_gain_index_type_after_exit_rx_mode;
-    this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EXIT_RX_STATE, reg == SET_GAIN);
-    this->writeRegField(REG_FAST_CONFIG_1, GOTO_OPTIMIZED_GAIN_IF_EXIT_RX_STATE, reg == OPTIMIZED_GAIN);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EXIT_RX_STATE, reg == SET_GAIN);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_OPTIMIZED_GAIN_IF_EXIT_RX_STATE, reg == OPTIMIZED_GAIN);
 
-    this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, USE_LAST_LOCK_LEVEL_FOR_SET_GAIN, ctrl->f_agc_use_last_lock_level_for_set_gain_en);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, USE_LAST_LOCK_LEVEL_FOR_SET_GAIN, ctrl->f_agc_use_last_lock_level_for_set_gain_en);
 
     reg = ctrl->f_agc_optimized_gain_offset;
     reg = CLAMP_T(uint32_t, reg, 0U, 15U);
-    this->writeRegField(REG_FAST_FINAL_OVER_RANGE_AND_OPT_GAIN, OPTIMIZE_GAIN_OFFSET(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_FINAL_OVER_RANGE_AND_OPT_GAIN, OPTIMIZE_GAIN_OFFSET(~0), reg);
 
     tmp1 = !ctrl->f_agc_rst_gla_stronger_sig_thresh_exceeded_en || !ctrl->f_agc_rst_gla_engergy_lost_sig_thresh_exceeded_en || !ctrl->f_agc_rst_gla_large_adc_overload_en || !ctrl->f_agc_rst_gla_large_lmt_overload_en || ctrl->f_agc_rst_gla_en_agc_pulled_high_en;
 
-    this->writeRegField(REG_AGC_CONFIG_2, AGC_GAIN_UNLOCK_CTRL, tmp1);
+    this->writeRegField(AD9361_REG_AGC_CONFIG_2, AGC_GAIN_UNLOCK_CTRL, tmp1);
 
     reg = !ctrl->f_agc_rst_gla_stronger_sig_thresh_exceeded_en;
-    this->writeRegField(REG_FAST_STRONG_SIGNAL_FREEZE, DONT_UNLOCK_GAIN_IF_STRONGER_SIGNAL, reg);
+    this->writeRegField(AD9361_REG_FAST_STRONG_SIGNAL_FREEZE, DONT_UNLOCK_GAIN_IF_STRONGER_SIGNAL, reg);
 
     reg = ctrl->f_agc_rst_gla_stronger_sig_thresh_above_ll;
     reg = CLAMP_T(uint32_t, reg, 0U, 63U);
-    this->writeRegField(REG_FAST_STRONGER_SIGNAL_THRESH, STRONGER_SIGNAL_THRESH(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_STRONGER_SIGNAL_THRESH, STRONGER_SIGNAL_THRESH(~0), reg);
 
     reg = ctrl->f_agc_rst_gla_engergy_lost_sig_thresh_below_ll;
     reg = CLAMP_T(uint32_t, reg, 0U, 63U);
-    this->writeRegField(REG_FAST_ENERGY_LOST_THRESH, ENERGY_LOST_THRESH(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_ENERGY_LOST_THRESH, ENERGY_LOST_THRESH(~0), reg);
 
     reg = ctrl->f_agc_rst_gla_engergy_lost_goto_optim_gain_en;
-    this->writeRegField(REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, reg);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, reg);
 
     reg = !ctrl->f_agc_rst_gla_engergy_lost_sig_thresh_exceeded_en;
-    this->writeRegField(REG_FAST_CONFIG_1, DONT_UNLOCK_GAIN_IF_ENERGY_LOST, reg);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, DONT_UNLOCK_GAIN_IF_ENERGY_LOST, reg);
 
     reg = ctrl->f_agc_energy_lost_stronger_sig_gain_lock_exit_cnt;
     reg = CLAMP_T(uint32_t, reg, 0U, 63U);
-    this->writeRegField(REG_FAST_GAIN_LOCK_EXIT_COUNT, GAIN_LOCK_EXIT_COUNT(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_GAIN_LOCK_EXIT_COUNT, GAIN_LOCK_EXIT_COUNT(~0), reg);
 
     reg = !ctrl->f_agc_rst_gla_large_adc_overload_en || !ctrl->f_agc_rst_gla_large_lmt_overload_en;
-    this->writeRegField(REG_FAST_CONFIG_1, DONT_UNLOCK_GAIN_IF_LG_ADC_OR_LMT_OVRG, reg);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_1, DONT_UNLOCK_GAIN_IF_LG_ADC_OR_LMT_OVRG, reg);
 
     reg = !ctrl->f_agc_rst_gla_large_adc_overload_en;
-    this->writeRegField(REG_FAST_LOW_POWER_THRESH, DONT_UNLOCK_GAIN_IF_ADC_OVRG, reg);
+    this->writeRegField(AD9361_REG_FAST_LOW_POWER_THRESH, DONT_UNLOCK_GAIN_IF_ADC_OVRG, reg);
 
     // 0 = Max Gain, 1 = Set Gain, 2 = Optimized Gain, 3 = No Gain Change
     if(ctrl->f_agc_rst_gla_en_agc_pulled_high_en)
@@ -1344,35 +1911,35 @@ void AD9361::setupGainControl(AD9361::GainControl *ctrl)
         switch(ctrl->f_agc_rst_gla_if_en_agc_pulled_high_mode)
         {
             case MAX_GAIN:
-                this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 1);
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 1);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, 0);
             break;
             case SET_GAIN:
-                this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 1);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 1);
             break;
             case OPTIMIZED_GAIN:
-                this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 1);
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, 1);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 1);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_OPT_GAIN_IF_ENERGY_LOST_OR_EN_AGC_HIGH, 1);
             break;
             case NO_GAIN_CHANGE:
-                this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
-                this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
+                this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
             break;
         }
     }
     else
     {
-        this->writeRegField(REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
-        this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
+        this->writeRegField(AD9361_REG_FAST_CONFIG_1, GOTO_SET_GAIN_IF_EN_AGC_HIGH, 0);
+        this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, GOTO_MAX_GAIN_OR_OPT_GAIN_IF_EN_AGC_HIGH, 0);
     }
 
     reg = Utils::Ilog2(ctrl->f_agc_power_measurement_duration_in_state5 / 16);
     reg = CLAMP_T(uint32_t, reg, 0U, 15U);
-    this->writeRegField(REG_RX1_MANUAL_LPF_GAIN, POWER_MEAS_IN_STATE_5(~0), reg);
-    this->writeRegField(REG_RX1_MANUAL_LMT_FULL_GAIN, POWER_MEAS_IN_STATE_5_MSB, reg >> 3);
+    this->writeRegField(AD9361_REG_RX1_MANUAL_LPF_GAIN, POWER_MEAS_IN_STATE_5(~0), reg);
+    this->writeRegField(AD9361_REG_RX1_MANUAL_LMT_FULL_GAIN, POWER_MEAS_IN_STATE_5_MSB, reg >> 3);
 
     return this->updateGainControl();
 }
@@ -1388,7 +1955,7 @@ void AD9361::updateGainControl()
     uint32_t reg = (200 + delay_lna) / 2 + (14000000UL / (clkrf / 500U));
     reg = DIV_CEIL(reg, 1000UL) + this->pdata->gain_ctrl.agc_attack_delay_extra_margin_us;
     reg = CLAMP_T(uint8_t, reg, 0U, 31U);
-    this->writeRegField(REG_AGC_ATTACK_DELAY, AGC_ATTACK_DELAY(~0), reg);
+    this->writeRegField(AD9361_REG_AGC_ATTACK_DELAY, AGC_ATTACK_DELAY(~0), reg);
 
     /*
      * Peak Overload Wait Time (ClkRF cycles)=ceiling((0.1+Delay_LNA) *clkRF+1)
@@ -1396,7 +1963,7 @@ void AD9361::updateGainControl()
     reg = (delay_lna + 100UL) * (clkrf / 1000UL);
     reg = DIV_CEIL(reg, 1000000UL) + 1;
     reg = CLAMP_T(uint8_t, reg, 0U, 31U);
-    this->writeRegField(REG_PEAK_WAIT_TIME, PEAK_OVERLOAD_WAIT_TIME(~0), reg);
+    this->writeRegField(AD9361_REG_PEAK_WAIT_TIME, PEAK_OVERLOAD_WAIT_TIME(~0), reg);
 
     /*
      * Settling Delay in 0x111.  Applies to all gain control modes:
@@ -1405,7 +1972,7 @@ void AD9361::updateGainControl()
     reg = (delay_lna + 200UL) * (clkrf / 2000UL);
     reg = DIV_CEIL(reg, 1000000UL) + 7;
     reg = CLAMP_T(uint8_t, reg, 0U, 31U);
-    this->writeRegField(REG_FAST_CONFIG_2_SETTLING_DELAY, SETTLING_DELAY(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_CONFIG_2_SETTLING_DELAY, SETTLING_DELAY(~0), reg);
 
     /*
      * Gain Update Counter [15:0]= round((((time*ClkRF-0x111[D4:D0]*2)-2))/2)
@@ -1431,29 +1998,29 @@ void AD9361::updateGainControl()
     }
 
     // Power Measurement Duration
-    this->writeRegField(REG_DEC_POWER_MEASURE_DURATION_0, DEC_POWER_MEASUREMENT_DURATION(~0), Utils::Ilog2(dec_pow_meas_dur / 16));
+    this->writeRegField(AD9361_REG_DEC_POWER_MEASURE_DURATION_0, DEC_POWER_MEASUREMENT_DURATION(~0), Utils::Ilog2(dec_pow_meas_dur / 16));
 
-    this->writeRegField(REG_DIGITAL_SAT_COUNTER, DOUBLE_GAIN_COUNTER, reg > 65535);
+    this->writeRegField(AD9361_REG_DIGITAL_SAT_COUNTER, DOUBLE_GAIN_COUNTER, reg > 65535);
 
     if(reg > 65535)
         reg >>= 1;
 
-    this->writeReg(REG_GAIN_UPDATE_COUNTER1, reg & 0xFF);
-    this->writeReg(REG_GAIN_UPDATE_COUNTER2, reg >> 8);
+    this->writeReg(AD9361_REG_GAIN_UPDATE_COUNTER1, reg & 0xFF);
+    this->writeReg(AD9361_REG_GAIN_UPDATE_COUNTER2, reg >> 8);
 
     /*
      * Fast AGC State Wait Time - Energy Detect Count
      */
     reg = DIV_ROUND(this->pdata->gain_ctrl.f_agc_state_wait_time_ns * (clkrf / 1000UL), 1000000UL);
     reg = CLAMP_T(uint32_t, reg, 0U, 31U);
-    this->writeRegField(REG_FAST_ENERGY_DETECT_COUNT, ENERGY_DETECT_COUNT(~0), reg);
+    this->writeRegField(AD9361_REG_FAST_ENERGY_DETECT_COUNT, ENERGY_DETECT_COUNT(~0), reg);
 }
 
 void AD9361::setupRXADC()
 {
-    uint8_t c3_msb = this->readReg(REG_RX_BBF_C3_MSB);
-    uint8_t c3_lsb = this->readReg(REG_RX_BBF_C3_LSB);
-    uint8_t r2346 = this->readReg(REG_RX_BBF_R2346);
+    uint8_t c3_msb = this->readReg(AD9361_REG_RX_BBF_C3_MSB);
+    uint8_t c3_lsb = this->readReg(AD9361_REG_RX_BBF_C3_LSB);
+    uint8_t r2346 = this->readReg(AD9361_REG_RX_BBF_R2346);
 
     /*
     * BBBW = (BBPLL / RxTuneDiv) * ln(2) / (1.4 * 2PI )
@@ -1624,14 +2191,14 @@ void AD9361::setupRSSI(AD9361::RSSIControl *ctrl, bool is_update)
     int32_t val = total_weight - 0xFF;
     weight[j - 1] -= val;
 
-    this->writeReg(REG_MEASURE_DURATION_01, (dur_buf[1] << 4) | dur_buf[0]); // RSSI Measurement Duration 0, 1
-    this->writeReg(REG_MEASURE_DURATION_23, (dur_buf[3] << 4) | dur_buf[2]); // RSSI Measurement Duration 2, 3
-    this->writeReg(REG_RSSI_WEIGHT_0, weight[0]); // RSSI Weighted Multiplier 0
-    this->writeReg(REG_RSSI_WEIGHT_1, weight[1]); // RSSI Weighted Multiplier 1
-    this->writeReg(REG_RSSI_WEIGHT_2, weight[2]); // RSSI Weighted Multiplier 2
-    this->writeReg(REG_RSSI_WEIGHT_3, weight[3]); // RSSI Weighted Multiplier 3
-    this->writeReg(REG_RSSI_DELAY, rssi_delay); // RSSI Delay
-    this->writeReg(REG_RSSI_WAIT_TIME, rssi_wait); // RSSI Wait
+    this->writeReg(AD9361_REG_MEASURE_DURATION_01, (dur_buf[1] << 4) | dur_buf[0]); // RSSI Measurement Duration 0, 1
+    this->writeReg(AD9361_REG_MEASURE_DURATION_23, (dur_buf[3] << 4) | dur_buf[2]); // RSSI Measurement Duration 2, 3
+    this->writeReg(AD9361_REG_RSSI_WEIGHT_0, weight[0]); // RSSI Weighted Multiplier 0
+    this->writeReg(AD9361_REG_RSSI_WEIGHT_1, weight[1]); // RSSI Weighted Multiplier 1
+    this->writeReg(AD9361_REG_RSSI_WEIGHT_2, weight[2]); // RSSI Weighted Multiplier 2
+    this->writeReg(AD9361_REG_RSSI_WEIGHT_3, weight[3]); // RSSI Weighted Multiplier 3
+    this->writeReg(AD9361_REG_RSSI_DELAY, rssi_delay); // RSSI Delay
+    this->writeReg(AD9361_REG_RSSI_WAIT_TIME, rssi_wait); // RSSI Wait
 
     uint8_t temp = RSSI_MODE_SELECT(ctrl->restart_mode);
 
@@ -1641,26 +2208,31 @@ void AD9361::setupRSSI(AD9361::RSSIControl *ctrl, bool is_update)
     if(rssi_duration == 0 && j == 1) // Power of two
         temp |= DEFAULT_RSSI_MEAS_MODE;
 
-    this->writeReg(REG_RSSI_CONFIG, temp); // RSSI Mode Select
+    this->writeReg(AD9361_REG_RSSI_CONFIG, temp); // RSSI Mode Select
 }
 
 double AD9361::getTemperature()
 {
     uint32_t val;
 
-    this->writeRegField(REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 1);
-    val = this->readReg(REG_TEMPERATURE);
-    this->writeRegField(REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 0);
+    this->writeRegField(AD9361_REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 1);
+    val = this->readReg(AD9361_REG_TEMPERATURE);
+    this->writeRegField(AD9361_REG_AUXADC_CONFIG, AUXADC_POWER_DOWN, 0);
 
     return (double)val / 1.14;
+}
+
+void AD9361::setChannelCount(uint8_t ch_no)
+{
+    // TODO: from ad9361_api.c ad9361_set_no_ch_mode
 }
 
 void AD9361::registerClocks()
 {
     // Scaled Reference Clocks
-    this->registerClock(AD9361::ClockIndex::TX_REFCLK, AD9361::ClockIndex::EXT_REF_CLK);
-    this->registerClock(AD9361::ClockIndex::RX_REFCLK, AD9361::ClockIndex::EXT_REF_CLK);
-    this->registerClock(AD9361::ClockIndex::BB_REFCLK, AD9361::ClockIndex::EXT_REF_CLK);
+    this->registerClock(AD9361::ClockIndex::TX_REFCLK);
+    this->registerClock(AD9361::ClockIndex::RX_REFCLK);
+    this->registerClock(AD9361::ClockIndex::BB_REFCLK);
 
     // Base Band PLL Clock
     this->registerClock(AD9361::ClockIndex::BBPLL_CLK, AD9361::ClockIndex::BB_REFCLK);
@@ -1679,8 +2251,6 @@ void AD9361::registerClocks()
 
     this->registerClock(AD9361::ClockIndex::RX_RFPLL_INT, AD9361::ClockIndex::RX_REFCLK);
     this->registerClock(AD9361::ClockIndex::TX_RFPLL_INT, AD9361::ClockIndex::TX_REFCLK);
-    this->registerClock(AD9361::ClockIndex::RX_RFPLL_DUMMY);
-    this->registerClock(AD9361::ClockIndex::TX_RFPLL_DUMMY);
     this->registerClock(AD9361::ClockIndex::RX_RFPLL);
     this->registerClock(AD9361::ClockIndex::TX_RFPLL);
 }
@@ -1723,7 +2293,7 @@ void AD9361::registerClock(AD9361::ClockIndex source, AD9361::ClockIndex psource
         case TX_REFCLK:
         case RX_REFCLK:
         case BB_REFCLK:
-            clk->rate = this->getClockFactorRate(clk_scale, this->clk_refin->rate);
+            clk->rate = this->getClockFactorRate(clk_scale, this->clk_refin);
         break;
         case BBPLL_CLK:
             clk->rate = this->getBBPLLRate(clk_scale, this->clks[BB_REFCLK]->rate);
@@ -1764,12 +2334,6 @@ void AD9361::registerClock(AD9361::ClockIndex source, AD9361::ClockIndex psource
         case TX_RFPLL_INT:
             clk->rate = this->getIntRFPLLRate(clk_scale, this->clks[TX_REFCLK]->rate);
         break;
-        case RX_RFPLL_DUMMY:
-            clk->rate = this->pdata->rx_synth_freq;
-        break;
-        case TX_RFPLL_DUMMY:
-            clk->rate = this->pdata->tx_synth_freq;
-        break;
         case RX_RFPLL:
         case TX_RFPLL:
             clk->rate = this->getRFPLLRate(clk_scale);
@@ -1788,15 +2352,11 @@ uint64_t AD9361::getClockRate(AD9361::ClockScale *clk_scale)
         case TX_REFCLK:
         case RX_REFCLK:
         case BB_REFCLK:
-            return this->getClockFactorRate(clk_scale, this->clk_refin->rate);
+            return this->getClockFactorRate(clk_scale, this->clk_refin);
         break;
         case TX_RFPLL_INT:
         case RX_RFPLL_INT:
             return this->getIntRFPLLRate(clk_scale, this->clks[clk_scale->parent_source]->rate);
-        break;
-        case RX_RFPLL_DUMMY:
-        case TX_RFPLL_DUMMY:
-            return this->getDummyRFPLLRate(clk_scale);
         break;
         case TX_RFPLL:
         case RX_RFPLL:
@@ -1831,11 +2391,11 @@ void AD9361::setClockRate(AD9361::ClockScale *clk_scale, uint64_t rate)
             case RX_REFCLK:
             case BB_REFCLK:
             {
-                uint64_t round_rate = this->roundClockFactorRate(clk_scale, rate, this->clk_refin->rate);
+                uint64_t round_rate = this->roundClockFactorRate(clk_scale, rate, this->clk_refin);
 
-                this->setClockFactorRate(clk_scale, round_rate, this->clk_refin->rate);
+                this->setClockFactorRate(clk_scale, round_rate, this->clk_refin);
 
-                this->clks[clk_scale->source]->rate = this->getClockFactorRate(clk_scale, this->clk_refin->rate);
+                this->clks[clk_scale->source]->rate = this->getClockFactorRate(clk_scale, this->clk_refin);
             }
             break;
             case TX_RFPLL_INT:
@@ -1847,10 +2407,6 @@ void AD9361::setClockRate(AD9361::ClockScale *clk_scale, uint64_t rate)
 
                 this->clks[clk_scale->source]->rate = this->getIntRFPLLRate(clk_scale, this->clks[clk_scale->parent_source]->rate);
             }
-            break;
-            case RX_RFPLL_DUMMY:
-            case TX_RFPLL_DUMMY:
-                this->setDummyRFPLLRate(clk_scale, rate);
             break;
             case TX_RFPLL:
             case RX_RFPLL:
@@ -1896,18 +2452,15 @@ void AD9361::setClockRate(AD9361::ClockScale *clk_scale, uint64_t rate)
         }
 
         for(AD9361::ClockIndex i = BB_REFCLK; i < BBPLL_CLK; i = (AD9361::ClockIndex)(i + 1))
-            this->clks[i]->rate = this->getClockFactorRate(this->ref_clk_scale[i], this->clk_refin->rate);
+            this->clks[i]->rate = this->getClockFactorRate(this->ref_clk_scale[i], this->clk_refin);
 
         this->clks[BBPLL_CLK]->rate = this->getBBPLLRate(this->ref_clk_scale[BBPLL_CLK], this->clks[this->ref_clk_scale[BBPLL_CLK]->parent_source]->rate);
 
         for(AD9361::ClockIndex i = ADC_CLK; i < RX_RFPLL_INT; i = (AD9361::ClockIndex)(i + 1))
             this->clks[i]->rate = this->getClockFactorRate(this->ref_clk_scale[i], this->clks[this->ref_clk_scale[i]->parent_source]->rate);
 
-        for(AD9361::ClockIndex i = RX_RFPLL_INT; i < RX_RFPLL_DUMMY; i = (AD9361::ClockIndex)(i + 1))
+        for(AD9361::ClockIndex i = RX_RFPLL_INT; i < RX_RFPLL; i = (AD9361::ClockIndex)(i + 1))
             this->clks[i]->rate = this->getIntRFPLLRate(this->ref_clk_scale[i], this->clks[this->ref_clk_scale[i]->parent_source]->rate);
-
-        for(AD9361::ClockIndex i = RX_RFPLL_DUMMY; i < RX_RFPLL; i = (AD9361::ClockIndex)(i + 1))
-            this->clks[i]->rate = this->getDummyRFPLLRate(this->ref_clk_scale[i]);
 
         for(AD9361::ClockIndex i = RX_RFPLL; i < NUM_AD9361_CLKS; i = (AD9361::ClockIndex)(i + 1))
             this->clks[i]->rate = this->getRFPLLRate(this->ref_clk_scale[i]);
@@ -1983,7 +2536,7 @@ uint32_t AD9361::getBBPLLRate(AD9361::ClockScale *clk_scale, uint32_t prate)
 {
     uint8_t buf[4];
 
-    this->readReg(REG_INTEGER_BB_FREQ_WORD, buf, REG_INTEGER_BB_FREQ_WORD - REG_FRACT_BB_FREQ_WORD_1 + 1);
+    this->readReg(AD9361_REG_INTEGER_BB_FREQ_WORD, buf, AD9361_REG_INTEGER_BB_FREQ_WORD - AD9361_REG_FRACT_BB_FREQ_WORD_1 + 1);
 
     uint8_t integer = buf[0];
     uint32_t fract = (buf[3] << 16) | (buf[2] << 8) | buf[1];
@@ -2010,14 +2563,14 @@ void AD9361::setBBPLLRate(AD9361::ClockScale *clk_scale, uint32_t rate, uint32_t
     icp_val = DIV_ROUND((uint32_t)tmp, 25U) - 1;
     icp_val = CLAMP(icp_val, 1, 64);
 
-    this->writeReg(REG_CP_CURRENT, icp_val);
-    this->writeReg(REG_LOOP_FILTER_3, lf_defaults, ARRAY_SIZE(lf_defaults));
+    this->writeReg(AD9361_REG_CP_CURRENT, icp_val);
+    this->writeReg(AD9361_REG_LOOP_FILTER_3, lf_defaults, ARRAY_SIZE(lf_defaults));
 
     // Allow calibration to occur and set cal count to 1024 for max accuracy
-    this->writeReg(REG_VCO_CTRL, FREQ_CAL_ENABLE | FREQ_CAL_COUNT_LENGTH(3));
+    this->writeReg(AD9361_REG_VCO_CTRL, FREQ_CAL_ENABLE | FREQ_CAL_COUNT_LENGTH(3));
 
     // Set calibration clock to REFCLK/4 for more accuracy
-    this->writeReg(REG_SDM_CTRL, 0x10);
+    this->writeReg(AD9361_REG_SDM_CTRL, 0x10);
 
     // Calculate and set BBPLL frequency word
     uint64_t temp = rate;
@@ -2028,19 +2581,19 @@ void AD9361::setBBPLLRate(AD9361::ClockScale *clk_scale, uint32_t rate, uint32_t
     uint8_t integer = temp;
     uint32_t fract = tmp;
 
-    this->writeReg(REG_INTEGER_BB_FREQ_WORD, integer);
-    this->writeReg(REG_FRACT_BB_FREQ_WORD_3, fract);
-    this->writeReg(REG_FRACT_BB_FREQ_WORD_2, fract >> 8);
-    this->writeReg(REG_FRACT_BB_FREQ_WORD_1, fract >> 16);
+    this->writeReg(AD9361_REG_INTEGER_BB_FREQ_WORD, integer);
+    this->writeReg(AD9361_REG_FRACT_BB_FREQ_WORD_3, fract);
+    this->writeReg(AD9361_REG_FRACT_BB_FREQ_WORD_2, fract >> 8);
+    this->writeReg(AD9361_REG_FRACT_BB_FREQ_WORD_1, fract >> 16);
 
-    this->writeReg(REG_SDM_CTRL_1, INIT_BB_FO_CAL | BBPLL_RESET_BAR); // Start BBPLL Calibration
-    this->writeReg(REG_SDM_CTRL_1, BBPLL_RESET_BAR); // Clear BBPLL start calibration bit
+    this->writeReg(AD9361_REG_SDM_CTRL_1, INIT_BB_FO_CAL | BBPLL_RESET_BAR); // Start BBPLL Calibration
+    this->writeReg(AD9361_REG_SDM_CTRL_1, BBPLL_RESET_BAR); // Clear BBPLL start calibration bit
 
-    this->writeReg(REG_VCO_PROGRAM_1, 0x86); // Increase BBPLL KV and phase margin
-    this->writeReg(REG_VCO_PROGRAM_2, 0x01); // Increase BBPLL KV and phase margin
-    this->writeReg(REG_VCO_PROGRAM_2, 0x05); // Increase BBPLL KV and phase margin
+    this->writeReg(AD9361_REG_VCO_PROGRAM_1, 0x86); // Increase BBPLL KV and phase margin
+    this->writeReg(AD9361_REG_VCO_PROGRAM_2, 0x01); // Increase BBPLL KV and phase margin
+    this->writeReg(AD9361_REG_VCO_PROGRAM_2, 0x05); // Increase BBPLL KV and phase margin
 
-    return this->checkCalibrationDone(REG_CH_1_OVERFLOW, BBPLL_LOCK, 1);
+    return this->checkCalibrationDone(AD9361_REG_CH_1_OVERFLOW, BBPLL_LOCK, 1);
 }
 
 uint64_t AD9361::roundIntRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate, uint32_t prate)
@@ -2080,13 +2633,13 @@ uint64_t AD9361::getIntRFPLLRate(AD9361::ClockScale *clk_scale, uint32_t prate)
     switch(clk_scale->source)
     {
         case RX_RFPLL_INT:
-            reg = REG_RX_FRACT_BYTE_2;
+            reg = AD9361_REG_RX_FRACT_BYTE_2;
             div_mask = RX_VCO_DIVIDER(~0);
 
             profile = this->fastlock.current_profile[0];
         break;
         case TX_RFPLL_INT:
-            reg = REG_TX_FRACT_BYTE_2;
+            reg = AD9361_REG_TX_FRACT_BYTE_2;
             div_mask = TX_VCO_DIVIDER(~0);
 
             profile = this->fastlock.current_profile[1];
@@ -2116,7 +2669,7 @@ uint64_t AD9361::getIntRFPLLRate(AD9361::ClockScale *clk_scale, uint32_t prate)
     {
         this->readReg(reg, buf, ARRAY_SIZE(buf));
 
-        div = this->readRegField(REG_RFPLL_DIVIDERS, div_mask);
+        div = this->readRegField(AD9361_REG_RFPLL_DIVIDERS, div_mask);
     }
 
     uint16_t integer = (SYNTH_INTEGER_WORD(buf[3]) << 8) | buf[4];
@@ -2158,16 +2711,16 @@ void AD9361::setIntRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate, uint3
     switch(clk_scale->source)
     {
         case RX_RFPLL_INT:
-            reg = REG_RX_FRACT_BYTE_2;
-            lock_reg = REG_RX_CP_OVERRANGE_VCO_LOCK;
+            reg = AD9361_REG_RX_FRACT_BYTE_2;
+            lock_reg = AD9361_REG_RX_CP_OVERRANGE_VCO_LOCK;
             div_mask = RX_VCO_DIVIDER(~0);
 
             this->cached_rx_rfpll_div = div;
             this->current_rx_lo_freq = rate;
         break;
         case TX_RFPLL_INT:
-            reg = REG_TX_FRACT_BYTE_2;
-            lock_reg = REG_TX_CP_OVERRANGE_VCO_LOCK;
+            reg = AD9361_REG_TX_FRACT_BYTE_2;
+            lock_reg = AD9361_REG_TX_CP_OVERRANGE_VCO_LOCK;
             div_mask = TX_VCO_DIVIDER(~0);
 
             this->cached_tx_rfpll_div = div;
@@ -2198,9 +2751,9 @@ void AD9361::setIntRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate, uint3
         buf[4] = integer & 0xFF;
 
         this->writeReg(reg, buf, 5);
-        this->writeRegField(REG_RFPLL_DIVIDERS, div_mask, div);
+        this->writeRegField(AD9361_REG_RFPLL_DIVIDERS, div_mask, div);
 
-        this->checkCalibrationDone(lock_reg, VCO_LOCK, 1);
+        this->checkCalibrationDone(lock_reg, VCO_LOCK, 1, 1000);
 
         // In FDD mode with RX LO == TX LO frequency we use TDD tables to reduce VCO pulling
         if(((this->pdata->fdd && !this->pdata->fdd_independent_mode) && (this->current_tx_lo_freq == this->current_rx_lo_freq) && (this->current_tx_use_tdd_table != this->current_rx_use_tdd_table)) || ((this->pdata->fdd && !this->pdata->fdd_independent_mode) && (this->current_tx_lo_freq != this->current_rx_lo_freq) && (this->current_tx_use_tdd_table || this->current_rx_use_tdd_table)))
@@ -2210,14 +2763,14 @@ void AD9361::setIntRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate, uint3
             switch(clk_scale->source)
             {
                 case RX_RFPLL_INT:
-                    reg = REG_TX_FRACT_BYTE_2;
-                    lock_reg = REG_TX_CP_OVERRANGE_VCO_LOCK;
+                    reg = AD9361_REG_TX_FRACT_BYTE_2;
+                    lock_reg = AD9361_REG_TX_CP_OVERRANGE_VCO_LOCK;
                     div_mask = TX_VCO_DIVIDER(~0);
                     _rate = this->current_tx_lo_freq;
                 break;
                 case TX_RFPLL_INT:
-                    reg = REG_RX_FRACT_BYTE_2;
-                    lock_reg = REG_RX_CP_OVERRANGE_VCO_LOCK;
+                    reg = AD9361_REG_RX_FRACT_BYTE_2;
+                    lock_reg = AD9361_REG_RX_CP_OVERRANGE_VCO_LOCK;
                     div_mask = RX_VCO_DIVIDER(~0);
                     _rate = this->current_rx_lo_freq;
                 break;
@@ -2257,15 +2810,6 @@ void AD9361::setIntRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate, uint3
         this->controlVCOCalibration(clk_scale->source == TX_RFPLL_INT, false);
 }
 
-uint64_t AD9361::getDummyRFPLLRate(AD9361::ClockScale *clk_scale)
-{
-    return this->clks[clk_scale->source]->rate;
-}
-void AD9361::setDummyRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
-{
-    this->clks[clk_scale->source]->rate = rate;
-}
-
 uint64_t AD9361::roundRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
 {
     switch(clk_scale->source)
@@ -2275,7 +2819,7 @@ uint64_t AD9361::roundRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
                 // if(this->ad9361_rfpll_ext_round_rate)
                 //     return this->ad9361_rfpll_ext_round_rate(clk_scale, rate);
                 // else
-                    return rate;
+                    throw std::runtime_error("AD9361: External RX LO round function not provided");
             else
                 return this->roundIntRFPLLRate(this->ref_clk_scale[RX_RFPLL_INT], rate, this->clks[this->ref_clk_scale[RX_RFPLL_INT]->parent_source]->rate);
         break;
@@ -2284,7 +2828,7 @@ uint64_t AD9361::roundRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
                 // if(this->ad9361_rfpll_ext_round_rate)
                 //     return this->ad9361_rfpll_ext_round_rate(clk_scale, rate);
                 // else
-                    return rate;
+                    throw std::runtime_error("AD9361: External TX LO round function not provided");
             else
                 return this->roundIntRFPLLRate(this->ref_clk_scale[TX_RFPLL_INT], rate, this->clks[this->ref_clk_scale[TX_RFPLL_INT]->parent_source]->rate);
         break;
@@ -2302,7 +2846,7 @@ uint64_t AD9361::getRFPLLRate(AD9361::ClockScale *clk_scale)
                 // if(this->ad9361_rfpll_ext_recalc_rate)
                 //     return this->ad9361_rfpll_ext_recalc_rate(clk_scale);
                 // else
-                    return this->getDummyRFPLLRate(this->ref_clk_scale[RX_RFPLL_DUMMY]);
+                    throw std::runtime_error("AD9361: External RX LO recalc function not provided");
             else
                 return this->getIntRFPLLRate(this->ref_clk_scale[RX_RFPLL_INT], this->clks[RX_REFCLK]->rate);
         break;
@@ -2311,7 +2855,7 @@ uint64_t AD9361::getRFPLLRate(AD9361::ClockScale *clk_scale)
                 // if(this->ad9361_rfpll_ext_recalc_rate)
                 //     rate = this->ad9361_rfpll_ext_recalc_rate(clk_scale);
                 // else
-                    return this->getDummyRFPLLRate(this->ref_clk_scale[TX_RFPLL_DUMMY]);
+                    throw std::runtime_error("AD9361: External TX LO recalc function not provided");
             else
                 return this->getIntRFPLLRate(this->ref_clk_scale[TX_RFPLL_INT], this->clks[TX_REFCLK]->rate);
         break;
@@ -2329,7 +2873,7 @@ void AD9361::setRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
                 // if(this->ad9361_rfpll_ext_set_rate)
                 //     this->ad9361_rfpll_ext_set_rate(clk_scale, rate);
                 // else
-                    this->setDummyRFPLLRate(this->ref_clk_scale[RX_RFPLL_DUMMY], rate);
+                    throw std::runtime_error("AD9361: External RX LO set function not provided");
             else
                 this->setIntRFPLLRate(this->ref_clk_scale[RX_RFPLL_INT], rate, this->clks[this->ref_clk_scale[RX_RFPLL_INT]->parent_source]->rate);
 
@@ -2341,7 +2885,7 @@ void AD9361::setRFPLLRate(AD9361::ClockScale *clk_scale, uint64_t rate)
                 // if(this->ad9361_rfpll_ext_set_rate)
                 //     this->ad9361_rfpll_ext_set_rate(clk_scale, rate);
                 // else
-                    this->setDummyRFPLLRate(this->ref_clk_scale[TX_RFPLL_DUMMY], rate);
+                    throw std::runtime_error("AD9361: External TX LO set function not provided");
             else
                 this->setIntRFPLLRate(this->ref_clk_scale[TX_RFPLL_INT], rate, this->clks[this->ref_clk_scale[TX_RFPLL_INT]->parent_source]->rate);
 
@@ -2395,7 +2939,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
             uint8_t val = this->getRefClockScaler(clk_scale);
 
             if(set)
-                this->writeRegField(REG_CLOCK_CTRL, REF_FREQ_SCALER(~0), val);
+                this->writeRegField(AD9361_REG_CLOCK_CTRL, REF_FREQ_SCALER(~0), val);
         }
         break;
         case RX_REFCLK:
@@ -2404,8 +2948,8 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
 
             if(set)
             {
-                this->writeRegField(REG_REF_DIVIDE_CONFIG_1, RX_REF_DIVIDER_MSB, val >> 1);
-                this->writeRegField(REG_REF_DIVIDE_CONFIG_2, RX_REF_DIVIDER_LSB, val & 1);
+                this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_1, RX_REF_DIVIDER_MSB, val >> 1);
+                this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, RX_REF_DIVIDER_LSB, val & 1);
             }
         }
         break;
@@ -2414,7 +2958,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
             uint8_t val = this->getRefClockScaler(clk_scale);
 
             if(set)
-                this->writeRegField(REG_REF_DIVIDE_CONFIG_2, TX_REF_DIVIDER(~0), val);
+                this->writeRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, TX_REF_DIVIDER(~0), val);
         }
         break;
         case ADC_CLK:
@@ -2425,7 +2969,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: ADC clock divider must be a power of two between 2 and 64");
 
             if(set)
-                this->writeRegField(REG_BBPLL, 0x7, val);
+                this->writeRegField(AD9361_REG_BBPLL, 0x7, val);
         }
         break;
         case R2_CLK:
@@ -2434,7 +2978,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: R2 clock divider must be 1, 2 or 3");
 
             if(set)
-                this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, DEC3_ENABLE_DECIMATION(~0), clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, DEC3_ENABLE_DECIMATION(~0), clk_scale->div - 1);
         }
         break;
         case R1_CLK:
@@ -2443,7 +2987,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: R1 clock divider must be 1 or 2");
 
             if(set)
-                this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RHB2_EN, clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RHB2_EN, clk_scale->div - 1);
         }
         break;
         case CLKRF_CLK:
@@ -2452,7 +2996,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: CLKRF clock divider must be 1 or 2");
 
             if(set)
-                this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RHB1_EN, clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RHB1_EN, clk_scale->div - 1);
         }
         break;
         case RX_SAMPL_CLK:
@@ -2463,7 +3007,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
             uint8_t val = this->bypass_rx_fir ? 0 : (Utils::Ilog2((uint8_t)clk_scale->div) + 1);
 
             if(set)
-                this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), val);
+                this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), val);
         }
         break;
         case DAC_CLK:
@@ -2472,7 +3016,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: DAC clock divider must be 1 or 2");
 
             if(set)
-                this->writeRegField(REG_BBPLL, BIT(3), clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_BBPLL, BIT(3), clk_scale->div - 1);
         }
         break;
         case T2_CLK:
@@ -2481,7 +3025,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: T2 clock divider must be 1, 2 or 3");
 
             if(set)
-                this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, THB3_ENABLE_INTERP(~0), clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB3_ENABLE_INTERP(~0), clk_scale->div - 1);
         }
         break;
         case T1_CLK:
@@ -2490,7 +3034,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: T1 clock divider must be 1 or 2");
 
             if(set)
-                this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, THB2_EN, clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB2_EN, clk_scale->div - 1);
         }
         break;
         case CLKTF_CLK:
@@ -2499,7 +3043,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
                 throw std::invalid_argument("AD9361: CLKTF clock divider must be 1 or 2");
 
             if(set)
-                this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, THB1_EN, clk_scale->div - 1);
+                this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB1_EN, clk_scale->div - 1);
         }
         break;
         case TX_SAMPL_CLK:
@@ -2510,7 +3054,7 @@ void AD9361::setClockScaler(AD9361::ClockScale *clk_scale, bool set)
             uint8_t val = this->bypass_tx_fir ? 0 : (Utils::Ilog2((uint8_t)clk_scale->div) + 1);
 
             if(set)
-                this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), val);
+                this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), val);
         }
         break;
         default:
@@ -2524,7 +3068,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
     {
         case BB_REFCLK:
         {
-            uint8_t tmp = this->readRegField(REG_CLOCK_CTRL, 0x03);
+            uint8_t tmp = this->readRegField(AD9361_REG_CLOCK_CTRL, 0x03);
 
             if(tmp > 2)
             {
@@ -2540,7 +3084,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case RX_REFCLK:
         {
-            uint8_t tmp = (this->readRegField(REG_REF_DIVIDE_CONFIG_1, RX_REF_DIVIDER_MSB) << 1) | this->readRegField(REG_REF_DIVIDE_CONFIG_2, RX_REF_DIVIDER_LSB);
+            uint8_t tmp = (this->readRegField(AD9361_REG_REF_DIVIDE_CONFIG_1, RX_REF_DIVIDER_MSB) << 1) | this->readRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, RX_REF_DIVIDER_LSB);
 
             if(tmp > 2)
             {
@@ -2556,7 +3100,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case TX_REFCLK:
         {
-            uint8_t tmp = this->readRegField(REG_REF_DIVIDE_CONFIG_2, TX_REF_DIVIDER(~0));
+            uint8_t tmp = this->readRegField(AD9361_REG_REF_DIVIDE_CONFIG_2, TX_REF_DIVIDER(~0));
 
             if(tmp > 2)
             {
@@ -2572,7 +3116,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case ADC_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_BBPLL, 0x07);
+            uint8_t tmp = this->readRegField(AD9361_REG_BBPLL, 0x07);
 
             clk_scale->mult = 1;
             clk_scale->div = 1 << tmp;
@@ -2580,7 +3124,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case R2_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, DEC3_ENABLE_DECIMATION(~0));
+            uint8_t tmp = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, DEC3_ENABLE_DECIMATION(~0));
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2588,7 +3132,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case R1_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, RHB2_EN);
+            uint8_t tmp = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RHB2_EN);
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2596,7 +3140,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case CLKRF_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, RHB1_EN);
+            uint8_t tmp = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RHB1_EN);
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2604,7 +3148,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case RX_SAMPL_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0));
+            uint8_t tmp = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0));
 
             if(!tmp)
                 tmp = 1; // bypass filter
@@ -2617,7 +3161,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case DAC_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_BBPLL, BIT(3));
+            uint8_t tmp = this->readRegField(AD9361_REG_BBPLL, BIT(3));
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2625,7 +3169,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case T2_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_TX_ENABLE_FILTER_CTRL, THB3_ENABLE_INTERP(~0));
+            uint8_t tmp = this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB3_ENABLE_INTERP(~0));
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2633,7 +3177,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case T1_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_TX_ENABLE_FILTER_CTRL, THB2_EN);
+            uint8_t tmp = this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB2_EN);
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2641,7 +3185,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case CLKTF_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_TX_ENABLE_FILTER_CTRL, THB1_EN);
+            uint8_t tmp = this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, THB1_EN);
 
             clk_scale->mult = 1;
             clk_scale->div = tmp + 1;
@@ -2649,7 +3193,7 @@ void AD9361::getClockScaler(AD9361::ClockScale *clk_scale)
         break;
         case TX_SAMPL_CLK:
         {
-            uint8_t tmp = this->readRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0));
+            uint8_t tmp = this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0));
 
             if(!tmp)
                 tmp = 1; // bypass filter
@@ -2831,10 +3375,10 @@ void AD9361::setClockChain(uint32_t *rx_clocks, uint32_t *tx_clocks)
      */
 
     if(this->rx_fir_dec == 1 || this->bypass_rx_fir)
-        this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), !this->bypass_rx_fir);
+        this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), !this->bypass_rx_fir);
 
     if(this->tx_fir_int == 1 || this->bypass_tx_fir)
-        this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), !this->bypass_tx_fir);
+        this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), !this->bypass_tx_fir);
 
     /* The FIR filter once enabled causes the interface timing to change.
      * It's typically not a problem if the timing margin is big enough.
@@ -2846,7 +3390,6 @@ void AD9361::setClockChain(uint32_t *rx_clocks, uint32_t *tx_clocks)
     // if(!this->pdata->dig_interface_tune_fir_disable && !(this->bypass_tx_fir && this->bypass_rx_fir))
     //     ad9361_util_dig_tune(0, SKIP_STORE_RESULT);
 
-    //ad9361_bb_clk_change_handler(); TODO
     this->updateGainControl();
     this->setupRSSI(&this->pdata->rssi_ctrl, true);
     this->setupAuxADC(&this->pdata->auxadc_ctrl);
@@ -2880,14 +3423,20 @@ void AD9361::checkCalibrationDone(uint16_t reg, uint8_t mask, uint8_t done_val, 
 {
     uint32_t timeout_us = timeout_ms * 1000;
 
+    // SoapySDR_logf(SOAPY_SDR_DEBUG, "AD9361: Waiting for calibration (reg: 0x%04X, mask: 0x%02X, done_val: 0x%02X)", reg, mask, done_val);
+
     do
     {
         uint8_t val = this->readRegField(reg, mask);
 
         if(val == done_val)
-            return;
+        {
+            // SoapySDR_logf(SOAPY_SDR_DEBUG, "AD9361: Calibration done (reg: 0x%04X, mask: 0x%02X, done_val: 0x%02X)", reg, mask, done_val);
 
-        if(reg == REG_CALIBRATION_CTRL)
+            return;
+        }
+
+        if(reg == AD9361_REG_CALIBRATION_CTRL)
         {
             timeout_us -= 1000;
 
@@ -2910,15 +3459,15 @@ void AD9361::calibrateRFPLLChargePump(bool tx)
     uint32_t vco_cal_cnt;
 
     // REVIST:
-    this->writeReg(REG_RX_CP_LEVEL_DETECT + offs, 0x17);
+    this->writeReg(AD9361_REG_RX_CP_LEVEL_DETECT + offs, 0x17);
 
-    this->writeReg(REG_RX_DSM_SETUP_1 + offs, 0x0);
+    this->writeReg(AD9361_REG_RX_DSM_SETUP_1 + offs, 0x0);
 
-    this->writeReg(REG_RX_LO_GEN_POWER_MODE + offs, 0x00);
-    this->writeReg(REG_RX_VCO_LDO + offs, 0x0B);
-    this->writeReg(REG_RX_VCO_PD_OVERRIDES + offs, 0x02);
-    this->writeReg(REG_RX_CP_CURRENT + offs, 0x80);
-    this->writeReg(REG_RX_CP_CONFIG + offs, CP_OFFSET_OFF);
+    this->writeReg(AD9361_REG_RX_LO_GEN_POWER_MODE + offs, 0x00);
+    this->writeReg(AD9361_REG_RX_VCO_LDO + offs, 0x0B);
+    this->writeReg(AD9361_REG_RX_VCO_PD_OVERRIDES + offs, 0x02);
+    this->writeReg(AD9361_REG_RX_CP_CURRENT + offs, 0x80);
+    this->writeReg(AD9361_REG_RX_CP_CONFIG + offs, CP_OFFSET_OFF);
 
     // see Table 70 Example Calibration Times for RF VCO Cal
     if(this->pdata->fdd)
@@ -2935,19 +3484,19 @@ void AD9361::calibrateRFPLLChargePump(bool tx)
             vco_cal_cnt = VCO_CAL_EN | VCO_CAL_COUNT(0) | FB_CLOCK_ADV(2);
     }
 
-    this->writeReg(REG_RX_VCO_CAL + offs, vco_cal_cnt);
+    this->writeReg(AD9361_REG_RX_VCO_CAL + offs, vco_cal_cnt);
 
     // Enable FDD mode during calibrations
     if(!this->pdata->fdd)
-        this->writeRegField(REG_PARALLEL_PORT_CONF_3, HALF_DUPLEX_MODE, 0);
+        this->writeRegField(AD9361_REG_PARALLEL_PORT_CONF_3, HALF_DUPLEX_MODE, 0);
 
-    this->writeReg(REG_ENSM_CONFIG_2, DUAL_SYNTH_MODE);
-    this->writeReg(REG_ENSM_CONFIG_1, FORCE_ALERT_STATE | TO_ALERT);
-    this->writeReg(REG_ENSM_MODE, FDD_MODE);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_2, DUAL_SYNTH_MODE);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, FORCE_ALERT_STATE | TO_ALERT);
+    this->writeReg(AD9361_REG_ENSM_MODE, FDD_MODE);
 
-    this->writeReg(REG_RX_CP_CONFIG + offs, CP_OFFSET_OFF | CP_CAL_ENABLE);
+    this->writeReg(AD9361_REG_RX_CP_CONFIG + offs, CP_OFFSET_OFF | CP_CAL_ENABLE);
 
-    this->checkCalibrationDone(REG_RX_CAL_STATUS + offs, CP_CAL_VALID, 1);
+    this->checkCalibrationDone(AD9361_REG_RX_CAL_STATUS + offs, CP_CAL_VALID, 1);
 }
 void AD9361::calibrateRXBasebandAnalogFilter(uint32_t bw)
 {
@@ -2958,35 +3507,35 @@ void AD9361::calibrateRXBasebandAnalogFilter(uint32_t bw)
     this->rxbbf_div = MIN_T(uint32_t, 511UL, DIV_CEIL(this->getClockRate(this->ref_clk_scale[BBPLL_CLK]), target));
 
     // Set RX baseband filter divide value
-    this->writeReg(REG_RX_BBF_TUNE_DIVIDE, this->rxbbf_div);
-    this->writeRegField(REG_RX_BBF_TUNE_CONFIG, BIT(0), this->rxbbf_div >> 8);
+    this->writeReg(AD9361_REG_RX_BBF_TUNE_DIVIDE, this->rxbbf_div);
+    this->writeRegField(AD9361_REG_RX_BBF_TUNE_CONFIG, BIT(0), this->rxbbf_div >> 8);
 
     // Write the BBBW into registers 0x1FB and 0x1FC
-    this->writeReg(REG_RX_BBBW_MHZ, bw / 1000000UL);
+    this->writeReg(AD9361_REG_RX_BBBW_MHZ, bw / 1000000UL);
 
     uint8_t tmp = DIV_ROUND((bw % 1000000UL) * 128, 1000000UL);
-    this->writeReg(REG_RX_BBBW_KHZ, MIN_T(uint8_t, 127, tmp));
+    this->writeReg(AD9361_REG_RX_BBBW_KHZ, MIN_T(uint8_t, 127, tmp));
 
-    this->writeReg(REG_RX_MIX_LO_CM, RX_MIX_LO_CM(0x3F)); // Set Rx Mix LO CM
-    this->writeReg(REG_RX_MIX_GM_CONFIG, RX_MIX_GM_PLOAD(3)); // Set GM common mode
+    this->writeReg(AD9361_REG_RX_MIX_LO_CM, RX_MIX_LO_CM(0x3F)); // Set Rx Mix LO CM
+    this->writeReg(AD9361_REG_RX_MIX_GM_CONFIG, RX_MIX_GM_PLOAD(3)); // Set GM common mode
 
     // Enable the RX BBF tune circuit by writing 0x1E2=0x02 and 0x1E3=0x02
-    this->writeReg(REG_RX1_TUNE_CTRL, RX1_TUNE_RESAMPLE);
-    this->writeReg(REG_RX2_TUNE_CTRL, RX2_TUNE_RESAMPLE);
+    this->writeReg(AD9361_REG_RX1_TUNE_CTRL, RX1_TUNE_RESAMPLE);
+    this->writeReg(AD9361_REG_RX2_TUNE_CTRL, RX2_TUNE_RESAMPLE);
 
     // Start the RX Baseband Filter calibration in register 0x016[7]
     // Calibration is complete when register 0x016[7] self clears
     this->runCalibration(RX_BB_TUNE_CAL);
 
     // Disable the RX baseband filter tune circuit, write 0x1E2=3, 0x1E3=3
-    this->writeReg(REG_RX1_TUNE_CTRL, RX1_TUNE_RESAMPLE | RX1_PD_TUNE);
-    this->writeReg(REG_RX2_TUNE_CTRL, RX2_TUNE_RESAMPLE | RX2_PD_TUNE);
+    this->writeReg(AD9361_REG_RX1_TUNE_CTRL, RX1_TUNE_RESAMPLE | RX1_PD_TUNE);
+    this->writeReg(AD9361_REG_RX2_TUNE_CTRL, RX2_TUNE_RESAMPLE | RX2_PD_TUNE);
 }
 void AD9361::calibrateRXTIA(uint32_t bw)
 {
-    uint8_t reg1EB = this->readReg(REG_RX_BBF_C3_MSB);
-    uint8_t reg1EC = this->readReg(REG_RX_BBF_C3_LSB);
-    uint8_t reg1E6 = this->readReg(REG_RX_BBF_R2346);
+    uint8_t reg1EB = this->readReg(AD9361_REG_RX_BBF_C3_MSB);
+    uint8_t reg1EC = this->readReg(AD9361_REG_RX_BBF_C3_LSB);
+    uint8_t reg1E6 = this->readReg(AD9361_REG_RX_BBF_R2346);
 
     bw = CLAMP(bw, 200000UL, 20000000UL);
 
@@ -3027,11 +3576,11 @@ void AD9361::calibrateRXTIA(uint32_t bw)
         reg1DF = 0;
     }
 
-    this->writeReg(REG_RX_TIA_CONFIG, reg1DB);
-    this->writeReg(REG_TIA1_C_LSB, reg1DC);
-    this->writeReg(REG_TIA1_C_MSB, reg1DD);
-    this->writeReg(REG_TIA2_C_LSB, reg1DE);
-    this->writeReg(REG_TIA2_C_MSB, reg1DF);
+    this->writeReg(AD9361_REG_RX_TIA_CONFIG, reg1DB);
+    this->writeReg(AD9361_REG_TIA1_C_LSB, reg1DC);
+    this->writeReg(AD9361_REG_TIA1_C_MSB, reg1DD);
+    this->writeReg(AD9361_REG_TIA2_C_LSB, reg1DE);
+    this->writeReg(AD9361_REG_TIA2_C_MSB, reg1DF);
 }
 void AD9361::calibrateTXBasebandAnalogFilter(uint32_t bw)
 {
@@ -3042,18 +3591,18 @@ void AD9361::calibrateTXBasebandAnalogFilter(uint32_t bw)
     uint32_t txbbf_div = MIN_T(uint32_t, 511UL, DIV_CEIL(this->getClockRate(this->ref_clk_scale[BBPLL_CLK]), target));
 
     // Set TX baseband filter divide value
-    this->writeReg(REG_TX_BBF_TUNE_DIVIDER, txbbf_div);
-    this->writeRegField(REG_TX_BBF_TUNE_MODE, TX_BBF_TUNE_DIVIDER, txbbf_div >> 8);
+    this->writeReg(AD9361_REG_TX_BBF_TUNE_DIVIDER, txbbf_div);
+    this->writeRegField(AD9361_REG_TX_BBF_TUNE_MODE, TX_BBF_TUNE_DIVIDER, txbbf_div >> 8);
 
     // Enable the TX baseband filter tune circuit by setting 0x0CA=0x22.
-    this->writeReg(REG_TX_TUNE_CTRL, TUNER_RESAMPLE | TUNE_CTRL(1));
+    this->writeReg(AD9361_REG_TX_TUNE_CTRL, TUNER_RESAMPLE | TUNE_CTRL(1));
 
     // Start the TX Baseband Filter calibration in register 0x016[6]
     // Calibration is complete when register 0x016[] self clears
     this->runCalibration(TX_BB_TUNE_CAL);
 
     // Disable the TX baseband filter tune circuit by writing 0x0CA=0x26.
-    this->writeReg(REG_TX_TUNE_CTRL, TUNER_RESAMPLE | TUNE_CTRL(1) | PD_TUNE);
+    this->writeReg(AD9361_REG_TX_TUNE_CTRL, TUNER_RESAMPLE | TUNE_CTRL(1) | PD_TUNE);
 }
 void AD9361::calibrateTXSecBasebandAnalogFilter(uint32_t bw)
 {
@@ -3111,41 +3660,41 @@ void AD9361::calibrateTXSecBasebandAnalogFilter(uint32_t bw)
         break;
     }
 
-    this->writeReg(REG_CONFIG0, reg_conf);
-    this->writeReg(REG_RESISTOR, reg_res);
-    this->writeReg(REG_CAPACITOR, (uint8_t)cap);
+    this->writeReg(AD9361_REG_CONFIG0, reg_conf);
+    this->writeReg(AD9361_REG_RESISTOR, reg_res);
+    this->writeReg(AD9361_REG_CAPACITOR, (uint8_t)cap);
 }
 void AD9361::calibrateBasebandDCOffset()
 {
-    this->writeReg(REG_BB_DC_OFFSET_COUNT, 0x3F);
-    this->writeReg(REG_BB_DC_OFFSET_SHIFT, BB_DC_M_SHIFT(0xF));
-    this->writeReg(REG_BB_DC_OFFSET_ATTEN, BB_DC_OFFSET_ATTEN(1));
+    this->writeReg(AD9361_REG_BB_DC_OFFSET_COUNT, 0x3F);
+    this->writeReg(AD9361_REG_BB_DC_OFFSET_SHIFT, BB_DC_M_SHIFT(0xF));
+    this->writeReg(AD9361_REG_BB_DC_OFFSET_ATTEN, BB_DC_OFFSET_ATTEN(1));
 
     this->runCalibration(BBDC_CAL);
 }
 void AD9361::calibrateRFDCOffset()
 {
-    this->writeReg(REG_WAIT_COUNT, 0x20);
+    this->writeReg(AD9361_REG_WAIT_COUNT, 0x20);
 
     if(this->getClockRate(this->ref_clk_scale[RX_RFPLL]) <= 4000000000ULL)
     {
-        this->writeReg(REG_RF_DC_OFFSET_COUNT, this->pdata->rf_dc_offset_count_low);
-        this->writeReg(REG_RF_DC_OFFSET_CONFIG_1, RF_DC_CALIBRATION_COUNT(4) | DAC_FS(2));
-        this->writeReg(REG_RF_DC_OFFSET_ATTEN, RF_DC_OFFSET_ATTEN(this->pdata->dc_offset_attenuation_low));
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_COUNT, this->pdata->rf_dc_offset_count_low);
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_CONFIG_1, RF_DC_CALIBRATION_COUNT(4) | DAC_FS(2));
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_ATTEN, RF_DC_OFFSET_ATTEN(this->pdata->dc_offset_attenuation_low));
     }
     else
     {
-        this->writeReg(REG_RF_DC_OFFSET_COUNT, this->pdata->rf_dc_offset_count_high);
-        this->writeReg(REG_RF_DC_OFFSET_CONFIG_1, RF_DC_CALIBRATION_COUNT(4) | DAC_FS(3));
-        this->writeReg(REG_RF_DC_OFFSET_ATTEN, RF_DC_OFFSET_ATTEN(this->pdata->dc_offset_attenuation_high));
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_COUNT, this->pdata->rf_dc_offset_count_high);
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_CONFIG_1, RF_DC_CALIBRATION_COUNT(4) | DAC_FS(3));
+        this->writeReg(AD9361_REG_RF_DC_OFFSET_ATTEN, RF_DC_OFFSET_ATTEN(this->pdata->dc_offset_attenuation_high));
     }
 
-    this->writeReg(REG_DC_OFFSET_CONFIG2, USE_WAIT_COUNTER_FOR_RF_DC_INIT_CAL | DC_OFFSET_UPDATE(3));
+    this->writeReg(AD9361_REG_DC_OFFSET_CONFIG2, USE_WAIT_COUNTER_FOR_RF_DC_INIT_CAL | DC_OFFSET_UPDATE(3));
 
     if(this->pdata->rx1rx2_phase_inversion_en || (this->pdata->port_ctrl.pp_conf[1] & INVERT_RX2))
-        this->writeReg(REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD);
+        this->writeReg(AD9361_REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD);
     else
-        this->writeReg(REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD | INVERT_RX2_RF_DC_CGOUT_WORD);
+        this->writeReg(AD9361_REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD | INVERT_RX2_RF_DC_CGOUT_WORD);
 
     this->runCalibration(RFDC_CAL);
 }
@@ -3154,7 +3703,7 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
     if(this->cached_synth_pd[0] & TX_LO_POWER_DOWN)
     {
         if(this->pdata->lo_powerdown_managed_en)
-            this->writeRegField(REG_TX_SYNTH_POWER_DOWN_OVERRIDE, TX_LO_POWER_DOWN, 0);
+            this->writeRegField(AD9361_REG_TX_SYNTH_POWER_DOWN_OVERRIDE, TX_LO_POWER_DOWN, 0);
         else
             throw std::runtime_error("AD9361: Tx QUAD Cal abort due to TX LO in powerdown");
     }
@@ -3181,7 +3730,7 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
 
     uint8_t __rx_phase = 0;
 
-    if(clkrf == (2 * clktf))
+    if((clkrf / 2) == clktf)
     {
         __rx_phase = 0x0E;
 
@@ -3215,7 +3764,7 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
                 __rx_phase = 0x1F;
             break;
             case 1:
-                if(this->readRegField(REG_TX_ENABLE_FILTER_CTRL, 0x3F) == 0x22)
+                if(this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, 0x3F) == 0x22)
                     __rx_phase = 0x15;     // REVISIT
                 else
                     __rx_phase = 0x1A;
@@ -3248,24 +3797,24 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
 
     if(phase_inversion_en)
     {
-        this->writeRegField(REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 0);
+        this->writeRegField(AD9361_REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 0);
 
-        reg_inv_bits = this->readReg(REG_INVERT_BITS);
+        reg_inv_bits = this->readReg(AD9361_REG_INVERT_BITS);
 
-        this->writeReg(REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD | INVERT_RX2_RF_DC_CGOUT_WORD);
+        this->writeReg(AD9361_REG_INVERT_BITS, INVERT_RX1_RF_DC_CGOUT_WORD | INVERT_RX2_RF_DC_CGOUT_WORD);
     }
 
-    this->writeRegField(REG_KEXP_2, TX_NCO_FREQ(~0), txnco_word);
-    this->writeReg(REG_QUAD_CAL_COUNT, 0xFF);
-    this->writeReg(REG_KEXP_1, KEXP_TX(1) | KEXP_TX_COMP(3) | KEXP_DC_I(3) | KEXP_DC_Q(3));
-    this->writeReg(REG_MAG_FTEST_THRESH, 0x03);
-    this->writeReg(REG_MAG_FTEST_THRESH_2, 0x03);
+    this->writeRegField(AD9361_REG_KEXP_2, TX_NCO_FREQ(~0), txnco_word);
+    this->writeReg(AD9361_REG_QUAD_CAL_COUNT, 0xFF);
+    this->writeReg(AD9361_REG_KEXP_1, KEXP_TX(1) | KEXP_TX_COMP(3) | KEXP_DC_I(3) | KEXP_DC_Q(3));
+    this->writeReg(AD9361_REG_MAG_FTEST_THRESH, 0x03);
+    this->writeReg(AD9361_REG_MAG_FTEST_THRESH_2, 0x03);
 
     if(this->tx_quad_lpf_tia_match >= 0)
-        this->writeReg(REG_TX_QUAD_FULL_LMT_GAIN, this->tx_quad_lpf_tia_match);
+        this->writeReg(AD9361_REG_TX_QUAD_FULL_LMT_GAIN, this->tx_quad_lpf_tia_match);
 
-    this->writeReg(REG_QUAD_SETTLE_COUNT, 0xF0);
-    this->writeReg(REG_TX_QUAD_LPF_GAIN, 0x00);
+    this->writeReg(AD9361_REG_QUAD_SETTLE_COUNT, 0xF0);
+    this->writeReg(AD9361_REG_TX_QUAD_LPF_GAIN, 0x00);
 
     uint8_t val = 0;
 
@@ -3291,8 +3840,8 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
 
     if(phase_inversion_en)
     {
-        this->writeRegField(REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 1);
-        this->writeReg(REG_INVERT_BITS, reg_inv_bits);
+        this->writeRegField(AD9361_REG_PARALLEL_PORT_CONF_2, INVERT_RX2, 1);
+        this->writeReg(AD9361_REG_INVERT_BITS, reg_inv_bits);
     }
 
     if(txnco_freq > (int32_t)((this->current_rx_bw_Hz / 2) / 4) || txnco_freq > (int32_t)((this->current_tx_bw_Hz / 2) / 4))
@@ -3300,80 +3849,82 @@ void AD9361::calibrateTXQuadrature(int32_t rx_phase)
 }
 void AD9361::__calibrateTXQuadrature(uint32_t phase, uint32_t rxnco_word, uint32_t decim, uint8_t *res)
 {
-    this->writeReg(REG_QUAD_CAL_NCO_FREQ_PHASE_OFFSET, RX_NCO_FREQ(rxnco_word) | RX_NCO_PHASE_OFFSET(phase));
-    this->writeReg(REG_QUAD_CAL_CTRL, SETTLE_MAIN_ENABLE | DC_OFFSET_ENABLE | QUAD_CAL_SOFT_RESET | GAIN_ENABLE | PHASE_ENABLE | M_DECIM(decim));
-    this->writeReg(REG_QUAD_CAL_CTRL, SETTLE_MAIN_ENABLE | DC_OFFSET_ENABLE | GAIN_ENABLE | PHASE_ENABLE | M_DECIM(decim));
+    this->writeReg(AD9361_REG_QUAD_CAL_NCO_FREQ_PHASE_OFFSET, RX_NCO_FREQ(rxnco_word) | RX_NCO_PHASE_OFFSET(phase));
+    this->writeReg(AD9361_REG_QUAD_CAL_CTRL, SETTLE_MAIN_ENABLE | DC_OFFSET_ENABLE | QUAD_CAL_SOFT_RESET | GAIN_ENABLE | PHASE_ENABLE | M_DECIM(decim));
+    this->writeReg(AD9361_REG_QUAD_CAL_CTRL, SETTLE_MAIN_ENABLE | DC_OFFSET_ENABLE | GAIN_ENABLE | PHASE_ENABLE | M_DECIM(decim));
 
     this->runCalibration(TX_QUAD_CAL);
 
     if(res != nullptr)
     {
-        *res = this->readReg((this->pdata->rx1tx1_mode_use_tx_num == 2) ? REG_QUAD_CAL_STATUS_TX2 : REG_QUAD_CAL_STATUS_TX1) & (TX1_LO_CONV | TX1_SSB_CONV);
+        *res = this->readReg((this->pdata->rx1tx1_mode_use_tx_num == 2) ? AD9361_REG_QUAD_CAL_STATUS_TX2 : AD9361_REG_QUAD_CAL_STATUS_TX1) & (TX1_LO_CONV | TX1_SSB_CONV);
 
         if(this->pdata->rx2tx2)
-            *res &= this->readReg(REG_QUAD_CAL_STATUS_TX2) & (TX2_LO_CONV | TX2_SSB_CONV);
+            *res &= this->readReg(AD9361_REG_QUAD_CAL_STATUS_TX2) & (TX2_LO_CONV | TX2_SSB_CONV);
     }
 }
 void AD9361::searchTXQuadraturePhase(uint32_t rxnco_word, uint8_t decim)
 {
-    uint8_t field[64], val;
-    uint32_t start, cnt;
+    uint8_t val;
+    std::vector<bool> field;
 
-    for(uint32_t i = 0; i < ARRAY_SIZE(field) / 2; i++)
+    field.reserve(64);
+
+    for(uint32_t i = 0; i < 32; i++)
     {
         this->__calibrateTXQuadrature(i, rxnco_word, decim, &val);
 
         // Handle 360/0 wrap around
-        field[i] = field[i + 32] = !((val & TX1_LO_CONV) && (val & TX1_SSB_CONV));
+        field[i] = field[i + 32] = (val & TX1_LO_CONV) && (val & TX1_SSB_CONV);
     }
 
-    cnt = this->findOpt(field, ARRAY_SIZE(field), &start);
+    auto l = Utils::FindLongestSequence<bool>(field, true);
 
-    this->last_tx_quad_cal_phase = (start + cnt / 2) & 0x1F;
+    this->last_tx_quad_cal_phase = (l.first + l.second / 2) & 0x1F;
 
     this->__calibrateTXQuadrature(this->last_tx_quad_cal_phase, rxnco_word, decim, NULL);
 }
 
 void AD9361::controlVCOCalibration(bool tx, bool enable)
 {
-    return this->writeRegField(tx ? REG_TX_PFD_CONFIG : REG_RX_PFD_CONFIG, BYPASS_LD_SYNTH, !enable);
+    return this->writeRegField(tx ? AD9361_REG_TX_PFD_CONFIG : AD9361_REG_RX_PFD_CONFIG, BYPASS_LD_SYNTH, !enable);
 }
 
 void AD9361::controlExternalLO(bool tx, bool enable)
 {
     uint8_t val = enable ? ~0 : 0;
 
-    bool mcs_rf_enable = this->readRegField(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, MCS_RF_ENABLE);
+    bool mcs_rf_enable = this->readRegField(AD9361_REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, MCS_RF_ENABLE);
 
     if(tx)
     {
-        this->writeRegField(REG_ENSM_CONFIG_2, POWER_DOWN_TX_SYNTH, mcs_rf_enable ? 0 : enable);
-        this->writeRegField(REG_ENSM_CONFIG_2, TX_SYNTH_READY_MASK, enable);
-        this->writeRegField(REG_RFPLL_DIVIDERS, TX_VCO_DIVIDER(~0), enable ? 7 : this->cached_tx_rfpll_div);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, POWER_DOWN_TX_SYNTH, mcs_rf_enable ? 0 : enable);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, TX_SYNTH_READY_MASK, enable);
+        this->writeRegField(AD9361_REG_RFPLL_DIVIDERS, TX_VCO_DIVIDER(~0), enable ? 7 : this->cached_tx_rfpll_div);
 
         if(enable)
             this->cached_synth_pd[0] |= TX_SYNTH_VCO_ALC_POWER_DOWN | TX_SYNTH_PTAT_POWER_DOWN | TX_SYNTH_VCO_POWER_DOWN;
         else
             this->cached_synth_pd[0] &= ~(TX_SYNTH_VCO_ALC_POWER_DOWN | TX_SYNTH_PTAT_POWER_DOWN | TX_SYNTH_VCO_POWER_DOWN);
 
-        this->writeReg(REG_TX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd[0]);
-        this->writeRegField(REG_ANALOG_POWER_DOWN_OVERRIDE, TX_EXT_VCO_BUFFER_POWER_DOWN, !enable);
-        this->writeReg(REG_TX_LO_GEN_POWER_MODE, TX_LO_GEN_POWER_MODE(val));
+        this->writeReg(AD9361_REG_TX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd[0]);
+        this->writeRegField(AD9361_REG_ANALOG_POWER_DOWN_OVERRIDE, TX_EXT_VCO_BUFFER_POWER_DOWN, !enable);
+        this->writeReg(AD9361_REG_TX_LO_GEN_POWER_MODE, TX_LO_GEN_POWER_MODE(val));
     }
     else
     {
-        this->writeRegField(REG_ENSM_CONFIG_2, POWER_DOWN_RX_SYNTH, mcs_rf_enable ? 0 : enable);
-        this->writeRegField(REG_ENSM_CONFIG_2, RX_SYNTH_READY_MASK, enable);
-        this->writeRegField(REG_RFPLL_DIVIDERS, RX_VCO_DIVIDER(~0), enable ? 7 : this->cached_rx_rfpll_div);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, POWER_DOWN_RX_SYNTH, mcs_rf_enable ? 0 : enable);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, RX_SYNTH_READY_MASK, enable);
+        this->writeRegField(AD9361_REG_RFPLL_DIVIDERS, RX_VCO_DIVIDER(~0), enable ? 7 : this->cached_rx_rfpll_div);
 
         if(enable)
             this->cached_synth_pd[1] |= RX_SYNTH_VCO_ALC_POWER_DOWN | RX_SYNTH_PTAT_POWER_DOWN | RX_SYNTH_VCO_POWER_DOWN;
         else
             this->cached_synth_pd[1] &= ~(TX_SYNTH_VCO_ALC_POWER_DOWN | RX_SYNTH_PTAT_POWER_DOWN | RX_SYNTH_VCO_POWER_DOWN);
 
-        this->writeReg(REG_RX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd[1]);
-        this->writeRegField(REG_ANALOG_POWER_DOWN_OVERRIDE, RX_EXT_VCO_BUFFER_POWER_DOWN, !enable);
-        this->writeReg(REG_RX_LO_GEN_POWER_MODE, RX_LO_GEN_POWER_MODE(val));
+        this->writeReg(AD9361_REG_RX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd[1]);
+        this->writeRegField(AD9361_REG_ANALOG_POWER_DOWN_OVERRIDE, RX_EXT_VCO_BUFFER_POWER_DOWN, !enable);
+        this->writeReg(AD9361_REG_RX_LO_GEN_POWER_MODE, RX_LO_GEN_POWER_MODE(val));
     }
 }
 
@@ -3403,17 +3954,17 @@ void AD9361::controlLOPowerDown(AD9361::SynthPDControl rx, AD9361::SynthPDContro
         break;
     }
 
-    this->writeReg(REG_TX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd, 2);
+    this->writeReg(AD9361_REG_TX_SYNTH_POWER_DOWN_OVERRIDE, this->cached_synth_pd, 2);
 }
 
 void AD9361::controlRXTracking(bool bbdc, bool rfdc, bool quad)
 {
-    this->writeReg(REG_CALIBRATION_CONFIG_2, CALIBRATION_CONFIG2_DFLT | K_EXP_PHASE(0x15));
-    this->writeReg(REG_CALIBRATION_CONFIG_3, PREVENT_POS_LOOP_GAIN | K_EXP_AMPLITUDE(0x15));
+    this->writeReg(AD9361_REG_CALIBRATION_CONFIG_2, CALIBRATION_CONFIG2_DFLT | K_EXP_PHASE(0x15));
+    this->writeReg(AD9361_REG_CALIBRATION_CONFIG_3, PREVENT_POS_LOOP_GAIN | K_EXP_AMPLITUDE(0x15));
 
-    this->writeReg(REG_DC_OFFSET_CONFIG2, USE_WAIT_COUNTER_FOR_RF_DC_INIT_CAL | DC_OFFSET_UPDATE(this->pdata->dc_offset_update_events) | (bbdc ? ENABLE_BB_DC_OFFSET_TRACKING : 0) | (rfdc ? ENABLE_RF_OFFSET_TRACKING : 0));
+    this->writeReg(AD9361_REG_DC_OFFSET_CONFIG2, USE_WAIT_COUNTER_FOR_RF_DC_INIT_CAL | DC_OFFSET_UPDATE(this->pdata->dc_offset_update_events) | (bbdc ? ENABLE_BB_DC_OFFSET_TRACKING : 0) | (rfdc ? ENABLE_RF_OFFSET_TRACKING : 0));
 
-    this->writeRegField(REG_RX_QUAD_GAIN2, CORRECTION_WORD_DECIMATION_M(~0), this->pdata->qec_tracking_slow_mode_en ? 4 : 0);
+    this->writeRegField(AD9361_REG_RX_QUAD_GAIN2, CORRECTION_WORD_DECIMATION_M(~0), this->pdata->qec_tracking_slow_mode_en ? 4 : 0);
 
     uint8_t qtrack = 0;
 
@@ -3425,28 +3976,28 @@ void AD9361::controlRXTracking(bool bbdc, bool rfdc, bool quad)
             qtrack = (this->pdata->rx1tx1_mode_use_rx_num == 1) ? ENABLE_TRACKING_MODE_CH1 : ENABLE_TRACKING_MODE_CH2;
     }
 
-    this->writeReg(REG_CALIBRATION_CONFIG_1, ENABLE_PHASE_CORR | ENABLE_GAIN_CORR | FREE_RUN_MODE | ENABLE_CORR_WORD_DECIMATION | qtrack);
+    this->writeReg(AD9361_REG_CALIBRATION_CONFIG_1, ENABLE_PHASE_CORR | ENABLE_GAIN_CORR | FREE_RUN_MODE | ENABLE_CORR_WORD_DECIMATION | qtrack);
 }
 
 void AD9361::loadMixerGMSubTable()
 {
-    this->writeReg(REG_GM_SUB_TABLE_CONFIG, START_GM_SUB_TABLE_CLOCK); // Start Clock
+    this->writeReg(AD9361_REG_GM_SUB_TABLE_CONFIG, START_GM_SUB_TABLE_CLOCK); // Start Clock
 
     for(uint32_t i = 0, addr = ARRAY_SIZE(gm_st_ctrl); i < ARRAY_SIZE(gm_st_ctrl); i++)
     {
-        this->writeReg(REG_GM_SUB_TABLE_ADDRESS, --addr); // Gain Table Index
-        this->writeReg(REG_GM_SUB_TABLE_BIAS_WRITE, 0); // Bias
-        this->writeReg(REG_GM_SUB_TABLE_GAIN_WRITE, gm_st_gain[i]); // Gain
-        this->writeReg(REG_GM_SUB_TABLE_CTRL_WRITE, gm_st_ctrl[i]); // Control
-        this->writeReg(REG_GM_SUB_TABLE_CONFIG, WRITE_GM_SUB_TABLE | START_GM_SUB_TABLE_CLOCK); // Write Words
-        this->writeReg(REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
-        this->writeReg(REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_ADDRESS, --addr); // Gain Table Index
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_BIAS_WRITE, 0); // Bias
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_GAIN_WRITE, gm_st_gain[i]); // Gain
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_CTRL_WRITE, gm_st_ctrl[i]); // Control
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_CONFIG, WRITE_GM_SUB_TABLE | START_GM_SUB_TABLE_CLOCK); // Write Words
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
+        this->writeReg(AD9361_REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
     }
 
-    this->writeReg(REG_GM_SUB_TABLE_CONFIG, START_GM_SUB_TABLE_CLOCK); // Clear Write
-    this->writeReg(REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
-    this->writeReg(REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
-    this->writeReg(REG_GM_SUB_TABLE_CONFIG, 0); // Stop Clock
+    this->writeReg(AD9361_REG_GM_SUB_TABLE_CONFIG, START_GM_SUB_TABLE_CLOCK); // Clear Write
+    this->writeReg(AD9361_REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
+    this->writeReg(AD9361_REG_GM_SUB_TABLE_GAIN_READ, 0); // Dummy Delay
+    this->writeReg(AD9361_REG_GM_SUB_TABLE_CONFIG, 0); // Stop Clock
 }
 
 void AD9361::setRFBandwidth(uint32_t rx_bw, uint32_t tx_bw)
@@ -3488,23 +4039,23 @@ void AD9361::setTXAttenuation(uint32_t atten_mdb, bool tx1, bool tx2, bool immed
     buf[0] = atten_mdb >> 8;
     buf[1] = atten_mdb & 0xFF;
 
-    this->writeRegField(REG_TX2_DIG_ATTEN, IMMEDIATELY_UPDATE_TPC_ATTEN, 0);
+    this->writeRegField(AD9361_REG_TX2_DIG_ATTEN, IMMEDIATELY_UPDATE_TPC_ATTEN, 0);
 
     if(tx1)
-        this->writeReg(REG_TX1_ATTEN_1, buf, 2);
+        this->writeReg(AD9361_REG_TX1_ATTEN_1, buf, 2);
 
     if(tx2)
-        this->writeReg(REG_TX2_ATTEN_1, buf, 2);
+        this->writeReg(AD9361_REG_TX2_ATTEN_1, buf, 2);
 
     if(immed)
-        this->writeRegField(REG_TX2_DIG_ATTEN, IMMEDIATELY_UPDATE_TPC_ATTEN, 1);
+        this->writeRegField(AD9361_REG_TX2_DIG_ATTEN, IMMEDIATELY_UPDATE_TPC_ATTEN, 1);
 }
 uint32_t AD9361::getTXAttenuation(uint32_t tx_num)
 {
     uint8_t buf[2];
     uint32_t code;
 
-    this->readReg((tx_num == 1) ? REG_TX1_ATTEN_1 : REG_TX2_ATTEN_1, buf, 2);
+    this->readReg((tx_num == 1) ? AD9361_REG_TX1_ATTEN_1 : AD9361_REG_TX2_ATTEN_1, buf, 2);
 
     code = (buf[0] << 8) | buf[1];
     code *= 250;
@@ -3536,25 +4087,25 @@ void AD9361::muteTX(bool mute)
 
 void AD9361::setENSMMode(bool fdd, bool pinctrl)
 {
-    this->writeReg(REG_ENSM_MODE, fdd ? FDD_MODE : 0);
+    this->writeReg(AD9361_REG_ENSM_MODE, fdd ? FDD_MODE : 0);
 
-    uint8_t val = this->readReg(REG_ENSM_CONFIG_2);
+    uint8_t val = this->readReg(AD9361_REG_ENSM_CONFIG_2);
     val &= POWER_DOWN_RX_SYNTH | POWER_DOWN_TX_SYNTH | RX_SYNTH_READY_MASK | TX_SYNTH_READY_MASK;
 
     if(fdd)
-        this->writeReg(REG_ENSM_CONFIG_2, val | DUAL_SYNTH_MODE | (this->pdata->fdd_independent_mode ? FDD_EXTERNAL_CTRL_ENABLE : 0));
+        this->writeReg(AD9361_REG_ENSM_CONFIG_2, val | DUAL_SYNTH_MODE | (this->pdata->fdd_independent_mode ? FDD_EXTERNAL_CTRL_ENABLE : 0));
     else
-        this->writeReg(REG_ENSM_CONFIG_2, val | (this->pdata->tdd_use_dual_synth ? DUAL_SYNTH_MODE : 0) | (this->pdata->tdd_use_dual_synth ? 0 : (pinctrl ? SYNTH_ENABLE_PIN_CTRL_MODE : 0)));
+        this->writeReg(AD9361_REG_ENSM_CONFIG_2, val | (this->pdata->tdd_use_dual_synth ? DUAL_SYNTH_MODE : 0) | (this->pdata->tdd_use_dual_synth ? 0 : (pinctrl ? SYNTH_ENABLE_PIN_CTRL_MODE : 0)));
 }
 void AD9361::setENSMState(uint8_t state, bool pinctrl)
 {
     if(this->curr_ensm_state == ENSM_STATE_SLEEP)
     {
-        this->writeReg(REG_CLOCK_ENABLE, DIGITAL_POWER_UP | CLOCK_ENABLE_DFLT | BBPLL_ENABLE | (this->pdata->use_extclk ? XO_BYPASS : 0)); // Enable Clocks
+        this->writeReg(AD9361_REG_CLOCK_ENABLE, DIGITAL_POWER_UP | CLOCK_ENABLE_DFLT | BBPLL_ENABLE | (this->pdata->use_extclk ? XO_BYPASS : 0)); // Enable Clocks
 
         usleep(20);
 
-        this->writeReg(REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
+        this->writeReg(AD9361_REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
         this->controlVCOCalibration(false, true); // Enable VCO Cal
         this->controlVCOCalibration(true, true);
     }
@@ -3595,17 +4146,17 @@ void AD9361::setENSMState(uint8_t state, bool pinctrl)
         case ENSM_STATE_SLEEP:
             this->controlVCOCalibration(false, false); // Disable VCO Cal
             this->controlVCOCalibration(true, false);
-            this->writeReg(REG_ENSM_CONFIG_1, 0); // Clear To Alert
-            this->writeReg(REG_ENSM_CONFIG_1, this->pdata->fdd ? FORCE_TX_ON : FORCE_RX_ON);
+            this->writeReg(AD9361_REG_ENSM_CONFIG_1, 0); // Clear To Alert
+            this->writeReg(AD9361_REG_ENSM_CONFIG_1, this->pdata->fdd ? FORCE_TX_ON : FORCE_RX_ON);
             // Delay Flush Time 384 ADC clock cycles
 
             usleep(384000000UL / this->getClockRate(this->ref_clk_scale[ADC_CLK]));
 
-            this->writeReg(REG_ENSM_CONFIG_1, 0); /* Move to Wait*/
+            this->writeReg(AD9361_REG_ENSM_CONFIG_1, 0); /* Move to Wait*/
 
             usleep(1); // Wait for ENSM settle
 
-            this->writeReg(REG_CLOCK_ENABLE, (this->pdata->use_extclk ? XO_BYPASS : 0)); // Turn off all clocks
+            this->writeReg(AD9361_REG_CLOCK_ENABLE, (this->pdata->use_extclk ? XO_BYPASS : 0)); // Turn off all clocks
 
             this->curr_ensm_state = state;
 
@@ -3625,9 +4176,9 @@ void AD9361::setENSMState(uint8_t state, bool pinctrl)
             val2 &= ~(FORCE_TX_ON | FORCE_RX_ON);
             val2 |= TO_ALERT | FORCE_ALERT_STATE;
 
-            this->writeReg(REG_ENSM_CONFIG_1, val2);
+            this->writeReg(AD9361_REG_ENSM_CONFIG_1, val2);
 
-            this->checkCalibrationDone(REG_STATE, ENSM_STATE(~0), ENSM_STATE_ALERT);
+            this->checkCalibrationDone(AD9361_REG_STATE, ENSM_STATE(~0), ENSM_STATE_ALERT);
         }
         else
         {
@@ -3642,36 +4193,36 @@ void AD9361::setENSMState(uint8_t state, bool pinctrl)
 
         if(state == ENSM_STATE_TX)
         {
-            reg = REG_TX_CP_OVERRANGE_VCO_LOCK;
+            reg = AD9361_REG_TX_CP_OVERRANGE_VCO_LOCK;
             check = !(this->cached_synth_pd[0] & TX_SYNTH_VCO_POWER_DOWN);
         }
         else
         {
-            reg = REG_RX_CP_OVERRANGE_VCO_LOCK;
+            reg = AD9361_REG_RX_CP_OVERRANGE_VCO_LOCK;
             check = !(this->cached_synth_pd[1] & RX_SYNTH_VCO_POWER_DOWN);
         }
 
-        this->writeRegField(REG_ENSM_CONFIG_2, TXNRX_SPI_CTRL, state == ENSM_STATE_TX);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, TXNRX_SPI_CTRL, state == ENSM_STATE_TX);
 
         if(check)
             this->checkCalibrationDone(reg, VCO_LOCK, 1);
     }
 
-    this->writeReg(REG_ENSM_CONFIG_1, val);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, val);
 
     if((val & FORCE_RX_ON) && (this->agc_mode[0] == RF_GAIN_MGC || this->agc_mode[1] == RF_GAIN_MGC))
     {
-        uint8_t tmp = this->readReg(REG_SMALL_LMT_OVERLOAD_THRESH);
+        uint8_t tmp = this->readReg(AD9361_REG_SMALL_LMT_OVERLOAD_THRESH);
 
-        this->writeReg(REG_SMALL_LMT_OVERLOAD_THRESH, (tmp & SMALL_LMT_OVERLOAD_THRESH(~0)) | (this->agc_mode[0] == RF_GAIN_MGC ? FORCE_PD_RESET_RX1 : 0) | (this->agc_mode[1] == RF_GAIN_MGC ? FORCE_PD_RESET_RX2 : 0));
-        this->writeReg(REG_SMALL_LMT_OVERLOAD_THRESH, tmp & SMALL_LMT_OVERLOAD_THRESH(~0));
+        this->writeReg(AD9361_REG_SMALL_LMT_OVERLOAD_THRESH, (tmp & SMALL_LMT_OVERLOAD_THRESH(~0)) | (this->agc_mode[0] == RF_GAIN_MGC ? FORCE_PD_RESET_RX1 : 0) | (this->agc_mode[1] == RF_GAIN_MGC ? FORCE_PD_RESET_RX2 : 0));
+        this->writeReg(AD9361_REG_SMALL_LMT_OVERLOAD_THRESH, tmp & SMALL_LMT_OVERLOAD_THRESH(~0));
     }
 
     this->curr_ensm_state = state;
 }
 uint8_t AD9361::getENSMState()
 {
-    return this->readRegField(REG_STATE, ENSM_STATE(~0));
+    return this->readRegField(AD9361_REG_STATE, ENSM_STATE(~0));
 }
 void AD9361::forceENSMState(uint8_t state)
 {
@@ -3682,7 +4233,7 @@ void AD9361::forceENSMState(uint8_t state)
     if(dev_ensm_state == state)
         return;
 
-    uint8_t val = this->readReg(REG_ENSM_CONFIG_1);
+    uint8_t val = this->readReg(AD9361_REG_ENSM_CONFIG_1);
 
     if(val & ENABLE_ENSM_PIN_CTRL)
     {
@@ -3716,8 +4267,8 @@ void AD9361::forceENSMState(uint8_t state)
         break;
     }
 
-    this->writeReg(REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
-    this->writeReg(REG_ENSM_CONFIG_1, val);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, val);
 
     uint32_t timeout = 10;
 
@@ -3726,7 +4277,7 @@ void AD9361::forceENSMState(uint8_t state)
 }
 void AD9361::restoreENSMState(uint8_t state)
 {
-    uint8_t val = this->readReg(REG_ENSM_CONFIG_1);
+    uint8_t val = this->readReg(AD9361_REG_ENSM_CONFIG_1);
 
     /* We are restoring state only, so clear State bits first
     * which might have set while forcing a particular state
@@ -3751,14 +4302,14 @@ void AD9361::restoreENSMState(uint8_t state)
         break;
     }
 
-    this->writeReg(REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
-    this->writeReg(REG_ENSM_CONFIG_1, val);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, TO_ALERT | FORCE_ALERT_STATE);
+    this->writeReg(AD9361_REG_ENSM_CONFIG_1, val);
 
     if(this->ensm_pin_ctl_en)
     {
         val |= ENABLE_ENSM_PIN_CTRL;
 
-        this->writeReg(REG_ENSM_CONFIG_1, val);
+        this->writeReg(AD9361_REG_ENSM_CONFIG_1, val);
     }
 }
 
@@ -3773,14 +4324,14 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
     uint8_t(* tab)[3] = this->gt_info[band].tab;
     uint8_t index_max = this->gt_info[band].max_index;
 
-    this->writeRegField(REG_AGC_CONFIG_2, AGC_USE_FULL_GAIN_TABLE, !this->pdata->split_gt);
+    this->writeRegField(AD9361_REG_AGC_CONFIG_2, AGC_USE_FULL_GAIN_TABLE, !this->pdata->split_gt);
 
-    this->writeReg(REG_MAX_LMT_FULL_GAIN, index_max - 1); // Max Full/LMT Gain Table Index
+    this->writeReg(AD9361_REG_MAX_LMT_FULL_GAIN, index_max - 1); // Max Full/LMT Gain Table Index
 
     int8_t rx1_gain;
     int8_t rx2_gain;
 
-    uint8_t set_gain = this->readRegField(REG_RX1_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK);
+    uint8_t set_gain = this->readRegField(AD9361_REG_RX1_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK);
 
     if(this->current_table != (uint32_t)-1)
     {
@@ -3794,7 +4345,7 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
         rx1_gain = this->gt_info[band].abs_gain_tbl[set_gain];
     }
 
-    set_gain = this->readRegField(REG_RX2_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK);
+    set_gain = this->readRegField(AD9361_REG_RX2_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK);
 
     if(this->current_table != (uint32_t)-1)
     {
@@ -3810,7 +4361,7 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
 
     uint8_t lna = this->pdata->elna_ctrl.elna_in_gaintable_all_index_en ? EXT_LNA_CTRL : 0;
 
-    this->writeReg(REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | RECEIVER_SELECT(dest)); // Start Gain Table Clock
+    this->writeReg(AD9361_REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | RECEIVER_SELECT(dest)); // Start Gain Table Clock
 
     uint8_t lpf_tia_mask;
 
@@ -3824,22 +4375,22 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
 
     for(uint8_t i = 0; i < index_max; i++)
     {
-        this->writeReg(REG_GAIN_TABLE_ADDRESS, i); // Gain Table Index
-        this->writeReg(REG_GAIN_TABLE_WRITE_DATA1, tab[i][0] | lna); // Ext LNA, Int LNA, & Mixer Gain Word
-        this->writeReg(REG_GAIN_TABLE_WRITE_DATA2, tab[i][1]); // TIA & LPF Word
-        this->writeReg(REG_GAIN_TABLE_WRITE_DATA3, tab[i][2]); // DC Cal bit & Dig Gain Word
-        this->writeReg(REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | WRITE_GAIN_TABLE | RECEIVER_SELECT(dest)); // Gain Table Index
-        this->writeReg(REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay 3 ADCCLK/16 cycles
-        this->writeReg(REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
+        this->writeReg(AD9361_REG_GAIN_TABLE_ADDRESS, i); // Gain Table Index
+        this->writeReg(AD9361_REG_GAIN_TABLE_WRITE_DATA1, tab[i][0] | lna); // Ext LNA, Int LNA, & Mixer Gain Word
+        this->writeReg(AD9361_REG_GAIN_TABLE_WRITE_DATA2, tab[i][1]); // TIA & LPF Word
+        this->writeReg(AD9361_REG_GAIN_TABLE_WRITE_DATA3, tab[i][2]); // DC Cal bit & Dig Gain Word
+        this->writeReg(AD9361_REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | WRITE_GAIN_TABLE | RECEIVER_SELECT(dest)); // Gain Table Index
+        this->writeReg(AD9361_REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay 3 ADCCLK/16 cycles
+        this->writeReg(AD9361_REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
 
         if((tab[i][1] & lpf_tia_mask) == 0x20)
             this->tx_quad_lpf_tia_match = i;
     }
 
-    this->writeReg(REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | RECEIVER_SELECT(dest)); // Clear Write Bit
-    this->writeReg(REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
-    this->writeReg(REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
-    this->writeReg(REG_GAIN_TABLE_CONFIG, 0); // Stop Gain Table Clock
+    this->writeReg(AD9361_REG_GAIN_TABLE_CONFIG, START_GAIN_TABLE_CLOCK | RECEIVER_SELECT(dest)); // Clear Write Bit
+    this->writeReg(AD9361_REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
+    this->writeReg(AD9361_REG_GAIN_TABLE_READ_DATA1, 0); // Dummy Write to delay ~1u
+    this->writeReg(AD9361_REG_GAIN_TABLE_CONFIG, 0); // Stop Gain Table Clock
 
     this->current_table = band;
 
@@ -3852,7 +4403,7 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
         set_gain = index_max - 1;
     }
 
-    this->writeRegField(REG_RX1_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK, set_gain); // Rx1 Full/LMT Gain Index
+    this->writeRegField(AD9361_REG_RX1_MANUAL_LMT_FULL_GAIN, RX_FULL_TBL_IDX_MASK, set_gain); // Rx1 Full/LMT Gain Index
 
     try
     {
@@ -3863,7 +4414,7 @@ void AD9361::loadGainTable(uint64_t freq, uint8_t dest)
         set_gain = index_max - 1;
     }
 
-    this->writeReg(REG_RX2_MANUAL_LMT_FULL_GAIN, set_gain); // Rx2 Full/LMT Gain Index
+    this->writeReg(AD9361_REG_RX2_MANUAL_LMT_FULL_GAIN, set_gain); // Rx2 Full/LMT Gain Index
 }
 uint8_t AD9361::findGainTableInfex(uint64_t freq)
 {
@@ -3898,19 +4449,19 @@ void AD9361::getSplitTableGain(uint16_t idx_reg, AD9361::RFRXGain *rx_gain)
         throw std::invalid_argument("AD9361: RX gain structure is null");
 
     rx_gain->fgt_lmt_index = this->readRegField(idx_reg, FULL_TABLE_GAIN_INDEX(~0));
-    uint8_t tbl_addr = this->readReg(REG_GAIN_TABLE_ADDRESS);
+    uint8_t tbl_addr = this->readReg(AD9361_REG_GAIN_TABLE_ADDRESS);
 
-    this->writeReg(REG_GAIN_TABLE_ADDRESS, rx_gain->fgt_lmt_index);
+    this->writeReg(AD9361_REG_GAIN_TABLE_ADDRESS, rx_gain->fgt_lmt_index);
 
-    uint8_t val = this->readReg(REG_GAIN_TABLE_READ_DATA1);
+    uint8_t val = this->readReg(AD9361_REG_GAIN_TABLE_READ_DATA1);
     rx_gain->lna_index = TO_LNA_GAIN(val);
     rx_gain->mixer_index = TO_MIXER_GM_GAIN(val);
 
-    rx_gain->tia_index = this->readRegField(REG_GAIN_TABLE_READ_DATA2, TIA_GAIN);
+    rx_gain->tia_index = this->readRegField(AD9361_REG_GAIN_TABLE_READ_DATA2, TIA_GAIN);
 
     rx_gain->lmt_gain = lna_table[this->getCurrentGainTable() - AD9361::RXGainTableName::MAX][rx_gain->lna_index] + mixer_table[this->getCurrentGainTable() - AD9361::RXGainTableName::MAX][rx_gain->mixer_index] + tia_table[rx_gain->tia_index];
 
-    this->writeReg(REG_GAIN_TABLE_ADDRESS, tbl_addr);
+    this->writeReg(AD9361_REG_GAIN_TABLE_ADDRESS, tbl_addr);
 
     // Read LPF Index
     rx_gain->lpf_gain = this->readRegField(idx_reg + 1, LPF_GAIN_RX(~0));
@@ -3945,14 +4496,14 @@ void AD9361::getRXGain(uint8_t rx_id, AD9361::RFRXGain *rx_gain)
 
     if(rx_id == 1)
     {
-        idx_reg = REG_GAIN_RX1;
+        idx_reg = AD9361_REG_GAIN_RX1;
         gain_ctl_shift = RX1_GAIN_CTRL_SHIFT;
         rx_enable_mask = RX_CHANNEL_ENABLE(RX_1);
         fast_atk_shift = RX1_FAST_ATK_SHIFT;
     }
     else if(rx_id == 2)
     {
-        idx_reg = REG_GAIN_RX2;
+        idx_reg = AD9361_REG_GAIN_RX2;
         gain_ctl_shift = RX2_GAIN_CTRL_SHIFT;
         rx_enable_mask = RX_CHANNEL_ENABLE(RX_2);
         fast_atk_shift = RX2_FAST_ATK_SHIFT;
@@ -3962,12 +4513,12 @@ void AD9361::getRXGain(uint8_t rx_id, AD9361::RFRXGain *rx_gain)
         throw std::invalid_argument("AD9361: Unknown RX path " + std::to_string(rx_id));
     }
 
-    uint8_t val = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, rx_enable_mask);
+    uint8_t val = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, rx_enable_mask);
 
     if(!val)
         throw std::runtime_error("AD9361: RX" + std::to_string(rx_id) + " is not enabled");
 
-    val = this->readReg(REG_AGC_CONFIG_1);
+    val = this->readReg(AD9361_REG_AGC_CONFIG_1);
     val = (val >> gain_ctl_shift) & RX_GAIN_CTL_MASK;
 
     if(val == RX_GAIN_CTL_AGC_FAST_ATK)
@@ -3975,7 +4526,7 @@ void AD9361::getRXGain(uint8_t rx_id, AD9361::RFRXGain *rx_gain)
         /* In fast attack mode check whether Fast attack state machine
         * has locked gain, if not then we can not read gain.
         */
-        val = this->readReg(REG_FAST_ATTACK_STATE);
+        val = this->readReg(AD9361_REG_FAST_ATTACK_STATE);
         val = (val >> fast_atk_shift) & FAST_ATK_MASK;
 
         if(val != FAST_ATK_GAIN_LOCKED)
@@ -4026,12 +4577,12 @@ void AD9361::setRXGain(uint8_t rx_id, AD9361::RFRXGain *rx_gain)
 
     if(rx_id == 1)
     {
-        idx_reg = REG_RX1_MANUAL_LMT_FULL_GAIN;
+        idx_reg = AD9361_REG_RX1_MANUAL_LMT_FULL_GAIN;
         gain_ctl_shift = RX1_GAIN_CTRL_SHIFT;
     }
     else if(rx_id == 2)
     {
-        idx_reg = REG_RX2_MANUAL_LMT_FULL_GAIN;
+        idx_reg = AD9361_REG_RX2_MANUAL_LMT_FULL_GAIN;
         gain_ctl_shift = RX2_GAIN_CTRL_SHIFT;
     }
     else
@@ -4039,7 +4590,7 @@ void AD9361::setRXGain(uint8_t rx_id, AD9361::RFRXGain *rx_gain)
         throw std::invalid_argument("AD9361: Unknown RX path " + std::to_string(rx_id));
     }
 
-    uint8_t val = this->readReg(REG_AGC_CONFIG_1);
+    uint8_t val = this->readReg(AD9361_REG_AGC_CONFIG_1);
     val = (val >> gain_ctl_shift) & RX_GAIN_CTL_MASK;
 
     if(val != RX_GAIN_CTL_MGC)
@@ -4085,28 +4636,28 @@ void AD9361::initRFPLLVCO(bool tx, uint64_t freq, uint32_t ref_freq)
             this->current_rx_use_tdd_table = true;
     }
 
-    uint16_t offs = tx ? (REG_TX_VCO_OUTPUT - REG_RX_VCO_OUTPUT) : 0;
+    uint16_t offs = tx ? (AD9361_REG_TX_VCO_OUTPUT - AD9361_REG_RX_VCO_OUTPUT) : 0;
 
     uint8_t i = 0;
 
     while(i < SYNTH_LUT_SIZE && tab[i].VCO_MHz > freq)
         i++;
 
-    this->writeReg(REG_RX_VCO_OUTPUT + offs, VCO_OUTPUT_LEVEL(tab[i].VCO_Output_Level) | PORB_VCO_LOGIC);
-    this->writeRegField(REG_RX_ALC_VARACTOR + offs, VCO_VARACTOR(~0), tab[i].VCO_Varactor);
-    this->writeReg(REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_REF(tab[i].VCO_Bias_Ref) | VCO_BIAS_TCF(tab[i].VCO_Bias_Tcf));
+    this->writeReg(AD9361_REG_RX_VCO_OUTPUT + offs, VCO_OUTPUT_LEVEL(tab[i].VCO_Output_Level) | PORB_VCO_LOGIC);
+    this->writeRegField(AD9361_REG_RX_ALC_VARACTOR + offs, VCO_VARACTOR(~0), tab[i].VCO_Varactor);
+    this->writeReg(AD9361_REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_REF(tab[i].VCO_Bias_Ref) | VCO_BIAS_TCF(tab[i].VCO_Bias_Tcf));
 
-    this->writeReg(REG_RX_FORCE_VCO_TUNE_1 + offs, VCO_CAL_OFFSET(tab[i].VCO_Cal_Offset));
-    this->writeReg(REG_RX_VCO_VARACTOR_CTRL_1 + offs, VCO_VARACTOR_REFERENCE(tab[i].VCO_Varactor_Reference));
+    this->writeReg(AD9361_REG_RX_FORCE_VCO_TUNE_1 + offs, VCO_CAL_OFFSET(tab[i].VCO_Cal_Offset));
+    this->writeReg(AD9361_REG_RX_VCO_VARACTOR_CTRL_1 + offs, VCO_VARACTOR_REFERENCE(tab[i].VCO_Varactor_Reference));
 
-    this->writeReg(REG_RX_VCO_CAL_REF + offs, VCO_CAL_REF_TCF(0));
+    this->writeReg(AD9361_REG_RX_VCO_CAL_REF + offs, VCO_CAL_REF_TCF(0));
 
-    this->writeReg(REG_RX_VCO_VARACTOR_CTRL_0 + offs, VCO_VARACTOR_OFFSET(0) | VCO_VARACTOR_REFERENCE_TCF(7));
+    this->writeReg(AD9361_REG_RX_VCO_VARACTOR_CTRL_0 + offs, VCO_VARACTOR_OFFSET(0) | VCO_VARACTOR_REFERENCE_TCF(7));
 
-    this->writeRegField(REG_RX_CP_CURRENT + offs, CHARGE_PUMP_CURRENT(~0), tab[i].Charge_Pump_Current);
-    this->writeReg(REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C2(tab[i].LF_C2) | LOOP_FILTER_C1(tab[i].LF_C1));
-    this->writeReg(REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_R1(tab[i].LF_R1) | LOOP_FILTER_C3(tab[i].LF_C3));
-    this->writeReg(REG_RX_LOOP_FILTER_3 + offs, LOOP_FILTER_R3(tab[i].LF_R3));
+    this->writeRegField(AD9361_REG_RX_CP_CURRENT + offs, CHARGE_PUMP_CURRENT(~0), tab[i].Charge_Pump_Current);
+    this->writeReg(AD9361_REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C2(tab[i].LF_C2) | LOOP_FILTER_C1(tab[i].LF_C1));
+    this->writeReg(AD9361_REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_R1(tab[i].LF_R1) | LOOP_FILTER_C3(tab[i].LF_C3));
+    this->writeReg(AD9361_REG_RX_LOOP_FILTER_3 + offs, LOOP_FILTER_R3(tab[i].LF_R3));
 }
 
 uint8_t AD9361::readFastLockVal(bool tx, uint8_t profile, uint8_t word)
@@ -4114,39 +4665,39 @@ uint8_t AD9361::readFastLockVal(bool tx, uint8_t profile, uint8_t word)
     uint16_t offs = 0;
 
     if(tx)
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
 
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_ADDR + offs, RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(word));
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_ADDR + offs, RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(word));
 
-    return this->readReg(REG_RX_FAST_LOCK_PROGRAM_READ + offs);
+    return this->readReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_READ + offs);
 }
 void AD9361::writeFastLockVal(bool tx, uint8_t profile, uint8_t word, uint8_t val, bool last)
 {
     uint16_t offs = 0;
 
     if(tx)
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
 
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_ADDR + offs, RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(word));
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_DATA + offs, val);
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, RX_FAST_LOCK_PROGRAM_WRITE | RX_FAST_LOCK_PROGRAM_CLOCK_ENABLE);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_ADDR + offs, RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(word));
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_DATA + offs, val);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, RX_FAST_LOCK_PROGRAM_WRITE | RX_FAST_LOCK_PROGRAM_CLOCK_ENABLE);
 
     if(last) // Stop Clocks
-        this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
 }
 void AD9361::loadFastLockData(bool tx, uint8_t profile, uint8_t *values)
 {
     uint16_t offs = 0;
 
     if(tx)
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
 
     uint8_t buf[4];
 
     buf[0] = values[0];
     buf[1] = RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(0);
 
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_DATA + offs, buf, 2);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_DATA + offs, buf, 2);
 
     for(uint8_t i = 1; i < RX_FAST_LOCK_CONFIG_WORD_NUM; i++)
     {
@@ -4155,11 +4706,11 @@ void AD9361::loadFastLockData(bool tx, uint8_t profile, uint8_t *values)
         buf[2] = values[i];
         buf[3] = RX_FAST_LOCK_PROFILE_ADDR(profile) | RX_FAST_LOCK_PROFILE_WORD(i);
 
-        this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, buf, 4);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, buf, 4);
     }
 
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, RX_FAST_LOCK_PROGRAM_WRITE | RX_FAST_LOCK_PROGRAM_CLOCK_ENABLE);
-    this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, RX_FAST_LOCK_PROGRAM_WRITE | RX_FAST_LOCK_PROGRAM_CLOCK_ENABLE);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
 
     this->fastlock.entry[tx][profile].flags = 1;
     this->fastlock.entry[tx][profile].alc_orig = values[15];
@@ -4175,53 +4726,53 @@ void AD9361::storeCurrentFastLockData(bool tx, uint8_t profile)
     uint16_t offs = 0;
 
     if(tx)
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
 
     uint8_t val[16];
 
-    val[0] = this->readReg(REG_RX_INTEGER_BYTE_0 + offs);
-    val[1] = this->readReg(REG_RX_INTEGER_BYTE_1 + offs);
-    val[2] = this->readReg(REG_RX_FRACT_BYTE_0 + offs);
-    val[3] = this->readReg(REG_RX_FRACT_BYTE_1 + offs);
-    val[4] = this->readReg(REG_RX_FRACT_BYTE_2 + offs);
+    val[0] = this->readReg(AD9361_REG_RX_INTEGER_BYTE_0 + offs);
+    val[1] = this->readReg(AD9361_REG_RX_INTEGER_BYTE_1 + offs);
+    val[2] = this->readReg(AD9361_REG_RX_FRACT_BYTE_0 + offs);
+    val[3] = this->readReg(AD9361_REG_RX_FRACT_BYTE_1 + offs);
+    val[4] = this->readReg(AD9361_REG_RX_FRACT_BYTE_2 + offs);
 
-    uint8_t x = this->readRegField(REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_REF(~0));
-    uint8_t y = this->readRegField(REG_RX_ALC_VARACTOR + offs, VCO_VARACTOR(~0));
+    uint8_t x = this->readRegField(AD9361_REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_REF(~0));
+    uint8_t y = this->readRegField(AD9361_REG_RX_ALC_VARACTOR + offs, VCO_VARACTOR(~0));
     val[5] = (x << 4) | y;
 
-    x = this->readRegField(REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_TCF(~0));
-    y = this->readRegField(REG_RX_CP_CURRENT + offs, CHARGE_PUMP_CURRENT(~0));
+    x = this->readRegField(AD9361_REG_RX_VCO_BIAS_1 + offs, VCO_BIAS_TCF(~0));
+    y = this->readRegField(AD9361_REG_RX_CP_CURRENT + offs, CHARGE_PUMP_CURRENT(~0));
     /* Wide BW option: N = 1
     * Set init and steady state values to the same - let user space handle it
     */
     val[6] = (x << 6) | y;
     val[7] = y;
 
-    x = this->readRegField(REG_RX_LOOP_FILTER_3 + offs, LOOP_FILTER_R3(~0));
+    x = this->readRegField(AD9361_REG_RX_LOOP_FILTER_3 + offs, LOOP_FILTER_R3(~0));
     val[8] = (x << 4) | x;
 
-    x = this->readRegField(REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_C3(~0));
+    x = this->readRegField(AD9361_REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_C3(~0));
     val[9] = (x << 4) | x;
 
-    x = this->readRegField(REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C1(~0));
-    y = this->readRegField(REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C2(~0));
+    x = this->readRegField(AD9361_REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C1(~0));
+    y = this->readRegField(AD9361_REG_RX_LOOP_FILTER_1 + offs, LOOP_FILTER_C2(~0));
     val[10] = (x << 4) | y;
 
-    x = this->readRegField(REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_R1(~0));
+    x = this->readRegField(AD9361_REG_RX_LOOP_FILTER_2 + offs, LOOP_FILTER_R1(~0));
     val[11] = (x << 4) | x;
 
-    x = this->readRegField(REG_RX_VCO_VARACTOR_CTRL_0 + offs, VCO_VARACTOR_REFERENCE_TCF(~0));
-    y = this->readRegField(REG_RFPLL_DIVIDERS, tx ? TX_VCO_DIVIDER(~0) : RX_VCO_DIVIDER(~0));
+    x = this->readRegField(AD9361_REG_RX_VCO_VARACTOR_CTRL_0 + offs, VCO_VARACTOR_REFERENCE_TCF(~0));
+    y = this->readRegField(AD9361_REG_RFPLL_DIVIDERS, tx ? TX_VCO_DIVIDER(~0) : RX_VCO_DIVIDER(~0));
     val[12] = (x << 4) | y;
 
-    x = this->readRegField(REG_RX_FORCE_VCO_TUNE_1 + offs, VCO_CAL_OFFSET(~0));
-    y = this->readRegField(REG_RX_VCO_VARACTOR_CTRL_1 + offs, VCO_VARACTOR_REFERENCE(~0));
+    x = this->readRegField(AD9361_REG_RX_FORCE_VCO_TUNE_1 + offs, VCO_CAL_OFFSET(~0));
+    y = this->readRegField(AD9361_REG_RX_VCO_VARACTOR_CTRL_1 + offs, VCO_VARACTOR_REFERENCE(~0));
     val[13] = (x << 4) | y;
 
-    val[14] = this->readReg(REG_RX_FORCE_VCO_TUNE_0 + offs);
+    val[14] = this->readReg(AD9361_REG_RX_FORCE_VCO_TUNE_0 + offs);
 
-    x = this->readRegField(REG_RX_FORCE_ALC + offs, FORCE_ALC_WORD(~0));
-    y = this->readRegField(REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE);
+    x = this->readRegField(AD9361_REG_RX_FORCE_ALC + offs, FORCE_ALC_WORD(~0));
+    y = this->readRegField(AD9361_REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE);
     val[15] = (x << 1) | y;
 
     this->loadFastLockData(tx, profile, val);
@@ -4233,7 +4784,7 @@ void AD9361::prepareFastLockProfile(bool tx, uint8_t profile, bool prepare)
 
     if(tx)
     {
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
         ready_mask = TX_SYNTH_READY_MASK;
     }
 
@@ -4241,25 +4792,25 @@ void AD9361::prepareFastLockProfile(bool tx, uint8_t profile, bool prepare)
 
     if(prepare && !is_prepared)
     {
-        this->writeReg(REG_RX_FAST_LOCK_SETUP_INIT_DELAY + offs, (tx ? this->pdata->tx_fastlock_delay_ns : this->pdata->rx_fastlock_delay_ns) / 250);
-        this->writeReg(REG_RX_FAST_LOCK_SETUP + offs, RX_FAST_LOCK_PROFILE(profile) | RX_FAST_LOCK_MODE_ENABLE);
-        this->writeReg(REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_SETUP_INIT_DELAY + offs, (tx ? this->pdata->tx_fastlock_delay_ns : this->pdata->rx_fastlock_delay_ns) / 250);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_SETUP + offs, RX_FAST_LOCK_PROFILE(profile) | RX_FAST_LOCK_MODE_ENABLE);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_PROGRAM_CTRL + offs, 0);
 
-        this->writeRegField(REG_ENSM_CONFIG_2, ready_mask, 1);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, ready_mask, 1);
         this->controlVCOCalibration(tx, false);
     }
     else if(!prepare && is_prepared)
     {
-        this->writeReg(REG_RX_FAST_LOCK_SETUP + offs, 0);
+        this->writeReg(AD9361_REG_RX_FAST_LOCK_SETUP + offs, 0);
 
         // Workaround: Exiting Fastlock Mode
-        this->writeRegField(REG_RX_FORCE_ALC + offs, FORCE_ALC_ENABLE, 1);
-        this->writeRegField(REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE, 1);
-        this->writeRegField(REG_RX_FORCE_ALC + offs, FORCE_ALC_ENABLE, 0);
-        this->writeRegField(REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE, 0);
+        this->writeRegField(AD9361_REG_RX_FORCE_ALC + offs, FORCE_ALC_ENABLE, 1);
+        this->writeRegField(AD9361_REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE, 1);
+        this->writeRegField(AD9361_REG_RX_FORCE_ALC + offs, FORCE_ALC_ENABLE, 0);
+        this->writeRegField(AD9361_REG_RX_FORCE_VCO_TUNE_1 + offs, FORCE_VCO_TUNE, 0);
 
         this->controlVCOCalibration(tx, true);
-        this->writeRegField(REG_ENSM_CONFIG_2, ready_mask, 0);
+        this->writeRegField(AD9361_REG_ENSM_CONFIG_2, ready_mask, 0);
 
         this->fastlock.current_profile[tx] = 0;
     }
@@ -4269,7 +4820,7 @@ void AD9361::recallFastLockProfile(bool tx, uint8_t profile)
     uint16_t offs = 0;
 
     if(tx)
-        offs = REG_TX_FAST_LOCK_SETUP - REG_RX_FAST_LOCK_SETUP;
+        offs = AD9361_REG_TX_FAST_LOCK_SETUP - AD9361_REG_RX_FAST_LOCK_SETUP;
 
     if(this->fastlock.entry[tx][profile].flags != 1)
         throw std::invalid_argument("AD9361: Fastlock profile " + std::to_string(profile) + " is not loaded");
@@ -4280,7 +4831,7 @@ void AD9361::recallFastLockProfile(bool tx, uint8_t profile)
     uint8_t curr;
 
     if(current_profile == 0)
-        curr = this->readRegField(REG_RX_FORCE_ALC + offs, FORCE_ALC_WORD(~0)) << 1;
+        curr = this->readRegField(AD9361_REG_RX_FORCE_ALC + offs, FORCE_ALC_WORD(~0)) << 1;
     else
         curr = this->fastlock.entry[tx][current_profile - 1].alc_written;
 
@@ -4302,7 +4853,7 @@ void AD9361::recallFastLockProfile(bool tx, uint8_t profile)
 
     this->fastlock.current_profile[tx] = profile + 1;
 
-    this->writeReg(REG_RX_FAST_LOCK_SETUP + offs, RX_FAST_LOCK_PROFILE(profile) | (this->pdata->trx_fastlock_pinctrl_en[tx] ? RX_FAST_LOCK_PROFILE_PIN_SELECT : 0) | RX_FAST_LOCK_MODE_ENABLE);
+    this->writeReg(AD9361_REG_RX_FAST_LOCK_SETUP + offs, RX_FAST_LOCK_PROFILE(profile) | (this->pdata->trx_fastlock_pinctrl_en[tx] ? RX_FAST_LOCK_PROFILE_PIN_SELECT : 0) | RX_FAST_LOCK_MODE_ENABLE);
 }
 
 void AD9361::doMCSStage(uint8_t stage)
@@ -4312,10 +4863,10 @@ void AD9361::doMCSStage(uint8_t stage)
     switch(stage)
     {
         case 1:
-            this->writeRegField(REG_ENSM_CONFIG_2, POWER_DOWN_TX_SYNTH | POWER_DOWN_RX_SYNTH, 0);
+            this->writeRegField(AD9361_REG_ENSM_CONFIG_2, POWER_DOWN_TX_SYNTH | POWER_DOWN_RX_SYNTH, 0);
 
-            this->writeRegField(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_BB_ENABLE | MCS_BBPLL_ENABLE | MCS_RF_ENABLE);
-            this->writeRegField(REG_CP_BLEED_CURRENT, MCS_REFCLK_SCALE_EN, 1);
+            this->writeRegField(AD9361_REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_BB_ENABLE | MCS_BBPLL_ENABLE | MCS_RF_ENABLE);
+            this->writeRegField(AD9361_REG_CP_BLEED_CURRENT, MCS_REFCLK_SCALE_EN, 1);
         break;
         case 2:
             /*
@@ -4328,169 +4879,30 @@ void AD9361::doMCSStage(uint8_t stage)
             this->sync_gpio.controller->setValue(this->sync_gpio.gpio, this->sync_gpio.invert ? AXIGPIO::Value::HIGH : AXIGPIO::Value::LOW);
         break;
         case 3:
-            this->writeRegField(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_BB_ENABLE | MCS_DIGITAL_CLK_ENABLE | MCS_RF_ENABLE);
+            this->writeRegField(AD9361_REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_BB_ENABLE | MCS_DIGITAL_CLK_ENABLE | MCS_RF_ENABLE);
         break;
         case 4:
             this->sync_gpio.controller->setValue(this->sync_gpio.gpio, this->sync_gpio.invert ? AXIGPIO::Value::LOW : AXIGPIO::Value::HIGH);
             this->sync_gpio.controller->setValue(this->sync_gpio.gpio, this->sync_gpio.invert ? AXIGPIO::Value::HIGH : AXIGPIO::Value::LOW);
         break;
         case 5:
-            this->writeRegField(REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_RF_ENABLE);
+            this->writeRegField(AD9361_REG_MULTICHIP_SYNC_AND_TX_MON_CTRL, mask, MCS_RF_ENABLE);
         break;
     }
 }
 
 /*
-static int32_t ad9361_int_loopback_fix_ch_cross(bool enable)
-{
-    // Loopback works only TX1->RX1 or RX2->RX2
-    if(!this->pdata->rx2tx2 && this->pdata->rx1tx1_mode_use_rx_num != this->pdata->rx1tx1_mode_use_tx_num)
-        return this->enableTX(TX_1 | TX_2, enable ? this->pdata->rx1tx1_mode_use_rx_num : this->pdata->rx1tx1_mode_use_tx_num);
-
-    return 0;
-}
-int32_t ad9361_bist_loopback(int32_t mode)
-{
-    uint32_t sp_hd, reg;
-
-    DBGPRINTLN_CTX("BIST loopback mode %"PRId32, mode);
-
-    reg = this->readReg(REG_OBSERVE_CONFIG);
-
-    this->bist_loopback_mode = mode;
-
-    switch(mode)
-    {
-        case 0:
-            axi_ad9361_set_hdl_loopback(0);
-            ad9361_int_loopback_fix_ch_cross(false);
-
-            reg &= ~(DATA_PORT_SP_HD_LOOP_TEST_OE | DATA_PORT_LOOP_TEST_ENABLE);
-
-            return this->writeReg(REG_OBSERVE_CONFIG, reg);
-        case 1:
-            // loopback (AD9361 internal) TX->RX
-            axi_ad9361_set_hdl_loopback(0);
-            ad9361_int_loopback_fix_ch_cross(true);
-
-            sp_hd = this->readReg(REG_PARALLEL_PORT_CONF_3);
-
-            if((sp_hd & SINGLE_PORT_MODE) && (sp_hd & HALF_DUPLEX_MODE))
-                reg |= DATA_PORT_SP_HD_LOOP_TEST_OE;
-            else
-                reg &= ~DATA_PORT_SP_HD_LOOP_TEST_OE;
-
-            reg |= DATA_PORT_LOOP_TEST_ENABLE;
-
-            return this->writeReg(REG_OBSERVE_CONFIG, reg);
-        case 2:
-            // loopback (FPGA internal) RX->TX
-            axi_ad9361_set_hdl_loopback(1);
-            ad9361_int_loopback_fix_ch_cross(false);
-
-            reg &= ~(DATA_PORT_SP_HD_LOOP_TEST_OE | DATA_PORT_LOOP_TEST_ENABLE);
-
-            return this->writeReg(REG_OBSERVE_CONFIG, reg);
-        default:
-            return -EINVAL;
-    }
-}
-void ad9361_get_bist_loopback(int32_t* mode)
-{
-    *mode = this->bist_loopback_mode;
-}
-int32_t ad9361_bist_prbs(enum ad9361_bist_mode mode)
-{
-    uint32_t reg = 0;
-
-    DBGPRINTLN_CTX("BIST PRBS mode %"PRId32, mode);
-
-    this->bist_prbs_mode = mode;
-
-    switch(mode)
-    {
-        case BIST_DISABLE:
-            reg = 0;
-        break;
-        case BIST_INJ_TX:
-            reg = BIST_CTRL_POINT(0) | BIST_ENABLE;
-        break;
-        case BIST_INJ_RX:
-            reg = BIST_CTRL_POINT(2) | BIST_ENABLE;
-        break;
-    };
-
-    this->bist_config = reg;
-
-    return this->writeReg(REG_BIST_CONFIG, reg);
-}
-void ad9361_get_bist_prbs(enum ad9361_bist_mode* mode)
-{
-    *mode = this->bist_prbs_mode;
-}
-int32_t ad9361_bist_tone(enum ad9361_bist_mode mode, uint32_t freq_Hz, uint32_t level_dB, uint32_t mask)
-{
-    uint32_t clk = 0;
-    uint32_t reg = 0, reg1, reg_mask;
-
-    DBGPRINTLN_CTX("BIST tone mode %"PRId32, mode);
-
-    this->bist_tone_mode = mode;
-    this->bist_tone_freq_Hz = freq_Hz;
-    this->bist_tone_level_dB = level_dB;
-    this->bist_tone_mask = mask;
-
-    switch(mode)
-    {
-        case BIST_DISABLE:
-            reg = 0;
-        break;
-        case BIST_INJ_TX:
-            clk = this->getClockRate(this->ref_clk_scale[TX_SAMPL_CLK]);
-            reg = BIST_CTRL_POINT(0) | BIST_ENABLE;
-        break;
-        case BIST_INJ_RX:
-            clk = this->getClockRate(this->ref_clk_scale[RX_SAMPL_CLK]);
-            reg = BIST_CTRL_POINT(2) | BIST_ENABLE;
-        break;
-    };
-
-    reg |= TONE_PRBS;
-    reg |= TONE_LEVEL(level_dB / 6);
-
-    if(freq_Hz < 4)
-        reg |= TONE_FREQ(freq_Hz);
-    else if(clk)
-        reg |= TONE_FREQ(DIV_ROUND(freq_Hz * 32, clk) - 1);
-
-    reg_mask = BIST_MASK_CHANNEL_1_I_DATA | BIST_MASK_CHANNEL_1_Q_DATA | BIST_MASK_CHANNEL_2_I_DATA | BIST_MASK_CHANNEL_2_Q_DATA;
-
-    reg1 = ((mask << 2) & reg_mask);
-    this->writeReg(REG_BIST_AND_DATA_PORT_TEST_CONFIG, reg1);
-
-    this->bist_config = reg;
-
-    return this->writeReg(REG_BIST_CONFIG, reg);
-}
-void ad9361_get_bist_tone(enum ad9361_bist_mode* mode, uint32_t* freq_Hz, uint32_t* level_dB, uint32_t* mask)
-{
-    *mode = this->bist_tone_mode;
-    *freq_Hz = this->bist_tone_freq_Hz;
-    *level_dB = this->bist_tone_level_dB;
-    *mask = this->bist_tone_mask;
-}
-
 int32_t ad9361_set_gain_ctrl_mode(struct ad9361_rf_gain_ctrl* gain_ctrl)
 {
     int32_t rc = 0;
     uint32_t gain_ctl_shift, mode;
     uint8_t val;
 
-    rc = this->readReg(REG_AGC_CONFIG_1, &val, 1);
+    rc = this->readReg(AD9361_REG_AGC_CONFIG_1, &val, 1);
 
     if(rc < 0)
     {
-        DBGPRINTLN_CTX("Unable to read AGC_CONFIG_1 register (%"PRIX32")", REG_AGC_CONFIG_1);
+        DBGPRINTLN_CTX("Unable to read AGC_CONFIG_1 register (%"PRIX32")", AD9361_REG_AGC_CONFIG_1);
 
         return rc;
     }
@@ -4546,11 +4958,11 @@ int32_t ad9361_set_gain_ctrl_mode(struct ad9361_rf_gain_ctrl* gain_ctrl)
     else
         val &= ~SLOW_ATTACK_HYBRID_MODE;
 
-    rc = this->writeReg(REG_AGC_CONFIG_1, val);
+    rc = this->writeReg(AD9361_REG_AGC_CONFIG_1, val);
 
     if(rc < 0)
     {
-        DBGPRINTLN_CTX("Unable to write AGC_CONFIG_1 register (%"PRIX32")", REG_AGC_CONFIG_1);
+        DBGPRINTLN_CTX("Unable to write AGC_CONFIG_1 register (%"PRIX32")", AD9361_REG_AGC_CONFIG_1);
 
         return rc;
     }
@@ -4567,7 +4979,7 @@ int32_t ad9361_read_rssi(struct ad9361_rf_rssi* rssi)
     uint8_t reg_val_buf[6];
     int32_t rc;
 
-    rc = this->readReg(REG_PREAMBLE_LSB, reg_val_buf, ARRAY_SIZE(reg_val_buf));
+    rc = this->readReg(AD9361_REG_PREAMBLE_LSB, reg_val_buf, ARRAY_SIZE(reg_val_buf));
 
     if(rssi->ant == 1)
     {
@@ -4634,14 +5046,14 @@ static int32_t ad9361_verify_fir_filter_coef(enum ad9361_fir_dest dest, uint32_t
 
     if(dest & FIR_IS_RX)
     {
-        gain = this->readReg(REG_RX_FILTER_GAIN);
+        gain = this->readReg(AD9361_REG_RX_FILTER_GAIN);
 
-        offs = REG_RX_FILTER_COEF_ADDR - REG_TX_FILTER_COEF_ADDR;
+        offs = AD9361_REG_RX_FILTER_COEF_ADDR - AD9361_REG_TX_FILTER_COEF_ADDR;
 
-        this->writeReg(REG_RX_FILTER_GAIN, 0);
+        this->writeReg(AD9361_REG_RX_FILTER_GAIN, 0);
     }
 
-    conf = this->readReg(REG_TX_FILTER_CONF + offs);
+    conf = this->readReg(AD9361_REG_TX_FILTER_CONF + offs);
 
     if((dest & 3) == 3)
     {
@@ -4656,15 +5068,15 @@ static int32_t ad9361_verify_fir_filter_coef(enum ad9361_fir_dest dest, uint32_t
 
     for(; cnt > 0; cnt--, sel++)
     {
-        this->writeReg(REG_TX_FILTER_CONF + offs, FIR_NUM_TAPS(ntaps / 16 - 1) | FIR_SELECT(sel) | FIR_START_CLK);
+        this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, FIR_NUM_TAPS(ntaps / 16 - 1) | FIR_SELECT(sel) | FIR_START_CLK);
 
         for(val = 0; val < ntaps; val++)
         {
             int16_t tmp;
 
-            this->writeReg(REG_TX_FILTER_COEF_ADDR + offs, val);
+            this->writeReg(AD9361_REG_TX_FILTER_COEF_ADDR + offs, val);
 
-            tmp = (this->readReg(REG_TX_FILTER_COEF_READ_DATA_1 + offs) & 0xFF) | (this->readReg(REG_TX_FILTER_COEF_READ_DATA_2 + offs) << 8);
+            tmp = (this->readReg(AD9361_REG_TX_FILTER_COEF_READ_DATA_1 + offs) & 0xFF) | (this->readReg(AD9361_REG_TX_FILTER_COEF_READ_DATA_2 + offs) << 8);
 
             if(tmp != coef[val])
             {
@@ -4676,9 +5088,9 @@ static int32_t ad9361_verify_fir_filter_coef(enum ad9361_fir_dest dest, uint32_t
     }
 
     if(dest & FIR_IS_RX)
-        this->writeReg(REG_RX_FILTER_GAIN, gain);
+        this->writeReg(AD9361_REG_RX_FILTER_GAIN, gain);
 
-    this->writeReg(REG_TX_FILTER_CONF + offs, conf);
+    this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, conf);
 
     return ret;
 }
@@ -4702,13 +5114,13 @@ int32_t ad9361_load_fir_filter_coef(enum ad9361_fir_dest dest, int32_t gain_dB, 
     {
         val = 3 - (gain_dB + 12) / 6;
 
-        this->writeReg(REG_RX_FILTER_GAIN, val & 0x3);
+        this->writeReg(AD9361_REG_RX_FILTER_GAIN, val & 0x3);
 
-        offs = REG_RX_FILTER_COEF_ADDR - REG_TX_FILTER_COEF_ADDR;
+        offs = AD9361_REG_RX_FILTER_COEF_ADDR - AD9361_REG_TX_FILTER_COEF_ADDR;
         this->rx_fir_ntaps = ntaps;
-        fir_enable = this->readRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0));
+        fir_enable = this->readRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0));
 
-        this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), (this->rx_fir_dec == 4) ? 3 : this->rx_fir_dec);
+        this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), (this->rx_fir_dec == 4) ? 3 : this->rx_fir_dec);
     }
     else
     {
@@ -4717,38 +5129,38 @@ int32_t ad9361_load_fir_filter_coef(enum ad9361_fir_dest dest, int32_t gain_dB, 
 
         this->tx_fir_ntaps = ntaps;
 
-        fir_enable = this->readRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0));
-        this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), (this->tx_fir_int == 4) ? 3 : this->tx_fir_int);
+        fir_enable = this->readRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0));
+        this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), (this->tx_fir_int == 4) ? 3 : this->tx_fir_int);
     }
 
     val = ntaps / 16 - 1;
 
     fir_conf |= FIR_NUM_TAPS(val) | FIR_SELECT(dest) | FIR_START_CLK;
 
-    this->writeReg(REG_TX_FILTER_CONF + offs, fir_conf);
+    this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, fir_conf);
 
     for(val = 0; val < ntaps; val++)
     {
-        this->writeReg(REG_TX_FILTER_COEF_ADDR + offs, val);
-        this->writeReg(REG_TX_FILTER_COEF_WRITE_DATA_1 + offs, coef[val] & 0xFF);
-        this->writeReg(REG_TX_FILTER_COEF_WRITE_DATA_2 + offs, coef[val] >> 8);
-        this->writeReg(REG_TX_FILTER_CONF + offs, fir_conf | FIR_WRITE);
-        this->writeReg(REG_TX_FILTER_COEF_READ_DATA_2 + offs, 0);
-        this->writeReg(REG_TX_FILTER_COEF_READ_DATA_2 + offs, 0);
+        this->writeReg(AD9361_REG_TX_FILTER_COEF_ADDR + offs, val);
+        this->writeReg(AD9361_REG_TX_FILTER_COEF_WRITE_DATA_1 + offs, coef[val] & 0xFF);
+        this->writeReg(AD9361_REG_TX_FILTER_COEF_WRITE_DATA_2 + offs, coef[val] >> 8);
+        this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, fir_conf | FIR_WRITE);
+        this->writeReg(AD9361_REG_TX_FILTER_COEF_READ_DATA_2 + offs, 0);
+        this->writeReg(AD9361_REG_TX_FILTER_COEF_READ_DATA_2 + offs, 0);
     }
 
-    this->writeReg(REG_TX_FILTER_CONF + offs, fir_conf);
+    this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, fir_conf);
 
     fir_conf &= ~FIR_START_CLK;
 
-    this->writeReg(REG_TX_FILTER_CONF + offs, fir_conf);
+    this->writeReg(AD9361_REG_TX_FILTER_CONF + offs, fir_conf);
 
     ret = ad9361_verify_fir_filter_coef(dest, ntaps, coef);
 
     if(dest & FIR_IS_RX)
-        this->writeRegField(REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), fir_enable);
+        this->writeRegField(AD9361_REG_RX_ENABLE_FILTER_CTRL, RX_FIR_ENABLE_DECIMATION(~0), fir_enable);
     else
-        this->writeRegField(REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), fir_enable);
+        this->writeRegField(AD9361_REG_TX_ENABLE_FILTER_CTRL, TX_FIR_ENABLE_INTERPOLATION(~0), fir_enable);
 
     this->restorePrevENSMState();
 
@@ -5026,71 +5438,71 @@ int32_t ad9361_rssi_gain_step_calib()
     this->forceENSMState(ENSM_STATE_ALERT);
 
     // Program the directly-addressable register values.
-    this->writeReg(REG_MAX_MIXER_CALIBRATION_GAIN_INDEX, MAX_MIXER_CALIBRATION_GAIN_INDEX(0x0F));
-    this->writeReg(REG_MEASURE_DURATION, GAIN_CAL_MEAS_DURATION(0x0E));
-    this->writeReg(REG_SETTLE_TIME, SETTLE_TIME(0x3F));
-    this->writeReg(REG_RSSI_CONFIG, RSSI_MODE_SELECT(0x3) | DEFAULT_RSSI_MEAS_MODE);
-    this->writeReg(REG_MEASURE_DURATION_01, MEASUREMENT_DURATION_0(0x0E));
-    this->writeReg(REG_LNA_GAIN, gain_step_calib_reg_val[lo_index][0]);
+    this->writeReg(AD9361_REG_MAX_MIXER_CALIBRATION_GAIN_INDEX, MAX_MIXER_CALIBRATION_GAIN_INDEX(0x0F));
+    this->writeReg(AD9361_REG_MEASURE_DURATION, GAIN_CAL_MEAS_DURATION(0x0E));
+    this->writeReg(AD9361_REG_SETTLE_TIME, SETTLE_TIME(0x3F));
+    this->writeReg(AD9361_REG_RSSI_CONFIG, RSSI_MODE_SELECT(0x3) | DEFAULT_RSSI_MEAS_MODE);
+    this->writeReg(AD9361_REG_MEASURE_DURATION_01, MEASUREMENT_DURATION_0(0x0E));
+    this->writeReg(AD9361_REG_LNA_GAIN, gain_step_calib_reg_val[lo_index][0]);
 
     // Program the LNA gain step words into the internal table.
-    this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
+    this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
 
     for(uint8_t i = 0; i < 4; i++)
     {
-        this->writeReg(REG_WORD_ADDRESS, i);
-        this->writeReg(REG_GAIN_DIFF_WORDERROR_WRITE, gain_step_calib_reg_val[lo_index][i + 1]);
-        this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_LNA_GAIN_DIFF | START_CALIB_TABLE_CLOCK);
+        this->writeReg(AD9361_REG_WORD_ADDRESS, i);
+        this->writeReg(AD9361_REG_GAIN_DIFF_WORDERROR_WRITE, gain_step_calib_reg_val[lo_index][i + 1]);
+        this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_LNA_GAIN_DIFF | START_CALIB_TABLE_CLOCK);
 
         usleep(3);    //Wait for data to fully write to internal table
     }
 
-    this->writeReg(REG_CONFIG, START_CALIB_TABLE_CLOCK);
-    this->writeReg(REG_CONFIG, 0x00);
+    this->writeReg(AD9361_REG_CONFIG, START_CALIB_TABLE_CLOCK);
+    this->writeReg(AD9361_REG_CONFIG, 0x00);
 
     // Run and wait until the calibration completes.
     this->runCalibration(RX_GAIN_STEP_CAL);
 
     // Read the LNA and Mixer error terms into nonvolatile memory.
-    this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x1) | READ_SELECT);
+    this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x1) | READ_SELECT);
 
     for(uint8_t i = 0; i < 4; i++)
     {
-        this->writeReg(REG_WORD_ADDRESS, i);
+        this->writeReg(AD9361_REG_WORD_ADDRESS, i);
 
-        lna_error[i] = this->readReg(REG_GAIN_ERROR_READ);
+        lna_error[i] = this->readReg(AD9361_REG_GAIN_ERROR_READ);
     }
 
-    this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x1));
+    this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x1));
 
     for(uint8_t i = 0; i < 15; i++)
     {
-        this->writeReg(REG_WORD_ADDRESS, i);
-        mixer_error[i] = this->readReg(REG_GAIN_ERROR_READ);
+        this->writeReg(AD9361_REG_WORD_ADDRESS, i);
+        mixer_error[i] = this->readReg(AD9361_REG_GAIN_ERROR_READ);
     }
 
-    this->writeReg(REG_CONFIG, 0x00);
+    this->writeReg(AD9361_REG_CONFIG, 0x00);
 
     // Programming gain step errors into the AD9361 in the field
-    this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
+    this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
 
     for(uint8_t i = 0; i < 4; i++)
     {
-        this->writeReg(REG_WORD_ADDRESS, i);
-        this->writeReg(REG_GAIN_DIFF_WORDERROR_WRITE, lna_error[i]);
-        this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_LNA_ERROR_TABLE | START_CALIB_TABLE_CLOCK);
+        this->writeReg(AD9361_REG_WORD_ADDRESS, i);
+        this->writeReg(AD9361_REG_GAIN_DIFF_WORDERROR_WRITE, lna_error[i]);
+        this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_LNA_ERROR_TABLE | START_CALIB_TABLE_CLOCK);
     }
 
-    this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
+    this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | START_CALIB_TABLE_CLOCK);
 
     for(uint8_t i = 0; i < 15; i++)
     {
-        this->writeReg(REG_WORD_ADDRESS, i);
-        this->writeReg(REG_GAIN_DIFF_WORDERROR_WRITE, mixer_error[i]);
-        this->writeReg(REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_MIXER_ERROR_TABLE | START_CALIB_TABLE_CLOCK);
+        this->writeReg(AD9361_REG_WORD_ADDRESS, i);
+        this->writeReg(AD9361_REG_GAIN_DIFF_WORDERROR_WRITE, mixer_error[i]);
+        this->writeReg(AD9361_REG_CONFIG, CALIB_TABLE_SELECT(0x3) | WRITE_MIXER_ERROR_TABLE | START_CALIB_TABLE_CLOCK);
     }
 
-    this->writeReg(REG_CONFIG, 0x00);
+    this->writeReg(AD9361_REG_CONFIG, 0x00);
 
     this->restorePrevENSMState();
 

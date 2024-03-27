@@ -84,15 +84,6 @@ void AXIIIC::reinit()
     this->writeReg(AXI_IIC_REG_ISR, this->readReg(AXI_IIC_REG_ISR)); // Clear IRQs
 }
 
-void AXIIIC::lock()
-{
-    this->mutex.lock();
-}
-void AXIIIC::unlock()
-{
-    this->mutex.unlock();
-}
-
 std::vector<uint8_t> AXIIIC::scan()
 {
     std::vector<uint8_t> ret;
@@ -126,7 +117,7 @@ void AXIIIC::transmit(uint8_t address, uint8_t *buf, uint8_t count, AXIIIC::Stop
     if((address & 1) && !count)
         throw std::invalid_argument("AXI IIC: Cannot receive 0 bytes");
 
-    std::lock_guard<std::mutex> lock(this->bus_mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     if((this->readReg(AXI_IIC_REG_SR) & AXI_IIC_REG_SR_BB) && !(this->readReg(AXI_IIC_REG_ISR) & AXI_IIC_REG_IxR_INT2_TX_EMPTY)) // Bus busy and not owner
         throw std::runtime_error("AXI IIC: Bus busy");

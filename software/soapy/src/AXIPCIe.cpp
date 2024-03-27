@@ -24,7 +24,8 @@ AXIPCIe::AXIPCIe(void *base_address): AXIPeripheral(base_address)
 
         this->num_bars++;
 
-        this->bar_locked[i] = false;
+        this->bar_axi_addr[i] = 0x00000000;
+        this->bar_axi_size[i] = 0x00000000;
 
         // Check if it is 64-bit
         bar = this->readReg(AXI_PCIE_REG_BARn_XLATE_HI(i));
@@ -49,85 +50,186 @@ AXIPCIe::AXIPCIe(void *base_address): AXIPeripheral(base_address)
         throw std::runtime_error("AXI PCIe: No AXI to PCIe BARs detected");
 }
 
-bool AXIPCIe::isBARLocked(uint8_t bar)
+void AXIPCIe::validateBARConfiguration(uint8_t bar)
 {
-    if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
+    if(!this->bar_axi_size[bar])
+        throw std::runtime_error("AXI PCIe: BAR AXI size is not set");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    if(!this->bar_pcie_size[bar])
+        throw std::runtime_error("AXI PCIe: BAR PCIe size is not set");
 
-    return this->bar_locked[bar];
-}
-void AXIPCIe::lockBAR(uint8_t bar)
-{
-    if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
-
-    std::lock_guard<std::mutex> lock(this->mutex);
-
-    if(this->bar_locked[bar])
-        throw std::runtime_error("AXI PCIe: BAR is already locked");
-
-    this->bar_locked[bar] = true;
-}
-void AXIPCIe::lockBAR(uint8_t bar, uint64_t address)
-{
-    if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
-
-    std::lock_guard<std::mutex> lock(this->mutex);
-
-    if(this->bar_locked[bar])
-        throw std::runtime_error("AXI PCIe: BAR is already locked");
-
-    this->bar_locked[bar] = true;
-
-    this->_setBARAddress(bar, address);
-}
-void AXIPCIe::unlockBAR(uint8_t bar)
-{
-    if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
-
-    std::lock_guard<std::mutex> lock(this->mutex);
-
-    this->bar_locked[bar] = false;
+    if(this->bar_axi_addr[bar] & (this->bar_axi_size[bar] - 1))
+        throw std::runtime_error("AXI PCIe: BAR AXI address is not aligned to BAR size");
 }
 
-void AXIPCIe::_setBARAddress(uint8_t bar, uint64_t address)
+void AXIPCIe::setBARPCIeAddress(uint8_t bar, uint64_t addr)
 {
-    this->writeReg(AXI_PCIE_REG_BARn_XLATE_LO(bar), address & 0xFFFFFFFF);
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->writeReg(AXI_PCIE_REG_BARn_XLATE_LO(bar), addr & 0xFFFFFFFF);
 
     if(!this->bar_64bit[bar])
         return;
 
-    this->writeReg(AXI_PCIE_REG_BARn_XLATE_HI(bar), (address >> 32) & 0xFFFFFFFF);
+    this->writeReg(AXI_PCIE_REG_BARn_XLATE_HI(bar), (addr >> 32) & 0xFFFFFFFF);
 }
-void AXIPCIe::setBARAddress(uint8_t bar, uint64_t address)
+void AXIPCIe::setBARPCIeAddress(uint8_t bar, uint64_t addr, uint32_t size)
 {
     if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    if(this->bar_locked[bar])
-        throw std::runtime_error("AXI PCIe: BAR is locked");
-
-    this->_setBARAddress(bar, address);
+    this->setBARPCIeAddress(bar, addr);
+    this->setBARPCIeSize(bar, size);
 }
-uint64_t AXIPCIe::getBARAddress(uint8_t bar)
+uint64_t AXIPCIe::getBARPCIeAddress(uint8_t bar)
 {
     if(bar >= this->num_bars)
-        throw std::runtime_error("AXI PCIe: Invalid BAR");
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
 
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    uint64_t address = this->readReg(AXI_PCIE_REG_BARn_XLATE_LO(bar));
+    uint64_t addr = this->readReg(AXI_PCIE_REG_BARn_XLATE_LO(bar));
 
     if(!this->bar_64bit[bar])
-        return address;
+        return addr;
 
-    address |= (static_cast<uint64_t>(this->readReg(AXI_PCIE_REG_BARn_XLATE_HI(bar))) << 32);
+    addr |= (uint64_t)this->readReg(AXI_PCIE_REG_BARn_XLATE_HI(bar)) << 32;
 
-    return address;
+    return addr;
+}
+uint64_t AXIPCIe::getBARPCIeAddress(uint8_t bar, const uint32_t axi_addr)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->validateBARConfiguration(bar);
+
+    if(axi_addr < this->bar_axi_addr[bar])
+        throw std::runtime_error("AXI PCIe: AXI address is out of range");
+
+    if(axi_addr >= this->bar_axi_addr[bar] + this->bar_axi_size[bar])
+        throw std::runtime_error("AXI PCIe: AXI address is out of range");
+
+    uint64_t start = this->getBARPCIeAddress(bar);
+    uint64_t base = start & ~((uint64_t)this->bar_axi_size[bar] - 1);
+    uint64_t offset = axi_addr & (this->bar_axi_size[bar] - 1);
+    uint64_t pcie_addr = base | offset;
+
+    if(pcie_addr < start)
+        throw std::runtime_error("AXI PCIe: PCIe address is out of range");
+
+    if(pcie_addr >= start + this->bar_pcie_size[bar])
+        throw std::runtime_error("AXI PCIe: PCIe address is out of range");
+
+    return pcie_addr;
+}
+void AXIPCIe::setBARPCIeSize(uint8_t bar, uint32_t size)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->bar_pcie_size[bar] = size;
+}
+uint32_t AXIPCIe::getBARPCIeSize(uint8_t bar)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    return this->bar_pcie_size[bar];
+}
+
+void AXIPCIe::setBARAXIAddress(uint8_t bar, uint32_t addr)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->bar_axi_addr[bar] = addr;
+}
+void AXIPCIe::setBARAXIAddress(uint8_t bar, uint32_t addr, uint32_t size)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->setBARAXIAddress(bar, addr);
+    this->setBARAXISize(bar, size);
+}
+uint32_t AXIPCIe::getBARAXIAddress(uint8_t bar)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    return this->bar_axi_addr[bar];
+}
+uint32_t AXIPCIe::getBARAXIAddress(uint8_t bar, const uint64_t pcie_addr)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->validateBARConfiguration(bar);
+
+    uint64_t start = this->getBARPCIeAddress(bar);
+
+    if(pcie_addr < start)
+        throw std::runtime_error("AXI PCIe: PCIe address is out of range");
+
+    if(pcie_addr >= start + this->bar_pcie_size[bar])
+        throw std::runtime_error("AXI PCIe: PCIe address is out of range");
+
+    uint64_t base = start & ~((uint64_t)this->bar_axi_size[bar] - 1);
+    uint64_t _base = pcie_addr & ~((uint64_t)this->bar_axi_size[bar] - 1);
+
+    if(base != _base)
+        throw std::runtime_error("AXI PCIe: AXI address is out of range");
+
+    uint64_t offset = pcie_addr & ((uint64_t)this->bar_axi_size[bar] - 1);
+    uint32_t axi_addr = this->bar_axi_addr[bar] | offset;
+
+    return axi_addr;
+}
+void AXIPCIe::setBARAXISize(uint8_t bar, uint32_t size)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    this->bar_axi_size[bar] = size;
+}
+uint32_t AXIPCIe::getBARAXISize(uint8_t bar)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    return this->bar_axi_size[bar];
+}
+
+uint32_t AXIPCIe::getBARSize(uint8_t bar)
+{
+    if(bar >= this->num_bars)
+        throw std::invalid_argument("AXI PCIe: Invalid BAR");
+
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+
+    return MIN(this->bar_axi_size[bar], this->bar_pcie_size[bar]);
 }

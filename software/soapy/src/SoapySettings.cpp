@@ -7,32 +7,35 @@ SoapyIcyRadio::SoapyIcyRadio(const SoapySDR::Kwargs &args)
     // Memory maps
     this->mm_axi_flash = nullptr;
     this->mm_axi_bram = nullptr;
+    this->mm_axi_dna = nullptr;
     this->mm_axi_ddr = nullptr;
     this->mm_axi_periph = nullptr;
     this->mm_dma_buffer = nullptr;
 
     // AXI Peripherals
+    this->axi_dna = nullptr;
     for(uint8_t i = 0; i < AXI_DMAC_NUM_INSTANCES; i++)
         this->axi_dmac[i] = nullptr;
-    for(uint8_t i = 0; i < AXI_GPIO_NUM_INSTANCES; i++)
-        this->axi_gpio[i] = nullptr;
     for(uint8_t i = 0; i < AXI_IIC_NUM_INSTANCES; i++)
         this->axi_iic[i] = nullptr;
     for(uint8_t i = 0; i < AXI_SPI_NUM_INSTANCES; i++)
         this->axi_spi[i] = nullptr;
+    for(uint8_t i = 0; i < AXI_GPIO_NUM_INSTANCES; i++)
+        this->axi_gpio[i] = nullptr;
     this->axi_pcie = nullptr;
-    this->axi_i2s = nullptr;
-    this->axi_xadc = nullptr;
     this->axi_rf_tstamp = nullptr;
     this->axi_irq_ctrl = nullptr;
-    this->axi_dna = nullptr;
-    // this->axi_ad9361 = nullptr;
+    this->axi_i2s = nullptr;
+    this->axi_xadc = nullptr;
+    this->axi_ad9361 = nullptr;
 
     // Peripherals
     this->pmc = nullptr;
     this->vin_reg = nullptr;
+    this->spi_flash = nullptr;
     this->clk_mngr = nullptr;
     this->mmw_synth = nullptr;
+    this->rf_phy = nullptr;
     this->exp_card = nullptr;
 
     if(args.count("label") != 0)
@@ -141,11 +144,11 @@ SoapySDR::Kwargs SoapyIcyRadio::getHardwareInfo() const
     SoapySDR::Kwargs info;
 
     // FPGA DNA (aka serial)
-    while(!this->axi_dna->ready()) // Serial is essential, so wait for it to be ready
+    while(!this->axi_dna->isSerialNumberReady()) // Serial is essential, so wait for it to be ready
         usleep(1000);
 
     char dna[16];
-    snprintf(dna, sizeof(dna), "%015lX", this->axi_dna->read());
+    snprintf(dna, sizeof(dna), "%015lX", this->axi_dna->getSerialNumber());
     info["serial"] = dna;
 
     // PMC info
@@ -164,7 +167,254 @@ SoapySDR::Kwargs SoapyIcyRadio::getHardwareInfo() const
     info["mmw_synth_rev_id"] = std::to_string(this->mmw_synth->getChipVersion());
     info["mmw_synth_chip_opt"] = std::to_string(this->mmw_synth->getChipOption());
 
+    // RF Phy info
+    info["rf_phy_rev_id"] = std::to_string(this->rf_phy->getChipRevision());
+
     return info;
+}
+
+void SoapyIcyRadio::setFrontendMapping(const int direction, const std::string &mapping)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setFrontendMapping: Unknown direction");
+}
+std::string SoapyIcyRadio::getFrontendMapping(const int direction) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrontendMapping: Unknown direction");
+
+    return "";
+}
+size_t SoapyIcyRadio::getNumChannels(const int direction) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getNumChannels: Unknown direction");
+
+    return 2;
+}
+SoapySDR::Kwargs SoapyIcyRadio::getChannelInfo(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getChannelInfo: Unknown direction");
+
+    SoapySDR::Kwargs info;
+
+    return info;
+}
+bool SoapyIcyRadio::getFullDuplex(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFullDuplex: Unknown direction");
+
+    return true;
+}
+
+
+std::vector<std::string> SoapyIcyRadio::listAntennas(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("listAntennas: Unknown direction");
+
+    std::vector<std::string> antennas;
+
+    if(direction == SOAPY_SDR_RX)
+    {
+        antennas.push_back("RX");
+    }
+    else
+    {
+        antennas.push_back("TX");
+    }
+
+    return antennas;
+}
+void SoapyIcyRadio::setAntenna(const int direction, const size_t channel, const std::string &name)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setAntenna: Unknown direction");
+}
+std::string SoapyIcyRadio::getAntenna(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getAntenna: Unknown direction");
+
+    return "RX";
+}
+
+void SoapyIcyRadio::setFrequency(const int direction, const size_t channel, const double frequency, const SoapySDR::Kwargs &args)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setFrequency: Unknown direction");
+}
+void SoapyIcyRadio::setFrequency(const int direction, const size_t channel, const std::string &name, const double frequency, const SoapySDR::Kwargs &args)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setFrequency: Unknown direction");
+}
+double SoapyIcyRadio::getFrequency(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrequency: Unknown direction");
+
+    return 101.4e6;
+}
+double SoapyIcyRadio::getFrequency(const int direction, const size_t channel, const std::string &name) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrequency: Unknown direction");
+
+    return 101.4e6;
+}
+std::vector<std::string> SoapyIcyRadio::listFrequencies(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("listFrequencies: Unknown direction");
+
+    std::vector<std::string> names;
+
+    names.push_back("RF");
+
+    return names;
+}
+SoapySDR::RangeList SoapyIcyRadio::getFrequencyRange(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrequencyRange: Unknown direction");
+
+    SoapySDR::RangeList ranges;
+
+    ranges.emplace_back(70e6, 6e9);
+
+    return ranges;
+}
+SoapySDR::RangeList SoapyIcyRadio::getFrequencyRange(const int direction, const size_t channel, const std::string &name) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrequencyRange: Unknown direction");
+
+    SoapySDR::RangeList ranges;
+
+    ranges.emplace_back(70e6, 6e9);
+
+    return ranges;
+}
+SoapySDR::ArgInfoList SoapyIcyRadio::getFrequencyArgsInfo(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getFrequencyArgsInfo: Unknown direction");
+
+    SoapySDR::ArgInfoList args;
+
+    return args;
+}
+
+void SoapyIcyRadio::setSampleRate(const int direction, const size_t channel, const double rate)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setSampleRate: Unknown direction");
+
+    std::lock_guard<std::recursive_mutex> lock(this->streams_mutex);
+
+    // Check if datapath needs reconfiguration and if we can do it
+    auto rx_chs = this->getBusyChannels(SOAPY_SDR_RX);
+    auto tx_chs = this->getBusyChannels(SOAPY_SDR_TX);
+    size_t num_chans = MAX(rx_chs.size(), tx_chs.size());
+
+    this->validateSampleRateAndChannelCombination(rate, MAX(num_chans, 1));
+
+    if(this->requiresDataPathReconfiguration(rate))
+    {
+        if(this->getStreams(true).size() > 0)
+            throw std::runtime_error("setSampleRate: Sample rate change requires datapath reconfiguration, but there are active streams");
+
+        SoapySDR_logf(SOAPY_SDR_DEBUG, "setSampleRate: Reconfiguring data path for new sample rate %u", (size_t)rate);
+
+        if(num_chans > 1)
+            this->reconfigureDataPath(true);
+        else
+            this->reconfigureDataPath(false, rx_chs.size() > 0 ? rx_chs[0] : 0, tx_chs.size() > 0 ? tx_chs[0] : 0);
+
+        auto streams = this->getStreams();
+
+        for(auto &s : streams)
+            this->reinitStreamChannels(s);
+    }
+
+    this->rf_phy->setClockChainFreq(rate);
+    this->rf_phy->setRFBandwidth(this->rf_phy->current_rx_bw_Hz, this->rf_phy->current_tx_bw_Hz);
+
+    this->axi_rf_tstamp->triggerClockResync(true, 100); // Wait for sync, 100 ms timeout
+}
+double SoapyIcyRadio::getSampleRate(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getSampleRate: Unknown direction");
+
+    return this->rf_phy->current_rx_path_clks[AD9361::RXClockIndex::RX_SAMPL_FREQ];
+}
+std::vector<double> SoapyIcyRadio::listSampleRates(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("listSampleRates: Unknown direction");
+
+    std::vector<double> rates;
+
+    rates.push_back(3000000UL);
+    rates.push_back(61440000UL);
+
+    return rates;
+}
+SoapySDR::RangeList SoapyIcyRadio::getSampleRateRange(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getSampleRateRange: Unknown direction");
+
+    SoapySDR::RangeList ranges;
+
+    ranges.emplace_back(3000000UL, 61440000UL);
+
+    return ranges;
+}
+
+void SoapyIcyRadio::setBandwidth(const int direction, const size_t channel, const double bw)
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("setBandwidth: Unknown direction");
+
+    if(bw < 200000UL || bw > 56000000UL)
+        throw std::runtime_error("setBandwidth: Bandwidth out of range");
+
+    this->rf_phy->setRFBandwidth(direction == SOAPY_SDR_RX ? bw : this->rf_phy->current_rx_bw_Hz, direction == SOAPY_SDR_TX ? bw : this->rf_phy->current_tx_bw_Hz);
+}
+double SoapyIcyRadio::getBandwidth(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getBandwidth: Unknown direction");
+
+    return direction == SOAPY_SDR_RX ? this->rf_phy->current_rx_bw_Hz : this->rf_phy->current_tx_bw_Hz;
+}
+std::vector<double> SoapyIcyRadio::listBandwidths(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("listBandwidths: Unknown direction");
+
+    std::vector<double> bws;
+
+    bws.push_back(200000UL);
+    bws.push_back(56000000UL);
+
+    return bws;
+}
+SoapySDR::RangeList SoapyIcyRadio::getBandwidthRange(const int direction, const size_t channel) const
+{
+    if(direction != SOAPY_SDR_RX && direction != SOAPY_SDR_TX)
+        throw std::runtime_error("getBandwidthRange: Unknown direction");
+
+    SoapySDR::RangeList ranges;
+
+    ranges.emplace_back(200000UL, 56000000UL);
+
+    return ranges;
 }
 
 std::vector<std::string> SoapyIcyRadio::listSensors() const
@@ -224,6 +474,9 @@ std::vector<std::string> SoapyIcyRadio::listSensors() const
     sensors.push_back("mmw_synth_locked");
     sensors.push_back("mmw_synth_vco_id");
     sensors.push_back("mmw_synth_vco_dig_band_id");
+
+    // RF Phy sensors
+    sensors.push_back("rf_phy_temp");
 
     return sensors;
 }
@@ -693,6 +946,17 @@ SoapySDR::ArgInfo SoapyIcyRadio::getSensorInfo(const std::string &key) const
         info.type = SoapySDR::ArgInfo::INT;
         info.range = SoapySDR::Range(0, 127);
     }
+    // RF Phy sensors
+    else if(key == "rf_phy_temp")
+    {
+        info.key = "rf_phy_temp";
+        info.value = "0.000";
+        info.name = "RF Phy Temperature";
+        info.description = "RF Phy (transceiver) die temperature";
+        info.units = "°C";
+        info.type = SoapySDR::ArgInfo::FLOAT;
+        info.range = SoapySDR::Range(-40.0, 125.0);
+    }
 
     return info;
 }
@@ -798,6 +1062,9 @@ std::string SoapyIcyRadio::readSensor(const std::string &key) const
         snprintf(buf, sizeof(buf), "%hhu", this->mmw_synth->getCurrentVCO());
     else if(key == "mmw_synth_vco_dig_band_id")
         snprintf(buf, sizeof(buf), "%hhu", this->mmw_synth->getCurrentDigitalBand());
+    // RF Phy sensors
+    else if(key == "rf_phy_temp")
+        snprintf(buf, sizeof(buf), "%.3f", this->rf_phy->getTemperature());
 
     return buf;
 }
