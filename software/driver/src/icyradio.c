@@ -2,6 +2,7 @@
 #include <linux/version.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
+#include <linux/printk.h>
 #include <linux/pci.h>
 #include <linux/delay.h>
 #include <linux/cdev.h>
@@ -12,8 +13,12 @@
 #include "structs.h"
 #include "ioctl.h"
 #include "dna.h"
-#include "debug_macros.h"
 #include "utils.h"
+
+#ifdef pr_fmt
+    #undef pr_fmt
+#endif
+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #define ICYRADIO_PCI_VENDOR_ID       0x10EE
 #define ICYRADIO_PCI_DEVICE_ID       0x7021
@@ -28,6 +33,8 @@
 #define ICYRADIO_PCIE_BAR0_AXI_XLATE 0x40000000 // Registers, 2 MB (End at 0x401FFFFF)
 #define ICYRADIO_PCIE_BAR1_AXI_XLATE 0x20000000 // DDR3, 512 MB (End at 0x3FFFFFFF)
 #define ICYRADIO_PCIE_BAR2_AXI_XLATE 0x00000000 // SPI Flash + BRAM + DNA (ROM), 32 MB (End at 0x01FFFFFF)
+
+#define ICYRADIO_PCIE_MSI_MAX_VECTORS   1 // 32
 
 static dev_t icyradio_dev_num;
 static struct class *icyradio_class = NULL;
@@ -61,7 +68,7 @@ static irqreturn_t icyradio_irq_handler(int iIRQ, void *pArg)
     pDev->ullIRQCount++;
     spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
-    // DBGPRINTLN_CTX("IRQ for device %u Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
+    pr_devel("IRQ for device %u Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
 
     wake_up_interruptible(&pDev->sIRQWaitQueue);
 
@@ -73,7 +80,7 @@ static ssize_t icyradio_read(struct file *pFile, char __user *pBuf, size_t ulCou
 {
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
 
-    DBGPRINTLN_CTX("Reading device %u Count: %lu", pDev->ulDevID, ulCount);
+    pr_debug("Reading device %u Count: %lu", pDev->ulDevID, ulCount);
 
     // TODO: Use read syscall to read the last IRQ vector, if we ever need more than one
 
@@ -83,7 +90,7 @@ static ssize_t icyradio_write(struct file *pFile, const char __user *pBuf, size_
 {
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
 
-    DBGPRINTLN_CTX("Writing device %u Count: %lu", pDev->ulDevID, ulCount);
+    pr_debug("Writing device %u Count: %lu", pDev->ulDevID, ulCount);
 
     return 0;
 }
@@ -95,7 +102,7 @@ static unsigned int icyradio_poll(struct file *pFile, poll_table *pPollTable)
 
     spin_lock_irqsave(&pDev->sIRQLock, ulIRQFlags);
 
-    // DBGPRINTLN_CTX("Polling device %u IRQ Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
+    pr_devel("Polling device %u IRQ Count: %llu", pDev->ulDevID, pDev->ullIRQCount);
 
     poll_wait(pFile, &pDev->sIRQWaitQueue, pPollTable);
 
@@ -125,7 +132,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
     int iErr = 0;
 
-    DBGPRINTLN_CTX("IOCTL on device %u, cmd: 0x%08X, arg: 0x%016lX", pDev->ulDevID, ulCmd, ulArg);
+    pr_debug("ioctl on device %u, cmd: 0x%08X, arg: 0x%016lX", pDev->ulDevID, ulCmd, ulArg);
 
     if(_IOC_DIR(ulCmd) & _IOC_READ)
     {
@@ -146,7 +153,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
     if(iErr)
     {
-        DBGPRINTLN_CTX("Invalid user space pointer, aborting");
+        pr_warn("Invalid user space pointer for ioctl, aborting");
 
         return -EFAULT;
     }
@@ -162,43 +169,43 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(pDev->pDMAVirtAddr)
             {
-                DBGPRINTLN_CTX("DMA buffer already allocated, aborting");
+                pr_warn("DMA buffer for device %u already allocated, aborting", pDev->ulDevID);
 
                 return -EBUSY;
             }
 
             if(copy_from_user(&ullSize, (void __user *)ulArg, sizeof(uint32_t)))
             {
-                DBGPRINTLN_CTX("Can't copy from user space, aborting");
+                pr_warn("Can't copy DMA buffer size for device %u from user space, aborting", pDev->ulDevID);
 
                 return -EFAULT;
             }
 
             if(!ullSize)
             {
-                DBGPRINTLN_CTX("Invalid size, aborting");
+                pr_warn("Invalid DMA buffer size for device %u, aborting", pDev->ulDevID);
 
                 return -EINVAL;
             }
 
-            DBGPRINTLN_CTX("Allocating DMA buffer of size 0x%08X", (uint32_t)ullSize);
+            pr_notice("Allocating DMA buffer for device %u of size 0x%08X", pDev->ulDevID, (uint32_t)ullSize);
 
             pVirtAddr = dma_alloc_coherent(&pDev->pPCIDev->dev, (uint32_t)ullSize, &ulPhysAddr, GFP_USER | GFP_ATOMIC | GFP_DMA);
 
             if(!pVirtAddr)
             {
-                DBGPRINTLN_CTX("Can't allocate DMA buffer, aborting");
+                pr_warn("Can't allocate DMA buffer for device %u, aborting", pDev->ulDevID);
 
                 return -ENOMEM;
             }
 
-            DBGPRINTLN_CTX("DMA buffer for device %u allocated at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pVirtAddr, ulPhysAddr);
+            pr_notice("DMA buffer for device %u allocated at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pVirtAddr, ulPhysAddr);
 
             ullPhysAddr = ulPhysAddr; // Copy to 64-bit variable to avoid warnings
 
             if(copy_to_user((void __user *)ulArg, &ullPhysAddr, sizeof(uint64_t)))
             {
-                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+                pr_warn("Can't copy DMA buffer phys address for device %u to user space, aborting", pDev->ulDevID);
 
                 dma_free_coherent(&pDev->pPCIDev->dev, (uint32_t)ullSize, pVirtAddr, ulPhysAddr);
 
@@ -218,19 +225,19 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(!pDev->pDMAVirtAddr)
             {
-                DBGPRINTLN_CTX("DMA buffer not allocated, aborting");
+                pr_warn("DMA buffer not allocated for device %u, aborting", pDev->ulDevID);
 
                 return -ENODEV;
             }
 
-            DBGPRINTLN_CTX("DMA buffer of size 0x%08X for device %u is at virt 0x%016lX and phys 0x%016llX", pDev->ulDMABufSize, pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+            pr_notice("DMA buffer of size 0x%08X for device %u is at virt 0x%016lX and phys 0x%016llX", pDev->ulDMABufSize, pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
 
             sQuery.ullPhysAddr = (uint64_t)pDev->ulDMAPhysAddr;
             sQuery.ulBufSize = pDev->ulDMABufSize;
 
             if(copy_to_user((void __user *)ulArg, &sQuery, sizeof(icyradio_ioctl_dma_buffer_query_t)))
             {
-                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+                pr_warn("Can't copy DMA buffer phys address for device %u to user space, aborting", pDev->ulDevID);
 
                 return -EFAULT;
             }
@@ -240,12 +247,12 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
         {
             if(!pDev->pDMAVirtAddr)
             {
-                DBGPRINTLN_CTX("DMA buffer not allocated, aborting");
+                pr_warn("DMA buffer not allocated for device %u, aborting", pDev->ulDevID);
 
                 return -ENODEV;
             }
 
-            DBGPRINTLN_CTX("Freeing DMA buffer for device %u at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
+            pr_notice("Freeing DMA buffer for device %u at virt 0x%016lX and phys 0x%016llX", pDev->ulDevID, (uintptr_t)pDev->pDMAVirtAddr, pDev->ulDMAPhysAddr);
 
             pci_clear_master(pDev->pPCIDev); // Clear bus master so it can't initiate DMA transfers
 
@@ -262,7 +269,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(pDev->iNumIRQs <= 0)
             {
-                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+                pr_warn("No IRQs allocated for device %u, aborting", pDev->ulDevID);
 
                 return -ENODEV;
             }
@@ -271,7 +278,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(copy_to_user((void __user *)ulArg, &ubIRQs, sizeof(uint8_t)))
             {
-                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+                pr_warn("Can't copy IRQ count for device %u to user space, aborting", pDev->ulDevID);
 
                 return -EFAULT;
             }
@@ -283,7 +290,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(pDev->iNumIRQs <= 0)
             {
-                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+                pr_warn("No IRQs allocated for device %u, aborting", pDev->ulDevID);
 
                 return -ENODEV;
             }
@@ -292,14 +299,14 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(pDev->ubIRQFlush)
             {
-                DBGPRINTLN_CTX("IRQ flush already pending, aborting");
+                pr_warn("IRQ flush already pending for device %u, aborting", pDev->ulDevID);
 
                 spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
                 return -EBUSY;
             }
 
-            DBGPRINTLN_CTX("Set IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
+            pr_notice("Set IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
 
             pDev->ubIRQFlush = 1;
 
@@ -314,7 +321,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(pDev->iNumIRQs <= 0)
             {
-                DBGPRINTLN_CTX("No IRQs allocated, aborting");
+                pr_warn("No IRQs allocated for device %u, aborting", pDev->ulDevID);
 
                 return -ENODEV;
             }
@@ -323,14 +330,14 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
             if(!pDev->ubIRQFlush)
             {
-                DBGPRINTLN_CTX("IRQ flush already not pending, aborting");
+                pr_warn("IRQ flush already not pending for device %u, aborting", pDev->ulDevID);
 
                 spin_unlock_irqrestore(&pDev->sIRQLock, ulIRQFlags);
 
                 return -EBUSY;
             }
 
-            DBGPRINTLN_CTX("Unset IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
+            pr_notice("Unset IRQ flush mode for device %u and waking up wait queue", pDev->ulDevID);
 
             pDev->ubIRQFlush = 0;
 
@@ -342,11 +349,11 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
 
         case ICYRADIO_IOCTL_SERIAL_QUERY:
         {
-            DBGPRINTLN_CTX("Serial number query for device %u (%015llX)", pDev->ulDevID, pDev->ullSerialNumber);
+            pr_notice("Serial number query for device %u (%015llX)", pDev->ulDevID, pDev->ullSerialNumber);
 
             if(copy_to_user((void __user *)ulArg, &pDev->ullSerialNumber, sizeof(uint64_t)))
             {
-                DBGPRINTLN_CTX("Can't copy to user space, aborting");
+                pr_warn("Can't copy serial number for device %u to user space, aborting", pDev->ulDevID);
 
                 return -EFAULT;
             }
@@ -354,7 +361,7 @@ static long icyradio_ioctl(struct file *pFile, unsigned int ulCmd, unsigned long
         break;
         default:
         {
-            DBGPRINTLN_CTX("Invalid IOCTL command, aborting");
+            pr_warn("Invalid ioctl command 0x%08X for device %u, aborting", ulCmd, pDev->ulDevID);
 
             return -EINVAL;
         }
@@ -368,7 +375,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
     unsigned long ulOffset, ulLength;
 
-    DBGPRINTLN_CTX("Memory map on device %u VMA start: 0x%016lX, end: 0x%016lX, pgoff: 0x%016lX", pDev->ulDevID, pVMA->vm_start, pVMA->vm_end, pVMA->vm_pgoff);
+    pr_debug("Memory map on device %u VMA start: 0x%016lX, end: 0x%016lX, pgoff: 0x%016lX", pDev->ulDevID, pVMA->vm_start, pVMA->vm_end, pVMA->vm_pgoff);
 
     if(pVMA->vm_pgoff > (~0UL >> PAGE_SHIFT))
         return -EINVAL;
@@ -383,7 +390,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
     {
         if(!pDev->pDMAVirtAddr)
         {
-            DBGPRINTLN_CTX("DMA buffer not allocated yet, aborting");
+            pr_warn("mmap to DMA buffer for device %u but no memory allocated, aborting", pDev->ulDevID);
 
             return -EINVAL;
         }
@@ -392,15 +399,15 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         if(ulOffset - pDev->ulDMAPhysAddr + ulLength > pDev->ulDMABufSize)
         {
-            DBGPRINTLN_CTX("Requested range exceeds DMA buffer size, aborting");
+            pr_warn("Requested range exceeds DMA buffer size for device %u, aborting", pDev->ulDevID);
 
             return -EINVAL;
         }
 
-        DBGPRINTLN_CTX("DMA Buffer, Phys start: 0x%016llX, Phys offset: 0x%016llX, map offset: 0x%016lX, map len: 0x%08lX", pDev->ulDMAPhysAddr, ulOffset - pDev->ulDMAPhysAddr, ulOffset, ulLength);
+        pr_notice("DMA Buffer, Phys start: 0x%016llX, Phys offset: 0x%016llX, map offset: 0x%016lX, map len: 0x%08lX", pDev->ulDMAPhysAddr, ulOffset - pDev->ulDMAPhysAddr, ulOffset, ulLength);
 
 #if defined(__aarch64__) || defined(__arm__)
-        DBGPRINTLN_CTX("Running on ARM, using dma_mmap_coherent");
+        pr_notice("Running on ARM, using dma_mmap_coherent");
 
         ulOffset -= pDev->ulDMAPhysAddr;
 
@@ -408,7 +415,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         if(dma_mmap_coherent(&pDev->pPCIDev->dev, pVMA, pDev->pDMAVirtAddr + ulOffset, pDev->ulDMAPhysAddr + ulOffset, ulLength))
 #else
-        DBGPRINTLN_CTX("Running on x86, using io_remap_pfn_range");
+        pr_notice("Running on x86, using io_remap_pfn_range");
 
         pVMA->vm_pgoff = ulOffset >> PAGE_SHIFT;
         pVMA->vm_page_prot = pgprot_noncached(pVMA->vm_page_prot);
@@ -421,7 +428,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
         if(io_remap_pfn_range(pVMA, pVMA->vm_start, pVMA->vm_pgoff, ulLength, pVMA->vm_page_prot))
 #endif
         {
-            DBGPRINTLN_CTX("Can't remap DMA buffer range, aborting");
+            pr_warn("Can't remap DMA buffer range for device %u, aborting", pDev->ulDevID);
 
             return -EAGAIN;
         }
@@ -445,7 +452,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
                 ulOffset = ulOffset - ulAXIStart + pci_resource_start(pDev->pPCIDev, i);
                 ubFound = 1;
 
-                DBGPRINTLN_CTX("BAR %d, AXI start: 0x%08X, AXI offset: 0x%08lX, map offset: 0x%016lX, map len: 0x%08lX", i, ulAXIStart, ulOffset - (unsigned long)pci_resource_start(pDev->pPCIDev, i), ulOffset, ulLength);
+                pr_notice("Map memory for device %u (BAR %d, AXI start: 0x%08X, AXI offset: 0x%08lX, map offset: 0x%016lX, map len: 0x%08lX)", pDev->ulDevID, i, ulAXIStart, ulOffset - (unsigned long)pci_resource_start(pDev->pPCIDev, i), ulOffset, ulLength);
 
                 break;
             }
@@ -453,7 +460,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         if(!ubFound)
         {
-            DBGPRINTLN_CTX("Region 0x%08lX to 0x%08lX not found in AXI address space, aborting", ulOffset, ulOffset + ulLength - 1);
+            pr_warn("Region 0x%08lX to 0x%08lX not found in AXI address space for device %u, aborting", ulOffset, ulOffset + ulLength - 1, pDev->ulDevID);
 
             return -EINVAL;
         }
@@ -468,7 +475,7 @@ static int icyradio_mmap(struct file *pFile, struct vm_area_struct *pVMA)
 
         if(io_remap_pfn_range(pVMA, pVMA->vm_start, pVMA->vm_pgoff, ulLength, pVMA->vm_page_prot))
         {
-            DBGPRINTLN_CTX("Can't remap IO range, aborting");
+            pr_warn("Can't remap IO range for device %u, aborting", pDev->ulDevID);
 
             return -EAGAIN;
         }
@@ -483,23 +490,23 @@ static int icyradio_open(struct inode *pInode, struct file *pFile)
 
     if(!pDev)
     {
-        DBGPRINTLN_CTX("Can't find IcyRadio device struct, aborting");
+        pr_err("Can't find IcyRadio device struct, aborting");
 
         return -ENODEV;
     }
 
-    DBGPRINTLN_CTX("Opening device %u", pDev->ulDevID);
+    pr_debug("Opening device %u", pDev->ulDevID);
 
     if(mutex_lock_interruptible(&pDev->sMutex))
     {
-        DBGPRINTLN_CTX("Can't lock device mutex, aborting");
+        pr_warn("Can't lock device %u mutex, aborting", pDev->ulDevID);
 
         return -EINTR;
     }
 
     if(pDev->pFile)
     {
-        DBGPRINTLN_CTX("Device file already open, aborting");
+        pr_warn("Device %u file already open, aborting", pDev->ulDevID);
 
         mutex_unlock(&pDev->sMutex);
 
@@ -526,17 +533,17 @@ static int icyradio_release(struct inode *pInode, struct file *pFile)
 {
     icyradio_dev_t *pDev = (icyradio_dev_t *)pFile->private_data;
 
-    DBGPRINTLN_CTX("Releasing device %u", pDev->ulDevID);
+    pr_debug("Releasing device %u", pDev->ulDevID);
 
     if(mutex_lock_interruptible(&pDev->sMutex))
     {
-        DBGPRINTLN_CTX("Can't lock device mutex, aborting");
+        pr_warn("Can't lock device %u mutex, aborting", pDev->ulDevID);
 
         return -EINTR;
     }
 
     if(!pDev->pFile)
-        DBGPRINTLN_CTX("Releasing device while not open");
+        pr_err("Releasing device %u while not open", pDev->ulDevID);
 
     pDev->pFile = NULL;
     pFile->private_data = NULL;
@@ -570,11 +577,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     uint32_t ulDesignVersion;
     uint32_t ulTimeout;
 
-    DBGPRINTLN_CTX("Probing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
+    pr_debug("Probing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
 
     if(pPCIDev->vendor != ICYRADIO_PCI_VENDOR_ID || pPCIDev->device != ICYRADIO_PCI_DEVICE_ID)
     {
-        DBGPRINTLN_CTX("Not an IcyRadio device, aborting");
+        pr_warn("Not an IcyRadio device, aborting");
 
         return -EINVAL;
     }
@@ -582,7 +589,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     // Lock the device table mutex
     if(mutex_lock_interruptible(&icyradio_devs_mutex))
     {
-        DBGPRINTLN_CTX("Can't lock device table mutex, aborting");
+        pr_warn("Can't lock device table mutex, aborting");
 
         return -EINTR;
     }
@@ -593,21 +600,21 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     if(ulDevID == ICYRADIO_MAX_DEVICES)
     {
-        DBGPRINTLN_CTX("Too many IcyRadio devices, aborting");
+        pr_warn("Too many IcyRadio devices, not registering new, aborting");
 
         mutex_unlock(&icyradio_devs_mutex);
 
         return -ENOMEM;
     }
 
-    DBGPRINTLN_CTX("Found free device ID %u", ulDevID);
+    pr_info("Registering new IcyRadio device with ID %u", ulDevID);
 
     // Allocate and initialize device struct
     pDev = (icyradio_dev_t *)kzalloc(sizeof(icyradio_dev_t), GFP_KERNEL);
 
     if(!pDev)
     {
-        DBGPRINTLN_CTX("Can't allocate device, aborting");
+        pr_err("Can't allocate memory for device %u, aborting", ulDevID);
 
         return -ENOMEM;
     }
@@ -621,7 +628,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     // Enable device
     if(pci_enable_device(pPCIDev))
     {
-        DBGPRINTLN_CTX("Can't enable PCI device, aborting");
+        pr_err("Can't enable PCI device %u, aborting", ulDevID);
 
         mutex_unlock(&pDev->sMutex);
         kfree(pDev);
@@ -630,21 +637,23 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return -EFAULT;
     }
 
+#ifdef DEBUG
     // Enumerate PCI resources
-    DBGPRINTLN_CTX("BARs:");
+    pr_devel("BARs:");
 
     for(int i = 0; i < ICYRADIO_PCIE_NUM_BARS; i++)
     {
         if(!pci_resource_len(pPCIDev, i))
             continue;
 
-        DBGPRINTLN_CTX("  BAR #%d: start: 0x%08llX, end: 0x%08llX, AXI start: 0x%08X, AXI end: 0x%08llX, len: 0x%08llX, flags: 0x%08lX", i, pci_resource_start(pPCIDev, i), pci_resource_end(pPCIDev, i), icyradio_pci_bar_axi_xlate[i], icyradio_pci_bar_axi_xlate[i] + pci_resource_len(pPCIDev, i) - 1, pci_resource_len(pPCIDev, i), pci_resource_flags(pPCIDev, i));
+        pr_devel("  BAR #%d: start: 0x%08llX, end: 0x%08llX, AXI start: 0x%08X, AXI end: 0x%08llX, len: 0x%08llX, flags: 0x%08lX", i, pci_resource_start(pPCIDev, i), pci_resource_end(pPCIDev, i), icyradio_pci_bar_axi_xlate[i], icyradio_pci_bar_axi_xlate[i] + pci_resource_len(pPCIDev, i) - 1, pci_resource_len(pPCIDev, i), pci_resource_flags(pPCIDev, i));
     }
+#endif
 
     // Request PCI resources
     if(pci_request_regions(pPCIDev, "icyradio"))
     {
-        DBGPRINTLN_CTX("Can't request PCI regions, aborting");
+        pr_err("Can't request PCI regions for device %u, aborting", ulDevID);
 
         pci_disable_device(pPCIDev);
         mutex_unlock(&pDev->sMutex);
@@ -659,7 +668,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     if(!pBAR)
     {
-        DBGPRINTLN_CTX("Can't map BAR #2, aborting");
+        pr_err("Can't map BAR #2 on device %u to access DNA, aborting", ulDevID);
 
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
@@ -674,11 +683,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     icyradio_axi_dna_get_design_id(pDNABase, szDesignID);
 
-    DBGPRINTLN_CTX("Device design ID: %s", szDesignID);
+    pr_info("Device %u design ID: %s", ulDevID, szDesignID);
 
     if(strcmp(szDesignID, "ICYRADIO"))
     {
-        DBGPRINTLN_CTX("Not an IcyRadio device, aborting");
+        pr_err("Device %u is not an IcyRadio, aborting", ulDevID);
 
         pci_iounmap(pPCIDev, pBAR);
         pci_release_regions(pPCIDev);
@@ -692,11 +701,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     ulDesignVersion = icyradio_axi_dna_get_design_version(pDNABase);
 
-    DBGPRINTLN_CTX("Device design version: v%u.%u.%u", AXI_DNA_DESIGN_VERSION_MAJOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_MINOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_PATCH(ulDesignVersion));
+    pr_info("Device %u design version: v%u.%u.%u", ulDevID, AXI_DNA_DESIGN_VERSION_MAJOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_MINOR(ulDesignVersion), AXI_DNA_DESIGN_VERSION_PATCH(ulDesignVersion));
 
     if(ulDesignVersion < AXI_DNA_DESIGN_VERSION(1, 0, 0))
     {
-        DBGPRINTLN_CTX("Unsupported design version, aborting");
+        pr_err("Unsupported design version for device %u, aborting", ulDevID);
 
         pci_iounmap(pPCIDev, pBAR);
         pci_release_regions(pPCIDev);
@@ -708,9 +717,9 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return -EINVAL;
     }
 
-    DBGPRINTLN_CTX("Device info: 0x%08X", icyradio_axi_dna_get_device_info(pDNABase));
-    DBGPRINTLN_CTX("Device User Access: 0x%08X", icyradio_axi_dna_get_usr_access(pDNABase));
-    DBGPRINTLN_CTX("Device EFUSE USR: 0x%08X", icyradio_axi_dna_get_efuse_usr(pDNABase));
+    pr_info("Device %u info: 0x%08X", ulDevID, icyradio_axi_dna_get_device_info(pDNABase));
+    pr_info("Device %u User Access: 0x%08X", ulDevID, icyradio_axi_dna_get_usr_access(pDNABase));
+    pr_info("Device %u EFUSE USR: 0x%08X", ulDevID, icyradio_axi_dna_get_efuse_usr(pDNABase));
 
     ulTimeout = 100;
 
@@ -719,7 +728,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     if(!ulTimeout)
     {
-        DBGPRINTLN_CTX("Timed out waiting for DNA to be ready, aborting");
+        pr_err("Timed out waiting for DNA of device %u to be ready, aborting", ulDevID);
 
         pci_iounmap(pPCIDev, pBAR);
         pci_release_regions(pPCIDev);
@@ -733,7 +742,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     pDev->ullSerialNumber = icyradio_axi_dna_get_dna(pDNABase);
 
-    DBGPRINTLN_CTX("Device serial number: %015llX", pDev->ullSerialNumber);
+    pr_info("Device %u serial number: %015llX", ulDevID, pDev->ullSerialNumber);
 
     pDNABase = NULL;
     pci_iounmap(pPCIDev, pBAR);
@@ -742,11 +751,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     // Set DMA mask
     if(dma_set_mask_and_coherent(&pPCIDev->dev, DMA_BIT_MASK(48)))
     {
-        DBGPRINTLN_CTX("Can't set DMA mask to 48 bits, trying 32 bits");
+        pr_warn("Can't set device %u DMA mask to 48 bits, trying 32 bits", ulDevID);
 
         if(dma_set_mask_and_coherent(&pPCIDev->dev, DMA_BIT_MASK(32)))
         {
-            DBGPRINTLN_CTX("Can't set DMA mask to 32 bits, aborting");
+            pr_err("Can't set device %u DMA mask to 32 bits, aborting", ulDevID);
 
             pci_release_regions(pPCIDev);
             pci_disable_device(pPCIDev);
@@ -758,20 +767,20 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         }
         else
         {
-            DBGPRINTLN_CTX("DMA mask set to 32 bits");
+            pr_info("Device %u DMA mask set to 32 bits", ulDevID);
         }
 	}
     else
     {
-        DBGPRINTLN_CTX("DMA mask set to 48 bits");
+        pr_info("Device %u DMA mask set to 48 bits", ulDevID);
     }
 
     // Setup interrupts
-    pDev->iNumIRQs = pci_alloc_irq_vectors(pPCIDev, 1, 32, PCI_IRQ_MSI | PCI_IRQ_MSIX | PCI_IRQ_AFFINITY); // Allocate up to 32 MSI-X vectors
+    pDev->iNumIRQs = pci_alloc_irq_vectors(pPCIDev, 1, ICYRADIO_PCIE_MSI_MAX_VECTORS, PCI_IRQ_MSI | PCI_IRQ_MSIX | PCI_IRQ_AFFINITY); // Allocate up to ICYRADIO_PCIE_MSI_MAX_VECTORS MSI-X vectors
 
     if(pDev->iNumIRQs < 0)
     {
-        DBGPRINTLN_CTX("Can't allocate MSI-X vectors, aborting");
+        pr_err("Can't allocate MSI-X vectors for device %u, aborting", ulDevID);
 
         pci_release_regions(pPCIDev);
         pci_disable_device(pPCIDev);
@@ -782,7 +791,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return -EFAULT;
     }
 
-    DBGPRINTLN_CTX("Allocated %d MSI-X vectors", pDev->iNumIRQs);
+    pr_info("Allocated %d MSI-X vectors for device %u", pDev->iNumIRQs, ulDevID);
 
     spin_lock_init(&pDev->sIRQLock);
 
@@ -790,11 +799,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
     {
         int iVec = pci_irq_vector(pPCIDev, i);
 
-        DBGPRINTLN_CTX("  MSI-X vector %d: IRQ %d", i, iVec);
+        pr_debug("  MSI-X vector %d: IRQ %d", i, iVec);
 
         if(request_irq(iVec, icyradio_irq_handler, 0, ICYRADIO_DEV_NAME, pDev))
         {
-            DBGPRINTLN_CTX("Can't request IRQ %d, aborting", iVec);
+            pr_err("Can't request vector %d (IRQ %d) for device %u, aborting", i, iVec, ulDevID);
 
             for(int j = 0; j < i; j++)
                 free_irq(pci_irq_vector(pPCIDev, j), pDev);
@@ -816,11 +825,11 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     ulDevNum = MKDEV(MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ulDevID);
 
-    DBGPRINTLN_CTX("Registering device with major %u and minor %u", MAJOR(ulDevNum), MINOR(ulDevNum));
+    pr_debug("Registering cdev for device %u with major %u and minor %u", ulDevID, MAJOR(ulDevNum), MINOR(ulDevNum));
 
     if(cdev_add(&pDev->sCharDev, ulDevNum, 1))
     {
-        DBGPRINTLN_CTX("Can't add cdev device, aborting");
+        pr_err("Can't add cdev for device %u, aborting", ulDevID);
 
         for(int i = 0; i < pDev->iNumIRQs; i++)
             free_irq(pci_irq_vector(pPCIDev, i), pDev);
@@ -839,7 +848,7 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
 
     if(IS_ERR(pUDevDevice))
     {
-        DBGPRINTLN_CTX("Can't create udev device, aborting");
+        pr_err("Can't create udev device for device %u, aborting", ulDevID);
 
         cdev_del(&pDev->sCharDev);
 
@@ -856,13 +865,13 @@ static int icyradio_pci_probe(struct pci_dev *pPCIDev, const struct pci_device_i
         return PTR_ERR(pUDevDevice);
     }
 
-    DBGPRINTLN_CTX("Device created at /dev/%s%u", ICYRADIO_DEV_NAME, ulDevID);
+    pr_info("Device %u file created at /dev/%s%u", ulDevID, ICYRADIO_DEV_NAME, ulDevID);
 
     // After all configuration is successful, register the device in the array and set its drvdata
     icyradio_devs[ulDevID] = pDev;
     pci_set_drvdata(pPCIDev, pDev);
 
-    DBGPRINTLN_CTX("IcyRadio device %u probed", ulDevID);
+    pr_notice("IcyRadio device %u successfully probed", ulDevID);
 
     mutex_unlock(&pDev->sMutex);
     mutex_unlock(&icyradio_devs_mutex);
@@ -874,28 +883,28 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
     icyradio_dev_t *pDev = pci_get_drvdata(pPCIDev);
     int iDevID = -1;
 
-    DBGPRINTLN_CTX("Removing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
+    pr_debug("Removing PCI device %04X:%04X", pPCIDev->vendor, pPCIDev->device);
 
     if(pPCIDev->vendor != ICYRADIO_PCI_VENDOR_ID || pPCIDev->device != ICYRADIO_PCI_DEVICE_ID)
     {
-        DBGPRINTLN_CTX("Not an IcyRadio device, aborting");
+        pr_warn("Not an IcyRadio device, aborting");
 
         return;
     }
 
     if(pDev)
     {
-        DBGPRINTLN_CTX("Device ID is %u", pDev->ulDevID);
+        pr_info("Removing IcyRadio device %u", pDev->ulDevID);
 
         if(pDev->pPCIDev != pPCIDev)
-            DBGPRINTLN_CTX("PCI Device ptr mismatch");
+            pr_warn("PCI device ptr mismatch for device %u", pDev->ulDevID);
 
         iDevID = pDev->ulDevID;
 
         mutex_lock(&pDev->sMutex); // Use non-interruptible lock since we can't return an error from here
 
         if(pDev->pFile)
-            DBGPRINTLN_CTX("Device file still open, processes may be using it");
+            pr_warn("Device %u file still open, processes may be using it", pDev->ulDevID);
 
         // Free IRQs first so that we don't try to access the device in the ISR after it's removed
         for(int i = 0; i < pDev->iNumIRQs; i++)
@@ -917,7 +926,7 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
     }
     else
     {
-        DBGPRINTLN_CTX("Can't find IcyRadio device struct");
+        pr_err("Can't find IcyRadio device struct");
 
         // Free IRQs anway
         for(int i = 0; i < pDev->iNumIRQs; i++)
@@ -929,7 +938,10 @@ static void icyradio_pci_remove(struct pci_dev *pPCIDev)
     pci_release_regions(pPCIDev);
     pci_disable_device(pPCIDev);
 
-    DBGPRINTLN_CTX("IcyRadio device %d removed", iDevID);
+    if(iDevID >= 0)
+        pr_info("IcyRadio device %d removed", iDevID);
+    else
+        pr_warn("Unknown IcyRadio device removed");
 }
 
 static struct pci_driver icyradio_pci_driver = {
@@ -954,7 +966,7 @@ static int __init icyradio_init(void)
 
     if(IS_ERR(icyradio_class))
     {
-        DBGPRINTLN_CTX("Can't create IcyRadio class, aborting");
+        pr_err("Can't create IcyRadio class, aborting");
 
         return PTR_ERR(icyradio_class);
     }
@@ -963,20 +975,20 @@ static int __init icyradio_init(void)
 
     if(status < 0)
     {
-        DBGPRINTLN_CTX("Can't allocate device number (%d), aborting", status);
+        pr_err("Can't allocate device number (%d), aborting", status);
 
         class_destroy(icyradio_class);
 
         return status;
     }
 
-    DBGPRINTLN_CTX("Allocated major number %d, minor numbers %d-%d", MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ICYRADIO_MAX_DEVICES - 1);
+    pr_info("Allocated major number %d, minor numbers %d-%d", MAJOR(icyradio_dev_num), MINOR(icyradio_dev_num), MINOR(icyradio_dev_num) + ICYRADIO_MAX_DEVICES - 1);
 
     status = pci_register_driver(&icyradio_pci_driver);
 
     if(status < 0)
     {
-        DBGPRINTLN_CTX("Can't register PCI driver (%d), aborting", status);
+        pr_err("Can't register PCI driver (%d), aborting", status);
 
         unregister_chrdev_region(icyradio_dev_num, ICYRADIO_MAX_DEVICES);
         class_destroy(icyradio_class);
@@ -984,7 +996,7 @@ static int __init icyradio_init(void)
         return status;
     }
 
-    DBGPRINTLN_CTX("IcyRadio kernel module loaded");
+    pr_info("IcyRadio kernel module loaded");
 
     return 0;
 }
@@ -995,7 +1007,7 @@ static void __exit icyradio_exit(void)
     unregister_chrdev_region(icyradio_dev_num, ICYRADIO_MAX_DEVICES);
     class_destroy(icyradio_class);
 
-    DBGPRINTLN_CTX("IcyRadio kernel module unloaded");
+    pr_info("IcyRadio kernel module unloaded");
 }
 
 module_init(icyradio_init);
