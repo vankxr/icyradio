@@ -2,11 +2,11 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-// Date        : Wed Mar 27 12:07:03 2024
+// Date        : Thu Mar  6 16:06:03 2025
 // Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode synth_stub -rename_top icyradio_ddr_intf_reset_combiner_0 -prefix
-//               icyradio_ddr_intf_reset_combiner_0_ icyradio_adc_packer_reset_combiner_rx1_0_stub.v
-// Design      : icyradio_adc_packer_reset_combiner_rx1_0
+//               icyradio_ddr_intf_reset_combiner_0_ icyradio_adc_packer_reset_combiner_rx0_0_stub.v
+// Design      : icyradio_adc_packer_reset_combiner_rx0_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7a100tfgg484-2
 // --------------------------------------------------------------------------------

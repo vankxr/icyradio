@@ -1,145 +1,145 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.987805",
-   "Default View_TopLeft":"6481,4185",
+   "Default View_ScaleFactor":"0.987804",
+   "Default View_TopLeft":"6777,3246",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.5.8 2022-09-21 7111 VDI=41 GEI=38 GUI=JA:10.0 TLS
 #  -string -flagsOSRD
-preplace port PCIe_REFCLK -pg 1 -lvl 0 -x -10 -y 3530 -defaultsOSRD
-preplace port PCIe -pg 1 -lvl 20 -x 7840 -y 3830 -defaultsOSRD
-preplace port AUDIO_I2C -pg 1 -lvl 20 -x 7840 -y 2740 -defaultsOSRD
-preplace port FLASH_QSPI -pg 1 -lvl 20 -x 7840 -y 3420 -defaultsOSRD
-preplace port DDR3 -pg 1 -lvl 20 -x 7840 -y 4410 -defaultsOSRD
-preplace port ADCIN_MAIN -pg 1 -lvl 0 -x -10 -y 3660 -defaultsOSRD
-preplace port TRX_SPI -pg 1 -lvl 20 -x 7840 -y 3090 -defaultsOSRD
-preplace port SYS_I2C -pg 1 -lvl 20 -x 7840 -y 2900 -defaultsOSRD
-preplace port EXT_I2C -pg 1 -lvl 20 -x 7840 -y 2380 -defaultsOSRD
-preplace port CODEC_I2S -pg 1 -lvl 20 -x 7840 -y 2560 -defaultsOSRD
-preplace port SYNTH_SPI -pg 1 -lvl 20 -x 7840 -y 3250 -defaultsOSRD
-preplace port port-id_TRX_DATA_CLK -pg 1 -lvl 0 -x -10 -y 280 -defaultsOSRD
-preplace port port-id_TRX_FBCLK -pg 1 -lvl 20 -x 7840 -y 340 -defaultsOSRD
-preplace port port-id_TRX_TXFRAME -pg 1 -lvl 20 -x 7840 -y 360 -defaultsOSRD
-preplace port port-id_TRX_RXFRAME -pg 1 -lvl 0 -x -10 -y 530 -defaultsOSRD
-preplace port port-id_TRX_EN -pg 1 -lvl 20 -x 7840 -y 400 -defaultsOSRD
-preplace port port-id_TRX_TXNRX -pg 1 -lvl 20 -x 7840 -y 420 -defaultsOSRD
-preplace port port-id_PCIe_RESETn -pg 1 -lvl 0 -x -10 -y 1160 -defaultsOSRD
-preplace port port-id_FPGA_CLK1 -pg 1 -lvl 0 -x -10 -y 2700 -defaultsOSRD
-preplace port port-id_TRX_CLK_OUT -pg 1 -lvl 0 -x -10 -y 20 -defaultsOSRD
-preplace port port-id_TRX_5V0_PA1_OCn -pg 1 -lvl 0 -x -10 -y 5040 -defaultsOSRD
-preplace port port-id_TRX_5V0_PA2_OCn -pg 1 -lvl 0 -x -10 -y 5060 -defaultsOSRD
-preplace port port-id_TRX_5V0_BIAS_T1_OCn -pg 1 -lvl 0 -x -10 -y 5000 -defaultsOSRD
-preplace port port-id_TRX_5V0_BIAS_T2_OCn -pg 1 -lvl 0 -x -10 -y 5020 -defaultsOSRD
-preplace port port-id_SYNTH_LD -pg 1 -lvl 0 -x -10 -y 4780 -defaultsOSRD
-preplace port port-id_CLK_MNGR_IRQn -pg 1 -lvl 0 -x -10 -y 3640 -defaultsOSRD
-preplace port port-id_VIN_REG_ALERTn -pg 1 -lvl 0 -x -10 -y 3620 -defaultsOSRD
-preplace port port-id_CODEC_MCLK -pg 1 -lvl 20 -x 7840 -y 2620 -defaultsOSRD
-preplace port port-id_FPGA_CLK0 -pg 1 -lvl 0 -x -10 -y 4520 -defaultsOSRD
-preplace portBus TRX_P1_RXDATA -pg 1 -lvl 0 -x -10 -y 550 -defaultsOSRD
-preplace portBus TRX_P0_TXDATA -pg 1 -lvl 20 -x 7840 -y 380 -defaultsOSRD
-preplace portBus TRX_CTRL_OUT -pg 1 -lvl 0 -x -10 -y 4660 -defaultsOSRD
-preplace portBus TRX_CTRL_IN -pg 1 -lvl 20 -x 7840 -y 2020 -defaultsOSRD
-preplace portBus TRX_EN_AGC -pg 1 -lvl 20 -x 7840 -y 2120 -defaultsOSRD
-preplace portBus CODEC_RSTn -pg 1 -lvl 20 -x 7840 -y 4900 -defaultsOSRD
-preplace portBus PCIe_CLKREQn -pg 1 -lvl 20 -x 7840 -y 4270 -defaultsOSRD
-preplace portBus TRX_RESETn -pg 1 -lvl 20 -x 7840 -y 2220 -defaultsOSRD
-preplace portBus TRX_SYNC_IN -pg 1 -lvl 20 -x 7840 -y 2320 -defaultsOSRD
-preplace portBus SYNTH_RESETn -pg 1 -lvl 20 -x 7840 -y 4090 -defaultsOSRD
-preplace portBus SYNTH_MUTE -pg 1 -lvl 20 -x 7840 -y 3990 -defaultsOSRD
-preplace portBus SYNTH_SYNC -pg 1 -lvl 20 -x 7840 -y 4190 -defaultsOSRD
-preplace portBus SYNTH_CE -pg 1 -lvl 20 -x 7840 -y 3890 -defaultsOSRD
-preplace portBus CLK_MNGR_OEn -pg 1 -lvl 20 -x 7840 -y 4700 -defaultsOSRD
-preplace portBus PM_I2C_EN -pg 1 -lvl 20 -x 7840 -y 5000 -defaultsOSRD
-preplace portBus CM4_WAKE -pg 1 -lvl 20 -x 7840 -y 4800 -defaultsOSRD
-preplace portBus PCIe_WAKEn -pg 1 -lvl 20 -x 7840 -y 4290 -defaultsOSRD
-preplace inst axi_bram_ctrl_0_bram -pg 1 -lvl 11 -x 4560 -y 3900 -defaultsOSRD
+preplace port PCIe_REFCLK -pg 1 -lvl 0 -x -20 -y 3530 -defaultsOSRD
+preplace port PCIe -pg 1 -lvl 20 -x 8110 -y 3830 -defaultsOSRD
+preplace port AUDIO_I2C -pg 1 -lvl 20 -x 8110 -y 2740 -defaultsOSRD
+preplace port FLASH_QSPI -pg 1 -lvl 20 -x 8110 -y 3460 -defaultsOSRD
+preplace port DDR3 -pg 1 -lvl 20 -x 8110 -y 4410 -defaultsOSRD
+preplace port ADCIN_MAIN -pg 1 -lvl 0 -x -20 -y 3660 -defaultsOSRD
+preplace port TRX_SPI -pg 1 -lvl 20 -x 8110 -y 3090 -defaultsOSRD
+preplace port SYS_I2C -pg 1 -lvl 20 -x 8110 -y 2900 -defaultsOSRD
+preplace port EXT_I2C -pg 1 -lvl 20 -x 8110 -y 2380 -defaultsOSRD
+preplace port CODEC_I2S -pg 1 -lvl 20 -x 8110 -y 2560 -defaultsOSRD
+preplace port SYNTH_SPI -pg 1 -lvl 20 -x 8110 -y 3250 -defaultsOSRD
+preplace port port-id_TRX_DATA_CLK -pg 1 -lvl 0 -x -20 -y 280 -defaultsOSRD
+preplace port port-id_TRX_FBCLK -pg 1 -lvl 20 -x 8110 -y 340 -defaultsOSRD
+preplace port port-id_TRX_TXFRAME -pg 1 -lvl 20 -x 8110 -y 360 -defaultsOSRD
+preplace port port-id_TRX_RXFRAME -pg 1 -lvl 0 -x -20 -y 530 -defaultsOSRD
+preplace port port-id_TRX_EN -pg 1 -lvl 20 -x 8110 -y 400 -defaultsOSRD
+preplace port port-id_TRX_TXNRX -pg 1 -lvl 20 -x 8110 -y 420 -defaultsOSRD
+preplace port port-id_PCIe_RESETn -pg 1 -lvl 0 -x -20 -y 1160 -defaultsOSRD
+preplace port port-id_FPGA_CLK1 -pg 1 -lvl 0 -x -20 -y 2700 -defaultsOSRD
+preplace port port-id_TRX_CLK_OUT -pg 1 -lvl 0 -x -20 -y 20 -defaultsOSRD
+preplace port port-id_TRX_5V0_PA1_OCn -pg 1 -lvl 0 -x -20 -y 5040 -defaultsOSRD
+preplace port port-id_TRX_5V0_PA2_OCn -pg 1 -lvl 0 -x -20 -y 5060 -defaultsOSRD
+preplace port port-id_TRX_5V0_BIAS_T1_OCn -pg 1 -lvl 0 -x -20 -y 5000 -defaultsOSRD
+preplace port port-id_TRX_5V0_BIAS_T2_OCn -pg 1 -lvl 0 -x -20 -y 5020 -defaultsOSRD
+preplace port port-id_SYNTH_LD -pg 1 -lvl 0 -x -20 -y 4780 -defaultsOSRD
+preplace port port-id_CLK_MNGR_IRQn -pg 1 -lvl 0 -x -20 -y 3640 -defaultsOSRD
+preplace port port-id_VIN_REG_ALERTn -pg 1 -lvl 0 -x -20 -y 3620 -defaultsOSRD
+preplace port port-id_CODEC_MCLK -pg 1 -lvl 20 -x 8110 -y 2620 -defaultsOSRD
+preplace port port-id_FPGA_CLK0 -pg 1 -lvl 0 -x -20 -y 4520 -defaultsOSRD
+preplace portBus TRX_P1_RXDATA -pg 1 -lvl 0 -x -20 -y 550 -defaultsOSRD
+preplace portBus TRX_P0_TXDATA -pg 1 -lvl 20 -x 8110 -y 380 -defaultsOSRD
+preplace portBus TRX_CTRL_OUT -pg 1 -lvl 0 -x -20 -y 4660 -defaultsOSRD
+preplace portBus TRX_CTRL_IN -pg 1 -lvl 20 -x 8110 -y 2020 -defaultsOSRD
+preplace portBus TRX_EN_AGC -pg 1 -lvl 20 -x 8110 -y 2120 -defaultsOSRD
+preplace portBus CODEC_RSTn -pg 1 -lvl 20 -x 8110 -y 4900 -defaultsOSRD
+preplace portBus PCIe_CLKREQn -pg 1 -lvl 20 -x 8110 -y 4270 -defaultsOSRD
+preplace portBus TRX_RESETn -pg 1 -lvl 20 -x 8110 -y 2220 -defaultsOSRD
+preplace portBus TRX_SYNC_IN -pg 1 -lvl 20 -x 8110 -y 2320 -defaultsOSRD
+preplace portBus SYNTH_RESETn -pg 1 -lvl 20 -x 8110 -y 4090 -defaultsOSRD
+preplace portBus SYNTH_MUTE -pg 1 -lvl 20 -x 8110 -y 3990 -defaultsOSRD
+preplace portBus SYNTH_SYNC -pg 1 -lvl 20 -x 8110 -y 4190 -defaultsOSRD
+preplace portBus SYNTH_CE -pg 1 -lvl 20 -x 8110 -y 3890 -defaultsOSRD
+preplace portBus CLK_MNGR_OEn -pg 1 -lvl 20 -x 8110 -y 4700 -defaultsOSRD
+preplace portBus PM_I2C_EN -pg 1 -lvl 20 -x 8110 -y 5000 -defaultsOSRD
+preplace portBus CM4_WAKE -pg 1 -lvl 20 -x 8110 -y 4800 -defaultsOSRD
+preplace portBus PCIe_WAKEn -pg 1 -lvl 20 -x 8110 -y 4290 -defaultsOSRD
+preplace inst axi_bram_ctrl_0_bram -pg 1 -lvl 11 -x 4580 -y 3900 -defaultsOSRD
 preplace inst rx_enable_gate_rx0 -pg 1 -lvl 4 -x 1130 -y 890 -defaultsOSRD
-preplace inst mig_7series_0 -pg 1 -lvl 17 -x 7130 -y 4450 -defaultsOSRD
+preplace inst mig_7series_0 -pg 1 -lvl 17 -x 7270 -y 4530 -defaultsOSRD
 preplace inst rst_mig_7series_0_166M -pg 1 -lvl 8 -x 3040 -y 4280 -defaultsOSRD
-preplace inst rst_axi_pcie_0_125M -pg 1 -lvl 5 -x 1570 -y 4060 -defaultsOSRD
+preplace inst rst_axi_pcie_0_125M -pg 1 -lvl 5 -x 1580 -y 4060 -defaultsOSRD
 preplace inst adc_packer_reset_combiner_rx1 -pg 1 -lvl 4 -x 1130 -y 610 -defaultsOSRD
 preplace inst xadc_wiz_0 -pg 1 -lvl 12 -x 5320 -y 3680 -defaultsOSRD
-preplace inst irq_concat_0 -pg 1 -lvl 11 -x 4560 -y 3450 -defaultsOSRD
-preplace inst GND_0 -pg 1 -lvl 19 -x 7710 -y 4290 -defaultsOSRD
-preplace inst axi_bram_ctrl_0 -pg 1 -lvl 10 -x 3990 -y 3900 -defaultsOSRD
-preplace inst axi_iic_0 -pg 1 -lvl 17 -x 7130 -y 2760 -defaultsOSRD
+preplace inst irq_concat_0 -pg 1 -lvl 11 -x 4580 -y 3450 -defaultsOSRD
+preplace inst GND_0 -pg 1 -lvl 19 -x 7980 -y 4290 -defaultsOSRD
+preplace inst axi_bram_ctrl_0 -pg 1 -lvl 10 -x 4000 -y 3900 -defaultsOSRD
+preplace inst axi_iic_0 -pg 1 -lvl 17 -x 7270 -y 2760 -defaultsOSRD
 preplace inst axi_pcie_0 -pg 1 -lvl 8 -x 3040 -y 3470 -defaultsOSRD
-preplace inst axi_protocol_convert_0 -pg 1 -lvl 10 -x 3990 -y 3220 -defaultsOSRD
-preplace inst util_ds_buf_0 -pg 1 -lvl 7 -x 2550 -y 3530 -defaultsOSRD
+preplace inst axi_protocol_convert_0 -pg 1 -lvl 10 -x 4000 -y 3220 -defaultsOSRD
+preplace inst util_ds_buf_0 -pg 1 -lvl 7 -x 2630 -y 3530 -defaultsOSRD
 preplace inst tx_enable_gate_tx0 -pg 1 -lvl 8 -x 3040 -y 900 -defaultsOSRD
 preplace inst picorv32_0 -pg 1 -lvl 6 -x 2100 -y 4000 -defaultsOSRD
-preplace inst axi_iic_1 -pg 1 -lvl 17 -x 7130 -y 2920 -defaultsOSRD
-preplace inst clk_wiz_0 -pg 1 -lvl 11 -x 4560 -y 4530 -defaultsOSRD
-preplace inst gpio_slice_trx_ctrl_out -pg 1 -lvl 19 -x 7710 -y 2020 -defaultsOSRD
-preplace inst gpio_slice_trx_sync_in -pg 1 -lvl 19 -x 7710 -y 2320 -defaultsOSRD
-preplace inst gpio_slice_trx_en_agc -pg 1 -lvl 19 -x 7710 -y 2120 -defaultsOSRD
+preplace inst axi_iic_1 -pg 1 -lvl 17 -x 7270 -y 2920 -defaultsOSRD
+preplace inst clk_wiz_0 -pg 1 -lvl 11 -x 4580 -y 4530 -defaultsOSRD
+preplace inst gpio_slice_trx_ctrl_out -pg 1 -lvl 19 -x 7980 -y 2020 -defaultsOSRD
+preplace inst gpio_slice_trx_sync_in -pg 1 -lvl 19 -x 7980 -y 2320 -defaultsOSRD
+preplace inst gpio_slice_trx_en_agc -pg 1 -lvl 19 -x 7980 -y 2120 -defaultsOSRD
 preplace inst gpio_concat_0 -pg 1 -lvl 14 -x 6070 -y 4750 -defaultsOSRD
 preplace inst GND_3 -pg 1 -lvl 13 -x 5780 -y 4930 -defaultsOSRD
-preplace inst gpio_slice_trx_up_txnrx -pg 1 -lvl 11 -x 4560 -y 1540 -defaultsOSRD
-preplace inst gpio_slice_trx_up_enable -pg 1 -lvl 11 -x 4560 -y 1440 -defaultsOSRD
+preplace inst gpio_slice_trx_up_txnrx -pg 1 -lvl 11 -x 4580 -y 1540 -defaultsOSRD
+preplace inst gpio_slice_trx_up_enable -pg 1 -lvl 11 -x 4580 -y 1440 -defaultsOSRD
 preplace inst gpio_concat_0_1 -pg 1 -lvl 3 -x 770 -y 5030 -defaultsOSRD
 preplace inst gpio_concat_1 -pg 1 -lvl 3 -x 770 -y 4790 -defaultsOSRD
 preplace inst GND_4 -pg 1 -lvl 2 -x 390 -y 4840 -defaultsOSRD
-preplace inst gpio_slice_synth_ce -pg 1 -lvl 19 -x 7710 -y 3890 -defaultsOSRD
-preplace inst gpio_slice_synth_mute -pg 1 -lvl 19 -x 7710 -y 3990 -defaultsOSRD
-preplace inst gpio_slice_synth_sync -pg 1 -lvl 19 -x 7710 -y 4190 -defaultsOSRD
-preplace inst gpio_slice_pm_i2c_en -pg 1 -lvl 19 -x 7710 -y 5000 -defaultsOSRD
-preplace inst gpio_slice_clk_mngr_oen -pg 1 -lvl 19 -x 7710 -y 4700 -defaultsOSRD
+preplace inst gpio_slice_synth_ce -pg 1 -lvl 19 -x 7980 -y 3890 -defaultsOSRD
+preplace inst gpio_slice_synth_mute -pg 1 -lvl 19 -x 7980 -y 3990 -defaultsOSRD
+preplace inst gpio_slice_synth_sync -pg 1 -lvl 19 -x 7980 -y 4190 -defaultsOSRD
+preplace inst gpio_slice_pm_i2c_en -pg 1 -lvl 19 -x 7980 -y 5000 -defaultsOSRD
+preplace inst gpio_slice_clk_mngr_oen -pg 1 -lvl 19 -x 7980 -y 4700 -defaultsOSRD
 preplace inst GND_5 -pg 1 -lvl 13 -x 5780 -y 4610 -defaultsOSRD
 preplace inst GND_6 -pg 1 -lvl 2 -x 390 -y 4720 -defaultsOSRD
-preplace inst gpio_slice_trx_resetn -pg 1 -lvl 19 -x 7710 -y 2220 -defaultsOSRD
+preplace inst gpio_slice_trx_resetn -pg 1 -lvl 19 -x 7980 -y 2220 -defaultsOSRD
 preplace inst GND_7 -pg 1 -lvl 13 -x 5780 -y 4830 -defaultsOSRD
-preplace inst gpio_slice_synth_resetn -pg 1 -lvl 19 -x 7710 -y 4090 -defaultsOSRD
+preplace inst gpio_slice_synth_resetn -pg 1 -lvl 19 -x 7980 -y 4090 -defaultsOSRD
 preplace inst GND_8 -pg 1 -lvl 2 -x 390 -y 4940 -defaultsOSRD
-preplace inst rst_clk_wiz_0_250M -pg 1 -lvl 16 -x 6680 -y 4630 -defaultsOSRD
+preplace inst rst_clk_wiz_0_250M -pg 1 -lvl 16 -x 6750 -y 4630 -defaultsOSRD
 preplace inst gpio_slice_sys_aux_reset -pg 1 -lvl 3 -x 770 -y 4200 -defaultsOSRD
-preplace inst gpio_slice_cpu_resetn -pg 1 -lvl 5 -x 1570 -y 3920 -defaultsOSRD
-preplace inst gpio_concat_2 -pg 1 -lvl 18 -x 7480 -y 4190 -defaultsOSRD
-preplace inst GND_9 -pg 1 -lvl 17 -x 7130 -y 4630 -defaultsOSRD
-preplace inst gpio_slice_cm4_wake -pg 1 -lvl 19 -x 7710 -y 4800 -defaultsOSRD
-preplace inst GND_1 -pg 1 -lvl 11 -x 4560 -y 60 -defaultsOSRD
-preplace inst GND_11 -pg 1 -lvl 10 -x 3990 -y 3400 -defaultsOSRD
-preplace inst GND_13 -pg 1 -lvl 11 -x 4560 -y 160 -defaultsOSRD
+preplace inst gpio_slice_cpu_resetn -pg 1 -lvl 5 -x 1580 -y 3920 -defaultsOSRD
+preplace inst gpio_concat_2 -pg 1 -lvl 18 -x 7740 -y 4190 -defaultsOSRD
+preplace inst GND_9 -pg 1 -lvl 17 -x 7270 -y 4710 -defaultsOSRD
+preplace inst gpio_slice_cm4_wake -pg 1 -lvl 19 -x 7980 -y 4800 -defaultsOSRD
+preplace inst GND_1 -pg 1 -lvl 11 -x 4580 -y 60 -defaultsOSRD
+preplace inst GND_11 -pg 1 -lvl 10 -x 4000 -y 3400 -defaultsOSRD
+preplace inst GND_13 -pg 1 -lvl 11 -x 4580 -y 160 -defaultsOSRD
 preplace inst GND_14 -pg 1 -lvl 13 -x 5780 -y 4730 -defaultsOSRD
 preplace inst gpio_concat_0_2 -pg 1 -lvl 13 -x 5780 -y 950 -defaultsOSRD
-preplace inst GND_15 -pg 1 -lvl 17 -x 7130 -y 4830 -defaultsOSRD
-preplace inst rst_axi_pcie_0_125M_pcie_core -pg 1 -lvl 7 -x 2550 -y 4140 -defaultsOSRD
+preplace inst GND_15 -pg 1 -lvl 17 -x 7270 -y 4910 -defaultsOSRD
+preplace inst rst_axi_pcie_0_125M_pcie_core -pg 1 -lvl 7 -x 2630 -y 4140 -defaultsOSRD
 preplace inst GND_17 -pg 1 -lvl 6 -x 2100 -y 4220 -defaultsOSRD
 preplace inst GND_18 -pg 1 -lvl 4 -x 1130 -y 4080 -defaultsOSRD
-preplace inst GND_19 -pg 1 -lvl 7 -x 2550 -y 4300 -defaultsOSRD
-preplace inst GND_20 -pg 1 -lvl 15 -x 6360 -y 4730 -defaultsOSRD
+preplace inst GND_19 -pg 1 -lvl 7 -x 2630 -y 4300 -defaultsOSRD
+preplace inst GND_20 -pg 1 -lvl 15 -x 6390 -y 4730 -defaultsOSRD
 preplace inst rst_pulse_gen_0 -pg 1 -lvl 4 -x 1130 -y 4190 -defaultsOSRD
-preplace inst axi_peripheral_interconnect -pg 1 -lvl 11 -x 4560 -y 2540 -defaultsOSRD
-preplace inst axi_cpu_dma_interconnect -pg 1 -lvl 7 -x 2550 -y 2780 -defaultsOSRD
-preplace inst gpio_slice_ddr_reset -pg 1 -lvl 15 -x 6360 -y 4630 -defaultsOSRD
-preplace inst GND_16 -pg 1 -lvl 17 -x 7130 -y 4930 -defaultsOSRD
-preplace inst GND_10 -pg 1 -lvl 17 -x 7130 -y 4730 -defaultsOSRD
+preplace inst axi_peripheral_interconnect -pg 1 -lvl 11 -x 4580 -y 2540 -defaultsOSRD
+preplace inst axi_cpu_dma_interconnect -pg 1 -lvl 7 -x 2630 -y 2780 -defaultsOSRD
+preplace inst gpio_slice_ddr_reset -pg 1 -lvl 15 -x 6390 -y 4630 -defaultsOSRD
+preplace inst GND_16 -pg 1 -lvl 17 -x 7270 -y 5010 -defaultsOSRD
+preplace inst GND_10 -pg 1 -lvl 17 -x 7270 -y 4810 -defaultsOSRD
 preplace inst gpio_slice_ddr_intf_reset -pg 1 -lvl 6 -x 2100 -y 4600 -defaultsOSRD
-preplace inst ddr_intf_reset_combiner -pg 1 -lvl 7 -x 2550 -y 4590 -defaultsOSRD
+preplace inst ddr_intf_reset_combiner -pg 1 -lvl 7 -x 2630 -y 4590 -defaultsOSRD
 preplace inst rst_axi_ad9361_61M44 -pg 1 -lvl 3 -x 770 -y 1200 -defaultsOSRD
 preplace inst VCC_0 -pg 1 -lvl 2 -x 390 -y 1320 -defaultsOSRD
 preplace inst GND_12 -pg 1 -lvl 2 -x 390 -y 1220 -defaultsOSRD
 preplace inst dac_unpacker_reset_combiner_tx0 -pg 1 -lvl 8 -x 3040 -y 1330 -defaultsOSRD
-preplace inst tx_dma_xfer_req_not_tx0 -pg 1 -lvl 7 -x 2550 -y 1460 -defaultsOSRD
+preplace inst tx_dma_xfer_req_not_tx0 -pg 1 -lvl 7 -x 2630 -y 1460 -defaultsOSRD
 preplace inst adc_packer_reset_combiner_rx0 -pg 1 -lvl 4 -x 1130 -y 730 -defaultsOSRD
 preplace inst rx_dma_xfer_req_not_rx0 -pg 1 -lvl 3 -x 770 -y 720 -defaultsOSRD
-preplace inst rst_FPGA_CLK1_49M152 -pg 1 -lvl 16 -x 6680 -y 4330 -defaultsOSRD
-preplace inst GND_2 -pg 1 -lvl 15 -x 6360 -y 4350 -defaultsOSRD
-preplace inst VCC_1 -pg 1 -lvl 15 -x 6360 -y 4450 -defaultsOSRD
-preplace inst gpio_slice_i2s_reset -pg 1 -lvl 15 -x 6360 -y 4250 -defaultsOSRD
-preplace inst gpio_slice_codec_resetn -pg 1 -lvl 19 -x 7710 -y 4900 -defaultsOSRD
-preplace inst axi_iic_2 -pg 1 -lvl 17 -x 7130 -y 2400 -defaultsOSRD
+preplace inst rst_FPGA_CLK1_49M152 -pg 1 -lvl 16 -x 6750 -y 4330 -defaultsOSRD
+preplace inst GND_2 -pg 1 -lvl 15 -x 6390 -y 4350 -defaultsOSRD
+preplace inst VCC_1 -pg 1 -lvl 15 -x 6390 -y 4450 -defaultsOSRD
+preplace inst gpio_slice_i2s_reset -pg 1 -lvl 15 -x 6390 -y 4250 -defaultsOSRD
+preplace inst gpio_slice_codec_resetn -pg 1 -lvl 19 -x 7980 -y 4900 -defaultsOSRD
+preplace inst axi_iic_2 -pg 1 -lvl 17 -x 7270 -y 2400 -defaultsOSRD
 preplace inst axi_dna_0 -pg 1 -lvl 12 -x 5320 -y 2290 -defaultsOSRD
 preplace inst axi_irq_controller_0 -pg 1 -lvl 12 -x 5320 -y 3430 -defaultsOSRD
 preplace inst axi_gpio_0 -pg 1 -lvl 12 -x 5320 -y 2460 -defaultsOSRD
 preplace inst axi_gpio_1 -pg 1 -lvl 12 -x 5320 -y 4060 -defaultsOSRD
 preplace inst axi_gpio_2 -pg 1 -lvl 12 -x 5320 -y 3920 -defaultsOSRD
 preplace inst axi_pcie_interconnect -pg 1 -lvl 9 -x 3600 -y 3820 -defaultsOSRD
-preplace inst axi_qspi_mm_0 -pg 1 -lvl 17 -x 7130 -y 3430 -defaultsOSRD
-preplace inst axi_spi_1 -pg 1 -lvl 17 -x 7130 -y 3260 -defaultsOSRD
-preplace inst axi_spi_0 -pg 1 -lvl 17 -x 7130 -y 3100 -defaultsOSRD
-preplace inst axi_i2s -pg 1 -lvl 17 -x 7130 -y 2590 -defaultsOSRD
+preplace inst axi_qspi_mm_0 -pg 1 -lvl 17 -x 7270 -y 3470 -defaultsOSRD
+preplace inst axi_spi_1 -pg 1 -lvl 17 -x 7270 -y 3260 -defaultsOSRD
+preplace inst axi_spi_0 -pg 1 -lvl 17 -x 7270 -y 3100 -defaultsOSRD
+preplace inst axi_i2s -pg 1 -lvl 17 -x 7270 -y 2590 -defaultsOSRD
 preplace inst axi_rf_timestamping -pg 1 -lvl 12 -x 5320 -y 1440 -defaultsOSRD
-preplace inst ad9361_adc_packer_rx0 -pg 1 -lvl 5 -x 1570 -y 400 -defaultsOSRD
+preplace inst ad9361_adc_packer_rx0 -pg 1 -lvl 5 -x 1580 -y 400 -defaultsOSRD
 preplace inst ad9361_dac_unpacker_tx0 -pg 1 -lvl 9 -x 3600 -y 860 -defaultsOSRD
 preplace inst axi_ad9361 -pg 1 -lvl 12 -x 5320 -y 670 -defaultsOSRD
 preplace inst axi_dmac_i2s_rx -pg 1 -lvl 6 -x 2100 -y 2640 -defaultsOSRD
@@ -149,28 +149,28 @@ preplace inst axi_dmac_rf_tx0 -pg 1 -lvl 6 -x 2100 -y 1360 -defaultsOSRD
 preplace inst axi_dmac_rf_tx1 -pg 1 -lvl 6 -x 2100 -y 1120 -defaultsOSRD
 preplace inst axi_dmac_rf_rx1 -pg 1 -lvl 6 -x 2100 -y 1830 -defaultsOSRD
 preplace inst ad9361_dac_unpacker_tx1 -pg 1 -lvl 9 -x 3600 -y 1170 -defaultsOSRD
-preplace inst dac_dunf_gate_tx1 -pg 1 -lvl 10 -x 3990 -y 1040 -defaultsOSRD
-preplace inst dac_dunf_combiner -pg 1 -lvl 11 -x 4560 -y 830 -defaultsOSRD
-preplace inst dac_dunf_gate_tx0 -pg 1 -lvl 10 -x 3990 -y 830 -defaultsOSRD
-preplace inst tx_enable_slice_tx0 -pg 1 -lvl 7 -x 2550 -y 890 -defaultsOSRD
-preplace inst tx_enable_slice_tx1 -pg 1 -lvl 7 -x 2550 -y 1030 -defaultsOSRD
+preplace inst dac_dunf_gate_tx1 -pg 1 -lvl 10 -x 4000 -y 1040 -defaultsOSRD
+preplace inst dac_dunf_combiner -pg 1 -lvl 11 -x 4580 -y 830 -defaultsOSRD
+preplace inst dac_dunf_gate_tx0 -pg 1 -lvl 10 -x 4000 -y 830 -defaultsOSRD
+preplace inst tx_enable_slice_tx0 -pg 1 -lvl 7 -x 2630 -y 890 -defaultsOSRD
+preplace inst tx_enable_slice_tx1 -pg 1 -lvl 7 -x 2630 -y 1030 -defaultsOSRD
 preplace inst rx_enable_slice_rx0 -pg 1 -lvl 3 -x 770 -y 880 -defaultsOSRD
 preplace inst rx_enable_slice_rx1 -pg 1 -lvl 3 -x 770 -y 1030 -defaultsOSRD
 preplace inst tx_enable_gate_tx1 -pg 1 -lvl 8 -x 3040 -y 1040 -defaultsOSRD
-preplace inst tx_fifo_underflow_concat -pg 1 -lvl 11 -x 4560 -y 1170 -defaultsOSRD
-preplace inst tx_dma_data_ready_concat -pg 1 -lvl 11 -x 4560 -y 1710 -defaultsOSRD
-preplace inst tx_data_ready_concat -pg 1 -lvl 11 -x 4560 -y 1050 -defaultsOSRD
-preplace inst rx_dma_xfer_req_concat -pg 1 -lvl 11 -x 4560 -y 680 -defaultsOSRD
-preplace inst rx_data_ready_concat -pg 1 -lvl 11 -x 4560 -y 1330 -defaultsOSRD
-preplace inst rx_fifo_overflow_concat -pg 1 -lvl 11 -x 4560 -y 560 -defaultsOSRD
-preplace inst ad9361_adc_packer_rx1 -pg 1 -lvl 5 -x 1570 -y 680 -defaultsOSRD
+preplace inst tx_fifo_underflow_concat -pg 1 -lvl 11 -x 4580 -y 1170 -defaultsOSRD
+preplace inst tx_dma_data_ready_concat -pg 1 -lvl 11 -x 4580 -y 1710 -defaultsOSRD
+preplace inst tx_data_ready_concat -pg 1 -lvl 11 -x 4580 -y 1050 -defaultsOSRD
+preplace inst rx_dma_xfer_req_concat -pg 1 -lvl 11 -x 4580 -y 680 -defaultsOSRD
+preplace inst rx_data_ready_concat -pg 1 -lvl 11 -x 4580 -y 1330 -defaultsOSRD
+preplace inst rx_fifo_overflow_concat -pg 1 -lvl 11 -x 4580 -y 560 -defaultsOSRD
+preplace inst ad9361_adc_packer_rx1 -pg 1 -lvl 5 -x 1580 -y 680 -defaultsOSRD
 preplace inst rx_enable_gate_rx1 -pg 1 -lvl 4 -x 1130 -y 1040 -defaultsOSRD
 preplace inst rx_dma_xfer_req_not_rx1 -pg 1 -lvl 3 -x 770 -y 620 -defaultsOSRD
-preplace inst tx_dma_xfer_req_not_tx1 -pg 1 -lvl 7 -x 2550 -y 1180 -defaultsOSRD
+preplace inst tx_dma_xfer_req_not_tx1 -pg 1 -lvl 7 -x 2630 -y 1180 -defaultsOSRD
 preplace inst dac_unpacker_reset_combiner_tx1 -pg 1 -lvl 8 -x 3040 -y 1190 -defaultsOSRD
-preplace inst adc_dovf_gate_rx0 -pg 1 -lvl 10 -x 3990 -y 390 -defaultsOSRD
-preplace inst adc_dovf_combiner -pg 1 -lvl 11 -x 4560 -y 330 -defaultsOSRD
-preplace inst adc_dovf_gate_rx1 -pg 1 -lvl 10 -x 3990 -y 560 -defaultsOSRD
+preplace inst adc_dovf_gate_rx0 -pg 1 -lvl 10 -x 4000 -y 390 -defaultsOSRD
+preplace inst adc_dovf_combiner -pg 1 -lvl 11 -x 4580 -y 330 -defaultsOSRD
+preplace inst adc_dovf_gate_rx1 -pg 1 -lvl 10 -x 4000 -y 560 -defaultsOSRD
 preplace inst startupe2 -pg 1 -lvl 9 -x 3600 -y 4910 -defaultsOSRD
 preplace inst GND_21 -pg 1 -lvl 8 -x 3040 -y 4850 -defaultsOSRD
 preplace inst VCC_2 -pg 1 -lvl 8 -x 3040 -y 4950 -defaultsOSRD
@@ -180,136 +180,136 @@ preplace inst tx_flush_combiner_tx0 -pg 1 -lvl 14 -x 6070 -y 1600 -defaultsOSRD
 preplace inst tx_flush_combiner_tx1 -pg 1 -lvl 14 -x 6070 -y 1720 -defaultsOSRD
 preplace inst tx_flush_slice_tx0 -pg 1 -lvl 13 -x 5780 -y 1610 -defaultsOSRD
 preplace inst tx_flush_slice_tx1 -pg 1 -lvl 13 -x 5780 -y 1730 -defaultsOSRD
-preplace netloc CLK_MNGR_IRQn_1 1 0 11 NJ 3640 NJ 3640 NJ 3640 NJ 3640 NJ 3640 NJ 3640 NJ 3640 NJ 3640 3330J 3600 NJ 3600 4180J
-preplace netloc FPGA_CLK0_1 1 0 11 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 4230J
-preplace netloc FPGA_CLK1_1 1 0 17 NJ 2700 NJ 2700 NJ 2700 NJ 2700 NJ 2700 1750 3100 NJ 3100 2760J 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 6500 2740 6880J
-preplace netloc GND_0_dout 1 19 1 7820J 4270n
+preplace netloc CLK_MNGR_IRQn_1 1 0 11 20J 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 3280J 3600 NJ 3600 4200J
+preplace netloc FPGA_CLK0_1 1 0 11 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 NJ 4520 2270J 4510 NJ 4510 NJ 4510 NJ 4510 4240J
+preplace netloc FPGA_CLK1_1 1 0 17 NJ 2700 NJ 2700 NJ 2700 NJ 2700 NJ 2700 1770 3110 NJ 3110 NJ 3110 3220J 3120 NJ 3120 NJ 3120 NJ 3120 NJ 3120 NJ 3120 NJ 3120 6560 2590 7080J
+preplace netloc GND_0_dout 1 19 1 8090J 4270n
 preplace netloc GND_11_dout 1 10 1 4310 3400n
-preplace netloc GND_13_dout 1 11 1 4720 160n
-preplace netloc GND_14_dout 1 13 1 5890J 4710n
-preplace netloc GND_15_dout 1 17 1 7350 4170n
-preplace netloc GND_17_dout 1 6 1 2370 4140n
+preplace netloc GND_13_dout 1 11 1 4750 160n
+preplace netloc GND_14_dout 1 13 1 5880J 4710n
+preplace netloc GND_15_dout 1 17 1 7610 4170n
+preplace netloc GND_17_dout 1 6 1 2450 4140n
 preplace netloc GND_18_dout 1 4 1 NJ 4080
 preplace netloc GND_19_dout 1 7 1 NJ 4300
 preplace netloc GND_1_dout 1 11 1 5100 60n
-preplace netloc GND_20_dout 1 15 1 6500J 4650n
-preplace netloc GND_21_dout 1 17 1 7370J 4350n
+preplace netloc GND_20_dout 1 15 1 6570J 4650n
+preplace netloc GND_21_dout 1 17 1 7630J 4350n
 preplace netloc GND_21_dout1 1 8 1 3220 4850n
-preplace netloc GND_22_dout 1 17 1 7360 4210n
+preplace netloc GND_22_dout 1 17 1 7620 4210n
 preplace netloc GND_23_dout 1 2 1 NJ 1220
 preplace netloc GND_25_dout 1 15 1 NJ 4350
-preplace netloc GND_3_dout 1 13 1 5920J 4790n
+preplace netloc GND_3_dout 1 13 1 5910J 4790n
 preplace netloc GND_4_dout 1 2 1 540J 4800n
-preplace netloc GND_5_dout 1 13 1 5890J 4610n
+preplace netloc GND_5_dout 1 13 1 5880J 4610n
 preplace netloc GND_6_dout 1 2 1 540J 4720n
-preplace netloc GND_7_dout 1 13 1 5900 4750n
-preplace netloc GND_8_dout 1 2 1 590J 4820n
-preplace netloc GND_9_dout 1 17 1 7330 4090n
-preplace netloc M02_ARESETN_1 1 8 1 3400 3930n
-preplace netloc M16_ACLK_1 1 8 3 3300J 3050 NJ 3050 4360
-preplace netloc RXCLK_1 1 0 12 NJ 280 NJ 280 560J 260 NJ 260 1280J 250 NJ 250 NJ 250 NJ 250 NJ 250 NJ 250 4150J 490 NJ
-preplace netloc RXDATA_1 1 0 12 20J 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 4350J 480 4900J
-preplace netloc RXFRAME_1 1 0 12 10J 180 NJ 180 NJ 180 NJ 180 NJ 180 NJ 180 NJ 180 NJ 180 NJ 180 NJ 180 4390J 440 5070J
+preplace netloc GND_7_dout 1 13 1 5920 4750n
+preplace netloc GND_8_dout 1 2 1 570J 4820n
+preplace netloc GND_9_dout 1 17 1 7580 4090n
+preplace netloc M02_ARESETN_1 1 8 1 3410 3930n
+preplace netloc M16_ACLK_1 1 8 3 3250J 3060 NJ 3060 4370
+preplace netloc RXCLK_1 1 0 12 NJ 280 NJ 280 550J 260 950J 250 NJ 250 NJ 250 NJ 250 NJ 250 NJ 250 NJ 250 4190J 490 NJ
+preplace netloc RXDATA_1 1 0 12 10J 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 4420J 410 5080J
+preplace netloc RXFRAME_1 1 0 12 20J 210 NJ 210 NJ 210 NJ 210 NJ 210 NJ 210 NJ 210 NJ 210 NJ 210 NJ 210 4410J 420 5060J
 preplace netloc SYNTH_LD_1 1 0 3 NJ 4780 NJ 4780 NJ
 preplace netloc TRX_5V0_BIAS_T1_OCn_1 1 0 3 NJ 5000 NJ 5000 NJ
 preplace netloc TRX_5V0_BIAS_T2_OCn_1 1 0 3 NJ 5020 NJ 5020 NJ
 preplace netloc TRX_5V0_PA1_OCn_1 1 0 3 NJ 5040 NJ 5040 NJ
 preplace netloc TRX_5V0_PA2_OCn_1 1 0 3 NJ 5060 NJ 5060 NJ
-preplace netloc TRX_CTRL_OUT_1 1 0 14 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 5680J 4670 NJ
-preplace netloc VCC_0_dout 1 2 1 570J 1240n
-preplace netloc VCC_1_dout 1 15 1 6480J 4370n
+preplace netloc TRX_CTRL_OUT_1 1 0 14 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 NJ 4660 5670J 4670 NJ
+preplace netloc VCC_0_dout 1 2 1 540J 1240n
+preplace netloc VCC_1_dout 1 15 1 6500J 4370n
 preplace netloc VCC_2_dout 1 8 1 3230J 4910n
-preplace netloc VIN_REG_ALERTn_1 1 0 11 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 NJ 3620 3340J 3610 NJ 3610 4170J
-preplace netloc ad9361_adc_packer_rx0_fifo_wr_overflow 1 5 6 NJ 410 NJ 410 NJ 410 NJ 410 3840 490 4140J
-preplace netloc ad9361_adc_packer_rx1_fifo_wr_overflow 1 5 6 1750J 640 NJ 640 NJ 640 NJ 640 3830 630 4140J
-preplace netloc ad9361_dac_unpacker_s_axis_ready 1 8 6 3330 1600 NJ 1600 NJ 1600 4850J 1280 NJ 1280 5920J
-preplace netloc ad9361_dac_unpacker_tx0_fifo_rd_underflow 1 9 2 3840 910 4150J
-preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_data_0 1 9 3 NJ 1180 4160J 910 4750
-preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_data_1 1 9 3 3780J 920 NJ 920 4770
-preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_underflow 1 9 2 3840 1170 4230J
-preplace netloc ad9361_dac_unpacker_tx1_s_axis_ready 1 8 6 3410 1640 NJ 1640 NJ 1640 4720J 1670 NJ 1670 5920J
-preplace netloc adc_dovf_combiner_Res 1 11 1 5030 330n
-preplace netloc adc_dovf_gate_rx0_Res 1 10 1 4160 320n
-preplace netloc adc_dovf_gate_rx1_Res 1 10 1 4220 340n
-preplace netloc axi_ad9361_0_adc_data_i0 1 4 9 1350 190 NJ 190 NJ 190 NJ 190 NJ 190 NJ 190 4410J 220 4750J 180 5540
-preplace netloc axi_ad9361_0_adc_data_i1 1 4 9 1360 200 NJ 200 NJ 200 NJ 200 NJ 200 NJ 200 4400J 230 4740J 170 5680
-preplace netloc axi_ad9361_0_adc_data_q0 1 4 9 1390 240 NJ 240 NJ 240 NJ 240 NJ 240 NJ 240 4360J 400 4800J 240 5600
-preplace netloc axi_ad9361_0_adc_data_q1 1 4 9 1390 800 1760J 650 NJ 650 NJ 650 NJ 650 NJ 650 4290J 950 4950J 1080 5560
-preplace netloc axi_ad9361_0_adc_enable_i0 1 4 9 1370 820 NJ 820 2280J 800 NJ 800 3220J 720 3830J 930 NJ 930 4960J 1090 5590
-preplace netloc axi_ad9361_0_adc_enable_i1 1 4 9 1380 810 1770J 660 NJ 660 NJ 660 NJ 660 NJ 660 4300J 750 4710J 1100 5550
-preplace netloc axi_ad9361_0_adc_enable_q0 1 4 9 1340 830 1790J 670 NJ 670 NJ 670 NJ 670 NJ 670 4280J 760 4910J 1110 5610
-preplace netloc axi_ad9361_0_adc_enable_q1 1 4 9 1350 960 NJ 960 NJ 960 2840J 970 3390J 1010 3800J 1240 NJ 1240 NJ 1240 5540
-preplace netloc axi_ad9361_0_adc_valid_i0 1 3 10 980 810 1320J 840 1820J 680 NJ 680 NJ 680 NJ 680 NJ 680 4270 970 4940J 1070 5570
-preplace netloc axi_ad9361_0_adc_valid_i1 1 3 10 980 1240 NJ 1240 NJ 1240 NJ 1240 2730J 1260 3290J 1020 3830J 970 4190 1250 NJ 1250 5600
-preplace netloc axi_ad9361_0_dac_enable_i0 1 8 5 3420 210 NJ 210 4380J 410 4790J 230 5640
-preplace netloc axi_ad9361_0_dac_enable_i1 1 8 5 3400 260 NJ 260 4330J 420 4780J 220 5650
-preplace netloc axi_ad9361_0_dac_enable_q0 1 8 5 3410 270 NJ 270 4340J 260 4770J 200 5670
-preplace netloc axi_ad9361_0_dac_enable_q1 1 8 5 3380 460 NJ 460 NJ 460 4810J 210 5660
-preplace netloc axi_ad9361_0_dac_valid_i0 1 8 5 3430 710 3810 950 4240 1260 NJ 1260 5580
+preplace netloc VIN_REG_ALERTn_1 1 0 11 0J 3630 NJ 3630 NJ 3630 NJ 3630 NJ 3630 NJ 3630 NJ 3630 NJ 3630 3320J 3610 NJ 3610 4160J
+preplace netloc ad9361_adc_packer_rx0_fifo_wr_overflow 1 5 6 NJ 410 NJ 410 NJ 410 NJ 410 3850 630 4300J
+preplace netloc ad9361_adc_packer_rx1_fifo_wr_overflow 1 5 6 1770J 660 NJ 660 NJ 660 NJ 660 3810 660 4310J
+preplace netloc ad9361_dac_unpacker_s_axis_ready 1 8 6 3390 1600 NJ 1600 NJ 1600 NJ 1600 5660J 1550 5920J
+preplace netloc ad9361_dac_unpacker_tx0_fifo_rd_underflow 1 9 2 3850 950 4330J
+preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_data_0 1 9 3 3770J 910 NJ 910 4770
+preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_data_1 1 9 3 3800J 920 NJ 920 4790
+preplace netloc ad9361_dac_unpacker_tx1_fifo_rd_underflow 1 9 2 3850 1180 NJ
+preplace netloc ad9361_dac_unpacker_tx1_s_axis_ready 1 8 6 3420 1780 NJ 1780 NJ 1780 4920J 1670 NJ 1670 5900J
+preplace netloc adc_dovf_combiner_Res 1 11 1 5040 330n
+preplace netloc adc_dovf_gate_rx0_Res 1 10 1 4240 320n
+preplace netloc adc_dovf_gate_rx1_Res 1 10 1 4250 340n
+preplace netloc axi_ad9361_0_adc_data_i0 1 4 9 1300 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 4730J 170 5600
+preplace netloc axi_ad9361_0_adc_data_i1 1 4 9 1360 230 NJ 230 NJ 230 NJ 230 NJ 230 NJ 230 NJ 230 4740J 180 5590
+preplace netloc axi_ad9361_0_adc_data_q0 1 4 9 1400 240 NJ 240 NJ 240 NJ 240 NJ 240 NJ 240 NJ 240 4760J 190 5540
+preplace netloc axi_ad9361_0_adc_data_q1 1 4 9 1400 830 1820J 710 NJ 710 NJ 710 NJ 710 3830J 930 NJ 930 5020J 1060 5530
+preplace netloc axi_ad9361_0_adc_enable_i0 1 4 9 1390 800 1780J 670 NJ 670 NJ 670 NJ 670 NJ 670 4370J 750 4730J 1070 5630
+preplace netloc axi_ad9361_0_adc_enable_i1 1 4 9 1370 810 1800J 680 NJ 680 NJ 680 NJ 680 NJ 680 4350J 760 5010J 1080 5610
+preplace netloc axi_ad9361_0_adc_enable_q0 1 4 9 1350 1240 NJ 1240 NJ 1240 2810J 1260 3370J 1310 NJ 1310 4180J 1250 NJ 1250 5600
+preplace netloc axi_ad9361_0_adc_enable_q1 1 4 9 1380 1000 NJ 1000 2420J 1110 NJ 1110 3340J 1020 3780J 960 NJ 960 4930J 1110 5590
+preplace netloc axi_ad9361_0_adc_valid_i0 1 3 10 980 820 NJ 820 1790J 690 NJ 690 NJ 690 NJ 690 NJ 690 4340 950 4960J 1100 5620
+preplace netloc axi_ad9361_0_adc_valid_i1 1 3 10 970 260 NJ 260 NJ 260 NJ 260 NJ 260 NJ 260 NJ 260 4360 980 4950J 1090 5570
+preplace netloc axi_ad9361_0_dac_enable_i0 1 8 5 3340 270 NJ 270 4400J 400 4820J 260 5580
+preplace netloc axi_ad9361_0_dac_enable_i1 1 8 5 3370 280 NJ 280 4390J 260 4800J 240 5640
+preplace netloc axi_ad9361_0_dac_enable_q0 1 8 5 3400 460 NJ 460 NJ 460 4840J 230 5560
+preplace netloc axi_ad9361_0_dac_enable_q1 1 8 5 3410 470 NJ 470 NJ 470 4850J 270 5550
+preplace netloc axi_ad9361_0_dac_valid_i0 1 8 5 3430 1000 3840 1120 4410 1260 NJ 1260 5580
 preplace netloc axi_ad9361_0_enable 1 12 8 NJ 400 NJ 400 NJ 400 NJ 400 NJ 400 NJ 400 NJ 400 NJ
-preplace netloc axi_ad9361_0_l_clk 1 2 11 560 520 NJ 520 1300 550 1800 830 NJ 830 NJ 830 3370 1000 3770J 960 NJ 960 5110 260 5550
-preplace netloc axi_ad9361_0_rst 1 1 12 240 530 NJ 530 NJ 530 NJ 530 NJ 530 NJ 530 NJ 530 3300J 480 NJ 480 4250J 450 4830J 270 5570
+preplace netloc axi_ad9361_0_l_clk 1 2 11 590 540 NJ 540 1290 550 1810 820 NJ 820 NJ 820 3310 1010 3790J 970 NJ 970 5110 280 5530
+preplace netloc axi_ad9361_0_rst 1 1 12 240 530 NJ 530 NJ 530 1310J 520 NJ 520 NJ 520 NJ 520 NJ 520 3830J 650 4260J 430 4810J 250 5630
 preplace netloc axi_ad9361_0_tx_clk_out 1 12 8 NJ 340 NJ 340 NJ 340 NJ 340 NJ 340 NJ 340 NJ 340 NJ
 preplace netloc axi_ad9361_0_tx_data_out 1 12 8 NJ 380 NJ 380 NJ 380 NJ 380 NJ 380 NJ 380 NJ 380 NJ
 preplace netloc axi_ad9361_0_tx_frame_out 1 12 8 NJ 360 NJ 360 NJ 360 NJ 360 NJ 360 NJ 360 NJ 360 NJ
 preplace netloc axi_ad9361_0_txnrx 1 12 8 NJ 420 NJ 420 NJ 420 NJ 420 NJ 420 NJ 420 NJ 420 NJ
-preplace netloc axi_ad9361_adc_r1_mode 1 12 1 5680 780n
+preplace netloc axi_ad9361_adc_r1_mode 1 12 1 5670 780n
 preplace netloc axi_ad9361_dac_r1_mode 1 12 1 N 960
-preplace netloc axi_ad9361_dac_valid_i1 1 8 5 3420 1030 3830 1110 4170 980 4930J 1060 5530
-preplace netloc axi_dmac_i2s_rx_irq 1 6 5 2270 3120 NJ 3120 NJ 3120 NJ 3120 4150J
-preplace netloc axi_dmac_i2s_tx_irq 1 6 5 NJ 3230 NJ 3230 NJ 3230 3770J 3300 4140
-preplace netloc axi_dmac_rf_rx0_irq 1 6 5 NJ 1600 NJ 1600 3220J 1610 NJ 1610 4170
-preplace netloc axi_dmac_rf_rx1_fifo_wr_xfer_req 1 2 9 590 280 NJ 280 NJ 280 1810 290 NJ 290 NJ 290 NJ 290 NJ 290 4310J
-preplace netloc axi_dmac_rf_rx1_irq 1 6 5 NJ 1840 NJ 1840 NJ 1840 NJ 1840 4160
-preplace netloc axi_dmac_rf_rx_fifo_wr_xfer_req 1 2 9 580 270 NJ 270 NJ 270 1850 280 NJ 280 NJ 280 NJ 280 NJ 280 4320J
-preplace netloc axi_dmac_rf_tx0_irq 1 6 5 NJ 1400 2740J 1580 NJ 1580 NJ 1580 4190
-preplace netloc axi_dmac_rf_tx1_irq 1 6 5 2290J 300 NJ 300 NJ 300 NJ 300 4260
-preplace netloc axi_dmac_rf_tx1_m_axis_data 1 6 3 2320J 1120 NJ 1120 3340
-preplace netloc axi_dmac_rf_tx1_m_axis_valid 1 6 5 2300J 1110 2790 1110 3230J 700 NJ 700 4220J
+preplace netloc axi_ad9361_dac_valid_i1 1 8 5 3430 1030 3780 1110 4420 1240 NJ 1240 5540
+preplace netloc axi_dmac_i2s_rx_irq 1 6 5 2360 2460 NJ 2460 NJ 2460 NJ 2460 4240J
+preplace netloc axi_dmac_i2s_tx_irq 1 6 5 NJ 3230 NJ 3230 NJ 3230 3770J 3310 4230
+preplace netloc axi_dmac_rf_rx0_irq 1 6 5 NJ 1600 NJ 1600 3220J 1610 NJ 1610 4260
+preplace netloc axi_dmac_rf_rx1_fifo_wr_xfer_req 1 2 9 560 270 NJ 270 NJ 270 1830 300 NJ 300 NJ 300 NJ 300 NJ 300 4380J
+preplace netloc axi_dmac_rf_rx1_irq 1 6 5 NJ 1840 NJ 1840 NJ 1840 NJ 1840 4250
+preplace netloc axi_dmac_rf_rx_fifo_wr_xfer_req 1 2 9 570 280 NJ 280 NJ 280 1850 290 NJ 290 NJ 290 NJ 290 NJ 290 4390J
+preplace netloc axi_dmac_rf_tx0_irq 1 6 5 NJ 1400 NJ 1400 NJ 1400 NJ 1400 4270
+preplace netloc axi_dmac_rf_tx1_irq 1 6 5 2280J 310 NJ 310 NJ 310 NJ 310 4320
+preplace netloc axi_dmac_rf_tx1_m_axis_data 1 6 3 2370J 1120 NJ 1120 3340
+preplace netloc axi_dmac_rf_tx1_m_axis_valid 1 6 5 2340J 1100 2810 700 NJ 700 NJ 700 4300J
 preplace netloc axi_dmac_rf_tx1_m_axis_xfer_req 1 6 1 N 1180
-preplace netloc axi_dmac_rf_tx_m_axis_data 1 6 3 2310J 820 NJ 820 3240
-preplace netloc axi_dmac_rf_tx_m_axis_valid 1 6 5 NJ 1360 2830 1570 NJ 1570 NJ 1570 4210J
-preplace netloc axi_dmac_rf_tx_m_axis_xfer_req 1 6 1 2270J 1420n
-preplace netloc axi_gpio_0_gpio_io_o 1 0 19 20 2000 NJ 2000 NJ 2000 NJ 2000 NJ 2000 NJ 2000 2270J 1940 NJ 1940 NJ 1940 NJ 1940 4230 1930 NJ 1930 5680 2240 NJ 2240 NJ 2240 NJ 2240 NJ 2240 NJ 2240 7600
-preplace netloc axi_gpio_1_gpio_io_o 1 12 7 5680J 3970 NJ 3970 NJ 3970 NJ 3970 NJ 3970 NJ 3970 7600
-preplace netloc axi_gpio_2_gpio_io_o 1 2 17 590 4260 NJ 4260 1340 4260 1930 4360 NJ 4360 2740J 4160 NJ 4160 NJ 4160 NJ 4160 NJ 4160 5610 4160 NJ 4160 6240 4520 NJ 4520 6910J 4570 NJ 4570 7600
+preplace netloc axi_dmac_rf_tx_m_axis_data 1 6 3 2350J 830 NJ 830 3330
+preplace netloc axi_dmac_rf_tx_m_axis_valid 1 6 5 NJ 1360 2840 1580 NJ 1580 NJ 1580 4290J
+preplace netloc axi_dmac_rf_tx_m_axis_xfer_req 1 6 1 2440J 1420n
+preplace netloc axi_gpio_0_gpio_io_o 1 0 19 20 2000 NJ 2000 NJ 2000 NJ 2000 NJ 2000 NJ 2000 2270J 1930 NJ 1930 NJ 1930 NJ 1930 4350 1920 NJ 1920 5670 2020 NJ 2020 NJ 2020 NJ 2020 NJ 2020 NJ 2020 7850
+preplace netloc axi_gpio_1_gpio_io_o 1 12 7 NJ 4060 NJ 4060 NJ 4060 NJ 4060 NJ 4060 7600J 4410 7860
+preplace netloc axi_gpio_2_gpio_io_o 1 2 17 570 4270 NJ 4270 1300 4270 1760 4280 2270J 4240 2840J 4170 NJ 4170 NJ 4170 NJ 4170 5110J 4160 5640 4160 NJ 4160 6270 4550 6540J 4430 6950J 4410 7480J 4430 7850
 preplace netloc axi_i2s_0_i2s_mclk 1 17 3 NJ 2620 NJ 2620 NJ
-preplace netloc axi_i2s_irq 1 10 8 4400 3170 5000J 2840 NJ 2840 NJ 2840 NJ 2840 NJ 2840 NJ 2840 7300
-preplace netloc axi_iic_0_iic2intc_irpt 1 10 8 4390 3160 5010J 3000 NJ 3000 NJ 3000 NJ 3000 NJ 3000 NJ 3000 7320
-preplace netloc axi_iic_1_iic2intc_irpt 1 10 8 4380 3120 4990J 3010 NJ 3010 NJ 3010 NJ 3010 NJ 3010 NJ 3010 7300
-preplace netloc axi_iic_2_iic2intc_irpt 1 10 8 4360 3150 5110J 3020 NJ 3020 NJ 3020 NJ 3020 NJ 3020 NJ 3020 7370
-preplace netloc axi_irq_controller_0_cpu_irq_out 1 5 8 1880 3110 NJ 3110 NJ 3110 NJ 3110 NJ 3110 NJ 3110 NJ 3110 5530
-preplace netloc axi_irq_controller_0_pcie_msi_request 1 7 6 2860 3100 NJ 3100 NJ 3100 NJ 3100 NJ 3100 5560
-preplace netloc axi_irq_controller_0_pcie_msi_vector 1 7 6 2850 3140 NJ 3140 NJ 3140 NJ 3140 NJ 3140 5550
-preplace netloc axi_pcie_0_INTX_MSI_Grant 1 8 4 NJ 3520 NJ 3520 4260J 3730 5060
-preplace netloc axi_pcie_0_MSI_Vector_Width 1 8 4 3270J 3580 NJ 3580 4150J 3760 5110
-preplace netloc axi_pcie_0_MSI_enable 1 8 4 3280J 3570 NJ 3570 4160J 3770 5090
-preplace netloc axi_pcie_0_axi_aclk_out 1 3 14 980 4020 1310 3860 1870 2760 2350 3630 NJ 3630 3380 3440 3820 3060 4330 1950 5020 2160 NJ 2160 NJ 2160 NJ 2160 NJ 2160 6940
-preplace netloc axi_pcie_0_interrupt_out 1 8 3 NJ 3500 NJ 3500 4290
-preplace netloc axi_pcie_0_mmcm_lock 1 4 14 1390 3840 NJ 3840 2320 3990 NJ 3990 3260 4030 NJ 4030 4410J 3840 NJ 3840 NJ 3840 NJ 3840 NJ 3840 NJ 3840 NJ 3840 7370
-preplace netloc axi_pcie_0_user_link_up 1 8 10 3240 4170 NJ 4170 NJ 4170 NJ 4170 5660J 4130 NJ 4130 NJ 4130 NJ 4130 NJ 4130 N
-preplace netloc axi_qspi_mm_0_irq 1 10 8 4370 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 7300
-preplace netloc axi_rf_timestamping_0_irq 1 10 3 4410 3740 5100J 3560 5580
-preplace netloc axi_rf_timestamping_0_rx_enable 1 2 11 570 540 NJ 540 NJ 540 1800J 520 NJ 520 NJ 520 3230J 470 NJ 470 NJ 470 4820J 250 5630
-preplace netloc axi_rf_timestamping_0_tx_enable 1 6 7 2370 320 NJ 320 NJ 320 NJ 320 4140J 430 4900J 280 5620
-preplace netloc axi_rf_timestamping_tx_flush 1 12 1 5680 1450n
-preplace netloc axi_spi_0_irq 1 10 8 4410 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 7300
-preplace netloc axi_spi_1_irq 1 10 8 4390 3780 5070J 3300 NJ 3300 NJ 3300 NJ 3300 NJ 3300 6870J 3340 7300
-preplace netloc clk_wiz_0_clk_out1 1 11 6 NJ 4510 NJ 4510 NJ 4510 NJ 4510 6500 4480 NJ
-preplace netloc clk_wiz_0_delay_ref_clk 1 11 6 4970 4210 NJ 4210 NJ 4210 6250J 4160 NJ 4160 6870
-preplace netloc clk_wiz_0_locked 1 11 7 4720J 4540 NJ 4540 NJ 4540 NJ 4540 6490 4030 NJ 4030 NJ
+preplace netloc axi_i2s_irq 1 10 8 4410 3160 5000J 2840 NJ 2840 NJ 2840 NJ 2840 NJ 2840 NJ 2840 7450
+preplace netloc axi_iic_0_iic2intc_irpt 1 10 8 4350 3960 5110J 3810 NJ 3810 NJ 3810 NJ 3810 NJ 3810 NJ 3810 7510
+preplace netloc axi_iic_1_iic2intc_irpt 1 10 8 4430 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 7470
+preplace netloc axi_iic_2_iic2intc_irpt 1 10 8 4380 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 NJ 3830 7530
+preplace netloc axi_irq_controller_0_cpu_irq_out 1 5 8 1930 4080 2400J 4020 NJ 4020 3260J 4040 NJ 4040 NJ 4040 4730J 4140 5580
+preplace netloc axi_irq_controller_0_pcie_msi_request 1 7 6 2850 3130 NJ 3130 NJ 3130 NJ 3130 NJ 3130 5540
+preplace netloc axi_irq_controller_0_pcie_msi_vector 1 7 6 2860 3300 NJ 3300 NJ 3300 4180J 3170 NJ 3170 5560
+preplace netloc axi_pcie_0_INTX_MSI_Grant 1 8 4 NJ 3520 NJ 3520 4210J 3730 5050
+preplace netloc axi_pcie_0_MSI_Vector_Width 1 8 4 NJ 3560 NJ 3560 4170J 3740 5080
+preplace netloc axi_pcie_0_MSI_enable 1 8 4 NJ 3540 NJ 3540 4180J 3750 5070
+preplace netloc axi_pcie_0_axi_aclk_out 1 3 14 980 4260 1320 4180 1880 2760 2420 3650 NJ 3650 3400 3440 3830 3070 4360 1930 5030 2600 NJ 2600 NJ 2600 NJ 2600 NJ 2600 7090
+preplace netloc axi_pcie_0_interrupt_out 1 8 3 NJ 3500 NJ 3500 4240
+preplace netloc axi_pcie_0_mmcm_lock 1 4 14 1390 4160 NJ 4160 2440 3980 NJ 3980 3300 3100 NJ 3100 NJ 3100 4990J 3010 NJ 3010 NJ 3010 NJ 3010 NJ 3010 NJ 3010 7630
+preplace netloc axi_pcie_0_user_link_up 1 8 10 3240 4180 NJ 4180 NJ 4180 NJ 4180 5670J 4140 NJ 4140 NJ 4140 NJ 4140 NJ 4140 7480
+preplace netloc axi_qspi_mm_0_irq 1 10 8 4420 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 7450
+preplace netloc axi_rf_timestamping_0_irq 1 10 3 4340 3140 NJ 3140 5560
+preplace netloc axi_rf_timestamping_0_rx_enable 1 2 11 580 520 NJ 520 1300J 540 NJ 540 NJ 540 NJ 540 NJ 540 3820J 640 4270J 440 4790J 200 5660
+preplace netloc axi_rf_timestamping_0_tx_enable 1 6 7 2440 480 NJ 480 NJ 480 NJ 480 NJ 480 4830J 210 5650
+preplace netloc axi_rf_timestamping_tx_flush 1 12 1 5680 1430n
+preplace netloc axi_spi_0_irq 1 10 8 4400 3150 5010J 3000 NJ 3000 NJ 3000 NJ 3000 NJ 3000 NJ 3000 7450
+preplace netloc axi_spi_1_irq 1 10 8 4390 3110 5020J 3020 NJ 3020 NJ 3020 NJ 3020 NJ 3020 NJ 3020 7440
+preplace netloc clk_wiz_0_clk_out1 1 11 6 4730J 4520 NJ 4520 NJ 4520 6250J 4540 6570 4530 6930J
+preplace netloc clk_wiz_0_delay_ref_clk 1 11 6 4980 4530 NJ 4530 NJ 4530 6260J 4520 NJ 4520 6940
+preplace netloc clk_wiz_0_locked 1 11 7 NJ 4550 NJ 4550 NJ 4550 6230J 4560 6530 4030 NJ 4030 NJ
 preplace netloc gpio_concat_0_2_dout 1 13 1 5910 950n
-preplace netloc gpio_concat_0_dout 1 12 3 NJ 2480 NJ 2480 6220
-preplace netloc gpio_concat_1_dout 1 3 11 950J 4500 NJ 4500 NJ 4500 NJ 4500 NJ 4500 NJ 4500 NJ 4500 4390J 4610 5110J 4550 NJ 4550 5900
+preplace netloc gpio_concat_0_dout 1 12 3 5590J 2530 NJ 2530 6220
+preplace netloc gpio_concat_1_dout 1 3 11 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 NJ 5030 5900
 preplace netloc gpio_concat_2_dout 1 3 10 NJ 4790 NJ 4790 NJ 4790 NJ 4790 NJ 4790 NJ 4790 NJ 4790 NJ 4790 NJ 4790 5540
-preplace netloc gpio_concat_2_dout1 1 12 7 NJ 3940 NJ 3940 NJ 3940 NJ 3940 NJ 3940 NJ 3940 7590
+preplace netloc gpio_concat_2_dout1 1 12 7 NJ 3940 NJ 3940 NJ 3940 NJ 3940 NJ 3940 NJ 3940 7850
 preplace netloc gpio_slice_clk_mngr_oen_Dout 1 19 1 NJ 4700
 preplace netloc gpio_slice_cm4_wake_Dout 1 19 1 NJ 4800
 preplace netloc gpio_slice_codec_resetn_Dout 1 19 1 NJ 4900
 preplace netloc gpio_slice_cpu_resetn_Dout 1 5 1 1760J 3920n
 preplace netloc gpio_slice_ddr_intf_reset_Dout 1 6 1 NJ 4600
 preplace netloc gpio_slice_ddr_reset_Dout 1 15 1 NJ 4630
-preplace netloc gpio_slice_i2s_reset_Dout 1 15 1 6480J 4250n
+preplace netloc gpio_slice_i2s_reset_Dout 1 15 1 6550J 4250n
 preplace netloc gpio_slice_pm_i2c_en_Dout 1 19 1 NJ 5000
 preplace netloc gpio_slice_rf_reset_Dout 1 1 1 NJ 1100
 preplace netloc gpio_slice_synth_ce_Dout 1 19 1 NJ 3890
@@ -320,117 +320,117 @@ preplace netloc gpio_slice_sys_aux_reset_Dout 1 3 1 NJ 4200
 preplace netloc gpio_slice_trx_en_agc_Dout 1 19 1 NJ 2120
 preplace netloc gpio_slice_trx_resestn_Dout 1 19 1 NJ 2220
 preplace netloc gpio_slice_trx_sync_in_Dout 1 19 1 NJ 2320
-preplace netloc gpio_slice_trx_up_enable_Dout 1 11 1 4780J 810n
-preplace netloc gpio_slice_trx_up_txnrx_Dout 1 11 1 4840J 830n
-preplace netloc irq_concat_0_dout 1 11 1 5040 3420n
-preplace netloc logic_and_0_Res 1 4 6 1310 520 1750J 510 NJ 510 NJ 510 3220J 450 3820
-preplace netloc logic_and_1_Res 1 4 6 1330 560 1820J 570 NJ 570 NJ 570 NJ 570 NJ
-preplace netloc logic_and_2_Res 1 8 1 3260 820n
-preplace netloc logic_and_3_Res 1 10 1 4140 840n
-preplace netloc logic_and_4_Res 1 10 1 4140 820n
-preplace netloc logic_and_5_Res 1 8 1 3350 1040n
-preplace netloc logic_not_0_Res 1 7 1 2730 1320n
+preplace netloc gpio_slice_trx_up_enable_Dout 1 11 1 4870J 810n
+preplace netloc gpio_slice_trx_up_txnrx_Dout 1 11 1 4880J 830n
+preplace netloc irq_concat_0_dout 1 11 1 5010 3420n
+preplace netloc logic_and_0_Res 1 4 6 1320 530 1810J 450 NJ 450 NJ 450 NJ 450 3810
+preplace netloc logic_and_1_Res 1 4 6 1340 560 1820J 570 NJ 570 NJ 570 NJ 570 NJ
+preplace netloc logic_and_2_Res 1 8 1 3320 820n
+preplace netloc logic_and_3_Res 1 10 1 4180 840n
+preplace netloc logic_and_4_Res 1 10 1 4180 820n
+preplace netloc logic_and_5_Res 1 8 1 3360 1040n
+preplace netloc logic_not_0_Res 1 7 1 2810 1320n
 preplace netloc logic_not_1_Res 1 3 1 NJ 720
 preplace netloc logic_not_2_Res 1 3 1 NJ 620
 preplace netloc logic_not_3_Res 1 7 1 NJ 1180
-preplace netloc logic_or_0_Res 1 4 1 1350 610n
-preplace netloc logic_or_2_Res 1 7 1 2760 4280n
-preplace netloc logic_or_3_Res 1 8 1 3270 880n
+preplace netloc logic_or_0_Res 1 4 1 1330 610n
+preplace netloc logic_or_2_Res 1 7 1 2830 4280n
+preplace netloc logic_or_3_Res 1 8 1 3330 880n
 preplace netloc logic_or_4_Res 1 4 1 1280 360n
-preplace netloc logic_or_5_Res 1 11 1 4760 750n
+preplace netloc logic_or_5_Res 1 11 1 4780 750n
 preplace netloc logic_or_6_Res 1 8 1 N 1190
-preplace netloc mig_7series_0_init_calib_complete 1 17 1 7340 4110n
-preplace netloc mig_7series_0_mmcm_locked 1 7 11 2830 4150 NJ 4150 NJ 4150 NJ 4150 NJ 4150 5680J 4140 NJ 4140 NJ 4140 NJ 4140 NJ 4140 7320
-preplace netloc mig_7series_0_ui_clk 1 7 11 2840 4170 3230 4180 NJ 4180 NJ 4180 NJ 4180 NJ 4180 NJ 4180 NJ 4180 NJ 4180 NJ 4180 7300
-preplace netloc mig_7series_0_ui_clk_sync_rst 1 6 12 2370 4510 NJ 4510 NJ 4510 NJ 4510 4140J 4620 5090J 4530 NJ 4530 NJ 4530 NJ 4530 NJ 4530 6860J 4560 7310
-preplace netloc picorv32_0_eoi 1 6 6 2340J 3670 NJ 3670 3220J 3590 NJ 3590 4140J 3750 5050
-preplace netloc picorv32_0_trap 1 6 12 NJ 4000 NJ 4000 3250J 4040 NJ 4040 NJ 4040 4720J 4140 5640J 4150 NJ 4150 NJ 4150 NJ 4150 NJ 4150 N
-preplace netloc rf_reset_combiner_Res 1 2 1 540 1090n
-preplace netloc rst_FPGA_CLK1_49M152_peripheral_aresetn 1 16 2 6900 4270 NJ
-preplace netloc rst_axi_ad9361_61M44_peripheral_aresetn 1 3 11 970J 820 1280J 850 1840J 690 NJ 690 NJ 690 NJ 690 NJ 690 4250J 1610 5110 1660 5660J 1800 5880J
-preplace netloc rst_axi_ad9361_61M44_peripheral_reset 1 3 5 950 970 NJ 970 NJ 970 NJ 970 2820
-preplace netloc rst_axi_pcie_0_125M_interconnect_aresetn 1 5 6 1750J 3520 2360 3240 NJ 3240 3390 3240 3800 3070 4410
-preplace netloc rst_axi_pcie_0_125M_pcie_core_peripheral_aresetn 1 7 1 2730 3460n
-preplace netloc rst_axi_pcie_0_125M_peripheral_aresetn 1 5 12 1860 4080 2370J 4040 NJ 4040 3220J 4050 3840 4050 4410 4050 5030 2200 NJ 2200 NJ 2200 NJ 2200 NJ 2200 6890
-preplace netloc rst_mig_7series_0_166M_peripheral_aresetn 1 8 10 3410 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 6860 4230 N
-preplace netloc rst_mig_7series_0_250M_peripheral_aresetn 1 16 2 6960 4250 N
-preplace netloc rst_pulse_gen_0_rst_out 1 4 1 1280 4060n
-preplace netloc rx_data_ready_concat_dout 1 11 1 4860 1330n
-preplace netloc rx_dma_xfer_req_concat_dout 1 11 1 4920 680n
+preplace netloc mig_7series_0_init_calib_complete 1 17 1 7590 4110n
+preplace netloc mig_7series_0_mmcm_locked 1 7 11 2850 4180 3220J 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 NJ 4190 7470
+preplace netloc mig_7series_0_ui_clk 1 7 11 2860 4160 3420 4160 NJ 4160 NJ 4160 4730J 4170 NJ 4170 NJ 4170 NJ 4170 NJ 4170 NJ 4170 7460
+preplace netloc mig_7series_0_ui_clk_sync_rst 1 6 12 2450 4520 NJ 4520 NJ 4520 NJ 4520 4150J 4610 5110J 4540 NJ 4540 NJ 4540 6280J 4530 6550J 4440 7100J 4420 7450
+preplace netloc picorv32_0_eoi 1 6 6 2390J 3640 NJ 3640 3310J 3590 NJ 3590 4150J 3760 5060
+preplace netloc picorv32_0_trap 1 6 12 NJ 4000 NJ 4000 3300J 4030 NJ 4030 NJ 4030 4750J 4150 NJ 4150 NJ 4150 NJ 4150 NJ 4150 NJ 4150 N
+preplace netloc rf_reset_combiner_Res 1 2 1 560 1090n
+preplace netloc rst_FPGA_CLK1_49M152_peripheral_aresetn 1 16 2 7010 4270 NJ
+preplace netloc rst_axi_ad9361_61M44_peripheral_aresetn 1 3 11 960J 970 NJ 970 NJ 970 NJ 970 NJ 970 3220J 720 NJ 720 4310J 1610 5020 1610 5650J 1540 5890J
+preplace netloc rst_axi_ad9361_61M44_peripheral_reset 1 3 5 950 960 NJ 960 NJ 960 NJ 960 2830
+preplace netloc rst_axi_pcie_0_125M_interconnect_aresetn 1 5 6 1870J 3100 2440 3100 NJ 3100 3270 3110 3850 3080 4420
+preplace netloc rst_axi_pcie_0_125M_pcie_core_peripheral_aresetn 1 7 1 2830 3460n
+preplace netloc rst_axi_pcie_0_125M_peripheral_aresetn 1 5 12 1860 4090 2410J 4030 2820J 4050 NJ 4050 3850 4050 4420 4050 5040 2580 NJ 2580 NJ 2580 NJ 2580 NJ 2580 7040
+preplace netloc rst_mig_7series_0_166M_peripheral_aresetn 1 8 10 3220 4450 NJ 4450 NJ 4450 NJ 4450 NJ 4450 NJ 4450 6280J 4510 NJ 4510 7020 4230 N
+preplace netloc rst_mig_7series_0_250M_peripheral_aresetn 1 16 2 7070 4250 N
+preplace netloc rst_pulse_gen_0_rst_out 1 4 1 1350 4060n
+preplace netloc rx_data_ready_concat_dout 1 11 1 4890 1330n
+preplace netloc rx_dma_xfer_req_concat_dout 1 11 1 4970 680n
 preplace netloc rx_enable_slice_rx0_Dout 1 3 1 NJ 880
 preplace netloc rx_enable_slice_rx1_Dout 1 3 1 NJ 1030
-preplace netloc rx_fifo_overflow_concat_dout 1 11 1 4900 560n
-preplace netloc tx_data_ready_concat_dout 1 11 1 4880 1050n
+preplace netloc rx_fifo_overflow_concat_dout 1 11 1 4940 560n
+preplace netloc tx_data_ready_concat_dout 1 11 1 4920 1050n
 preplace netloc tx_enable_slice_tx0_Dout 1 7 1 NJ 890
 preplace netloc tx_enable_slice_tx1_Dout 1 7 1 NJ 1030
-preplace netloc tx_fifo_underflow_concat_concat_dout 1 11 1 4890 1440n
-preplace netloc tx_fifo_underflow_concat_dout 1 11 1 4870 1170n
-preplace netloc tx_flush_combiner_tx0_Res 1 6 9 NJ 1340 2750J 1590 NJ 1590 NJ 1590 4200J 1790 NJ 1790 NJ 1790 NJ 1790 6230
-preplace netloc tx_flush_combiner_tx1_Res 1 6 9 2270J 230 NJ 230 NJ 230 NJ 230 4370J 240 4730J 160 NJ 160 NJ 160 6220
+preplace netloc tx_fifo_underflow_concat_concat_dout 1 11 1 4910 1440n
+preplace netloc tx_fifo_underflow_concat_dout 1 11 1 4900 1170n
+preplace netloc tx_flush_combiner_tx0_Res 1 6 9 NJ 1340 2820J 1590 NJ 1590 NJ 1590 4280J 1620 NJ 1620 5610J 1530 NJ 1530 6220
+preplace netloc tx_flush_combiner_tx1_Res 1 6 9 2270J 490 NJ 490 NJ 490 NJ 490 4180J 450 4770J 160 NJ 160 NJ 160 6280
 preplace netloc tx_flush_slice_tx0_Dout 1 13 1 NJ 1610
 preplace netloc tx_flush_slice_tx1_Dout 1 13 1 NJ 1730
 preplace netloc util_ds_buf_0_IBUF_OUT 1 7 1 NJ 3520
-preplace netloc util_upack2_1_fifo_rd_data_0 1 9 3 3790J 940 NJ 940 4740
-preplace netloc util_upack2_1_fifo_rd_data_1 1 9 3 3820J 900 NJ 900 4730
-preplace netloc util_vector_logic_2_Res 1 0 16 NJ 1160 NJ 1160 550 1100 960J 1110 1290 3850 NJ 3850 2310 4240 2810 4180 3220J 4200 NJ 4200 NJ 4200 NJ 4200 5680J 4170 NJ 4170 NJ 4170 6470
-preplace netloc xadc_wiz_0_ip2intc_irpt 1 10 3 4380 3790 4730J 3800 5540
-preplace netloc xadc_wiz_0_temp_out 1 12 5 5680 3800 NJ 3800 NJ 3800 NJ 3800 6890J
+preplace netloc util_upack2_1_fifo_rd_data_0 1 9 3 3810J 940 NJ 940 4760
+preplace netloc util_upack2_1_fifo_rd_data_1 1 9 3 3820J 900 NJ 900 4740
+preplace netloc util_vector_logic_2_Res 1 0 16 NJ 1160 NJ 1160 550 1300 NJ 1300 1280 4170 1930J 4150 2430 4040 2810 4620 NJ 4620 NJ 4620 NJ 4620 5090J 4510 NJ 4510 NJ 4510 6240J 4570 6560
+preplace netloc xadc_wiz_0_ip2intc_irpt 1 10 3 4370 3840 NJ 3840 5550
+preplace netloc xadc_wiz_0_temp_out 1 12 5 5670 3790 NJ 3790 NJ 3790 NJ 3790 6930J
 preplace netloc xlslice_0_Dout 1 19 1 NJ 2020
 preplace netloc PCIe_REFCLK_1 1 0 7 NJ 3530 NJ 3530 NJ 3530 NJ 3530 NJ 3530 NJ 3530 NJ
-preplace netloc S06_AXI_1 1 6 1 2330 2640n
-preplace netloc Vp_Vn_0_1 1 0 12 NJ 3660 NJ 3660 NJ 3660 NJ 3660 NJ 3660 NJ 3660 NJ 3660 NJ 3660 3320J 3560 NJ 3560 4230J 3720 5080J
-preplace netloc ad9361_adc_packer_rx1_packed_fifo_wr 1 5 1 1780 670n
+preplace netloc S06_AXI_1 1 6 1 2380 2640n
+preplace netloc Vp_Vn_0_1 1 0 12 10J 3330 NJ 3330 NJ 3330 NJ 3330 NJ 3330 NJ 3330 NJ 3330 2820J 3320 NJ 3320 NJ 3320 4220J 3720 5090J
+preplace netloc ad9361_adc_packer_rx1_packed_fifo_wr 1 5 1 1760 670n
 preplace netloc axi_bram_ctrl_0_BRAM_PORTA 1 10 1 NJ 3900
-preplace netloc axi_cpu_dma_interconnect_M00_AXI 1 7 2 NJ 2770 3310
+preplace netloc axi_cpu_dma_interconnect_M00_AXI 1 7 2 NJ 2770 3290
 preplace netloc axi_dmac_i2s_rx_m_dest_axi 1 6 1 N 2620
-preplace netloc axi_dmac_i2s_tx_m_axis 1 6 11 2370J 3130 NJ 3130 NJ 3130 NJ 3130 NJ 3130 4980J 2720 NJ 2720 NJ 2720 NJ 2720 NJ 2720 6870
-preplace netloc axi_dmac_i2s_tx_m_src_axi 1 6 1 2280 2600n
-preplace netloc axi_dmac_rf_rx0_m_dest_axi 1 6 1 2310 1580n
-preplace netloc axi_dmac_rf_rx1_m_dest_axi 1 6 1 2290 1820n
-preplace netloc axi_dmac_rf_tx1_m_src_axi 1 6 1 2330 1060n
-preplace netloc axi_dmac_rf_tx_m_src_axi 1 6 1 2320 1300n
-preplace netloc axi_i2s_0_m_axis 1 5 13 1890 310 NJ 310 NJ 310 NJ 310 NJ 310 4160J 250 4760J 190 NJ 190 NJ 190 NJ 190 NJ 190 NJ 190 7300
+preplace netloc axi_dmac_i2s_tx_m_axis 1 6 11 2290J 1920 NJ 1920 NJ 1920 NJ 1920 4340J 1910 NJ 1910 NJ 1910 NJ 1910 NJ 1910 NJ 1910 7100
+preplace netloc axi_dmac_i2s_tx_m_src_axi 1 6 1 2370 2600n
+preplace netloc axi_dmac_rf_rx0_m_dest_axi 1 6 1 2350 1580n
+preplace netloc axi_dmac_rf_rx1_m_dest_axi 1 6 1 2340 1820n
+preplace netloc axi_dmac_rf_tx1_m_src_axi 1 6 1 2380 1060n
+preplace netloc axi_dmac_rf_tx_m_src_axi 1 6 1 2370 1300n
+preplace netloc axi_i2s_0_m_axis 1 5 13 1890 320 NJ 320 NJ 320 NJ 320 NJ 320 4220J 250 4780J 220 NJ 220 NJ 220 NJ 220 NJ 220 NJ 220 7450
 preplace netloc axi_i2s_i2s 1 17 3 NJ 2560 NJ 2560 NJ
 preplace netloc axi_iic_0_IIC 1 17 3 NJ 2740 NJ 2740 NJ
 preplace netloc axi_iic_1_IIC 1 17 3 NJ 2900 NJ 2900 NJ
 preplace netloc axi_iic_2_IIC 1 17 3 NJ 2380 NJ 2380 NJ
-preplace netloc axi_interconnect_0_M00_AXI1 1 9 1 3780 3200n
-preplace netloc axi_interconnect_0_M01_AXI1 1 9 8 3770J 3800 NJ 3800 4710J 3290 NJ 3290 NJ 3290 NJ 3290 NJ 3290 6860
-preplace netloc axi_interconnect_0_M01_AXI2 1 7 1 2730 2790n
-preplace netloc axi_interconnect_0_M02_AXI 1 9 8 3840J 3810 NJ 3810 NJ 3810 NJ 3810 NJ 3810 NJ 3810 NJ 3810 6880
+preplace netloc axi_interconnect_0_M00_AXI1 1 9 1 3810 3200n
+preplace netloc axi_interconnect_0_M01_AXI1 1 9 8 NJ 3810 NJ 3810 5100J 3560 NJ 3560 NJ 3560 NJ 3560 NJ 3560 7020
+preplace netloc axi_interconnect_0_M01_AXI2 1 7 1 2810 2790n
+preplace netloc axi_interconnect_0_M02_AXI 1 9 8 3790J 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 NJ 3090 6940
 preplace netloc axi_interconnect_0_M03_AXI1 1 9 1 3770 3850n
-preplace netloc axi_pcie_0_M_AXI 1 8 1 3290 3380n
-preplace netloc axi_pcie_0_pcie_7x_mgt 1 8 12 NJ 3400 3770J 3460 4210J 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 NJ 3820 7820J
-preplace netloc axi_peripheral_interconnect_M00_AXI 1 11 1 4930 2270n
-preplace netloc axi_peripheral_interconnect_M01_AXI 1 5 7 1930 1960 2280J 1950 NJ 1950 NJ 1950 NJ 1950 4240J 1940 4720
-preplace netloc axi_peripheral_interconnect_M02_AXI 1 5 7 1920 1970 NJ 1970 NJ 1970 NJ 1970 NJ 1970 NJ 1970 4770
-preplace netloc axi_peripheral_interconnect_M03_AXI 1 5 7 1910 1980 NJ 1980 NJ 1980 NJ 1980 NJ 1980 4180J 1990 4730
-preplace netloc axi_peripheral_interconnect_M04_AXI 1 5 7 1900 1990 NJ 1990 NJ 1990 NJ 1990 NJ 1990 4300J 1980 4750
-preplace netloc axi_peripheral_interconnect_M05_AXI 1 5 7 1930 2020 2300J 1960 NJ 1960 NJ 1960 NJ 1960 NJ 1960 4790
-preplace netloc axi_peripheral_interconnect_M06_AXI 1 5 7 1920 2010 NJ 2010 NJ 2010 NJ 2010 NJ 2010 4410J 2000 4710
-preplace netloc axi_peripheral_interconnect_M07_AXI 1 11 6 4860J 2170 NJ 2170 NJ 2170 NJ 2170 NJ 2170 6960
-preplace netloc axi_peripheral_interconnect_M08_AXI 1 11 6 4920J 2180 NJ 2180 NJ 2180 NJ 2180 NJ 2180 6950
-preplace netloc axi_peripheral_interconnect_M09_AXI 1 11 6 4960J 2380 NJ 2380 NJ 2380 NJ 2380 NJ 2380 N
-preplace netloc axi_peripheral_interconnect_M10_AXI 1 11 6 4950J 2190 NJ 2190 NJ 2190 NJ 2190 NJ 2190 6920
-preplace netloc axi_peripheral_interconnect_M11_AXI 1 11 6 NJ 2550 NJ 2550 NJ 2550 NJ 2550 NJ 2550 6930
-preplace netloc axi_peripheral_interconnect_M12_AXI 1 11 6 4780J 2730 NJ 2730 NJ 2730 NJ 2730 NJ 2730 6910
-preplace netloc axi_peripheral_interconnect_M13_AXI 1 11 1 4980 2440n
-preplace netloc axi_peripheral_interconnect_M14_AXI 1 11 1 4750 2610n
-preplace netloc axi_peripheral_interconnect_M15_AXI 1 11 1 4740 2630n
-preplace netloc axi_peripheral_interconnect_M16_AXI 1 7 5 2840 3080 NJ 3080 NJ 3080 NJ 3080 4720
-preplace netloc axi_peripheral_interconnect_M17_AXI 1 11 1 4910 1340n
-preplace netloc axi_peripheral_interconnect_M18_AXI 1 11 1 4760 2690n
-preplace netloc axi_peripheral_interconnect_M19_AXI 1 11 6 NJ 2710 NJ 2710 NJ 2710 NJ 2710 NJ 2710 6860
+preplace netloc axi_pcie_0_M_AXI 1 8 1 3260 3380n
+preplace netloc axi_pcie_0_pcie_7x_mgt 1 8 12 NJ 3400 3770J 3460 4190J 3800 NJ 3800 NJ 3800 NJ 3800 NJ 3800 NJ 3800 NJ 3800 NJ 3800 NJ 3800 8090J
+preplace netloc axi_peripheral_interconnect_M00_AXI 1 11 1 4950 2270n
+preplace netloc axi_peripheral_interconnect_M01_AXI 1 5 7 1920 1970 2300J 1980 NJ 1980 NJ 1980 NJ 1980 NJ 1980 4750
+preplace netloc axi_peripheral_interconnect_M02_AXI 1 5 7 1930 1960 2310J 1970 NJ 1970 NJ 1970 NJ 1970 NJ 1970 4770
+preplace netloc axi_peripheral_interconnect_M03_AXI 1 5 7 1910 1980 2280J 1950 NJ 1950 NJ 1950 NJ 1950 NJ 1950 4780
+preplace netloc axi_peripheral_interconnect_M04_AXI 1 5 7 1900 1990 NJ 1990 NJ 1990 NJ 1990 NJ 1990 NJ 1990 4730
+preplace netloc axi_peripheral_interconnect_M05_AXI 1 5 7 1920 2010 2330J 2000 NJ 2000 NJ 2000 NJ 2000 NJ 2000 4740
+preplace netloc axi_peripheral_interconnect_M06_AXI 1 5 7 1930 2020 2320J 1960 NJ 1960 NJ 1960 NJ 1960 NJ 1960 4760
+preplace netloc axi_peripheral_interconnect_M07_AXI 1 11 6 4940J 2380 NJ 2380 NJ 2380 NJ 2380 NJ 2380 7060
+preplace netloc axi_peripheral_interconnect_M08_AXI 1 11 6 4820J 2610 NJ 2610 NJ 2610 NJ 2610 NJ 2610 7020
+preplace netloc axi_peripheral_interconnect_M09_AXI 1 11 6 4840J 2540 5650J 2520 NJ 2520 NJ 2520 NJ 2520 7070
+preplace netloc axi_peripheral_interconnect_M10_AXI 1 11 6 4810J 2550 NJ 2550 NJ 2550 NJ 2550 NJ 2550 7050
+preplace netloc axi_peripheral_interconnect_M11_AXI 1 11 6 4800J 2560 NJ 2560 NJ 2560 NJ 2560 NJ 2560 7070
+preplace netloc axi_peripheral_interconnect_M12_AXI 1 11 6 NJ 2570 NJ 2570 NJ 2570 NJ 2570 NJ 2570 7030
+preplace netloc axi_peripheral_interconnect_M13_AXI 1 11 1 4960 2440n
+preplace netloc axi_peripheral_interconnect_M14_AXI 1 11 1 4810 2610n
+preplace netloc axi_peripheral_interconnect_M15_AXI 1 11 1 4800 2630n
+preplace netloc axi_peripheral_interconnect_M16_AXI 1 7 5 2840 1940 NJ 1940 NJ 1940 NJ 1940 4790
+preplace netloc axi_peripheral_interconnect_M17_AXI 1 11 1 4930 1340n
+preplace netloc axi_peripheral_interconnect_M18_AXI 1 11 1 4830 2690n
+preplace netloc axi_peripheral_interconnect_M19_AXI 1 11 6 4970J 2590 5670J 2540 NJ 2540 NJ 2540 NJ 2540 N
 preplace netloc axi_peripheral_interconnect_M20_AXI 1 11 1 4730 2730n
-preplace netloc axi_peripheral_interconnect_M21_AXI 1 11 1 4830 470n
-preplace netloc axi_protocol_convert_0_M_AXI 1 10 1 4370 2060n
-preplace netloc axi_qspi_mm_0_spi 1 17 3 NJ 3420 NJ 3420 NJ
+preplace netloc axi_peripheral_interconnect_M21_AXI 1 11 1 4860 470n
+preplace netloc axi_protocol_convert_0_M_AXI 1 10 1 4380 2060n
+preplace netloc axi_qspi_mm_0_spi 1 17 3 NJ 3460 NJ 3460 NJ
 preplace netloc axi_spi_0_spi1 1 17 3 NJ 3090 NJ 3090 NJ
 preplace netloc axi_spi_1_spi 1 17 3 NJ 3250 NJ 3250 NJ
-preplace netloc mig_7series_0_DDR3 1 17 3 NJ 4410 NJ 4410 NJ
-preplace netloc util_cpack2_0_packed_fifo_wr 1 5 1 1830 390n
-levelinfo -pg 1 -10 130 390 770 1130 1570 2100 2550 3040 3600 3990 4560 5320 5780 6070 6360 6680 7130 7480 7710 7840
-pagesize -pg 1 -db -bbox -sgen -230 0 8060 5120
+preplace netloc mig_7series_0_DDR3 1 17 3 7600J 4420 7870J 4410 NJ
+preplace netloc util_cpack2_0_packed_fifo_wr 1 5 1 1840 390n
+levelinfo -pg 1 -20 130 390 770 1130 1580 2100 2630 3040 3600 4000 4580 5320 5780 6070 6390 6750 7270 7740 7980 8110
+pagesize -pg 1 -db -bbox -sgen -240 0 8350 5310
 "
 }
 0

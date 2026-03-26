@@ -2,7 +2,7 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Wed Mar 27 12:09:42 2024
+-- Date        : Thu Mar  6 16:09:32 2025
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 -- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_startupe2_0_0 -prefix
 --               icyradio_startupe2_0_0_ icyradio_startupe2_0_0_sim_netlist.vhdl

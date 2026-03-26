@@ -2,11 +2,11 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-// Date        : Fri Nov 22 16:33:13 2024
+// Date        : Thu Mar  6 16:08:33 2025
 // Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode funcsim -rename_top icyradio_axi_spi_0_0 -prefix
-//               icyradio_axi_spi_0_0_ icyradio_axi_spi_1_0_sim_netlist.v
-// Design      : icyradio_axi_spi_1_0
+//               icyradio_axi_spi_0_0_ icyradio_axi_spi_0_0_sim_netlist.v
+// Design      : icyradio_axi_spi_0_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
 // Device      : xc7a100tfgg484-2
@@ -2726,7 +2726,7 @@ module icyradio_axi_spi_0_0_axi_spi
         .S(p_0_in__0));
 endmodule
 
-(* CHECK_LICENSE_TYPE = "icyradio_axi_spi_1_0,axi_spi,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "module_ref" *) 
+(* CHECK_LICENSE_TYPE = "icyradio_axi_spi_0_0,axi_spi,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "module_ref" *) 
 (* X_CORE_INFO = "axi_spi,Vivado 2023.2" *) 
 (* NotValidForBitStream *)
 module icyradio_axi_spi_0_0

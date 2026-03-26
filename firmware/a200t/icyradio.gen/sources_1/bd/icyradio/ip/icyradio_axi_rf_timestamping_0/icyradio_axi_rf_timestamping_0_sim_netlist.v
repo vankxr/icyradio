@@ -2,7 +2,7 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-// Date        : Sun May 26 20:14:20 2024
+// Date        : Thu Mar  5 09:21:10 2026
 // Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode funcsim
 //               /home/joao/icyradio/firmware/a200t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_rf_timestamping_0/icyradio_axi_rf_timestamping_0_sim_netlist.v
@@ -41,8 +41,6 @@ module icyradio_axi_rf_timestamping_0
     irq,
     ts_clk,
     ts_resetn,
-    ts_clk_tx_en,
-    ts_clk_rx_en,
     tx_dma_data_ready,
     rx_dma_xfer_req,
     tx_data_ready,
@@ -76,8 +74,6 @@ module icyradio_axi_rf_timestamping_0
   (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 irq INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME irq, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) output irq;
   (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 ts_clk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_clk, ASSOCIATED_RESET ts_resetn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_ad9361_0_l_clk, INSERT_VIP 0" *) input ts_clk;
   (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 ts_resetn RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_resetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input ts_resetn;
-  output ts_clk_tx_en;
-  output ts_clk_rx_en;
   (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_dma_data_ready;
   (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_dma_xfer_req;
   (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_data_ready;
@@ -111,8 +107,6 @@ module icyradio_axi_rf_timestamping_0
   wire [3:0]s_axi_wstrb;
   wire s_axi_wvalid;
   wire ts_clk;
-  wire ts_clk_rx_en;
-  wire ts_clk_tx_en;
   wire ts_resetn;
   wire [1:0]tx_data_ready;
   wire [1:0]tx_dma_data_ready;
@@ -149,8 +143,6 @@ module icyradio_axi_rf_timestamping_0
         .s_axi_wvalid(s_axi_wvalid),
         .src_in({tx_dma_data_ready,rx_dma_xfer_req,tx_data_ready,rx_data_ready,tx_fifo_underflow,rx_fifo_overflow,ts_resetn}),
         .ts_clk(ts_clk),
-        .ts_clk_rx_en_reg_0(ts_clk_rx_en),
-        .ts_clk_tx_en_reg_0(ts_clk_tx_en),
         .tx_enable(tx_enable),
         .tx_flush(tx_flush));
 endmodule
@@ -160,12 +152,10 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
    (s_axi_rvalid_reg_0,
     s_axi_awready,
     \rx_enable_reg[1]_0 ,
-    ts_clk_rx_en_reg_0,
     \rx_enable_reg[0]_0 ,
     tx_enable,
     s_axi_rdata,
     tx_flush,
-    ts_clk_tx_en_reg_0,
     s_axi_arready,
     s_axi_bvalid,
     irq,
@@ -185,12 +175,10 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   output s_axi_rvalid_reg_0;
   output s_axi_awready;
   output \rx_enable_reg[1]_0 ;
-  output ts_clk_rx_en_reg_0;
   output \rx_enable_reg[0]_0 ;
   output [1:0]tx_enable;
   output [31:0]s_axi_rdata;
   output [1:0]tx_flush;
-  output ts_clk_tx_en_reg_0;
   output s_axi_arready;
   output s_axi_bvalid;
   output irq;
@@ -1467,15 +1455,15 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   wire ts_clk_resync_req;
   wire ts_clk_resync_req_a_i_1_n_0;
   wire ts_clk_resync_req_a_i_2_n_0;
+  wire ts_clk_rx_en;
   wire ts_clk_rx_en_i_1_n_0;
-  wire ts_clk_rx_en_reg_0;
   wire ts_clk_rx_synced_i_1_n_0;
   wire ts_clk_rx_synced_reg_n_0;
   wire ts_clk_sync_bypass;
   wire ts_clk_sync_bypass_a_i_1_n_0;
   wire ts_clk_sync_bypass_a_i_2_n_0;
+  wire ts_clk_tx_en;
   wire ts_clk_tx_en_i_1_n_0;
-  wire ts_clk_tx_en_reg_0;
   wire ts_clk_tx_synced_i_1_n_0;
   wire ts_clk_tx_synced_reg_n_0;
   wire ts_resetn_a;
@@ -1645,7 +1633,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   LUT4 #(
     .INIT(16'hAA30)) 
     \cnt[0]_i_1 
-       (.I0(ts_clk_rx_en_reg_0),
+       (.I0(ts_clk_rx_en),
         .I1(cnt_wr_done_reg_n_0),
         .I2(cnt_wr_req),
         .I3(cnt_en),
@@ -2791,7 +2779,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
         .I1(\cnt_latch_armed[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
         .I3(\cnt_latch_arm_req_reg_n_0_[0] ),
-        .I4(ts_clk_rx_en_reg_0),
+        .I4(ts_clk_rx_en),
         .I5(\cnt_latch_armed_reg_n_0_[0] ),
         .O(\cnt_latch_armed[0]_i_1_n_0 ));
   LUT6 #(
@@ -2811,7 +2799,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
         .I1(\cnt_latch_armed[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
         .I3(p_2_in95_in),
-        .I4(ts_clk_rx_en_reg_0),
+        .I4(ts_clk_rx_en),
         .I5(p_0_in94_in),
         .O(\cnt_latch_armed[1]_i_1_n_0 ));
   LUT6 #(
@@ -2854,7 +2842,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(\cnt_latch_armed_reg_n_0_[0] ),
         .I1(\cnt_latch_valid[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(cnt_latch_valid_rd[0]),
         .I5(\cnt_latch_valid_reg_n_0_[0] ),
         .O(\cnt_latch_valid[0]_i_1_n_0 ));
@@ -2874,7 +2862,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(p_0_in94_in),
         .I1(\cnt_latch_valid[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(cnt_latch_valid_rd[1]),
         .I5(p_2_in91_in),
         .O(\cnt_latch_valid[1]_i_1_n_0 ));
@@ -2956,7 +2944,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(\cnt_latch_armed_reg_n_0_[0] ),
         .I1(\cnt_latch_valid[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .O(cnt_latched0));
   LUT6 #(
     .INIT(64'h0000000000400000)) 
@@ -3941,7 +3929,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(p_0_in94_in),
         .I1(\cnt_latch_valid[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .O(cnt_latched1));
   LUT6 #(
     .INIT(64'h0000000000400000)) 
@@ -7143,7 +7131,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_rx_done[0]_i_1 
        (.I0(\cnt_rx_done_reg_n_0_[0] ),
-        .I1(ts_clk_rx_en_reg_0),
+        .I1(ts_clk_rx_en),
         .I2(rx_enable1),
         .I3(\cnt_rx_en_reg_n_0_[0] ),
         .O(\cnt_rx_done[0]_i_1_n_0 ));
@@ -7151,7 +7139,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_rx_done[1]_i_1 
        (.I0(\cnt_rx_done_reg_n_0_[1] ),
-        .I1(ts_clk_rx_en_reg_0),
+        .I1(ts_clk_rx_en),
         .I2(rx_enable10_out),
         .I3(p_2_in10_in),
         .O(\cnt_rx_done[1]_i_1_n_0 ));
@@ -8962,7 +8950,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_tx_done[0]_i_1 
        (.I0(\cnt_tx_done_reg_n_0_[0] ),
-        .I1(ts_clk_tx_en_reg_0),
+        .I1(ts_clk_tx_en),
         .I2(tx_enable1),
         .I3(\cnt_tx_en_reg_n_0_[0] ),
         .O(\cnt_tx_done[0]_i_1_n_0 ));
@@ -8970,7 +8958,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hF800)) 
     \cnt_tx_done[1]_i_1 
        (.I0(tx_enable11_out),
-        .I1(ts_clk_tx_en_reg_0),
+        .I1(ts_clk_tx_en),
         .I2(\cnt_tx_done_reg_n_0_[1] ),
         .I3(p_2_in),
         .O(\cnt_tx_done[1]_i_1_n_0 ));
@@ -11194,7 +11182,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \rx_enable[0]_i_1 
        (.I0(rx_enable_man[0]),
         .I1(\cnt_rx_done_reg_n_0_[0] ),
-        .I2(ts_clk_rx_en_reg_0),
+        .I2(ts_clk_rx_en),
         .I3(rx_enable1),
         .I4(\cnt_rx_en_reg_n_0_[0] ),
         .I5(\rx_enable_reg[0]_0 ),
@@ -11204,7 +11192,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \rx_enable[1]_i_1 
        (.I0(rx_enable_man[1]),
         .I1(\cnt_rx_done_reg_n_0_[1] ),
-        .I2(ts_clk_rx_en_reg_0),
+        .I2(ts_clk_rx_en),
         .I3(rx_enable10_out),
         .I4(p_2_in10_in),
         .I5(\rx_enable_reg[1]_0 ),
@@ -14023,15 +14011,14 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(src_in[0]),
         .I1(ts_clk_rx_synced_reg_n_0),
         .I2(ts_clk_resync_req),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(ts_clk_sync_bypass),
         .O(ts_clk_rx_en_i_1_n_0));
-  (* X_INTERFACE_IGNORE = "true" *) 
   FDRE ts_clk_rx_en_reg
        (.C(ts_clk),
         .CE(1'b1),
         .D(ts_clk_rx_en_i_1_n_0),
-        .Q(ts_clk_rx_en_reg_0),
+        .Q(ts_clk_rx_en),
         .R(1'b0));
   FDRE ts_clk_rx_synced_a_reg
        (.C(aclk),
@@ -14161,15 +14148,14 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(src_in[0]),
         .I1(ts_clk_tx_synced_reg_n_0),
         .I2(ts_clk_resync_req),
-        .I3(ts_clk_tx_en_reg_0),
+        .I3(ts_clk_tx_en),
         .I4(ts_clk_sync_bypass),
         .O(ts_clk_tx_en_i_1_n_0));
-  (* X_INTERFACE_IGNORE = "true" *) 
   FDRE ts_clk_tx_en_reg
        (.C(ts_clk),
         .CE(1'b1),
         .D(ts_clk_tx_en_i_1_n_0),
-        .Q(ts_clk_tx_en_reg_0),
+        .Q(ts_clk_tx_en),
         .R(1'b0));
   FDRE ts_clk_tx_synced_a_reg
        (.C(aclk),
@@ -14722,7 +14708,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \tx_enable[0]_i_1 
        (.I0(tx_enable_man[0]),
         .I1(\cnt_tx_done_reg_n_0_[0] ),
-        .I2(ts_clk_tx_en_reg_0),
+        .I2(ts_clk_tx_en),
         .I3(tx_enable1),
         .I4(\cnt_tx_en_reg_n_0_[0] ),
         .I5(tx_enable[0]),
@@ -14737,7 +14723,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \tx_enable[1]_i_2 
        (.I0(tx_enable_man[1]),
         .I1(tx_enable11_out),
-        .I2(ts_clk_tx_en_reg_0),
+        .I2(ts_clk_tx_en),
         .I3(\cnt_tx_done_reg_n_0_[1] ),
         .I4(p_2_in),
         .I5(tx_enable[1]),

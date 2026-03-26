@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Sun May 26 20:16:42 2024
+-- Date        : Sun May 26 20:16:41 2024
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/joao/icyradio/firmware/a200t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_xbar_3/icyradio_xbar_3_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_xbar_3 -prefix
+--               icyradio_xbar_3_ icyradio_xbar_3_sim_netlist.vhdl
 -- Design      : icyradio_xbar_3
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -99,8 +99,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_addr_arbiter is
     r_cmd_pop_2 : in STD_LOGIC;
     \gen_arbiter.qual_reg_reg[6]_0\ : in STD_LOGIC_VECTOR ( 3 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_addr_arbiter : entity is "axi_crossbar_v2_1_30_addr_arbiter";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_addr_arbiter;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_addr_arbiter is
@@ -8671,8 +8669,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_decerr_slave is
     \gen_axi.s_axi_rlast_i_reg_0\ : in STD_LOGIC;
     m_axi_awid : in STD_LOGIC_VECTOR ( 2 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_decerr_slave : entity is "axi_crossbar_v2_1_30_decerr_slave";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_decerr_slave;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_decerr_slave is
@@ -9332,8 +9328,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_si_transactor is
     s_axi_arvalid : in STD_LOGIC_VECTOR ( 0 to 0 );
     \gen_arbiter.qual_reg_reg[0]\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_si_transactor : entity is "axi_crossbar_v2_1_30_si_transactor";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_si_transactor;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_si_transactor is
@@ -15262,8 +15256,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_splitter is
     aresetn_d : in STD_LOGIC;
     aclk : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_splitter : entity is "axi_crossbar_v2_1_30_splitter";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_splitter;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_splitter is
@@ -26904,8 +26896,6 @@ entity icyradio_xbar_3_axi_data_fifo_v2_1_28_axic_reg_srl_fifo is
     \m_axi_wvalid[0]_INST_0_i_1\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \m_axi_wvalid[1]_INST_0_i_1\ : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_data_fifo_v2_1_28_axic_reg_srl_fifo : entity is "axi_data_fifo_v2_1_28_axic_reg_srl_fifo";
 end icyradio_xbar_3_axi_data_fifo_v2_1_28_axic_reg_srl_fifo;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_data_fifo_v2_1_28_axic_reg_srl_fifo is
@@ -30052,8 +30042,6 @@ entity icyradio_xbar_3_axi_register_slice_v2_1_29_axi_register_slice is
     m_axi_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
     m_axi_rdata : in STD_LOGIC_VECTOR ( 63 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_register_slice_v2_1_29_axi_register_slice : entity is "axi_register_slice_v2_1_29_axi_register_slice";
 end icyradio_xbar_3_axi_register_slice_v2_1_29_axi_register_slice;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_register_slice_v2_1_29_axi_register_slice is
@@ -30463,8 +30451,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_mux is
     s_axi_wstrb : in STD_LOGIC_VECTOR ( 31 downto 0 );
     s_axi_wdata : in STD_LOGIC_VECTOR ( 255 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_mux : entity is "axi_crossbar_v2_1_30_wdata_mux";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_mux;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_mux is
@@ -30739,8 +30725,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_router is
     \m_axi_wvalid[1]_INST_0_i_1\ : in STD_LOGIC_VECTOR ( 0 to 0 );
     \m_axi_wvalid[1]_INST_0_i_1_0\ : in STD_LOGIC
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_router : entity is "axi_crossbar_v2_1_30_wdata_router";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_router;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_wdata_router is
@@ -31083,8 +31067,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_crossbar is
     s_axi_arcache : in STD_LOGIC_VECTOR ( 15 downto 0 );
     s_axi_arqos : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_crossbar : entity is "axi_crossbar_v2_1_30_crossbar";
 end icyradio_xbar_3_axi_crossbar_v2_1_30_crossbar;
 
 architecture STRUCTURE of icyradio_xbar_3_axi_crossbar_v2_1_30_crossbar is
@@ -32748,8 +32730,6 @@ entity icyradio_xbar_3_axi_crossbar_v2_1_30_axi_crossbar is
   attribute C_S_AXI_WRITE_ACCEPTANCE of icyradio_xbar_3_axi_crossbar_v2_1_30_axi_crossbar : entity is "224'b00000000000000000000000000000100000000000000000000000000000010000000000000000000000000000000010000000000000000000000000000001000000000000000000000000000000010000000000000000000000000000000010000000000000000000000000000000100";
   attribute DowngradeIPIdentifiedWarnings : string;
   attribute DowngradeIPIdentifiedWarnings of icyradio_xbar_3_axi_crossbar_v2_1_30_axi_crossbar : entity is "yes";
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_xbar_3_axi_crossbar_v2_1_30_axi_crossbar : entity is "axi_crossbar_v2_1_30_axi_crossbar";
   attribute P_ADDR_DECODE : integer;
   attribute P_ADDR_DECODE of icyradio_xbar_3_axi_crossbar_v2_1_30_axi_crossbar : entity is 1;
   attribute P_AXI3 : integer;

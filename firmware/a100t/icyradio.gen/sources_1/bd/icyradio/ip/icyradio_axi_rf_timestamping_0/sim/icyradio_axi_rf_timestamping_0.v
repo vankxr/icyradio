@@ -1,5 +1,5 @@
 // (c) Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
-// (c) Copyright 2022-2024 Advanced Micro Devices, Inc. All rights reserved.
+// (c) Copyright 2022-2026 Advanced Micro Devices, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of AMD and is protected under U.S. and international copyright
@@ -79,8 +79,6 @@ module icyradio_axi_rf_timestamping_0 (
   irq,
   ts_clk,
   ts_resetn,
-  ts_clk_tx_en,
-  ts_clk_rx_en,
   tx_dma_data_ready,
   rx_dma_xfer_req,
   tx_data_ready,
@@ -147,8 +145,6 @@ input wire ts_clk;
 (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_resetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *)
 (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 ts_resetn RST" *)
 input wire ts_resetn;
-output wire ts_clk_tx_en;
-output wire ts_clk_rx_en;
 input wire [1 : 0] tx_dma_data_ready;
 input wire [1 : 0] rx_dma_xfer_req;
 input wire [1 : 0] tx_data_ready;
@@ -184,8 +180,6 @@ output wire [1 : 0] rx_enable;
     .irq(irq),
     .ts_clk(ts_clk),
     .ts_resetn(ts_resetn),
-    .ts_clk_tx_en(ts_clk_tx_en),
-    .ts_clk_rx_en(ts_clk_rx_en),
     .tx_dma_data_ready(tx_dma_data_ready),
     .rx_dma_xfer_req(rx_dma_xfer_req),
     .tx_data_ready(tx_data_ready),

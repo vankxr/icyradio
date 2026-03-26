@@ -57,8 +57,6 @@ module axi_rf_timestamping
     (* X_INTERFACE_PARAMETER = "ASSOCIATED_RESET ts_resetn" *)
     input ts_clk,
     input ts_resetn,
-    output ts_clk_tx_en, // DEBUG
-    output ts_clk_rx_en, // DEBUG
 
     // DMA signals
     (* X_INTERFACE_IGNORE = "true" *)
@@ -92,9 +90,7 @@ module axi_rf_timestamping
 localparam S_AXI_ADDR_LSB = 2;
 localparam NUM_IRQS = 9;
 
-(* X_INTERFACE_IGNORE = "true" *)
 reg  ts_clk_tx_en;           // Enable signal for the TX timestamping logic
-(* X_INTERFACE_IGNORE = "true" *)
 reg  ts_clk_rx_en;           // Enable signal for the RX timestamping logic (and the global counter)
 reg  ts_clk_tx_synced_a;     // Whether the TX clock enable signal is synchronized to the data-valid edge (AXI-Lite clock domain)
 reg  ts_clk_tx_synced;       // Whether the TX clock enable signal is synchronized to the data-valid edge

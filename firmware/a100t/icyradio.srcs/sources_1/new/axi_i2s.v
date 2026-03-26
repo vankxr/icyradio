@@ -118,9 +118,10 @@ reg                 [7:0] i2s_chan_en; // Bit mask of enabled slots (channels)
 reg                 [2:0] i2s_chan_max_a; // Number of channels in the frame - 1 (AXI-Lite clock domain)
 reg                 [2:0] i2s_chan_max; // Number of channels in the frame - 1
 reg                 [2:0] i2s_chan_cnt; // Current channel
-reg                       i2s_chan_bit_sz_a; // Channel bit size (0 = 16 bits, 1 = 32 bits) (AXI-Lite clock domain)
-reg                       i2s_chan_bit_sz; // Channel bit size (0 = 16 bits, 1 = 32 bits)
+reg                 [1:0] i2s_chan_bit_sz_a; // Channel bit size (0 = 8 bits, 1 = 16 bits, 2 = 24 bits, 3 = 32 bits) (AXI-Lite clock domain)
+reg                 [1:0] i2s_chan_bit_sz; // Channel bit size (0 = 8 bits, 1 = 16 bits, 2 = 24 bits, 3 = 32 bits)
 reg                 [5:0] i2s_bit_cnt; // Number of bits shifted in the current channel
+reg                       i2s_bit_cnt_done; // Whether the counter is at max value (depending on channel bit size)
 reg                 [5:0] i2s_sdata_out_sr_bit_cnt; // Number of bits left in the output shift register
 reg                [31:0] i2s_sdata_out_sr; // Serial data out shift register
 reg                 [5:0] i2s_sdata_in_sr_bit_cnt; // Number of bits in the input shift register
@@ -149,8 +150,8 @@ wire                      i2s_lrclk_falling = i2s_lrclk_toggle & i2s_lrclk; // L
 reg  i2s_src_resetn_a; // Reset signal for the I2S SERDES and AXI-Stream interfaces (AXI-Lite clock domain)
 
 // Synchronization logic (aclk -> i2s_src_clk)
-wire [15 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ:0] sync_aclk_to_i2s_src_clk_out;       // Synchtonized signals aclk -> i2s_src_clk output in i2s_src_clk domain
-wire [15 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ:0] sync_aclk_to_i2s_src_clk_in;        // Synchtonized signals aclk -> i2s_src_clk input in aclk domain
+wire [16 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ:0] sync_aclk_to_i2s_src_clk_out;       // Synchtonized signals aclk -> i2s_src_clk output in i2s_src_clk domain
+wire [16 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ:0] sync_aclk_to_i2s_src_clk_in;        // Synchtonized signals aclk -> i2s_src_clk input in aclk domain
 wire                                                   sync_aclk_to_i2s_src_clk_src_done;  // Synchronization done signal for aclk -> i2s_src_clk
 reg                                                    sync_aclk_to_i2s_src_clk_src_req;   // Synchronization request signal for aclk -> i2s_src_clk
 wire                                                   sync_aclk_to_i2s_src_clk_dst_req;   // Synchronization request signal for aclk -> i2s_src_clk output in i2s_src_clk domain
@@ -161,7 +162,7 @@ xpm_cdc_handshake #(
     .INIT_SYNC_FF(1),
     .SIM_ASSERT_CHK(1),
     .SRC_SYNC_FF(4),
-    .WIDTH(16 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ)
+    .WIDTH(17 + MCLK_DIV_SZ + BCLK_DIV_SZ + LRCLK_DIV_SZ)
 )
 aclk_to_i2s_src_clk_sync
 (
@@ -289,6 +290,17 @@ always @(*)
         endcase
     end
 
+// Channel bit count done logic
+always @(*)
+    begin
+        case(i2s_chan_bit_sz)
+            2'd0: i2s_bit_cnt_done <= (i2s_bit_cnt == 6'd7); // 8 bits
+            2'd1: i2s_bit_cnt_done <= (i2s_bit_cnt == 6'd15); // 16 bits
+            2'd2: i2s_bit_cnt_done <= (i2s_bit_cnt == 6'd23); // 24 bits
+            2'd3: i2s_bit_cnt_done <= (i2s_bit_cnt == 6'd31); // 32 bits
+        endcase
+    end
+
 // I2S SERDES logic
 always @(posedge i2s_src_clk)
     begin
@@ -330,22 +342,16 @@ always @(posedge i2s_src_clk)
                 case(i2s_fsm_state)
                     I2S_FSM_STATE_RESET:
                         begin
-                            m_axis_tvalid <= 1'b0;
-                            m_axis_tdata <= 32'h00000000;
-
-                            s_axis_tready <= 1'b0;
-
                             i2s_sdata_out_int <= 1'b0;
 
                             i2s_paused <= i2s_pause;
                             i2s_chan_cnt <= 3'd0;
                             i2s_bit_cnt <= 6'd0;
-                            i2s_sdata_out_sr_bit_cnt <= 6'd0;
-                            i2s_sdata_out_sr <= 32'h00000000;
                             i2s_sdata_in_sr_bit_cnt <= 6'd0;
                             i2s_sdata_in_sr <= 32'h00000000;
 
-                            i2s_fsm_state <= I2S_FSM_STATE_RD_FIRST;
+                            if(!s_axis_tready && !m_axis_tvalid)
+                                i2s_fsm_state <= I2S_FSM_STATE_RD_FIRST;
                         end
                     I2S_FSM_STATE_RD_FIRST: // Read first data from S-AXIS
                         begin
@@ -401,7 +407,7 @@ always @(posedge i2s_src_clk)
                                 begin
                                     i2s_bit_cnt <= i2s_bit_cnt + 1;
 
-                                    if((!i2s_chan_bit_sz && &i2s_bit_cnt[3:0]) || (i2s_chan_bit_sz && &i2s_bit_cnt[4:0])) // If we read the last bit of the current channel (16 or 32)
+                                    if(i2s_bit_cnt_done) // If we read the last bit of the current channel
                                         begin
                                             i2s_bit_cnt <= 6'd0;
 
@@ -467,7 +473,7 @@ always @(posedge aclk)
                 i2s_lb_en_a <= 1'b0;
                 i2s_chan_en_a <= 8'b00000000;
                 i2s_chan_max_a <= 3'd0;
-                i2s_chan_bit_sz_a <= 1'b0;
+                i2s_chan_bit_sz_a <= 2'd0;
 
                 i2s_clk_div_en_a <= 1'b0;
                 i2s_mclk_div_a <= {MCLK_DIV_SZ{1'b0}};
@@ -521,10 +527,12 @@ always @(posedge aclk)
 
                         case(s_axi_araddr[S_AXI_ASZ - 1:S_AXI_ADDR_LSB])
                             3'h0:    s_axi_rdata <= {16'd1, 8'd0, 8'd1}; // IP Version
-                            3'h1:    s_axi_rdata <= {i2s_src_resetn_a, 10'd0, i2s_chan_bit_sz_a, 1'd0, i2s_chan_max_a, i2s_chan_en_a, 3'd0, i2s_lb_en_a, i2s_paused_a, i2s_pause_a, i2s_en_a, i2s_clk_div_en_a};
-                            3'h2:    s_axi_rdata <= {{(S_AXI_DSZ - MCLK_DIV_SZ){1'b0}}, i2s_mclk_div_a};
-                            3'h3:    s_axi_rdata <= {{(S_AXI_DSZ - BCLK_DIV_SZ){1'b0}}, i2s_bclk_div_a};
-                            3'h4:    s_axi_rdata <= {{(S_AXI_DSZ - LRCLK_DIV_SZ){1'b0}}, i2s_lrclk_div_a};
+                            3'h1:    s_axi_rdata <= {i2s_src_resetn_a, 9'd0, i2s_chan_bit_sz_a, 1'd0, i2s_chan_max_a, i2s_chan_en_a, 3'd0, i2s_lb_en_a, i2s_paused_a, i2s_pause_a, i2s_en_a, i2s_clk_div_en_a};
+                            3'h2:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_IRQS){1'b0}}, irq_enabled}; // IRQ Enabled
+                            3'h3:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_IRQS){1'b0}}, irq_pend}; // IRQ Pending
+                            3'h4:    s_axi_rdata <= {{(S_AXI_DSZ - MCLK_DIV_SZ){1'b0}}, i2s_mclk_div_a};
+                            3'h5:    s_axi_rdata <= {{(S_AXI_DSZ - BCLK_DIV_SZ){1'b0}}, i2s_bclk_div_a};
+                            3'h6:    s_axi_rdata <= {{(S_AXI_DSZ - LRCLK_DIV_SZ){1'b0}}, i2s_lrclk_div_a};
                             default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                         endcase
                     end
@@ -567,7 +575,7 @@ always @(posedge aclk)
                                                 begin
                                                     i2s_chan_max_a <= s_axi_wdata[18:16];
 
-                                                    i2s_chan_bit_sz_a <= s_axi_wdata[20];
+                                                    i2s_chan_bit_sz_a <= s_axi_wdata[21:20];
                                                 end
                                         end
 
@@ -577,6 +585,68 @@ always @(posedge aclk)
                                         end
                                 end
                             3'h2: // Register 2
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_IRQS > 8)
+                                                irq_enabled[7:0] <= s_axi_wdata[7:0];
+                                            else
+                                                irq_enabled[NUM_IRQS - 1:0] <= s_axi_wdata[NUM_IRQS - 1:0];
+                                        end
+
+                                    if(NUM_IRQS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_IRQS > 16)
+                                                irq_enabled[15:8] <= s_axi_wdata[15:8];
+                                            else
+                                                irq_enabled[NUM_IRQS - 1:8] <= s_axi_wdata[NUM_IRQS - 1:8];
+                                        end
+
+                                    if(NUM_IRQS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_IRQS > 24)
+                                                irq_enabled[23:16] <= s_axi_wdata[23:16];
+                                            else
+                                                irq_enabled[NUM_IRQS - 1:16] <= s_axi_wdata[NUM_IRQS - 1:16];
+                                        end
+
+                                    if(NUM_IRQS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            irq_enabled[NUM_IRQS - 1:24] <= s_axi_wdata[NUM_IRQS - 1:24];
+                                        end
+                                end
+                            3'h3: // Register 3
+                                begin
+                                    if(s_axi_wstrb[0] == 1'b1) // s_axi_wdata[7:0]
+                                        begin
+                                            if(NUM_IRQS > 8)
+                                                irq_pend[7:0] <= irq_pend[7:0] & ~s_axi_wdata[7:0];
+                                            else
+                                                irq_pend[NUM_IRQS - 1:0] <= irq_pend[NUM_IRQS - 1:0] & ~s_axi_wdata[NUM_IRQS - 1:0];
+                                        end
+
+                                    if(NUM_IRQS > 8 && s_axi_wstrb[1]) // s_axi_wdata[15:8]
+                                        begin
+                                            if(NUM_IRQS > 16)
+                                                irq_pend[15:8] <= irq_pend[15:8] & ~s_axi_wdata[15:8];
+                                            else
+                                                irq_pend[NUM_IRQS - 1:8] <= irq_pend[NUM_IRQS - 1:8] & ~s_axi_wdata[NUM_IRQS - 1:8];
+                                        end
+
+                                    if(NUM_IRQS > 16 && s_axi_wstrb[2]) // s_axi_wdata[23:16]
+                                        begin
+                                            if(NUM_IRQS > 24)
+                                                irq_pend[23:16] <= irq_pend[23:16] & ~s_axi_wdata[23:16];
+                                            else
+                                                irq_pend[NUM_IRQS - 1:16] <= irq_pend[NUM_IRQS - 1:16] & ~s_axi_wdata[NUM_IRQS - 1:16];
+                                        end
+
+                                    if(NUM_IRQS > 24 && s_axi_wstrb[3]) // s_axi_wdata[31:24]
+                                        begin
+                                            irq_pend[NUM_IRQS - 1:24] <= irq_pend[NUM_IRQS - 1:24] & ~s_axi_wdata[NUM_IRQS - 1:24];
+                                        end
+                                end
+                            3'h4: // Register 4
                                 begin
                                     if(!i2s_clk_div_en_a) // Clock divider can only be changed if the clock generation is disabled
                                         begin
@@ -610,7 +680,7 @@ always @(posedge aclk)
                                                 end
                                         end
                                 end
-                            3'h3: // Register 3
+                            3'h5: // Register 5
                                 begin
                                     if(!i2s_clk_div_en_a) // Clock divider can only be changed if the clock generation is disabled
                                         begin
@@ -644,7 +714,7 @@ always @(posedge aclk)
                                                 end
                                         end
                                 end
-                            3'h4: // Register 4
+                            3'h6: // Register 6
                                 begin
                                     if(!i2s_clk_div_en_a) // Clock divider can only be changed if the clock generation is disabled
                                         begin

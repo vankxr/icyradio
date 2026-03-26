@@ -2,10 +2,10 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-// Date        : Mon Apr  1 20:29:13 2024
+// Date        : Fri Feb 13 12:11:14 2026
 // Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
-// Command     : write_verilog -force -mode funcsim -rename_top icyradio_axi_rf_timestamping_0 -prefix
-//               icyradio_axi_rf_timestamping_0_ icyradio_axi_rf_timestamping_0_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim
+//               /home/joao/icyradio/firmware/a100t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_rf_timestamping_0/icyradio_axi_rf_timestamping_0_sim_netlist.v
 // Design      : icyradio_axi_rf_timestamping_0
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -13,16 +13,149 @@
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 
+(* CHECK_LICENSE_TYPE = "icyradio_axi_rf_timestamping_0,axi_rf_timestamping,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "module_ref" *) 
+(* X_CORE_INFO = "axi_rf_timestamping,Vivado 2023.2" *) 
+(* NotValidForBitStream *)
+module icyradio_axi_rf_timestamping_0
+   (aclk,
+    aresetn,
+    s_axi_awaddr,
+    s_axi_awprot,
+    s_axi_awvalid,
+    s_axi_awready,
+    s_axi_wdata,
+    s_axi_wstrb,
+    s_axi_wvalid,
+    s_axi_wready,
+    s_axi_bresp,
+    s_axi_bvalid,
+    s_axi_bready,
+    s_axi_araddr,
+    s_axi_arprot,
+    s_axi_arvalid,
+    s_axi_arready,
+    s_axi_rdata,
+    s_axi_rresp,
+    s_axi_rvalid,
+    s_axi_rready,
+    irq,
+    ts_clk,
+    ts_resetn,
+    tx_dma_data_ready,
+    rx_dma_xfer_req,
+    tx_data_ready,
+    rx_data_ready,
+    tx_fifo_underflow,
+    rx_fifo_overflow,
+    tx_flush,
+    tx_enable,
+    rx_enable);
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 aclk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME aclk, ASSOCIATED_BUSIF s_axi, ASSOCIATED_RESET aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input aclk;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 aresetn RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME aresetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input aresetn;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWADDR" *) input [6:0]s_axi_awaddr;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWPROT" *) input [2:0]s_axi_awprot;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWVALID" *) input s_axi_awvalid;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWREADY" *) output s_axi_awready;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WDATA" *) input [31:0]s_axi_wdata;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WSTRB" *) input [3:0]s_axi_wstrb;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WVALID" *) input s_axi_wvalid;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WREADY" *) output s_axi_wready;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BRESP" *) output [1:0]s_axi_bresp;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BVALID" *) output s_axi_bvalid;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BREADY" *) input s_axi_bready;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARADDR" *) input [6:0]s_axi_araddr;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARPROT" *) input [2:0]s_axi_arprot;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARVALID" *) input s_axi_arvalid;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARREADY" *) output s_axi_arready;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) output [31:0]s_axi_rdata;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RRESP" *) output [1:0]s_axi_rresp;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RVALID" *) output s_axi_rvalid;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RREADY" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME s_axi, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 1, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 1, NUM_WRITE_OUTSTANDING 1, MAX_BURST_LENGTH 1, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *) input s_axi_rready;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 irq INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME irq, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) output irq;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 ts_clk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_clk, ASSOCIATED_RESET ts_resetn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_ad9361_0_l_clk, INSERT_VIP 0" *) input ts_clk;
+  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 ts_resetn RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_resetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input ts_resetn;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_dma_data_ready;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_dma_xfer_req;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_data_ready;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_data_ready;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_fifo_underflow;
+  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_fifo_overflow;
+  output [1:0]tx_flush;
+  output [1:0]tx_enable;
+  output [1:0]rx_enable;
+
+  wire \<const0> ;
+  wire aclk;
+  wire aresetn;
+  wire irq;
+  wire [1:0]rx_data_ready;
+  wire [1:0]rx_dma_xfer_req;
+  wire [1:0]rx_enable;
+  wire [1:0]rx_fifo_overflow;
+  wire [6:0]s_axi_araddr;
+  wire s_axi_arready;
+  wire s_axi_arvalid;
+  wire [6:0]s_axi_awaddr;
+  wire s_axi_awready;
+  wire s_axi_awvalid;
+  wire s_axi_bready;
+  wire s_axi_bvalid;
+  wire [31:0]s_axi_rdata;
+  wire s_axi_rready;
+  wire s_axi_rvalid;
+  wire [31:0]s_axi_wdata;
+  wire [3:0]s_axi_wstrb;
+  wire s_axi_wvalid;
+  wire ts_clk;
+  wire ts_resetn;
+  wire [1:0]tx_data_ready;
+  wire [1:0]tx_dma_data_ready;
+  wire [1:0]tx_enable;
+  wire [1:0]tx_fifo_underflow;
+  wire [1:0]tx_flush;
+
+  assign s_axi_bresp[1] = \<const0> ;
+  assign s_axi_bresp[0] = \<const0> ;
+  assign s_axi_rresp[1] = \<const0> ;
+  assign s_axi_rresp[0] = \<const0> ;
+  assign s_axi_wready = s_axi_awready;
+  GND GND
+       (.G(\<const0> ));
+  icyradio_axi_rf_timestamping_0_axi_rf_timestamping inst
+       (.aclk(aclk),
+        .aresetn(aresetn),
+        .irq(irq),
+        .\rx_enable_reg[0]_0 (rx_enable[0]),
+        .\rx_enable_reg[1]_0 (rx_enable[1]),
+        .s_axi_araddr(s_axi_araddr[6:2]),
+        .s_axi_arready(s_axi_arready),
+        .s_axi_arvalid(s_axi_arvalid),
+        .s_axi_awaddr(s_axi_awaddr[6:2]),
+        .s_axi_awready(s_axi_awready),
+        .s_axi_awvalid(s_axi_awvalid),
+        .s_axi_bready(s_axi_bready),
+        .s_axi_bvalid(s_axi_bvalid),
+        .s_axi_rdata(s_axi_rdata),
+        .s_axi_rready(s_axi_rready),
+        .s_axi_rvalid_reg_0(s_axi_rvalid),
+        .s_axi_wdata(s_axi_wdata),
+        .s_axi_wstrb(s_axi_wstrb),
+        .s_axi_wvalid(s_axi_wvalid),
+        .src_in({tx_dma_data_ready,rx_dma_xfer_req,tx_data_ready,rx_data_ready,tx_fifo_underflow,rx_fifo_overflow,ts_resetn}),
+        .ts_clk(ts_clk),
+        .tx_enable(tx_enable),
+        .tx_flush(tx_flush));
+endmodule
+
+(* ORIG_REF_NAME = "axi_rf_timestamping" *) 
 module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
    (s_axi_rvalid_reg_0,
     s_axi_awready,
     \rx_enable_reg[1]_0 ,
-    ts_clk_rx_en_reg_0,
     \rx_enable_reg[0]_0 ,
     tx_enable,
     s_axi_rdata,
     tx_flush,
-    ts_clk_tx_en_reg_0,
     s_axi_arready,
     s_axi_bvalid,
     irq,
@@ -42,12 +175,10 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   output s_axi_rvalid_reg_0;
   output s_axi_awready;
   output \rx_enable_reg[1]_0 ;
-  output ts_clk_rx_en_reg_0;
   output \rx_enable_reg[0]_0 ;
   output [1:0]tx_enable;
   output [31:0]s_axi_rdata;
   output [1:0]tx_flush;
-  output ts_clk_tx_en_reg_0;
   output s_axi_arready;
   output s_axi_bvalid;
   output irq;
@@ -1324,15 +1455,15 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   wire ts_clk_resync_req;
   wire ts_clk_resync_req_a_i_1_n_0;
   wire ts_clk_resync_req_a_i_2_n_0;
+  wire ts_clk_rx_en;
   wire ts_clk_rx_en_i_1_n_0;
-  wire ts_clk_rx_en_reg_0;
   wire ts_clk_rx_synced_i_1_n_0;
   wire ts_clk_rx_synced_reg_n_0;
   wire ts_clk_sync_bypass;
   wire ts_clk_sync_bypass_a_i_1_n_0;
   wire ts_clk_sync_bypass_a_i_2_n_0;
+  wire ts_clk_tx_en;
   wire ts_clk_tx_en_i_1_n_0;
-  wire ts_clk_tx_en_reg_0;
   wire ts_clk_tx_synced_i_1_n_0;
   wire ts_clk_tx_synced_reg_n_0;
   wire ts_resetn_a;
@@ -1502,7 +1633,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
   LUT4 #(
     .INIT(16'hAA30)) 
     \cnt[0]_i_1 
-       (.I0(ts_clk_rx_en_reg_0),
+       (.I0(ts_clk_rx_en),
         .I1(cnt_wr_done_reg_n_0),
         .I2(cnt_wr_req),
         .I3(cnt_en),
@@ -2648,7 +2779,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
         .I1(\cnt_latch_armed[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
         .I3(\cnt_latch_arm_req_reg_n_0_[0] ),
-        .I4(ts_clk_rx_en_reg_0),
+        .I4(ts_clk_rx_en),
         .I5(\cnt_latch_armed_reg_n_0_[0] ),
         .O(\cnt_latch_armed[0]_i_1_n_0 ));
   LUT6 #(
@@ -2668,7 +2799,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
         .I1(\cnt_latch_armed[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
         .I3(p_2_in95_in),
-        .I4(ts_clk_rx_en_reg_0),
+        .I4(ts_clk_rx_en),
         .I5(p_0_in94_in),
         .O(\cnt_latch_armed[1]_i_1_n_0 ));
   LUT6 #(
@@ -2711,7 +2842,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(\cnt_latch_armed_reg_n_0_[0] ),
         .I1(\cnt_latch_valid[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(cnt_latch_valid_rd[0]),
         .I5(\cnt_latch_valid_reg_n_0_[0] ),
         .O(\cnt_latch_valid[0]_i_1_n_0 ));
@@ -2731,7 +2862,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(p_0_in94_in),
         .I1(\cnt_latch_valid[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(cnt_latch_valid_rd[1]),
         .I5(p_2_in91_in),
         .O(\cnt_latch_valid[1]_i_1_n_0 ));
@@ -2813,7 +2944,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(\cnt_latch_armed_reg_n_0_[0] ),
         .I1(\cnt_latch_valid[0]_i_2_n_0 ),
         .I2(\rx_enable_reg[0]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .O(cnt_latched0));
   LUT6 #(
     .INIT(64'h0000000000400000)) 
@@ -3798,7 +3929,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(p_0_in94_in),
         .I1(\cnt_latch_valid[1]_i_2_n_0 ),
         .I2(\rx_enable_reg[1]_0 ),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .O(cnt_latched1));
   LUT6 #(
     .INIT(64'h0000000000400000)) 
@@ -7000,7 +7131,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_rx_done[0]_i_1 
        (.I0(\cnt_rx_done_reg_n_0_[0] ),
-        .I1(ts_clk_rx_en_reg_0),
+        .I1(ts_clk_rx_en),
         .I2(rx_enable1),
         .I3(\cnt_rx_en_reg_n_0_[0] ),
         .O(\cnt_rx_done[0]_i_1_n_0 ));
@@ -7008,7 +7139,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_rx_done[1]_i_1 
        (.I0(\cnt_rx_done_reg_n_0_[1] ),
-        .I1(ts_clk_rx_en_reg_0),
+        .I1(ts_clk_rx_en),
         .I2(rx_enable10_out),
         .I3(p_2_in10_in),
         .O(\cnt_rx_done[1]_i_1_n_0 ));
@@ -8819,7 +8950,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hEA00)) 
     \cnt_tx_done[0]_i_1 
        (.I0(\cnt_tx_done_reg_n_0_[0] ),
-        .I1(ts_clk_tx_en_reg_0),
+        .I1(ts_clk_tx_en),
         .I2(tx_enable1),
         .I3(\cnt_tx_en_reg_n_0_[0] ),
         .O(\cnt_tx_done[0]_i_1_n_0 ));
@@ -8827,7 +8958,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     .INIT(16'hF800)) 
     \cnt_tx_done[1]_i_1 
        (.I0(tx_enable11_out),
-        .I1(ts_clk_tx_en_reg_0),
+        .I1(ts_clk_tx_en),
         .I2(\cnt_tx_done_reg_n_0_[1] ),
         .I3(p_2_in),
         .O(\cnt_tx_done[1]_i_1_n_0 ));
@@ -11051,7 +11182,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \rx_enable[0]_i_1 
        (.I0(rx_enable_man[0]),
         .I1(\cnt_rx_done_reg_n_0_[0] ),
-        .I2(ts_clk_rx_en_reg_0),
+        .I2(ts_clk_rx_en),
         .I3(rx_enable1),
         .I4(\cnt_rx_en_reg_n_0_[0] ),
         .I5(\rx_enable_reg[0]_0 ),
@@ -11061,7 +11192,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \rx_enable[1]_i_1 
        (.I0(rx_enable_man[1]),
         .I1(\cnt_rx_done_reg_n_0_[1] ),
-        .I2(ts_clk_rx_en_reg_0),
+        .I2(ts_clk_rx_en),
         .I3(rx_enable10_out),
         .I4(p_2_in10_in),
         .I5(\rx_enable_reg[1]_0 ),
@@ -13880,15 +14011,14 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(src_in[0]),
         .I1(ts_clk_rx_synced_reg_n_0),
         .I2(ts_clk_resync_req),
-        .I3(ts_clk_rx_en_reg_0),
+        .I3(ts_clk_rx_en),
         .I4(ts_clk_sync_bypass),
         .O(ts_clk_rx_en_i_1_n_0));
-  (* X_INTERFACE_IGNORE = "true" *) 
   FDRE ts_clk_rx_en_reg
        (.C(ts_clk),
         .CE(1'b1),
         .D(ts_clk_rx_en_i_1_n_0),
-        .Q(ts_clk_rx_en_reg_0),
+        .Q(ts_clk_rx_en),
         .R(1'b0));
   FDRE ts_clk_rx_synced_a_reg
        (.C(aclk),
@@ -14018,15 +14148,14 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
        (.I0(src_in[0]),
         .I1(ts_clk_tx_synced_reg_n_0),
         .I2(ts_clk_resync_req),
-        .I3(ts_clk_tx_en_reg_0),
+        .I3(ts_clk_tx_en),
         .I4(ts_clk_sync_bypass),
         .O(ts_clk_tx_en_i_1_n_0));
-  (* X_INTERFACE_IGNORE = "true" *) 
   FDRE ts_clk_tx_en_reg
        (.C(ts_clk),
         .CE(1'b1),
         .D(ts_clk_tx_en_i_1_n_0),
-        .Q(ts_clk_tx_en_reg_0),
+        .Q(ts_clk_tx_en),
         .R(1'b0));
   FDRE ts_clk_tx_synced_a_reg
        (.C(aclk),
@@ -14579,7 +14708,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \tx_enable[0]_i_1 
        (.I0(tx_enable_man[0]),
         .I1(\cnt_tx_done_reg_n_0_[0] ),
-        .I2(ts_clk_tx_en_reg_0),
+        .I2(ts_clk_tx_en),
         .I3(tx_enable1),
         .I4(\cnt_tx_en_reg_n_0_[0] ),
         .I5(tx_enable[0]),
@@ -14594,7 +14723,7 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
     \tx_enable[1]_i_2 
        (.I0(tx_enable_man[1]),
         .I1(tx_enable11_out),
-        .I2(ts_clk_tx_en_reg_0),
+        .I2(ts_clk_tx_en),
         .I3(\cnt_tx_done_reg_n_0_[1] ),
         .I4(p_2_in),
         .I5(tx_enable[1]),
@@ -14819,152 +14948,10 @@ module icyradio_axi_rf_timestamping_0_axi_rf_timestamping
         .R(1'b0));
 endmodule
 
-(* CHECK_LICENSE_TYPE = "icyradio_axi_rf_timestamping_0,axi_rf_timestamping,{}" *) (* DowngradeIPIdentifiedWarnings = "yes" *) (* IP_DEFINITION_SOURCE = "module_ref" *) 
-(* X_CORE_INFO = "axi_rf_timestamping,Vivado 2023.2" *) 
-(* NotValidForBitStream *)
-module icyradio_axi_rf_timestamping_0
-   (aclk,
-    aresetn,
-    s_axi_awaddr,
-    s_axi_awprot,
-    s_axi_awvalid,
-    s_axi_awready,
-    s_axi_wdata,
-    s_axi_wstrb,
-    s_axi_wvalid,
-    s_axi_wready,
-    s_axi_bresp,
-    s_axi_bvalid,
-    s_axi_bready,
-    s_axi_araddr,
-    s_axi_arprot,
-    s_axi_arvalid,
-    s_axi_arready,
-    s_axi_rdata,
-    s_axi_rresp,
-    s_axi_rvalid,
-    s_axi_rready,
-    irq,
-    ts_clk,
-    ts_resetn,
-    ts_clk_tx_en,
-    ts_clk_rx_en,
-    tx_dma_data_ready,
-    rx_dma_xfer_req,
-    tx_data_ready,
-    rx_data_ready,
-    tx_fifo_underflow,
-    rx_fifo_overflow,
-    tx_flush,
-    tx_enable,
-    rx_enable);
-  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 aclk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME aclk, ASSOCIATED_BUSIF s_axi, ASSOCIATED_RESET aresetn, FREQ_HZ 125000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, INSERT_VIP 0" *) input aclk;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 aresetn RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME aresetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input aresetn;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWADDR" *) input [6:0]s_axi_awaddr;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWPROT" *) input [2:0]s_axi_awprot;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWVALID" *) input s_axi_awvalid;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi AWREADY" *) output s_axi_awready;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WDATA" *) input [31:0]s_axi_wdata;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WSTRB" *) input [3:0]s_axi_wstrb;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WVALID" *) input s_axi_wvalid;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi WREADY" *) output s_axi_wready;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BRESP" *) output [1:0]s_axi_bresp;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BVALID" *) output s_axi_bvalid;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi BREADY" *) input s_axi_bready;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARADDR" *) input [6:0]s_axi_araddr;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARPROT" *) input [2:0]s_axi_arprot;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARVALID" *) input s_axi_arvalid;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi ARREADY" *) output s_axi_arready;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) output [31:0]s_axi_rdata;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RRESP" *) output [1:0]s_axi_rresp;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RVALID" *) output s_axi_rvalid;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RREADY" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME s_axi, DATA_WIDTH 32, PROTOCOL AXI4LITE, FREQ_HZ 125000000, ID_WIDTH 0, ADDR_WIDTH 7, AWUSER_WIDTH 0, ARUSER_WIDTH 0, WUSER_WIDTH 0, RUSER_WIDTH 0, BUSER_WIDTH 0, READ_WRITE_MODE READ_WRITE, HAS_BURST 0, HAS_LOCK 0, HAS_PROT 1, HAS_CACHE 0, HAS_QOS 0, HAS_REGION 0, HAS_WSTRB 1, HAS_BRESP 1, HAS_RRESP 1, SUPPORTS_NARROW_BURST 0, NUM_READ_OUTSTANDING 1, NUM_WRITE_OUTSTANDING 1, MAX_BURST_LENGTH 1, PHASE 0.0, CLK_DOMAIN icyradio_axi_pcie_0_0_axi_aclk_out, NUM_READ_THREADS 1, NUM_WRITE_THREADS 1, RUSER_BITS_PER_BYTE 0, WUSER_BITS_PER_BYTE 0, INSERT_VIP 0" *) input s_axi_rready;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:interrupt:1.0 irq INTERRUPT" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME irq, SENSITIVITY LEVEL_HIGH, PortWidth 1" *) output irq;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 ts_clk CLK" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_clk, ASSOCIATED_RESET ts_resetn, FREQ_HZ 100000000, FREQ_TOLERANCE_HZ 0, PHASE 0.0, CLK_DOMAIN icyradio_axi_ad9361_0_l_clk, INSERT_VIP 0" *) input ts_clk;
-  (* X_INTERFACE_INFO = "xilinx.com:signal:reset:1.0 ts_resetn RST" *) (* X_INTERFACE_PARAMETER = "XIL_INTERFACENAME ts_resetn, POLARITY ACTIVE_LOW, INSERT_VIP 0" *) input ts_resetn;
-  output ts_clk_tx_en;
-  output ts_clk_rx_en;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_dma_data_ready;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_dma_xfer_req;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_data_ready;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_data_ready;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]tx_fifo_underflow;
-  (* X_INTERFACE_IGNORE = "true" *) input [1:0]rx_fifo_overflow;
-  output [1:0]tx_flush;
-  output [1:0]tx_enable;
-  output [1:0]rx_enable;
-
-  wire \<const0> ;
-  wire aclk;
-  wire aresetn;
-  wire irq;
-  wire [1:0]rx_data_ready;
-  wire [1:0]rx_dma_xfer_req;
-  wire [1:0]rx_enable;
-  wire [1:0]rx_fifo_overflow;
-  wire [6:0]s_axi_araddr;
-  wire s_axi_arready;
-  wire s_axi_arvalid;
-  wire [6:0]s_axi_awaddr;
-  wire s_axi_awready;
-  wire s_axi_awvalid;
-  wire s_axi_bready;
-  wire s_axi_bvalid;
-  wire [31:0]s_axi_rdata;
-  wire s_axi_rready;
-  wire s_axi_rvalid;
-  wire [31:0]s_axi_wdata;
-  wire [3:0]s_axi_wstrb;
-  wire s_axi_wvalid;
-  wire ts_clk;
-  wire ts_clk_rx_en;
-  wire ts_clk_tx_en;
-  wire ts_resetn;
-  wire [1:0]tx_data_ready;
-  wire [1:0]tx_dma_data_ready;
-  wire [1:0]tx_enable;
-  wire [1:0]tx_fifo_underflow;
-  wire [1:0]tx_flush;
-
-  assign s_axi_bresp[1] = \<const0> ;
-  assign s_axi_bresp[0] = \<const0> ;
-  assign s_axi_rresp[1] = \<const0> ;
-  assign s_axi_rresp[0] = \<const0> ;
-  assign s_axi_wready = s_axi_awready;
-  GND GND
-       (.G(\<const0> ));
-  icyradio_axi_rf_timestamping_0_axi_rf_timestamping inst
-       (.aclk(aclk),
-        .aresetn(aresetn),
-        .irq(irq),
-        .\rx_enable_reg[0]_0 (rx_enable[0]),
-        .\rx_enable_reg[1]_0 (rx_enable[1]),
-        .s_axi_araddr(s_axi_araddr[6:2]),
-        .s_axi_arready(s_axi_arready),
-        .s_axi_arvalid(s_axi_arvalid),
-        .s_axi_awaddr(s_axi_awaddr[6:2]),
-        .s_axi_awready(s_axi_awready),
-        .s_axi_awvalid(s_axi_awvalid),
-        .s_axi_bready(s_axi_bready),
-        .s_axi_bvalid(s_axi_bvalid),
-        .s_axi_rdata(s_axi_rdata),
-        .s_axi_rready(s_axi_rready),
-        .s_axi_rvalid_reg_0(s_axi_rvalid),
-        .s_axi_wdata(s_axi_wdata),
-        .s_axi_wstrb(s_axi_wstrb),
-        .s_axi_wvalid(s_axi_wvalid),
-        .src_in({tx_dma_data_ready,rx_dma_xfer_req,tx_data_ready,rx_data_ready,tx_fifo_underflow,rx_fifo_overflow,ts_resetn}),
-        .ts_clk(ts_clk),
-        .ts_clk_rx_en_reg_0(ts_clk_rx_en),
-        .ts_clk_tx_en_reg_0(ts_clk_tx_en),
-        .tx_enable(tx_enable),
-        .tx_flush(tx_flush));
-endmodule
-
 (* DEST_EXT_HSK = "0" *) (* DEST_SYNC_FF = "4" *) (* INIT_SYNC_FF = "1" *) 
-(* SIM_ASSERT_CHK = "1" *) (* SRC_SYNC_FF = "4" *) (* VERSION = "0" *) 
-(* WIDTH = "354" *) (* XPM_MODULE = "TRUE" *) (* keep_hierarchy = "true" *) 
-(* xpm_cdc = "HANDSHAKE" *) 
+(* ORIG_REF_NAME = "xpm_cdc_handshake" *) (* SIM_ASSERT_CHK = "1" *) (* SRC_SYNC_FF = "4" *) 
+(* VERSION = "0" *) (* WIDTH = "354" *) (* XPM_MODULE = "TRUE" *) 
+(* keep_hierarchy = "true" *) (* xpm_cdc = "HANDSHAKE" *) 
 module icyradio_axi_rf_timestamping_0_xpm_cdc_handshake
    (src_clk,
     src_in,
@@ -23293,9 +23280,9 @@ module icyradio_axi_rf_timestamping_0_xpm_cdc_handshake__parameterized0
         .src_in(src_sendd_ff));
 endmodule
 
-(* DEST_SYNC_FF = "4" *) (* INIT_SYNC_FF = "1" *) (* SIM_ASSERT_CHK = "0" *) 
-(* SRC_INPUT_REG = "0" *) (* VERSION = "0" *) (* XPM_MODULE = "TRUE" *) 
-(* keep_hierarchy = "true" *) (* xpm_cdc = "SINGLE" *) 
+(* DEST_SYNC_FF = "4" *) (* INIT_SYNC_FF = "1" *) (* ORIG_REF_NAME = "xpm_cdc_single" *) 
+(* SIM_ASSERT_CHK = "0" *) (* SRC_INPUT_REG = "0" *) (* VERSION = "0" *) 
+(* XPM_MODULE = "TRUE" *) (* keep_hierarchy = "true" *) (* xpm_cdc = "SINGLE" *) 
 module icyradio_axi_rf_timestamping_0_xpm_cdc_single
    (src_clk,
     src_in,

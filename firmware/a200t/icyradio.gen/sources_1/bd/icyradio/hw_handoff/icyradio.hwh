@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Sat Nov 23 13:19:21 2024" VIVADOVERSION="2023.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Thu Mar  5 09:20:10 2026" VIVADOVERSION="2023.2">
 
   <SYSTEMINFO ARCH="artix7" DEVICE="7a200t" NAME="icyradio" PACKAGE="fbg484" SPEEDGRADE="-2"/>
 
@@ -37866,15 +37866,6 @@
         </ADDRESSBLOCK>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR0" RANGE="4G" USAGE="memory"/>
-      </ADDRESSBLOCKS>
-      <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR1" RANGE="4G" USAGE="memory"/>
-      </ADDRESSBLOCKS>
-      <ADDRESSBLOCKS>
-        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR2" RANGE="4G" USAGE="memory"/>
-      </ADDRESSBLOCKS>
-      <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR3" RANGE="4G" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
@@ -37882,6 +37873,15 @@
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR5" RANGE="4G" USAGE="memory"/>
+      </ADDRESSBLOCKS>
+      <ADDRESSBLOCKS>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR0" RANGE="4G" USAGE="memory"/>
+      </ADDRESSBLOCKS>
+      <ADDRESSBLOCKS>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR1" RANGE="4G" USAGE="memory"/>
+      </ADDRESSBLOCKS>
+      <ADDRESSBLOCKS>
+        <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI" NAME="BAR2" RANGE="4G" USAGE="memory"/>
       </ADDRESSBLOCKS>
       <ADDRESSBLOCKS>
         <ADDRESSBLOCK ACCESS="read-write" INTERFACE="S_AXI_CTL" NAME="CTL0" RANGE="256M" USAGE="memory">
@@ -39398,13 +39398,13 @@
             <CONNECTION INSTANCE="axi_gpio_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_gpio_1" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_gpio_2" PORT="aclk"/>
-            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aclk"/>
-            <CONNECTION INSTANCE="axi_rf_timestamping" PORT="aclk"/>
             <CONNECTION INSTANCE="rst_pulse_gen_0" PORT="clk"/>
             <CONNECTION INSTANCE="axi_qspi_mm_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_spi_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_spi_1" PORT="aclk"/>
+            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aclk"/>
             <CONNECTION INSTANCE="axi_i2s" PORT="aclk"/>
+            <CONNECTION INSTANCE="axi_rf_timestamping" PORT="aclk"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="axi_aresetn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="rst_axi_pcie_0_125M_pcie_core_peripheral_aresetn">
@@ -46283,8 +46283,6 @@
             <CONNECTION INSTANCE="axi_ad9361" PORT="l_clk"/>
           </CONNECTIONS>
         </PORT>
-        <PORT DIR="O" NAME="ts_clk_rx_en" SIGIS="undef"/>
-        <PORT DIR="O" NAME="ts_clk_tx_en" SIGIS="undef"/>
         <PORT DIR="I" NAME="ts_resetn" POLARITY="ACTIVE_LOW" SIGIS="rst" SIGNAME="rst_axi_ad9361_61M44_peripheral_aresetn">
           <CONNECTIONS>
             <CONNECTION INSTANCE="rst_axi_ad9361_61M44" PORT="peripheral_aresetn"/>
@@ -51477,12 +51475,12 @@
             <CONNECTION INSTANCE="axi_gpio_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_gpio_1" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_gpio_2" PORT="aresetn"/>
-            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aresetn"/>
-            <CONNECTION INSTANCE="axi_rf_timestamping" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_qspi_mm_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_spi_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_spi_1" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_irq_controller_0" PORT="aresetn"/>
             <CONNECTION INSTANCE="axi_i2s" PORT="aresetn"/>
+            <CONNECTION INSTANCE="axi_rf_timestamping" PORT="aresetn"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="O" LEFT="0" NAME="peripheral_reset" POLARITY="ACTIVE_HIGH" RIGHT="0" SIGIS="rst"/>

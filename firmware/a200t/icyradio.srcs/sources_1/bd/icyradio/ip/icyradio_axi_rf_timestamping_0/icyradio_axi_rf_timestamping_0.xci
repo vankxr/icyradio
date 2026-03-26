@@ -60,8 +60,6 @@
         "irq": [ { "direction": "out" } ],
         "ts_clk": [ { "direction": "in" } ],
         "ts_resetn": [ { "direction": "in" } ],
-        "ts_clk_tx_en": [ { "direction": "out" } ],
-        "ts_clk_rx_en": [ { "direction": "out" } ],
         "tx_dma_data_ready": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],
         "rx_dma_xfer_req": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],
         "tx_data_ready": [ { "direction": "in", "size_left": "1", "size_right": "0" } ],

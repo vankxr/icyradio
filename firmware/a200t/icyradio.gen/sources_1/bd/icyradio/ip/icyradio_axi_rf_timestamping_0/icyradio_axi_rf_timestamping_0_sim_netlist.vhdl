@@ -2,7 +2,7 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Sun May 26 20:14:20 2024
+-- Date        : Thu Mar  5 09:21:11 2026
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 -- Command     : write_vhdl -force -mode funcsim
 --               /home/joao/icyradio/firmware/a200t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_rf_timestamping_0/icyradio_axi_rf_timestamping_0_sim_netlist.vhdl
@@ -11096,12 +11096,10 @@ entity icyradio_axi_rf_timestamping_0_axi_rf_timestamping is
     s_axi_rvalid_reg_0 : out STD_LOGIC;
     s_axi_awready : out STD_LOGIC;
     \rx_enable_reg[1]_0\ : out STD_LOGIC;
-    ts_clk_rx_en_reg_0 : out STD_LOGIC;
     \rx_enable_reg[0]_0\ : out STD_LOGIC;
     tx_enable : out STD_LOGIC_VECTOR ( 1 downto 0 );
     s_axi_rdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
     tx_flush : out STD_LOGIC_VECTOR ( 1 downto 0 );
-    ts_clk_tx_en_reg_0 : out STD_LOGIC;
     s_axi_arready : out STD_LOGIC;
     s_axi_bvalid : out STD_LOGIC;
     irq : out STD_LOGIC;
@@ -12367,15 +12365,15 @@ architecture STRUCTURE of icyradio_axi_rf_timestamping_0_axi_rf_timestamping is
   signal ts_clk_resync_req : STD_LOGIC;
   signal ts_clk_resync_req_a_i_1_n_0 : STD_LOGIC;
   signal ts_clk_resync_req_a_i_2_n_0 : STD_LOGIC;
+  signal ts_clk_rx_en : STD_LOGIC;
   signal ts_clk_rx_en_i_1_n_0 : STD_LOGIC;
-  signal \^ts_clk_rx_en_reg_0\ : STD_LOGIC;
   signal ts_clk_rx_synced_i_1_n_0 : STD_LOGIC;
   signal ts_clk_rx_synced_reg_n_0 : STD_LOGIC;
   signal ts_clk_sync_bypass : STD_LOGIC;
   signal ts_clk_sync_bypass_a_i_1_n_0 : STD_LOGIC;
   signal ts_clk_sync_bypass_a_i_2_n_0 : STD_LOGIC;
+  signal ts_clk_tx_en : STD_LOGIC;
   signal ts_clk_tx_en_i_1_n_0 : STD_LOGIC;
-  signal \^ts_clk_tx_en_reg_0\ : STD_LOGIC;
   signal ts_clk_tx_synced_i_1_n_0 : STD_LOGIC;
   signal ts_clk_tx_synced_reg_n_0 : STD_LOGIC;
   signal ts_resetn_a : STD_LOGIC;
@@ -12635,7 +12633,6 @@ architecture STRUCTURE of icyradio_axi_rf_timestamping_0_axi_rf_timestamping is
   attribute SOFT_HLUTNM of s_axi_rvalid_i_1 : label is "soft_lutpair23";
   attribute X_INTERFACE_INFO of s_axi_rvalid_reg : label is "xilinx.com:interface:aximm:1.0 s_axi RVALID";
   attribute SOFT_HLUTNM of ts_clk_resync_req_a_i_2 : label is "soft_lutpair12";
-  attribute X_INTERFACE_IGNORE of ts_clk_rx_en_reg : label is "true";
   attribute DEST_EXT_HSK of ts_clk_to_aclk_sync : label is 0;
   attribute DEST_SYNC_FF of ts_clk_to_aclk_sync : label is 4;
   attribute INIT_SYNC_FF of ts_clk_to_aclk_sync : label is 1;
@@ -12645,7 +12642,6 @@ architecture STRUCTURE of icyradio_axi_rf_timestamping_0_axi_rf_timestamping is
   attribute WIDTH of ts_clk_to_aclk_sync : label is 228;
   attribute XPM_CDC of ts_clk_to_aclk_sync : label is "HANDSHAKE";
   attribute XPM_MODULE of ts_clk_to_aclk_sync : label is "TRUE";
-  attribute X_INTERFACE_IGNORE of ts_clk_tx_en_reg : label is "true";
   attribute SOFT_HLUTNM of \tx_data_ready_stky_a[0]_i_1\ : label is "soft_lutpair18";
   attribute SOFT_HLUTNM of \tx_data_ready_stky_a[1]_i_1\ : label is "soft_lutpair21";
   attribute SOFT_HLUTNM of \tx_dma_data_ready_stky_a[0]_i_1\ : label is "soft_lutpair16";
@@ -12666,8 +12662,6 @@ begin
   s_axi_awready <= \^s_axi_awready\;
   s_axi_bvalid <= \^s_axi_bvalid\;
   s_axi_rvalid_reg_0 <= \^s_axi_rvalid_reg_0\;
-  ts_clk_rx_en_reg_0 <= \^ts_clk_rx_en_reg_0\;
-  ts_clk_tx_en_reg_0 <= \^ts_clk_tx_en_reg_0\;
   tx_enable(1 downto 0) <= \^tx_enable\(1 downto 0);
 aclk_to_ts_clk_sync: entity work.icyradio_axi_rf_timestamping_0_xpm_cdc_handshake
      port map (
@@ -12906,7 +12900,7 @@ aclk_to_ts_clk_sync: entity work.icyradio_axi_rf_timestamping_0_xpm_cdc_handshak
       INIT => X"AA30"
     )
         port map (
-      I0 => \^ts_clk_rx_en_reg_0\,
+      I0 => ts_clk_rx_en,
       I1 => cnt_wr_done_reg_n_0,
       I2 => cnt_wr_req,
       I3 => cnt_en,
@@ -14471,7 +14465,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I1 => \cnt_latch_armed[0]_i_2_n_0\,
       I2 => \^rx_enable_reg[0]_0\,
       I3 => \cnt_latch_arm_req_reg_n_0_[0]\,
-      I4 => \^ts_clk_rx_en_reg_0\,
+      I4 => ts_clk_rx_en,
       I5 => \cnt_latch_armed_reg_n_0_[0]\,
       O => \cnt_latch_armed[0]_i_1_n_0\
     );
@@ -14497,7 +14491,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I1 => \cnt_latch_armed[1]_i_2_n_0\,
       I2 => \^rx_enable_reg[1]_0\,
       I3 => p_2_in95_in,
-      I4 => \^ts_clk_rx_en_reg_0\,
+      I4 => ts_clk_rx_en,
       I5 => p_0_in94_in,
       O => \cnt_latch_armed[1]_i_1_n_0\
     );
@@ -14554,7 +14548,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I0 => \cnt_latch_armed_reg_n_0_[0]\,
       I1 => \cnt_latch_valid[0]_i_2_n_0\,
       I2 => \^rx_enable_reg[0]_0\,
-      I3 => \^ts_clk_rx_en_reg_0\,
+      I3 => ts_clk_rx_en,
       I4 => cnt_latch_valid_rd(0),
       I5 => \cnt_latch_valid_reg_n_0_[0]\,
       O => \cnt_latch_valid[0]_i_1_n_0\
@@ -14580,7 +14574,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I0 => p_0_in94_in,
       I1 => \cnt_latch_valid[1]_i_2_n_0\,
       I2 => \^rx_enable_reg[1]_0\,
-      I3 => \^ts_clk_rx_en_reg_0\,
+      I3 => ts_clk_rx_en,
       I4 => cnt_latch_valid_rd(1),
       I5 => p_2_in91_in,
       O => \cnt_latch_valid[1]_i_1_n_0\
@@ -14690,7 +14684,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I0 => \cnt_latch_armed_reg_n_0_[0]\,
       I1 => \cnt_latch_valid[0]_i_2_n_0\,
       I2 => \^rx_enable_reg[0]_0\,
-      I3 => \^ts_clk_rx_en_reg_0\,
+      I3 => ts_clk_rx_en,
       O => cnt_latched0
     );
 \cnt_latched0_a_rd_buf[31]_i_1\: unisim.vcomponents.LUT6
@@ -16003,7 +15997,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
       I0 => p_0_in94_in,
       I1 => \cnt_latch_valid[1]_i_2_n_0\,
       I2 => \^rx_enable_reg[1]_0\,
-      I3 => \^ts_clk_rx_en_reg_0\,
+      I3 => ts_clk_rx_en,
       O => cnt_latched1
     );
 \cnt_latched1_a_rd_buf[31]_i_1\: unisim.vcomponents.LUT6
@@ -20389,7 +20383,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
     )
         port map (
       I0 => \cnt_rx_done_reg_n_0_[0]\,
-      I1 => \^ts_clk_rx_en_reg_0\,
+      I1 => ts_clk_rx_en,
       I2 => rx_enable1,
       I3 => \cnt_rx_en_reg_n_0_[0]\,
       O => \cnt_rx_done[0]_i_1_n_0\
@@ -20400,7 +20394,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
     )
         port map (
       I0 => \cnt_rx_done_reg_n_0_[1]\,
-      I1 => \^ts_clk_rx_en_reg_0\,
+      I1 => ts_clk_rx_en,
       I2 => rx_enable10_out,
       I3 => p_2_in10_in,
       O => \cnt_rx_done[1]_i_1_n_0\
@@ -22811,7 +22805,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
     )
         port map (
       I0 => \cnt_tx_done_reg_n_0_[0]\,
-      I1 => \^ts_clk_tx_en_reg_0\,
+      I1 => ts_clk_tx_en,
       I2 => tx_enable1,
       I3 => \cnt_tx_en_reg_n_0_[0]\,
       O => \cnt_tx_done[0]_i_1_n_0\
@@ -22822,7 +22816,7 @@ cnt_en_reg: unisim.vcomponents.FDRE
     )
         port map (
       I0 => tx_enable11_out,
-      I1 => \^ts_clk_tx_en_reg_0\,
+      I1 => ts_clk_tx_en,
       I2 => \cnt_tx_done_reg_n_0_[1]\,
       I3 => p_2_in,
       O => \cnt_tx_done[1]_i_1_n_0\
@@ -25825,7 +25819,7 @@ rx_enable1_carry_i_4: unisim.vcomponents.LUT6
         port map (
       I0 => rx_enable_man(0),
       I1 => \cnt_rx_done_reg_n_0_[0]\,
-      I2 => \^ts_clk_rx_en_reg_0\,
+      I2 => ts_clk_rx_en,
       I3 => rx_enable1,
       I4 => \cnt_rx_en_reg_n_0_[0]\,
       I5 => \^rx_enable_reg[0]_0\,
@@ -25838,7 +25832,7 @@ rx_enable1_carry_i_4: unisim.vcomponents.LUT6
         port map (
       I0 => rx_enable_man(1),
       I1 => \cnt_rx_done_reg_n_0_[1]\,
-      I2 => \^ts_clk_rx_en_reg_0\,
+      I2 => ts_clk_rx_en,
       I3 => rx_enable10_out,
       I4 => p_2_in10_in,
       I5 => \^rx_enable_reg[1]_0\,
@@ -29505,7 +29499,7 @@ ts_clk_rx_en_i_1: unisim.vcomponents.LUT5
       I0 => src_in(0),
       I1 => ts_clk_rx_synced_reg_n_0,
       I2 => ts_clk_resync_req,
-      I3 => \^ts_clk_rx_en_reg_0\,
+      I3 => ts_clk_rx_en,
       I4 => ts_clk_sync_bypass,
       O => ts_clk_rx_en_i_1_n_0
     );
@@ -29514,7 +29508,7 @@ ts_clk_rx_en_reg: unisim.vcomponents.FDRE
       C => ts_clk,
       CE => '1',
       D => ts_clk_rx_en_i_1_n_0,
-      Q => \^ts_clk_rx_en_reg_0\,
+      Q => ts_clk_rx_en,
       R => '0'
     );
 ts_clk_rx_synced_a_reg: unisim.vcomponents.FDRE
@@ -29833,7 +29827,7 @@ ts_clk_tx_en_i_1: unisim.vcomponents.LUT5
       I0 => src_in(0),
       I1 => ts_clk_tx_synced_reg_n_0,
       I2 => ts_clk_resync_req,
-      I3 => \^ts_clk_tx_en_reg_0\,
+      I3 => ts_clk_tx_en,
       I4 => ts_clk_sync_bypass,
       O => ts_clk_tx_en_i_1_n_0
     );
@@ -29842,7 +29836,7 @@ ts_clk_tx_en_reg: unisim.vcomponents.FDRE
       C => ts_clk,
       CE => '1',
       D => ts_clk_tx_en_i_1_n_0,
-      Q => \^ts_clk_tx_en_reg_0\,
+      Q => ts_clk_tx_en,
       R => '0'
     );
 ts_clk_tx_synced_a_reg: unisim.vcomponents.FDRE
@@ -30635,7 +30629,7 @@ tx_enable1_carry_i_4: unisim.vcomponents.LUT6
         port map (
       I0 => tx_enable_man(0),
       I1 => \cnt_tx_done_reg_n_0_[0]\,
-      I2 => \^ts_clk_tx_en_reg_0\,
+      I2 => ts_clk_tx_en,
       I3 => tx_enable1,
       I4 => \cnt_tx_en_reg_n_0_[0]\,
       I5 => \^tx_enable\(0),
@@ -30656,7 +30650,7 @@ tx_enable1_carry_i_4: unisim.vcomponents.LUT6
         port map (
       I0 => tx_enable_man(1),
       I1 => tx_enable11_out,
-      I2 => \^ts_clk_tx_en_reg_0\,
+      I2 => ts_clk_tx_en,
       I3 => \cnt_tx_done_reg_n_0_[1]\,
       I4 => p_2_in,
       I5 => \^tx_enable\(1),
@@ -30972,8 +30966,6 @@ entity icyradio_axi_rf_timestamping_0 is
     irq : out STD_LOGIC;
     ts_clk : in STD_LOGIC;
     ts_resetn : in STD_LOGIC;
-    ts_clk_tx_en : out STD_LOGIC;
-    ts_clk_rx_en : out STD_LOGIC;
     tx_dma_data_ready : in STD_LOGIC_VECTOR ( 1 downto 0 );
     rx_dma_xfer_req : in STD_LOGIC_VECTOR ( 1 downto 0 );
     tx_data_ready : in STD_LOGIC_VECTOR ( 1 downto 0 );
@@ -31078,8 +31070,6 @@ inst: entity work.icyradio_axi_rf_timestamping_0_axi_rf_timestamping
       src_in(2 downto 1) => rx_fifo_overflow(1 downto 0),
       src_in(0) => ts_resetn,
       ts_clk => ts_clk,
-      ts_clk_rx_en_reg_0 => ts_clk_rx_en,
-      ts_clk_tx_en_reg_0 => ts_clk_tx_en,
       tx_enable(1 downto 0) => tx_enable(1 downto 0),
       tx_flush(1 downto 0) => tx_flush(1 downto 0)
     );

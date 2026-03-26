@@ -2,11 +2,11 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Wed Mar 27 12:07:06 2024
+-- Date        : Thu Mar  6 16:09:48 2025
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 -- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_rst_axi_pcie_0_125M_0 -prefix
---               icyradio_rst_axi_pcie_0_125M_0_ icyradio_rst_axi_pcie_0_125M_pcie_core_0_sim_netlist.vhdl
--- Design      : icyradio_rst_axi_pcie_0_125M_pcie_core_0
+--               icyradio_rst_axi_pcie_0_125M_0_ icyradio_rst_axi_pcie_0_125M_0_sim_netlist.vhdl
+-- Design      : icyradio_rst_axi_pcie_0_125M_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
 -- Device      : xc7a100tfgg484-2
@@ -1053,7 +1053,7 @@ entity icyradio_rst_axi_pcie_0_125M_0 is
   attribute NotValidForBitStream : boolean;
   attribute NotValidForBitStream of icyradio_rst_axi_pcie_0_125M_0 : entity is true;
   attribute CHECK_LICENSE_TYPE : string;
-  attribute CHECK_LICENSE_TYPE of icyradio_rst_axi_pcie_0_125M_0 : entity is "icyradio_rst_axi_pcie_0_125M_pcie_core_0,proc_sys_reset,{}";
+  attribute CHECK_LICENSE_TYPE of icyradio_rst_axi_pcie_0_125M_0 : entity is "icyradio_rst_axi_pcie_0_125M_0,proc_sys_reset,{}";
   attribute downgradeipidentifiedwarnings : string;
   attribute downgradeipidentifiedwarnings of icyradio_rst_axi_pcie_0_125M_0 : entity is "yes";
   attribute x_core_info : string;

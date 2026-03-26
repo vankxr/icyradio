@@ -4216,13 +4216,13 @@
 						"BREADY": { "actual": "S00_AXI_bready"},
 						"BRESP": { "actual": "S00_AXI_bresp[1:0]"},
 						"BVALID": { "actual": "S00_AXI_bvalid"},
-						"RDATA": { "actual": "S00_AXI_rdata[31:0]"},
+						"RDATA": { "actual": "S00_AXI_rdata[63:0]"},
 						"RREADY": { "actual": "S00_AXI_rready"},
 						"RRESP": { "actual": "S00_AXI_rresp[1:0]"},
 						"RVALID": { "actual": "S00_AXI_rvalid"},
-						"WDATA": { "actual": "S00_AXI_wdata[31:0]"},
+						"WDATA": { "actual": "S00_AXI_wdata[63:0]"},
 						"WREADY": { "actual": "S00_AXI_wready"},
-						"WSTRB": { "actual": "S00_AXI_wstrb[3:0]"},
+						"WSTRB": { "actual": "S00_AXI_wstrb[7:0]"},
 						"WVALID": { "actual": "S00_AXI_wvalid"}
 					}
 				},
@@ -5602,13 +5602,13 @@
 						"BREADY": { "actual": "S_AXI_bready"},
 						"BRESP": { "actual": "S_AXI_bresp[1:0]"},
 						"BVALID": { "actual": "S_AXI_bvalid"},
-						"RDATA": { "actual": "S_AXI_rdata[31:0]"},
+						"RDATA": { "actual": "S_AXI_rdata[63:0]"},
 						"RREADY": { "actual": "S_AXI_rready"},
 						"RRESP": { "actual": "S_AXI_rresp[1:0]"},
 						"RVALID": { "actual": "S_AXI_rvalid"},
-						"WDATA": { "actual": "S_AXI_wdata[31:0]"},
+						"WDATA": { "actual": "S_AXI_wdata[63:0]"},
 						"WREADY": { "actual": "S_AXI_wready"},
-						"WSTRB": { "actual": "S_AXI_wstrb[3:0]"},
+						"WSTRB": { "actual": "S_AXI_wstrb[7:0]"},
 						"WVALID": { "actual": "S_AXI_wvalid"}
 					}
 				},

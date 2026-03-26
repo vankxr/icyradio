@@ -1,7 +1,7 @@
 
 //-----------------------------------------------------------------------------
 //
-// (c) Copyright 2020-2024 Advanced Micro Devices, Inc. All rights reserved.
+// (c) Copyright 2020-2025 Advanced Micro Devices, Inc. All rights reserved.
 //
 // This file contains confidential and proprietary information
 // of AMD and is protected under U.S. and

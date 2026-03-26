@@ -357,9 +357,9 @@ always @(posedge aclk)
                             6'h7:    s_axi_rdata <= {{(S_AXI_DSZ - NUM_IRQS){1'b0}}, irq_ack}; // IRQ Acknowledged
 
                             6'h10:   s_axi_rdata <= {22'd0, pcie_msi_req_fifo_full, pcie_msi_req_fifo_empty, 4'd0, pcie_msi_vector_width, pcie_msi_enabled};
-                            6'h11:   s_axi_rdata <= {{S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W}, pcie_msi_req_fifo_wr_ptr};
-                            6'h12:   s_axi_rdata <= {{S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W}, pcie_msi_req_fifo_rd_ptr};
-                            6'h13:   s_axi_rdata <= {{S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W - 1}, pcie_msi_req_fifo_count};
+                            6'h11:   s_axi_rdata <= {{(S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W){1'b0}}, pcie_msi_req_fifo_wr_ptr};
+                            6'h12:   s_axi_rdata <= {{(S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W){1'b0}}, pcie_msi_req_fifo_rd_ptr};
+                            6'h13:   s_axi_rdata <= {{(S_AXI_DSZ - PCIE_MSI_REQ_FIFO_DEPTH_W - 1){1'b0}}, pcie_msi_req_fifo_count};
 
                             default: s_axi_rdata <= {S_AXI_DSZ{1'b0}};
                         endcase

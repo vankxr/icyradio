@@ -313,32 +313,14 @@
         "vlnv_bus_definition": "xilinx.com:interface:spi:1.0",
         "vlnv": "xilinx.com:interface:spi_rtl:1.0",
         "port_maps": {
-          "SS_I": {
-            "physical_name": "FLASH_QSPI_ss_i",
-            "direction": "I",
-            "left": "0",
-            "right": "0"
-          },
           "SS_O": {
             "physical_name": "FLASH_QSPI_ss_o",
             "direction": "O",
             "left": "0",
             "right": "0"
           },
-          "SS_T": {
-            "physical_name": "FLASH_QSPI_ss_t",
-            "direction": "O"
-          },
-          "SCK_I": {
-            "physical_name": "FLASH_QSPI_sck_i",
-            "direction": "I"
-          },
           "SCK_O": {
             "physical_name": "FLASH_QSPI_sck_o",
-            "direction": "O"
-          },
-          "SCK_T": {
-            "physical_name": "FLASH_QSPI_sck_t",
             "direction": "O"
           },
           "IO0_I": {
@@ -387,6 +369,24 @@
           },
           "IO3_T": {
             "physical_name": "FLASH_QSPI_io3_t",
+            "direction": "O"
+          },
+          "SCK_I": {
+            "physical_name": "FLASH_QSPI_sck_i",
+            "direction": "I"
+          },
+          "SCK_T": {
+            "physical_name": "FLASH_QSPI_sck_t",
+            "direction": "O"
+          },
+          "SS_I": {
+            "physical_name": "FLASH_QSPI_ss_i",
+            "direction": "I",
+            "left": "0",
+            "right": "0"
+          },
+          "SS_T": {
+            "physical_name": "FLASH_QSPI_ss_t",
             "direction": "O"
           }
         }
@@ -5790,8 +5790,8 @@
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
                 "ip_revision": "28",
-                "xci_name": "icyradio_s00_data_fifo_104",
-                "xci_path": "ip/icyradio_s00_data_fifo_104/icyradio_s00_data_fifo_104.xci",
+                "xci_name": "icyradio_s00_data_fifo_112",
+                "xci_path": "ip/icyradio_s00_data_fifo_112/icyradio_s00_data_fifo_112.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -5884,8 +5884,8 @@
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
                 "ip_revision": "28",
-                "xci_name": "icyradio_s01_data_fifo_104",
-                "xci_path": "ip/icyradio_s01_data_fifo_104/icyradio_s01_data_fifo_104.xci",
+                "xci_name": "icyradio_s01_data_fifo_112",
+                "xci_path": "ip/icyradio_s01_data_fifo_112/icyradio_s01_data_fifo_112.xci",
                 "inst_hier_path": "axi_cpu_dma_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -8696,8 +8696,8 @@
               "s00_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
                 "ip_revision": "28",
-                "xci_name": "icyradio_s00_data_fifo_105",
-                "xci_path": "ip/icyradio_s00_data_fifo_105/icyradio_s00_data_fifo_105.xci",
+                "xci_name": "icyradio_s00_data_fifo_113",
+                "xci_path": "ip/icyradio_s00_data_fifo_113/icyradio_s00_data_fifo_113.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s00_couplers/s00_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -8790,8 +8790,8 @@
               "s01_data_fifo": {
                 "vlnv": "xilinx.com:ip:axi_data_fifo:2.1",
                 "ip_revision": "28",
-                "xci_name": "icyradio_s01_data_fifo_105",
-                "xci_path": "ip/icyradio_s01_data_fifo_105/icyradio_s01_data_fifo_105.xci",
+                "xci_name": "icyradio_s01_data_fifo_113",
+                "xci_path": "ip/icyradio_s01_data_fifo_113/icyradio_s01_data_fifo_113.xci",
                 "inst_hier_path": "axi_pcie_interconnect/s01_couplers/s01_data_fifo",
                 "interface_ports": {
                   "S_AXI": {
@@ -11349,12 +11349,6 @@
               }
             }
           },
-          "ts_clk_tx_en": {
-            "direction": "O"
-          },
-          "ts_clk_rx_en": {
-            "direction": "O"
-          },
           "tx_dma_data_ready": {
             "direction": "I",
             "left": "1",
@@ -13398,16 +13392,16 @@
           "axi_peripheral_interconnect/M05_ACLK",
           "axi_peripheral_interconnect/M20_ACLK",
           "axi_peripheral_interconnect/M21_ACLK",
-          "axi_irq_controller_0/aclk",
           "axi_gpio_0/aclk",
           "axi_gpio_1/aclk",
           "axi_gpio_2/aclk",
           "axi_dna_0/aclk",
-          "axi_rf_timestamping/aclk",
           "axi_spi_0/aclk",
           "axi_spi_1/aclk",
-          "axi_qspi_mm_0/aclk",
-          "axi_i2s/aclk"
+          "axi_irq_controller_0/aclk",
+          "axi_i2s/aclk",
+          "axi_rf_timestamping/aclk",
+          "axi_qspi_mm_0/aclk"
         ]
       },
       "axi_pcie_0_interrupt_out": {
@@ -13886,16 +13880,16 @@
           "axi_dmac_rf_tx1/m_src_axi_aresetn",
           "axi_dmac_rf_rx1/s_axi_aresetn",
           "axi_dmac_rf_rx1/m_dest_axi_aresetn",
-          "axi_irq_controller_0/aresetn",
           "axi_gpio_0/aresetn",
           "axi_gpio_1/aresetn",
           "axi_gpio_2/aresetn",
           "axi_dna_0/aresetn",
-          "axi_rf_timestamping/aresetn",
           "axi_spi_0/aresetn",
           "axi_spi_1/aresetn",
-          "axi_qspi_mm_0/aresetn",
-          "axi_i2s/aresetn"
+          "axi_irq_controller_0/aresetn",
+          "axi_i2s/aresetn",
+          "axi_rf_timestamping/aresetn",
+          "axi_qspi_mm_0/aresetn"
         ]
       },
       "rst_mig_7series_0_166M_peripheral_aresetn": {

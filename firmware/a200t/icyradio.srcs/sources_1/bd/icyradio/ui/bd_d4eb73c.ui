@@ -1,7 +1,7 @@
 {
    "ActiveEmotionalView":"Default View",
    "Default View_ScaleFactor":"1.13469",
-   "Default View_TopLeft":"6701,4065",
+   "Default View_TopLeft":"4757,1237",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.5.8 2022-09-21 7111 VDI=41 GEI=38 GUI=JA:10.0 TLS
 #  -string -flagsOSRD
@@ -292,7 +292,7 @@ preplace netloc axi_qspi_mm_0_irq 1 10 8 4370 3830 NJ 3830 NJ 3830 NJ 3830 NJ 38
 preplace netloc axi_rf_timestamping_0_irq 1 10 3 4410 3740 5100J 3560 5580
 preplace netloc axi_rf_timestamping_0_rx_enable 1 2 11 570 540 NJ 540 NJ 540 1800J 520 NJ 520 NJ 520 3230J 470 NJ 470 NJ 470 4820J 250 5630
 preplace netloc axi_rf_timestamping_0_tx_enable 1 6 7 2370 320 NJ 320 NJ 320 NJ 320 4140J 430 4900J 280 5620
-preplace netloc axi_rf_timestamping_tx_flush 1 12 1 5680 1450n
+preplace netloc axi_rf_timestamping_tx_flush 1 12 1 5680 1430n
 preplace netloc axi_spi_0_irq 1 10 8 4410 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 NJ 3180 7300
 preplace netloc axi_spi_1_irq 1 10 8 4390 3780 5070J 3300 NJ 3300 NJ 3300 NJ 3300 NJ 3300 6870J 3340 7300
 preplace netloc clk_wiz_0_clk_out1 1 11 6 NJ 4510 NJ 4510 NJ 4510 NJ 4510 6500 4480 NJ

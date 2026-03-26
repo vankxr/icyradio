@@ -2,7 +2,7 @@
 // Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
-// Date        : Wed Mar 27 12:10:04 2024
+// Date        : Thu Mar  6 16:07:23 2025
 // Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 // Command     : write_verilog -force -mode funcsim -rename_top icyradio_axi_irq_controller_0_0 -prefix
 //               icyradio_axi_irq_controller_0_0_ icyradio_axi_irq_controller_0_0_sim_netlist.v
@@ -22,10 +22,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     pcie_msi_vector,
     s_axi_arready,
     s_axi_bvalid,
-    aresetn,
-    s_axi_arvalid,
-    s_axi_araddr,
     s_axi_rready,
+    s_axi_arvalid,
+    aresetn,
+    s_axi_araddr,
     s_axi_awaddr,
     s_axi_wstrb,
     s_axi_wdata,
@@ -46,10 +46,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   output [4:0]pcie_msi_vector;
   output s_axi_arready;
   output s_axi_bvalid;
-  input aresetn;
-  input s_axi_arvalid;
-  input [5:0]s_axi_araddr;
   input s_axi_rready;
+  input s_axi_arvalid;
+  input aresetn;
+  input [5:0]s_axi_araddr;
   input [5:0]s_axi_awaddr;
   input [2:0]s_axi_wstrb;
   input [21:0]s_axi_wdata;
@@ -75,6 +75,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[0]_i_15_n_0 ;
   wire \cpu_irq_out[0]_i_16_n_0 ;
   wire \cpu_irq_out[0]_i_17_n_0 ;
+  wire \cpu_irq_out[0]_i_18_n_0 ;
   wire \cpu_irq_out[0]_i_1_n_0 ;
   wire \cpu_irq_out[0]_i_2_n_0 ;
   wire \cpu_irq_out[0]_i_3_n_0 ;
@@ -106,6 +107,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[11]_i_14_n_0 ;
   wire \cpu_irq_out[11]_i_15_n_0 ;
   wire \cpu_irq_out[11]_i_16_n_0 ;
+  wire \cpu_irq_out[11]_i_17_n_0 ;
   wire \cpu_irq_out[11]_i_1_n_0 ;
   wire \cpu_irq_out[11]_i_2_n_0 ;
   wire \cpu_irq_out[11]_i_3_n_0 ;
@@ -127,6 +129,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[12]_i_19_n_0 ;
   wire \cpu_irq_out[12]_i_1_n_0 ;
   wire \cpu_irq_out[12]_i_20_n_0 ;
+  wire \cpu_irq_out[12]_i_21_n_0 ;
+  wire \cpu_irq_out[12]_i_22_n_0 ;
+  wire \cpu_irq_out[12]_i_23_n_0 ;
+  wire \cpu_irq_out[12]_i_24_n_0 ;
   wire \cpu_irq_out[12]_i_2_n_0 ;
   wire \cpu_irq_out[12]_i_3_n_0 ;
   wire \cpu_irq_out[12]_i_4_n_0 ;
@@ -148,11 +154,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[13]_i_1_n_0 ;
   wire \cpu_irq_out[13]_i_20_n_0 ;
   wire \cpu_irq_out[13]_i_21_n_0 ;
-  wire \cpu_irq_out[13]_i_22_n_0 ;
-  wire \cpu_irq_out[13]_i_23_n_0 ;
-  wire \cpu_irq_out[13]_i_24_n_0 ;
-  wire \cpu_irq_out[13]_i_25_n_0 ;
-  wire \cpu_irq_out[13]_i_26_n_0 ;
   wire \cpu_irq_out[13]_i_2_n_0 ;
   wire \cpu_irq_out[13]_i_3_n_0 ;
   wire \cpu_irq_out[13]_i_4_n_0 ;
@@ -174,6 +175,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[14]_i_1_n_0 ;
   wire \cpu_irq_out[14]_i_20_n_0 ;
   wire \cpu_irq_out[14]_i_21_n_0 ;
+  wire \cpu_irq_out[14]_i_22_n_0 ;
+  wire \cpu_irq_out[14]_i_23_n_0 ;
   wire \cpu_irq_out[14]_i_2_n_0 ;
   wire \cpu_irq_out[14]_i_3_n_0 ;
   wire \cpu_irq_out[14]_i_4_n_0 ;
@@ -205,8 +208,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[15]_i_29_n_0 ;
   wire \cpu_irq_out[15]_i_2_n_0 ;
   wire \cpu_irq_out[15]_i_30_n_0 ;
-  wire \cpu_irq_out[15]_i_31_n_0 ;
-  wire \cpu_irq_out[15]_i_32_n_0 ;
   wire \cpu_irq_out[15]_i_3_n_0 ;
   wire \cpu_irq_out[15]_i_4_n_0 ;
   wire \cpu_irq_out[15]_i_5_n_0 ;
@@ -223,7 +224,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[16]_i_16_n_0 ;
   wire \cpu_irq_out[16]_i_17_n_0 ;
   wire \cpu_irq_out[16]_i_18_n_0 ;
-  wire \cpu_irq_out[16]_i_19_n_0 ;
   wire \cpu_irq_out[16]_i_1_n_0 ;
   wire \cpu_irq_out[16]_i_2_n_0 ;
   wire \cpu_irq_out[16]_i_3_n_0 ;
@@ -241,8 +241,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[17]_i_15_n_0 ;
   wire \cpu_irq_out[17]_i_16_n_0 ;
   wire \cpu_irq_out[17]_i_17_n_0 ;
-  wire \cpu_irq_out[17]_i_18_n_0 ;
-  wire \cpu_irq_out[17]_i_19_n_0 ;
   wire \cpu_irq_out[17]_i_1_n_0 ;
   wire \cpu_irq_out[17]_i_2_n_0 ;
   wire \cpu_irq_out[17]_i_3_n_0 ;
@@ -280,7 +278,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[19]_i_18_n_0 ;
   wire \cpu_irq_out[19]_i_19_n_0 ;
   wire \cpu_irq_out[19]_i_1_n_0 ;
-  wire \cpu_irq_out[19]_i_20_n_0 ;
   wire \cpu_irq_out[19]_i_2_n_0 ;
   wire \cpu_irq_out[19]_i_3_n_0 ;
   wire \cpu_irq_out[19]_i_4_n_0 ;
@@ -295,7 +292,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[1]_i_13_n_0 ;
   wire \cpu_irq_out[1]_i_14_n_0 ;
   wire \cpu_irq_out[1]_i_15_n_0 ;
-  wire \cpu_irq_out[1]_i_16_n_0 ;
   wire \cpu_irq_out[1]_i_1_n_0 ;
   wire \cpu_irq_out[1]_i_2_n_0 ;
   wire \cpu_irq_out[1]_i_3_n_0 ;
@@ -318,10 +314,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[20]_i_1_n_0 ;
   wire \cpu_irq_out[20]_i_20_n_0 ;
   wire \cpu_irq_out[20]_i_21_n_0 ;
-  wire \cpu_irq_out[20]_i_22_n_0 ;
-  wire \cpu_irq_out[20]_i_23_n_0 ;
-  wire \cpu_irq_out[20]_i_24_n_0 ;
-  wire \cpu_irq_out[20]_i_25_n_0 ;
   wire \cpu_irq_out[20]_i_2_n_0 ;
   wire \cpu_irq_out[20]_i_3_n_0 ;
   wire \cpu_irq_out[20]_i_4_n_0 ;
@@ -346,8 +338,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[21]_i_22_n_0 ;
   wire \cpu_irq_out[21]_i_23_n_0 ;
   wire \cpu_irq_out[21]_i_24_n_0 ;
-  wire \cpu_irq_out[21]_i_25_n_0 ;
-  wire \cpu_irq_out[21]_i_26_n_0 ;
   wire \cpu_irq_out[21]_i_2_n_0 ;
   wire \cpu_irq_out[21]_i_3_n_0 ;
   wire \cpu_irq_out[21]_i_4_n_0 ;
@@ -372,6 +362,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[22]_i_22_n_0 ;
   wire \cpu_irq_out[22]_i_23_n_0 ;
   wire \cpu_irq_out[22]_i_24_n_0 ;
+  wire \cpu_irq_out[22]_i_25_n_0 ;
+  wire \cpu_irq_out[22]_i_26_n_0 ;
+  wire \cpu_irq_out[22]_i_27_n_0 ;
+  wire \cpu_irq_out[22]_i_28_n_0 ;
+  wire \cpu_irq_out[22]_i_29_n_0 ;
   wire \cpu_irq_out[22]_i_2_n_0 ;
   wire \cpu_irq_out[22]_i_3_n_0 ;
   wire \cpu_irq_out[22]_i_4_n_0 ;
@@ -403,6 +398,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[23]_i_29_n_0 ;
   wire \cpu_irq_out[23]_i_2_n_0 ;
   wire \cpu_irq_out[23]_i_30_n_0 ;
+  wire \cpu_irq_out[23]_i_31_n_0 ;
+  wire \cpu_irq_out[23]_i_32_n_0 ;
+  wire \cpu_irq_out[23]_i_33_n_0 ;
   wire \cpu_irq_out[23]_i_3_n_0 ;
   wire \cpu_irq_out[23]_i_4_n_0 ;
   wire \cpu_irq_out[23]_i_5_n_0 ;
@@ -457,8 +455,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[25]_i_25_n_0 ;
   wire \cpu_irq_out[25]_i_26_n_0 ;
   wire \cpu_irq_out[25]_i_27_n_0 ;
-  wire \cpu_irq_out[25]_i_28_n_0 ;
-  wire \cpu_irq_out[25]_i_29_n_0 ;
   wire \cpu_irq_out[25]_i_2_n_0 ;
   wire \cpu_irq_out[25]_i_3_n_0 ;
   wire \cpu_irq_out[25]_i_4_n_0 ;
@@ -547,6 +543,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[28]_i_28_n_0 ;
   wire \cpu_irq_out[28]_i_29_n_0 ;
   wire \cpu_irq_out[28]_i_2_n_0 ;
+  wire \cpu_irq_out[28]_i_30_n_0 ;
+  wire \cpu_irq_out[28]_i_31_n_0 ;
   wire \cpu_irq_out[28]_i_3_n_0 ;
   wire \cpu_irq_out[28]_i_4_n_0 ;
   wire \cpu_irq_out[28]_i_5_n_0 ;
@@ -577,8 +575,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[29]_i_29_n_0 ;
   wire \cpu_irq_out[29]_i_2_n_0 ;
   wire \cpu_irq_out[29]_i_30_n_0 ;
-  wire \cpu_irq_out[29]_i_31_n_0 ;
-  wire \cpu_irq_out[29]_i_32_n_0 ;
   wire \cpu_irq_out[29]_i_3_n_0 ;
   wire \cpu_irq_out[29]_i_4_n_0 ;
   wire \cpu_irq_out[29]_i_5_n_0 ;
@@ -594,8 +590,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[2]_i_15_n_0 ;
   wire \cpu_irq_out[2]_i_16_n_0 ;
   wire \cpu_irq_out[2]_i_17_n_0 ;
-  wire \cpu_irq_out[2]_i_18_n_0 ;
-  wire \cpu_irq_out[2]_i_19_n_0 ;
   wire \cpu_irq_out[2]_i_1_n_0 ;
   wire \cpu_irq_out[2]_i_2_n_0 ;
   wire \cpu_irq_out[2]_i_3_n_0 ;
@@ -631,6 +625,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[30]_i_31_n_0 ;
   wire \cpu_irq_out[30]_i_32_n_0 ;
   wire \cpu_irq_out[30]_i_33_n_0 ;
+  wire \cpu_irq_out[30]_i_34_n_0 ;
+  wire \cpu_irq_out[30]_i_35_n_0 ;
   wire \cpu_irq_out[30]_i_3_n_0 ;
   wire \cpu_irq_out[30]_i_4_n_0 ;
   wire \cpu_irq_out[30]_i_5_n_0 ;
@@ -683,9 +679,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[3]_i_13_n_0 ;
   wire \cpu_irq_out[3]_i_14_n_0 ;
   wire \cpu_irq_out[3]_i_15_n_0 ;
-  wire \cpu_irq_out[3]_i_16_n_0 ;
-  wire \cpu_irq_out[3]_i_17_n_0 ;
-  wire \cpu_irq_out[3]_i_18_n_0 ;
   wire \cpu_irq_out[3]_i_1_n_0 ;
   wire \cpu_irq_out[3]_i_2_n_0 ;
   wire \cpu_irq_out[3]_i_3_n_0 ;
@@ -707,7 +700,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[4]_i_19_n_0 ;
   wire \cpu_irq_out[4]_i_1_n_0 ;
   wire \cpu_irq_out[4]_i_20_n_0 ;
-  wire \cpu_irq_out[4]_i_21_n_0 ;
   wire \cpu_irq_out[4]_i_2_n_0 ;
   wire \cpu_irq_out[4]_i_3_n_0 ;
   wire \cpu_irq_out[4]_i_4_n_0 ;
@@ -727,6 +719,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[5]_i_18_n_0 ;
   wire \cpu_irq_out[5]_i_19_n_0 ;
   wire \cpu_irq_out[5]_i_1_n_0 ;
+  wire \cpu_irq_out[5]_i_20_n_0 ;
+  wire \cpu_irq_out[5]_i_21_n_0 ;
+  wire \cpu_irq_out[5]_i_22_n_0 ;
+  wire \cpu_irq_out[5]_i_23_n_0 ;
+  wire \cpu_irq_out[5]_i_24_n_0 ;
+  wire \cpu_irq_out[5]_i_25_n_0 ;
   wire \cpu_irq_out[5]_i_2_n_0 ;
   wire \cpu_irq_out[5]_i_3_n_0 ;
   wire \cpu_irq_out[5]_i_4_n_0 ;
@@ -744,6 +742,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[6]_i_16_n_0 ;
   wire \cpu_irq_out[6]_i_17_n_0 ;
   wire \cpu_irq_out[6]_i_18_n_0 ;
+  wire \cpu_irq_out[6]_i_19_n_0 ;
   wire \cpu_irq_out[6]_i_1_n_0 ;
   wire \cpu_irq_out[6]_i_2_n_0 ;
   wire \cpu_irq_out[6]_i_3_n_0 ;
@@ -788,8 +787,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[8]_i_13_n_0 ;
   wire \cpu_irq_out[8]_i_14_n_0 ;
   wire \cpu_irq_out[8]_i_15_n_0 ;
-  wire \cpu_irq_out[8]_i_16_n_0 ;
-  wire \cpu_irq_out[8]_i_17_n_0 ;
   wire \cpu_irq_out[8]_i_1_n_0 ;
   wire \cpu_irq_out[8]_i_2_n_0 ;
   wire \cpu_irq_out[8]_i_3_n_0 ;
@@ -806,6 +803,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \cpu_irq_out[9]_i_14_n_0 ;
   wire \cpu_irq_out[9]_i_15_n_0 ;
   wire \cpu_irq_out[9]_i_16_n_0 ;
+  wire \cpu_irq_out[9]_i_17_n_0 ;
+  wire \cpu_irq_out[9]_i_18_n_0 ;
   wire \cpu_irq_out[9]_i_1_n_0 ;
   wire \cpu_irq_out[9]_i_2_n_0 ;
   wire \cpu_irq_out[9]_i_3_n_0 ;
@@ -1327,29 +1326,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_dest[0][5]_i_1_n_0 ;
   wire \irq_dest[10][5]_i_1_n_0 ;
   wire \irq_dest[10][5]_i_2_n_0 ;
+  wire \irq_dest[10][5]_i_3_n_0 ;
   wire \irq_dest[11][5]_i_1_n_0 ;
   wire \irq_dest[12][5]_i_1_n_0 ;
   wire \irq_dest[12][5]_i_2_n_0 ;
   wire \irq_dest[13][5]_i_1_n_0 ;
   wire \irq_dest[14][5]_i_1_n_0 ;
+  wire \irq_dest[14][5]_i_2_n_0 ;
+  wire \irq_dest[14][5]_i_3_n_0 ;
   wire \irq_dest[15][5]_i_1_n_0 ;
   wire \irq_dest[16][5]_i_1_n_0 ;
   wire \irq_dest[16][5]_i_2_n_0 ;
+  wire \irq_dest[16][5]_i_3_n_0 ;
   wire \irq_dest[17][5]_i_1_n_0 ;
   wire \irq_dest[18][5]_i_1_n_0 ;
-  wire \irq_dest[18][5]_i_2_n_0 ;
   wire \irq_dest[19][5]_i_1_n_0 ;
   wire \irq_dest[1][5]_i_1_n_0 ;
   wire \irq_dest[1][5]_i_2_n_0 ;
   wire \irq_dest[20][5]_i_1_n_0 ;
   wire \irq_dest[2][5]_i_1_n_0 ;
   wire \irq_dest[3][5]_i_1_n_0 ;
+  wire \irq_dest[3][5]_i_2_n_0 ;
   wire \irq_dest[4][5]_i_1_n_0 ;
+  wire \irq_dest[4][5]_i_2_n_0 ;
   wire \irq_dest[5][5]_i_1_n_0 ;
-  wire \irq_dest[5][5]_i_2_n_0 ;
   wire \irq_dest[6][5]_i_1_n_0 ;
   wire \irq_dest[7][5]_i_1_n_0 ;
-  wire \irq_dest[7][5]_i_2_n_0 ;
   wire \irq_dest[8][5]_i_1_n_0 ;
   wire \irq_dest[9][5]_i_1_n_0 ;
   wire \irq_dest_reg_n_0_[10][0] ;
@@ -1445,29 +1447,29 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_enabled[0]_i_1_n_0 ;
   wire \irq_enabled[0]_i_2_n_0 ;
   wire \irq_enabled[0]_i_3_n_0 ;
+  wire \irq_enabled[0]_i_4_n_0 ;
   wire \irq_enabled[10]_i_1_n_0 ;
   wire \irq_enabled[10]_i_2_n_0 ;
   wire \irq_enabled[10]_i_3_n_0 ;
   wire \irq_enabled[11]_i_1_n_0 ;
-  wire \irq_enabled[11]_i_2_n_0 ;
-  wire \irq_enabled[11]_i_3_n_0 ;
+  wire \irq_enabled[11]_i_4_n_0 ;
   wire \irq_enabled[11]_i_5_n_0 ;
   wire \irq_enabled[12]_i_1_n_0 ;
   wire \irq_enabled[12]_i_2_n_0 ;
   wire \irq_enabled[12]_i_3_n_0 ;
   wire \irq_enabled[13]_i_1_n_0 ;
+  wire \irq_enabled[13]_i_2_n_0 ;
   wire \irq_enabled[13]_i_3_n_0 ;
+  wire \irq_enabled[13]_i_4_n_0 ;
   wire \irq_enabled[14]_i_1_n_0 ;
+  wire \irq_enabled[14]_i_2_n_0 ;
   wire \irq_enabled[14]_i_3_n_0 ;
   wire \irq_enabled[14]_i_4_n_0 ;
-  wire \irq_enabled[14]_i_5_n_0 ;
   wire \irq_enabled[15]_i_1_n_0 ;
   wire \irq_enabled[15]_i_2_n_0 ;
   wire \irq_enabled[15]_i_3_n_0 ;
   wire \irq_enabled[15]_i_4_n_0 ;
   wire \irq_enabled[16]_i_1_n_0 ;
-  wire \irq_enabled[16]_i_2_n_0 ;
-  wire \irq_enabled[16]_i_3_n_0 ;
   wire \irq_enabled[17]_i_1_n_0 ;
   wire \irq_enabled[17]_i_2_n_0 ;
   wire \irq_enabled[17]_i_3_n_0 ;
@@ -1479,6 +1481,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_enabled[19]_i_2_n_0 ;
   wire \irq_enabled[19]_i_3_n_0 ;
   wire \irq_enabled[19]_i_4_n_0 ;
+  wire \irq_enabled[19]_i_5_n_0 ;
   wire \irq_enabled[1]_i_1_n_0 ;
   wire \irq_enabled[1]_i_2_n_0 ;
   wire \irq_enabled[1]_i_3_n_0 ;
@@ -1489,35 +1492,33 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_enabled[21]_i_2_n_0 ;
   wire \irq_enabled[21]_i_3_n_0 ;
   wire \irq_enabled[21]_i_4_n_0 ;
-  wire \irq_enabled[21]_i_5_n_0 ;
   wire \irq_enabled[2]_i_1_n_0 ;
   wire \irq_enabled[2]_i_2_n_0 ;
   wire \irq_enabled[2]_i_3_n_0 ;
+  wire \irq_enabled[2]_i_4_n_0 ;
   wire \irq_enabled[3]_i_1_n_0 ;
   wire \irq_enabled[3]_i_2_n_0 ;
   wire \irq_enabled[3]_i_3_n_0 ;
+  wire \irq_enabled[3]_i_4_n_0 ;
   wire \irq_enabled[4]_i_1_n_0 ;
   wire \irq_enabled[4]_i_2_n_0 ;
   wire \irq_enabled[4]_i_3_n_0 ;
   wire \irq_enabled[4]_i_4_n_0 ;
-  wire \irq_enabled[4]_i_6_n_0 ;
-  wire \irq_enabled[4]_i_7_n_0 ;
+  wire \irq_enabled[4]_i_5_n_0 ;
   wire \irq_enabled[5]_i_1_n_0 ;
-  wire \irq_enabled[5]_i_2_n_0 ;
   wire \irq_enabled[5]_i_3_n_0 ;
-  wire \irq_enabled[5]_i_4_n_0 ;
-  wire \irq_enabled[5]_i_5_n_0 ;
   wire \irq_enabled[6]_i_1_n_0 ;
+  wire \irq_enabled[6]_i_2_n_0 ;
   wire \irq_enabled[6]_i_3_n_0 ;
+  wire \irq_enabled[6]_i_5_n_0 ;
   wire \irq_enabled[7]_i_1_n_0 ;
   wire \irq_enabled[7]_i_2_n_0 ;
   wire \irq_enabled[7]_i_3_n_0 ;
-  wire \irq_enabled[7]_i_5_n_0 ;
+  wire \irq_enabled[7]_i_4_n_0 ;
   wire \irq_enabled[8]_i_1_n_0 ;
   wire \irq_enabled[8]_i_2_n_0 ;
-  wire \irq_enabled[8]_i_3_n_0 ;
-  wire \irq_enabled[8]_i_4_n_0 ;
   wire \irq_enabled[9]_i_1_n_0 ;
+  wire \irq_enabled[9]_i_2_n_0 ;
   wire \irq_enabled[9]_i_3_n_0 ;
   wire \irq_enabled[9]_i_4_n_0 ;
   wire \irq_enabled_reg_n_0_[0] ;
@@ -1573,42 +1574,45 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_in_rising_reg_n_0_[8] ;
   wire \irq_in_rising_reg_n_0_[9] ;
   wire [21:0]irq_in_sync;
-  wire [16:0]irq_inv;
+  wire [18:0]irq_inv;
   wire \irq_inv[0]_i_1_n_0 ;
   wire \irq_inv[10]_i_1_n_0 ;
   wire \irq_inv[11]_i_1_n_0 ;
   wire \irq_inv[12]_i_1_n_0 ;
   wire \irq_inv[12]_i_2_n_0 ;
+  wire \irq_inv[12]_i_3_n_0 ;
   wire \irq_inv[13]_i_1_n_0 ;
-  wire \irq_inv[13]_i_2_n_0 ;
   wire \irq_inv[14]_i_1_n_0 ;
+  wire \irq_inv[14]_i_2_n_0 ;
   wire \irq_inv[15]_i_1_n_0 ;
   wire \irq_inv[15]_i_2_n_0 ;
+  wire \irq_inv[15]_i_3_n_0 ;
+  wire \irq_inv[15]_i_4_n_0 ;
   wire \irq_inv[16]_i_1_n_0 ;
   wire \irq_inv[17]_i_1_n_0 ;
   wire \irq_inv[17]_i_2_n_0 ;
   wire \irq_inv[18]_i_1_n_0 ;
-  wire \irq_inv[18]_i_2_n_0 ;
   wire \irq_inv[19]_i_1_n_0 ;
   wire \irq_inv[19]_i_2_n_0 ;
   wire \irq_inv[19]_i_3_n_0 ;
+  wire \irq_inv[19]_i_4_n_0 ;
   wire \irq_inv[1]_i_1_n_0 ;
+  wire \irq_inv[1]_i_2_n_0 ;
+  wire \irq_inv[1]_i_3_n_0 ;
   wire \irq_inv[20]_i_1_n_0 ;
   wire \irq_inv[20]_i_2_n_0 ;
   wire \irq_inv[21]_i_1_n_0 ;
   wire \irq_inv[21]_i_2_n_0 ;
   wire \irq_inv[2]_i_1_n_0 ;
   wire \irq_inv[2]_i_2_n_0 ;
-  wire \irq_inv[2]_i_3_n_0 ;
   wire \irq_inv[3]_i_1_n_0 ;
+  wire \irq_inv[3]_i_2_n_0 ;
   wire \irq_inv[4]_i_1_n_0 ;
   wire \irq_inv[5]_i_1_n_0 ;
   wire \irq_inv[6]_i_1_n_0 ;
   wire \irq_inv[7]_i_1_n_0 ;
   wire \irq_inv[8]_i_1_n_0 ;
   wire \irq_inv[9]_i_1_n_0 ;
-  wire \irq_inv[9]_i_2_n_0 ;
-  wire \irq_inv[9]_i_3_n_0 ;
   wire \irq_inv_reg_n_0_[1] ;
   wire \irq_mode[0]_i_1_n_0 ;
   wire \irq_mode[10]_i_1_n_0 ;
@@ -1654,12 +1658,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_pend[0]_i_5_n_0 ;
   wire \irq_pend[0]_i_6_n_0 ;
   wire \irq_pend[0]_i_7_n_0 ;
+  wire \irq_pend[0]_i_8_n_0 ;
+  wire \irq_pend[0]_i_9_n_0 ;
   wire \irq_pend[10]_i_1_n_0 ;
   wire \irq_pend[10]_i_2_n_0 ;
   wire \irq_pend[10]_i_3_n_0 ;
   wire \irq_pend[10]_i_4_n_0 ;
   wire \irq_pend[10]_i_5_n_0 ;
   wire \irq_pend[10]_i_6_n_0 ;
+  wire \irq_pend[10]_i_7_n_0 ;
   wire \irq_pend[11]_i_1_n_0 ;
   wire \irq_pend[11]_i_2_n_0 ;
   wire \irq_pend[11]_i_3_n_0 ;
@@ -1678,14 +1685,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_pend[13]_i_5_n_0 ;
   wire \irq_pend[13]_i_6_n_0 ;
   wire \irq_pend[13]_i_7_n_0 ;
-  wire \irq_pend[13]_i_8_n_0 ;
   wire \irq_pend[14]_i_1_n_0 ;
   wire \irq_pend[14]_i_2_n_0 ;
   wire \irq_pend[14]_i_3_n_0 ;
   wire \irq_pend[14]_i_4_n_0 ;
   wire \irq_pend[14]_i_5_n_0 ;
   wire \irq_pend[14]_i_6_n_0 ;
-  wire \irq_pend[14]_i_7_n_0 ;
   wire \irq_pend[15]_i_1_n_0 ;
   wire \irq_pend[15]_i_2_n_0 ;
   wire \irq_pend[15]_i_3_n_0 ;
@@ -1696,6 +1701,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_pend[16]_i_3_n_0 ;
   wire \irq_pend[16]_i_4_n_0 ;
   wire \irq_pend[16]_i_5_n_0 ;
+  wire \irq_pend[16]_i_6_n_0 ;
   wire \irq_pend[17]_i_1_n_0 ;
   wire \irq_pend[17]_i_2_n_0 ;
   wire \irq_pend[17]_i_3_n_0 ;
@@ -1705,24 +1711,19 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_pend[18]_i_2_n_0 ;
   wire \irq_pend[18]_i_3_n_0 ;
   wire \irq_pend[18]_i_4_n_0 ;
-  wire \irq_pend[18]_i_5_n_0 ;
-  wire \irq_pend[18]_i_6_n_0 ;
-  wire \irq_pend[18]_i_7_n_0 ;
-  wire \irq_pend[18]_i_8_n_0 ;
   wire \irq_pend[19]_i_1_n_0 ;
   wire \irq_pend[19]_i_2_n_0 ;
   wire \irq_pend[19]_i_3_n_0 ;
   wire \irq_pend[19]_i_4_n_0 ;
-  wire \irq_pend[19]_i_5_n_0 ;
   wire \irq_pend[1]_i_1_n_0 ;
   wire \irq_pend[1]_i_2_n_0 ;
   wire \irq_pend[1]_i_3_n_0 ;
   wire \irq_pend[1]_i_4_n_0 ;
+  wire \irq_pend[1]_i_5_n_0 ;
   wire \irq_pend[20]_i_1_n_0 ;
   wire \irq_pend[20]_i_2_n_0 ;
   wire \irq_pend[20]_i_3_n_0 ;
   wire \irq_pend[20]_i_4_n_0 ;
-  wire \irq_pend[20]_i_5_n_0 ;
   wire \irq_pend[21]_i_1_n_0 ;
   wire \irq_pend[21]_i_2_n_0 ;
   wire \irq_pend[21]_i_3_n_0 ;
@@ -1743,31 +1744,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \irq_pend[5]_i_1_n_0 ;
   wire \irq_pend[5]_i_2_n_0 ;
   wire \irq_pend[5]_i_3_n_0 ;
+  wire \irq_pend[5]_i_4_n_0 ;
+  wire \irq_pend[5]_i_5_n_0 ;
+  wire \irq_pend[5]_i_6_n_0 ;
+  wire \irq_pend[5]_i_7_n_0 ;
   wire \irq_pend[6]_i_1_n_0 ;
   wire \irq_pend[6]_i_2_n_0 ;
   wire \irq_pend[6]_i_3_n_0 ;
   wire \irq_pend[6]_i_4_n_0 ;
   wire \irq_pend[6]_i_5_n_0 ;
-  wire \irq_pend[6]_i_6_n_0 ;
   wire \irq_pend[7]_i_1_n_0 ;
   wire \irq_pend[7]_i_2_n_0 ;
   wire \irq_pend[7]_i_3_n_0 ;
   wire \irq_pend[7]_i_4_n_0 ;
-  wire \irq_pend[7]_i_5_n_0 ;
   wire \irq_pend[8]_i_1_n_0 ;
   wire \irq_pend[8]_i_2_n_0 ;
   wire \irq_pend[8]_i_3_n_0 ;
   wire \irq_pend[8]_i_4_n_0 ;
   wire \irq_pend[8]_i_5_n_0 ;
   wire \irq_pend[8]_i_6_n_0 ;
+  wire \irq_pend[8]_i_7_n_0 ;
   wire \irq_pend[9]_i_1_n_0 ;
   wire \irq_pend[9]_i_2_n_0 ;
   wire \irq_pend[9]_i_3_n_0 ;
   wire \irq_pend[9]_i_4_n_0 ;
   wire \irq_pend[9]_i_5_n_0 ;
   wire \irq_pend[9]_i_6_n_0 ;
-  wire \irq_pend[9]_i_7_n_0 ;
-  wire \irq_pend[9]_i_8_n_0 ;
   wire \irq_pend_reg_n_0_[0] ;
   wire [4:0]p_0_in;
   wire p_13_in;
@@ -1790,7 +1792,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire p_21_in;
   wire p_21_in152_in;
   wire p_21_in98_in;
-  wire [14:6]p_26_out;
+  wire [16:5]p_26_out;
   wire p_29_in166_in;
   wire p_2_in103_in;
   wire p_2_in108_in;
@@ -1960,7 +1962,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \pcie_msi_req_fifo_wr_data[4]_i_4_n_0 ;
   wire \pcie_msi_req_fifo_wr_data[4]_i_5_n_0 ;
   wire \pcie_msi_req_fifo_wr_data[4]_i_6_n_0 ;
-  wire \pcie_msi_req_fifo_wr_data[4]_i_7_n_0 ;
+  wire \pcie_msi_req_fifo_wr_data[4]_i_8_n_0 ;
   wire \pcie_msi_req_fifo_wr_data[4]_i_9_n_0 ;
   wire pcie_msi_req_fifo_wr_en6_out;
   wire pcie_msi_req_fifo_wr_en_reg_n_0;
@@ -2000,31 +2002,29 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \s_axi_rdata[0]_i_10_n_0 ;
   wire \s_axi_rdata[0]_i_11_n_0 ;
   wire \s_axi_rdata[0]_i_12_n_0 ;
+  wire \s_axi_rdata[0]_i_13_n_0 ;
   wire \s_axi_rdata[0]_i_1_n_0 ;
   wire \s_axi_rdata[0]_i_2_n_0 ;
   wire \s_axi_rdata[0]_i_3_n_0 ;
-  wire \s_axi_rdata[0]_i_6_n_0 ;
+  wire \s_axi_rdata[0]_i_4_n_0 ;
   wire \s_axi_rdata[0]_i_7_n_0 ;
   wire \s_axi_rdata[0]_i_8_n_0 ;
   wire \s_axi_rdata[0]_i_9_n_0 ;
   wire \s_axi_rdata[10]_i_10_n_0 ;
   wire \s_axi_rdata[10]_i_11_n_0 ;
-  wire \s_axi_rdata[10]_i_12_n_0 ;
-  wire \s_axi_rdata[10]_i_13_n_0 ;
   wire \s_axi_rdata[10]_i_1_n_0 ;
   wire \s_axi_rdata[10]_i_2_n_0 ;
-  wire \s_axi_rdata[10]_i_3_n_0 ;
   wire \s_axi_rdata[10]_i_4_n_0 ;
-  wire \s_axi_rdata[10]_i_5_n_0 ;
+  wire \s_axi_rdata[10]_i_7_n_0 ;
   wire \s_axi_rdata[10]_i_8_n_0 ;
   wire \s_axi_rdata[10]_i_9_n_0 ;
   wire \s_axi_rdata[11]_i_10_n_0 ;
   wire \s_axi_rdata[11]_i_11_n_0 ;
+  wire \s_axi_rdata[11]_i_12_n_0 ;
   wire \s_axi_rdata[11]_i_1_n_0 ;
   wire \s_axi_rdata[11]_i_2_n_0 ;
   wire \s_axi_rdata[11]_i_3_n_0 ;
-  wire \s_axi_rdata[11]_i_4_n_0 ;
-  wire \s_axi_rdata[11]_i_7_n_0 ;
+  wire \s_axi_rdata[11]_i_5_n_0 ;
   wire \s_axi_rdata[11]_i_8_n_0 ;
   wire \s_axi_rdata[11]_i_9_n_0 ;
   wire \s_axi_rdata[12]_i_1_n_0 ;
@@ -2034,38 +2034,43 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \s_axi_rdata[16]_i_1_n_0 ;
   wire \s_axi_rdata[16]_i_2_n_0 ;
   wire \s_axi_rdata[16]_i_3_n_0 ;
-  wire \s_axi_rdata[16]_i_4_n_0 ;
   wire \s_axi_rdata[17]_i_1_n_0 ;
   wire \s_axi_rdata[18]_i_1_n_0 ;
+  wire \s_axi_rdata[18]_i_2_n_0 ;
+  wire \s_axi_rdata[18]_i_3_n_0 ;
+  wire \s_axi_rdata[18]_i_4_n_0 ;
+  wire \s_axi_rdata[18]_i_5_n_0 ;
   wire \s_axi_rdata[19]_i_1_n_0 ;
+  wire \s_axi_rdata[19]_i_2_n_0 ;
   wire \s_axi_rdata[1]_i_10_n_0 ;
   wire \s_axi_rdata[1]_i_11_n_0 ;
+  wire \s_axi_rdata[1]_i_12_n_0 ;
+  wire \s_axi_rdata[1]_i_13_n_0 ;
+  wire \s_axi_rdata[1]_i_14_n_0 ;
   wire \s_axi_rdata[1]_i_1_n_0 ;
   wire \s_axi_rdata[1]_i_2_n_0 ;
   wire \s_axi_rdata[1]_i_3_n_0 ;
-  wire \s_axi_rdata[1]_i_4_n_0 ;
   wire \s_axi_rdata[1]_i_5_n_0 ;
-  wire \s_axi_rdata[1]_i_6_n_0 ;
   wire \s_axi_rdata[1]_i_7_n_0 ;
   wire \s_axi_rdata[1]_i_8_n_0 ;
   wire \s_axi_rdata[1]_i_9_n_0 ;
   wire \s_axi_rdata[20]_i_1_n_0 ;
+  wire \s_axi_rdata[20]_i_2_n_0 ;
   wire \s_axi_rdata[21]_i_1_n_0 ;
   wire \s_axi_rdata[21]_i_2_n_0 ;
   wire \s_axi_rdata[21]_i_3_n_0 ;
   wire \s_axi_rdata[21]_i_4_n_0 ;
   wire \s_axi_rdata[21]_i_5_n_0 ;
   wire \s_axi_rdata[21]_i_6_n_0 ;
-  wire \s_axi_rdata[21]_i_7_n_0 ;
   wire \s_axi_rdata[2]_i_10_n_0 ;
   wire \s_axi_rdata[2]_i_11_n_0 ;
   wire \s_axi_rdata[2]_i_12_n_0 ;
+  wire \s_axi_rdata[2]_i_13_n_0 ;
   wire \s_axi_rdata[2]_i_1_n_0 ;
   wire \s_axi_rdata[2]_i_2_n_0 ;
-  wire \s_axi_rdata[2]_i_3_n_0 ;
+  wire \s_axi_rdata[2]_i_4_n_0 ;
+  wire \s_axi_rdata[2]_i_5_n_0 ;
   wire \s_axi_rdata[2]_i_6_n_0 ;
-  wire \s_axi_rdata[2]_i_7_n_0 ;
-  wire \s_axi_rdata[2]_i_8_n_0 ;
   wire \s_axi_rdata[2]_i_9_n_0 ;
   wire \s_axi_rdata[3]_i_10_n_0 ;
   wire \s_axi_rdata[3]_i_11_n_0 ;
@@ -2074,24 +2079,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \s_axi_rdata[3]_i_1_n_0 ;
   wire \s_axi_rdata[3]_i_2_n_0 ;
   wire \s_axi_rdata[3]_i_3_n_0 ;
-  wire \s_axi_rdata[3]_i_4_n_0 ;
-  wire \s_axi_rdata[3]_i_5_n_0 ;
+  wire \s_axi_rdata[3]_i_6_n_0 ;
+  wire \s_axi_rdata[3]_i_7_n_0 ;
   wire \s_axi_rdata[3]_i_8_n_0 ;
   wire \s_axi_rdata[3]_i_9_n_0 ;
   wire \s_axi_rdata[4]_i_10_n_0 ;
   wire \s_axi_rdata[4]_i_11_n_0 ;
   wire \s_axi_rdata[4]_i_12_n_0 ;
+  wire \s_axi_rdata[4]_i_13_n_0 ;
   wire \s_axi_rdata[4]_i_1_n_0 ;
   wire \s_axi_rdata[4]_i_2_n_0 ;
-  wire \s_axi_rdata[4]_i_3_n_0 ;
   wire \s_axi_rdata[4]_i_4_n_0 ;
   wire \s_axi_rdata[4]_i_5_n_0 ;
-  wire \s_axi_rdata[4]_i_8_n_0 ;
+  wire \s_axi_rdata[4]_i_6_n_0 ;
   wire \s_axi_rdata[4]_i_9_n_0 ;
   wire \s_axi_rdata[5]_i_10_n_0 ;
   wire \s_axi_rdata[5]_i_11_n_0 ;
   wire \s_axi_rdata[5]_i_12_n_0 ;
-  wire \s_axi_rdata[5]_i_13_n_0 ;
   wire \s_axi_rdata[5]_i_1_n_0 ;
   wire \s_axi_rdata[5]_i_2_n_0 ;
   wire \s_axi_rdata[5]_i_3_n_0 ;
@@ -2101,13 +2105,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \s_axi_rdata[5]_i_9_n_0 ;
   wire \s_axi_rdata[6]_i_1_n_0 ;
   wire \s_axi_rdata[7]_i_1_n_0 ;
-  wire \s_axi_rdata[7]_i_2_n_0 ;
   wire \s_axi_rdata[8]_i_10_n_0 ;
   wire \s_axi_rdata[8]_i_11_n_0 ;
   wire \s_axi_rdata[8]_i_12_n_0 ;
   wire \s_axi_rdata[8]_i_1_n_0 ;
   wire \s_axi_rdata[8]_i_2_n_0 ;
-  wire \s_axi_rdata[8]_i_3_n_0 ;
   wire \s_axi_rdata[8]_i_4_n_0 ;
   wire \s_axi_rdata[8]_i_5_n_0 ;
   wire \s_axi_rdata[8]_i_8_n_0 ;
@@ -2115,31 +2117,39 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   wire \s_axi_rdata[9]_i_10_n_0 ;
   wire \s_axi_rdata[9]_i_11_n_0 ;
   wire \s_axi_rdata[9]_i_12_n_0 ;
+  wire \s_axi_rdata[9]_i_13_n_0 ;
   wire \s_axi_rdata[9]_i_1_n_0 ;
   wire \s_axi_rdata[9]_i_2_n_0 ;
-  wire \s_axi_rdata[9]_i_3_n_0 ;
   wire \s_axi_rdata[9]_i_4_n_0 ;
-  wire \s_axi_rdata[9]_i_7_n_0 ;
-  wire \s_axi_rdata[9]_i_8_n_0 ;
+  wire \s_axi_rdata[9]_i_5_n_0 ;
+  wire \s_axi_rdata[9]_i_6_n_0 ;
   wire \s_axi_rdata[9]_i_9_n_0 ;
-  wire \s_axi_rdata_reg[0]_i_4_n_0 ;
   wire \s_axi_rdata_reg[0]_i_5_n_0 ;
+  wire \s_axi_rdata_reg[0]_i_6_n_0 ;
+  wire \s_axi_rdata_reg[10]_i_3_n_0 ;
+  wire \s_axi_rdata_reg[10]_i_5_n_0 ;
   wire \s_axi_rdata_reg[10]_i_6_n_0 ;
-  wire \s_axi_rdata_reg[10]_i_7_n_0 ;
-  wire \s_axi_rdata_reg[11]_i_5_n_0 ;
+  wire \s_axi_rdata_reg[11]_i_4_n_0 ;
   wire \s_axi_rdata_reg[11]_i_6_n_0 ;
-  wire \s_axi_rdata_reg[2]_i_4_n_0 ;
-  wire \s_axi_rdata_reg[2]_i_5_n_0 ;
-  wire \s_axi_rdata_reg[3]_i_6_n_0 ;
-  wire \s_axi_rdata_reg[3]_i_7_n_0 ;
-  wire \s_axi_rdata_reg[4]_i_6_n_0 ;
+  wire \s_axi_rdata_reg[11]_i_7_n_0 ;
+  wire \s_axi_rdata_reg[1]_i_4_n_0 ;
+  wire \s_axi_rdata_reg[1]_i_6_n_0 ;
+  wire \s_axi_rdata_reg[2]_i_3_n_0 ;
+  wire \s_axi_rdata_reg[2]_i_7_n_0 ;
+  wire \s_axi_rdata_reg[2]_i_8_n_0 ;
+  wire \s_axi_rdata_reg[3]_i_4_n_0 ;
+  wire \s_axi_rdata_reg[3]_i_5_n_0 ;
+  wire \s_axi_rdata_reg[4]_i_3_n_0 ;
   wire \s_axi_rdata_reg[4]_i_7_n_0 ;
+  wire \s_axi_rdata_reg[4]_i_8_n_0 ;
   wire \s_axi_rdata_reg[5]_i_6_n_0 ;
   wire \s_axi_rdata_reg[5]_i_7_n_0 ;
+  wire \s_axi_rdata_reg[8]_i_3_n_0 ;
   wire \s_axi_rdata_reg[8]_i_6_n_0 ;
   wire \s_axi_rdata_reg[8]_i_7_n_0 ;
-  wire \s_axi_rdata_reg[9]_i_5_n_0 ;
-  wire \s_axi_rdata_reg[9]_i_6_n_0 ;
+  wire \s_axi_rdata_reg[9]_i_3_n_0 ;
+  wire \s_axi_rdata_reg[9]_i_7_n_0 ;
+  wire \s_axi_rdata_reg[9]_i_8_n_0 ;
   wire s_axi_rready;
   wire s_axi_rvalid_i_1_n_0;
   wire s_axi_rvalid_reg_0;
@@ -2162,76 +2172,85 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[0]_i_10 
-       (.I0(\cpu_irq_out[16]_i_15_n_0 ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[24]_i_28_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_21_n_0 ),
+        .I1(data17[3]),
+        .I2(data17[4]),
+        .I3(\cpu_irq_out[24]_i_27_n_0 ),
         .I4(\irq_dest_reg_n_0_[16][3] ),
         .I5(\irq_dest_reg_n_0_[16][4] ),
         .O(\cpu_irq_out[0]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[0]_i_11 
-       (.I0(\cpu_irq_out[24]_i_21_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_9_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][3] ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\cpu_irq_out[8]_i_17_n_0 ),
+        .I3(\cpu_irq_out[24]_i_20_n_0 ),
         .I4(data19[3]),
         .I5(data19[4]),
         .O(\cpu_irq_out[0]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair74" *) 
-  LUT4 #(
-    .INIT(16'hFEFF)) 
+  (* SOFT_HLUTNM = "soft_lutpair110" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \cpu_irq_out[0]_i_12 
-       (.I0(\irq_dest_reg_n_0_[11][0] ),
-        .I1(\irq_dest_reg_n_0_[11][1] ),
-        .I2(\irq_dest_reg_n_0_[11][2] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[8][4] ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(\cpu_irq_out[24]_i_18_n_0 ),
         .O(\cpu_irq_out[0]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h01010101010101FF)) 
+  (* SOFT_HLUTNM = "soft_lutpair142" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \cpu_irq_out[0]_i_13 
-       (.I0(\cpu_irq_out[24]_i_18_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\cpu_irq_out[16]_i_10_n_0 ),
-        .I4(\irq_dest_reg_n_0_[13][3] ),
-        .I5(\irq_dest_reg_n_0_[13][4] ),
+       (.I0(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\cpu_irq_out[16]_i_10_n_0 ),
         .O(\cpu_irq_out[0]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair135" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
+  (* SOFT_HLUTNM = "soft_lutpair154" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
     \cpu_irq_out[0]_i_14 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[8]_i_9_n_0 ),
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][0] ),
+        .I2(\irq_dest_reg_n_0_[21][1] ),
+        .I3(\irq_dest_reg_n_0_[21][2] ),
         .O(\cpu_irq_out[0]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair127" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \cpu_irq_out[0]_i_15 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[16]_i_18_n_0 ),
-        .O(\cpu_irq_out[0]_i_15_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
+    \cpu_irq_out[0]_i_15 
+       (.I0(\cpu_irq_out[8]_i_9_n_0 ),
+        .I1(data14[3]),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[8]_i_14_n_0 ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
+        .I5(\irq_dest_reg_n_0_[20][4] ),
+        .O(\cpu_irq_out[0]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair112" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
     \cpu_irq_out[0]_i_16 
-       (.I0(\cpu_irq_out[24]_i_27_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\cpu_irq_out[24]_i_17_n_0 ),
-        .I4(data17[3]),
-        .I5(data17[4]),
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][0] ),
+        .I2(\irq_dest_reg_n_0_[19][1] ),
+        .I3(\irq_dest_reg_n_0_[19][2] ),
         .O(\cpu_irq_out[0]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'h01010101010101FF)) 
+    \cpu_irq_out[0]_i_17 
+       (.I0(\cpu_irq_out[24]_i_28_n_0 ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I3(\cpu_irq_out[16]_i_13_n_0 ),
+        .I4(\irq_dest_reg_n_0_[15][3] ),
+        .I5(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[0]_i_17_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair232" *) 
   LUT3 #(
     .INIT(8'hFE)) 
-    \cpu_irq_out[0]_i_17 
+    \cpu_irq_out[0]_i_18 
        (.I0(\irq_dest_reg_n_0_[10][2] ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
-        .O(\cpu_irq_out[0]_i_17_n_0 ));
+        .O(\cpu_irq_out[0]_i_18_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFAAAB)) 
     \cpu_irq_out[0]_i_2 
@@ -2243,21 +2262,21 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[0]_i_11_n_0 ),
         .O(\cpu_irq_out[0]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF2222222F)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[0]_i_3 
-       (.I0(\cpu_irq_out[2]_i_11_n_0 ),
-        .I1(\cpu_irq_out[0]_i_12_n_0 ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\cpu_irq_out[16]_i_13_n_0 ),
-        .I5(\cpu_irq_out[0]_i_13_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[24]_i_15_n_0 ),
+        .I2(\cpu_irq_out[0]_i_12_n_0 ),
+        .I3(\cpu_irq_out[0]_i_13_n_0 ),
+        .I4(\cpu_irq_out[5]_i_20_n_0 ),
+        .I5(\cpu_irq_out[24]_i_17_n_0 ),
         .O(\cpu_irq_out[0]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[0]_i_4 
-       (.I0(\cpu_irq_out[24]_i_16_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_dest_reg_n_0_[14][4] ),
+       (.I0(\cpu_irq_out[24]_i_26_n_0 ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_dest_reg_n_0_[12][4] ),
         .I3(\cpu_irq_out[24]_i_10_n_0 ),
         .I4(data16[3]),
         .I5(data16[4]),
@@ -2265,32 +2284,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[0]_i_5 
-       (.I0(\cpu_irq_out[24]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\cpu_irq_out[24]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_11_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\cpu_irq_out[24]_i_14_n_0 ),
         .I4(data21[3]),
         .I5(data21[4]),
         .O(\cpu_irq_out[0]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[0]_i_6 
-       (.I0(\cpu_irq_out[7]_i_9_n_0 ),
-        .I1(\cpu_irq_out[24]_i_8_n_0 ),
-        .I2(\cpu_irq_out[0]_i_14_n_0 ),
-        .I3(\cpu_irq_out[0]_i_15_n_0 ),
-        .I4(\cpu_irq_out[7]_i_23_n_0 ),
-        .I5(\cpu_irq_out[24]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
+        .I1(\cpu_irq_out[0]_i_14_n_0 ),
+        .I2(data18[4]),
+        .I3(data18[3]),
+        .I4(\cpu_irq_out[24]_i_24_n_0 ),
+        .I5(\cpu_irq_out[0]_i_15_n_0 ),
         .O(\cpu_irq_out[0]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[0]_i_7 
-       (.I0(\cpu_irq_out[2]_i_17_n_0 ),
-        .I1(\cpu_irq_out[24]_i_26_n_0 ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\cpu_irq_out[24]_i_22_n_0 ),
-        .I5(\cpu_irq_out[0]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_27_n_0 ),
+        .I1(\cpu_irq_out[0]_i_16_n_0 ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\cpu_irq_out[16]_i_17_n_0 ),
+        .I5(\cpu_irq_out[0]_i_17_n_0 ),
         .O(\cpu_irq_out[0]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h4444444F44444444)) 
@@ -2299,10 +2318,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(cpu_irq_out[0]),
         .I2(\irq_dest_reg_n_0_[10][4] ),
         .I3(\irq_dest_reg_n_0_[10][3] ),
-        .I4(\cpu_irq_out[0]_i_17_n_0 ),
+        .I4(\cpu_irq_out[0]_i_18_n_0 ),
         .I5(\irq_ack[10]_i_2_n_0 ),
         .O(\cpu_irq_out[0]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair90" *) 
+  (* SOFT_HLUTNM = "soft_lutpair40" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[0]_i_9 
@@ -2334,10 +2353,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[10]_i_11 
-       (.I0(\cpu_irq_out[18]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[2]_i_9_n_0 ),
         .I1(data15[3]),
         .I2(data15[4]),
-        .I3(\cpu_irq_out[2]_i_13_n_0 ),
+        .I3(\cpu_irq_out[26]_i_29_n_0 ),
         .I4(\irq_dest_reg_n_0_[15][3] ),
         .I5(\irq_dest_reg_n_0_[15][4] ),
         .O(\cpu_irq_out[10]_i_11_n_0 ));
@@ -2347,20 +2366,20 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \cpu_irq_out[10]_i_12 
        (.I0(\irq_dest_reg_n_0_[1][4] ),
         .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[26]_i_26_n_0 ),
+        .I2(\cpu_irq_out[2]_i_15_n_0 ),
         .O(\cpu_irq_out[10]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair214" *) 
+  (* SOFT_HLUTNM = "soft_lutpair213" *) 
   LUT3 #(
     .INIT(8'h04)) 
     \cpu_irq_out[10]_i_13 
        (.I0(\irq_dest_reg_n_0_[16][4] ),
         .I1(\irq_dest_reg_n_0_[16][3] ),
-        .I2(\cpu_irq_out[18]_i_10_n_0 ),
+        .I2(\cpu_irq_out[26]_i_27_n_0 ),
         .O(\cpu_irq_out[10]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[10]_i_14 
-       (.I0(\cpu_irq_out[26]_i_29_n_0 ),
+       (.I0(\cpu_irq_out[26]_i_28_n_0 ),
         .I1(\irq_dest_reg_n_0_[8][3] ),
         .I2(\irq_dest_reg_n_0_[8][4] ),
         .I3(\cpu_irq_out[26]_i_17_n_0 ),
@@ -2370,7 +2389,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[10]_i_15 
-       (.I0(\cpu_irq_out[26]_i_27_n_0 ),
+       (.I0(\cpu_irq_out[18]_i_12_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][3] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(\cpu_irq_out[18]_i_8_n_0 ),
@@ -2380,17 +2399,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[10]_i_2 
-       (.I0(\cpu_irq_out[15]_i_10_n_0 ),
+       (.I0(\cpu_irq_out[10]_i_8_n_0 ),
         .I1(\cpu_irq_out[26]_i_8_n_0 ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\irq_dest_reg_n_0_[9][3] ),
         .I4(\cpu_irq_out[26]_i_20_n_0 ),
-        .I5(\cpu_irq_out[10]_i_8_n_0 ),
+        .I5(\cpu_irq_out[10]_i_9_n_0 ),
         .O(\cpu_irq_out[10]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hFF04FF04FFFFFF04)) 
     \cpu_irq_out[10]_i_3 
-       (.I0(\cpu_irq_out[10]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[18]_i_10_n_0 ),
         .I1(data14[3]),
         .I2(data14[4]),
         .I3(\cpu_irq_out[10]_i_10_n_0 ),
@@ -2401,7 +2420,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[10]_i_4 
        (.I0(\cpu_irq_out[10]_i_11_n_0 ),
-        .I1(\cpu_irq_out[11]_i_12_n_0 ),
+        .I1(\cpu_irq_out[14]_i_18_n_0 ),
         .I2(\cpu_irq_out[26]_i_24_n_0 ),
         .I3(\irq_dest_reg_n_0_[20][4] ),
         .I4(\irq_dest_reg_n_0_[20][3] ),
@@ -2411,16 +2430,16 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFAEAEFFAE)) 
     \cpu_irq_out[10]_i_5 
        (.I0(\cpu_irq_out[10]_i_12_n_0 ),
-        .I1(\cpu_irq_out[12]_i_18_n_0 ),
+        .I1(\cpu_irq_out[12]_i_16_n_0 ),
         .I2(\cpu_irq_out[26]_i_16_n_0 ),
-        .I3(\cpu_irq_out[13]_i_9_n_0 ),
+        .I3(\cpu_irq_out[15]_i_8_n_0 ),
         .I4(\cpu_irq_out[26]_i_10_n_0 ),
         .I5(\cpu_irq_out[10]_i_13_n_0 ),
         .O(\cpu_irq_out[10]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[10]_i_6 
-       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_13_n_0 ),
         .I1(\cpu_irq_out[26]_i_25_n_0 ),
         .I2(data17[4]),
         .I3(data17[3]),
@@ -2430,31 +2449,29 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[10]_i_7 
-       (.I0(\cpu_irq_out[13]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
         .I1(\cpu_irq_out[26]_i_21_n_0 ),
         .I2(data21[4]),
         .I3(data21[3]),
         .I4(\cpu_irq_out[26]_i_18_n_0 ),
         .I5(\cpu_irq_out[10]_i_15_n_0 ),
         .O(\cpu_irq_out[10]_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair274" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[10]_i_8 
+       (.I0(data18[3]),
+        .I1(data18[4]),
+        .O(\cpu_irq_out[10]_i_8_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[10]_i_8 
-       (.I0(\cpu_irq_out[26]_i_28_n_0 ),
+    \cpu_irq_out[10]_i_9 
+       (.I0(\cpu_irq_out[26]_i_26_n_0 ),
         .I1(data19[3]),
         .I2(data19[4]),
-        .I3(\cpu_irq_out[2]_i_12_n_0 ),
+        .I3(\cpu_irq_out[18]_i_17_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[10]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair133" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[10]_i_9 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[0]),
-        .I2(data14[1]),
-        .I3(data14[2]),
         .O(\cpu_irq_out[10]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -2467,127 +2484,137 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[11]_i_7_n_0 ),
         .O(\cpu_irq_out[11]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000200000000000)) 
-    \cpu_irq_out[11]_i_10 
-       (.I0(\irq_ack[10]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[10][2] ),
-        .I2(\irq_dest_reg_n_0_[10][1] ),
-        .I3(\irq_dest_reg_n_0_[10][0] ),
-        .I4(\irq_dest_reg_n_0_[10][4] ),
-        .I5(\irq_dest_reg_n_0_[10][3] ),
-        .O(\cpu_irq_out[11]_i_10_n_0 ));
-  LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[11]_i_11 
+    \cpu_irq_out[11]_i_10 
        (.I0(\cpu_irq_out[27]_i_10_n_0 ),
         .I1(data15[3]),
         .I2(data15[4]),
-        .I3(\cpu_irq_out[27]_i_24_n_0 ),
+        .I3(\cpu_irq_out[27]_i_11_n_0 ),
         .I4(\irq_dest_reg_n_0_[15][3] ),
         .I5(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[11]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000004000000)) 
+    \cpu_irq_out[11]_i_11 
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(data18[2]),
+        .I3(data18[1]),
+        .I4(data18[0]),
+        .I5(\irq_ack[3]_i_2_n_0 ),
         .O(\cpu_irq_out[11]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair271" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  (* SOFT_HLUTNM = "soft_lutpair213" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
     \cpu_irq_out[11]_i_12 
-       (.I0(\irq_dest_reg_n_0_[12][3] ),
-        .I1(\irq_dest_reg_n_0_[12][4] ),
-        .O(\cpu_irq_out[11]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair220" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[11]_i_13 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[3]_i_16_n_0 ),
-        .O(\cpu_irq_out[11]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair215" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[11]_i_14 
        (.I0(\irq_dest_reg_n_0_[16][4] ),
         .I1(\irq_dest_reg_n_0_[16][3] ),
-        .I2(\cpu_irq_out[19]_i_10_n_0 ),
+        .I2(\cpu_irq_out[27]_i_28_n_0 ),
+        .O(\cpu_irq_out[11]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair269" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[11]_i_13 
+       (.I0(\irq_dest_reg_n_0_[18][3] ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .O(\cpu_irq_out[11]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair144" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[11]_i_14 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[0]),
+        .I2(data17[1]),
+        .I3(data17[2]),
         .O(\cpu_irq_out[11]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[11]_i_15 
-       (.I0(\cpu_irq_out[27]_i_28_n_0 ),
+       (.I0(\cpu_irq_out[27]_i_29_n_0 ),
         .I1(\irq_dest_reg_n_0_[8][3] ),
         .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[3]_i_14_n_0 ),
+        .I3(\cpu_irq_out[27]_i_21_n_0 ),
         .I4(\irq_dest_reg_n_0_[21][3] ),
         .I5(\irq_dest_reg_n_0_[21][4] ),
         .O(\cpu_irq_out[11]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair119" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[11]_i_16 
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][0] ),
+        .I2(\irq_dest_reg_n_0_[1][1] ),
+        .I3(\irq_dest_reg_n_0_[1][2] ),
+        .O(\cpu_irq_out[11]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[11]_i_16 
-       (.I0(\cpu_irq_out[27]_i_21_n_0 ),
+    \cpu_irq_out[11]_i_17 
+       (.I0(\cpu_irq_out[19]_i_12_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][3] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(\cpu_irq_out[19]_i_8_n_0 ),
         .I4(\irq_dest_reg_n_0_[17][3] ),
         .I5(\irq_dest_reg_n_0_[17][4] ),
-        .O(\cpu_irq_out[11]_i_16_n_0 ));
+        .O(\cpu_irq_out[11]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[11]_i_2 
-       (.I0(\cpu_irq_out[15]_i_10_n_0 ),
-        .I1(\cpu_irq_out[27]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
+        .I1(\cpu_irq_out[27]_i_9_n_0 ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\cpu_irq_out[19]_i_12_n_0 ),
+        .I4(\cpu_irq_out[27]_i_20_n_0 ),
         .I5(\cpu_irq_out[11]_i_8_n_0 ),
         .O(\cpu_irq_out[11]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hFF04FF04FFFFFF04)) 
     \cpu_irq_out[11]_i_3 
-       (.I0(\cpu_irq_out[11]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[19]_i_10_n_0 ),
         .I1(data14[3]),
         .I2(data14[4]),
-        .I3(\cpu_irq_out[11]_i_10_n_0 ),
+        .I3(\cpu_irq_out[11]_i_9_n_0 ),
         .I4(cpu_irq_out[11]),
         .I5(cpu_eoi_in[11]),
         .O(\cpu_irq_out[11]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[11]_i_4 
-       (.I0(\cpu_irq_out[11]_i_11_n_0 ),
-        .I1(\cpu_irq_out[11]_i_12_n_0 ),
-        .I2(\cpu_irq_out[27]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_10_n_0 ),
+        .I1(\cpu_irq_out[14]_i_18_n_0 ),
+        .I2(\cpu_irq_out[27]_i_26_n_0 ),
         .I3(\irq_dest_reg_n_0_[20][4] ),
         .I4(\irq_dest_reg_n_0_[20][3] ),
-        .I5(\cpu_irq_out[19]_i_18_n_0 ),
+        .I5(\cpu_irq_out[19]_i_16_n_0 ),
         .O(\cpu_irq_out[11]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAEAEFFAE)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[11]_i_5 
-       (.I0(\cpu_irq_out[11]_i_13_n_0 ),
-        .I1(\cpu_irq_out[12]_i_18_n_0 ),
-        .I2(\cpu_irq_out[27]_i_15_n_0 ),
-        .I3(\cpu_irq_out[13]_i_9_n_0 ),
-        .I4(\cpu_irq_out[27]_i_9_n_0 ),
-        .I5(\cpu_irq_out[11]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_23_n_0 ),
+        .I1(\cpu_irq_out[27]_i_17_n_0 ),
+        .I2(\cpu_irq_out[12]_i_16_n_0 ),
+        .I3(\cpu_irq_out[27]_i_15_n_0 ),
+        .I4(\cpu_irq_out[11]_i_11_n_0 ),
+        .I5(\cpu_irq_out[11]_i_12_n_0 ),
         .O(\cpu_irq_out[11]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[11]_i_6 
-       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
-        .I1(\cpu_irq_out[27]_i_11_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_13_n_0 ),
+        .I1(\cpu_irq_out[27]_i_23_n_0 ),
         .I2(data17[4]),
         .I3(data17[3]),
-        .I4(\cpu_irq_out[27]_i_14_n_0 ),
+        .I4(\cpu_irq_out[11]_i_14_n_0 ),
         .I5(\cpu_irq_out[11]_i_15_n_0 ),
         .O(\cpu_irq_out[11]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[11]_i_7 
-       (.I0(\cpu_irq_out[13]_i_18_n_0 ),
-        .I1(\cpu_irq_out[27]_i_22_n_0 ),
-        .I2(data21[4]),
-        .I3(data21[3]),
-        .I4(\cpu_irq_out[27]_i_16_n_0 ),
-        .I5(\cpu_irq_out[11]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
+        .I1(\cpu_irq_out[27]_i_14_n_0 ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\cpu_irq_out[11]_i_16_n_0 ),
+        .I5(\cpu_irq_out[11]_i_17_n_0 ),
         .O(\cpu_irq_out[11]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
@@ -2595,18 +2622,19 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\cpu_irq_out[27]_i_27_n_0 ),
         .I1(data19[3]),
         .I2(data19[4]),
-        .I3(\cpu_irq_out[27]_i_29_n_0 ),
+        .I3(\cpu_irq_out[19]_i_19_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[11]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair133" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
+  LUT6 #(
+    .INIT(64'h0000200000000000)) 
     \cpu_irq_out[11]_i_9 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[0]),
-        .I2(data14[1]),
-        .I3(data14[2]),
+       (.I0(\irq_ack[10]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[10][2] ),
+        .I2(\irq_dest_reg_n_0_[10][1] ),
+        .I3(\irq_dest_reg_n_0_[10][0] ),
+        .I4(\irq_dest_reg_n_0_[10][4] ),
+        .I5(\irq_dest_reg_n_0_[10][3] ),
         .O(\cpu_irq_out[11]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -2618,191 +2646,225 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[12]_i_6_n_0 ),
         .I5(\cpu_irq_out[12]_i_7_n_0 ),
         .O(\cpu_irq_out[12]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair131" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
+    \cpu_irq_out[12]_i_10 
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[2]),
+        .I2(data14[0]),
+        .I3(data14[1]),
+        .O(\cpu_irq_out[12]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000020000000000)) 
-    \cpu_irq_out[12]_i_10 
+    \cpu_irq_out[12]_i_11 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][4] ),
         .I5(\irq_dest_reg_n_0_[10][3] ),
-        .O(\cpu_irq_out[12]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair42" *) 
+        .O(\cpu_irq_out[12]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair268" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[12]_i_12 
+       (.I0(\irq_dest_reg_n_0_[15][3] ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[12]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair39" *) 
   LUT4 #(
     .INIT(16'hFFFB)) 
-    \cpu_irq_out[12]_i_11 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][1] ),
-        .I3(\irq_dest_reg_n_0_[17][0] ),
-        .O(\cpu_irq_out[12]_i_11_n_0 ));
+    \cpu_irq_out[12]_i_13 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[1]),
+        .I3(data15[0]),
+        .O(\cpu_irq_out[12]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_12 
+    \cpu_irq_out[12]_i_14 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I3(\irq_dest_reg_n_0_[13][3] ),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(\irq_dest_reg_n_0_[13][1] ),
+        .O(\cpu_irq_out[12]_i_14_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[12]_i_15 
        (.I0(\irq_dest_reg_n_0_[18][4] ),
         .I1(\irq_dest_reg_n_0_[18][3] ),
         .I2(\irq_ack[18]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[18][2] ),
         .I4(\irq_dest_reg_n_0_[18][0] ),
         .I5(\irq_dest_reg_n_0_[18][1] ),
-        .O(\cpu_irq_out[12]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[12]_i_13 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
-        .I4(data14[4]),
-        .I5(data14[3]),
-        .O(\cpu_irq_out[12]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_14 
-       (.I0(data18[4]),
-        .I1(data18[3]),
-        .I2(\irq_ack[3]_i_2_n_0 ),
-        .I3(data18[2]),
-        .I4(data18[0]),
-        .I5(data18[1]),
-        .O(\cpu_irq_out[12]_i_14_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_15 
-       (.I0(\irq_dest_reg_n_0_[12][4] ),
-        .I1(\irq_dest_reg_n_0_[12][3] ),
-        .I2(\irq_ack[12]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][2] ),
-        .I4(\irq_dest_reg_n_0_[12][0] ),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
         .O(\cpu_irq_out[12]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair280" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[12]_i_16 
+       (.I0(\irq_dest_reg_n_0_[14][3] ),
+        .I1(\irq_dest_reg_n_0_[14][4] ),
+        .O(\cpu_irq_out[12]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_16 
+    \cpu_irq_out[12]_i_17 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][2] ),
         .I2(\irq_dest_reg_n_0_[16][4] ),
         .I3(\irq_dest_reg_n_0_[16][3] ),
         .I4(\irq_dest_reg_n_0_[16][0] ),
         .I5(\irq_dest_reg_n_0_[16][1] ),
-        .O(\cpu_irq_out[12]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_17 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\irq_dest_reg_n_0_[15][0] ),
-        .I5(\irq_dest_reg_n_0_[15][1] ),
         .O(\cpu_irq_out[12]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair280" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
     \cpu_irq_out[12]_i_18 
-       (.I0(\irq_dest_reg_n_0_[14][3] ),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
-        .O(\cpu_irq_out[12]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000020000000000)) 
-    \cpu_irq_out[12]_i_19 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[11][0] ),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][4] ),
-        .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[12]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[12]_i_2 
-       (.I0(\cpu_irq_out[13]_i_9_n_0 ),
-        .I1(\cpu_irq_out[20]_i_13_n_0 ),
-        .I2(\cpu_irq_out[13]_i_8_n_0 ),
-        .I3(\cpu_irq_out[28]_i_9_n_0 ),
-        .I4(\cpu_irq_out[12]_i_8_n_0 ),
-        .I5(\cpu_irq_out[12]_i_9_n_0 ),
-        .O(\cpu_irq_out[12]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_20 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\irq_dest_reg_n_0_[20][3] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
-        .O(\cpu_irq_out[12]_i_20_n_0 ));
-  LUT6 #(
-    .INIT(64'hFF04FF04FFFFFF04)) 
-    \cpu_irq_out[12]_i_3 
-       (.I0(\cpu_irq_out[20]_i_23_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][3] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\cpu_irq_out[12]_i_10_n_0 ),
-        .I4(cpu_irq_out[12]),
-        .I5(cpu_eoi_in[12]),
-        .O(\cpu_irq_out[12]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[12]_i_4 
-       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
-        .I1(\cpu_irq_out[12]_i_11_n_0 ),
-        .I2(\cpu_irq_out[15]_i_16_n_0 ),
-        .I3(\cpu_irq_out[20]_i_9_n_0 ),
-        .I4(\cpu_irq_out[12]_i_12_n_0 ),
-        .I5(\cpu_irq_out[12]_i_13_n_0 ),
-        .O(\cpu_irq_out[12]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[12]_i_5 
-       (.I0(\cpu_irq_out[15]_i_24_n_0 ),
-        .I1(\cpu_irq_out[28]_i_15_n_0 ),
-        .I2(\cpu_irq_out[13]_i_21_n_0 ),
-        .I3(\cpu_irq_out[28]_i_18_n_0 ),
-        .I4(\cpu_irq_out[12]_i_14_n_0 ),
-        .I5(\cpu_irq_out[12]_i_15_n_0 ),
-        .O(\cpu_irq_out[12]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[12]_i_6 
-       (.I0(\cpu_irq_out[13]_i_18_n_0 ),
-        .I1(\cpu_irq_out[28]_i_8_n_0 ),
-        .I2(\cpu_irq_out[15]_i_28_n_0 ),
-        .I3(\cpu_irq_out[28]_i_22_n_0 ),
-        .I4(\cpu_irq_out[12]_i_16_n_0 ),
-        .I5(\cpu_irq_out[12]_i_17_n_0 ),
-        .O(\cpu_irq_out[12]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[12]_i_7 
-       (.I0(\cpu_irq_out[12]_i_18_n_0 ),
-        .I1(\cpu_irq_out[20]_i_10_n_0 ),
-        .I2(\cpu_irq_out[15]_i_30_n_0 ),
-        .I3(\cpu_irq_out[28]_i_26_n_0 ),
-        .I4(\cpu_irq_out[12]_i_19_n_0 ),
-        .I5(\cpu_irq_out[12]_i_20_n_0 ),
-        .O(\cpu_irq_out[12]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000800)) 
-    \cpu_irq_out[12]_i_8 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\irq_dest_reg_n_0_[8][3] ),
-        .I4(\irq_dest_reg_n_0_[8][0] ),
-        .I5(\irq_dest_reg_n_0_[8][1] ),
-        .O(\cpu_irq_out[12]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[12]_i_9 
        (.I0(\irq_ack[2]_i_2_n_0 ),
         .I1(data19[2]),
         .I2(data19[4]),
         .I3(data19[3]),
         .I4(data19[0]),
         .I5(data19[1]),
+        .O(\cpu_irq_out[12]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair125" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[12]_i_19 
+       (.I0(data16[1]),
+        .I1(data16[0]),
+        .I2(data16[2]),
+        .I3(\irq_ack[5]_i_2_n_0 ),
+        .O(\cpu_irq_out[12]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[12]_i_2 
+       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
+        .I1(\cpu_irq_out[28]_i_24_n_0 ),
+        .I2(\cpu_irq_out[15]_i_27_n_0 ),
+        .I3(\cpu_irq_out[20]_i_10_n_0 ),
+        .I4(\cpu_irq_out[12]_i_8_n_0 ),
+        .I5(\cpu_irq_out[12]_i_9_n_0 ),
+        .O(\cpu_irq_out[12]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[12]_i_20 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][4] ),
+        .I3(\irq_dest_reg_n_0_[21][3] ),
+        .I4(\irq_dest_reg_n_0_[21][0] ),
+        .I5(\irq_dest_reg_n_0_[21][1] ),
+        .O(\cpu_irq_out[12]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000800)) 
+    \cpu_irq_out[12]_i_21 
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\irq_dest_reg_n_0_[8][3] ),
+        .I4(\irq_dest_reg_n_0_[8][0] ),
+        .I5(\irq_dest_reg_n_0_[8][1] ),
+        .O(\cpu_irq_out[12]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair49" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
+    \cpu_irq_out[12]_i_22 
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][1] ),
+        .I3(\irq_dest_reg_n_0_[19][0] ),
+        .O(\cpu_irq_out[12]_i_22_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[12]_i_23 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\irq_dest_reg_n_0_[17][3] ),
+        .I4(\irq_dest_reg_n_0_[17][0] ),
+        .I5(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[12]_i_23_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[12]_i_24 
+       (.I0(\irq_dest_reg_n_0_[12][4] ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_ack[12]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[12][2] ),
+        .I4(\irq_dest_reg_n_0_[12][0] ),
+        .I5(\irq_dest_reg_n_0_[12][1] ),
+        .O(\cpu_irq_out[12]_i_24_n_0 ));
+  LUT6 #(
+    .INIT(64'hFF04FF04FFFFFF04)) 
+    \cpu_irq_out[12]_i_3 
+       (.I0(\cpu_irq_out[12]_i_10_n_0 ),
+        .I1(data14[3]),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[12]_i_11_n_0 ),
+        .I4(cpu_irq_out[12]),
+        .I5(cpu_eoi_in[12]),
+        .O(\cpu_irq_out[12]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[12]_i_4 
+       (.I0(\cpu_irq_out[12]_i_12_n_0 ),
+        .I1(\cpu_irq_out[28]_i_12_n_0 ),
+        .I2(\cpu_irq_out[14]_i_8_n_0 ),
+        .I3(\cpu_irq_out[12]_i_13_n_0 ),
+        .I4(\cpu_irq_out[12]_i_14_n_0 ),
+        .I5(\cpu_irq_out[12]_i_15_n_0 ),
+        .O(\cpu_irq_out[12]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[12]_i_5 
+       (.I0(\cpu_irq_out[15]_i_28_n_0 ),
+        .I1(\cpu_irq_out[28]_i_9_n_0 ),
+        .I2(\cpu_irq_out[12]_i_16_n_0 ),
+        .I3(\cpu_irq_out[28]_i_18_n_0 ),
+        .I4(\cpu_irq_out[12]_i_17_n_0 ),
+        .I5(\cpu_irq_out[12]_i_18_n_0 ),
+        .O(\cpu_irq_out[12]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[12]_i_6 
+       (.I0(\cpu_irq_out[15]_i_16_n_0 ),
+        .I1(\cpu_irq_out[28]_i_28_n_0 ),
+        .I2(\cpu_irq_out[15]_i_8_n_0 ),
+        .I3(\cpu_irq_out[12]_i_19_n_0 ),
+        .I4(\cpu_irq_out[12]_i_20_n_0 ),
+        .I5(\cpu_irq_out[12]_i_21_n_0 ),
+        .O(\cpu_irq_out[12]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[12]_i_7 
+       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
+        .I1(\cpu_irq_out[12]_i_22_n_0 ),
+        .I2(\cpu_irq_out[15]_i_23_n_0 ),
+        .I3(\cpu_irq_out[28]_i_19_n_0 ),
+        .I4(\cpu_irq_out[12]_i_23_n_0 ),
+        .I5(\cpu_irq_out[12]_i_24_n_0 ),
+        .O(\cpu_irq_out[12]_i_7_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[12]_i_8 
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(\irq_ack[3]_i_2_n_0 ),
+        .I3(data18[2]),
+        .I4(data18[0]),
+        .I5(data18[1]),
+        .O(\cpu_irq_out[12]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000020000000000)) 
+    \cpu_irq_out[12]_i_9 
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[11][0] ),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][4] ),
+        .I5(\irq_dest_reg_n_0_[11][3] ),
         .O(\cpu_irq_out[12]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -2815,236 +2877,199 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[13]_i_7_n_0 ),
         .O(\cpu_irq_out[13]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000080000000000)) 
+    .INIT(64'h0000040000000000)) 
     \cpu_irq_out[13]_i_10 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\irq_dest_reg_n_0_[8][3] ),
-        .I4(\irq_dest_reg_n_0_[8][1] ),
-        .I5(\irq_dest_reg_n_0_[8][0] ),
-        .O(\cpu_irq_out[13]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_11 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[4]),
-        .I3(data19[3]),
-        .I4(data19[1]),
-        .I5(data19[0]),
-        .O(\cpu_irq_out[13]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair52" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[13]_i_12 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][0] ),
-        .I3(\irq_dest_reg_n_0_[9][1] ),
-        .O(\cpu_irq_out[13]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000080000000000)) 
-    \cpu_irq_out[13]_i_13 
-       (.I0(\irq_ack[10]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[10][0] ),
-        .I2(\irq_dest_reg_n_0_[10][1] ),
-        .I3(\irq_dest_reg_n_0_[10][2] ),
-        .I4(\irq_dest_reg_n_0_[10][4] ),
-        .I5(\irq_dest_reg_n_0_[10][3] ),
-        .O(\cpu_irq_out[13]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair36" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[13]_i_14 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][0] ),
-        .I3(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[13]_i_14_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_15 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\irq_dest_reg_n_0_[15][1] ),
-        .I5(\irq_dest_reg_n_0_[15][0] ),
-        .O(\cpu_irq_out[13]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_16 
-       (.I0(\irq_dest_reg_n_0_[18][4] ),
-        .I1(\irq_dest_reg_n_0_[18][3] ),
-        .I2(\irq_ack[18]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[18][2] ),
-        .I4(\irq_dest_reg_n_0_[18][1] ),
-        .I5(\irq_dest_reg_n_0_[18][0] ),
-        .O(\cpu_irq_out[13]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair223" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[13]_i_17 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[5]_i_10_n_0 ),
-        .O(\cpu_irq_out[13]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair278" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[13]_i_18 
-       (.I0(\irq_dest_reg_n_0_[19][3] ),
-        .I1(\irq_dest_reg_n_0_[19][4] ),
-        .O(\cpu_irq_out[13]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair46" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[13]_i_19 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][0] ),
-        .I3(\irq_dest_reg_n_0_[19][1] ),
-        .O(\cpu_irq_out[13]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[13]_i_2 
-       (.I0(\cpu_irq_out[13]_i_8_n_0 ),
-        .I1(\cpu_irq_out[21]_i_9_n_0 ),
-        .I2(\cpu_irq_out[13]_i_9_n_0 ),
-        .I3(\cpu_irq_out[29]_i_21_n_0 ),
-        .I4(\cpu_irq_out[13]_i_10_n_0 ),
-        .I5(\cpu_irq_out[13]_i_11_n_0 ),
-        .O(\cpu_irq_out[13]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_20 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][1] ),
         .I5(\irq_dest_reg_n_0_[12][0] ),
-        .O(\cpu_irq_out[13]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair282" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[13]_i_21 
-       (.I0(\irq_dest_reg_n_0_[21][3] ),
-        .I1(\irq_dest_reg_n_0_[21][4] ),
-        .O(\cpu_irq_out[13]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair54" *) 
+        .O(\cpu_irq_out[13]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000080000000000)) 
+    \cpu_irq_out[13]_i_11 
+       (.I0(\irq_ack[10]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[10][0] ),
+        .I2(\irq_dest_reg_n_0_[10][1] ),
+        .I3(\irq_dest_reg_n_0_[10][2] ),
+        .I4(\irq_dest_reg_n_0_[10][4] ),
+        .I5(\irq_dest_reg_n_0_[10][3] ),
+        .O(\cpu_irq_out[13]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair43" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[13]_i_22 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][0] ),
-        .I3(\irq_dest_reg_n_0_[21][1] ),
-        .O(\cpu_irq_out[13]_i_22_n_0 ));
+    \cpu_irq_out[13]_i_12 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][0] ),
+        .I3(\irq_dest_reg_n_0_[20][1] ),
+        .O(\cpu_irq_out[13]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_23 
+    \cpu_irq_out[13]_i_13 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][1] ),
+        .I5(\irq_dest_reg_n_0_[15][0] ),
+        .O(\cpu_irq_out[13]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[13]_i_14 
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][1] ),
+        .I5(\irq_dest_reg_n_0_[18][0] ),
+        .O(\cpu_irq_out[13]_i_14_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000080000000000)) 
+    \cpu_irq_out[13]_i_15 
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\irq_dest_reg_n_0_[8][3] ),
+        .I4(\irq_dest_reg_n_0_[8][1] ),
+        .I5(\irq_dest_reg_n_0_[8][0] ),
+        .O(\cpu_irq_out[13]_i_15_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[13]_i_16 
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(\irq_ack[3]_i_2_n_0 ),
+        .I3(data18[2]),
+        .I4(data18[1]),
+        .I5(data18[0]),
+        .O(\cpu_irq_out[13]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[13]_i_17 
        (.I0(\irq_dest_reg_n_0_[14][4] ),
         .I1(\irq_dest_reg_n_0_[14][3] ),
         .I2(\irq_ack[14]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[14][2] ),
         .I4(\irq_dest_reg_n_0_[14][1] ),
         .I5(\irq_dest_reg_n_0_[14][0] ),
-        .O(\cpu_irq_out[13]_i_23_n_0 ));
+        .O(\cpu_irq_out[13]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair222" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
+    \cpu_irq_out[13]_i_18 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[5]_i_10_n_0 ),
+        .O(\cpu_irq_out[13]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair55" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[13]_i_19 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[0]),
+        .I3(data17[1]),
+        .O(\cpu_irq_out[13]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFAEFFAEFFFFFFAE)) 
+    \cpu_irq_out[13]_i_2 
+       (.I0(\cpu_irq_out[13]_i_8_n_0 ),
+        .I1(\cpu_irq_out[15]_i_8_n_0 ),
+        .I2(\cpu_irq_out[13]_i_9_n_0 ),
+        .I3(\cpu_irq_out[13]_i_10_n_0 ),
+        .I4(\cpu_irq_out[15]_i_11_n_0 ),
+        .I5(\cpu_irq_out[21]_i_9_n_0 ),
+        .O(\cpu_irq_out[13]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_24 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][1] ),
-        .I5(\irq_dest_reg_n_0_[16][0] ),
-        .O(\cpu_irq_out[13]_i_24_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000200000000000)) 
-    \cpu_irq_out[13]_i_25 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[11][1] ),
-        .I2(\irq_dest_reg_n_0_[11][0] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][4] ),
-        .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[13]_i_25_n_0 ));
+    \cpu_irq_out[13]_i_20 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[1]),
+        .I5(data15[0]),
+        .O(\cpu_irq_out[13]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[13]_i_26 
+    \cpu_irq_out[13]_i_21 
        (.I0(\irq_ack[17]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][2] ),
         .I2(\irq_dest_reg_n_0_[17][4] ),
         .I3(\irq_dest_reg_n_0_[17][3] ),
         .I4(\irq_dest_reg_n_0_[17][1] ),
         .I5(\irq_dest_reg_n_0_[17][0] ),
-        .O(\cpu_irq_out[13]_i_26_n_0 ));
+        .O(\cpu_irq_out[13]_i_21_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[13]_i_3 
-       (.I0(\cpu_irq_out[13]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][3] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
+       (.I0(\cpu_irq_out[29]_i_23_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(cpu_irq_out[13]),
         .I4(cpu_eoi_in[13]),
-        .I5(\cpu_irq_out[13]_i_13_n_0 ),
+        .I5(\cpu_irq_out[13]_i_11_n_0 ),
         .O(\cpu_irq_out[13]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[13]_i_4 
-       (.I0(\cpu_irq_out[15]_i_16_n_0 ),
-        .I1(\cpu_irq_out[13]_i_14_n_0 ),
-        .I2(\cpu_irq_out[15]_i_25_n_0 ),
-        .I3(\cpu_irq_out[29]_i_28_n_0 ),
-        .I4(\cpu_irq_out[13]_i_15_n_0 ),
-        .I5(\cpu_irq_out[13]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
+        .I1(\cpu_irq_out[21]_i_18_n_0 ),
+        .I2(\cpu_irq_out[15]_i_16_n_0 ),
+        .I3(\cpu_irq_out[13]_i_12_n_0 ),
+        .I4(\cpu_irq_out[13]_i_13_n_0 ),
+        .I5(\cpu_irq_out[13]_i_14_n_0 ),
         .O(\cpu_irq_out[13]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFAEFFAEFFFFFFAE)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[13]_i_5 
-       (.I0(\cpu_irq_out[13]_i_17_n_0 ),
-        .I1(\cpu_irq_out[13]_i_18_n_0 ),
-        .I2(\cpu_irq_out[13]_i_19_n_0 ),
-        .I3(\cpu_irq_out[13]_i_20_n_0 ),
-        .I4(\cpu_irq_out[15]_i_10_n_0 ),
-        .I5(\cpu_irq_out[29]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_19_n_0 ),
+        .I1(\cpu_irq_out[21]_i_13_n_0 ),
+        .I2(\cpu_irq_out[15]_i_20_n_0 ),
+        .I3(\cpu_irq_out[21]_i_19_n_0 ),
+        .I4(\cpu_irq_out[13]_i_15_n_0 ),
+        .I5(\cpu_irq_out[13]_i_16_n_0 ),
         .O(\cpu_irq_out[13]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[13]_i_6 
-       (.I0(\cpu_irq_out[15]_i_24_n_0 ),
-        .I1(\cpu_irq_out[29]_i_14_n_0 ),
-        .I2(\cpu_irq_out[13]_i_21_n_0 ),
-        .I3(\cpu_irq_out[13]_i_22_n_0 ),
-        .I4(\cpu_irq_out[13]_i_23_n_0 ),
-        .I5(\cpu_irq_out[13]_i_24_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_23_n_0 ),
+        .I1(\cpu_irq_out[29]_i_19_n_0 ),
+        .I2(\cpu_irq_out[15]_i_24_n_0 ),
+        .I3(\cpu_irq_out[29]_i_24_n_0 ),
+        .I4(\cpu_irq_out[13]_i_17_n_0 ),
+        .I5(\cpu_irq_out[13]_i_18_n_0 ),
         .O(\cpu_irq_out[13]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[13]_i_7 
-       (.I0(\cpu_irq_out[15]_i_28_n_0 ),
-        .I1(\cpu_irq_out[29]_i_8_n_0 ),
-        .I2(\cpu_irq_out[15]_i_30_n_0 ),
-        .I3(\cpu_irq_out[21]_i_24_n_0 ),
-        .I4(\cpu_irq_out[13]_i_25_n_0 ),
-        .I5(\cpu_irq_out[13]_i_26_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_27_n_0 ),
+        .I1(\cpu_irq_out[13]_i_19_n_0 ),
+        .I2(\cpu_irq_out[15]_i_28_n_0 ),
+        .I3(\cpu_irq_out[29]_i_8_n_0 ),
+        .I4(\cpu_irq_out[13]_i_20_n_0 ),
+        .I5(\cpu_irq_out[13]_i_21_n_0 ),
         .O(\cpu_irq_out[13]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair275" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  LUT6 #(
+    .INIT(64'h0000200000000000)) 
     \cpu_irq_out[13]_i_8 
-       (.I0(data15[3]),
-        .I1(data15[4]),
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[11][1] ),
+        .I2(\irq_dest_reg_n_0_[11][0] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][4] ),
+        .I5(\irq_dest_reg_n_0_[11][3] ),
         .O(\cpu_irq_out[13]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair274" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  (* SOFT_HLUTNM = "soft_lutpair125" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
     \cpu_irq_out[13]_i_9 
-       (.I0(data16[3]),
-        .I1(data16[4]),
+       (.I0(data16[0]),
+        .I1(data16[1]),
+        .I2(data16[2]),
+        .I3(\irq_ack[5]_i_2_n_0 ),
         .O(\cpu_irq_out[13]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -3056,112 +3081,104 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[14]_i_6_n_0 ),
         .I5(\cpu_irq_out[14]_i_7_n_0 ),
         .O(\cpu_irq_out[14]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair134" *) 
-  LUT4 #(
-    .INIT(16'hFBFF)) 
-    \cpu_irq_out[14]_i_10 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
-        .O(\cpu_irq_out[14]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000080000000000)) 
+    \cpu_irq_out[14]_i_10 
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\irq_dest_reg_n_0_[8][3] ),
+        .I4(\irq_dest_reg_n_0_[8][0] ),
+        .I5(\irq_dest_reg_n_0_[8][1] ),
+        .O(\cpu_irq_out[14]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair42" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
     \cpu_irq_out[14]_i_11 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][1] ),
+        .I3(\irq_dest_reg_n_0_[9][0] ),
+        .O(\cpu_irq_out[14]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000080000000000)) 
+    \cpu_irq_out[14]_i_12 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][4] ),
         .I5(\irq_dest_reg_n_0_[10][3] ),
-        .O(\cpu_irq_out[14]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair37" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[14]_i_12 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(\irq_dest_reg_n_0_[13][0] ),
         .O(\cpu_irq_out[14]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair283" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
     \cpu_irq_out[14]_i_13 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\irq_dest_reg_n_0_[9][0] ),
-        .I5(\irq_dest_reg_n_0_[9][1] ),
+       (.I0(\irq_dest_reg_n_0_[13][3] ),
+        .I1(\irq_dest_reg_n_0_[13][4] ),
         .O(\cpu_irq_out[14]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
     \cpu_irq_out[14]_i_14 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\irq_dest_reg_n_0_[19][0] ),
-        .I5(\irq_dest_reg_n_0_[19][1] ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
         .O(\cpu_irq_out[14]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
     \cpu_irq_out[14]_i_15 
-       (.I0(data16[4]),
-        .I1(data16[3]),
-        .I2(\irq_ack[5]_i_2_n_0 ),
-        .I3(data16[2]),
-        .I4(data16[0]),
-        .I5(data16[1]),
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
         .O(\cpu_irq_out[14]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair223" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
     \cpu_irq_out[14]_i_16 
-       (.I0(\irq_dest_reg_n_0_[12][4] ),
-        .I1(\irq_dest_reg_n_0_[12][3] ),
-        .I2(\irq_ack[12]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][2] ),
-        .I4(\irq_dest_reg_n_0_[12][0] ),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[6]_i_10_n_0 ),
         .O(\cpu_irq_out[14]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair45" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
     \cpu_irq_out[14]_i_17 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][1] ),
-        .I3(\irq_dest_reg_n_0_[20][0] ),
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(\irq_ack[3]_i_2_n_0 ),
+        .I3(data18[2]),
+        .I4(data18[0]),
+        .I5(data18[1]),
         .O(\cpu_irq_out[14]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  LUT2 #(
+    .INIT(4'h2)) 
     \cpu_irq_out[14]_i_18 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
+       (.I0(\irq_dest_reg_n_0_[12][3] ),
+        .I1(\irq_dest_reg_n_0_[12][4] ),
         .O(\cpu_irq_out[14]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair83" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
     \cpu_irq_out[14]_i_19 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][0] ),
-        .I5(\irq_dest_reg_n_0_[16][1] ),
+       (.I0(\irq_dest_reg_n_0_[12][1] ),
+        .I1(\irq_dest_reg_n_0_[12][0] ),
+        .I2(\irq_dest_reg_n_0_[12][2] ),
+        .I3(\irq_ack[12]_i_2_n_0 ),
         .O(\cpu_irq_out[14]_i_19_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[14]_i_2 
-       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
-        .I1(\cpu_irq_out[22]_i_16_n_0 ),
-        .I2(\cpu_irq_out[15]_i_10_n_0 ),
-        .I3(\cpu_irq_out[30]_i_31_n_0 ),
-        .I4(\cpu_irq_out[14]_i_8_n_0 ),
-        .I5(\cpu_irq_out[14]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[14]_i_8_n_0 ),
+        .I1(\cpu_irq_out[30]_i_9_n_0 ),
+        .I2(\cpu_irq_out[15]_i_8_n_0 ),
+        .I3(\cpu_irq_out[22]_i_22_n_0 ),
+        .I4(\cpu_irq_out[14]_i_9_n_0 ),
+        .I5(\cpu_irq_out[14]_i_10_n_0 ),
         .O(\cpu_irq_out[14]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
@@ -3174,74 +3191,91 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_dest_reg_n_0_[14][1] ),
         .O(\cpu_irq_out[14]_i_20_n_0 ));
   LUT6 #(
-    .INIT(64'h0000200000000000)) 
+    .INIT(64'h0000040000000000)) 
     \cpu_irq_out[14]_i_21 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\irq_dest_reg_n_0_[16][3] ),
+        .I4(\irq_dest_reg_n_0_[16][0] ),
+        .I5(\irq_dest_reg_n_0_[16][1] ),
+        .O(\cpu_irq_out[14]_i_21_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[14]_i_22 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\irq_dest_reg_n_0_[17][3] ),
+        .I4(\irq_dest_reg_n_0_[17][0] ),
+        .I5(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[14]_i_22_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000200000000000)) 
+    \cpu_irq_out[14]_i_23 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[14]_i_21_n_0 ));
+        .O(\cpu_irq_out[14]_i_23_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[14]_i_3 
-       (.I0(\cpu_irq_out[14]_i_10_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
+       (.I0(\cpu_irq_out[14]_i_11_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][3] ),
+        .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(cpu_irq_out[14]),
         .I4(cpu_eoi_in[14]),
-        .I5(\cpu_irq_out[14]_i_11_n_0 ),
+        .I5(\cpu_irq_out[14]_i_12_n_0 ),
         .O(\cpu_irq_out[14]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[14]_i_4 
-       (.I0(\cpu_irq_out[15]_i_16_n_0 ),
-        .I1(\cpu_irq_out[14]_i_12_n_0 ),
-        .I2(\cpu_irq_out[15]_i_15_n_0 ),
-        .I3(\cpu_irq_out[30]_i_13_n_0 ),
-        .I4(\cpu_irq_out[14]_i_13_n_0 ),
-        .I5(\cpu_irq_out[14]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[14]_i_13_n_0 ),
+        .I1(\cpu_irq_out[22]_i_19_n_0 ),
+        .I2(\cpu_irq_out[15]_i_16_n_0 ),
+        .I3(\cpu_irq_out[22]_i_27_n_0 ),
+        .I4(\cpu_irq_out[14]_i_14_n_0 ),
+        .I5(\cpu_irq_out[14]_i_15_n_0 ),
         .O(\cpu_irq_out[14]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFAEFFAEFFFFFFAE)) 
     \cpu_irq_out[14]_i_5 
-       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
-        .I1(\cpu_irq_out[22]_i_10_n_0 ),
-        .I2(\cpu_irq_out[15]_i_21_n_0 ),
-        .I3(\cpu_irq_out[30]_i_21_n_0 ),
-        .I4(\cpu_irq_out[14]_i_15_n_0 ),
-        .I5(\cpu_irq_out[14]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[14]_i_16_n_0 ),
+        .I1(\cpu_irq_out[15]_i_20_n_0 ),
+        .I2(\cpu_irq_out[30]_i_11_n_0 ),
+        .I3(\cpu_irq_out[14]_i_17_n_0 ),
+        .I4(\cpu_irq_out[14]_i_18_n_0 ),
+        .I5(\cpu_irq_out[14]_i_19_n_0 ),
         .O(\cpu_irq_out[14]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[14]_i_6 
-       (.I0(\cpu_irq_out[15]_i_24_n_0 ),
-        .I1(\cpu_irq_out[30]_i_16_n_0 ),
-        .I2(\cpu_irq_out[15]_i_25_n_0 ),
-        .I3(\cpu_irq_out[14]_i_17_n_0 ),
-        .I4(\cpu_irq_out[14]_i_18_n_0 ),
-        .I5(\cpu_irq_out[14]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_23_n_0 ),
+        .I1(\cpu_irq_out[30]_i_17_n_0 ),
+        .I2(\cpu_irq_out[15]_i_24_n_0 ),
+        .I3(\cpu_irq_out[30]_i_22_n_0 ),
+        .I4(\cpu_irq_out[14]_i_20_n_0 ),
+        .I5(\cpu_irq_out[14]_i_21_n_0 ),
         .O(\cpu_irq_out[14]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[14]_i_7 
-       (.I0(\cpu_irq_out[15]_i_30_n_0 ),
-        .I1(\cpu_irq_out[30]_i_30_n_0 ),
-        .I2(\cpu_irq_out[15]_i_28_n_0 ),
-        .I3(\cpu_irq_out[30]_i_25_n_0 ),
-        .I4(\cpu_irq_out[14]_i_20_n_0 ),
-        .I5(\cpu_irq_out[14]_i_21_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_28_n_0 ),
+        .I1(\cpu_irq_out[30]_i_32_n_0 ),
+        .I2(\cpu_irq_out[15]_i_27_n_0 ),
+        .I3(\cpu_irq_out[30]_i_26_n_0 ),
+        .I4(\cpu_irq_out[14]_i_22_n_0 ),
+        .I5(\cpu_irq_out[14]_i_23_n_0 ),
         .O(\cpu_irq_out[14]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair278" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
     \cpu_irq_out[14]_i_8 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[4]),
-        .I3(data15[3]),
-        .I4(data15[0]),
-        .I5(data15[1]),
+       (.I0(data15[3]),
+        .I1(data15[4]),
         .O(\cpu_irq_out[14]_i_8_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
@@ -3263,40 +3297,40 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[15]_i_6_n_0 ),
         .I5(\cpu_irq_out[15]_i_7_n_0 ),
         .O(\cpu_irq_out[15]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair276" *) 
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[15]_i_10 
+       (.I0(\irq_dest_reg_n_0_[12][4] ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_ack[12]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[12][2] ),
+        .I4(\irq_dest_reg_n_0_[12][0] ),
+        .I5(\irq_dest_reg_n_0_[12][1] ),
+        .O(\cpu_irq_out[15]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair273" *) 
   LUT2 #(
     .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_10 
-       (.I0(data18[3]),
-        .I1(data18[4]),
-        .O(\cpu_irq_out[15]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
     \cpu_irq_out[15]_i_11 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[4]),
-        .I3(data15[3]),
-        .I4(data15[0]),
-        .I5(data15[1]),
+       (.I0(data19[3]),
+        .I1(data19[4]),
         .O(\cpu_irq_out[15]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair52" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
     \cpu_irq_out[15]_i_12 
        (.I0(\irq_ack[2]_i_2_n_0 ),
         .I1(data19[2]),
-        .I2(data19[4]),
-        .I3(data19[3]),
-        .I4(data19[0]),
-        .I5(data19[1]),
+        .I2(data19[1]),
+        .I3(data19[0]),
         .O(\cpu_irq_out[15]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair54" *) 
   LUT4 #(
     .INIT(16'hBFFF)) 
     \cpu_irq_out[15]_i_13 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(\irq_dest_reg_n_0_[13][0] ),
         .O(\cpu_irq_out[15]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0000800000000000)) 
@@ -3308,234 +3342,216 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][4] ),
         .I5(\irq_dest_reg_n_0_[10][3] ),
         .O(\cpu_irq_out[15]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair279" *) 
+  (* SOFT_HLUTNM = "soft_lutpair266" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[15]_i_15 
-       (.I0(\irq_dest_reg_n_0_[18][3] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
+       (.I0(\irq_dest_reg_n_0_[9][3] ),
+        .I1(\irq_dest_reg_n_0_[9][4] ),
         .O(\cpu_irq_out[15]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair268" *) 
+  (* SOFT_HLUTNM = "soft_lutpair270" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[15]_i_16 
-       (.I0(\irq_dest_reg_n_0_[13][3] ),
-        .I1(\irq_dest_reg_n_0_[13][4] ),
+       (.I0(\irq_dest_reg_n_0_[20][3] ),
+        .I1(\irq_dest_reg_n_0_[20][4] ),
         .O(\cpu_irq_out[15]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair37" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
     \cpu_irq_out[15]_i_17 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(\irq_dest_reg_n_0_[13][0] ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
         .O(\cpu_irq_out[15]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h0400000000000000)) 
     \cpu_irq_out[15]_i_18 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\irq_dest_reg_n_0_[9][0] ),
-        .I5(\irq_dest_reg_n_0_[9][1] ),
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
         .O(\cpu_irq_out[15]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[15]_i_19 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\irq_dest_reg_n_0_[19][0] ),
-        .I5(\irq_dest_reg_n_0_[19][1] ),
-        .O(\cpu_irq_out[15]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[15]_i_2 
-       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
-        .I1(\cpu_irq_out[15]_i_9_n_0 ),
-        .I2(\cpu_irq_out[15]_i_10_n_0 ),
-        .I3(\cpu_irq_out[31]_i_31_n_0 ),
-        .I4(\cpu_irq_out[15]_i_11_n_0 ),
-        .I5(\cpu_irq_out[15]_i_12_n_0 ),
-        .O(\cpu_irq_out[15]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair270" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_20 
-       (.I0(\irq_dest_reg_n_0_[15][3] ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
-        .O(\cpu_irq_out[15]_i_20_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair277" *) 
   LUT2 #(
     .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_19 
+       (.I0(\irq_dest_reg_n_0_[16][3] ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
+        .O(\cpu_irq_out[15]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    \cpu_irq_out[15]_i_2 
+       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
+        .I1(\cpu_irq_out[31]_i_23_n_0 ),
+        .I2(\cpu_irq_out[15]_i_9_n_0 ),
+        .I3(\cpu_irq_out[15]_i_10_n_0 ),
+        .I4(\cpu_irq_out[15]_i_11_n_0 ),
+        .I5(\cpu_irq_out[15]_i_12_n_0 ),
+        .O(\cpu_irq_out[15]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair276" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_20 
+       (.I0(\irq_dest_reg_n_0_[19][3] ),
+        .I1(\irq_dest_reg_n_0_[19][4] ),
+        .O(\cpu_irq_out[15]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
     \cpu_irq_out[15]_i_21 
-       (.I0(\irq_dest_reg_n_0_[8][3] ),
-        .I1(\irq_dest_reg_n_0_[8][4] ),
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(\irq_ack[3]_i_2_n_0 ),
+        .I3(data18[2]),
+        .I4(data18[0]),
+        .I5(data18[1]),
         .O(\cpu_irq_out[15]_i_21_n_0 ));
   LUT6 #(
-    .INIT(64'h0400000000000000)) 
+    .INIT(64'h0800000000000000)) 
     \cpu_irq_out[15]_i_22 
-       (.I0(\irq_dest_reg_n_0_[12][4] ),
-        .I1(\irq_dest_reg_n_0_[12][3] ),
-        .I2(\irq_ack[12]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][2] ),
-        .I4(\irq_dest_reg_n_0_[12][0] ),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\irq_dest_reg_n_0_[8][3] ),
+        .I4(\irq_dest_reg_n_0_[8][0] ),
+        .I5(\irq_dest_reg_n_0_[8][1] ),
         .O(\cpu_irq_out[15]_i_22_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[15]_i_23 
-       (.I0(data16[4]),
-        .I1(data16[3]),
-        .I2(\irq_ack[5]_i_2_n_0 ),
-        .I3(data16[2]),
-        .I4(data16[0]),
-        .I5(data16[1]),
-        .O(\cpu_irq_out[15]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair283" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_24 
-       (.I0(data21[3]),
-        .I1(data21[4]),
-        .O(\cpu_irq_out[15]_i_24_n_0 ));
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_25 
-       (.I0(\irq_dest_reg_n_0_[20][3] ),
-        .I1(\irq_dest_reg_n_0_[20][4] ),
-        .O(\cpu_irq_out[15]_i_25_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[15]_i_26 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
-        .O(\cpu_irq_out[15]_i_26_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[15]_i_27 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][0] ),
-        .I5(\irq_dest_reg_n_0_[16][1] ),
-        .O(\cpu_irq_out[15]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair269" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_28 
-       (.I0(data17[3]),
-        .I1(data17[4]),
-        .O(\cpu_irq_out[15]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair41" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
-    \cpu_irq_out[15]_i_29 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[1]),
-        .I3(data17[0]),
-        .O(\cpu_irq_out[15]_i_29_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFF0404FF04)) 
-    \cpu_irq_out[15]_i_3 
-       (.I0(\cpu_irq_out[15]_i_13_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
-        .I3(cpu_irq_out[15]),
-        .I4(cpu_eoi_in[15]),
-        .I5(\cpu_irq_out[15]_i_14_n_0 ),
-        .O(\cpu_irq_out[15]_i_3_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair281" *) 
   LUT2 #(
     .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_30 
-       (.I0(\irq_dest_reg_n_0_[1][3] ),
-        .I1(\irq_dest_reg_n_0_[1][4] ),
-        .O(\cpu_irq_out[15]_i_30_n_0 ));
+    \cpu_irq_out[15]_i_23 
+       (.I0(data21[3]),
+        .I1(data21[4]),
+        .O(\cpu_irq_out[15]_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair282" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_24 
+       (.I0(\irq_dest_reg_n_0_[21][3] ),
+        .I1(\irq_dest_reg_n_0_[21][4] ),
+        .O(\cpu_irq_out[15]_i_24_n_0 ));
   LUT6 #(
     .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[15]_i_31 
+    \cpu_irq_out[15]_i_25 
        (.I0(\irq_dest_reg_n_0_[14][4] ),
         .I1(\irq_dest_reg_n_0_[14][3] ),
         .I2(\irq_ack[14]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[14][2] ),
         .I4(\irq_dest_reg_n_0_[14][0] ),
         .I5(\irq_dest_reg_n_0_[14][1] ),
-        .O(\cpu_irq_out[15]_i_31_n_0 ));
+        .O(\cpu_irq_out[15]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair225" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
+    \cpu_irq_out[15]_i_26 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[7]_i_12_n_0 ),
+        .O(\cpu_irq_out[15]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair279" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_27 
+       (.I0(data17[3]),
+        .I1(data17[4]),
+        .O(\cpu_irq_out[15]_i_27_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair272" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_28 
+       (.I0(\irq_dest_reg_n_0_[1][3] ),
+        .I1(\irq_dest_reg_n_0_[1][4] ),
+        .O(\cpu_irq_out[15]_i_28_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[15]_i_29 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[0]),
+        .I5(data15[1]),
+        .O(\cpu_irq_out[15]_i_29_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF0404FF04)) 
+    \cpu_irq_out[15]_i_3 
+       (.I0(\cpu_irq_out[15]_i_13_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I3(cpu_irq_out[15]),
+        .I4(cpu_eoi_in[15]),
+        .I5(\cpu_irq_out[15]_i_14_n_0 ),
+        .O(\cpu_irq_out[15]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[15]_i_30 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\irq_dest_reg_n_0_[17][3] ),
+        .I4(\irq_dest_reg_n_0_[17][0] ),
+        .I5(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[15]_i_30_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[15]_i_4 
+       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
+        .I1(\cpu_irq_out[23]_i_22_n_0 ),
+        .I2(\cpu_irq_out[15]_i_16_n_0 ),
+        .I3(\cpu_irq_out[31]_i_35_n_0 ),
+        .I4(\cpu_irq_out[15]_i_17_n_0 ),
+        .I5(\cpu_irq_out[15]_i_18_n_0 ),
+        .O(\cpu_irq_out[15]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[15]_i_5 
+       (.I0(\cpu_irq_out[15]_i_19_n_0 ),
+        .I1(\cpu_irq_out[23]_i_15_n_0 ),
+        .I2(\cpu_irq_out[15]_i_20_n_0 ),
+        .I3(\cpu_irq_out[23]_i_12_n_0 ),
+        .I4(\cpu_irq_out[15]_i_21_n_0 ),
+        .I5(\cpu_irq_out[15]_i_22_n_0 ),
+        .O(\cpu_irq_out[15]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[15]_i_6 
+       (.I0(\cpu_irq_out[15]_i_23_n_0 ),
+        .I1(\cpu_irq_out[31]_i_19_n_0 ),
+        .I2(\cpu_irq_out[15]_i_24_n_0 ),
+        .I3(\cpu_irq_out[23]_i_20_n_0 ),
+        .I4(\cpu_irq_out[15]_i_25_n_0 ),
+        .I5(\cpu_irq_out[15]_i_26_n_0 ),
+        .O(\cpu_irq_out[15]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[15]_i_7 
+       (.I0(\cpu_irq_out[15]_i_27_n_0 ),
+        .I1(\cpu_irq_out[31]_i_9_n_0 ),
+        .I2(\cpu_irq_out[15]_i_28_n_0 ),
+        .I3(\cpu_irq_out[23]_i_31_n_0 ),
+        .I4(\cpu_irq_out[15]_i_29_n_0 ),
+        .I5(\cpu_irq_out[15]_i_30_n_0 ),
+        .O(\cpu_irq_out[15]_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair271" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[15]_i_8 
+       (.I0(data16[3]),
+        .I1(data16[4]),
+        .O(\cpu_irq_out[15]_i_8_n_0 ));
   LUT6 #(
     .INIT(64'h0000800000000000)) 
-    \cpu_irq_out[15]_i_32 
+    \cpu_irq_out[15]_i_9 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[15]_i_32_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[15]_i_4 
-       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
-        .I1(\cpu_irq_out[31]_i_25_n_0 ),
-        .I2(\cpu_irq_out[15]_i_16_n_0 ),
-        .I3(\cpu_irq_out[15]_i_17_n_0 ),
-        .I4(\cpu_irq_out[15]_i_18_n_0 ),
-        .I5(\cpu_irq_out[15]_i_19_n_0 ),
-        .O(\cpu_irq_out[15]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[15]_i_5 
-       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
-        .I1(\cpu_irq_out[31]_i_14_n_0 ),
-        .I2(\cpu_irq_out[15]_i_21_n_0 ),
-        .I3(\cpu_irq_out[31]_i_13_n_0 ),
-        .I4(\cpu_irq_out[15]_i_22_n_0 ),
-        .I5(\cpu_irq_out[15]_i_23_n_0 ),
-        .O(\cpu_irq_out[15]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[15]_i_6 
-       (.I0(\cpu_irq_out[15]_i_24_n_0 ),
-        .I1(\cpu_irq_out[31]_i_29_n_0 ),
-        .I2(\cpu_irq_out[15]_i_25_n_0 ),
-        .I3(\cpu_irq_out[31]_i_19_n_0 ),
-        .I4(\cpu_irq_out[15]_i_26_n_0 ),
-        .I5(\cpu_irq_out[15]_i_27_n_0 ),
-        .O(\cpu_irq_out[15]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[15]_i_7 
-       (.I0(\cpu_irq_out[15]_i_28_n_0 ),
-        .I1(\cpu_irq_out[15]_i_29_n_0 ),
-        .I2(\cpu_irq_out[15]_i_30_n_0 ),
-        .I3(\cpu_irq_out[31]_i_35_n_0 ),
-        .I4(\cpu_irq_out[15]_i_31_n_0 ),
-        .I5(\cpu_irq_out[15]_i_32_n_0 ),
-        .O(\cpu_irq_out[15]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair272" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[15]_i_8 
-       (.I0(\irq_dest_reg_n_0_[17][3] ),
-        .I1(\irq_dest_reg_n_0_[17][4] ),
-        .O(\cpu_irq_out[15]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair43" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
-    \cpu_irq_out[15]_i_9 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][1] ),
-        .I3(\irq_dest_reg_n_0_[17][0] ),
         .O(\cpu_irq_out[15]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -3547,7 +3563,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[16]_i_6_n_0 ),
         .I5(\cpu_irq_out[16]_i_7_n_0 ),
         .O(\cpu_irq_out[16]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair79" *) 
+  (* SOFT_HLUTNM = "soft_lutpair140" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[16]_i_10 
@@ -3569,14 +3585,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[16]_i_12 
-       (.I0(\cpu_irq_out[24]_i_21_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_9_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][4] ),
         .I2(\irq_dest_reg_n_0_[9][3] ),
-        .I3(\cpu_irq_out[24]_i_12_n_0 ),
+        .I3(\cpu_irq_out[8]_i_14_n_0 ),
         .I4(\irq_dest_reg_n_0_[20][4] ),
         .I5(\irq_dest_reg_n_0_[20][3] ),
         .O(\cpu_irq_out[16]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair136" *) 
+  (* SOFT_HLUTNM = "soft_lutpair104" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[16]_i_13 
@@ -3588,64 +3604,55 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[16]_i_14 
-       (.I0(\cpu_irq_out[24]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[0]_i_16_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][4] ),
         .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\cpu_irq_out[24]_i_28_n_0 ),
+        .I3(\cpu_irq_out[24]_i_27_n_0 ),
         .I4(\irq_dest_reg_n_0_[16][4] ),
         .I5(\irq_dest_reg_n_0_[16][3] ),
         .O(\cpu_irq_out[16]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair82" *) 
-  LUT4 #(
-    .INIT(16'hFEFF)) 
+  (* SOFT_HLUTNM = "soft_lutpair230" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
     \cpu_irq_out[16]_i_15 
-       (.I0(\irq_dest_reg_n_0_[8][0] ),
-        .I1(\irq_dest_reg_n_0_[8][1] ),
-        .I2(\irq_dest_reg_n_0_[8][2] ),
-        .I3(\irq_ack[8]_i_2_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[21][3] ),
+        .I1(\irq_dest_reg_n_0_[21][4] ),
+        .I2(\cpu_irq_out[0]_i_14_n_0 ),
         .O(\cpu_irq_out[16]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair229" *) 
+  (* SOFT_HLUTNM = "soft_lutpair220" *) 
   LUT3 #(
     .INIT(8'h04)) 
     \cpu_irq_out[16]_i_16 
-       (.I0(\irq_dest_reg_n_0_[21][3] ),
-        .I1(\irq_dest_reg_n_0_[21][4] ),
-        .I2(\cpu_irq_out[24]_i_18_n_0 ),
-        .O(\cpu_irq_out[16]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair221" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[16]_i_17 
        (.I0(data14[3]),
         .I1(data14[4]),
         .I2(\cpu_irq_out[8]_i_9_n_0 ),
-        .O(\cpu_irq_out[16]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair124" *) 
+        .O(\cpu_irq_out[16]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair118" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[16]_i_18 
+    \cpu_irq_out[16]_i_17 
        (.I0(\irq_ack[1]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[1][0] ),
         .I2(\irq_dest_reg_n_0_[1][1] ),
         .I3(\irq_dest_reg_n_0_[1][2] ),
-        .O(\cpu_irq_out[16]_i_18_n_0 ));
+        .O(\cpu_irq_out[16]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[16]_i_19 
-       (.I0(\cpu_irq_out[24]_i_27_n_0 ),
+    \cpu_irq_out[16]_i_18 
+       (.I0(\cpu_irq_out[24]_i_11_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][4] ),
         .I2(\irq_dest_reg_n_0_[17][3] ),
         .I3(\cpu_irq_out[0]_i_9_n_0 ),
         .I4(data15[4]),
         .I5(data15[3]),
-        .O(\cpu_irq_out[16]_i_19_n_0 ));
+        .O(\cpu_irq_out[16]_i_18_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFAEAEFFAE)) 
     \cpu_irq_out[16]_i_2 
        (.I0(\cpu_irq_out[16]_i_8_n_0 ),
-        .I1(\cpu_irq_out[19]_i_17_n_0 ),
+        .I1(\cpu_irq_out[23]_i_29_n_0 ),
         .I2(\cpu_irq_out[24]_i_10_n_0 ),
-        .I3(\cpu_irq_out[19]_i_14_n_0 ),
+        .I3(\cpu_irq_out[19]_i_15_n_0 ),
         .I4(\cpu_irq_out[24]_i_26_n_0 ),
         .I5(\cpu_irq_out[16]_i_9_n_0 ),
         .O(\cpu_irq_out[16]_i_2_n_0 ));
@@ -3663,8 +3670,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[16]_i_4 
        (.I0(\cpu_irq_out[16]_i_12_n_0 ),
-        .I1(\cpu_irq_out[22]_i_22_n_0 ),
-        .I2(\cpu_irq_out[24]_i_25_n_0 ),
+        .I1(\cpu_irq_out[23]_i_16_n_0 ),
+        .I2(\cpu_irq_out[24]_i_17_n_0 ),
         .I3(\irq_dest_reg_n_0_[15][3] ),
         .I4(\irq_dest_reg_n_0_[15][4] ),
         .I5(\cpu_irq_out[16]_i_13_n_0 ),
@@ -3673,47 +3680,47 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[16]_i_5 
        (.I0(\cpu_irq_out[16]_i_14_n_0 ),
-        .I1(\cpu_irq_out[23]_i_28_n_0 ),
-        .I2(\cpu_irq_out[16]_i_15_n_0 ),
+        .I1(\cpu_irq_out[22]_i_8_n_0 ),
+        .I2(\cpu_irq_out[24]_i_18_n_0 ),
         .I3(data18[3]),
         .I4(data18[4]),
-        .I5(\cpu_irq_out[24]_i_8_n_0 ),
+        .I5(\cpu_irq_out[24]_i_24_n_0 ),
         .O(\cpu_irq_out[16]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFF2F2FFF2)) 
     \cpu_irq_out[16]_i_6 
-       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
-        .I1(\cpu_irq_out[24]_i_19_n_0 ),
-        .I2(\cpu_irq_out[16]_i_16_n_0 ),
-        .I3(\cpu_irq_out[23]_i_26_n_0 ),
-        .I4(\cpu_irq_out[24]_i_16_n_0 ),
-        .I5(\cpu_irq_out[16]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[24]_i_14_n_0 ),
+        .I2(\cpu_irq_out[16]_i_15_n_0 ),
+        .I3(\cpu_irq_out[23]_i_8_n_0 ),
+        .I4(\cpu_irq_out[24]_i_15_n_0 ),
+        .I5(\cpu_irq_out[16]_i_16_n_0 ),
         .O(\cpu_irq_out[16]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[16]_i_7 
-       (.I0(\cpu_irq_out[21]_i_19_n_0 ),
-        .I1(\cpu_irq_out[24]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_11_n_0 ),
+        .I1(\cpu_irq_out[24]_i_21_n_0 ),
         .I2(\irq_dest_reg_n_0_[1][3] ),
         .I3(\irq_dest_reg_n_0_[1][4] ),
-        .I4(\cpu_irq_out[16]_i_18_n_0 ),
-        .I5(\cpu_irq_out[16]_i_19_n_0 ),
+        .I4(\cpu_irq_out[16]_i_17_n_0 ),
+        .I5(\cpu_irq_out[16]_i_18_n_0 ),
         .O(\cpu_irq_out[16]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair78" *) 
+  (* SOFT_HLUTNM = "soft_lutpair103" *) 
   LUT3 #(
     .INIT(8'h04)) 
     \cpu_irq_out[16]_i_8 
        (.I0(\irq_dest_reg_n_0_[11][3] ),
         .I1(\irq_dest_reg_n_0_[11][4] ),
-        .I2(\cpu_irq_out[0]_i_12_n_0 ),
+        .I2(\cpu_irq_out[24]_i_28_n_0 ),
         .O(\cpu_irq_out[16]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair216" *) 
+  (* SOFT_HLUTNM = "soft_lutpair117" *) 
   LUT3 #(
     .INIT(8'h04)) 
     \cpu_irq_out[16]_i_9 
        (.I0(data19[3]),
         .I1(data19[4]),
-        .I2(\cpu_irq_out[8]_i_17_n_0 ),
+        .I2(\cpu_irq_out[24]_i_20_n_0 ),
         .O(\cpu_irq_out[16]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -3725,173 +3732,159 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[17]_i_6_n_0 ),
         .I5(\cpu_irq_out[17]_i_7_n_0 ),
         .O(\cpu_irq_out[17]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair79" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[17]_i_10 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][1] ),
-        .I2(\irq_dest_reg_n_0_[13][0] ),
-        .I3(\irq_dest_reg_n_0_[13][2] ),
-        .O(\cpu_irq_out[17]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000002000000000)) 
-    \cpu_irq_out[17]_i_11 
+    \cpu_irq_out[17]_i_10 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][2] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][1] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
+        .O(\cpu_irq_out[17]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair140" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[17]_i_11 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][1] ),
+        .I2(\irq_dest_reg_n_0_[13][0] ),
+        .I3(\irq_dest_reg_n_0_[13][2] ),
         .O(\cpu_irq_out[17]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[17]_i_12 
-       (.I0(\cpu_irq_out[25]_i_20_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][4] ),
-        .I2(\irq_dest_reg_n_0_[9][3] ),
-        .I3(\cpu_irq_out[9]_i_12_n_0 ),
-        .I4(\irq_dest_reg_n_0_[20][4] ),
-        .I5(\irq_dest_reg_n_0_[20][3] ),
+       (.I0(\cpu_irq_out[9]_i_16_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][4] ),
+        .I2(\irq_dest_reg_n_0_[19][3] ),
+        .I3(\cpu_irq_out[9]_i_8_n_0 ),
+        .I4(\irq_dest_reg_n_0_[9][4] ),
+        .I5(\irq_dest_reg_n_0_[9][3] ),
         .O(\cpu_irq_out[17]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[17]_i_13 
-       (.I0(\cpu_irq_out[25]_i_14_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][4] ),
-        .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\cpu_irq_out[25]_i_29_n_0 ),
-        .I4(\irq_dest_reg_n_0_[16][4] ),
-        .I5(\irq_dest_reg_n_0_[16][3] ),
+       (.I0(\cpu_irq_out[25]_i_9_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(\cpu_irq_out[25]_i_26_n_0 ),
+        .I4(\irq_dest_reg_n_0_[8][4] ),
+        .I5(\irq_dest_reg_n_0_[8][3] ),
         .O(\cpu_irq_out[17]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair82" *) 
+  (* SOFT_HLUTNM = "soft_lutpair99" *) 
   LUT4 #(
-    .INIT(16'hFBFF)) 
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[17]_i_14 
-       (.I0(\irq_dest_reg_n_0_[8][1] ),
-        .I1(\irq_dest_reg_n_0_[8][0] ),
-        .I2(\irq_dest_reg_n_0_[8][2] ),
-        .I3(\irq_ack[8]_i_2_n_0 ),
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][1] ),
+        .I2(\irq_dest_reg_n_0_[20][0] ),
+        .I3(\irq_dest_reg_n_0_[20][2] ),
         .O(\cpu_irq_out[17]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair230" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[17]_i_15 
-       (.I0(\irq_dest_reg_n_0_[21][3] ),
-        .I1(\irq_dest_reg_n_0_[21][4] ),
-        .I2(\cpu_irq_out[25]_i_21_n_0 ),
-        .O(\cpu_irq_out[17]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair222" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[17]_i_16 
-       (.I0(data14[3]),
-        .I1(data14[4]),
-        .I2(\cpu_irq_out[9]_i_9_n_0 ),
-        .O(\cpu_irq_out[17]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair94" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[17]_i_17 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[1]),
-        .I2(data17[0]),
-        .I3(data17[2]),
-        .O(\cpu_irq_out[17]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair124" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[17]_i_18 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][1] ),
-        .I2(\irq_dest_reg_n_0_[1][0] ),
-        .I3(\irq_dest_reg_n_0_[1][2] ),
-        .O(\cpu_irq_out[17]_i_18_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[17]_i_19 
-       (.I0(\cpu_irq_out[25]_i_10_n_0 ),
-        .I1(data15[4]),
-        .I2(data15[3]),
-        .I3(\cpu_irq_out[25]_i_28_n_0 ),
-        .I4(\irq_dest_reg_n_0_[17][4] ),
-        .I5(\irq_dest_reg_n_0_[17][3] ),
-        .O(\cpu_irq_out[17]_i_19_n_0 ));
+    \cpu_irq_out[17]_i_15 
+       (.I0(\cpu_irq_out[25]_i_27_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
+        .I2(\irq_dest_reg_n_0_[16][3] ),
+        .I3(\cpu_irq_out[25]_i_12_n_0 ),
+        .I4(\irq_dest_reg_n_0_[21][4] ),
+        .I5(\irq_dest_reg_n_0_[21][3] ),
+        .O(\cpu_irq_out[17]_i_15_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAEAEFFAE)) 
+    .INIT(64'h0404040404FF0404)) 
+    \cpu_irq_out[17]_i_16 
+       (.I0(\cpu_irq_out[9]_i_17_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][4] ),
+        .I2(\irq_dest_reg_n_0_[1][3] ),
+        .I3(\cpu_irq_out[9]_i_14_n_0 ),
+        .I4(data17[4]),
+        .I5(data17[3]),
+        .O(\cpu_irq_out[17]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair211" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[17]_i_17 
+       (.I0(\irq_dest_reg_n_0_[11][4] ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .O(\cpu_irq_out[17]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[17]_i_2 
-       (.I0(\cpu_irq_out[17]_i_8_n_0 ),
-        .I1(\cpu_irq_out[19]_i_17_n_0 ),
-        .I2(\cpu_irq_out[25]_i_9_n_0 ),
-        .I3(\cpu_irq_out[19]_i_14_n_0 ),
-        .I4(\cpu_irq_out[25]_i_25_n_0 ),
-        .I5(\cpu_irq_out[17]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_26_n_0 ),
+        .I1(\cpu_irq_out[25]_i_13_n_0 ),
+        .I2(\irq_dest_reg_n_0_[17][3] ),
+        .I3(\irq_dest_reg_n_0_[17][4] ),
+        .I4(\cpu_irq_out[25]_i_19_n_0 ),
+        .I5(\cpu_irq_out[17]_i_8_n_0 ),
         .O(\cpu_irq_out[17]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[17]_i_3 
-       (.I0(\cpu_irq_out[17]_i_10_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][4] ),
-        .I2(\irq_dest_reg_n_0_[13][3] ),
+       (.I0(\cpu_irq_out[17]_i_9_n_0 ),
+        .I1(data14[4]),
+        .I2(data14[3]),
         .I3(cpu_irq_out[17]),
         .I4(cpu_eoi_in[17]),
-        .I5(\cpu_irq_out[17]_i_11_n_0 ),
+        .I5(\cpu_irq_out[17]_i_10_n_0 ),
         .O(\cpu_irq_out[17]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEAEFFAEAE)) 
+    .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[17]_i_4 
-       (.I0(\cpu_irq_out[17]_i_12_n_0 ),
-        .I1(\cpu_irq_out[22]_i_22_n_0 ),
-        .I2(\cpu_irq_out[25]_i_23_n_0 ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\irq_dest_reg_n_0_[15][4] ),
-        .I5(\cpu_irq_out[25]_i_11_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_16_n_0 ),
+        .I1(\cpu_irq_out[25]_i_16_n_0 ),
+        .I2(\irq_dest_reg_n_0_[13][3] ),
+        .I3(\irq_dest_reg_n_0_[13][4] ),
+        .I4(\cpu_irq_out[17]_i_11_n_0 ),
+        .I5(\cpu_irq_out[17]_i_12_n_0 ),
         .O(\cpu_irq_out[17]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[17]_i_5 
        (.I0(\cpu_irq_out[17]_i_13_n_0 ),
-        .I1(\cpu_irq_out[23]_i_28_n_0 ),
-        .I2(\cpu_irq_out[17]_i_14_n_0 ),
-        .I3(data18[3]),
-        .I4(data18[4]),
-        .I5(\cpu_irq_out[25]_i_18_n_0 ),
+        .I1(\cpu_irq_out[19]_i_15_n_0 ),
+        .I2(\cpu_irq_out[25]_i_15_n_0 ),
+        .I3(data16[3]),
+        .I4(data16[4]),
+        .I5(\cpu_irq_out[25]_i_17_n_0 ),
         .O(\cpu_irq_out[17]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFF2F2FFF2)) 
+    .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[17]_i_6 
-       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
-        .I1(\cpu_irq_out[25]_i_17_n_0 ),
-        .I2(\cpu_irq_out[17]_i_15_n_0 ),
-        .I3(\cpu_irq_out[23]_i_26_n_0 ),
-        .I4(\cpu_irq_out[25]_i_15_n_0 ),
-        .I5(\cpu_irq_out[17]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[25]_i_14_n_0 ),
+        .I2(\irq_dest_reg_n_0_[20][3] ),
+        .I3(\irq_dest_reg_n_0_[20][4] ),
+        .I4(\cpu_irq_out[17]_i_14_n_0 ),
+        .I5(\cpu_irq_out[17]_i_15_n_0 ),
         .O(\cpu_irq_out[17]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF22222F22)) 
+    .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[17]_i_7 
-       (.I0(\cpu_irq_out[21]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[17]_i_16_n_0 ),
         .I1(\cpu_irq_out[17]_i_17_n_0 ),
-        .I2(\irq_dest_reg_n_0_[1][3] ),
-        .I3(\irq_dest_reg_n_0_[1][4] ),
-        .I4(\cpu_irq_out[17]_i_18_n_0 ),
-        .I5(\cpu_irq_out[17]_i_19_n_0 ),
+        .I2(\cpu_irq_out[25]_i_23_n_0 ),
+        .I3(\irq_dest_reg_n_0_[14][3] ),
+        .I4(\irq_dest_reg_n_0_[14][4] ),
+        .I5(\cpu_irq_out[25]_i_22_n_0 ),
         .O(\cpu_irq_out[17]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair170" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[17]_i_8 
-       (.I0(\irq_dest_reg_n_0_[11][3] ),
-        .I1(\irq_dest_reg_n_0_[11][4] ),
-        .I2(\cpu_irq_out[1]_i_11_n_0 ),
+       (.I0(\cpu_irq_out[1]_i_9_n_0 ),
+        .I1(data15[4]),
+        .I2(data15[3]),
+        .I3(\cpu_irq_out[25]_i_20_n_0 ),
+        .I4(data19[4]),
+        .I5(data19[3]),
         .O(\cpu_irq_out[17]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair216" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
+  (* SOFT_HLUTNM = "soft_lutpair129" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[17]_i_9 
-       (.I0(data19[3]),
-        .I1(data19[4]),
-        .I2(\cpu_irq_out[25]_i_27_n_0 ),
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[1]),
+        .I2(data14[0]),
+        .I3(data14[2]),
         .O(\cpu_irq_out[17]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -3903,14 +3896,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[18]_i_6_n_0 ),
         .I5(\cpu_irq_out[18]_i_7_n_0 ),
         .O(\cpu_irq_out[18]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair110" *) 
+  (* SOFT_HLUTNM = "soft_lutpair130" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[18]_i_10 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][0] ),
-        .I2(\irq_dest_reg_n_0_[16][1] ),
-        .I3(\irq_dest_reg_n_0_[16][2] ),
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[0]),
+        .I2(data14[1]),
+        .I3(data14[2]),
         .O(\cpu_irq_out[18]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000002000000000)) 
@@ -3922,38 +3915,41 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[18]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair141" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[18]_i_12 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][0] ),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(\irq_dest_reg_n_0_[13][2] ),
+        .O(\cpu_irq_out[18]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[18]_i_12 
+    \cpu_irq_out[18]_i_13 
        (.I0(\cpu_irq_out[26]_i_21_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][4] ),
         .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\cpu_irq_out[26]_i_27_n_0 ),
-        .I4(\irq_dest_reg_n_0_[13][4] ),
-        .I5(\irq_dest_reg_n_0_[13][3] ),
-        .O(\cpu_irq_out[18]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair226" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[18]_i_13 
-       (.I0(\irq_dest_reg_n_0_[15][3] ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
-        .I2(\cpu_irq_out[2]_i_13_n_0 ),
+        .I3(\cpu_irq_out[26]_i_20_n_0 ),
+        .I4(\irq_dest_reg_n_0_[9][4] ),
+        .I5(\irq_dest_reg_n_0_[9][3] ),
         .O(\cpu_irq_out[18]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair209" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[18]_i_14 
-       (.I0(\irq_dest_reg_n_0_[8][3] ),
-        .I1(\irq_dest_reg_n_0_[8][4] ),
-        .I2(\cpu_irq_out[26]_i_29_n_0 ),
+       (.I0(\cpu_irq_out[26]_i_29_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(\cpu_irq_out[26]_i_28_n_0 ),
+        .I4(\irq_dest_reg_n_0_[8][4] ),
+        .I5(\irq_dest_reg_n_0_[8][3] ),
         .O(\cpu_irq_out[18]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[18]_i_15 
-       (.I0(\cpu_irq_out[10]_i_9_n_0 ),
-        .I1(data14[4]),
-        .I2(data14[3]),
+       (.I0(\cpu_irq_out[26]_i_27_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
+        .I2(\irq_dest_reg_n_0_[16][3] ),
         .I3(\cpu_irq_out[26]_i_17_n_0 ),
         .I4(\irq_dest_reg_n_0_[21][4] ),
         .I5(\irq_dest_reg_n_0_[21][3] ),
@@ -3961,26 +3957,26 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[18]_i_16 
-       (.I0(\cpu_irq_out[26]_i_26_n_0 ),
+       (.I0(\cpu_irq_out[2]_i_15_n_0 ),
         .I1(\irq_dest_reg_n_0_[1][4] ),
         .I2(\irq_dest_reg_n_0_[1][3] ),
         .I3(\cpu_irq_out[26]_i_15_n_0 ),
         .I4(data17[4]),
         .I5(data17[3]),
         .O(\cpu_irq_out[18]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair91" *) 
+  (* SOFT_HLUTNM = "soft_lutpair102" *) 
   LUT4 #(
-    .INIT(16'hFFEF)) 
+    .INIT(16'hFBFF)) 
     \cpu_irq_out[18]_i_17 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[0]),
-        .I2(data15[1]),
-        .I3(data15[2]),
+       (.I0(\irq_dest_reg_n_0_[11][0] ),
+        .I1(\irq_dest_reg_n_0_[11][1] ),
+        .I2(\irq_dest_reg_n_0_[11][2] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
         .O(\cpu_irq_out[18]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[18]_i_2 
-       (.I0(\cpu_irq_out[23]_i_8_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_26_n_0 ),
         .I1(\cpu_irq_out[26]_i_8_n_0 ),
         .I2(\irq_dest_reg_n_0_[17][3] ),
         .I3(\irq_dest_reg_n_0_[17][4] ),
@@ -3991,8 +3987,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[18]_i_3 
        (.I0(\cpu_irq_out[18]_i_10_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][4] ),
-        .I2(\irq_dest_reg_n_0_[16][3] ),
+        .I1(data14[4]),
+        .I2(data14[3]),
         .I3(cpu_irq_out[18]),
         .I4(cpu_eoi_in[18]),
         .I5(\cpu_irq_out[18]_i_11_n_0 ),
@@ -4000,27 +3996,27 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[18]_i_4 
-       (.I0(\cpu_irq_out[22]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_16_n_0 ),
         .I1(\cpu_irq_out[26]_i_25_n_0 ),
-        .I2(\irq_dest_reg_n_0_[9][3] ),
-        .I3(\irq_dest_reg_n_0_[9][4] ),
-        .I4(\cpu_irq_out[26]_i_20_n_0 ),
-        .I5(\cpu_irq_out[18]_i_12_n_0 ),
+        .I2(\irq_dest_reg_n_0_[13][3] ),
+        .I3(\irq_dest_reg_n_0_[13][4] ),
+        .I4(\cpu_irq_out[18]_i_12_n_0 ),
+        .I5(\cpu_irq_out[18]_i_13_n_0 ),
         .O(\cpu_irq_out[18]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[18]_i_5 
-       (.I0(\cpu_irq_out[19]_i_14_n_0 ),
-        .I1(\cpu_irq_out[26]_i_24_n_0 ),
-        .I2(\cpu_irq_out[18]_i_13_n_0 ),
-        .I3(\cpu_irq_out[18]_i_14_n_0 ),
-        .I4(\cpu_irq_out[19]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[18]_i_14_n_0 ),
+        .I1(\cpu_irq_out[19]_i_15_n_0 ),
+        .I2(\cpu_irq_out[26]_i_24_n_0 ),
+        .I3(data16[3]),
+        .I4(data16[4]),
         .I5(\cpu_irq_out[26]_i_10_n_0 ),
         .O(\cpu_irq_out[18]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[18]_i_6 
-       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
         .I1(\cpu_irq_out[26]_i_18_n_0 ),
         .I2(\irq_dest_reg_n_0_[20][3] ),
         .I3(\irq_dest_reg_n_0_[20][4] ),
@@ -4031,13 +4027,13 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[18]_i_7 
        (.I0(\cpu_irq_out[18]_i_16_n_0 ),
-        .I1(\cpu_irq_out[21]_i_8_n_0 ),
-        .I2(\cpu_irq_out[18]_i_17_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][3] ),
-        .I4(\irq_dest_reg_n_0_[14][4] ),
-        .I5(\cpu_irq_out[26]_i_16_n_0 ),
+        .I1(\cpu_irq_out[23]_i_8_n_0 ),
+        .I2(\cpu_irq_out[26]_i_16_n_0 ),
+        .I3(\irq_dest_reg_n_0_[11][3] ),
+        .I4(\irq_dest_reg_n_0_[11][4] ),
+        .I5(\cpu_irq_out[18]_i_17_n_0 ),
         .O(\cpu_irq_out[18]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair108" *) 
+  (* SOFT_HLUTNM = "soft_lutpair107" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[18]_i_8 
@@ -4049,12 +4045,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[18]_i_9 
-       (.I0(\cpu_irq_out[2]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[11][4] ),
-        .I2(\irq_dest_reg_n_0_[11][3] ),
-        .I3(\cpu_irq_out[26]_i_28_n_0 ),
-        .I4(data19[4]),
-        .I5(data19[3]),
+       (.I0(\cpu_irq_out[26]_i_26_n_0 ),
+        .I1(data19[4]),
+        .I2(data19[3]),
+        .I3(\cpu_irq_out[2]_i_9_n_0 ),
+        .I4(data15[4]),
+        .I5(data15[3]),
         .O(\cpu_irq_out[18]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -4066,14 +4062,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[19]_i_6_n_0 ),
         .I5(\cpu_irq_out[19]_i_7_n_0 ),
         .O(\cpu_irq_out[19]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair110" *) 
+  (* SOFT_HLUTNM = "soft_lutpair130" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[19]_i_10 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][0] ),
-        .I2(\irq_dest_reg_n_0_[16][1] ),
-        .I3(\irq_dest_reg_n_0_[16][2] ),
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[0]),
+        .I2(data14[1]),
+        .I3(data14[2]),
         .O(\cpu_irq_out[19]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000200000000000)) 
@@ -4085,78 +4081,84 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[19]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair139" *) 
+  (* SOFT_HLUTNM = "soft_lutpair141" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[19]_i_12 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][0] ),
-        .I2(\irq_dest_reg_n_0_[9][1] ),
-        .I3(\irq_dest_reg_n_0_[9][2] ),
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][0] ),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(\irq_dest_reg_n_0_[13][2] ),
         .O(\cpu_irq_out[19]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[19]_i_13 
-       (.I0(\cpu_irq_out[27]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[27]_i_14_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][4] ),
         .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\cpu_irq_out[27]_i_21_n_0 ),
-        .I4(\irq_dest_reg_n_0_[13][4] ),
-        .I5(\irq_dest_reg_n_0_[13][3] ),
+        .I3(\cpu_irq_out[27]_i_20_n_0 ),
+        .I4(\irq_dest_reg_n_0_[9][4] ),
+        .I5(\irq_dest_reg_n_0_[9][3] ),
         .O(\cpu_irq_out[19]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair271" *) 
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
+    \cpu_irq_out[19]_i_14 
+       (.I0(\cpu_irq_out[27]_i_11_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(\cpu_irq_out[27]_i_29_n_0 ),
+        .I4(\irq_dest_reg_n_0_[8][4] ),
+        .I5(\irq_dest_reg_n_0_[8][3] ),
+        .O(\cpu_irq_out[19]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair183" *) 
   LUT2 #(
     .INIT(4'h2)) 
-    \cpu_irq_out[19]_i_14 
+    \cpu_irq_out[19]_i_15 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
-        .O(\cpu_irq_out[19]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair227" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[19]_i_15 
-       (.I0(\irq_dest_reg_n_0_[15][3] ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
-        .I2(\cpu_irq_out[27]_i_24_n_0 ),
         .O(\cpu_irq_out[19]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair210" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[19]_i_16 
-       (.I0(\irq_dest_reg_n_0_[8][3] ),
-        .I1(\irq_dest_reg_n_0_[8][4] ),
-        .I2(\cpu_irq_out[27]_i_28_n_0 ),
-        .O(\cpu_irq_out[19]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair274" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[19]_i_17 
-       (.I0(data16[4]),
-        .I1(data16[3]),
-        .O(\cpu_irq_out[19]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair118" *) 
+  (* SOFT_HLUTNM = "soft_lutpair100" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[19]_i_18 
+    \cpu_irq_out[19]_i_16 
        (.I0(\irq_ack[20]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[20][0] ),
         .I2(\irq_dest_reg_n_0_[20][1] ),
         .I3(\irq_dest_reg_n_0_[20][2] ),
-        .O(\cpu_irq_out[19]_i_18_n_0 ));
+        .O(\cpu_irq_out[19]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[19]_i_19 
-       (.I0(\cpu_irq_out[11]_i_9_n_0 ),
-        .I1(data14[4]),
-        .I2(data14[3]),
-        .I3(\cpu_irq_out[3]_i_14_n_0 ),
+    \cpu_irq_out[19]_i_17 
+       (.I0(\cpu_irq_out[27]_i_28_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
+        .I2(\irq_dest_reg_n_0_[16][3] ),
+        .I3(\cpu_irq_out[27]_i_21_n_0 ),
         .I4(\irq_dest_reg_n_0_[21][4] ),
         .I5(\irq_dest_reg_n_0_[21][3] ),
+        .O(\cpu_irq_out[19]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
+    \cpu_irq_out[19]_i_18 
+       (.I0(\cpu_irq_out[11]_i_16_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][4] ),
+        .I2(\irq_dest_reg_n_0_[1][3] ),
+        .I3(\cpu_irq_out[11]_i_14_n_0 ),
+        .I4(data17[4]),
+        .I5(data17[3]),
+        .O(\cpu_irq_out[19]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair102" *) 
+  LUT4 #(
+    .INIT(16'hF7FF)) 
+    \cpu_irq_out[19]_i_19 
+       (.I0(\irq_dest_reg_n_0_[11][0] ),
+        .I1(\irq_dest_reg_n_0_[11][1] ),
+        .I2(\irq_dest_reg_n_0_[11][2] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
         .O(\cpu_irq_out[19]_i_19_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[19]_i_2 
-       (.I0(\cpu_irq_out[22]_i_15_n_0 ),
+       (.I0(\cpu_irq_out[22]_i_16_n_0 ),
         .I1(\cpu_irq_out[19]_i_8_n_0 ),
         .I2(data18[3]),
         .I3(data18[4]),
@@ -4164,21 +4166,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[19]_i_9_n_0 ),
         .O(\cpu_irq_out[19]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[19]_i_20 
-       (.I0(\cpu_irq_out[3]_i_16_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][4] ),
-        .I2(\irq_dest_reg_n_0_[1][3] ),
-        .I3(\cpu_irq_out[27]_i_14_n_0 ),
-        .I4(data17[4]),
-        .I5(data17[3]),
-        .O(\cpu_irq_out[19]_i_20_n_0 ));
-  LUT6 #(
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[19]_i_3 
        (.I0(\cpu_irq_out[19]_i_10_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][4] ),
-        .I2(\irq_dest_reg_n_0_[16][3] ),
+        .I1(data14[4]),
+        .I2(data14[3]),
         .I3(cpu_irq_out[19]),
         .I4(cpu_eoi_in[19]),
         .I5(\cpu_irq_out[19]_i_11_n_0 ),
@@ -4186,44 +4178,44 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[19]_i_4 
-       (.I0(\cpu_irq_out[22]_i_22_n_0 ),
-        .I1(\cpu_irq_out[27]_i_11_n_0 ),
-        .I2(\irq_dest_reg_n_0_[9][3] ),
-        .I3(\irq_dest_reg_n_0_[9][4] ),
+       (.I0(\cpu_irq_out[23]_i_16_n_0 ),
+        .I1(\cpu_irq_out[27]_i_23_n_0 ),
+        .I2(\irq_dest_reg_n_0_[13][3] ),
+        .I3(\irq_dest_reg_n_0_[13][4] ),
         .I4(\cpu_irq_out[19]_i_12_n_0 ),
         .I5(\cpu_irq_out[19]_i_13_n_0 ),
         .O(\cpu_irq_out[19]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[19]_i_5 
        (.I0(\cpu_irq_out[19]_i_14_n_0 ),
-        .I1(\cpu_irq_out[27]_i_25_n_0 ),
-        .I2(\cpu_irq_out[19]_i_15_n_0 ),
-        .I3(\cpu_irq_out[19]_i_16_n_0 ),
-        .I4(\cpu_irq_out[19]_i_17_n_0 ),
+        .I1(\cpu_irq_out[19]_i_15_n_0 ),
+        .I2(\cpu_irq_out[27]_i_26_n_0 ),
+        .I3(data16[3]),
+        .I4(data16[4]),
         .I5(\cpu_irq_out[27]_i_9_n_0 ),
         .O(\cpu_irq_out[19]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[19]_i_6 
-       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
-        .I1(\cpu_irq_out[27]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[27]_i_17_n_0 ),
         .I2(\irq_dest_reg_n_0_[20][3] ),
         .I3(\irq_dest_reg_n_0_[20][4] ),
-        .I4(\cpu_irq_out[19]_i_18_n_0 ),
-        .I5(\cpu_irq_out[19]_i_19_n_0 ),
+        .I4(\cpu_irq_out[19]_i_16_n_0 ),
+        .I5(\cpu_irq_out[19]_i_17_n_0 ),
         .O(\cpu_irq_out[19]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[19]_i_7 
-       (.I0(\cpu_irq_out[19]_i_20_n_0 ),
-        .I1(\cpu_irq_out[21]_i_8_n_0 ),
-        .I2(\cpu_irq_out[27]_i_10_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][3] ),
-        .I4(\irq_dest_reg_n_0_[14][4] ),
-        .I5(\cpu_irq_out[27]_i_15_n_0 ),
+       (.I0(\cpu_irq_out[19]_i_18_n_0 ),
+        .I1(\cpu_irq_out[23]_i_8_n_0 ),
+        .I2(\cpu_irq_out[27]_i_15_n_0 ),
+        .I3(\irq_dest_reg_n_0_[11][3] ),
+        .I4(\irq_dest_reg_n_0_[11][4] ),
+        .I5(\cpu_irq_out[19]_i_19_n_0 ),
         .O(\cpu_irq_out[19]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair108" *) 
+  (* SOFT_HLUTNM = "soft_lutpair107" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[19]_i_8 
@@ -4238,9 +4230,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\cpu_irq_out[27]_i_27_n_0 ),
         .I1(data19[4]),
         .I2(data19[3]),
-        .I3(\cpu_irq_out[27]_i_29_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][4] ),
-        .I5(\irq_dest_reg_n_0_[11][3] ),
+        .I3(\cpu_irq_out[27]_i_10_n_0 ),
+        .I4(data15[4]),
+        .I5(data15[3]),
         .O(\cpu_irq_out[19]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -4255,124 +4247,117 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[1]_i_10 
-       (.I0(\cpu_irq_out[25]_i_20_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][3] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
+       (.I0(\cpu_irq_out[9]_i_14_n_0 ),
+        .I1(data17[3]),
+        .I2(data17[4]),
         .I3(\cpu_irq_out[25]_i_27_n_0 ),
-        .I4(data19[3]),
-        .I5(data19[4]),
+        .I4(\irq_dest_reg_n_0_[16][3] ),
+        .I5(\irq_dest_reg_n_0_[16][4] ),
         .O(\cpu_irq_out[1]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair74" *) 
-  LUT4 #(
-    .INIT(16'hFBFF)) 
-    \cpu_irq_out[1]_i_11 
-       (.I0(\irq_dest_reg_n_0_[11][1] ),
-        .I1(\irq_dest_reg_n_0_[11][0] ),
-        .I2(\irq_dest_reg_n_0_[11][2] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .O(\cpu_irq_out[1]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
+    \cpu_irq_out[1]_i_11 
+       (.I0(\cpu_irq_out[9]_i_8_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][3] ),
+        .I2(\irq_dest_reg_n_0_[9][4] ),
+        .I3(\cpu_irq_out[25]_i_20_n_0 ),
+        .I4(data19[3]),
+        .I5(data19[4]),
+        .O(\cpu_irq_out[1]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair215" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \cpu_irq_out[1]_i_12 
-       (.I0(\cpu_irq_out[25]_i_21_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\cpu_irq_out[17]_i_10_n_0 ),
-        .I4(\irq_dest_reg_n_0_[13][3] ),
-        .I5(\irq_dest_reg_n_0_[13][4] ),
+       (.I0(\irq_dest_reg_n_0_[8][4] ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(\cpu_irq_out[25]_i_26_n_0 ),
         .O(\cpu_irq_out[1]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair221" *) 
+  (* SOFT_HLUTNM = "soft_lutpair226" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \cpu_irq_out[1]_i_13 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[9]_i_9_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\cpu_irq_out[17]_i_11_n_0 ),
         .O(\cpu_irq_out[1]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair217" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
+  LUT6 #(
+    .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[1]_i_14 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[17]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[17]_i_9_n_0 ),
+        .I1(data14[3]),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[17]_i_14_n_0 ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
+        .I5(\irq_dest_reg_n_0_[20][4] ),
         .O(\cpu_irq_out[1]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[1]_i_15 
-       (.I0(\cpu_irq_out[25]_i_28_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\cpu_irq_out[17]_i_17_n_0 ),
-        .I4(data17[3]),
-        .I5(data17[4]),
+       (.I0(\cpu_irq_out[25]_i_23_n_0 ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I3(\cpu_irq_out[25]_i_9_n_0 ),
+        .I4(\irq_dest_reg_n_0_[15][3] ),
+        .I5(\irq_dest_reg_n_0_[15][4] ),
         .O(\cpu_irq_out[1]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair232" *) 
-  LUT3 #(
-    .INIT(8'hFB)) 
-    \cpu_irq_out[1]_i_16 
-       (.I0(\irq_dest_reg_n_0_[10][2] ),
-        .I1(\irq_dest_reg_n_0_[10][0] ),
-        .I2(\irq_dest_reg_n_0_[10][1] ),
-        .O(\cpu_irq_out[1]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFAAAB)) 
     \cpu_irq_out[1]_i_2 
        (.I0(\cpu_irq_out[1]_i_8_n_0 ),
         .I1(data15[4]),
         .I2(data15[3]),
-        .I3(\cpu_irq_out[25]_i_10_n_0 ),
-        .I4(\cpu_irq_out[1]_i_9_n_0 ),
-        .I5(\cpu_irq_out[1]_i_10_n_0 ),
+        .I3(\cpu_irq_out[1]_i_9_n_0 ),
+        .I4(\cpu_irq_out[1]_i_10_n_0 ),
+        .I5(\cpu_irq_out[1]_i_11_n_0 ),
         .O(\cpu_irq_out[1]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF2222222F)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[1]_i_3 
-       (.I0(\cpu_irq_out[2]_i_11_n_0 ),
-        .I1(\cpu_irq_out[1]_i_11_n_0 ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\cpu_irq_out[25]_i_11_n_0 ),
-        .I5(\cpu_irq_out[1]_i_12_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[25]_i_22_n_0 ),
+        .I2(\cpu_irq_out[1]_i_12_n_0 ),
+        .I3(\cpu_irq_out[1]_i_13_n_0 ),
+        .I4(\cpu_irq_out[5]_i_20_n_0 ),
+        .I5(\cpu_irq_out[25]_i_16_n_0 ),
         .O(\cpu_irq_out[1]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[1]_i_4 
        (.I0(\cpu_irq_out[25]_i_15_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_dest_reg_n_0_[14][4] ),
-        .I3(\cpu_irq_out[25]_i_9_n_0 ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_dest_reg_n_0_[12][4] ),
+        .I3(\cpu_irq_out[25]_i_17_n_0 ),
         .I4(data16[3]),
         .I5(data16[4]),
         .O(\cpu_irq_out[1]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[1]_i_5 
-       (.I0(\cpu_irq_out[9]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\cpu_irq_out[25]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[25]_i_19_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\cpu_irq_out[25]_i_14_n_0 ),
         .I4(data21[3]),
         .I5(data21[4]),
         .O(\cpu_irq_out[1]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[1]_i_6 
-       (.I0(\cpu_irq_out[7]_i_9_n_0 ),
-        .I1(\cpu_irq_out[25]_i_18_n_0 ),
-        .I2(\cpu_irq_out[1]_i_13_n_0 ),
-        .I3(\cpu_irq_out[1]_i_14_n_0 ),
-        .I4(\cpu_irq_out[7]_i_23_n_0 ),
-        .I5(\cpu_irq_out[25]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
+        .I1(\cpu_irq_out[25]_i_12_n_0 ),
+        .I2(data18[4]),
+        .I3(data18[3]),
+        .I4(\cpu_irq_out[25]_i_13_n_0 ),
+        .I5(\cpu_irq_out[1]_i_14_n_0 ),
         .O(\cpu_irq_out[1]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[1]_i_7 
-       (.I0(\cpu_irq_out[2]_i_17_n_0 ),
-        .I1(\cpu_irq_out[25]_i_25_n_0 ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\cpu_irq_out[25]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_27_n_0 ),
+        .I1(\cpu_irq_out[9]_i_16_n_0 ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\cpu_irq_out[9]_i_17_n_0 ),
         .I5(\cpu_irq_out[1]_i_15_n_0 ),
         .O(\cpu_irq_out[1]_i_7_n_0 ));
   LUT6 #(
@@ -4382,18 +4367,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(cpu_irq_out[1]),
         .I2(\irq_dest_reg_n_0_[10][4] ),
         .I3(\irq_dest_reg_n_0_[10][3] ),
-        .I4(\cpu_irq_out[1]_i_16_n_0 ),
+        .I4(\cpu_irq_out[25]_i_25_n_0 ),
         .I5(\irq_ack[10]_i_2_n_0 ),
         .O(\cpu_irq_out[1]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'h01010101010101FF)) 
+  (* SOFT_HLUTNM = "soft_lutpair85" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[1]_i_9 
-       (.I0(\cpu_irq_out[17]_i_14_n_0 ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[25]_i_29_n_0 ),
-        .I4(\irq_dest_reg_n_0_[16][3] ),
-        .I5(\irq_dest_reg_n_0_[16][4] ),
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[1]),
+        .I2(data15[0]),
+        .I3(data15[2]),
         .O(\cpu_irq_out[1]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -4405,236 +4389,200 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[20]_i_6_n_0 ),
         .I5(\cpu_irq_out[20]_i_7_n_0 ),
         .O(\cpu_irq_out[20]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair100" *) 
+  (* SOFT_HLUTNM = "soft_lutpair55" *) 
   LUT4 #(
-    .INIT(16'hFFEF)) 
+    .INIT(16'hFFFB)) 
     \cpu_irq_out[20]_i_10 
-       (.I0(\irq_dest_reg_n_0_[14][1] ),
-        .I1(\irq_dest_reg_n_0_[14][0] ),
-        .I2(\irq_dest_reg_n_0_[14][2] ),
-        .I3(\irq_ack[14]_i_2_n_0 ),
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[1]),
+        .I3(data17[0]),
         .O(\cpu_irq_out[20]_i_10_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_11 
-       (.I0(data18[3]),
-        .I1(data18[4]),
-        .I2(\irq_ack[3]_i_2_n_0 ),
-        .I3(data18[2]),
-        .I4(data18[0]),
-        .I5(data18[1]),
-        .O(\cpu_irq_out[20]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_12 
-       (.I0(data21[3]),
-        .I1(data21[4]),
-        .I2(\irq_ack[0]_i_2_n_0 ),
-        .I3(data21[2]),
-        .I4(data21[0]),
-        .I5(data21[1]),
-        .O(\cpu_irq_out[20]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair103" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[20]_i_13 
-       (.I0(data16[1]),
-        .I1(data16[0]),
-        .I2(data16[2]),
-        .I3(\irq_ack[5]_i_2_n_0 ),
-        .O(\cpu_irq_out[20]_i_13_n_0 ));
-  LUT6 #(
     .INIT(64'h0000020000000000)) 
-    \cpu_irq_out[20]_i_14 
+    \cpu_irq_out[20]_i_11 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[20]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair44" *) 
-  LUT4 #(
-    .INIT(16'hFFFB)) 
-    \cpu_irq_out[20]_i_15 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][1] ),
-        .I3(\irq_dest_reg_n_0_[20][0] ),
-        .O(\cpu_irq_out[20]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[20]_i_16 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
-        .I4(data14[3]),
-        .I5(data14[4]),
-        .O(\cpu_irq_out[20]_i_16_n_0 ));
+        .O(\cpu_irq_out[20]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair221" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
+    \cpu_irq_out[20]_i_12 
+       (.I0(data14[3]),
+        .I1(data14[4]),
+        .I2(\cpu_irq_out[12]_i_10_n_0 ),
+        .O(\cpu_irq_out[20]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_17 
+    \cpu_irq_out[20]_i_13 
        (.I0(\irq_ack[17]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][2] ),
         .I2(\irq_dest_reg_n_0_[17][3] ),
         .I3(\irq_dest_reg_n_0_[17][4] ),
         .I4(\irq_dest_reg_n_0_[17][0] ),
         .I5(\irq_dest_reg_n_0_[17][1] ),
-        .O(\cpu_irq_out[20]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair50" *) 
+        .O(\cpu_irq_out[20]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair53" *) 
   LUT4 #(
     .INIT(16'hFFFB)) 
-    \cpu_irq_out[20]_i_18 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][1] ),
-        .I3(\irq_dest_reg_n_0_[15][0] ),
-        .O(\cpu_irq_out[20]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000020000000000)) 
-    \cpu_irq_out[20]_i_19 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[11][0] ),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][3] ),
-        .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[20]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[20]_i_2 
-       (.I0(\cpu_irq_out[20]_i_8_n_0 ),
-        .I1(\cpu_irq_out[20]_i_9_n_0 ),
-        .I2(\cpu_irq_out[23]_i_26_n_0 ),
-        .I3(\cpu_irq_out[20]_i_10_n_0 ),
-        .I4(\cpu_irq_out[20]_i_11_n_0 ),
-        .I5(\cpu_irq_out[20]_i_12_n_0 ),
-        .O(\cpu_irq_out[20]_i_2_n_0 ));
+    \cpu_irq_out[20]_i_14 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(\irq_dest_reg_n_0_[13][0] ),
+        .O(\cpu_irq_out[20]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_20 
+    \cpu_irq_out[20]_i_15 
        (.I0(\irq_dest_reg_n_0_[12][3] ),
         .I1(\irq_dest_reg_n_0_[12][4] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[20]_i_20_n_0 ));
+        .O(\cpu_irq_out[20]_i_15_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_21 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[3]),
-        .I3(data17[4]),
-        .I4(data17[0]),
-        .I5(data17[1]),
-        .O(\cpu_irq_out[20]_i_21_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000800)) 
-    \cpu_irq_out[20]_i_22 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][3] ),
-        .I3(\irq_dest_reg_n_0_[8][4] ),
-        .I4(\irq_dest_reg_n_0_[8][0] ),
-        .I5(\irq_dest_reg_n_0_[8][1] ),
-        .O(\cpu_irq_out[20]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair52" *) 
+    \cpu_irq_out[20]_i_16 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[3]),
+        .I3(data15[4]),
+        .I4(data15[0]),
+        .I5(data15[1]),
+        .O(\cpu_irq_out[20]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair89" *) 
   LUT4 #(
-    .INIT(16'hFFFB)) 
-    \cpu_irq_out[20]_i_23 
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[20]_i_17 
+       (.I0(\irq_dest_reg_n_0_[18][1] ),
+        .I1(\irq_dest_reg_n_0_[18][0] ),
+        .I2(\irq_dest_reg_n_0_[18][2] ),
+        .I3(\irq_ack[18]_i_2_n_0 ),
+        .O(\cpu_irq_out[20]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[20]_i_18 
+       (.I0(data16[3]),
+        .I1(data16[4]),
+        .I2(\irq_ack[5]_i_2_n_0 ),
+        .I3(data16[2]),
+        .I4(data16[0]),
+        .I5(data16[1]),
+        .O(\cpu_irq_out[20]_i_18_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
+    \cpu_irq_out[20]_i_19 
        (.I0(\irq_ack[9]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][1] ),
-        .I3(\irq_dest_reg_n_0_[9][0] ),
-        .O(\cpu_irq_out[20]_i_23_n_0 ));
+        .I2(\irq_dest_reg_n_0_[9][3] ),
+        .I3(\irq_dest_reg_n_0_[9][4] ),
+        .I4(\irq_dest_reg_n_0_[9][0] ),
+        .I5(\irq_dest_reg_n_0_[9][1] ),
+        .O(\cpu_irq_out[20]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[20]_i_2 
+       (.I0(\cpu_irq_out[23]_i_14_n_0 ),
+        .I1(\cpu_irq_out[28]_i_15_n_0 ),
+        .I2(\cpu_irq_out[23]_i_8_n_0 ),
+        .I3(\cpu_irq_out[28]_i_18_n_0 ),
+        .I4(\cpu_irq_out[20]_i_8_n_0 ),
+        .I5(\cpu_irq_out[20]_i_9_n_0 ),
+        .O(\cpu_irq_out[20]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_24 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][3] ),
-        .I3(\irq_dest_reg_n_0_[16][4] ),
-        .I4(\irq_dest_reg_n_0_[16][0] ),
-        .I5(\irq_dest_reg_n_0_[16][1] ),
-        .O(\cpu_irq_out[20]_i_24_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000400)) 
-    \cpu_irq_out[20]_i_25 
+    \cpu_irq_out[20]_i_20 
        (.I0(\irq_ack[19]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][2] ),
         .I2(\irq_dest_reg_n_0_[19][3] ),
         .I3(\irq_dest_reg_n_0_[19][4] ),
         .I4(\irq_dest_reg_n_0_[19][0] ),
         .I5(\irq_dest_reg_n_0_[19][1] ),
-        .O(\cpu_irq_out[20]_i_25_n_0 ));
+        .O(\cpu_irq_out[20]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000020000000000)) 
+    \cpu_irq_out[20]_i_21 
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[11][0] ),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][3] ),
+        .I5(\irq_dest_reg_n_0_[11][4] ),
+        .O(\cpu_irq_out[20]_i_21_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF0404FF04)) 
     \cpu_irq_out[20]_i_3 
-       (.I0(\cpu_irq_out[20]_i_13_n_0 ),
-        .I1(data16[4]),
-        .I2(data16[3]),
+       (.I0(\cpu_irq_out[20]_i_10_n_0 ),
+        .I1(data17[4]),
+        .I2(data17[3]),
         .I3(cpu_irq_out[20]),
         .I4(cpu_eoi_in[20]),
-        .I5(\cpu_irq_out[20]_i_14_n_0 ),
+        .I5(\cpu_irq_out[20]_i_11_n_0 ),
         .O(\cpu_irq_out[20]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[20]_i_4 
-       (.I0(\cpu_irq_out[21]_i_16_n_0 ),
-        .I1(\cpu_irq_out[20]_i_15_n_0 ),
-        .I2(\cpu_irq_out[20]_i_16_n_0 ),
-        .I3(\cpu_irq_out[20]_i_17_n_0 ),
-        .I4(\cpu_irq_out[23]_i_16_n_0 ),
-        .I5(\cpu_irq_out[20]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[22]_i_26_n_0 ),
+        .I1(\cpu_irq_out[28]_i_28_n_0 ),
+        .I2(\cpu_irq_out[20]_i_12_n_0 ),
+        .I3(\cpu_irq_out[20]_i_13_n_0 ),
+        .I4(\cpu_irq_out[21]_i_22_n_0 ),
+        .I5(\cpu_irq_out[28]_i_12_n_0 ),
         .O(\cpu_irq_out[20]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[20]_i_5 
-       (.I0(\cpu_irq_out[23]_i_17_n_0 ),
-        .I1(\cpu_irq_out[28]_i_18_n_0 ),
-        .I2(\cpu_irq_out[20]_i_19_n_0 ),
-        .I3(\cpu_irq_out[20]_i_20_n_0 ),
-        .I4(\cpu_irq_out[21]_i_8_n_0 ),
-        .I5(\cpu_irq_out[28]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
+        .I1(\cpu_irq_out[28]_i_25_n_0 ),
+        .I2(\cpu_irq_out[22]_i_18_n_0 ),
+        .I3(\cpu_irq_out[20]_i_14_n_0 ),
+        .I4(\cpu_irq_out[20]_i_15_n_0 ),
+        .I5(\cpu_irq_out[20]_i_16_n_0 ),
         .O(\cpu_irq_out[20]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[20]_i_6 
-       (.I0(\cpu_irq_out[22]_i_22_n_0 ),
-        .I1(\cpu_irq_out[28]_i_12_n_0 ),
-        .I2(\cpu_irq_out[23]_i_9_n_0 ),
-        .I3(\cpu_irq_out[28]_i_26_n_0 ),
-        .I4(\cpu_irq_out[20]_i_21_n_0 ),
-        .I5(\cpu_irq_out[20]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[28]_i_19_n_0 ),
+        .I2(\cpu_irq_out[23]_i_16_n_0 ),
+        .I3(\cpu_irq_out[20]_i_17_n_0 ),
+        .I4(\cpu_irq_out[20]_i_18_n_0 ),
+        .I5(\cpu_irq_out[20]_i_19_n_0 ),
         .O(\cpu_irq_out[20]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[20]_i_7 
-       (.I0(\cpu_irq_out[23]_i_22_n_0 ),
-        .I1(\cpu_irq_out[20]_i_23_n_0 ),
-        .I2(\cpu_irq_out[21]_i_22_n_0 ),
-        .I3(\cpu_irq_out[28]_i_27_n_0 ),
-        .I4(\cpu_irq_out[20]_i_24_n_0 ),
-        .I5(\cpu_irq_out[20]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_26_n_0 ),
+        .I1(\cpu_irq_out[28]_i_8_n_0 ),
+        .I2(\cpu_irq_out[22]_i_8_n_0 ),
+        .I3(\cpu_irq_out[28]_i_29_n_0 ),
+        .I4(\cpu_irq_out[20]_i_20_n_0 ),
+        .I5(\cpu_irq_out[20]_i_21_n_0 ),
         .O(\cpu_irq_out[20]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair268" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
     \cpu_irq_out[20]_i_8 
-       (.I0(\irq_dest_reg_n_0_[13][4] ),
-        .I1(\irq_dest_reg_n_0_[13][3] ),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[3]),
+        .I3(data19[4]),
+        .I4(data19[0]),
+        .I5(data19[1]),
         .O(\cpu_irq_out[20]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair36" *) 
-  LUT4 #(
-    .INIT(16'hFFFB)) 
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
     \cpu_irq_out[20]_i_9 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(\irq_dest_reg_n_0_[13][0] ),
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][2] ),
+        .I2(\irq_dest_reg_n_0_[1][3] ),
+        .I3(\irq_dest_reg_n_0_[1][4] ),
+        .I4(\irq_dest_reg_n_0_[1][0] ),
+        .I5(\irq_dest_reg_n_0_[1][1] ),
         .O(\cpu_irq_out[20]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -4649,22 +4597,22 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0000040000000000)) 
     \cpu_irq_out[21]_i_10 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][3] ),
-        .I3(\irq_dest_reg_n_0_[9][4] ),
-        .I4(\irq_dest_reg_n_0_[9][1] ),
-        .I5(\irq_dest_reg_n_0_[9][0] ),
-        .O(\cpu_irq_out[21]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[21]_i_11 
        (.I0(data16[3]),
         .I1(data16[4]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[1]),
         .I5(data16[0]),
+        .O(\cpu_irq_out[21]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[21]_i_11 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[3]),
+        .I3(data15[4]),
+        .I4(data15[1]),
+        .I5(data15[0]),
         .O(\cpu_irq_out[21]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h0000080000000000)) 
@@ -4676,7 +4624,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[21]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[21]_i_13 
@@ -4685,77 +4633,81 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[16][0] ),
         .I3(\irq_dest_reg_n_0_[16][1] ),
         .O(\cpu_irq_out[21]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair222" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
     \cpu_irq_out[21]_i_14 
-       (.I0(\irq_dest_reg_n_0_[14][3] ),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
-        .I2(\irq_ack[14]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .I4(\irq_dest_reg_n_0_[14][1] ),
-        .I5(\irq_dest_reg_n_0_[14][0] ),
+       (.I0(data14[3]),
+        .I1(data14[4]),
+        .I2(\cpu_irq_out[5]_i_10_n_0 ),
         .O(\cpu_irq_out[21]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
     \cpu_irq_out[21]_i_15 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][3] ),
-        .I3(\irq_dest_reg_n_0_[21][4] ),
-        .I4(\irq_dest_reg_n_0_[21][1] ),
-        .I5(\irq_dest_reg_n_0_[21][0] ),
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[3]),
+        .I3(data17[4]),
+        .I4(data17[1]),
+        .I5(data17[0]),
         .O(\cpu_irq_out[21]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair264" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[21]_i_16 
-       (.I0(\irq_dest_reg_n_0_[20][4] ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .O(\cpu_irq_out[21]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair223" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[21]_i_17 
-       (.I0(data14[3]),
-        .I1(data14[4]),
-        .I2(\cpu_irq_out[5]_i_10_n_0 ),
-        .O(\cpu_irq_out[21]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[21]_i_18 
+    \cpu_irq_out[21]_i_16 
        (.I0(\irq_ack[13]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][2] ),
         .I2(\irq_dest_reg_n_0_[13][3] ),
         .I3(\irq_dest_reg_n_0_[13][4] ),
         .I4(\irq_dest_reg_n_0_[13][1] ),
         .I5(\irq_dest_reg_n_0_[13][0] ),
+        .O(\cpu_irq_out[21]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[21]_i_17 
+       (.I0(data18[3]),
+        .I1(data18[4]),
+        .I2(\irq_ack[3]_i_2_n_0 ),
+        .I3(data18[2]),
+        .I4(data18[1]),
+        .I5(data18[0]),
+        .O(\cpu_irq_out[21]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair41" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[21]_i_18 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][0] ),
+        .I3(\irq_dest_reg_n_0_[9][1] ),
         .O(\cpu_irq_out[21]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair269" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  (* SOFT_HLUTNM = "soft_lutpair49" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
     \cpu_irq_out[21]_i_19 
-       (.I0(data17[4]),
-        .I1(data17[3]),
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][0] ),
+        .I3(\irq_dest_reg_n_0_[19][1] ),
         .O(\cpu_irq_out[21]_i_19_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[21]_i_2 
-       (.I0(\cpu_irq_out[23]_i_16_n_0 ),
-        .I1(\cpu_irq_out[29]_i_32_n_0 ),
-        .I2(\cpu_irq_out[21]_i_8_n_0 ),
-        .I3(\cpu_irq_out[21]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[21]_i_8_n_0 ),
+        .I1(\cpu_irq_out[21]_i_9_n_0 ),
+        .I2(\cpu_irq_out[23]_i_30_n_0 ),
+        .I3(\cpu_irq_out[29]_i_8_n_0 ),
         .I4(\cpu_irq_out[21]_i_10_n_0 ),
         .I5(\cpu_irq_out[21]_i_11_n_0 ),
         .O(\cpu_irq_out[21]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
     \cpu_irq_out[21]_i_20 
-       (.I0(\irq_dest_reg_n_0_[18][3] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
-        .I2(\irq_ack[18]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[18][2] ),
-        .I4(\irq_dest_reg_n_0_[18][1] ),
-        .I5(\irq_dest_reg_n_0_[18][0] ),
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][3] ),
+        .I3(\irq_dest_reg_n_0_[17][4] ),
+        .I4(\irq_dest_reg_n_0_[17][1] ),
+        .I5(\irq_dest_reg_n_0_[17][0] ),
         .O(\cpu_irq_out[21]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'h0000200000000000)) 
@@ -4767,88 +4719,70 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[21]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair267" *) 
+  (* SOFT_HLUTNM = "soft_lutpair268" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[21]_i_22 
-       (.I0(data19[4]),
-        .I1(data19[3]),
+       (.I0(\irq_dest_reg_n_0_[15][4] ),
+        .I1(\irq_dest_reg_n_0_[15][3] ),
         .O(\cpu_irq_out[21]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair48" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[21]_i_23 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[0]),
-        .I3(data19[1]),
-        .O(\cpu_irq_out[21]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair35" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[21]_i_24 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][2] ),
-        .I2(\irq_dest_reg_n_0_[1][0] ),
-        .I3(\irq_dest_reg_n_0_[1][1] ),
-        .O(\cpu_irq_out[21]_i_24_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[21]_i_25 
+    \cpu_irq_out[21]_i_23 
        (.I0(\irq_dest_reg_n_0_[12][3] ),
         .I1(\irq_dest_reg_n_0_[12][4] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][1] ),
         .I5(\irq_dest_reg_n_0_[12][0] ),
-        .O(\cpu_irq_out[21]_i_25_n_0 ));
+        .O(\cpu_irq_out[21]_i_23_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[21]_i_26 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\irq_dest_reg_n_0_[19][4] ),
-        .I4(\irq_dest_reg_n_0_[19][1] ),
-        .I5(\irq_dest_reg_n_0_[19][0] ),
-        .O(\cpu_irq_out[21]_i_26_n_0 ));
+    \cpu_irq_out[21]_i_24 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][3] ),
+        .I3(\irq_dest_reg_n_0_[20][4] ),
+        .I4(\irq_dest_reg_n_0_[20][1] ),
+        .I5(\irq_dest_reg_n_0_[20][0] ),
+        .O(\cpu_irq_out[21]_i_24_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF0404FF04)) 
+    .INIT(64'hFF04FF04FFFFFF04)) 
     \cpu_irq_out[21]_i_3 
-       (.I0(\cpu_irq_out[29]_i_20_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][4] ),
-        .I2(\irq_dest_reg_n_0_[17][3] ),
-        .I3(cpu_irq_out[21]),
-        .I4(cpu_eoi_in[21]),
-        .I5(\cpu_irq_out[21]_i_12_n_0 ),
+       (.I0(\cpu_irq_out[29]_i_27_n_0 ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .I2(\irq_dest_reg_n_0_[18][3] ),
+        .I3(\cpu_irq_out[21]_i_12_n_0 ),
+        .I4(cpu_irq_out[21]),
+        .I5(cpu_eoi_in[21]),
         .O(\cpu_irq_out[21]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[21]_i_4 
-       (.I0(\cpu_irq_out[23]_i_13_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_14_n_0 ),
         .I1(\cpu_irq_out[21]_i_13_n_0 ),
-        .I2(\cpu_irq_out[23]_i_19_n_0 ),
-        .I3(\cpu_irq_out[29]_i_14_n_0 ),
-        .I4(\cpu_irq_out[21]_i_14_n_0 ),
-        .I5(\cpu_irq_out[21]_i_15_n_0 ),
+        .I2(\cpu_irq_out[21]_i_14_n_0 ),
+        .I3(\cpu_irq_out[21]_i_15_n_0 ),
+        .I4(\cpu_irq_out[23]_i_8_n_0 ),
+        .I5(\cpu_irq_out[29]_i_17_n_0 ),
         .O(\cpu_irq_out[21]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[21]_i_5 
-       (.I0(\cpu_irq_out[21]_i_16_n_0 ),
-        .I1(\cpu_irq_out[29]_i_28_n_0 ),
-        .I2(\cpu_irq_out[23]_i_28_n_0 ),
-        .I3(\cpu_irq_out[29]_i_9_n_0 ),
-        .I4(\cpu_irq_out[21]_i_17_n_0 ),
-        .I5(\cpu_irq_out[21]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[29]_i_19_n_0 ),
+        .I2(\cpu_irq_out[23]_i_19_n_0 ),
+        .I3(\cpu_irq_out[29]_i_24_n_0 ),
+        .I4(\cpu_irq_out[21]_i_16_n_0 ),
+        .I5(\cpu_irq_out[21]_i_17_n_0 ),
         .O(\cpu_irq_out[21]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[21]_i_6 
-       (.I0(\cpu_irq_out[21]_i_19_n_0 ),
-        .I1(\cpu_irq_out[29]_i_8_n_0 ),
-        .I2(\cpu_irq_out[23]_i_8_n_0 ),
-        .I3(\cpu_irq_out[29]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_21_n_0 ),
+        .I1(\cpu_irq_out[21]_i_18_n_0 ),
+        .I2(\cpu_irq_out[22]_i_23_n_0 ),
+        .I3(\cpu_irq_out[21]_i_19_n_0 ),
         .I4(\cpu_irq_out[21]_i_20_n_0 ),
         .I5(\cpu_irq_out[21]_i_21_n_0 ),
         .O(\cpu_irq_out[21]_i_6_n_0 ));
@@ -4856,27 +4790,27 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[21]_i_7 
        (.I0(\cpu_irq_out[21]_i_22_n_0 ),
-        .I1(\cpu_irq_out[21]_i_23_n_0 ),
-        .I2(\cpu_irq_out[23]_i_9_n_0 ),
-        .I3(\cpu_irq_out[21]_i_24_n_0 ),
-        .I4(\cpu_irq_out[21]_i_25_n_0 ),
-        .I5(\cpu_irq_out[21]_i_26_n_0 ),
+        .I1(\cpu_irq_out[29]_i_12_n_0 ),
+        .I2(\cpu_irq_out[22]_i_8_n_0 ),
+        .I3(\cpu_irq_out[29]_i_14_n_0 ),
+        .I4(\cpu_irq_out[21]_i_23_n_0 ),
+        .I5(\cpu_irq_out[21]_i_24_n_0 ),
         .O(\cpu_irq_out[21]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair275" *) 
+  (* SOFT_HLUTNM = "soft_lutpair273" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[21]_i_8 
-       (.I0(data15[4]),
-        .I1(data15[3]),
+       (.I0(data19[4]),
+        .I1(data19[3]),
         .O(\cpu_irq_out[21]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  (* SOFT_HLUTNM = "soft_lutpair51" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[21]_i_9 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[0]),
-        .I3(data15[1]),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[0]),
+        .I3(data19[1]),
         .O(\cpu_irq_out[21]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -4888,223 +4822,262 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[22]_i_6_n_0 ),
         .I5(\cpu_irq_out[22]_i_7_n_0 ),
         .O(\cpu_irq_out[22]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair51" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
     \cpu_irq_out[22]_i_10 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][1] ),
-        .I3(\irq_dest_reg_n_0_[15][0] ),
-        .O(\cpu_irq_out[22]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000080000000000)) 
-    \cpu_irq_out[22]_i_11 
-       (.I0(\irq_ack[10]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[10][1] ),
-        .I2(\irq_dest_reg_n_0_[10][0] ),
-        .I3(\irq_dest_reg_n_0_[10][2] ),
-        .I4(\irq_dest_reg_n_0_[10][3] ),
-        .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[22]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair224" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[22]_i_12 
-       (.I0(data14[3]),
-        .I1(data14[4]),
-        .I2(\cpu_irq_out[14]_i_10_n_0 ),
-        .O(\cpu_irq_out[22]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_13 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][3] ),
-        .I3(\irq_dest_reg_n_0_[19][4] ),
-        .I4(\irq_dest_reg_n_0_[19][0] ),
-        .I5(\irq_dest_reg_n_0_[19][1] ),
-        .O(\cpu_irq_out[22]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair101" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[22]_i_14 
-       (.I0(\irq_dest_reg_n_0_[14][1] ),
-        .I1(\irq_dest_reg_n_0_[14][0] ),
-        .I2(\irq_dest_reg_n_0_[14][2] ),
-        .I3(\irq_ack[14]_i_2_n_0 ),
-        .O(\cpu_irq_out[22]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair272" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[22]_i_15 
-       (.I0(\irq_dest_reg_n_0_[17][4] ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .O(\cpu_irq_out[22]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair43" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[22]_i_16 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][1] ),
-        .I3(\irq_dest_reg_n_0_[17][0] ),
-        .O(\cpu_irq_out[22]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_17 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[3]),
-        .I3(data19[4]),
-        .I4(data19[0]),
-        .I5(data19[1]),
-        .O(\cpu_irq_out[22]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_18 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][3] ),
-        .I3(\irq_dest_reg_n_0_[13][4] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[22]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair53" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[22]_i_19 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][1] ),
-        .I3(\irq_dest_reg_n_0_[9][0] ),
-        .O(\cpu_irq_out[22]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[22]_i_2 
-       (.I0(\cpu_irq_out[23]_i_8_n_0 ),
-        .I1(\cpu_irq_out[30]_i_31_n_0 ),
-        .I2(\cpu_irq_out[23]_i_9_n_0 ),
-        .I3(\cpu_irq_out[30]_i_30_n_0 ),
-        .I4(\cpu_irq_out[22]_i_8_n_0 ),
-        .I5(\cpu_irq_out[22]_i_9_n_0 ),
-        .O(\cpu_irq_out[22]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_20 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][3] ),
-        .I3(\irq_dest_reg_n_0_[20][4] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
-        .O(\cpu_irq_out[22]_i_20_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000200000000000)) 
-    \cpu_irq_out[22]_i_21 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[11][0] ),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][3] ),
-        .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[22]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair260" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[22]_i_22 
-       (.I0(\irq_dest_reg_n_0_[18][4] ),
-        .I1(\irq_dest_reg_n_0_[18][3] ),
-        .O(\cpu_irq_out[22]_i_22_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_23 
        (.I0(\irq_dest_reg_n_0_[12][3] ),
         .I1(\irq_dest_reg_n_0_[12][4] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[22]_i_23_n_0 ));
+        .O(\cpu_irq_out[22]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_24 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[3]),
-        .I3(data17[4]),
-        .I4(data17[0]),
-        .I5(data17[1]),
-        .O(\cpu_irq_out[22]_i_24_n_0 ));
+    \cpu_irq_out[22]_i_11 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[3]),
+        .I3(data19[4]),
+        .I4(data19[0]),
+        .I5(data19[1]),
+        .O(\cpu_irq_out[22]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair46" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[22]_i_12 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][1] ),
+        .I3(\irq_dest_reg_n_0_[15][0] ),
+        .O(\cpu_irq_out[22]_i_12_n_0 ));
   LUT6 #(
-    .INIT(64'hFF04FF04FFFFFF04)) 
-    \cpu_irq_out[22]_i_3 
-       (.I0(\cpu_irq_out[22]_i_10_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
-        .I2(\irq_dest_reg_n_0_[15][3] ),
-        .I3(\cpu_irq_out[22]_i_11_n_0 ),
-        .I4(cpu_irq_out[22]),
-        .I5(cpu_eoi_in[22]),
-        .O(\cpu_irq_out[22]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFAEFFAEFFFFFFAE)) 
-    \cpu_irq_out[22]_i_4 
-       (.I0(\cpu_irq_out[22]_i_12_n_0 ),
-        .I1(\cpu_irq_out[23]_i_13_n_0 ),
-        .I2(\cpu_irq_out[30]_i_15_n_0 ),
-        .I3(\cpu_irq_out[22]_i_13_n_0 ),
-        .I4(\cpu_irq_out[23]_i_26_n_0 ),
-        .I5(\cpu_irq_out[22]_i_14_n_0 ),
-        .O(\cpu_irq_out[22]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[22]_i_5 
-       (.I0(\cpu_irq_out[22]_i_15_n_0 ),
-        .I1(\cpu_irq_out[22]_i_16_n_0 ),
-        .I2(\cpu_irq_out[23]_i_19_n_0 ),
-        .I3(\cpu_irq_out[30]_i_16_n_0 ),
-        .I4(\cpu_irq_out[22]_i_17_n_0 ),
-        .I5(\cpu_irq_out[22]_i_18_n_0 ),
-        .O(\cpu_irq_out[22]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[22]_i_6 
-       (.I0(\cpu_irq_out[23]_i_22_n_0 ),
-        .I1(\cpu_irq_out[22]_i_19_n_0 ),
-        .I2(\cpu_irq_out[23]_i_17_n_0 ),
-        .I3(\cpu_irq_out[30]_i_20_n_0 ),
-        .I4(\cpu_irq_out[22]_i_20_n_0 ),
-        .I5(\cpu_irq_out[22]_i_21_n_0 ),
-        .O(\cpu_irq_out[22]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[22]_i_7 
-       (.I0(\cpu_irq_out[23]_i_28_n_0 ),
-        .I1(\cpu_irq_out[30]_i_21_n_0 ),
-        .I2(\cpu_irq_out[22]_i_22_n_0 ),
-        .I3(\cpu_irq_out[30]_i_13_n_0 ),
-        .I4(\cpu_irq_out[22]_i_23_n_0 ),
-        .I5(\cpu_irq_out[22]_i_24_n_0 ),
-        .O(\cpu_irq_out[22]_i_7_n_0 ));
+    .INIT(64'h0000080000000000)) 
+    \cpu_irq_out[22]_i_13 
+       (.I0(\irq_ack[10]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[10][1] ),
+        .I2(\irq_dest_reg_n_0_[10][0] ),
+        .I3(\irq_dest_reg_n_0_[10][2] ),
+        .I4(\irq_dest_reg_n_0_[10][3] ),
+        .I5(\irq_dest_reg_n_0_[10][4] ),
+        .O(\cpu_irq_out[22]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_8 
-       (.I0(data16[3]),
-        .I1(data16[4]),
-        .I2(\irq_ack[5]_i_2_n_0 ),
-        .I3(data16[2]),
-        .I4(data16[0]),
-        .I5(data16[1]),
-        .O(\cpu_irq_out[22]_i_8_n_0 ));
+    \cpu_irq_out[22]_i_14 
+       (.I0(\irq_dest_reg_n_0_[14][3] ),
+        .I1(\irq_dest_reg_n_0_[14][4] ),
+        .I2(\irq_ack[14]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[14][2] ),
+        .I4(\irq_dest_reg_n_0_[14][0] ),
+        .I5(\irq_dest_reg_n_0_[14][1] ),
+        .O(\cpu_irq_out[22]_i_14_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000200000000000)) 
+    \cpu_irq_out[22]_i_15 
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[11][0] ),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][3] ),
+        .I5(\irq_dest_reg_n_0_[11][4] ),
+        .O(\cpu_irq_out[22]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair267" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[22]_i_16 
+       (.I0(\irq_dest_reg_n_0_[17][4] ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .O(\cpu_irq_out[22]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair48" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[22]_i_17 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][1] ),
+        .I3(\irq_dest_reg_n_0_[17][0] ),
+        .O(\cpu_irq_out[22]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair262" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[22]_i_18 
+       (.I0(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .O(\cpu_irq_out[22]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair54" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[22]_i_19 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(\irq_dest_reg_n_0_[13][0] ),
+        .O(\cpu_irq_out[22]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[22]_i_2 
+       (.I0(\cpu_irq_out[22]_i_8_n_0 ),
+        .I1(\cpu_irq_out[30]_i_23_n_0 ),
+        .I2(\cpu_irq_out[23]_i_14_n_0 ),
+        .I3(\cpu_irq_out[22]_i_9_n_0 ),
+        .I4(\cpu_irq_out[22]_i_10_n_0 ),
+        .I5(\cpu_irq_out[22]_i_11_n_0 ),
+        .O(\cpu_irq_out[22]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0000040000000000)) 
-    \cpu_irq_out[22]_i_9 
+    \cpu_irq_out[22]_i_20 
        (.I0(\irq_ack[6]_i_2_n_0 ),
         .I1(data15[2]),
         .I2(data15[3]),
         .I3(data15[4]),
         .I4(data15[0]),
         .I5(data15[1]),
+        .O(\cpu_irq_out[22]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[22]_i_21 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][3] ),
+        .I3(\irq_dest_reg_n_0_[21][4] ),
+        .I4(\irq_dest_reg_n_0_[21][0] ),
+        .I5(\irq_dest_reg_n_0_[21][1] ),
+        .O(\cpu_irq_out[22]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair126" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[22]_i_22 
+       (.I0(data16[1]),
+        .I1(data16[0]),
+        .I2(data16[2]),
+        .I3(\irq_ack[5]_i_2_n_0 ),
+        .O(\cpu_irq_out[22]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair276" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[22]_i_23 
+       (.I0(\irq_dest_reg_n_0_[19][4] ),
+        .I1(\irq_dest_reg_n_0_[19][3] ),
+        .O(\cpu_irq_out[22]_i_23_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[22]_i_24 
+       (.I0(\irq_dest_reg_n_0_[18][3] ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
+        .O(\cpu_irq_out[22]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair224" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
+    \cpu_irq_out[22]_i_25 
+       (.I0(data14[3]),
+        .I1(data14[4]),
+        .I2(\cpu_irq_out[6]_i_10_n_0 ),
+        .O(\cpu_irq_out[22]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair270" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[22]_i_26 
+       (.I0(\irq_dest_reg_n_0_[20][4] ),
+        .I1(\irq_dest_reg_n_0_[20][3] ),
+        .O(\cpu_irq_out[22]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair44" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[22]_i_27 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][1] ),
+        .I3(\irq_dest_reg_n_0_[20][0] ),
+        .O(\cpu_irq_out[22]_i_27_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[22]_i_28 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][3] ),
+        .I3(\irq_dest_reg_n_0_[9][4] ),
+        .I4(\irq_dest_reg_n_0_[9][0] ),
+        .I5(\irq_dest_reg_n_0_[9][1] ),
+        .O(\cpu_irq_out[22]_i_28_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000040000000000)) 
+    \cpu_irq_out[22]_i_29 
+       (.I0(data21[3]),
+        .I1(data21[4]),
+        .I2(\irq_ack[0]_i_2_n_0 ),
+        .I3(data21[2]),
+        .I4(data21[0]),
+        .I5(data21[1]),
+        .O(\cpu_irq_out[22]_i_29_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF0404FF04)) 
+    \cpu_irq_out[22]_i_3 
+       (.I0(\cpu_irq_out[22]_i_12_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(cpu_irq_out[22]),
+        .I4(cpu_eoi_in[22]),
+        .I5(\cpu_irq_out[22]_i_13_n_0 ),
+        .O(\cpu_irq_out[22]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[22]_i_4 
+       (.I0(\cpu_irq_out[23]_i_30_n_0 ),
+        .I1(\cpu_irq_out[30]_i_32_n_0 ),
+        .I2(\cpu_irq_out[23]_i_26_n_0 ),
+        .I3(\cpu_irq_out[30]_i_33_n_0 ),
+        .I4(\cpu_irq_out[22]_i_14_n_0 ),
+        .I5(\cpu_irq_out[22]_i_15_n_0 ),
+        .O(\cpu_irq_out[22]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[22]_i_5 
+       (.I0(\cpu_irq_out[22]_i_16_n_0 ),
+        .I1(\cpu_irq_out[22]_i_17_n_0 ),
+        .I2(\cpu_irq_out[22]_i_18_n_0 ),
+        .I3(\cpu_irq_out[22]_i_19_n_0 ),
+        .I4(\cpu_irq_out[22]_i_20_n_0 ),
+        .I5(\cpu_irq_out[22]_i_21_n_0 ),
+        .O(\cpu_irq_out[22]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[22]_i_6 
+       (.I0(\cpu_irq_out[23]_i_29_n_0 ),
+        .I1(\cpu_irq_out[22]_i_22_n_0 ),
+        .I2(\cpu_irq_out[22]_i_23_n_0 ),
+        .I3(\cpu_irq_out[30]_i_11_n_0 ),
+        .I4(\cpu_irq_out[22]_i_24_n_0 ),
+        .I5(\cpu_irq_out[22]_i_25_n_0 ),
+        .O(\cpu_irq_out[22]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[22]_i_7 
+       (.I0(\cpu_irq_out[22]_i_26_n_0 ),
+        .I1(\cpu_irq_out[22]_i_27_n_0 ),
+        .I2(\cpu_irq_out[23]_i_11_n_0 ),
+        .I3(\cpu_irq_out[30]_i_26_n_0 ),
+        .I4(\cpu_irq_out[22]_i_28_n_0 ),
+        .I5(\cpu_irq_out[22]_i_29_n_0 ),
+        .O(\cpu_irq_out[22]_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair275" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[22]_i_8 
+       (.I0(\irq_dest_reg_n_0_[8][4] ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .O(\cpu_irq_out[22]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[22]_i_9 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][1] ),
+        .I3(\irq_dest_reg_n_0_[16][0] ),
         .O(\cpu_irq_out[22]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -5117,260 +5090,287 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[23]_i_7_n_0 ),
         .O(\cpu_irq_out[23]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0400000000000000)) 
+    .INIT(64'h0800000000000000)) 
     \cpu_irq_out[23]_i_10 
-       (.I0(data16[3]),
-        .I1(data16[4]),
-        .I2(\irq_ack[5]_i_2_n_0 ),
-        .I3(data16[2]),
-        .I4(data16[0]),
-        .I5(data16[1]),
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][3] ),
+        .I3(\irq_dest_reg_n_0_[8][4] ),
+        .I4(\irq_dest_reg_n_0_[8][0] ),
+        .I5(\irq_dest_reg_n_0_[8][1] ),
         .O(\cpu_irq_out[23]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair228" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
     \cpu_irq_out[23]_i_11 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[3]),
-        .I3(data15[4]),
-        .I4(data15[0]),
-        .I5(data15[1]),
+       (.I0(data17[4]),
+        .I1(data17[3]),
         .O(\cpu_irq_out[23]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair50" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[23]_i_12 
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][1] ),
+        .I3(\irq_dest_reg_n_0_[19][0] ),
+        .O(\cpu_irq_out[23]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000800000000000)) 
-    \cpu_irq_out[23]_i_12 
+    \cpu_irq_out[23]_i_13 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[23]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair263" *) 
+        .O(\cpu_irq_out[23]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair264" *) 
   LUT2 #(
     .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_13 
+    \cpu_irq_out[23]_i_14 
        (.I0(\irq_dest_reg_n_0_[16][4] ),
         .I1(\irq_dest_reg_n_0_[16][3] ),
-        .O(\cpu_irq_out[23]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair225" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[23]_i_14 
-       (.I0(data14[3]),
-        .I1(data14[4]),
-        .I2(\cpu_irq_out[15]_i_13_n_0 ),
         .O(\cpu_irq_out[23]_i_14_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
     \cpu_irq_out[23]_i_15 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[3]),
-        .I3(data17[4]),
-        .I4(data17[0]),
-        .I5(data17[1]),
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][1] ),
+        .I3(\irq_dest_reg_n_0_[16][0] ),
         .O(\cpu_irq_out[23]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair270" *) 
+  (* SOFT_HLUTNM = "soft_lutpair269" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[23]_i_16 
-       (.I0(\irq_dest_reg_n_0_[15][4] ),
-        .I1(\irq_dest_reg_n_0_[15][3] ),
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
         .O(\cpu_irq_out[23]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair262" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
     \cpu_irq_out[23]_i_17 
-       (.I0(\irq_dest_reg_n_0_[21][4] ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .O(\cpu_irq_out[23]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair55" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
-    \cpu_irq_out[23]_i_18 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][1] ),
-        .I3(\irq_dest_reg_n_0_[21][0] ),
-        .O(\cpu_irq_out[23]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair265" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_19 
-       (.I0(data21[4]),
-        .I1(data21[3]),
-        .O(\cpu_irq_out[23]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[23]_i_2 
-       (.I0(\cpu_irq_out[23]_i_8_n_0 ),
-        .I1(\cpu_irq_out[31]_i_31_n_0 ),
-        .I2(\cpu_irq_out[23]_i_9_n_0 ),
-        .I3(\cpu_irq_out[31]_i_35_n_0 ),
-        .I4(\cpu_irq_out[23]_i_10_n_0 ),
-        .I5(\cpu_irq_out[23]_i_11_n_0 ),
-        .O(\cpu_irq_out[23]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[23]_i_20 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[3]),
-        .I3(data19[4]),
-        .I4(data19[0]),
-        .I5(data19[1]),
-        .O(\cpu_irq_out[23]_i_20_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[23]_i_21 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][3] ),
-        .I3(\irq_dest_reg_n_0_[13][4] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[23]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair273" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_22 
-       (.I0(\irq_dest_reg_n_0_[9][4] ),
-        .I1(\irq_dest_reg_n_0_[9][3] ),
-        .O(\cpu_irq_out[23]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair266" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_23 
-       (.I0(\irq_dest_reg_n_0_[19][4] ),
-        .I1(\irq_dest_reg_n_0_[19][3] ),
-        .O(\cpu_irq_out[23]_i_23_n_0 ));
-  LUT6 #(
-    .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[23]_i_24 
        (.I0(\irq_ack[17]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][2] ),
         .I2(\irq_dest_reg_n_0_[17][3] ),
         .I3(\irq_dest_reg_n_0_[17][4] ),
         .I4(\irq_dest_reg_n_0_[17][0] ),
         .I5(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[23]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[23]_i_18 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(\irq_dest_reg_n_0_[15][4] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
+        .O(\cpu_irq_out[23]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair263" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_19 
+       (.I0(\irq_dest_reg_n_0_[21][4] ),
+        .I1(\irq_dest_reg_n_0_[21][3] ),
+        .O(\cpu_irq_out[23]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    \cpu_irq_out[23]_i_2 
+       (.I0(\cpu_irq_out[23]_i_8_n_0 ),
+        .I1(\cpu_irq_out[31]_i_14_n_0 ),
+        .I2(\cpu_irq_out[23]_i_9_n_0 ),
+        .I3(\cpu_irq_out[23]_i_10_n_0 ),
+        .I4(\cpu_irq_out[23]_i_11_n_0 ),
+        .I5(\cpu_irq_out[31]_i_9_n_0 ),
+        .O(\cpu_irq_out[23]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair58" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[23]_i_20 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][1] ),
+        .I3(\irq_dest_reg_n_0_[21][0] ),
+        .O(\cpu_irq_out[23]_i_20_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair266" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_21 
+       (.I0(\irq_dest_reg_n_0_[9][4] ),
+        .I1(\irq_dest_reg_n_0_[9][3] ),
+        .O(\cpu_irq_out[23]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair42" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[23]_i_22 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][1] ),
+        .I3(\irq_dest_reg_n_0_[9][0] ),
+        .O(\cpu_irq_out[23]_i_22_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[23]_i_23 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[3]),
+        .I3(data15[4]),
+        .I4(data15[0]),
+        .I5(data15[1]),
+        .O(\cpu_irq_out[23]_i_23_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[23]_i_24 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][3] ),
+        .I3(\irq_dest_reg_n_0_[13][4] ),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(\irq_dest_reg_n_0_[13][1] ),
         .O(\cpu_irq_out[23]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair261" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_25 
+       (.I0(data21[4]),
+        .I1(data21[3]),
+        .O(\cpu_irq_out[23]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair274" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_26 
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .O(\cpu_irq_out[23]_i_26_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \cpu_irq_out[23]_i_27 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[3]),
+        .I3(data19[4]),
+        .I4(data19[0]),
+        .I5(data19[1]),
+        .O(\cpu_irq_out[23]_i_27_n_0 ));
   LUT6 #(
     .INIT(64'h0000800000000000)) 
-    \cpu_irq_out[23]_i_25 
+    \cpu_irq_out[23]_i_28 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[23]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair261" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_26 
-       (.I0(\irq_dest_reg_n_0_[14][4] ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .O(\cpu_irq_out[23]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair101" *) 
-  LUT4 #(
-    .INIT(16'hFF7F)) 
-    \cpu_irq_out[23]_i_27 
-       (.I0(\irq_dest_reg_n_0_[14][1] ),
-        .I1(\irq_dest_reg_n_0_[14][0] ),
-        .I2(\irq_dest_reg_n_0_[14][2] ),
-        .I3(\irq_ack[14]_i_2_n_0 ),
-        .O(\cpu_irq_out[23]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair210" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[23]_i_28 
-       (.I0(\irq_dest_reg_n_0_[8][4] ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
         .O(\cpu_irq_out[23]_i_28_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair271" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_29 
+       (.I0(data16[4]),
+        .I1(data16[3]),
+        .O(\cpu_irq_out[23]_i_29_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF0404FF04)) 
+    \cpu_irq_out[23]_i_3 
+       (.I0(\cpu_irq_out[23]_i_12_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][4] ),
+        .I2(\irq_dest_reg_n_0_[19][3] ),
+        .I3(cpu_irq_out[23]),
+        .I4(cpu_eoi_in[23]),
+        .I5(\cpu_irq_out[23]_i_13_n_0 ),
+        .O(\cpu_irq_out[23]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair272" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \cpu_irq_out[23]_i_30 
+       (.I0(\irq_dest_reg_n_0_[1][4] ),
+        .I1(\irq_dest_reg_n_0_[1][3] ),
+        .O(\cpu_irq_out[23]_i_30_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair35" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[23]_i_31 
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][2] ),
+        .I2(\irq_dest_reg_n_0_[1][1] ),
+        .I3(\irq_dest_reg_n_0_[1][0] ),
+        .O(\cpu_irq_out[23]_i_31_n_0 ));
   LUT6 #(
     .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[23]_i_29 
+    \cpu_irq_out[23]_i_32 
        (.I0(\irq_dest_reg_n_0_[12][3] ),
         .I1(\irq_dest_reg_n_0_[12][4] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[23]_i_29_n_0 ));
-  LUT6 #(
-    .INIT(64'hFF04FF04FFFFFF04)) 
-    \cpu_irq_out[23]_i_3 
-       (.I0(\cpu_irq_out[31]_i_19_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][4] ),
-        .I2(\irq_dest_reg_n_0_[20][3] ),
-        .I3(\cpu_irq_out[23]_i_12_n_0 ),
-        .I4(cpu_irq_out[23]),
-        .I5(cpu_eoi_in[23]),
-        .O(\cpu_irq_out[23]_i_3_n_0 ));
+        .O(\cpu_irq_out[23]_i_32_n_0 ));
   LUT6 #(
     .INIT(64'h0400000000000000)) 
-    \cpu_irq_out[23]_i_30 
-       (.I0(\irq_dest_reg_n_0_[18][3] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
-        .I2(\irq_ack[18]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[18][2] ),
-        .I4(\irq_dest_reg_n_0_[18][0] ),
-        .I5(\irq_dest_reg_n_0_[18][1] ),
-        .O(\cpu_irq_out[23]_i_30_n_0 ));
+    \cpu_irq_out[23]_i_33 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][3] ),
+        .I3(\irq_dest_reg_n_0_[20][4] ),
+        .I4(\irq_dest_reg_n_0_[20][0] ),
+        .I5(\irq_dest_reg_n_0_[20][1] ),
+        .O(\cpu_irq_out[23]_i_33_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[23]_i_4 
-       (.I0(\cpu_irq_out[23]_i_13_n_0 ),
-        .I1(\cpu_irq_out[31]_i_17_n_0 ),
-        .I2(\cpu_irq_out[23]_i_14_n_0 ),
-        .I3(\cpu_irq_out[23]_i_15_n_0 ),
-        .I4(\cpu_irq_out[23]_i_16_n_0 ),
-        .I5(\cpu_irq_out[31]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_14_n_0 ),
+        .I1(\cpu_irq_out[23]_i_15_n_0 ),
+        .I2(\cpu_irq_out[23]_i_16_n_0 ),
+        .I3(\cpu_irq_out[31]_i_29_n_0 ),
+        .I4(\cpu_irq_out[23]_i_17_n_0 ),
+        .I5(\cpu_irq_out[23]_i_18_n_0 ),
         .O(\cpu_irq_out[23]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[23]_i_5 
-       (.I0(\cpu_irq_out[23]_i_17_n_0 ),
-        .I1(\cpu_irq_out[23]_i_18_n_0 ),
-        .I2(\cpu_irq_out[23]_i_19_n_0 ),
-        .I3(\cpu_irq_out[31]_i_29_n_0 ),
-        .I4(\cpu_irq_out[23]_i_20_n_0 ),
-        .I5(\cpu_irq_out[23]_i_21_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_19_n_0 ),
+        .I1(\cpu_irq_out[23]_i_20_n_0 ),
+        .I2(\cpu_irq_out[23]_i_21_n_0 ),
+        .I3(\cpu_irq_out[23]_i_22_n_0 ),
+        .I4(\cpu_irq_out[23]_i_23_n_0 ),
+        .I5(\cpu_irq_out[23]_i_24_n_0 ),
         .O(\cpu_irq_out[23]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[23]_i_6 
-       (.I0(\cpu_irq_out[23]_i_22_n_0 ),
-        .I1(\cpu_irq_out[31]_i_23_n_0 ),
-        .I2(\cpu_irq_out[23]_i_23_n_0 ),
-        .I3(\cpu_irq_out[31]_i_9_n_0 ),
-        .I4(\cpu_irq_out[23]_i_24_n_0 ),
-        .I5(\cpu_irq_out[23]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_25_n_0 ),
+        .I1(\cpu_irq_out[31]_i_19_n_0 ),
+        .I2(\cpu_irq_out[23]_i_26_n_0 ),
+        .I3(\cpu_irq_out[31]_i_31_n_0 ),
+        .I4(\cpu_irq_out[23]_i_27_n_0 ),
+        .I5(\cpu_irq_out[23]_i_28_n_0 ),
         .O(\cpu_irq_out[23]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[23]_i_7 
-       (.I0(\cpu_irq_out[23]_i_26_n_0 ),
-        .I1(\cpu_irq_out[23]_i_27_n_0 ),
-        .I2(\cpu_irq_out[23]_i_28_n_0 ),
-        .I3(\cpu_irq_out[31]_i_13_n_0 ),
-        .I4(\cpu_irq_out[23]_i_29_n_0 ),
-        .I5(\cpu_irq_out[23]_i_30_n_0 ),
+       (.I0(\cpu_irq_out[23]_i_29_n_0 ),
+        .I1(\cpu_irq_out[31]_i_23_n_0 ),
+        .I2(\cpu_irq_out[23]_i_30_n_0 ),
+        .I3(\cpu_irq_out[23]_i_31_n_0 ),
+        .I4(\cpu_irq_out[23]_i_32_n_0 ),
+        .I5(\cpu_irq_out[23]_i_33_n_0 ),
         .O(\cpu_irq_out[23]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair276" *) 
+  (* SOFT_HLUTNM = "soft_lutpair265" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \cpu_irq_out[23]_i_8 
-       (.I0(data18[4]),
-        .I1(data18[3]),
+       (.I0(\irq_dest_reg_n_0_[14][4] ),
+        .I1(\irq_dest_reg_n_0_[14][3] ),
         .O(\cpu_irq_out[23]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair220" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
+  (* SOFT_HLUTNM = "soft_lutpair225" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
     \cpu_irq_out[23]_i_9 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
+       (.I0(data14[3]),
+        .I1(data14[4]),
+        .I2(\cpu_irq_out[7]_i_12_n_0 ),
         .O(\cpu_irq_out[23]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -5382,7 +5382,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[24]_i_6_n_0 ),
         .I5(\cpu_irq_out[24]_i_7_n_0 ),
         .O(\cpu_irq_out[24]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair103" *) 
+  (* SOFT_HLUTNM = "soft_lutpair123" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[24]_i_10 
@@ -5391,154 +5391,151 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data16[1]),
         .I3(data16[2]),
         .O(\cpu_irq_out[24]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair211" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[24]_i_11 
-       (.I0(data15[4]),
-        .I1(data15[3]),
-        .I2(\cpu_irq_out[0]_i_9_n_0 ),
-        .O(\cpu_irq_out[24]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair117" *) 
+  (* SOFT_HLUTNM = "soft_lutpair106" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_12 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][0] ),
-        .I2(\irq_dest_reg_n_0_[20][1] ),
-        .I3(\irq_dest_reg_n_0_[20][2] ),
-        .O(\cpu_irq_out[24]_i_12_n_0 ));
+    \cpu_irq_out[24]_i_11 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][0] ),
+        .I2(\irq_dest_reg_n_0_[17][1] ),
+        .I3(\irq_dest_reg_n_0_[17][2] ),
+        .O(\cpu_irq_out[24]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h0002000000000000)) 
-    \cpu_irq_out[24]_i_13 
+    \cpu_irq_out[24]_i_12 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][2] ),
         .I2(\irq_dest_reg_n_0_[10][1] ),
         .I3(\irq_dest_reg_n_0_[10][0] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
+        .O(\cpu_irq_out[24]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair212" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[24]_i_13 
+       (.I0(\irq_dest_reg_n_0_[16][4] ),
+        .I1(\irq_dest_reg_n_0_[16][3] ),
+        .I2(\cpu_irq_out[24]_i_27_n_0 ),
         .O(\cpu_irq_out[24]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[24]_i_14 
-       (.I0(\cpu_irq_out[0]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[11][3] ),
-        .I2(\irq_dest_reg_n_0_[11][4] ),
-        .I3(\cpu_irq_out[8]_i_9_n_0 ),
-        .I4(data14[3]),
-        .I5(data14[4]),
-        .O(\cpu_irq_out[24]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair261" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[24]_i_15 
-       (.I0(\irq_dest_reg_n_0_[14][3] ),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
-        .O(\cpu_irq_out[24]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair98" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_16 
-       (.I0(\irq_ack[14]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][0] ),
-        .I2(\irq_dest_reg_n_0_[14][1] ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .O(\cpu_irq_out[24]_i_16_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair94" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_17 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[0]),
-        .I2(data17[1]),
-        .I3(data17[2]),
-        .O(\cpu_irq_out[24]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair152" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_18 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][0] ),
-        .I2(\irq_dest_reg_n_0_[21][1] ),
-        .I3(\irq_dest_reg_n_0_[21][2] ),
-        .O(\cpu_irq_out[24]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair86" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_19 
+    \cpu_irq_out[24]_i_14 
        (.I0(\irq_ack[0]_i_2_n_0 ),
         .I1(data21[0]),
         .I2(data21[1]),
         .I3(data21[2]),
-        .O(\cpu_irq_out[24]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFF2F2FFF2)) 
-    \cpu_irq_out[24]_i_2 
-       (.I0(\cpu_irq_out[31]_i_30_n_0 ),
-        .I1(\cpu_irq_out[24]_i_8_n_0 ),
-        .I2(\cpu_irq_out[24]_i_9_n_0 ),
-        .I3(\cpu_irq_out[31]_i_36_n_0 ),
-        .I4(\cpu_irq_out[24]_i_10_n_0 ),
-        .I5(\cpu_irq_out[24]_i_11_n_0 ),
-        .O(\cpu_irq_out[24]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[24]_i_20 
-       (.I0(\cpu_irq_out[16]_i_10_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][3] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\cpu_irq_out[8]_i_17_n_0 ),
-        .I4(data19[3]),
-        .I5(data19[4]),
-        .O(\cpu_irq_out[24]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair138" *) 
+        .O(\cpu_irq_out[24]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair74" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_21 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][0] ),
-        .I2(\irq_dest_reg_n_0_[9][1] ),
-        .I3(\irq_dest_reg_n_0_[9][2] ),
-        .O(\cpu_irq_out[24]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair119" *) 
+    \cpu_irq_out[24]_i_15 
+       (.I0(\irq_ack[14]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[14][0] ),
+        .I2(\irq_dest_reg_n_0_[14][1] ),
+        .I3(\irq_dest_reg_n_0_[14][2] ),
+        .O(\cpu_irq_out[24]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair230" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[24]_i_16 
+       (.I0(\irq_dest_reg_n_0_[21][4] ),
+        .I1(\irq_dest_reg_n_0_[21][3] ),
+        .I2(\cpu_irq_out[0]_i_14_n_0 ),
+        .O(\cpu_irq_out[24]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair90" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_22 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][0] ),
-        .I2(\irq_dest_reg_n_0_[19][1] ),
-        .I3(\irq_dest_reg_n_0_[19][2] ),
-        .O(\cpu_irq_out[24]_i_22_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[24]_i_23 
-       (.I0(\cpu_irq_out[24]_i_27_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\cpu_irq_out[24]_i_28_n_0 ),
-        .I4(\irq_dest_reg_n_0_[16][3] ),
-        .I5(\irq_dest_reg_n_0_[16][4] ),
-        .O(\cpu_irq_out[24]_i_23_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[24]_i_24 
-       (.I0(\cpu_irq_out[16]_i_15_n_0 ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[16]_i_13_n_0 ),
-        .I4(\irq_dest_reg_n_0_[15][3] ),
-        .I5(\irq_dest_reg_n_0_[15][4] ),
-        .O(\cpu_irq_out[24]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair141" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_25 
+    \cpu_irq_out[24]_i_17 
        (.I0(\irq_ack[18]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[18][0] ),
         .I2(\irq_dest_reg_n_0_[18][1] ),
         .I3(\irq_dest_reg_n_0_[18][2] ),
+        .O(\cpu_irq_out[24]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair108" *) 
+  LUT4 #(
+    .INIT(16'hFEFF)) 
+    \cpu_irq_out[24]_i_18 
+       (.I0(\irq_dest_reg_n_0_[8][0] ),
+        .I1(\irq_dest_reg_n_0_[8][1] ),
+        .I2(\irq_dest_reg_n_0_[8][2] ),
+        .I3(\irq_ack[8]_i_2_n_0 ),
+        .O(\cpu_irq_out[24]_i_18_n_0 ));
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[24]_i_19 
+       (.I0(\cpu_irq_out[16]_i_10_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I3(\cpu_irq_out[8]_i_9_n_0 ),
+        .I4(data14[3]),
+        .I5(data14[4]),
+        .O(\cpu_irq_out[24]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hAEAEAEAEFFAEAEAE)) 
+    \cpu_irq_out[24]_i_2 
+       (.I0(\cpu_irq_out[24]_i_8_n_0 ),
+        .I1(\cpu_irq_out[28]_i_23_n_0 ),
+        .I2(\cpu_irq_out[24]_i_9_n_0 ),
+        .I3(data16[4]),
+        .I4(data16[3]),
+        .I5(\cpu_irq_out[24]_i_10_n_0 ),
+        .O(\cpu_irq_out[24]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair114" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    \cpu_irq_out[24]_i_20 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[0]),
+        .I2(data19[1]),
+        .I3(data19[2]),
+        .O(\cpu_irq_out[24]_i_20_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair143" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    \cpu_irq_out[24]_i_21 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[0]),
+        .I2(data17[1]),
+        .I3(data17[2]),
+        .O(\cpu_irq_out[24]_i_21_n_0 ));
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[24]_i_22 
+       (.I0(\cpu_irq_out[24]_i_28_n_0 ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I3(\cpu_irq_out[8]_i_14_n_0 ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
+        .I5(\irq_dest_reg_n_0_[20][4] ),
+        .O(\cpu_irq_out[24]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair121" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[24]_i_23 
+       (.I0(\irq_dest_reg_n_0_[1][4] ),
+        .I1(\irq_dest_reg_n_0_[1][3] ),
+        .I2(\cpu_irq_out[16]_i_17_n_0 ),
+        .O(\cpu_irq_out[24]_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair136" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    \cpu_irq_out[24]_i_24 
+       (.I0(\irq_ack[3]_i_2_n_0 ),
+        .I1(data18[0]),
+        .I2(data18[1]),
+        .I3(data18[2]),
+        .O(\cpu_irq_out[24]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair218" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[24]_i_25 
+       (.I0(\irq_dest_reg_n_0_[19][4] ),
+        .I1(\irq_dest_reg_n_0_[19][3] ),
+        .I2(\cpu_irq_out[0]_i_16_n_0 ),
         .O(\cpu_irq_out[24]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair129" *) 
+  (* SOFT_HLUTNM = "soft_lutpair81" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[24]_i_26 
@@ -5547,90 +5544,92 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[12][1] ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .O(\cpu_irq_out[24]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair107" *) 
+  (* SOFT_HLUTNM = "soft_lutpair79" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[24]_i_27 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][0] ),
-        .I2(\irq_dest_reg_n_0_[17][1] ),
-        .I3(\irq_dest_reg_n_0_[17][2] ),
-        .O(\cpu_irq_out[24]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair109" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_28 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][0] ),
         .I2(\irq_dest_reg_n_0_[16][1] ),
         .I3(\irq_dest_reg_n_0_[16][2] ),
+        .O(\cpu_irq_out[24]_i_27_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair101" *) 
+  LUT4 #(
+    .INIT(16'hFEFF)) 
+    \cpu_irq_out[24]_i_28 
+       (.I0(\irq_dest_reg_n_0_[11][0] ),
+        .I1(\irq_dest_reg_n_0_[11][1] ),
+        .I2(\irq_dest_reg_n_0_[11][2] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
         .O(\cpu_irq_out[24]_i_28_n_0 ));
   LUT6 #(
-    .INIT(64'hFF40FF40FFFFFF40)) 
+    .INIT(64'hFFFFFFFF4040FF40)) 
     \cpu_irq_out[24]_i_3 
-       (.I0(\cpu_irq_out[24]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\cpu_irq_out[24]_i_13_n_0 ),
-        .I4(cpu_irq_out[24]),
-        .I5(cpu_eoi_in[24]),
+       (.I0(\cpu_irq_out[24]_i_11_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(cpu_irq_out[24]),
+        .I4(cpu_eoi_in[24]),
+        .I5(\cpu_irq_out[24]_i_12_n_0 ),
         .O(\cpu_irq_out[24]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEFFAEAEAE)) 
+    .INIT(64'hFFFFFFFFAEAEFFAE)) 
     \cpu_irq_out[24]_i_4 
-       (.I0(\cpu_irq_out[24]_i_14_n_0 ),
-        .I1(\cpu_irq_out[24]_i_15_n_0 ),
-        .I2(\cpu_irq_out[24]_i_16_n_0 ),
-        .I3(data17[4]),
-        .I4(data17[3]),
-        .I5(\cpu_irq_out[24]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_13_n_0 ),
+        .I1(\cpu_irq_out[31]_i_18_n_0 ),
+        .I2(\cpu_irq_out[24]_i_14_n_0 ),
+        .I3(\cpu_irq_out[30]_i_19_n_0 ),
+        .I4(\cpu_irq_out[24]_i_15_n_0 ),
+        .I5(\cpu_irq_out[24]_i_16_n_0 ),
         .O(\cpu_irq_out[24]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[24]_i_5 
-       (.I0(\cpu_irq_out[30]_i_19_n_0 ),
-        .I1(\cpu_irq_out[24]_i_18_n_0 ),
-        .I2(data21[4]),
-        .I3(data21[3]),
-        .I4(\cpu_irq_out[24]_i_19_n_0 ),
-        .I5(\cpu_irq_out[24]_i_20_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
+        .I1(\cpu_irq_out[24]_i_17_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\irq_dest_reg_n_0_[8][3] ),
+        .I4(\cpu_irq_out[24]_i_18_n_0 ),
+        .I5(\cpu_irq_out[24]_i_19_n_0 ),
         .O(\cpu_irq_out[24]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[24]_i_6 
-       (.I0(\cpu_irq_out[31]_i_22_n_0 ),
-        .I1(\cpu_irq_out[24]_i_21_n_0 ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\cpu_irq_out[24]_i_22_n_0 ),
-        .I5(\cpu_irq_out[24]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_27_n_0 ),
+        .I1(\cpu_irq_out[24]_i_20_n_0 ),
+        .I2(data17[4]),
+        .I3(data17[3]),
+        .I4(\cpu_irq_out[24]_i_21_n_0 ),
+        .I5(\cpu_irq_out[24]_i_22_n_0 ),
         .O(\cpu_irq_out[24]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEFFAEAEAE)) 
+    .INIT(64'hFFAEFFAEFFFFFFAE)) 
     \cpu_irq_out[24]_i_7 
-       (.I0(\cpu_irq_out[24]_i_24_n_0 ),
-        .I1(\cpu_irq_out[31]_i_24_n_0 ),
-        .I2(\cpu_irq_out[24]_i_25_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][4] ),
-        .I4(\irq_dest_reg_n_0_[12][3] ),
+       (.I0(\cpu_irq_out[24]_i_23_n_0 ),
+        .I1(\cpu_irq_out[31]_i_30_n_0 ),
+        .I2(\cpu_irq_out[24]_i_24_n_0 ),
+        .I3(\cpu_irq_out[24]_i_25_n_0 ),
+        .I4(\cpu_irq_out[31]_i_16_n_0 ),
         .I5(\cpu_irq_out[24]_i_26_n_0 ),
         .O(\cpu_irq_out[24]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair113" *) 
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[24]_i_8 
+       (.I0(\cpu_irq_out[0]_i_9_n_0 ),
+        .I1(data15[3]),
+        .I2(data15[4]),
+        .I3(\cpu_irq_out[16]_i_13_n_0 ),
+        .I4(\irq_dest_reg_n_0_[15][3] ),
+        .I5(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[24]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair96" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
-    \cpu_irq_out[24]_i_8 
-       (.I0(\irq_ack[3]_i_2_n_0 ),
-        .I1(data18[0]),
-        .I2(data18[1]),
-        .I3(data18[2]),
-        .O(\cpu_irq_out[24]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair217" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
     \cpu_irq_out[24]_i_9 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[16]_i_18_n_0 ),
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][0] ),
+        .I2(\irq_dest_reg_n_0_[9][1] ),
+        .I3(\irq_dest_reg_n_0_[9][2] ),
         .O(\cpu_irq_out[24]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -5642,263 +5641,250 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[25]_i_6_n_0 ),
         .I5(\cpu_irq_out[25]_i_7_n_0 ),
         .O(\cpu_irq_out[25]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair90" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_10 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[1]),
-        .I2(data15[0]),
-        .I3(data15[2]),
-        .O(\cpu_irq_out[25]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair136" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_11 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][1] ),
-        .I2(\irq_dest_reg_n_0_[15][0] ),
-        .I3(\irq_dest_reg_n_0_[15][2] ),
-        .O(\cpu_irq_out[25]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'h0020000000000000)) 
-    \cpu_irq_out[25]_i_12 
-       (.I0(\irq_ack[10]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[10][2] ),
-        .I2(\irq_dest_reg_n_0_[10][0] ),
-        .I3(\irq_dest_reg_n_0_[10][1] ),
-        .I4(\irq_dest_reg_n_0_[10][3] ),
-        .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[25]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[25]_i_13 
-       (.I0(\cpu_irq_out[9]_i_9_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
-        .I3(\cpu_irq_out[1]_i_11_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][3] ),
-        .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[25]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair119" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_14 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][1] ),
-        .I2(\irq_dest_reg_n_0_[19][0] ),
-        .I3(\irq_dest_reg_n_0_[19][2] ),
-        .O(\cpu_irq_out[25]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair98" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_15 
-       (.I0(\irq_ack[14]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][1] ),
-        .I2(\irq_dest_reg_n_0_[14][0] ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .O(\cpu_irq_out[25]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair213" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[25]_i_16 
-       (.I0(\irq_dest_reg_n_0_[17][4] ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .I2(\cpu_irq_out[25]_i_28_n_0 ),
-        .O(\cpu_irq_out[25]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair86" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_17 
-       (.I0(\irq_ack[0]_i_2_n_0 ),
-        .I1(data21[1]),
-        .I2(data21[0]),
-        .I3(data21[2]),
-        .O(\cpu_irq_out[25]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair113" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_18 
-       (.I0(\irq_ack[3]_i_2_n_0 ),
-        .I1(data18[1]),
-        .I2(data18[0]),
-        .I3(data18[2]),
-        .O(\cpu_irq_out[25]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair81" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[25]_i_19 
-       (.I0(\irq_dest_reg_n_0_[13][4] ),
-        .I1(\irq_dest_reg_n_0_[13][3] ),
-        .I2(\cpu_irq_out[17]_i_10_n_0 ),
-        .O(\cpu_irq_out[25]_i_19_n_0 ));
+    \cpu_irq_out[25]_i_10 
+       (.I0(\cpu_irq_out[9]_i_17_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][3] ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\cpu_irq_out[17]_i_9_n_0 ),
+        .I4(data14[3]),
+        .I5(data14[4]),
+        .O(\cpu_irq_out[25]_i_10_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEFFAEAEAE)) 
-    \cpu_irq_out[25]_i_2 
-       (.I0(\cpu_irq_out[25]_i_8_n_0 ),
-        .I1(\cpu_irq_out[31]_i_36_n_0 ),
-        .I2(\cpu_irq_out[25]_i_9_n_0 ),
-        .I3(data15[4]),
-        .I4(data15[3]),
-        .I5(\cpu_irq_out[25]_i_10_n_0 ),
-        .O(\cpu_irq_out[25]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair138" *) 
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[25]_i_11 
+       (.I0(\cpu_irq_out[9]_i_14_n_0 ),
+        .I1(data17[3]),
+        .I2(data17[4]),
+        .I3(\cpu_irq_out[25]_i_26_n_0 ),
+        .I4(\irq_dest_reg_n_0_[8][3] ),
+        .I5(\irq_dest_reg_n_0_[8][4] ),
+        .O(\cpu_irq_out[25]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair154" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_20 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][1] ),
-        .I2(\irq_dest_reg_n_0_[9][0] ),
-        .I3(\irq_dest_reg_n_0_[9][2] ),
-        .O(\cpu_irq_out[25]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair152" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_21 
+    \cpu_irq_out[25]_i_12 
        (.I0(\irq_ack[21]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[21][1] ),
         .I2(\irq_dest_reg_n_0_[21][0] ),
         .I3(\irq_dest_reg_n_0_[21][2] ),
-        .O(\cpu_irq_out[25]_i_21_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[25]_i_22 
-       (.I0(\cpu_irq_out[25]_i_29_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][3] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\cpu_irq_out[9]_i_12_n_0 ),
-        .I4(\irq_dest_reg_n_0_[20][3] ),
-        .I5(\irq_dest_reg_n_0_[20][4] ),
-        .O(\cpu_irq_out[25]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair141" *) 
+        .O(\cpu_irq_out[25]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair136" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_23 
-       (.I0(\irq_ack[18]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][1] ),
-        .I2(\irq_dest_reg_n_0_[18][0] ),
-        .I3(\irq_dest_reg_n_0_[18][2] ),
-        .O(\cpu_irq_out[25]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair84" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[25]_i_24 
-       (.I0(\irq_dest_reg_n_0_[8][4] ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\cpu_irq_out[17]_i_14_n_0 ),
-        .O(\cpu_irq_out[25]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair130" *) 
+    \cpu_irq_out[25]_i_13 
+       (.I0(\irq_ack[3]_i_2_n_0 ),
+        .I1(data18[1]),
+        .I2(data18[0]),
+        .I3(data18[2]),
+        .O(\cpu_irq_out[25]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair94" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_25 
+    \cpu_irq_out[25]_i_14 
+       (.I0(\irq_ack[0]_i_2_n_0 ),
+        .I1(data21[1]),
+        .I2(data21[0]),
+        .I3(data21[2]),
+        .O(\cpu_irq_out[25]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair81" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[25]_i_15 
        (.I0(\irq_ack[12]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[12][1] ),
         .I2(\irq_dest_reg_n_0_[12][0] ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
-        .O(\cpu_irq_out[25]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair96" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[25]_i_26 
-       (.I0(data17[4]),
-        .I1(data17[3]),
-        .I2(\cpu_irq_out[17]_i_17_n_0 ),
-        .O(\cpu_irq_out[25]_i_26_n_0 ));
+        .O(\cpu_irq_out[25]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair90" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[25]_i_16 
+       (.I0(\irq_ack[18]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[18][1] ),
+        .I2(\irq_dest_reg_n_0_[18][0] ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .O(\cpu_irq_out[25]_i_16_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair123" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_27 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[1]),
-        .I2(data19[0]),
-        .I3(data19[2]),
-        .O(\cpu_irq_out[25]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair107" *) 
+    \cpu_irq_out[25]_i_17 
+       (.I0(\irq_ack[5]_i_2_n_0 ),
+        .I1(data16[1]),
+        .I2(data16[0]),
+        .I3(data16[2]),
+        .O(\cpu_irq_out[25]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[25]_i_18 
+       (.I0(\cpu_irq_out[1]_i_9_n_0 ),
+        .I1(data15[3]),
+        .I2(data15[4]),
+        .I3(\cpu_irq_out[9]_i_8_n_0 ),
+        .I4(\irq_dest_reg_n_0_[9][3] ),
+        .I5(\irq_dest_reg_n_0_[9][4] ),
+        .O(\cpu_irq_out[25]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair106" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_28 
+    \cpu_irq_out[25]_i_19 
        (.I0(\irq_ack[17]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][1] ),
         .I2(\irq_dest_reg_n_0_[17][0] ),
         .I3(\irq_dest_reg_n_0_[17][2] ),
-        .O(\cpu_irq_out[25]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair109" *) 
+        .O(\cpu_irq_out[25]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFFAAEA)) 
+    \cpu_irq_out[25]_i_2 
+       (.I0(\cpu_irq_out[25]_i_8_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .I2(\irq_dest_reg_n_0_[15][3] ),
+        .I3(\cpu_irq_out[25]_i_9_n_0 ),
+        .I4(\cpu_irq_out[25]_i_10_n_0 ),
+        .I5(\cpu_irq_out[25]_i_11_n_0 ),
+        .O(\cpu_irq_out[25]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair114" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
-    \cpu_irq_out[25]_i_29 
+    \cpu_irq_out[25]_i_20 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[1]),
+        .I2(data19[0]),
+        .I3(data19[2]),
+        .O(\cpu_irq_out[25]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[25]_i_21 
+       (.I0(\cpu_irq_out[25]_i_27_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][3] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\cpu_irq_out[9]_i_16_n_0 ),
+        .I4(\irq_dest_reg_n_0_[19][3] ),
+        .I5(\irq_dest_reg_n_0_[19][4] ),
+        .O(\cpu_irq_out[25]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair74" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[25]_i_22 
+       (.I0(\irq_ack[14]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[14][1] ),
+        .I2(\irq_dest_reg_n_0_[14][0] ),
+        .I3(\irq_dest_reg_n_0_[14][2] ),
+        .O(\cpu_irq_out[25]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair101" *) 
+  LUT4 #(
+    .INIT(16'hFBFF)) 
+    \cpu_irq_out[25]_i_23 
+       (.I0(\irq_dest_reg_n_0_[11][1] ),
+        .I1(\irq_dest_reg_n_0_[11][0] ),
+        .I2(\irq_dest_reg_n_0_[11][2] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .O(\cpu_irq_out[25]_i_23_n_0 ));
+  LUT6 #(
+    .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[25]_i_24 
+       (.I0(\cpu_irq_out[17]_i_14_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][3] ),
+        .I2(\irq_dest_reg_n_0_[20][4] ),
+        .I3(\cpu_irq_out[17]_i_11_n_0 ),
+        .I4(\irq_dest_reg_n_0_[13][3] ),
+        .I5(\irq_dest_reg_n_0_[13][4] ),
+        .O(\cpu_irq_out[25]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair232" *) 
+  LUT3 #(
+    .INIT(8'hFB)) 
+    \cpu_irq_out[25]_i_25 
+       (.I0(\irq_dest_reg_n_0_[10][2] ),
+        .I1(\irq_dest_reg_n_0_[10][0] ),
+        .I2(\irq_dest_reg_n_0_[10][1] ),
+        .O(\cpu_irq_out[25]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair108" *) 
+  LUT4 #(
+    .INIT(16'hFBFF)) 
+    \cpu_irq_out[25]_i_26 
+       (.I0(\irq_dest_reg_n_0_[8][1] ),
+        .I1(\irq_dest_reg_n_0_[8][0] ),
+        .I2(\irq_dest_reg_n_0_[8][2] ),
+        .I3(\irq_ack[8]_i_2_n_0 ),
+        .O(\cpu_irq_out[25]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair79" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[25]_i_27 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][1] ),
         .I2(\irq_dest_reg_n_0_[16][0] ),
         .I3(\irq_dest_reg_n_0_[16][2] ),
-        .O(\cpu_irq_out[25]_i_29_n_0 ));
+        .O(\cpu_irq_out[25]_i_27_n_0 ));
   LUT6 #(
-    .INIT(64'hFF40FF40FFFFFF40)) 
+    .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[25]_i_3 
-       (.I0(\cpu_irq_out[25]_i_11_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][3] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\cpu_irq_out[25]_i_12_n_0 ),
-        .I4(cpu_irq_out[25]),
-        .I5(cpu_eoi_in[25]),
+       (.I0(\cpu_irq_out[25]_i_12_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][3] ),
+        .I2(\irq_dest_reg_n_0_[21][4] ),
+        .I3(\cpu_irq_out[25]_i_13_n_0 ),
+        .I4(data18[3]),
+        .I5(data18[4]),
         .O(\cpu_irq_out[25]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEFFAEAEAE)) 
+    .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[25]_i_4 
-       (.I0(\cpu_irq_out[25]_i_13_n_0 ),
-        .I1(\cpu_irq_out[31]_i_8_n_0 ),
-        .I2(\cpu_irq_out[25]_i_14_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][4] ),
-        .I4(\irq_dest_reg_n_0_[14][3] ),
-        .I5(\cpu_irq_out[25]_i_15_n_0 ),
+       (.I0(\cpu_irq_out[25]_i_14_n_0 ),
+        .I1(data21[3]),
+        .I2(data21[4]),
+        .I3(\cpu_irq_out[25]_i_15_n_0 ),
+        .I4(\irq_dest_reg_n_0_[12][3] ),
+        .I5(\irq_dest_reg_n_0_[12][4] ),
         .O(\cpu_irq_out[25]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAEAEFFAE)) 
+    .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[25]_i_5 
-       (.I0(\cpu_irq_out[25]_i_16_n_0 ),
-        .I1(\cpu_irq_out[31]_i_28_n_0 ),
-        .I2(\cpu_irq_out[25]_i_17_n_0 ),
-        .I3(\cpu_irq_out[31]_i_30_n_0 ),
-        .I4(\cpu_irq_out[25]_i_18_n_0 ),
-        .I5(\cpu_irq_out[25]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
+        .I1(\cpu_irq_out[25]_i_16_n_0 ),
+        .I2(data16[4]),
+        .I3(data16[3]),
+        .I4(\cpu_irq_out[25]_i_17_n_0 ),
+        .I5(\cpu_irq_out[25]_i_18_n_0 ),
         .O(\cpu_irq_out[25]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[25]_i_6 
-       (.I0(\cpu_irq_out[31]_i_22_n_0 ),
-        .I1(\cpu_irq_out[25]_i_20_n_0 ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\cpu_irq_out[25]_i_21_n_0 ),
-        .I5(\cpu_irq_out[25]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_24_n_0 ),
+        .I1(\cpu_irq_out[25]_i_19_n_0 ),
+        .I2(data19[4]),
+        .I3(data19[3]),
+        .I4(\cpu_irq_out[25]_i_20_n_0 ),
+        .I5(\cpu_irq_out[25]_i_21_n_0 ),
         .O(\cpu_irq_out[25]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFF2F2FFF2)) 
+    .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[25]_i_7 
-       (.I0(\cpu_irq_out[31]_i_24_n_0 ),
-        .I1(\cpu_irq_out[25]_i_23_n_0 ),
-        .I2(\cpu_irq_out[25]_i_24_n_0 ),
-        .I3(\cpu_irq_out[29]_i_15_n_0 ),
-        .I4(\cpu_irq_out[25]_i_25_n_0 ),
-        .I5(\cpu_irq_out[25]_i_26_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_19_n_0 ),
+        .I1(\cpu_irq_out[25]_i_22_n_0 ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I3(\irq_dest_reg_n_0_[11][3] ),
+        .I4(\cpu_irq_out[25]_i_23_n_0 ),
+        .I5(\cpu_irq_out[25]_i_24_n_0 ),
         .O(\cpu_irq_out[25]_i_7_n_0 ));
   LUT6 #(
-    .INIT(64'h40FF404040404040)) 
+    .INIT(64'h0800FFFF08000800)) 
     \cpu_irq_out[25]_i_8 
-       (.I0(\cpu_irq_out[25]_i_27_n_0 ),
-        .I1(data19[3]),
-        .I2(data19[4]),
-        .I3(\cpu_irq_out[17]_i_18_n_0 ),
-        .I4(\irq_dest_reg_n_0_[1][3] ),
-        .I5(\irq_dest_reg_n_0_[1][4] ),
+       (.I0(\irq_dest_reg_n_0_[10][4] ),
+        .I1(\irq_dest_reg_n_0_[10][3] ),
+        .I2(\cpu_irq_out[25]_i_25_n_0 ),
+        .I3(\irq_ack[10]_i_2_n_0 ),
+        .I4(cpu_eoi_in[25]),
+        .I5(cpu_irq_out[25]),
         .O(\cpu_irq_out[25]_i_8_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair104" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[25]_i_9 
-       (.I0(\irq_ack[5]_i_2_n_0 ),
-        .I1(data16[1]),
-        .I2(data16[0]),
-        .I3(data16[2]),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][1] ),
+        .I2(\irq_dest_reg_n_0_[15][0] ),
+        .I3(\irq_dest_reg_n_0_[15][2] ),
         .O(\cpu_irq_out[25]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -5910,7 +5896,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[26]_i_6_n_0 ),
         .I5(\cpu_irq_out[26]_i_7_n_0 ),
         .O(\cpu_irq_out[26]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair104" *) 
+  (* SOFT_HLUTNM = "soft_lutpair124" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_10 
@@ -5919,15 +5905,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data16[1]),
         .I3(data16[2]),
         .O(\cpu_irq_out[26]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair211" *) 
+  (* SOFT_HLUTNM = "soft_lutpair86" *) 
   LUT3 #(
     .INIT(8'h08)) 
     \cpu_irq_out[26]_i_11 
        (.I0(data15[4]),
         .I1(data15[3]),
-        .I2(\cpu_irq_out[18]_i_17_n_0 ),
+        .I2(\cpu_irq_out[2]_i_9_n_0 ),
         .O(\cpu_irq_out[26]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair118" *) 
+  (* SOFT_HLUTNM = "soft_lutpair100" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_12 
@@ -5949,14 +5935,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[26]_i_14 
-       (.I0(\cpu_irq_out[10]_i_9_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
+       (.I0(\cpu_irq_out[18]_i_17_n_0 ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
         .I3(\cpu_irq_out[18]_i_10_n_0 ),
-        .I4(\irq_dest_reg_n_0_[16][3] ),
-        .I5(\irq_dest_reg_n_0_[16][4] ),
+        .I4(data14[3]),
+        .I5(data14[4]),
         .O(\cpu_irq_out[26]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair95" *) 
+  (* SOFT_HLUTNM = "soft_lutpair144" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_15 
@@ -5965,7 +5951,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data17[1]),
         .I3(data17[2]),
         .O(\cpu_irq_out[26]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair99" *) 
+  (* SOFT_HLUTNM = "soft_lutpair75" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_16 
@@ -5974,7 +5960,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[14][1] ),
         .I3(\irq_dest_reg_n_0_[14][2] ),
         .O(\cpu_irq_out[26]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair153" *) 
+  (* SOFT_HLUTNM = "soft_lutpair155" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_17 
@@ -5983,7 +5969,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[21][1] ),
         .I3(\irq_dest_reg_n_0_[21][2] ),
         .O(\cpu_irq_out[26]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair87" *) 
+  (* SOFT_HLUTNM = "soft_lutpair95" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_18 
@@ -5995,10 +5981,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[26]_i_19 
-       (.I0(\cpu_irq_out[26]_i_27_n_0 ),
+       (.I0(\cpu_irq_out[18]_i_12_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][3] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\cpu_irq_out[26]_i_28_n_0 ),
+        .I3(\cpu_irq_out[26]_i_26_n_0 ),
         .I4(data19[3]),
         .I5(data19[4]),
         .O(\cpu_irq_out[26]_i_19_n_0 ));
@@ -6008,11 +5994,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\cpu_irq_out[31]_i_30_n_0 ),
         .I1(\cpu_irq_out[26]_i_8_n_0 ),
         .I2(\cpu_irq_out[26]_i_9_n_0 ),
-        .I3(\cpu_irq_out[31]_i_36_n_0 ),
+        .I3(\cpu_irq_out[31]_i_22_n_0 ),
         .I4(\cpu_irq_out[26]_i_10_n_0 ),
         .I5(\cpu_irq_out[26]_i_11_n_0 ),
         .O(\cpu_irq_out[26]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair139" *) 
+  (* SOFT_HLUTNM = "soft_lutpair97" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_20 
@@ -6021,7 +6007,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[9][1] ),
         .I3(\irq_dest_reg_n_0_[9][2] ),
         .O(\cpu_irq_out[26]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair120" *) 
+  (* SOFT_HLUTNM = "soft_lutpair113" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_21 
@@ -6033,9 +6019,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[26]_i_22 
-       (.I0(\cpu_irq_out[2]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[11][3] ),
-        .I2(\irq_dest_reg_n_0_[11][4] ),
+       (.I0(\cpu_irq_out[26]_i_27_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][3] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
         .I3(\cpu_irq_out[18]_i_8_n_0 ),
         .I4(\irq_dest_reg_n_0_[17][3] ),
         .I5(\irq_dest_reg_n_0_[17][4] ),
@@ -6043,14 +6029,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[26]_i_23 
-       (.I0(\cpu_irq_out[26]_i_29_n_0 ),
+       (.I0(\cpu_irq_out[26]_i_28_n_0 ),
         .I1(\irq_dest_reg_n_0_[8][3] ),
         .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[2]_i_13_n_0 ),
+        .I3(\cpu_irq_out[26]_i_29_n_0 ),
         .I4(\irq_dest_reg_n_0_[15][3] ),
         .I5(\irq_dest_reg_n_0_[15][4] ),
         .O(\cpu_irq_out[26]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair130" *) 
+  (* SOFT_HLUTNM = "soft_lutpair82" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_24 
@@ -6059,7 +6045,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[12][1] ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .O(\cpu_irq_out[26]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair142" *) 
+  (* SOFT_HLUTNM = "soft_lutpair91" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_25 
@@ -6068,41 +6054,41 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[18][1] ),
         .I3(\irq_dest_reg_n_0_[18][2] ),
         .O(\cpu_irq_out[26]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair125" *) 
+  (* SOFT_HLUTNM = "soft_lutpair115" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_26 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][0] ),
-        .I2(\irq_dest_reg_n_0_[1][1] ),
-        .I3(\irq_dest_reg_n_0_[1][2] ),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[0]),
+        .I2(data19[1]),
+        .I3(data19[2]),
         .O(\cpu_irq_out[26]_i_26_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair80" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_27 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][0] ),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(\irq_dest_reg_n_0_[13][2] ),
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][0] ),
+        .I2(\irq_dest_reg_n_0_[16][1] ),
+        .I3(\irq_dest_reg_n_0_[16][2] ),
         .O(\cpu_irq_out[26]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair123" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[26]_i_28 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[0]),
-        .I2(data19[1]),
-        .I3(data19[2]),
-        .O(\cpu_irq_out[26]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair83" *) 
+  (* SOFT_HLUTNM = "soft_lutpair109" *) 
   LUT4 #(
     .INIT(16'hFBFF)) 
-    \cpu_irq_out[26]_i_29 
+    \cpu_irq_out[26]_i_28 
        (.I0(\irq_dest_reg_n_0_[8][0] ),
         .I1(\irq_dest_reg_n_0_[8][1] ),
         .I2(\irq_dest_reg_n_0_[8][2] ),
         .I3(\irq_ack[8]_i_2_n_0 ),
+        .O(\cpu_irq_out[26]_i_28_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair105" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[26]_i_29 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][0] ),
+        .I2(\irq_dest_reg_n_0_[15][1] ),
+        .I3(\irq_dest_reg_n_0_[15][2] ),
         .O(\cpu_irq_out[26]_i_29_n_0 ));
   LUT6 #(
     .INIT(64'hFF40FF40FFFFFF40)) 
@@ -6118,7 +6104,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEFFAEAEAE)) 
     \cpu_irq_out[26]_i_4 
        (.I0(\cpu_irq_out[26]_i_14_n_0 ),
-        .I1(\cpu_irq_out[30]_i_24_n_0 ),
+        .I1(\cpu_irq_out[31]_i_8_n_0 ),
         .I2(\cpu_irq_out[26]_i_15_n_0 ),
         .I3(\irq_dest_reg_n_0_[14][4] ),
         .I4(\irq_dest_reg_n_0_[14][3] ),
@@ -6127,7 +6113,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[26]_i_5 
-       (.I0(\cpu_irq_out[30]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_21_n_0 ),
         .I1(\cpu_irq_out[26]_i_17_n_0 ),
         .I2(data21[4]),
         .I3(data21[3]),
@@ -6137,7 +6123,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[26]_i_6 
-       (.I0(\cpu_irq_out[31]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[28]_i_23_n_0 ),
         .I1(\cpu_irq_out[26]_i_20_n_0 ),
         .I2(\irq_dest_reg_n_0_[19][4] ),
         .I3(\irq_dest_reg_n_0_[19][3] ),
@@ -6148,13 +6134,13 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEFFAEAEAE)) 
     \cpu_irq_out[26]_i_7 
        (.I0(\cpu_irq_out[26]_i_23_n_0 ),
-        .I1(\cpu_irq_out[29]_i_15_n_0 ),
+        .I1(\cpu_irq_out[31]_i_16_n_0 ),
         .I2(\cpu_irq_out[26]_i_24_n_0 ),
         .I3(\irq_dest_reg_n_0_[18][4] ),
         .I4(\irq_dest_reg_n_0_[18][3] ),
         .I5(\cpu_irq_out[26]_i_25_n_0 ),
         .O(\cpu_irq_out[26]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair114" *) 
+  (* SOFT_HLUTNM = "soft_lutpair137" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
     \cpu_irq_out[26]_i_8 
@@ -6169,7 +6155,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \cpu_irq_out[26]_i_9 
        (.I0(\irq_dest_reg_n_0_[1][4] ),
         .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[26]_i_26_n_0 ),
+        .I2(\cpu_irq_out[2]_i_15_n_0 ),
         .O(\cpu_irq_out[26]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -6181,7 +6167,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[27]_i_6_n_0 ),
         .I5(\cpu_irq_out[27]_i_7_n_0 ),
         .O(\cpu_irq_out[27]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair91" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_10 
@@ -6190,14 +6175,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data15[1]),
         .I3(data15[2]),
         .O(\cpu_irq_out[27]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair142" *) 
+  (* SOFT_HLUTNM = "soft_lutpair105" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_11 
-       (.I0(\irq_ack[18]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][0] ),
-        .I2(\irq_dest_reg_n_0_[18][1] ),
-        .I3(\irq_dest_reg_n_0_[18][2] ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][0] ),
+        .I2(\irq_dest_reg_n_0_[15][1] ),
+        .I3(\irq_dest_reg_n_0_[15][2] ),
         .O(\cpu_irq_out[27]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h2000000000000000)) 
@@ -6212,23 +6197,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[27]_i_13 
-       (.I0(\cpu_irq_out[27]_i_28_n_0 ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[27]_i_29_n_0 ),
+       (.I0(\cpu_irq_out[19]_i_10_n_0 ),
+        .I1(data14[3]),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[19]_i_19_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[27]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair95" *) 
+  (* SOFT_HLUTNM = "soft_lutpair113" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_14 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[0]),
-        .I2(data17[1]),
-        .I3(data17[2]),
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][0] ),
+        .I2(\irq_dest_reg_n_0_[19][1] ),
+        .I3(\irq_dest_reg_n_0_[19][2] ),
         .O(\cpu_irq_out[27]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair99" *) 
+  (* SOFT_HLUTNM = "soft_lutpair75" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_15 
@@ -6237,24 +6222,24 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[14][1] ),
         .I3(\irq_dest_reg_n_0_[14][2] ),
         .O(\cpu_irq_out[27]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair87" *) 
+  (* SOFT_HLUTNM = "soft_lutpair214" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[27]_i_16 
+       (.I0(\irq_dest_reg_n_0_[17][4] ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .I2(\cpu_irq_out[19]_i_8_n_0 ),
+        .O(\cpu_irq_out[27]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair95" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[27]_i_16 
+    \cpu_irq_out[27]_i_17 
        (.I0(\irq_ack[0]_i_2_n_0 ),
         .I1(data21[0]),
         .I2(data21[1]),
         .I3(data21[2]),
-        .O(\cpu_irq_out[27]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair230" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[27]_i_17 
-       (.I0(\irq_dest_reg_n_0_[21][4] ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .I2(\cpu_irq_out[3]_i_14_n_0 ),
         .O(\cpu_irq_out[27]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair114" *) 
+  (* SOFT_HLUTNM = "soft_lutpair137" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_18 
@@ -6263,86 +6248,87 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data18[1]),
         .I3(data18[2]),
         .O(\cpu_irq_out[27]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair215" *) 
+  (* SOFT_HLUTNM = "soft_lutpair227" *) 
   LUT3 #(
     .INIT(8'h08)) 
     \cpu_irq_out[27]_i_19 
-       (.I0(\irq_dest_reg_n_0_[16][4] ),
-        .I1(\irq_dest_reg_n_0_[16][3] ),
-        .I2(\cpu_irq_out[19]_i_10_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\cpu_irq_out[19]_i_12_n_0 ),
         .O(\cpu_irq_out[27]_i_19_n_0 ));
   LUT6 #(
     .INIT(64'hAEAEAEAEFFAEAEAE)) 
     \cpu_irq_out[27]_i_2 
        (.I0(\cpu_irq_out[27]_i_8_n_0 ),
-        .I1(\cpu_irq_out[31]_i_36_n_0 ),
+        .I1(\cpu_irq_out[31]_i_22_n_0 ),
         .I2(\cpu_irq_out[27]_i_9_n_0 ),
         .I3(data15[4]),
         .I4(data15[3]),
         .I5(\cpu_irq_out[27]_i_10_n_0 ),
         .O(\cpu_irq_out[27]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair208" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
+  (* SOFT_HLUTNM = "soft_lutpair97" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_20 
-       (.I0(\irq_dest_reg_n_0_[13][3] ),
-        .I1(\irq_dest_reg_n_0_[13][4] ),
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][0] ),
+        .I2(\irq_dest_reg_n_0_[9][1] ),
+        .I3(\irq_dest_reg_n_0_[9][2] ),
         .O(\cpu_irq_out[27]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair80" *) 
+  (* SOFT_HLUTNM = "soft_lutpair155" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_21 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][0] ),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(\irq_dest_reg_n_0_[13][2] ),
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][0] ),
+        .I2(\irq_dest_reg_n_0_[21][1] ),
+        .I3(\irq_dest_reg_n_0_[21][2] ),
         .O(\cpu_irq_out[27]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair120" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[27]_i_22 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][0] ),
-        .I2(\irq_dest_reg_n_0_[19][1] ),
-        .I3(\irq_dest_reg_n_0_[19][2] ),
-        .O(\cpu_irq_out[27]_i_22_n_0 ));
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
+    \cpu_irq_out[27]_i_22 
+       (.I0(\cpu_irq_out[27]_i_28_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][3] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\cpu_irq_out[19]_i_16_n_0 ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
+        .I5(\irq_dest_reg_n_0_[20][4] ),
+        .O(\cpu_irq_out[27]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair91" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_23 
-       (.I0(\cpu_irq_out[11]_i_9_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
-        .I3(\cpu_irq_out[19]_i_8_n_0 ),
-        .I4(\irq_dest_reg_n_0_[17][3] ),
-        .I5(\irq_dest_reg_n_0_[17][4] ),
+       (.I0(\irq_ack[18]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[18][0] ),
+        .I2(\irq_dest_reg_n_0_[18][1] ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
         .O(\cpu_irq_out[27]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair137" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
+  (* SOFT_HLUTNM = "soft_lutpair216" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
     \cpu_irq_out[27]_i_24 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][0] ),
-        .I2(\irq_dest_reg_n_0_[15][1] ),
-        .I3(\irq_dest_reg_n_0_[15][2] ),
+       (.I0(\irq_dest_reg_n_0_[8][4] ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(\cpu_irq_out[27]_i_29_n_0 ),
         .O(\cpu_irq_out[27]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair146" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[27]_i_25 
+       (.I0(data17[4]),
+        .I1(data17[3]),
+        .I2(\cpu_irq_out[11]_i_14_n_0 ),
+        .O(\cpu_irq_out[27]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair82" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[27]_i_25 
+    \cpu_irq_out[27]_i_26 
        (.I0(\irq_ack[12]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[12][0] ),
         .I2(\irq_dest_reg_n_0_[12][1] ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
-        .O(\cpu_irq_out[27]_i_25_n_0 ));
-  LUT6 #(
-    .INIT(64'h40FF404040404040)) 
-    \cpu_irq_out[27]_i_26 
-       (.I0(\cpu_irq_out[19]_i_18_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\cpu_irq_out[19]_i_12_n_0 ),
-        .I4(\irq_dest_reg_n_0_[9][3] ),
-        .I5(\irq_dest_reg_n_0_[9][4] ),
         .O(\cpu_irq_out[27]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair115" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_27 
@@ -6351,30 +6337,30 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data19[1]),
         .I3(data19[2]),
         .O(\cpu_irq_out[27]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair83" *) 
+  (* SOFT_HLUTNM = "soft_lutpair80" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[27]_i_28 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][0] ),
+        .I2(\irq_dest_reg_n_0_[16][1] ),
+        .I3(\irq_dest_reg_n_0_[16][2] ),
+        .O(\cpu_irq_out[27]_i_28_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair109" *) 
   LUT4 #(
     .INIT(16'hF7FF)) 
-    \cpu_irq_out[27]_i_28 
+    \cpu_irq_out[27]_i_29 
        (.I0(\irq_dest_reg_n_0_[8][0] ),
         .I1(\irq_dest_reg_n_0_[8][1] ),
         .I2(\irq_dest_reg_n_0_[8][2] ),
         .I3(\irq_ack[8]_i_2_n_0 ),
-        .O(\cpu_irq_out[27]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair75" *) 
-  LUT4 #(
-    .INIT(16'hF7FF)) 
-    \cpu_irq_out[27]_i_29 
-       (.I0(\irq_dest_reg_n_0_[11][0] ),
-        .I1(\irq_dest_reg_n_0_[11][1] ),
-        .I2(\irq_dest_reg_n_0_[11][2] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
         .O(\cpu_irq_out[27]_i_29_n_0 ));
   LUT6 #(
     .INIT(64'hFF40FF40FFFFFF40)) 
     \cpu_irq_out[27]_i_3 
        (.I0(\cpu_irq_out[27]_i_11_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][3] ),
-        .I2(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[15][3] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
         .I3(\cpu_irq_out[27]_i_12_n_0 ),
         .I4(cpu_irq_out[27]),
         .I5(cpu_eoi_in[27]),
@@ -6383,17 +6369,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEFFAEAEAE)) 
     \cpu_irq_out[27]_i_4 
        (.I0(\cpu_irq_out[27]_i_13_n_0 ),
-        .I1(\cpu_irq_out[30]_i_24_n_0 ),
+        .I1(\cpu_irq_out[30]_i_10_n_0 ),
         .I2(\cpu_irq_out[27]_i_14_n_0 ),
         .I3(\irq_dest_reg_n_0_[14][4] ),
         .I4(\irq_dest_reg_n_0_[14][3] ),
         .I5(\cpu_irq_out[27]_i_15_n_0 ),
         .O(\cpu_irq_out[27]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFF2F2FFF2)) 
+    .INIT(64'hFFFFFFFFAEAEFFAE)) 
     \cpu_irq_out[27]_i_5 
-       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
-        .I1(\cpu_irq_out[27]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[27]_i_16_n_0 ),
+        .I1(\cpu_irq_out[31]_i_18_n_0 ),
         .I2(\cpu_irq_out[27]_i_17_n_0 ),
         .I3(\cpu_irq_out[31]_i_30_n_0 ),
         .I4(\cpu_irq_out[27]_i_18_n_0 ),
@@ -6402,33 +6388,34 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFF2222F222)) 
     \cpu_irq_out[27]_i_6 
-       (.I0(\cpu_irq_out[27]_i_20_n_0 ),
-        .I1(\cpu_irq_out[27]_i_21_n_0 ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\cpu_irq_out[27]_i_22_n_0 ),
-        .I5(\cpu_irq_out[27]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[28]_i_23_n_0 ),
+        .I1(\cpu_irq_out[27]_i_20_n_0 ),
+        .I2(\irq_dest_reg_n_0_[21][4] ),
+        .I3(\irq_dest_reg_n_0_[21][3] ),
+        .I4(\cpu_irq_out[27]_i_21_n_0 ),
+        .I5(\cpu_irq_out[27]_i_22_n_0 ),
         .O(\cpu_irq_out[27]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF2222F222)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[27]_i_7 
-       (.I0(\cpu_irq_out[29]_i_31_n_0 ),
-        .I1(\cpu_irq_out[27]_i_24_n_0 ),
-        .I2(\irq_dest_reg_n_0_[12][4] ),
-        .I3(\irq_dest_reg_n_0_[12][3] ),
-        .I4(\cpu_irq_out[27]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
+        .I1(\cpu_irq_out[27]_i_23_n_0 ),
+        .I2(\cpu_irq_out[27]_i_24_n_0 ),
+        .I3(\cpu_irq_out[27]_i_25_n_0 ),
+        .I4(\cpu_irq_out[31]_i_16_n_0 ),
         .I5(\cpu_irq_out[27]_i_26_n_0 ),
         .O(\cpu_irq_out[27]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h40FF404040404040)) 
     \cpu_irq_out[27]_i_8 
-       (.I0(\cpu_irq_out[3]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_16_n_0 ),
         .I1(\irq_dest_reg_n_0_[1][3] ),
         .I2(\irq_dest_reg_n_0_[1][4] ),
         .I3(\cpu_irq_out[27]_i_27_n_0 ),
         .I4(data19[3]),
         .I5(data19[4]),
         .O(\cpu_irq_out[27]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair124" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[27]_i_9 
@@ -6448,33 +6435,33 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[28]_i_7_n_0 ),
         .O(\cpu_irq_out[28]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000004000)) 
-    \cpu_irq_out[28]_i_10 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\irq_dest_reg_n_0_[9][0] ),
-        .I5(\irq_dest_reg_n_0_[9][1] ),
-        .O(\cpu_irq_out[28]_i_10_n_0 ));
-  LUT6 #(
     .INIT(64'h0000000000000800)) 
-    \cpu_irq_out[28]_i_11 
+    \cpu_irq_out[28]_i_10 
        (.I0(data16[4]),
         .I1(data16[3]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[0]),
         .I5(data16[1]),
+        .O(\cpu_irq_out[28]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000004000)) 
+    \cpu_irq_out[28]_i_11 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[0]),
+        .I5(data15[1]),
         .O(\cpu_irq_out[28]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair143" *) 
+  (* SOFT_HLUTNM = "soft_lutpair45" *) 
   LUT4 #(
-    .INIT(16'hFFEF)) 
+    .INIT(16'hFFFB)) 
     \cpu_irq_out[28]_i_12 
-       (.I0(\irq_dest_reg_n_0_[18][1] ),
-        .I1(\irq_dest_reg_n_0_[18][0] ),
-        .I2(\irq_dest_reg_n_0_[18][2] ),
-        .I3(\irq_ack[18]_i_2_n_0 ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][1] ),
+        .I3(\irq_dest_reg_n_0_[15][0] ),
         .O(\cpu_irq_out[28]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0200000000000000)) 
@@ -6486,235 +6473,247 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[28]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  (* SOFT_HLUTNM = "soft_lutpair264" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[28]_i_14 
+       (.I0(\irq_dest_reg_n_0_[16][3] ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
+        .O(\cpu_irq_out[28]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT4 #(
     .INIT(16'hFFFB)) 
-    \cpu_irq_out[28]_i_14 
+    \cpu_irq_out[28]_i_15 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][2] ),
         .I2(\irq_dest_reg_n_0_[16][1] ),
         .I3(\irq_dest_reg_n_0_[16][0] ),
-        .O(\cpu_irq_out[28]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair88" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[28]_i_15 
-       (.I0(data21[1]),
-        .I1(data21[0]),
-        .I2(data21[2]),
-        .I3(\irq_ack[0]_i_2_n_0 ),
         .O(\cpu_irq_out[28]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000800)) 
+  (* SOFT_HLUTNM = "soft_lutpair221" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
     \cpu_irq_out[28]_i_16 
-       (.I0(\irq_dest_reg_n_0_[14][4] ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_ack[14]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .I4(\irq_dest_reg_n_0_[14][0] ),
-        .I5(\irq_dest_reg_n_0_[14][1] ),
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[12]_i_10_n_0 ),
         .O(\cpu_irq_out[28]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000004000)) 
     \cpu_irq_out[28]_i_17 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\irq_dest_reg_n_0_[17][3] ),
-        .I4(\irq_dest_reg_n_0_[17][0] ),
-        .I5(\irq_dest_reg_n_0_[17][1] ),
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][4] ),
+        .I3(\irq_dest_reg_n_0_[19][3] ),
+        .I4(\irq_dest_reg_n_0_[19][0] ),
+        .I5(\irq_dest_reg_n_0_[19][1] ),
         .O(\cpu_irq_out[28]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair54" *) 
+  (* SOFT_HLUTNM = "soft_lutpair73" *) 
   LUT4 #(
-    .INIT(16'hFFFB)) 
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[28]_i_18 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][1] ),
-        .I3(\irq_dest_reg_n_0_[21][0] ),
+       (.I0(\irq_dest_reg_n_0_[14][1] ),
+        .I1(\irq_dest_reg_n_0_[14][0] ),
+        .I2(\irq_dest_reg_n_0_[14][2] ),
+        .I3(\irq_ack[14]_i_2_n_0 ),
         .O(\cpu_irq_out[28]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  (* SOFT_HLUTNM = "soft_lutpair93" *) 
   LUT4 #(
-    .INIT(16'hFFF7)) 
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[28]_i_19 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][1] ),
-        .I3(\irq_dest_reg_n_0_[8][0] ),
+       (.I0(data21[1]),
+        .I1(data21[0]),
+        .I2(data21[2]),
+        .I3(\irq_ack[0]_i_2_n_0 ),
         .O(\cpu_irq_out[28]_i_19_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[28]_i_2 
-       (.I0(\cpu_irq_out[31]_i_8_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_30_n_0 ),
         .I1(\cpu_irq_out[28]_i_8_n_0 ),
-        .I2(\cpu_irq_out[30]_i_8_n_0 ),
+        .I2(\cpu_irq_out[30]_i_31_n_0 ),
         .I3(\cpu_irq_out[28]_i_9_n_0 ),
         .I4(\cpu_irq_out[28]_i_10_n_0 ),
         .I5(\cpu_irq_out[28]_i_11_n_0 ),
         .O(\cpu_irq_out[28]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0004000000000000)) 
+  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
     \cpu_irq_out[28]_i_20 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
-        .I4(data14[4]),
-        .I5(data14[3]),
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][1] ),
+        .I3(\irq_dest_reg_n_0_[17][0] ),
         .O(\cpu_irq_out[28]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000004000)) 
     \cpu_irq_out[28]_i_21 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[4]),
+        .I3(data19[3]),
+        .I4(data19[0]),
+        .I5(data19[1]),
+        .O(\cpu_irq_out[28]_i_21_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000004000)) 
+    \cpu_irq_out[28]_i_22 
        (.I0(\irq_ack[13]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][2] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(\irq_dest_reg_n_0_[13][3] ),
         .I4(\irq_dest_reg_n_0_[13][0] ),
         .I5(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[28]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair40" *) 
+        .O(\cpu_irq_out[28]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair98" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[28]_i_23 
+       (.I0(\irq_dest_reg_n_0_[9][3] ),
+        .I1(\irq_dest_reg_n_0_[9][4] ),
+        .O(\cpu_irq_out[28]_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair41" *) 
   LUT4 #(
     .INIT(16'hFFFB)) 
-    \cpu_irq_out[28]_i_22 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[1]),
-        .I3(data17[0]),
-        .O(\cpu_irq_out[28]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair112" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
-    \cpu_irq_out[28]_i_23 
-       (.I0(data18[1]),
-        .I1(data18[0]),
-        .I2(data18[2]),
-        .I3(\irq_ack[3]_i_2_n_0 ),
-        .O(\cpu_irq_out[28]_i_23_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000004000)) 
     \cpu_irq_out[28]_i_24 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\irq_dest_reg_n_0_[20][3] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][1] ),
+        .I3(\irq_dest_reg_n_0_[9][0] ),
         .O(\cpu_irq_out[28]_i_24_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair57" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
+    \cpu_irq_out[28]_i_25 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][1] ),
+        .I3(\irq_dest_reg_n_0_[21][0] ),
+        .O(\cpu_irq_out[28]_i_25_n_0 ));
   LUT6 #(
     .INIT(64'h0200000000000000)) 
-    \cpu_irq_out[28]_i_25 
+    \cpu_irq_out[28]_i_26 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[28]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair35" *) 
-  LUT4 #(
-    .INIT(16'hFFFB)) 
-    \cpu_irq_out[28]_i_26 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][2] ),
-        .I2(\irq_dest_reg_n_0_[1][1] ),
-        .I3(\irq_dest_reg_n_0_[1][0] ),
         .O(\cpu_irq_out[28]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair48" *) 
-  LUT4 #(
-    .INIT(16'hFFFB)) 
-    \cpu_irq_out[28]_i_27 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[1]),
-        .I3(data19[0]),
-        .O(\cpu_irq_out[28]_i_27_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000800)) 
+    \cpu_irq_out[28]_i_27 
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
+        .O(\cpu_irq_out[28]_i_27_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair43" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
     \cpu_irq_out[28]_i_28 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][1] ),
+        .I3(\irq_dest_reg_n_0_[20][0] ),
+        .O(\cpu_irq_out[28]_i_28_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair34" *) 
+  LUT4 #(
+    .INIT(16'hFFF7)) 
+    \cpu_irq_out[28]_i_29 
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][1] ),
+        .I3(\irq_dest_reg_n_0_[8][0] ),
+        .O(\cpu_irq_out[28]_i_29_n_0 ));
+  LUT6 #(
+    .INIT(64'hFF40FF40FFFFFF40)) 
+    \cpu_irq_out[28]_i_3 
+       (.I0(\cpu_irq_out[28]_i_12_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][3] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\cpu_irq_out[28]_i_13_n_0 ),
+        .I4(cpu_irq_out[28]),
+        .I5(cpu_eoi_in[28]),
+        .O(\cpu_irq_out[28]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000800)) 
+    \cpu_irq_out[28]_i_30 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[28]_i_28_n_0 ));
+        .O(\cpu_irq_out[28]_i_30_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000004000)) 
-    \cpu_irq_out[28]_i_29 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\irq_dest_reg_n_0_[15][0] ),
-        .I5(\irq_dest_reg_n_0_[15][1] ),
-        .O(\cpu_irq_out[28]_i_29_n_0 ));
+    \cpu_irq_out[28]_i_31 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[4]),
+        .I3(data17[3]),
+        .I4(data17[0]),
+        .I5(data17[1]),
+        .O(\cpu_irq_out[28]_i_31_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF4040FF40)) 
-    \cpu_irq_out[28]_i_3 
-       (.I0(\cpu_irq_out[28]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][3] ),
-        .I2(\irq_dest_reg_n_0_[18][4] ),
-        .I3(cpu_irq_out[28]),
-        .I4(cpu_eoi_in[28]),
-        .I5(\cpu_irq_out[28]_i_13_n_0 ),
-        .O(\cpu_irq_out[28]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[28]_i_4 
-       (.I0(\cpu_irq_out[31]_i_16_n_0 ),
-        .I1(\cpu_irq_out[28]_i_14_n_0 ),
-        .I2(\cpu_irq_out[31]_i_28_n_0 ),
-        .I3(\cpu_irq_out[28]_i_15_n_0 ),
-        .I4(\cpu_irq_out[28]_i_16_n_0 ),
-        .I5(\cpu_irq_out[28]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[28]_i_14_n_0 ),
+        .I1(\cpu_irq_out[28]_i_15_n_0 ),
+        .I2(\cpu_irq_out[28]_i_16_n_0 ),
+        .I3(\cpu_irq_out[28]_i_17_n_0 ),
+        .I4(\cpu_irq_out[30]_i_19_n_0 ),
+        .I5(\cpu_irq_out[28]_i_18_n_0 ),
         .O(\cpu_irq_out[28]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF222F)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[28]_i_5 
-       (.I0(\cpu_irq_out[30]_i_19_n_0 ),
-        .I1(\cpu_irq_out[28]_i_18_n_0 ),
-        .I2(\cpu_irq_out[31]_i_12_n_0 ),
-        .I3(\cpu_irq_out[28]_i_19_n_0 ),
-        .I4(\cpu_irq_out[28]_i_20_n_0 ),
-        .I5(\cpu_irq_out[28]_i_21_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_18_n_0 ),
+        .I1(\cpu_irq_out[28]_i_19_n_0 ),
+        .I2(\cpu_irq_out[31]_i_24_n_0 ),
+        .I3(\cpu_irq_out[28]_i_20_n_0 ),
+        .I4(\cpu_irq_out[28]_i_21_n_0 ),
+        .I5(\cpu_irq_out[28]_i_22_n_0 ),
         .O(\cpu_irq_out[28]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[28]_i_6 
-       (.I0(\cpu_irq_out[30]_i_24_n_0 ),
-        .I1(\cpu_irq_out[28]_i_22_n_0 ),
-        .I2(\cpu_irq_out[31]_i_30_n_0 ),
-        .I3(\cpu_irq_out[28]_i_23_n_0 ),
-        .I4(\cpu_irq_out[28]_i_24_n_0 ),
-        .I5(\cpu_irq_out[28]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[28]_i_23_n_0 ),
+        .I1(\cpu_irq_out[28]_i_24_n_0 ),
+        .I2(\cpu_irq_out[30]_i_21_n_0 ),
+        .I3(\cpu_irq_out[28]_i_25_n_0 ),
+        .I4(\cpu_irq_out[28]_i_26_n_0 ),
+        .I5(\cpu_irq_out[28]_i_27_n_0 ),
         .O(\cpu_irq_out[28]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFFFFFFFFFFF222F)) 
     \cpu_irq_out[28]_i_7 
        (.I0(\cpu_irq_out[31]_i_34_n_0 ),
-        .I1(\cpu_irq_out[28]_i_26_n_0 ),
-        .I2(\cpu_irq_out[30]_i_26_n_0 ),
-        .I3(\cpu_irq_out[28]_i_27_n_0 ),
-        .I4(\cpu_irq_out[28]_i_28_n_0 ),
-        .I5(\cpu_irq_out[28]_i_29_n_0 ),
+        .I1(\cpu_irq_out[28]_i_28_n_0 ),
+        .I2(\cpu_irq_out[31]_i_10_n_0 ),
+        .I3(\cpu_irq_out[28]_i_29_n_0 ),
+        .I4(\cpu_irq_out[28]_i_30_n_0 ),
+        .I5(\cpu_irq_out[28]_i_31_n_0 ),
         .O(\cpu_irq_out[28]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair46" *) 
+  (* SOFT_HLUTNM = "soft_lutpair135" *) 
   LUT4 #(
-    .INIT(16'hFFFB)) 
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[28]_i_8 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][1] ),
-        .I3(\irq_dest_reg_n_0_[19][0] ),
+       (.I0(data18[1]),
+        .I1(data18[0]),
+        .I2(data18[2]),
+        .I3(\irq_ack[3]_i_2_n_0 ),
         .O(\cpu_irq_out[28]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  (* SOFT_HLUTNM = "soft_lutpair36" *) 
   LUT4 #(
     .INIT(16'hFFFB)) 
     \cpu_irq_out[28]_i_9 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[1]),
-        .I3(data15[0]),
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][2] ),
+        .I2(\irq_dest_reg_n_0_[1][1] ),
+        .I3(\irq_dest_reg_n_0_[1][0] ),
         .O(\cpu_irq_out[28]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -6726,32 +6725,34 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[29]_i_6_n_0 ),
         .I5(\cpu_irq_out[29]_i_7_n_0 ),
         .O(\cpu_irq_out[29]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair224" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[29]_i_10 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[5]_i_10_n_0 ),
-        .O(\cpu_irq_out[29]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_10 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[1]),
+        .I5(data15[0]),
+        .O(\cpu_irq_out[29]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000080000000000)) 
     \cpu_irq_out[29]_i_11 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][2] ),
-        .I2(\irq_dest_reg_n_0_[1][4] ),
-        .I3(\irq_dest_reg_n_0_[1][3] ),
-        .I4(\irq_dest_reg_n_0_[1][1] ),
-        .I5(\irq_dest_reg_n_0_[1][0] ),
+       (.I0(data16[4]),
+        .I1(data16[3]),
+        .I2(\irq_ack[5]_i_2_n_0 ),
+        .I3(data16[2]),
+        .I4(data16[1]),
+        .I5(data16[0]),
         .O(\cpu_irq_out[29]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair100" *) 
+  (* SOFT_HLUTNM = "soft_lutpair45" *) 
   LUT4 #(
-    .INIT(16'hFFDF)) 
+    .INIT(16'hFFBF)) 
     \cpu_irq_out[29]_i_12 
-       (.I0(\irq_dest_reg_n_0_[14][0] ),
-        .I1(\irq_dest_reg_n_0_[14][1] ),
-        .I2(\irq_dest_reg_n_0_[14][2] ),
-        .I3(\irq_ack[14]_i_2_n_0 ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][0] ),
+        .I3(\irq_dest_reg_n_0_[15][1] ),
         .O(\cpu_irq_out[29]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0800000000000000)) 
@@ -6763,256 +6764,240 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[29]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair88" *) 
+  (* SOFT_HLUTNM = "soft_lutpair34" *) 
   LUT4 #(
-    .INIT(16'hFFDF)) 
+    .INIT(16'hFF7F)) 
     \cpu_irq_out[29]_i_14 
-       (.I0(data21[0]),
-        .I1(data21[1]),
-        .I2(data21[2]),
-        .I3(\irq_ack[0]_i_2_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][0] ),
+        .I3(\irq_dest_reg_n_0_[8][1] ),
         .O(\cpu_irq_out[29]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair131" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[29]_i_15 
-       (.I0(\irq_dest_reg_n_0_[12][3] ),
-        .I1(\irq_dest_reg_n_0_[12][4] ),
-        .O(\cpu_irq_out[29]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair129" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[29]_i_16 
-       (.I0(\irq_dest_reg_n_0_[12][0] ),
-        .I1(\irq_dest_reg_n_0_[12][1] ),
-        .I2(\irq_dest_reg_n_0_[12][2] ),
-        .I3(\irq_ack[12]_i_2_n_0 ),
-        .O(\cpu_irq_out[29]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_17 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[4]),
-        .I3(data19[3]),
-        .I4(data19[1]),
-        .I5(data19[0]),
-        .O(\cpu_irq_out[29]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_18 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\irq_dest_reg_n_0_[19][1] ),
-        .I5(\irq_dest_reg_n_0_[19][0] ),
-        .O(\cpu_irq_out[29]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair213" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[29]_i_19 
-       (.I0(\irq_dest_reg_n_0_[17][3] ),
-        .I1(\irq_dest_reg_n_0_[17][4] ),
-        .O(\cpu_irq_out[29]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF222F)) 
-    \cpu_irq_out[29]_i_2 
-       (.I0(\cpu_irq_out[30]_i_24_n_0 ),
-        .I1(\cpu_irq_out[29]_i_8_n_0 ),
-        .I2(\cpu_irq_out[31]_i_12_n_0 ),
-        .I3(\cpu_irq_out[29]_i_9_n_0 ),
-        .I4(\cpu_irq_out[29]_i_10_n_0 ),
-        .I5(\cpu_irq_out[29]_i_11_n_0 ),
-        .O(\cpu_irq_out[29]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair42" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[29]_i_20 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][0] ),
-        .I3(\irq_dest_reg_n_0_[17][1] ),
-        .O(\cpu_irq_out[29]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair102" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[29]_i_21 
-       (.I0(data16[0]),
-        .I1(data16[1]),
-        .I2(data16[2]),
-        .I3(\irq_ack[5]_i_2_n_0 ),
-        .O(\cpu_irq_out[29]_i_21_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_22 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\irq_dest_reg_n_0_[9][1] ),
-        .I5(\irq_dest_reg_n_0_[9][0] ),
-        .O(\cpu_irq_out[29]_i_22_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_23 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[4]),
-        .I3(data15[3]),
-        .I4(data15[1]),
-        .I5(data15[0]),
-        .O(\cpu_irq_out[29]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair143" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[29]_i_24 
-       (.I0(\irq_dest_reg_n_0_[18][0] ),
-        .I1(\irq_dest_reg_n_0_[18][1] ),
-        .I2(\irq_dest_reg_n_0_[18][2] ),
-        .I3(\irq_ack[18]_i_2_n_0 ),
-        .O(\cpu_irq_out[29]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair112" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[29]_i_25 
-       (.I0(data18[0]),
-        .I1(data18[1]),
-        .I2(data18[2]),
-        .I3(\irq_ack[3]_i_2_n_0 ),
-        .O(\cpu_irq_out[29]_i_25_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_26 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][1] ),
-        .I5(\irq_dest_reg_n_0_[16][0] ),
-        .O(\cpu_irq_out[29]_i_26_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[29]_i_27 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][1] ),
-        .I5(\irq_dest_reg_n_0_[21][0] ),
-        .O(\cpu_irq_out[29]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair44" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[29]_i_28 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][0] ),
-        .I3(\irq_dest_reg_n_0_[20][1] ),
-        .O(\cpu_irq_out[29]_i_28_n_0 ));
   LUT6 #(
     .INIT(64'h2000000000000000)) 
-    \cpu_irq_out[29]_i_29 
+    \cpu_irq_out[29]_i_15 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][1] ),
         .I2(\irq_dest_reg_n_0_[11][0] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
+        .O(\cpu_irq_out[29]_i_15_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_16 
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][4] ),
+        .I3(\irq_dest_reg_n_0_[19][3] ),
+        .I4(\irq_dest_reg_n_0_[19][1] ),
+        .I5(\irq_dest_reg_n_0_[19][0] ),
+        .O(\cpu_irq_out[29]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[29]_i_17 
+       (.I0(\irq_dest_reg_n_0_[14][0] ),
+        .I1(\irq_dest_reg_n_0_[14][1] ),
+        .I2(\irq_dest_reg_n_0_[14][2] ),
+        .I3(\irq_ack[14]_i_2_n_0 ),
+        .O(\cpu_irq_out[29]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[29]_i_18 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][0] ),
+        .I3(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[29]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair93" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[29]_i_19 
+       (.I0(data21[0]),
+        .I1(data21[1]),
+        .I2(data21[2]),
+        .I3(\irq_ack[0]_i_2_n_0 ),
+        .O(\cpu_irq_out[29]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[29]_i_2 
+       (.I0(\cpu_irq_out[30]_i_31_n_0 ),
+        .I1(\cpu_irq_out[29]_i_8_n_0 ),
+        .I2(\cpu_irq_out[31]_i_30_n_0 ),
+        .I3(\cpu_irq_out[29]_i_9_n_0 ),
+        .I4(\cpu_irq_out[29]_i_10_n_0 ),
+        .I5(\cpu_irq_out[29]_i_11_n_0 ),
+        .O(\cpu_irq_out[29]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_20 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[4]),
+        .I3(data19[3]),
+        .I4(data19[1]),
+        .I5(data19[0]),
+        .O(\cpu_irq_out[29]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_21 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\irq_dest_reg_n_0_[16][3] ),
+        .I4(\irq_dest_reg_n_0_[16][1] ),
+        .I5(\irq_dest_reg_n_0_[16][0] ),
+        .O(\cpu_irq_out[29]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair262" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[29]_i_22 
+       (.I0(\irq_dest_reg_n_0_[13][3] ),
+        .I1(\irq_dest_reg_n_0_[13][4] ),
+        .O(\cpu_irq_out[29]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair53" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[29]_i_23 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][0] ),
+        .I3(\irq_dest_reg_n_0_[13][1] ),
+        .O(\cpu_irq_out[29]_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair57" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[29]_i_24 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][0] ),
+        .I3(\irq_dest_reg_n_0_[21][1] ),
+        .O(\cpu_irq_out[29]_i_24_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_25 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][4] ),
+        .I3(\irq_dest_reg_n_0_[20][3] ),
+        .I4(\irq_dest_reg_n_0_[20][1] ),
+        .I5(\irq_dest_reg_n_0_[20][0] ),
+        .O(\cpu_irq_out[29]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair223" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[29]_i_26 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[5]_i_10_n_0 ),
+        .O(\cpu_irq_out[29]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair89" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[29]_i_27 
+       (.I0(\irq_dest_reg_n_0_[18][0] ),
+        .I1(\irq_dest_reg_n_0_[18][1] ),
+        .I2(\irq_dest_reg_n_0_[18][2] ),
+        .I3(\irq_ack[18]_i_2_n_0 ),
+        .O(\cpu_irq_out[29]_i_27_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair83" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[29]_i_28 
+       (.I0(\irq_dest_reg_n_0_[12][0] ),
+        .I1(\irq_dest_reg_n_0_[12][1] ),
+        .I2(\irq_dest_reg_n_0_[12][2] ),
+        .I3(\irq_ack[12]_i_2_n_0 ),
+        .O(\cpu_irq_out[29]_i_28_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[29]_i_29 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][4] ),
+        .I3(\irq_dest_reg_n_0_[9][3] ),
+        .I4(\irq_dest_reg_n_0_[9][1] ),
+        .I5(\irq_dest_reg_n_0_[9][0] ),
         .O(\cpu_irq_out[29]_i_29_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF4040FF40)) 
+    .INIT(64'hFF40FF40FFFFFF40)) 
     \cpu_irq_out[29]_i_3 
        (.I0(\cpu_irq_out[29]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_dest_reg_n_0_[14][4] ),
-        .I3(cpu_irq_out[29]),
-        .I4(cpu_eoi_in[29]),
-        .I5(\cpu_irq_out[29]_i_13_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][3] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\cpu_irq_out[29]_i_13_n_0 ),
+        .I4(cpu_irq_out[29]),
+        .I5(cpu_eoi_in[29]),
         .O(\cpu_irq_out[29]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
     \cpu_irq_out[29]_i_30 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\irq_dest_reg_n_0_[13][3] ),
-        .I4(\irq_dest_reg_n_0_[13][1] ),
-        .I5(\irq_dest_reg_n_0_[13][0] ),
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[4]),
+        .I3(data17[3]),
+        .I4(data17[1]),
+        .I5(data17[0]),
         .O(\cpu_irq_out[29]_i_30_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair227" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[29]_i_31 
-       (.I0(\irq_dest_reg_n_0_[15][3] ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
-        .O(\cpu_irq_out[29]_i_31_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair50" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[29]_i_32 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][0] ),
-        .I3(\irq_dest_reg_n_0_[15][1] ),
-        .O(\cpu_irq_out[29]_i_32_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFF1FFF1FFFFFFF1)) 
     \cpu_irq_out[29]_i_4 
-       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_10_n_0 ),
         .I1(\cpu_irq_out[29]_i_14_n_0 ),
         .I2(\cpu_irq_out[29]_i_15_n_0 ),
         .I3(\cpu_irq_out[29]_i_16_n_0 ),
-        .I4(\cpu_irq_out[29]_i_17_n_0 ),
-        .I5(\cpu_irq_out[29]_i_18_n_0 ),
+        .I4(\cpu_irq_out[30]_i_19_n_0 ),
+        .I5(\cpu_irq_out[29]_i_17_n_0 ),
         .O(\cpu_irq_out[29]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[29]_i_5 
-       (.I0(\cpu_irq_out[29]_i_19_n_0 ),
-        .I1(\cpu_irq_out[29]_i_20_n_0 ),
-        .I2(\cpu_irq_out[31]_i_36_n_0 ),
-        .I3(\cpu_irq_out[29]_i_21_n_0 ),
-        .I4(\cpu_irq_out[29]_i_22_n_0 ),
-        .I5(\cpu_irq_out[29]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_24_n_0 ),
+        .I1(\cpu_irq_out[29]_i_18_n_0 ),
+        .I2(\cpu_irq_out[31]_i_18_n_0 ),
+        .I3(\cpu_irq_out[29]_i_19_n_0 ),
+        .I4(\cpu_irq_out[29]_i_20_n_0 ),
+        .I5(\cpu_irq_out[29]_i_21_n_0 ),
         .O(\cpu_irq_out[29]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[29]_i_6 
-       (.I0(\cpu_irq_out[31]_i_24_n_0 ),
-        .I1(\cpu_irq_out[29]_i_24_n_0 ),
-        .I2(\cpu_irq_out[31]_i_30_n_0 ),
-        .I3(\cpu_irq_out[29]_i_25_n_0 ),
-        .I4(\cpu_irq_out[29]_i_26_n_0 ),
-        .I5(\cpu_irq_out[29]_i_27_n_0 ),
+       (.I0(\cpu_irq_out[29]_i_22_n_0 ),
+        .I1(\cpu_irq_out[29]_i_23_n_0 ),
+        .I2(\cpu_irq_out[30]_i_21_n_0 ),
+        .I3(\cpu_irq_out[29]_i_24_n_0 ),
+        .I4(\cpu_irq_out[29]_i_25_n_0 ),
+        .I5(\cpu_irq_out[29]_i_26_n_0 ),
         .O(\cpu_irq_out[29]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[29]_i_7 
-       (.I0(\cpu_irq_out[31]_i_18_n_0 ),
-        .I1(\cpu_irq_out[29]_i_28_n_0 ),
-        .I2(\cpu_irq_out[29]_i_29_n_0 ),
-        .I3(\cpu_irq_out[29]_i_30_n_0 ),
-        .I4(\cpu_irq_out[29]_i_31_n_0 ),
-        .I5(\cpu_irq_out[29]_i_32_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_28_n_0 ),
+        .I1(\cpu_irq_out[29]_i_27_n_0 ),
+        .I2(\cpu_irq_out[31]_i_16_n_0 ),
+        .I3(\cpu_irq_out[29]_i_28_n_0 ),
+        .I4(\cpu_irq_out[29]_i_29_n_0 ),
+        .I5(\cpu_irq_out[29]_i_30_n_0 ),
         .O(\cpu_irq_out[29]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair40" *) 
+  (* SOFT_HLUTNM = "soft_lutpair36" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[29]_i_8 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[0]),
-        .I3(data17[1]),
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][2] ),
+        .I2(\irq_dest_reg_n_0_[1][0] ),
+        .I3(\irq_dest_reg_n_0_[1][1] ),
         .O(\cpu_irq_out[29]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair31" *) 
+  (* SOFT_HLUTNM = "soft_lutpair135" *) 
   LUT4 #(
-    .INIT(16'hFF7F)) 
+    .INIT(16'hFFDF)) 
     \cpu_irq_out[29]_i_9 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][0] ),
-        .I3(\irq_dest_reg_n_0_[8][1] ),
+       (.I0(data18[0]),
+        .I1(data18[1]),
+        .I2(data18[2]),
+        .I3(\irq_ack[3]_i_2_n_0 ),
         .O(\cpu_irq_out[29]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -7027,114 +7012,102 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[2]_i_10 
+       (.I0(\cpu_irq_out[26]_i_15_n_0 ),
+        .I1(data17[3]),
+        .I2(data17[4]),
+        .I3(\cpu_irq_out[26]_i_27_n_0 ),
+        .I4(\irq_dest_reg_n_0_[16][3] ),
+        .I5(\irq_dest_reg_n_0_[16][4] ),
+        .O(\cpu_irq_out[2]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'h01010101010101FF)) 
+    \cpu_irq_out[2]_i_11 
        (.I0(\cpu_irq_out[26]_i_20_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][3] ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
-        .I3(\cpu_irq_out[26]_i_28_n_0 ),
+        .I3(\cpu_irq_out[26]_i_26_n_0 ),
         .I4(data19[3]),
         .I5(data19[4]),
-        .O(\cpu_irq_out[2]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair170" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
-    \cpu_irq_out[2]_i_11 
-       (.I0(\irq_dest_reg_n_0_[11][3] ),
-        .I1(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[2]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair75" *) 
-  LUT4 #(
-    .INIT(16'hFBFF)) 
+  (* SOFT_HLUTNM = "soft_lutpair215" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \cpu_irq_out[2]_i_12 
-       (.I0(\irq_dest_reg_n_0_[11][0] ),
-        .I1(\irq_dest_reg_n_0_[11][1] ),
-        .I2(\irq_dest_reg_n_0_[11][2] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[8][4] ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(\cpu_irq_out[26]_i_28_n_0 ),
         .O(\cpu_irq_out[2]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair137" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
+  (* SOFT_HLUTNM = "soft_lutpair226" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \cpu_irq_out[2]_i_13 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][0] ),
-        .I2(\irq_dest_reg_n_0_[15][1] ),
-        .I3(\irq_dest_reg_n_0_[15][2] ),
+       (.I0(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][3] ),
+        .I2(\cpu_irq_out[18]_i_12_n_0 ),
         .O(\cpu_irq_out[2]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[2]_i_14 
-       (.I0(\cpu_irq_out[26]_i_17_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\cpu_irq_out[26]_i_27_n_0 ),
-        .I4(\irq_dest_reg_n_0_[13][3] ),
-        .I5(\irq_dest_reg_n_0_[13][4] ),
-        .O(\cpu_irq_out[2]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair222" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \cpu_irq_out[2]_i_15 
-       (.I0(data14[4]),
+       (.I0(\cpu_irq_out[18]_i_10_n_0 ),
         .I1(data14[3]),
-        .I2(\cpu_irq_out[10]_i_9_n_0 ),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[26]_i_12_n_0 ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
+        .I5(\irq_dest_reg_n_0_[20][4] ),
+        .O(\cpu_irq_out[2]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair119" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[2]_i_15 
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][0] ),
+        .I2(\irq_dest_reg_n_0_[1][1] ),
+        .I3(\irq_dest_reg_n_0_[1][2] ),
         .O(\cpu_irq_out[2]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair218" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \cpu_irq_out[2]_i_16 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[26]_i_26_n_0 ),
-        .O(\cpu_irq_out[2]_i_16_n_0 ));
-  LUT2 #(
-    .INIT(4'h1)) 
-    \cpu_irq_out[2]_i_17 
-       (.I0(\irq_dest_reg_n_0_[12][3] ),
-        .I1(\irq_dest_reg_n_0_[12][4] ),
-        .O(\cpu_irq_out[2]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
-    \cpu_irq_out[2]_i_18 
-       (.I0(\cpu_irq_out[18]_i_8_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][3] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\cpu_irq_out[26]_i_15_n_0 ),
-        .I4(data17[3]),
-        .I5(data17[4]),
-        .O(\cpu_irq_out[2]_i_18_n_0 ));
+    \cpu_irq_out[2]_i_16 
+       (.I0(\cpu_irq_out[18]_i_17_n_0 ),
+        .I1(\irq_dest_reg_n_0_[11][3] ),
+        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I3(\cpu_irq_out[26]_i_29_n_0 ),
+        .I4(\irq_dest_reg_n_0_[15][3] ),
+        .I5(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[2]_i_16_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair231" *) 
   LUT3 #(
     .INIT(8'hFB)) 
-    \cpu_irq_out[2]_i_19 
+    \cpu_irq_out[2]_i_17 
        (.I0(\irq_dest_reg_n_0_[10][2] ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
-        .O(\cpu_irq_out[2]_i_19_n_0 ));
+        .O(\cpu_irq_out[2]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFAAAB)) 
     \cpu_irq_out[2]_i_2 
        (.I0(\cpu_irq_out[2]_i_8_n_0 ),
         .I1(data15[4]),
         .I2(data15[3]),
-        .I3(\cpu_irq_out[18]_i_17_n_0 ),
-        .I4(\cpu_irq_out[2]_i_9_n_0 ),
-        .I5(\cpu_irq_out[2]_i_10_n_0 ),
+        .I3(\cpu_irq_out[2]_i_9_n_0 ),
+        .I4(\cpu_irq_out[2]_i_10_n_0 ),
+        .I5(\cpu_irq_out[2]_i_11_n_0 ),
         .O(\cpu_irq_out[2]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF2222222F)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[2]_i_3 
-       (.I0(\cpu_irq_out[2]_i_11_n_0 ),
-        .I1(\cpu_irq_out[2]_i_12_n_0 ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\cpu_irq_out[2]_i_13_n_0 ),
-        .I5(\cpu_irq_out[2]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[26]_i_16_n_0 ),
+        .I2(\cpu_irq_out[2]_i_12_n_0 ),
+        .I3(\cpu_irq_out[2]_i_13_n_0 ),
+        .I4(\cpu_irq_out[5]_i_20_n_0 ),
+        .I5(\cpu_irq_out[26]_i_25_n_0 ),
         .O(\cpu_irq_out[2]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[2]_i_4 
-       (.I0(\cpu_irq_out[26]_i_16_n_0 ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_dest_reg_n_0_[14][4] ),
+       (.I0(\cpu_irq_out[26]_i_24_n_0 ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_dest_reg_n_0_[12][4] ),
         .I3(\cpu_irq_out[26]_i_10_n_0 ),
         .I4(data16[3]),
         .I5(data16[4]),
@@ -7142,32 +7115,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[2]_i_5 
-       (.I0(\cpu_irq_out[26]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
+       (.I0(\cpu_irq_out[18]_i_8_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][3] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
         .I3(\cpu_irq_out[26]_i_18_n_0 ),
         .I4(data21[3]),
         .I5(data21[4]),
         .O(\cpu_irq_out[2]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFFFFFF2)) 
+    .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[2]_i_6 
-       (.I0(\cpu_irq_out[7]_i_9_n_0 ),
-        .I1(\cpu_irq_out[26]_i_8_n_0 ),
-        .I2(\cpu_irq_out[2]_i_15_n_0 ),
-        .I3(\cpu_irq_out[2]_i_16_n_0 ),
-        .I4(\cpu_irq_out[7]_i_23_n_0 ),
-        .I5(\cpu_irq_out[26]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
+        .I1(\cpu_irq_out[26]_i_17_n_0 ),
+        .I2(data18[4]),
+        .I3(data18[3]),
+        .I4(\cpu_irq_out[26]_i_8_n_0 ),
+        .I5(\cpu_irq_out[2]_i_14_n_0 ),
         .O(\cpu_irq_out[2]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[2]_i_7 
-       (.I0(\cpu_irq_out[2]_i_17_n_0 ),
-        .I1(\cpu_irq_out[26]_i_24_n_0 ),
-        .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\irq_dest_reg_n_0_[19][3] ),
-        .I4(\cpu_irq_out[26]_i_21_n_0 ),
-        .I5(\cpu_irq_out[2]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_27_n_0 ),
+        .I1(\cpu_irq_out[26]_i_21_n_0 ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\cpu_irq_out[2]_i_15_n_0 ),
+        .I5(\cpu_irq_out[2]_i_16_n_0 ),
         .O(\cpu_irq_out[2]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h4444444F44444444)) 
@@ -7176,18 +7149,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(cpu_irq_out[2]),
         .I2(\irq_dest_reg_n_0_[10][4] ),
         .I3(\irq_dest_reg_n_0_[10][3] ),
-        .I4(\cpu_irq_out[2]_i_19_n_0 ),
+        .I4(\cpu_irq_out[2]_i_17_n_0 ),
         .I5(\irq_ack[10]_i_2_n_0 ),
         .O(\cpu_irq_out[2]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'h01010101010101FF)) 
+  (* SOFT_HLUTNM = "soft_lutpair85" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
     \cpu_irq_out[2]_i_9 
-       (.I0(\cpu_irq_out[26]_i_29_n_0 ),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[18]_i_10_n_0 ),
-        .I4(\irq_dest_reg_n_0_[16][3] ),
-        .I5(\irq_dest_reg_n_0_[16][4] ),
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[0]),
+        .I2(data15[1]),
+        .I3(data15[2]),
         .O(\cpu_irq_out[2]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -7199,293 +7171,307 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[30]_i_6_n_0 ),
         .I5(\cpu_irq_out[30]_i_7_n_0 ),
         .O(\cpu_irq_out[30]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  (* SOFT_HLUTNM = "soft_lutpair218" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[30]_i_10 
+       (.I0(\irq_dest_reg_n_0_[19][3] ),
+        .I1(\irq_dest_reg_n_0_[19][4] ),
+        .O(\cpu_irq_out[30]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair50" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_10 
+    \cpu_irq_out[30]_i_11 
        (.I0(\irq_ack[19]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][2] ),
         .I2(\irq_dest_reg_n_0_[19][1] ),
         .I3(\irq_dest_reg_n_0_[19][0] ),
-        .O(\cpu_irq_out[30]_i_10_n_0 ));
+        .O(\cpu_irq_out[30]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[30]_i_11 
+    \cpu_irq_out[30]_i_12 
        (.I0(\irq_ack[9]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][2] ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\irq_dest_reg_n_0_[9][3] ),
         .I4(\irq_dest_reg_n_0_[9][0] ),
         .I5(\irq_dest_reg_n_0_[9][1] ),
-        .O(\cpu_irq_out[30]_i_11_n_0 ));
+        .O(\cpu_irq_out[30]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000080000000000)) 
-    \cpu_irq_out[30]_i_12 
+    \cpu_irq_out[30]_i_13 
        (.I0(data16[4]),
         .I1(data16[3]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[0]),
         .I5(data16[1]),
-        .O(\cpu_irq_out[30]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair144" *) 
+        .O(\cpu_irq_out[30]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair88" *) 
   LUT4 #(
     .INIT(16'hFFDF)) 
-    \cpu_irq_out[30]_i_13 
+    \cpu_irq_out[30]_i_14 
        (.I0(\irq_dest_reg_n_0_[18][1] ),
         .I1(\irq_dest_reg_n_0_[18][0] ),
         .I2(\irq_dest_reg_n_0_[18][2] ),
         .I3(\irq_ack[18]_i_2_n_0 ),
-        .O(\cpu_irq_out[30]_i_13_n_0 ));
+        .O(\cpu_irq_out[30]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0800000000000000)) 
-    \cpu_irq_out[30]_i_14 
+    \cpu_irq_out[30]_i_15 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[30]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair32" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_15 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][1] ),
-        .I3(\irq_dest_reg_n_0_[16][0] ),
         .O(\cpu_irq_out[30]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair89" *) 
-  LUT4 #(
-    .INIT(16'hFFDF)) 
-    \cpu_irq_out[30]_i_16 
-       (.I0(data21[1]),
-        .I1(data21[0]),
-        .I2(data21[2]),
-        .I3(\irq_ack[0]_i_2_n_0 ),
-        .O(\cpu_irq_out[30]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[30]_i_17 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\irq_dest_reg_n_0_[17][3] ),
-        .I4(\irq_dest_reg_n_0_[17][0] ),
-        .I5(\irq_dest_reg_n_0_[17][1] ),
-        .O(\cpu_irq_out[30]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000080000000000)) 
-    \cpu_irq_out[30]_i_18 
-       (.I0(\irq_dest_reg_n_0_[14][4] ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_ack[14]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .I4(\irq_dest_reg_n_0_[14][0] ),
-        .I5(\irq_dest_reg_n_0_[14][1] ),
-        .O(\cpu_irq_out[30]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair262" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[30]_i_19 
-       (.I0(\irq_dest_reg_n_0_[21][3] ),
-        .I1(\irq_dest_reg_n_0_[21][4] ),
-        .O(\cpu_irq_out[30]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[30]_i_2 
-       (.I0(\cpu_irq_out[30]_i_8_n_0 ),
-        .I1(\cpu_irq_out[30]_i_9_n_0 ),
-        .I2(\cpu_irq_out[31]_i_8_n_0 ),
-        .I3(\cpu_irq_out[30]_i_10_n_0 ),
-        .I4(\cpu_irq_out[30]_i_11_n_0 ),
-        .I5(\cpu_irq_out[30]_i_12_n_0 ),
-        .O(\cpu_irq_out[30]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair55" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_20 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][1] ),
-        .I3(\irq_dest_reg_n_0_[21][0] ),
-        .O(\cpu_irq_out[30]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair30" *) 
-  LUT4 #(
-    .INIT(16'hFF7F)) 
-    \cpu_irq_out[30]_i_21 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][1] ),
-        .I3(\irq_dest_reg_n_0_[8][0] ),
-        .O(\cpu_irq_out[30]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair225" *) 
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[30]_i_22 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[14]_i_10_n_0 ),
-        .O(\cpu_irq_out[30]_i_22_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[30]_i_23 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\irq_dest_reg_n_0_[13][3] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[30]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair97" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[30]_i_24 
-       (.I0(data17[3]),
-        .I1(data17[4]),
-        .O(\cpu_irq_out[30]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair41" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_25 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[1]),
-        .I3(data17[0]),
-        .O(\cpu_irq_out[30]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair121" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[30]_i_26 
-       (.I0(data19[3]),
-        .I1(data19[4]),
-        .O(\cpu_irq_out[30]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair49" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_27 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[1]),
-        .I3(data19[0]),
-        .O(\cpu_irq_out[30]_i_27_n_0 ));
   LUT6 #(
     .INIT(64'h2000000000000000)) 
-    \cpu_irq_out[30]_i_28 
+    \cpu_irq_out[30]_i_16 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
+        .O(\cpu_irq_out[30]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair92" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[30]_i_17 
+       (.I0(data21[1]),
+        .I1(data21[0]),
+        .I2(data21[2]),
+        .I3(\irq_ack[0]_i_2_n_0 ),
+        .O(\cpu_irq_out[30]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[30]_i_18 
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][4] ),
+        .I3(\irq_dest_reg_n_0_[17][3] ),
+        .I4(\irq_dest_reg_n_0_[17][0] ),
+        .I5(\irq_dest_reg_n_0_[17][1] ),
+        .O(\cpu_irq_out[30]_i_18_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair265" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[30]_i_19 
+       (.I0(\irq_dest_reg_n_0_[14][3] ),
+        .I1(\irq_dest_reg_n_0_[14][4] ),
+        .O(\cpu_irq_out[30]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[30]_i_2 
+       (.I0(\cpu_irq_out[30]_i_8_n_0 ),
+        .I1(\cpu_irq_out[30]_i_9_n_0 ),
+        .I2(\cpu_irq_out[30]_i_10_n_0 ),
+        .I3(\cpu_irq_out[30]_i_11_n_0 ),
+        .I4(\cpu_irq_out[30]_i_12_n_0 ),
+        .I5(\cpu_irq_out[30]_i_13_n_0 ),
+        .O(\cpu_irq_out[30]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair72" *) 
+  LUT4 #(
+    .INIT(16'hFFDF)) 
+    \cpu_irq_out[30]_i_20 
+       (.I0(\irq_dest_reg_n_0_[14][1] ),
+        .I1(\irq_dest_reg_n_0_[14][0] ),
+        .I2(\irq_dest_reg_n_0_[14][2] ),
+        .I3(\irq_ack[14]_i_2_n_0 ),
+        .O(\cpu_irq_out[30]_i_20_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair263" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[30]_i_21 
+       (.I0(\irq_dest_reg_n_0_[21][3] ),
+        .I1(\irq_dest_reg_n_0_[21][4] ),
+        .O(\cpu_irq_out[30]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair58" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[30]_i_22 
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][1] ),
+        .I3(\irq_dest_reg_n_0_[21][0] ),
+        .O(\cpu_irq_out[30]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair33" *) 
+  LUT4 #(
+    .INIT(16'hFF7F)) 
+    \cpu_irq_out[30]_i_23 
+       (.I0(\irq_dest_reg_n_0_[8][2] ),
+        .I1(\irq_ack[8]_i_2_n_0 ),
+        .I2(\irq_dest_reg_n_0_[8][1] ),
+        .I3(\irq_dest_reg_n_0_[8][0] ),
+        .O(\cpu_irq_out[30]_i_23_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair224" *) 
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[30]_i_24 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[6]_i_10_n_0 ),
+        .O(\cpu_irq_out[30]_i_24_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[30]_i_25 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I3(\irq_dest_reg_n_0_[13][3] ),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(\irq_dest_reg_n_0_[13][1] ),
+        .O(\cpu_irq_out[30]_i_25_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair56" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[30]_i_26 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[1]),
+        .I3(data17[0]),
+        .O(\cpu_irq_out[30]_i_26_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair116" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[30]_i_27 
+       (.I0(data19[3]),
+        .I1(data19[4]),
+        .O(\cpu_irq_out[30]_i_27_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair52" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[30]_i_28 
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[1]),
+        .I3(data19[0]),
         .O(\cpu_irq_out[30]_i_28_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
     \cpu_irq_out[30]_i_29 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\irq_dest_reg_n_0_[16][3] ),
+        .I4(\irq_dest_reg_n_0_[16][0] ),
+        .I5(\irq_dest_reg_n_0_[16][1] ),
+        .O(\cpu_irq_out[30]_i_29_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF4040FF40)) 
+    \cpu_irq_out[30]_i_3 
+       (.I0(\cpu_irq_out[30]_i_14_n_0 ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_dest_reg_n_0_[18][4] ),
+        .I3(cpu_irq_out[30]),
+        .I4(cpu_eoi_in[30]),
+        .I5(\cpu_irq_out[30]_i_15_n_0 ),
+        .O(\cpu_irq_out[30]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000400000000000)) 
+    \cpu_irq_out[30]_i_30 
        (.I0(\irq_ack[20]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[20][2] ),
         .I2(\irq_dest_reg_n_0_[20][4] ),
         .I3(\irq_dest_reg_n_0_[20][3] ),
         .I4(\irq_dest_reg_n_0_[20][0] ),
         .I5(\irq_dest_reg_n_0_[20][1] ),
-        .O(\cpu_irq_out[30]_i_29_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFF4040FF40)) 
-    \cpu_irq_out[30]_i_3 
-       (.I0(\cpu_irq_out[30]_i_13_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][3] ),
-        .I2(\irq_dest_reg_n_0_[18][4] ),
-        .I3(cpu_irq_out[30]),
-        .I4(cpu_eoi_in[30]),
-        .I5(\cpu_irq_out[30]_i_14_n_0 ),
-        .O(\cpu_irq_out[30]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair34" *) 
+        .O(\cpu_irq_out[30]_i_30_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair120" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[30]_i_31 
+       (.I0(\irq_dest_reg_n_0_[1][3] ),
+        .I1(\irq_dest_reg_n_0_[1][4] ),
+        .O(\cpu_irq_out[30]_i_31_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair35" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
-    \cpu_irq_out[30]_i_30 
+    \cpu_irq_out[30]_i_32 
        (.I0(\irq_ack[1]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[1][2] ),
         .I2(\irq_dest_reg_n_0_[1][1] ),
         .I3(\irq_dest_reg_n_0_[1][0] ),
-        .O(\cpu_irq_out[30]_i_30_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair111" *) 
+        .O(\cpu_irq_out[30]_i_32_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair134" *) 
   LUT4 #(
     .INIT(16'hFFDF)) 
-    \cpu_irq_out[30]_i_31 
+    \cpu_irq_out[30]_i_33 
        (.I0(data18[1]),
         .I1(data18[0]),
         .I2(data18[2]),
         .I3(\irq_ack[3]_i_2_n_0 ),
-        .O(\cpu_irq_out[30]_i_31_n_0 ));
+        .O(\cpu_irq_out[30]_i_33_n_0 ));
   LUT6 #(
     .INIT(64'h0000080000000000)) 
-    \cpu_irq_out[30]_i_32 
+    \cpu_irq_out[30]_i_34 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[30]_i_32_n_0 ));
+        .O(\cpu_irq_out[30]_i_34_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
-    \cpu_irq_out[30]_i_33 
+    \cpu_irq_out[30]_i_35 
        (.I0(\irq_ack[15]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[15][2] ),
         .I2(\irq_dest_reg_n_0_[15][4] ),
         .I3(\irq_dest_reg_n_0_[15][3] ),
         .I4(\irq_dest_reg_n_0_[15][0] ),
         .I5(\irq_dest_reg_n_0_[15][1] ),
-        .O(\cpu_irq_out[30]_i_33_n_0 ));
+        .O(\cpu_irq_out[30]_i_35_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFAEFFAEFFFFFFAE)) 
     \cpu_irq_out[30]_i_4 
-       (.I0(\cpu_irq_out[31]_i_16_n_0 ),
-        .I1(\cpu_irq_out[30]_i_15_n_0 ),
-        .I2(\cpu_irq_out[31]_i_28_n_0 ),
-        .I3(\cpu_irq_out[30]_i_16_n_0 ),
-        .I4(\cpu_irq_out[30]_i_17_n_0 ),
-        .I5(\cpu_irq_out[30]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_16_n_0 ),
+        .I1(\cpu_irq_out[31]_i_18_n_0 ),
+        .I2(\cpu_irq_out[30]_i_17_n_0 ),
+        .I3(\cpu_irq_out[30]_i_18_n_0 ),
+        .I4(\cpu_irq_out[30]_i_19_n_0 ),
+        .I5(\cpu_irq_out[30]_i_20_n_0 ),
         .O(\cpu_irq_out[30]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF222F)) 
     \cpu_irq_out[30]_i_5 
-       (.I0(\cpu_irq_out[30]_i_19_n_0 ),
-        .I1(\cpu_irq_out[30]_i_20_n_0 ),
-        .I2(\cpu_irq_out[31]_i_12_n_0 ),
-        .I3(\cpu_irq_out[30]_i_21_n_0 ),
-        .I4(\cpu_irq_out[30]_i_22_n_0 ),
-        .I5(\cpu_irq_out[30]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_21_n_0 ),
+        .I1(\cpu_irq_out[30]_i_22_n_0 ),
+        .I2(\cpu_irq_out[31]_i_10_n_0 ),
+        .I3(\cpu_irq_out[30]_i_23_n_0 ),
+        .I4(\cpu_irq_out[30]_i_24_n_0 ),
+        .I5(\cpu_irq_out[30]_i_25_n_0 ),
         .O(\cpu_irq_out[30]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[30]_i_6 
-       (.I0(\cpu_irq_out[30]_i_24_n_0 ),
-        .I1(\cpu_irq_out[30]_i_25_n_0 ),
-        .I2(\cpu_irq_out[30]_i_26_n_0 ),
-        .I3(\cpu_irq_out[30]_i_27_n_0 ),
-        .I4(\cpu_irq_out[30]_i_28_n_0 ),
-        .I5(\cpu_irq_out[30]_i_29_n_0 ),
+       (.I0(\cpu_irq_out[31]_i_8_n_0 ),
+        .I1(\cpu_irq_out[30]_i_26_n_0 ),
+        .I2(\cpu_irq_out[30]_i_27_n_0 ),
+        .I3(\cpu_irq_out[30]_i_28_n_0 ),
+        .I4(\cpu_irq_out[30]_i_29_n_0 ),
+        .I5(\cpu_irq_out[30]_i_30_n_0 ),
         .O(\cpu_irq_out[30]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[30]_i_7 
-       (.I0(\cpu_irq_out[31]_i_34_n_0 ),
-        .I1(\cpu_irq_out[30]_i_30_n_0 ),
+       (.I0(\cpu_irq_out[30]_i_31_n_0 ),
+        .I1(\cpu_irq_out[30]_i_32_n_0 ),
         .I2(\cpu_irq_out[31]_i_30_n_0 ),
-        .I3(\cpu_irq_out[30]_i_31_n_0 ),
-        .I4(\cpu_irq_out[30]_i_32_n_0 ),
-        .I5(\cpu_irq_out[30]_i_33_n_0 ),
+        .I3(\cpu_irq_out[30]_i_33_n_0 ),
+        .I4(\cpu_irq_out[30]_i_34_n_0 ),
+        .I5(\cpu_irq_out[30]_i_35_n_0 ),
         .O(\cpu_irq_out[30]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair92" *) 
+  (* SOFT_HLUTNM = "soft_lutpair87" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[30]_i_8 
        (.I0(data15[3]),
         .I1(data15[4]),
         .O(\cpu_irq_out[30]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair39" *) 
+  (* SOFT_HLUTNM = "soft_lutpair40" *) 
   LUT4 #(
     .INIT(16'hFFBF)) 
     \cpu_irq_out[30]_i_9 
@@ -7504,47 +7490,47 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[31]_i_6_n_0 ),
         .I5(\cpu_irq_out[31]_i_7_n_0 ),
         .O(\cpu_irq_out[31]_i_1_n_0 ));
-  LUT3 #(
-    .INIT(8'h08)) 
-    \cpu_irq_out[31]_i_10 
-       (.I0(data14[4]),
-        .I1(data14[3]),
-        .I2(\cpu_irq_out[15]_i_13_n_0 ),
-        .O(\cpu_irq_out[31]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h4000000000000000)) 
-    \cpu_irq_out[31]_i_11 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[4]),
-        .I3(data17[3]),
-        .I4(data17[0]),
-        .I5(data17[1]),
-        .O(\cpu_irq_out[31]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair85" *) 
+  (* SOFT_HLUTNM = "soft_lutpair111" *) 
   LUT2 #(
     .INIT(4'h7)) 
-    \cpu_irq_out[31]_i_12 
+    \cpu_irq_out[31]_i_10 
        (.I0(\irq_dest_reg_n_0_[8][3] ),
         .I1(\irq_dest_reg_n_0_[8][4] ),
-        .O(\cpu_irq_out[31]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair30" *) 
+        .O(\cpu_irq_out[31]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair33" *) 
   LUT4 #(
     .INIT(16'h7FFF)) 
-    \cpu_irq_out[31]_i_13 
+    \cpu_irq_out[31]_i_11 
        (.I0(\irq_dest_reg_n_0_[8][2] ),
         .I1(\irq_ack[8]_i_2_n_0 ),
         .I2(\irq_dest_reg_n_0_[8][1] ),
         .I3(\irq_dest_reg_n_0_[8][0] ),
+        .O(\cpu_irq_out[31]_i_11_n_0 ));
+  LUT3 #(
+    .INIT(8'h08)) 
+    \cpu_irq_out[31]_i_12 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[7]_i_12_n_0 ),
+        .O(\cpu_irq_out[31]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'h4000000000000000)) 
+    \cpu_irq_out[31]_i_13 
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][2] ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\irq_dest_reg_n_0_[1][0] ),
+        .I5(\irq_dest_reg_n_0_[1][1] ),
         .O(\cpu_irq_out[31]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair51" *) 
+  (* SOFT_HLUTNM = "soft_lutpair72" *) 
   LUT4 #(
-    .INIT(16'hBFFF)) 
+    .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_14 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][1] ),
-        .I3(\irq_dest_reg_n_0_[15][0] ),
+       (.I0(\irq_dest_reg_n_0_[14][1] ),
+        .I1(\irq_dest_reg_n_0_[14][0] ),
+        .I2(\irq_dest_reg_n_0_[14][2] ),
+        .I3(\irq_ack[14]_i_2_n_0 ),
         .O(\cpu_irq_out[31]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h8000000000000000)) 
@@ -7556,40 +7542,39 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[31]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair263" *) 
+  (* SOFT_HLUTNM = "soft_lutpair84" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_16 
-       (.I0(\irq_dest_reg_n_0_[16][3] ),
-        .I1(\irq_dest_reg_n_0_[16][4] ),
+       (.I0(\irq_dest_reg_n_0_[12][3] ),
+        .I1(\irq_dest_reg_n_0_[12][4] ),
         .O(\cpu_irq_out[31]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair32" *) 
   LUT4 #(
-    .INIT(16'hBFFF)) 
+    .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_17 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][1] ),
-        .I3(\irq_dest_reg_n_0_[16][0] ),
+       (.I0(\irq_dest_reg_n_0_[12][1] ),
+        .I1(\irq_dest_reg_n_0_[12][0] ),
+        .I2(\irq_dest_reg_n_0_[12][2] ),
+        .I3(\irq_ack[12]_i_2_n_0 ),
         .O(\cpu_irq_out[31]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair264" *) 
+  (* SOFT_HLUTNM = "soft_lutpair261" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_18 
-       (.I0(\irq_dest_reg_n_0_[20][3] ),
-        .I1(\irq_dest_reg_n_0_[20][4] ),
+       (.I0(data21[3]),
+        .I1(data21[4]),
         .O(\cpu_irq_out[31]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair45" *) 
+  (* SOFT_HLUTNM = "soft_lutpair92" *) 
   LUT4 #(
-    .INIT(16'hBFFF)) 
+    .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_19 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][1] ),
-        .I3(\irq_dest_reg_n_0_[20][0] ),
+       (.I0(data21[1]),
+        .I1(data21[0]),
+        .I2(data21[2]),
+        .I3(\irq_ack[0]_i_2_n_0 ),
         .O(\cpu_irq_out[31]_i_19_n_0 ));
   LUT6 #(
-    .INIT(64'hFFF2FFF2FFF2FFFF)) 
+    .INIT(64'hFFFFFFFFFFFF222F)) 
     \cpu_irq_out[31]_i_2 
        (.I0(\cpu_irq_out[31]_i_8_n_0 ),
         .I1(\cpu_irq_out[31]_i_9_n_0 ),
@@ -7599,111 +7584,111 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[31]_i_13_n_0 ),
         .O(\cpu_irq_out[31]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0800000000000000)) 
+    .INIT(64'h4000000000000000)) 
     \cpu_irq_out[31]_i_20 
-       (.I0(\irq_dest_reg_n_0_[14][4] ),
-        .I1(\irq_dest_reg_n_0_[14][3] ),
-        .I2(\irq_ack[14]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[14][2] ),
-        .I4(\irq_dest_reg_n_0_[14][0] ),
-        .I5(\irq_dest_reg_n_0_[14][1] ),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[4]),
+        .I3(data19[3]),
+        .I4(data19[0]),
+        .I5(data19[1]),
         .O(\cpu_irq_out[31]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'h4000000000000000)) 
     \cpu_irq_out[31]_i_21 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][2] ),
+        .I2(\irq_dest_reg_n_0_[19][4] ),
+        .I3(\irq_dest_reg_n_0_[19][3] ),
+        .I4(\irq_dest_reg_n_0_[19][0] ),
+        .I5(\irq_dest_reg_n_0_[19][1] ),
         .O(\cpu_irq_out[31]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair140" *) 
+  (* SOFT_HLUTNM = "soft_lutpair128" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_22 
-       (.I0(\irq_dest_reg_n_0_[9][3] ),
-        .I1(\irq_dest_reg_n_0_[9][4] ),
+       (.I0(data16[3]),
+        .I1(data16[4]),
         .O(\cpu_irq_out[31]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair53" *) 
+  (* SOFT_HLUTNM = "soft_lutpair126" *) 
   LUT4 #(
-    .INIT(16'hBFFF)) 
+    .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_23 
-       (.I0(\irq_ack[9]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[9][2] ),
-        .I2(\irq_dest_reg_n_0_[9][1] ),
-        .I3(\irq_dest_reg_n_0_[9][0] ),
+       (.I0(data16[1]),
+        .I1(data16[0]),
+        .I2(data16[2]),
+        .I3(\irq_ack[5]_i_2_n_0 ),
         .O(\cpu_irq_out[31]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair260" *) 
+  (* SOFT_HLUTNM = "soft_lutpair214" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_24 
-       (.I0(\irq_dest_reg_n_0_[18][3] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
+       (.I0(\irq_dest_reg_n_0_[17][3] ),
+        .I1(\irq_dest_reg_n_0_[17][4] ),
         .O(\cpu_irq_out[31]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair144" *) 
+  (* SOFT_HLUTNM = "soft_lutpair48" *) 
   LUT4 #(
-    .INIT(16'hFF7F)) 
+    .INIT(16'hBFFF)) 
     \cpu_irq_out[31]_i_25 
-       (.I0(\irq_dest_reg_n_0_[18][1] ),
-        .I1(\irq_dest_reg_n_0_[18][0] ),
-        .I2(\irq_dest_reg_n_0_[18][2] ),
-        .I3(\irq_ack[18]_i_2_n_0 ),
+       (.I0(\irq_ack[17]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[17][2] ),
+        .I2(\irq_dest_reg_n_0_[17][1] ),
+        .I3(\irq_dest_reg_n_0_[17][0] ),
         .O(\cpu_irq_out[31]_i_25_n_0 ));
   LUT6 #(
     .INIT(64'h4000000000000000)) 
     \cpu_irq_out[31]_i_26 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][2] ),
+        .I2(\irq_dest_reg_n_0_[9][4] ),
+        .I3(\irq_dest_reg_n_0_[9][3] ),
+        .I4(\irq_dest_reg_n_0_[9][0] ),
+        .I5(\irq_dest_reg_n_0_[9][1] ),
+        .O(\cpu_irq_out[31]_i_26_n_0 ));
+  LUT6 #(
+    .INIT(64'h4000000000000000)) 
+    \cpu_irq_out[31]_i_27 
        (.I0(\irq_ack[6]_i_2_n_0 ),
         .I1(data15[2]),
         .I2(data15[4]),
         .I3(data15[3]),
         .I4(data15[0]),
         .I5(data15[1]),
-        .O(\cpu_irq_out[31]_i_26_n_0 ));
-  LUT6 #(
-    .INIT(64'h4000000000000000)) 
-    \cpu_irq_out[31]_i_27 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\irq_dest_reg_n_0_[13][3] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
         .O(\cpu_irq_out[31]_i_27_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair265" *) 
+  (* SOFT_HLUTNM = "soft_lutpair193" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_28 
-       (.I0(data21[3]),
-        .I1(data21[4]),
+       (.I0(\irq_dest_reg_n_0_[18][3] ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
         .O(\cpu_irq_out[31]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair89" *) 
+  (* SOFT_HLUTNM = "soft_lutpair88" *) 
   LUT4 #(
     .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_29 
-       (.I0(data21[1]),
-        .I1(data21[0]),
-        .I2(data21[2]),
-        .I3(\irq_ack[0]_i_2_n_0 ),
+       (.I0(\irq_dest_reg_n_0_[18][1] ),
+        .I1(\irq_dest_reg_n_0_[18][0] ),
+        .I2(\irq_dest_reg_n_0_[18][2] ),
+        .I3(\irq_ack[18]_i_2_n_0 ),
         .O(\cpu_irq_out[31]_i_29_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF4040FF40)) 
     \cpu_irq_out[31]_i_3 
        (.I0(\cpu_irq_out[31]_i_14_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][3] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I1(\irq_dest_reg_n_0_[14][3] ),
+        .I2(\irq_dest_reg_n_0_[14][4] ),
         .I3(cpu_irq_out[31]),
         .I4(cpu_eoi_in[31]),
         .I5(\cpu_irq_out[31]_i_15_n_0 ),
         .O(\cpu_irq_out[31]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair115" *) 
+  (* SOFT_HLUTNM = "soft_lutpair138" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_30 
        (.I0(data18[3]),
         .I1(data18[4]),
         .O(\cpu_irq_out[31]_i_30_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair111" *) 
+  (* SOFT_HLUTNM = "soft_lutpair134" *) 
   LUT4 #(
     .INIT(16'hFF7F)) 
     \cpu_irq_out[31]_i_31 
@@ -7715,74 +7700,74 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h4000000000000000)) 
     \cpu_irq_out[31]_i_32 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[4]),
-        .I3(data19[3]),
-        .I4(data19[0]),
-        .I5(data19[1]),
+       (.I0(\irq_ack[21]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(\irq_dest_reg_n_0_[21][4] ),
+        .I3(\irq_dest_reg_n_0_[21][3] ),
+        .I4(\irq_dest_reg_n_0_[21][0] ),
+        .I5(\irq_dest_reg_n_0_[21][1] ),
         .O(\cpu_irq_out[31]_i_32_n_0 ));
   LUT6 #(
-    .INIT(64'h8000000000000000)) 
+    .INIT(64'h4000000000000000)) 
     \cpu_irq_out[31]_i_33 
+       (.I0(\irq_ack[16]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[16][2] ),
+        .I2(\irq_dest_reg_n_0_[16][4] ),
+        .I3(\irq_dest_reg_n_0_[16][3] ),
+        .I4(\irq_dest_reg_n_0_[16][0] ),
+        .I5(\irq_dest_reg_n_0_[16][1] ),
+        .O(\cpu_irq_out[31]_i_33_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair234" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[31]_i_34 
+       (.I0(\irq_dest_reg_n_0_[20][3] ),
+        .I1(\irq_dest_reg_n_0_[20][4] ),
+        .O(\cpu_irq_out[31]_i_34_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair44" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[31]_i_35 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][1] ),
+        .I3(\irq_dest_reg_n_0_[20][0] ),
+        .O(\cpu_irq_out[31]_i_35_n_0 ));
+  LUT6 #(
+    .INIT(64'h8000000000000000)) 
+    \cpu_irq_out[31]_i_36 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
-        .O(\cpu_irq_out[31]_i_33_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair128" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[31]_i_34 
-       (.I0(\irq_dest_reg_n_0_[1][3] ),
-        .I1(\irq_dest_reg_n_0_[1][4] ),
-        .O(\cpu_irq_out[31]_i_34_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair34" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
-    \cpu_irq_out[31]_i_35 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][2] ),
-        .I2(\irq_dest_reg_n_0_[1][1] ),
-        .I3(\irq_dest_reg_n_0_[1][0] ),
-        .O(\cpu_irq_out[31]_i_35_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair106" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \cpu_irq_out[31]_i_36 
-       (.I0(data16[3]),
-        .I1(data16[4]),
         .O(\cpu_irq_out[31]_i_36_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair102" *) 
-  LUT4 #(
-    .INIT(16'hFF7F)) 
-    \cpu_irq_out[31]_i_37 
-       (.I0(data16[1]),
-        .I1(data16[0]),
-        .I2(data16[2]),
-        .I3(\irq_ack[5]_i_2_n_0 ),
-        .O(\cpu_irq_out[31]_i_37_n_0 ));
-  LUT6 #(
-    .INIT(64'h0800000000000000)) 
-    \cpu_irq_out[31]_i_38 
-       (.I0(\irq_dest_reg_n_0_[12][4] ),
-        .I1(\irq_dest_reg_n_0_[12][3] ),
-        .I2(\irq_ack[12]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][2] ),
-        .I4(\irq_dest_reg_n_0_[12][0] ),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[31]_i_38_n_0 ));
   LUT6 #(
     .INIT(64'h4000000000000000)) 
+    \cpu_irq_out[31]_i_37 
+       (.I0(\irq_ack[13]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[13][2] ),
+        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I3(\irq_dest_reg_n_0_[13][3] ),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(\irq_dest_reg_n_0_[13][1] ),
+        .O(\cpu_irq_out[31]_i_37_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair204" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \cpu_irq_out[31]_i_38 
+       (.I0(\irq_dest_reg_n_0_[15][3] ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[31]_i_38_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair46" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
     \cpu_irq_out[31]_i_39 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\irq_dest_reg_n_0_[17][3] ),
-        .I4(\irq_dest_reg_n_0_[17][0] ),
-        .I5(\irq_dest_reg_n_0_[17][1] ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][1] ),
+        .I3(\irq_dest_reg_n_0_[15][0] ),
         .O(\cpu_irq_out[31]_i_39_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
@@ -7815,7 +7800,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\cpu_irq_out[31]_i_33_n_0 ),
         .O(\cpu_irq_out[31]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[31]_i_7 
        (.I0(\cpu_irq_out[31]_i_34_n_0 ),
         .I1(\cpu_irq_out[31]_i_35_n_0 ),
@@ -7824,21 +7809,21 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[31]_i_38_n_0 ),
         .I5(\cpu_irq_out[31]_i_39_n_0 ),
         .O(\cpu_irq_out[31]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair266" *) 
+  (* SOFT_HLUTNM = "soft_lutpair145" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \cpu_irq_out[31]_i_8 
-       (.I0(\irq_dest_reg_n_0_[19][3] ),
-        .I1(\irq_dest_reg_n_0_[19][4] ),
+       (.I0(data17[3]),
+        .I1(data17[4]),
         .O(\cpu_irq_out[31]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair47" *) 
+  (* SOFT_HLUTNM = "soft_lutpair56" *) 
   LUT4 #(
     .INIT(16'hBFFF)) 
     \cpu_irq_out[31]_i_9 
-       (.I0(\irq_ack[19]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[19][2] ),
-        .I2(\irq_dest_reg_n_0_[19][1] ),
-        .I3(\irq_dest_reg_n_0_[19][0] ),
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[1]),
+        .I3(data17[0]),
         .O(\cpu_irq_out[31]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -7853,82 +7838,57 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[3]_i_10 
-       (.I0(\cpu_irq_out[19]_i_12_n_0 ),
+       (.I0(\cpu_irq_out[27]_i_20_n_0 ),
         .I1(\irq_dest_reg_n_0_[9][3] ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\cpu_irq_out[27]_i_27_n_0 ),
         .I4(data19[3]),
         .I5(data19[4]),
         .O(\cpu_irq_out[3]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair209" *) 
+  (* SOFT_HLUTNM = "soft_lutpair216" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \cpu_irq_out[3]_i_11 
        (.I0(\irq_dest_reg_n_0_[8][4] ),
         .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(\cpu_irq_out[27]_i_28_n_0 ),
+        .I2(\cpu_irq_out[27]_i_29_n_0 ),
         .O(\cpu_irq_out[3]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair208" *) 
+  (* SOFT_HLUTNM = "soft_lutpair227" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \cpu_irq_out[3]_i_12 
        (.I0(\irq_dest_reg_n_0_[13][4] ),
         .I1(\irq_dest_reg_n_0_[13][3] ),
-        .I2(\cpu_irq_out[27]_i_21_n_0 ),
+        .I2(\cpu_irq_out[19]_i_12_n_0 ),
         .O(\cpu_irq_out[3]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair282" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
-    \cpu_irq_out[3]_i_13 
-       (.I0(\irq_dest_reg_n_0_[21][3] ),
-        .I1(\irq_dest_reg_n_0_[21][4] ),
-        .O(\cpu_irq_out[3]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair153" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[3]_i_14 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][0] ),
-        .I2(\irq_dest_reg_n_0_[21][1] ),
-        .I3(\irq_dest_reg_n_0_[21][2] ),
-        .O(\cpu_irq_out[3]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
-    \cpu_irq_out[3]_i_15 
-       (.I0(\cpu_irq_out[11]_i_9_n_0 ),
+    \cpu_irq_out[3]_i_13 
+       (.I0(\cpu_irq_out[19]_i_10_n_0 ),
         .I1(data14[3]),
         .I2(data14[4]),
-        .I3(\cpu_irq_out[19]_i_18_n_0 ),
+        .I3(\cpu_irq_out[19]_i_16_n_0 ),
         .I4(\irq_dest_reg_n_0_[20][3] ),
         .I5(\irq_dest_reg_n_0_[20][4] ),
-        .O(\cpu_irq_out[3]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair125" *) 
-  LUT4 #(
-    .INIT(16'hFFBF)) 
-    \cpu_irq_out[3]_i_16 
-       (.I0(\irq_ack[1]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[1][0] ),
-        .I2(\irq_dest_reg_n_0_[1][1] ),
-        .I3(\irq_dest_reg_n_0_[1][2] ),
-        .O(\cpu_irq_out[3]_i_16_n_0 ));
+        .O(\cpu_irq_out[3]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
-    \cpu_irq_out[3]_i_17 
-       (.I0(\cpu_irq_out[27]_i_29_n_0 ),
+    \cpu_irq_out[3]_i_14 
+       (.I0(\cpu_irq_out[19]_i_19_n_0 ),
         .I1(\irq_dest_reg_n_0_[11][3] ),
         .I2(\irq_dest_reg_n_0_[11][4] ),
-        .I3(\cpu_irq_out[27]_i_24_n_0 ),
+        .I3(\cpu_irq_out[27]_i_11_n_0 ),
         .I4(\irq_dest_reg_n_0_[15][3] ),
         .I5(\irq_dest_reg_n_0_[15][4] ),
-        .O(\cpu_irq_out[3]_i_17_n_0 ));
+        .O(\cpu_irq_out[3]_i_14_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair231" *) 
   LUT3 #(
     .INIT(8'hBF)) 
-    \cpu_irq_out[3]_i_18 
+    \cpu_irq_out[3]_i_15 
        (.I0(\irq_dest_reg_n_0_[10][2] ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
-        .O(\cpu_irq_out[3]_i_18_n_0 ));
+        .O(\cpu_irq_out[3]_i_15_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFAAAB)) 
     \cpu_irq_out[3]_i_2 
@@ -7942,17 +7902,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFF2FFF2FFFFFFF2)) 
     \cpu_irq_out[3]_i_3 
-       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
         .I1(\cpu_irq_out[27]_i_15_n_0 ),
         .I2(\cpu_irq_out[3]_i_11_n_0 ),
         .I3(\cpu_irq_out[3]_i_12_n_0 ),
-        .I4(\cpu_irq_out[7]_i_23_n_0 ),
-        .I5(\cpu_irq_out[27]_i_11_n_0 ),
+        .I4(\cpu_irq_out[5]_i_20_n_0 ),
+        .I5(\cpu_irq_out[27]_i_23_n_0 ),
         .O(\cpu_irq_out[3]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[3]_i_4 
-       (.I0(\cpu_irq_out[27]_i_25_n_0 ),
+       (.I0(\cpu_irq_out[27]_i_26_n_0 ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_dest_reg_n_0_[12][4] ),
         .I3(\cpu_irq_out[27]_i_9_n_0 ),
@@ -7965,29 +7925,29 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\cpu_irq_out[19]_i_8_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][3] ),
         .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\cpu_irq_out[27]_i_16_n_0 ),
+        .I3(\cpu_irq_out[27]_i_17_n_0 ),
         .I4(data21[3]),
         .I5(data21[4]),
         .O(\cpu_irq_out[3]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[3]_i_6 
-       (.I0(\cpu_irq_out[3]_i_13_n_0 ),
-        .I1(\cpu_irq_out[3]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
+        .I1(\cpu_irq_out[27]_i_21_n_0 ),
         .I2(data18[4]),
         .I3(data18[3]),
         .I4(\cpu_irq_out[27]_i_18_n_0 ),
-        .I5(\cpu_irq_out[3]_i_15_n_0 ),
+        .I5(\cpu_irq_out[3]_i_13_n_0 ),
         .O(\cpu_irq_out[3]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF2222222F)) 
     \cpu_irq_out[3]_i_7 
        (.I0(\cpu_irq_out[7]_i_27_n_0 ),
-        .I1(\cpu_irq_out[27]_i_22_n_0 ),
+        .I1(\cpu_irq_out[27]_i_14_n_0 ),
         .I2(\irq_dest_reg_n_0_[1][4] ),
         .I3(\irq_dest_reg_n_0_[1][3] ),
-        .I4(\cpu_irq_out[3]_i_16_n_0 ),
-        .I5(\cpu_irq_out[3]_i_17_n_0 ),
+        .I4(\cpu_irq_out[11]_i_16_n_0 ),
+        .I5(\cpu_irq_out[3]_i_14_n_0 ),
         .O(\cpu_irq_out[3]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h4444444F44444444)) 
@@ -7996,16 +7956,16 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(cpu_irq_out[3]),
         .I2(\irq_dest_reg_n_0_[10][4] ),
         .I3(\irq_dest_reg_n_0_[10][3] ),
-        .I4(\cpu_irq_out[3]_i_18_n_0 ),
+        .I4(\cpu_irq_out[3]_i_15_n_0 ),
         .I5(\irq_ack[10]_i_2_n_0 ),
         .O(\cpu_irq_out[3]_i_8_n_0 ));
   LUT6 #(
     .INIT(64'h01010101010101FF)) 
     \cpu_irq_out[3]_i_9 
-       (.I0(\cpu_irq_out[27]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_14_n_0 ),
         .I1(data17[3]),
         .I2(data17[4]),
-        .I3(\cpu_irq_out[19]_i_10_n_0 ),
+        .I3(\cpu_irq_out[27]_i_28_n_0 ),
         .I4(\irq_dest_reg_n_0_[16][3] ),
         .I5(\irq_dest_reg_n_0_[16][4] ),
         .O(\cpu_irq_out[3]_i_9_n_0 ));
@@ -8022,175 +7982,170 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0000000000000004)) 
     \cpu_irq_out[4]_i_10 
-       (.I0(\irq_ack[4]_i_2_n_0 ),
-        .I1(data17[2]),
-        .I2(data17[4]),
-        .I3(data17[3]),
-        .I4(data17[0]),
-        .I5(data17[1]),
-        .O(\cpu_irq_out[4]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000200)) 
-    \cpu_irq_out[4]_i_11 
-       (.I0(\irq_ack[10]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[10][1] ),
-        .I2(\irq_dest_reg_n_0_[10][0] ),
-        .I3(\irq_dest_reg_n_0_[10][2] ),
-        .I4(\irq_dest_reg_n_0_[10][3] ),
-        .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[4]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair277" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
-    \cpu_irq_out[4]_i_12 
-       (.I0(\irq_dest_reg_n_0_[8][3] ),
-        .I1(\irq_dest_reg_n_0_[8][4] ),
-        .O(\cpu_irq_out[4]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000100)) 
-    \cpu_irq_out[4]_i_13 
-       (.I0(\irq_dest_reg_n_0_[12][4] ),
-        .I1(\irq_dest_reg_n_0_[12][3] ),
-        .I2(\irq_ack[12]_i_2_n_0 ),
-        .I3(\irq_dest_reg_n_0_[12][2] ),
-        .I4(\irq_dest_reg_n_0_[12][0] ),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[4]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_14 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\irq_dest_reg_n_0_[20][3] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
-        .O(\cpu_irq_out[4]_i_14_n_0 ));
-  LUT2 #(
-    .INIT(4'h1)) 
-    \cpu_irq_out[4]_i_15 
-       (.I0(\irq_dest_reg_n_0_[17][3] ),
-        .I1(\irq_dest_reg_n_0_[17][4] ),
-        .O(\cpu_irq_out[4]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_16 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][2] ),
         .I2(\irq_dest_reg_n_0_[16][4] ),
         .I3(\irq_dest_reg_n_0_[16][3] ),
         .I4(\irq_dest_reg_n_0_[16][0] ),
         .I5(\irq_dest_reg_n_0_[16][1] ),
-        .O(\cpu_irq_out[4]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000100)) 
-    \cpu_irq_out[4]_i_17 
-       (.I0(data16[4]),
-        .I1(data16[3]),
-        .I2(\irq_ack[5]_i_2_n_0 ),
-        .I3(data16[2]),
-        .I4(data16[0]),
-        .I5(data16[1]),
-        .O(\cpu_irq_out[4]_i_17_n_0 ));
+        .O(\cpu_irq_out[4]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_18 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
-        .O(\cpu_irq_out[4]_i_18_n_0 ));
+    \cpu_irq_out[4]_i_11 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[2]),
+        .I2(data17[4]),
+        .I3(data17[3]),
+        .I4(data17[0]),
+        .I5(data17[1]),
+        .O(\cpu_irq_out[4]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000200)) 
+    \cpu_irq_out[4]_i_12 
+       (.I0(\irq_ack[10]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[10][1] ),
+        .I2(\irq_dest_reg_n_0_[10][0] ),
+        .I3(\irq_dest_reg_n_0_[10][2] ),
+        .I4(\irq_dest_reg_n_0_[10][3] ),
+        .I5(\irq_dest_reg_n_0_[10][4] ),
+        .O(\cpu_irq_out[4]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_19 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[2]),
-        .I2(data14[0]),
-        .I3(data14[1]),
-        .I4(data14[4]),
-        .I5(data14[3]),
-        .O(\cpu_irq_out[4]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[4]_i_2 
-       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
-        .I1(\cpu_irq_out[20]_i_23_n_0 ),
-        .I2(\cpu_irq_out[4]_i_8_n_0 ),
-        .I3(\cpu_irq_out[28]_i_27_n_0 ),
-        .I4(\cpu_irq_out[4]_i_9_n_0 ),
-        .I5(\cpu_irq_out[4]_i_10_n_0 ),
-        .O(\cpu_irq_out[4]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_20 
-       (.I0(\irq_ack[15]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[15][2] ),
-        .I2(\irq_dest_reg_n_0_[15][4] ),
-        .I3(\irq_dest_reg_n_0_[15][3] ),
-        .I4(\irq_dest_reg_n_0_[15][0] ),
-        .I5(\irq_dest_reg_n_0_[15][1] ),
-        .O(\cpu_irq_out[4]_i_20_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000004)) 
-    \cpu_irq_out[4]_i_21 
+    \cpu_irq_out[4]_i_13 
        (.I0(\irq_ack[13]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][2] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(\irq_dest_reg_n_0_[13][3] ),
         .I4(\irq_dest_reg_n_0_[13][0] ),
         .I5(\irq_dest_reg_n_0_[13][1] ),
-        .O(\cpu_irq_out[4]_i_21_n_0 ));
+        .O(\cpu_irq_out[4]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000100)) 
+    \cpu_irq_out[4]_i_14 
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
+        .O(\cpu_irq_out[4]_i_14_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000100)) 
+    \cpu_irq_out[4]_i_15 
+       (.I0(data16[4]),
+        .I1(data16[3]),
+        .I2(\irq_ack[5]_i_2_n_0 ),
+        .I3(data16[2]),
+        .I4(data16[0]),
+        .I5(data16[1]),
+        .O(\cpu_irq_out[4]_i_15_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000100)) 
+    \cpu_irq_out[4]_i_16 
+       (.I0(\irq_dest_reg_n_0_[12][4] ),
+        .I1(\irq_dest_reg_n_0_[12][3] ),
+        .I2(\irq_ack[12]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[12][2] ),
+        .I4(\irq_dest_reg_n_0_[12][0] ),
+        .I5(\irq_dest_reg_n_0_[12][1] ),
+        .O(\cpu_irq_out[4]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000004)) 
+    \cpu_irq_out[4]_i_17 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][4] ),
+        .I3(\irq_dest_reg_n_0_[20][3] ),
+        .I4(\irq_dest_reg_n_0_[20][0] ),
+        .I5(\irq_dest_reg_n_0_[20][1] ),
+        .O(\cpu_irq_out[4]_i_17_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair220" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
+    \cpu_irq_out[4]_i_18 
+       (.I0(data14[4]),
+        .I1(data14[3]),
+        .I2(\cpu_irq_out[12]_i_10_n_0 ),
+        .O(\cpu_irq_out[4]_i_18_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000004)) 
+    \cpu_irq_out[4]_i_19 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
+        .O(\cpu_irq_out[4]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[4]_i_2 
+       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
+        .I1(\cpu_irq_out[28]_i_24_n_0 ),
+        .I2(\cpu_irq_out[4]_i_8_n_0 ),
+        .I3(\cpu_irq_out[4]_i_9_n_0 ),
+        .I4(\cpu_irq_out[4]_i_10_n_0 ),
+        .I5(\cpu_irq_out[4]_i_11_n_0 ),
+        .O(\cpu_irq_out[4]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000200)) 
+    \cpu_irq_out[4]_i_20 
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[11][0] ),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(\irq_ack[11]_i_2_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][4] ),
+        .I5(\irq_dest_reg_n_0_[11][3] ),
+        .O(\cpu_irq_out[4]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'hFF01FF01FFFFFF01)) 
     \cpu_irq_out[4]_i_3 
-       (.I0(\cpu_irq_out[28]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[12]_i_13_n_0 ),
         .I1(data15[3]),
         .I2(data15[4]),
-        .I3(\cpu_irq_out[4]_i_11_n_0 ),
+        .I3(\cpu_irq_out[4]_i_12_n_0 ),
         .I4(cpu_irq_out[4]),
         .I5(cpu_eoi_in[4]),
         .O(\cpu_irq_out[4]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[4]_i_4 
-       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
-        .I1(\cpu_irq_out[20]_i_10_n_0 ),
-        .I2(\cpu_irq_out[4]_i_12_n_0 ),
-        .I3(\cpu_irq_out[28]_i_19_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[28]_i_18_n_0 ),
+        .I2(\cpu_irq_out[7]_i_23_n_0 ),
+        .I3(\cpu_irq_out[28]_i_29_n_0 ),
         .I4(\cpu_irq_out[4]_i_13_n_0 ),
         .I5(\cpu_irq_out[4]_i_14_n_0 ),
         .O(\cpu_irq_out[4]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[4]_i_5 
-       (.I0(\cpu_irq_out[7]_i_26_n_0 ),
-        .I1(\cpu_irq_out[28]_i_15_n_0 ),
-        .I2(\cpu_irq_out[4]_i_15_n_0 ),
-        .I3(\cpu_irq_out[12]_i_11_n_0 ),
-        .I4(\cpu_irq_out[4]_i_16_n_0 ),
-        .I5(\cpu_irq_out[4]_i_17_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_23_n_0 ),
+        .I1(\cpu_irq_out[28]_i_19_n_0 ),
+        .I2(\cpu_irq_out[7]_i_15_n_0 ),
+        .I3(\cpu_irq_out[28]_i_20_n_0 ),
+        .I4(\cpu_irq_out[4]_i_15_n_0 ),
+        .I5(\cpu_irq_out[4]_i_16_n_0 ),
         .O(\cpu_irq_out[4]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[4]_i_6 
        (.I0(\cpu_irq_out[7]_i_9_n_0 ),
-        .I1(\cpu_irq_out[28]_i_23_n_0 ),
-        .I2(\cpu_irq_out[7]_i_23_n_0 ),
-        .I3(\cpu_irq_out[28]_i_12_n_0 ),
-        .I4(\cpu_irq_out[4]_i_18_n_0 ),
-        .I5(\cpu_irq_out[4]_i_19_n_0 ),
+        .I1(\cpu_irq_out[28]_i_8_n_0 ),
+        .I2(\cpu_irq_out[7]_i_18_n_0 ),
+        .I3(\cpu_irq_out[28]_i_25_n_0 ),
+        .I4(\cpu_irq_out[4]_i_17_n_0 ),
+        .I5(\cpu_irq_out[4]_i_18_n_0 ),
         .O(\cpu_irq_out[4]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[4]_i_7 
        (.I0(\cpu_irq_out[7]_i_27_n_0 ),
-        .I1(\cpu_irq_out[28]_i_8_n_0 ),
+        .I1(\cpu_irq_out[12]_i_22_n_0 ),
         .I2(\cpu_irq_out[7]_i_19_n_0 ),
-        .I3(\cpu_irq_out[28]_i_26_n_0 ),
-        .I4(\cpu_irq_out[4]_i_20_n_0 ),
-        .I5(\cpu_irq_out[4]_i_21_n_0 ),
+        .I3(\cpu_irq_out[28]_i_9_n_0 ),
+        .I4(\cpu_irq_out[4]_i_19_n_0 ),
+        .I5(\cpu_irq_out[4]_i_20_n_0 ),
         .O(\cpu_irq_out[4]_i_7_n_0 ));
   LUT2 #(
     .INIT(4'h1)) 
@@ -8198,15 +8153,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(data19[3]),
         .I1(data19[4]),
         .O(\cpu_irq_out[4]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000200)) 
+  (* SOFT_HLUTNM = "soft_lutpair51" *) 
+  LUT4 #(
+    .INIT(16'hFFFB)) 
     \cpu_irq_out[4]_i_9 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[11][0] ),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(\irq_ack[11]_i_2_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][4] ),
-        .I5(\irq_dest_reg_n_0_[11][3] ),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[1]),
+        .I3(data19[0]),
         .O(\cpu_irq_out[4]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -8218,7 +8172,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[5]_i_6_n_0 ),
         .I5(\cpu_irq_out[5]_i_7_n_0 ),
         .O(\cpu_irq_out[5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair134" *) 
+  (* SOFT_HLUTNM = "soft_lutpair131" *) 
   LUT4 #(
     .INIT(16'hFBFF)) 
     \cpu_irq_out[5]_i_10 
@@ -8237,96 +8191,138 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
         .O(\cpu_irq_out[5]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair278" *) 
+  LUT2 #(
+    .INIT(4'h1)) 
+    \cpu_irq_out[5]_i_12 
+       (.I0(data15[3]),
+        .I1(data15[4]),
+        .O(\cpu_irq_out[5]_i_12_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair39" *) 
+  LUT4 #(
+    .INIT(16'hFFBF)) 
+    \cpu_irq_out[5]_i_13 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[0]),
+        .I3(data15[1]),
+        .O(\cpu_irq_out[5]_i_13_n_0 ));
+  LUT2 #(
+    .INIT(4'h1)) 
+    \cpu_irq_out[5]_i_14 
+       (.I0(\irq_dest_reg_n_0_[15][3] ),
+        .I1(\irq_dest_reg_n_0_[15][4] ),
+        .O(\cpu_irq_out[5]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[5]_i_12 
+    \cpu_irq_out[5]_i_15 
        (.I0(\irq_ack[20]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[20][2] ),
         .I2(\irq_dest_reg_n_0_[20][4] ),
         .I3(\irq_dest_reg_n_0_[20][3] ),
         .I4(\irq_dest_reg_n_0_[20][1] ),
         .I5(\irq_dest_reg_n_0_[20][0] ),
-        .O(\cpu_irq_out[5]_i_12_n_0 ));
+        .O(\cpu_irq_out[5]_i_15_n_0 ));
   LUT6 #(
     .INIT(64'h0000010000000000)) 
-    \cpu_irq_out[5]_i_13 
+    \cpu_irq_out[5]_i_16 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][1] ),
         .I5(\irq_dest_reg_n_0_[12][0] ),
-        .O(\cpu_irq_out[5]_i_13_n_0 ));
+        .O(\cpu_irq_out[5]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair280" *) 
+  LUT2 #(
+    .INIT(4'h1)) 
+    \cpu_irq_out[5]_i_17 
+       (.I0(\irq_dest_reg_n_0_[14][3] ),
+        .I1(\irq_dest_reg_n_0_[14][4] ),
+        .O(\cpu_irq_out[5]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h0000010000000000)) 
-    \cpu_irq_out[5]_i_14 
+    \cpu_irq_out[5]_i_18 
        (.I0(data16[4]),
         .I1(data16[3]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[1]),
         .I5(data16[0]),
-        .O(\cpu_irq_out[5]_i_14_n_0 ));
+        .O(\cpu_irq_out[5]_i_18_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[5]_i_15 
+    \cpu_irq_out[5]_i_19 
        (.I0(\irq_ack[16]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[16][2] ),
         .I2(\irq_dest_reg_n_0_[16][4] ),
         .I3(\irq_dest_reg_n_0_[16][3] ),
         .I4(\irq_dest_reg_n_0_[16][1] ),
         .I5(\irq_dest_reg_n_0_[16][0] ),
-        .O(\cpu_irq_out[5]_i_15_n_0 ));
+        .O(\cpu_irq_out[5]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[5]_i_2 
+       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
+        .I1(\cpu_irq_out[21]_i_18_n_0 ),
+        .I2(\cpu_irq_out[7]_i_9_n_0 ),
+        .I3(\cpu_irq_out[29]_i_9_n_0 ),
+        .I4(\cpu_irq_out[5]_i_8_n_0 ),
+        .I5(\cpu_irq_out[5]_i_9_n_0 ),
+        .O(\cpu_irq_out[5]_i_2_n_0 ));
+  LUT2 #(
+    .INIT(4'h1)) 
+    \cpu_irq_out[5]_i_20 
+       (.I0(\irq_dest_reg_n_0_[18][3] ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .O(\cpu_irq_out[5]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'h0000000800000000)) 
-    \cpu_irq_out[5]_i_16 
+    \cpu_irq_out[5]_i_21 
        (.I0(\irq_dest_reg_n_0_[8][2] ),
         .I1(\irq_ack[8]_i_2_n_0 ),
         .I2(\irq_dest_reg_n_0_[8][4] ),
         .I3(\irq_dest_reg_n_0_[8][3] ),
         .I4(\irq_dest_reg_n_0_[8][1] ),
         .I5(\irq_dest_reg_n_0_[8][0] ),
-        .O(\cpu_irq_out[5]_i_16_n_0 ));
+        .O(\cpu_irq_out[5]_i_21_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[5]_i_17 
+    \cpu_irq_out[5]_i_22 
        (.I0(\irq_ack[21]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[21][2] ),
         .I2(\irq_dest_reg_n_0_[21][4] ),
         .I3(\irq_dest_reg_n_0_[21][3] ),
         .I4(\irq_dest_reg_n_0_[21][1] ),
         .I5(\irq_dest_reg_n_0_[21][0] ),
-        .O(\cpu_irq_out[5]_i_17_n_0 ));
+        .O(\cpu_irq_out[5]_i_22_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair281" *) 
+  LUT2 #(
+    .INIT(4'h1)) 
+    \cpu_irq_out[5]_i_23 
+       (.I0(data21[3]),
+        .I1(data21[4]),
+        .O(\cpu_irq_out[5]_i_23_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[5]_i_18 
+    \cpu_irq_out[5]_i_24 
        (.I0(\irq_ack[13]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][2] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
         .I3(\irq_dest_reg_n_0_[13][3] ),
         .I4(\irq_dest_reg_n_0_[13][1] ),
         .I5(\irq_dest_reg_n_0_[13][0] ),
-        .O(\cpu_irq_out[5]_i_18_n_0 ));
+        .O(\cpu_irq_out[5]_i_24_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[5]_i_19 
+    \cpu_irq_out[5]_i_25 
        (.I0(\irq_ack[17]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][2] ),
         .I2(\irq_dest_reg_n_0_[17][4] ),
         .I3(\irq_dest_reg_n_0_[17][3] ),
         .I4(\irq_dest_reg_n_0_[17][1] ),
         .I5(\irq_dest_reg_n_0_[17][0] ),
-        .O(\cpu_irq_out[5]_i_19_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[5]_i_2 
-       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
-        .I1(\cpu_irq_out[13]_i_12_n_0 ),
-        .I2(\cpu_irq_out[7]_i_9_n_0 ),
-        .I3(\cpu_irq_out[29]_i_25_n_0 ),
-        .I4(\cpu_irq_out[5]_i_8_n_0 ),
-        .I5(\cpu_irq_out[5]_i_9_n_0 ),
-        .O(\cpu_irq_out[5]_i_2_n_0 ));
+        .O(\cpu_irq_out[5]_i_25_n_0 ));
   LUT6 #(
     .INIT(64'hFF01FF01FFFFFF01)) 
     \cpu_irq_out[5]_i_3 
@@ -8340,42 +8336,42 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[5]_i_4 
-       (.I0(\cpu_irq_out[7]_i_13_n_0 ),
-        .I1(\cpu_irq_out[21]_i_9_n_0 ),
-        .I2(\cpu_irq_out[7]_i_15_n_0 ),
-        .I3(\cpu_irq_out[29]_i_32_n_0 ),
-        .I4(\cpu_irq_out[5]_i_12_n_0 ),
-        .I5(\cpu_irq_out[5]_i_13_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_12_n_0 ),
+        .I1(\cpu_irq_out[5]_i_13_n_0 ),
+        .I2(\cpu_irq_out[5]_i_14_n_0 ),
+        .I3(\cpu_irq_out[29]_i_12_n_0 ),
+        .I4(\cpu_irq_out[5]_i_15_n_0 ),
+        .I5(\cpu_irq_out[5]_i_16_n_0 ),
         .O(\cpu_irq_out[5]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[5]_i_5 
-       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
-        .I1(\cpu_irq_out[29]_i_12_n_0 ),
+       (.I0(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[29]_i_17_n_0 ),
         .I2(\cpu_irq_out[7]_i_19_n_0 ),
-        .I3(\cpu_irq_out[21]_i_24_n_0 ),
-        .I4(\cpu_irq_out[5]_i_14_n_0 ),
-        .I5(\cpu_irq_out[5]_i_15_n_0 ),
+        .I3(\cpu_irq_out[29]_i_8_n_0 ),
+        .I4(\cpu_irq_out[5]_i_18_n_0 ),
+        .I5(\cpu_irq_out[5]_i_19_n_0 ),
         .O(\cpu_irq_out[5]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[5]_i_6 
        (.I0(\cpu_irq_out[7]_i_22_n_0 ),
-        .I1(\cpu_irq_out[29]_i_8_n_0 ),
-        .I2(\cpu_irq_out[7]_i_23_n_0 ),
-        .I3(\cpu_irq_out[29]_i_24_n_0 ),
-        .I4(\cpu_irq_out[5]_i_16_n_0 ),
-        .I5(\cpu_irq_out[5]_i_17_n_0 ),
+        .I1(\cpu_irq_out[13]_i_19_n_0 ),
+        .I2(\cpu_irq_out[5]_i_20_n_0 ),
+        .I3(\cpu_irq_out[29]_i_27_n_0 ),
+        .I4(\cpu_irq_out[5]_i_21_n_0 ),
+        .I5(\cpu_irq_out[5]_i_22_n_0 ),
         .O(\cpu_irq_out[5]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[5]_i_7 
        (.I0(\cpu_irq_out[7]_i_27_n_0 ),
-        .I1(\cpu_irq_out[13]_i_19_n_0 ),
-        .I2(\cpu_irq_out[7]_i_26_n_0 ),
-        .I3(\cpu_irq_out[29]_i_14_n_0 ),
-        .I4(\cpu_irq_out[5]_i_18_n_0 ),
-        .I5(\cpu_irq_out[5]_i_19_n_0 ),
+        .I1(\cpu_irq_out[21]_i_19_n_0 ),
+        .I2(\cpu_irq_out[5]_i_23_n_0 ),
+        .I3(\cpu_irq_out[29]_i_19_n_0 ),
+        .I4(\cpu_irq_out[5]_i_24_n_0 ),
+        .I5(\cpu_irq_out[5]_i_25_n_0 ),
         .O(\cpu_irq_out[5]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000002000)) 
@@ -8407,175 +8403,184 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\cpu_irq_out[6]_i_6_n_0 ),
         .I5(\cpu_irq_out[6]_i_7_n_0 ),
         .O(\cpu_irq_out[6]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  LUT4 #(
+    .INIT(16'hFBFF)) 
+    \cpu_irq_out[6]_i_10 
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[2]),
+        .I2(data14[0]),
+        .I3(data14[1]),
+        .O(\cpu_irq_out[6]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000000800)) 
-    \cpu_irq_out[6]_i_10 
+    \cpu_irq_out[6]_i_11 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[6]_i_10_n_0 ));
+        .O(\cpu_irq_out[6]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'h0000010000000000)) 
-    \cpu_irq_out[6]_i_11 
+    \cpu_irq_out[6]_i_12 
        (.I0(\irq_dest_reg_n_0_[12][4] ),
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_2_n_0 ),
         .I3(\irq_dest_reg_n_0_[12][2] ),
         .I4(\irq_dest_reg_n_0_[12][0] ),
         .I5(\irq_dest_reg_n_0_[12][1] ),
-        .O(\cpu_irq_out[6]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[6]_i_12 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\irq_dest_reg_n_0_[20][3] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
         .O(\cpu_irq_out[6]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000010000000000)) 
     \cpu_irq_out[6]_i_13 
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
+        .O(\cpu_irq_out[6]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000010000000000)) 
+    \cpu_irq_out[6]_i_14 
        (.I0(data16[4]),
         .I1(data16[3]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[0]),
         .I5(data16[1]),
-        .O(\cpu_irq_out[6]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[6]_i_14 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][0] ),
-        .I5(\irq_dest_reg_n_0_[16][1] ),
         .O(\cpu_irq_out[6]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
     \cpu_irq_out[6]_i_15 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
         .O(\cpu_irq_out[6]_i_15_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000800000000)) 
+    .INIT(64'h0000010000000000)) 
     \cpu_irq_out[6]_i_16 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\irq_dest_reg_n_0_[8][3] ),
-        .I4(\irq_dest_reg_n_0_[8][0] ),
-        .I5(\irq_dest_reg_n_0_[8][1] ),
+       (.I0(data21[4]),
+        .I1(data21[3]),
+        .I2(\irq_ack[0]_i_2_n_0 ),
+        .I3(data21[2]),
+        .I4(data21[0]),
+        .I5(data21[1]),
         .O(\cpu_irq_out[6]_i_16_n_0 ));
   LUT6 #(
     .INIT(64'h0000000400000000)) 
     \cpu_irq_out[6]_i_17 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\irq_dest_reg_n_0_[13][3] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][4] ),
+        .I3(\irq_dest_reg_n_0_[20][3] ),
+        .I4(\irq_dest_reg_n_0_[20][0] ),
+        .I5(\irq_dest_reg_n_0_[20][1] ),
         .O(\cpu_irq_out[6]_i_17_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000400000000)) 
+    .INIT(64'h0000010000000000)) 
     \cpu_irq_out[6]_i_18 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\irq_dest_reg_n_0_[17][3] ),
-        .I4(\irq_dest_reg_n_0_[17][0] ),
-        .I5(\irq_dest_reg_n_0_[17][1] ),
+       (.I0(\irq_dest_reg_n_0_[14][4] ),
+        .I1(\irq_dest_reg_n_0_[14][3] ),
+        .I2(\irq_ack[14]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[14][2] ),
+        .I4(\irq_dest_reg_n_0_[14][0] ),
+        .I5(\irq_dest_reg_n_0_[14][1] ),
         .O(\cpu_irq_out[6]_i_18_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[6]_i_2 
-       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
-        .I1(\cpu_irq_out[22]_i_19_n_0 ),
-        .I2(\cpu_irq_out[7]_i_9_n_0 ),
-        .I3(\cpu_irq_out[30]_i_31_n_0 ),
-        .I4(\cpu_irq_out[6]_i_8_n_0 ),
-        .I5(\cpu_irq_out[6]_i_9_n_0 ),
-        .O(\cpu_irq_out[6]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hFF01FF01FFFFFF01)) 
-    \cpu_irq_out[6]_i_3 
-       (.I0(\cpu_irq_out[14]_i_10_n_0 ),
-        .I1(data14[3]),
-        .I2(data14[4]),
-        .I3(\cpu_irq_out[6]_i_10_n_0 ),
-        .I4(cpu_irq_out[6]),
-        .I5(cpu_eoi_in[6]),
-        .O(\cpu_irq_out[6]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[6]_i_4 
-       (.I0(\cpu_irq_out[7]_i_15_n_0 ),
-        .I1(\cpu_irq_out[22]_i_10_n_0 ),
-        .I2(\cpu_irq_out[7]_i_13_n_0 ),
-        .I3(\cpu_irq_out[30]_i_9_n_0 ),
-        .I4(\cpu_irq_out[6]_i_11_n_0 ),
-        .I5(\cpu_irq_out[6]_i_12_n_0 ),
-        .O(\cpu_irq_out[6]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[6]_i_5 
-       (.I0(\cpu_irq_out[7]_i_18_n_0 ),
-        .I1(\cpu_irq_out[22]_i_14_n_0 ),
-        .I2(\cpu_irq_out[7]_i_19_n_0 ),
-        .I3(\cpu_irq_out[30]_i_30_n_0 ),
-        .I4(\cpu_irq_out[6]_i_13_n_0 ),
-        .I5(\cpu_irq_out[6]_i_14_n_0 ),
-        .O(\cpu_irq_out[6]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[6]_i_6 
-       (.I0(\cpu_irq_out[7]_i_23_n_0 ),
-        .I1(\cpu_irq_out[30]_i_13_n_0 ),
-        .I2(\cpu_irq_out[7]_i_22_n_0 ),
-        .I3(\cpu_irq_out[30]_i_25_n_0 ),
-        .I4(\cpu_irq_out[6]_i_15_n_0 ),
-        .I5(\cpu_irq_out[6]_i_16_n_0 ),
-        .O(\cpu_irq_out[6]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF22F2)) 
-    \cpu_irq_out[6]_i_7 
-       (.I0(\cpu_irq_out[7]_i_27_n_0 ),
-        .I1(\cpu_irq_out[30]_i_10_n_0 ),
-        .I2(\cpu_irq_out[7]_i_26_n_0 ),
-        .I3(\cpu_irq_out[30]_i_16_n_0 ),
-        .I4(\cpu_irq_out[6]_i_17_n_0 ),
-        .I5(\cpu_irq_out[6]_i_18_n_0 ),
-        .O(\cpu_irq_out[6]_i_7_n_0 ));
-  LUT6 #(
     .INIT(64'h0000000400000000)) 
-    \cpu_irq_out[6]_i_8 
+    \cpu_irq_out[6]_i_19 
        (.I0(\irq_ack[2]_i_2_n_0 ),
         .I1(data19[2]),
         .I2(data19[4]),
         .I3(data19[3]),
         .I4(data19[0]),
         .I5(data19[1]),
-        .O(\cpu_irq_out[6]_i_8_n_0 ));
+        .O(\cpu_irq_out[6]_i_19_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[6]_i_2 
+       (.I0(\cpu_irq_out[7]_i_8_n_0 ),
+        .I1(\cpu_irq_out[14]_i_11_n_0 ),
+        .I2(\cpu_irq_out[7]_i_9_n_0 ),
+        .I3(\cpu_irq_out[30]_i_33_n_0 ),
+        .I4(\cpu_irq_out[6]_i_8_n_0 ),
+        .I5(\cpu_irq_out[6]_i_9_n_0 ),
+        .O(\cpu_irq_out[6]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hFF01FF01FFFFFF01)) 
+    \cpu_irq_out[6]_i_3 
+       (.I0(\cpu_irq_out[6]_i_10_n_0 ),
+        .I1(data14[3]),
+        .I2(data14[4]),
+        .I3(\cpu_irq_out[6]_i_11_n_0 ),
+        .I4(cpu_irq_out[6]),
+        .I5(cpu_eoi_in[6]),
+        .O(\cpu_irq_out[6]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[6]_i_4 
+       (.I0(\cpu_irq_out[7]_i_14_n_0 ),
+        .I1(\cpu_irq_out[22]_i_19_n_0 ),
+        .I2(\cpu_irq_out[7]_i_15_n_0 ),
+        .I3(\cpu_irq_out[22]_i_17_n_0 ),
+        .I4(\cpu_irq_out[6]_i_12_n_0 ),
+        .I5(\cpu_irq_out[6]_i_13_n_0 ),
+        .O(\cpu_irq_out[6]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[6]_i_5 
+       (.I0(\cpu_irq_out[7]_i_19_n_0 ),
+        .I1(\cpu_irq_out[30]_i_32_n_0 ),
+        .I2(\cpu_irq_out[7]_i_18_n_0 ),
+        .I3(\cpu_irq_out[30]_i_22_n_0 ),
+        .I4(\cpu_irq_out[6]_i_14_n_0 ),
+        .I5(\cpu_irq_out[6]_i_15_n_0 ),
+        .O(\cpu_irq_out[6]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[6]_i_6 
+       (.I0(\cpu_irq_out[7]_i_22_n_0 ),
+        .I1(\cpu_irq_out[30]_i_26_n_0 ),
+        .I2(\cpu_irq_out[7]_i_23_n_0 ),
+        .I3(\cpu_irq_out[30]_i_23_n_0 ),
+        .I4(\cpu_irq_out[6]_i_16_n_0 ),
+        .I5(\cpu_irq_out[6]_i_17_n_0 ),
+        .O(\cpu_irq_out[6]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
+    \cpu_irq_out[6]_i_7 
+       (.I0(\cpu_irq_out[7]_i_26_n_0 ),
+        .I1(\cpu_irq_out[22]_i_9_n_0 ),
+        .I2(\cpu_irq_out[7]_i_27_n_0 ),
+        .I3(\cpu_irq_out[30]_i_11_n_0 ),
+        .I4(\cpu_irq_out[6]_i_18_n_0 ),
+        .I5(\cpu_irq_out[6]_i_19_n_0 ),
+        .O(\cpu_irq_out[6]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000002000)) 
-    \cpu_irq_out[6]_i_9 
+    \cpu_irq_out[6]_i_8 
        (.I0(\irq_dest_reg_n_0_[11][2] ),
         .I1(\irq_dest_reg_n_0_[11][0] ),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(\irq_ack[11]_i_2_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
+        .O(\cpu_irq_out[6]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000400000000)) 
+    \cpu_irq_out[6]_i_9 
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[0]),
+        .I5(data15[1]),
         .O(\cpu_irq_out[6]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFFFFFE)) 
@@ -8590,12 +8595,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0004000000000000)) 
     \cpu_irq_out[7]_i_10 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[2]),
-        .I2(data19[4]),
-        .I3(data19[3]),
-        .I4(data19[0]),
-        .I5(data19[1]),
+       (.I0(\irq_ack[6]_i_2_n_0 ),
+        .I1(data15[2]),
+        .I2(data15[4]),
+        .I3(data15[3]),
+        .I4(data15[0]),
+        .I5(data15[1]),
         .O(\cpu_irq_out[7]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000008000)) 
@@ -8607,36 +8612,38 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[11][4] ),
         .I5(\irq_dest_reg_n_0_[11][3] ),
         .O(\cpu_irq_out[7]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  LUT4 #(
+    .INIT(16'hBFFF)) 
+    \cpu_irq_out[7]_i_12 
+       (.I0(\irq_ack[7]_i_2_n_0 ),
+        .I1(data14[2]),
+        .I2(data14[0]),
+        .I3(data14[1]),
+        .O(\cpu_irq_out[7]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000008000)) 
-    \cpu_irq_out[7]_i_12 
+    \cpu_irq_out[7]_i_13 
        (.I0(\irq_ack[10]_i_2_n_0 ),
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_dest_reg_n_0_[10][0] ),
         .I3(\irq_dest_reg_n_0_[10][2] ),
         .I4(\irq_dest_reg_n_0_[10][3] ),
         .I5(\irq_dest_reg_n_0_[10][4] ),
-        .O(\cpu_irq_out[7]_i_12_n_0 ));
+        .O(\cpu_irq_out[7]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair283" *) 
   LUT2 #(
     .INIT(4'h1)) 
-    \cpu_irq_out[7]_i_13 
-       (.I0(data15[3]),
-        .I1(data15[4]),
-        .O(\cpu_irq_out[7]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair39" *) 
-  LUT4 #(
-    .INIT(16'hBFFF)) 
     \cpu_irq_out[7]_i_14 
-       (.I0(\irq_ack[6]_i_2_n_0 ),
-        .I1(data15[2]),
-        .I2(data15[1]),
-        .I3(data15[0]),
+       (.I0(\irq_dest_reg_n_0_[13][3] ),
+        .I1(\irq_dest_reg_n_0_[13][4] ),
         .O(\cpu_irq_out[7]_i_14_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair267" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_15 
-       (.I0(\irq_dest_reg_n_0_[15][3] ),
-        .I1(\irq_dest_reg_n_0_[15][4] ),
+       (.I0(\irq_dest_reg_n_0_[17][3] ),
+        .I1(\irq_dest_reg_n_0_[17][4] ),
         .O(\cpu_irq_out[7]_i_15_n_0 ));
   LUT6 #(
     .INIT(64'h0100000000000000)) 
@@ -8649,23 +8656,22 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_dest_reg_n_0_[12][1] ),
         .O(\cpu_irq_out[7]_i_16_n_0 ));
   LUT6 #(
-    .INIT(64'h0004000000000000)) 
+    .INIT(64'h0100000000000000)) 
     \cpu_irq_out[7]_i_17 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][2] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\irq_dest_reg_n_0_[20][3] ),
-        .I4(\irq_dest_reg_n_0_[20][0] ),
-        .I5(\irq_dest_reg_n_0_[20][1] ),
+       (.I0(\irq_dest_reg_n_0_[18][4] ),
+        .I1(\irq_dest_reg_n_0_[18][3] ),
+        .I2(\irq_ack[18]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[18][2] ),
+        .I4(\irq_dest_reg_n_0_[18][0] ),
+        .I5(\irq_dest_reg_n_0_[18][1] ),
         .O(\cpu_irq_out[7]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair280" *) 
+  (* SOFT_HLUTNM = "soft_lutpair282" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_18 
-       (.I0(\irq_dest_reg_n_0_[14][3] ),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
+       (.I0(\irq_dest_reg_n_0_[21][3] ),
+        .I1(\irq_dest_reg_n_0_[21][4] ),
         .O(\cpu_irq_out[7]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair281" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_19 
@@ -8676,73 +8682,73 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[7]_i_2 
        (.I0(\cpu_irq_out[7]_i_8_n_0 ),
-        .I1(\cpu_irq_out[31]_i_23_n_0 ),
+        .I1(\cpu_irq_out[23]_i_22_n_0 ),
         .I2(\cpu_irq_out[7]_i_9_n_0 ),
         .I3(\cpu_irq_out[31]_i_31_n_0 ),
         .I4(\cpu_irq_out[7]_i_10_n_0 ),
         .I5(\cpu_irq_out[7]_i_11_n_0 ),
         .O(\cpu_irq_out[7]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0100000000000000)) 
+    .INIT(64'h0004000000000000)) 
     \cpu_irq_out[7]_i_20 
+       (.I0(\irq_ack[15]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[15][2] ),
+        .I2(\irq_dest_reg_n_0_[15][4] ),
+        .I3(\irq_dest_reg_n_0_[15][3] ),
+        .I4(\irq_dest_reg_n_0_[15][0] ),
+        .I5(\irq_dest_reg_n_0_[15][1] ),
+        .O(\cpu_irq_out[7]_i_20_n_0 ));
+  LUT6 #(
+    .INIT(64'h0100000000000000)) 
+    \cpu_irq_out[7]_i_21 
        (.I0(data16[4]),
         .I1(data16[3]),
         .I2(\irq_ack[5]_i_2_n_0 ),
         .I3(data16[2]),
         .I4(data16[0]),
         .I5(data16[1]),
-        .O(\cpu_irq_out[7]_i_20_n_0 ));
-  LUT6 #(
-    .INIT(64'h0004000000000000)) 
-    \cpu_irq_out[7]_i_21 
-       (.I0(\irq_ack[16]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[16][2] ),
-        .I2(\irq_dest_reg_n_0_[16][4] ),
-        .I3(\irq_dest_reg_n_0_[16][3] ),
-        .I4(\irq_dest_reg_n_0_[16][0] ),
-        .I5(\irq_dest_reg_n_0_[16][1] ),
         .O(\cpu_irq_out[7]_i_21_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair279" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_22 
        (.I0(data17[3]),
         .I1(data17[4]),
         .O(\cpu_irq_out[7]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair279" *) 
+  (* SOFT_HLUTNM = "soft_lutpair275" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_23 
-       (.I0(\irq_dest_reg_n_0_[18][3] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
+       (.I0(\irq_dest_reg_n_0_[8][3] ),
+        .I1(\irq_dest_reg_n_0_[8][4] ),
         .O(\cpu_irq_out[7]_i_23_n_0 ));
   LUT6 #(
-    .INIT(64'h0004000000000000)) 
+    .INIT(64'h0100000000000000)) 
     \cpu_irq_out[7]_i_24 
-       (.I0(\irq_ack[21]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[21][2] ),
-        .I2(\irq_dest_reg_n_0_[21][4] ),
-        .I3(\irq_dest_reg_n_0_[21][3] ),
-        .I4(\irq_dest_reg_n_0_[21][0] ),
-        .I5(\irq_dest_reg_n_0_[21][1] ),
+       (.I0(data21[4]),
+        .I1(data21[3]),
+        .I2(\irq_ack[0]_i_2_n_0 ),
+        .I3(data21[2]),
+        .I4(data21[0]),
+        .I5(data21[1]),
         .O(\cpu_irq_out[7]_i_24_n_0 ));
   LUT6 #(
-    .INIT(64'h0008000000000000)) 
+    .INIT(64'h0004000000000000)) 
     \cpu_irq_out[7]_i_25 
-       (.I0(\irq_dest_reg_n_0_[8][2] ),
-        .I1(\irq_ack[8]_i_2_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\irq_dest_reg_n_0_[8][3] ),
-        .I4(\irq_dest_reg_n_0_[8][0] ),
-        .I5(\irq_dest_reg_n_0_[8][1] ),
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][2] ),
+        .I2(\irq_dest_reg_n_0_[20][4] ),
+        .I3(\irq_dest_reg_n_0_[20][3] ),
+        .I4(\irq_dest_reg_n_0_[20][0] ),
+        .I5(\irq_dest_reg_n_0_[20][1] ),
         .O(\cpu_irq_out[7]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair283" *) 
+  (* SOFT_HLUTNM = "soft_lutpair277" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_26 
-       (.I0(data21[3]),
-        .I1(data21[4]),
+       (.I0(\irq_dest_reg_n_0_[16][3] ),
+        .I1(\irq_dest_reg_n_0_[16][4] ),
         .O(\cpu_irq_out[7]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair278" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_27 
@@ -8750,42 +8756,42 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[19][4] ),
         .O(\cpu_irq_out[7]_i_27_n_0 ));
   LUT6 #(
-    .INIT(64'h0004000000000000)) 
+    .INIT(64'h0100000000000000)) 
     \cpu_irq_out[7]_i_28 
-       (.I0(\irq_ack[17]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[17][2] ),
-        .I2(\irq_dest_reg_n_0_[17][4] ),
-        .I3(\irq_dest_reg_n_0_[17][3] ),
-        .I4(\irq_dest_reg_n_0_[17][0] ),
-        .I5(\irq_dest_reg_n_0_[17][1] ),
+       (.I0(\irq_dest_reg_n_0_[14][4] ),
+        .I1(\irq_dest_reg_n_0_[14][3] ),
+        .I2(\irq_ack[14]_i_2_n_0 ),
+        .I3(\irq_dest_reg_n_0_[14][2] ),
+        .I4(\irq_dest_reg_n_0_[14][0] ),
+        .I5(\irq_dest_reg_n_0_[14][1] ),
         .O(\cpu_irq_out[7]_i_28_n_0 ));
   LUT6 #(
     .INIT(64'h0004000000000000)) 
     \cpu_irq_out[7]_i_29 
-       (.I0(\irq_ack[13]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[13][2] ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\irq_dest_reg_n_0_[13][3] ),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(\irq_dest_reg_n_0_[13][1] ),
+       (.I0(\irq_ack[2]_i_2_n_0 ),
+        .I1(data19[2]),
+        .I2(data19[4]),
+        .I3(data19[3]),
+        .I4(data19[0]),
+        .I5(data19[1]),
         .O(\cpu_irq_out[7]_i_29_n_0 ));
   LUT6 #(
     .INIT(64'hFF01FF01FFFFFF01)) 
     \cpu_irq_out[7]_i_3 
-       (.I0(\cpu_irq_out[15]_i_13_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_12_n_0 ),
         .I1(data14[3]),
         .I2(data14[4]),
-        .I3(\cpu_irq_out[7]_i_12_n_0 ),
+        .I3(\cpu_irq_out[7]_i_13_n_0 ),
         .I4(cpu_irq_out[7]),
         .I5(cpu_eoi_in[7]),
         .O(\cpu_irq_out[7]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[7]_i_4 
-       (.I0(\cpu_irq_out[7]_i_13_n_0 ),
-        .I1(\cpu_irq_out[7]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[7]_i_14_n_0 ),
+        .I1(\cpu_irq_out[15]_i_13_n_0 ),
         .I2(\cpu_irq_out[7]_i_15_n_0 ),
-        .I3(\cpu_irq_out[31]_i_14_n_0 ),
+        .I3(\cpu_irq_out[31]_i_25_n_0 ),
         .I4(\cpu_irq_out[7]_i_16_n_0 ),
         .I5(\cpu_irq_out[7]_i_17_n_0 ),
         .O(\cpu_irq_out[7]_i_4_n_0 ));
@@ -8793,9 +8799,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[7]_i_5 
        (.I0(\cpu_irq_out[7]_i_18_n_0 ),
-        .I1(\cpu_irq_out[23]_i_27_n_0 ),
+        .I1(\cpu_irq_out[23]_i_20_n_0 ),
         .I2(\cpu_irq_out[7]_i_19_n_0 ),
-        .I3(\cpu_irq_out[31]_i_35_n_0 ),
+        .I3(\cpu_irq_out[23]_i_31_n_0 ),
         .I4(\cpu_irq_out[7]_i_20_n_0 ),
         .I5(\cpu_irq_out[7]_i_21_n_0 ),
         .O(\cpu_irq_out[7]_i_5_n_0 ));
@@ -8803,9 +8809,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[7]_i_6 
        (.I0(\cpu_irq_out[7]_i_22_n_0 ),
-        .I1(\cpu_irq_out[15]_i_29_n_0 ),
+        .I1(\cpu_irq_out[31]_i_9_n_0 ),
         .I2(\cpu_irq_out[7]_i_23_n_0 ),
-        .I3(\cpu_irq_out[31]_i_25_n_0 ),
+        .I3(\cpu_irq_out[31]_i_11_n_0 ),
         .I4(\cpu_irq_out[7]_i_24_n_0 ),
         .I5(\cpu_irq_out[7]_i_25_n_0 ),
         .O(\cpu_irq_out[7]_i_6_n_0 ));
@@ -8813,13 +8819,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[7]_i_7 
        (.I0(\cpu_irq_out[7]_i_26_n_0 ),
-        .I1(\cpu_irq_out[31]_i_29_n_0 ),
+        .I1(\cpu_irq_out[23]_i_15_n_0 ),
         .I2(\cpu_irq_out[7]_i_27_n_0 ),
-        .I3(\cpu_irq_out[31]_i_9_n_0 ),
+        .I3(\cpu_irq_out[23]_i_12_n_0 ),
         .I4(\cpu_irq_out[7]_i_28_n_0 ),
         .I5(\cpu_irq_out[7]_i_29_n_0 ),
         .O(\cpu_irq_out[7]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair273" *) 
   LUT2 #(
     .INIT(4'h1)) 
     \cpu_irq_out[7]_i_8 
@@ -8855,73 +8860,60 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[8]_i_11 
-       (.I0(\cpu_irq_out[24]_i_27_n_0 ),
+       (.I0(\cpu_irq_out[24]_i_11_n_0 ),
         .I1(\irq_dest_reg_n_0_[17][3] ),
         .I2(\irq_dest_reg_n_0_[17][4] ),
         .I3(\cpu_irq_out[16]_i_10_n_0 ),
         .I4(\irq_dest_reg_n_0_[13][3] ),
         .I5(\irq_dest_reg_n_0_[13][4] ),
         .O(\cpu_irq_out[8]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair229" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[8]_i_12 
-       (.I0(\irq_dest_reg_n_0_[21][4] ),
-        .I1(\irq_dest_reg_n_0_[21][3] ),
-        .I2(\cpu_irq_out[24]_i_18_n_0 ),
-        .O(\cpu_irq_out[8]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair226" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[8]_i_13 
-       (.I0(\irq_dest_reg_n_0_[15][4] ),
-        .I1(\irq_dest_reg_n_0_[15][3] ),
-        .I2(\cpu_irq_out[16]_i_13_n_0 ),
-        .O(\cpu_irq_out[8]_i_13_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[8]_i_14 
-       (.I0(\cpu_irq_out[24]_i_12_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][3] ),
-        .I2(\irq_dest_reg_n_0_[20][4] ),
-        .I3(\cpu_irq_out[16]_i_18_n_0 ),
+    \cpu_irq_out[8]_i_12 
+       (.I0(\cpu_irq_out[0]_i_14_n_0 ),
+        .I1(\irq_dest_reg_n_0_[21][3] ),
+        .I2(\irq_dest_reg_n_0_[21][4] ),
+        .I3(\cpu_irq_out[16]_i_17_n_0 ),
         .I4(\irq_dest_reg_n_0_[1][3] ),
         .I5(\irq_dest_reg_n_0_[1][4] ),
+        .O(\cpu_irq_out[8]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
+    \cpu_irq_out[8]_i_13 
+       (.I0(\cpu_irq_out[24]_i_18_n_0 ),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
+        .I3(\cpu_irq_out[24]_i_21_n_0 ),
+        .I4(data17[3]),
+        .I5(data17[4]),
+        .O(\cpu_irq_out[8]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair99" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    \cpu_irq_out[8]_i_14 
+       (.I0(\irq_ack[20]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[20][0] ),
+        .I2(\irq_dest_reg_n_0_[20][1] ),
+        .I3(\irq_dest_reg_n_0_[20][2] ),
         .O(\cpu_irq_out[8]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[8]_i_15 
-       (.I0(\cpu_irq_out[24]_i_22_n_0 ),
+       (.I0(\cpu_irq_out[0]_i_16_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][3] ),
         .I2(\irq_dest_reg_n_0_[19][4] ),
-        .I3(\cpu_irq_out[24]_i_28_n_0 ),
+        .I3(\cpu_irq_out[24]_i_27_n_0 ),
         .I4(\irq_dest_reg_n_0_[16][3] ),
         .I5(\irq_dest_reg_n_0_[16][4] ),
         .O(\cpu_irq_out[8]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair267" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \cpu_irq_out[8]_i_16 
-       (.I0(data19[3]),
-        .I1(data19[4]),
-        .O(\cpu_irq_out[8]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair49" *) 
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \cpu_irq_out[8]_i_17 
-       (.I0(\irq_ack[2]_i_2_n_0 ),
-        .I1(data19[0]),
-        .I2(data19[1]),
-        .I3(data19[2]),
-        .O(\cpu_irq_out[8]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[8]_i_2 
-       (.I0(\cpu_irq_out[13]_i_9_n_0 ),
-        .I1(\cpu_irq_out[24]_i_10_n_0 ),
+       (.I0(\cpu_irq_out[10]_i_8_n_0 ),
+        .I1(\cpu_irq_out[24]_i_24_n_0 ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\cpu_irq_out[24]_i_21_n_0 ),
+        .I4(\cpu_irq_out[24]_i_9_n_0 ),
         .I5(\cpu_irq_out[8]_i_8_n_0 ),
         .O(\cpu_irq_out[8]_i_2_n_0 ));
   LUT6 #(
@@ -8938,41 +8930,41 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[8]_i_4 
        (.I0(\cpu_irq_out[8]_i_11_n_0 ),
-        .I1(\cpu_irq_out[11]_i_12_n_0 ),
+        .I1(\cpu_irq_out[14]_i_18_n_0 ),
         .I2(\cpu_irq_out[24]_i_26_n_0 ),
         .I3(\irq_dest_reg_n_0_[18][4] ),
         .I4(\irq_dest_reg_n_0_[18][3] ),
-        .I5(\cpu_irq_out[24]_i_25_n_0 ),
+        .I5(\cpu_irq_out[24]_i_17_n_0 ),
         .O(\cpu_irq_out[8]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFF2F2FFF2)) 
+    .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[8]_i_5 
-       (.I0(\cpu_irq_out[15]_i_24_n_0 ),
-        .I1(\cpu_irq_out[24]_i_19_n_0 ),
-        .I2(\cpu_irq_out[8]_i_12_n_0 ),
-        .I3(\cpu_irq_out[15]_i_10_n_0 ),
-        .I4(\cpu_irq_out[24]_i_8_n_0 ),
-        .I5(\cpu_irq_out[8]_i_13_n_0 ),
+       (.I0(\cpu_irq_out[8]_i_12_n_0 ),
+        .I1(\cpu_irq_out[15]_i_8_n_0 ),
+        .I2(\cpu_irq_out[24]_i_10_n_0 ),
+        .I3(\irq_dest_reg_n_0_[15][4] ),
+        .I4(\irq_dest_reg_n_0_[15][3] ),
+        .I5(\cpu_irq_out[16]_i_13_n_0 ),
         .O(\cpu_irq_out[8]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF22222F22)) 
+    .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[8]_i_6 
-       (.I0(\cpu_irq_out[15]_i_28_n_0 ),
-        .I1(\cpu_irq_out[24]_i_17_n_0 ),
-        .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\irq_dest_reg_n_0_[8][3] ),
-        .I4(\cpu_irq_out[16]_i_15_n_0 ),
+       (.I0(\cpu_irq_out[8]_i_13_n_0 ),
+        .I1(\cpu_irq_out[15]_i_23_n_0 ),
+        .I2(\cpu_irq_out[24]_i_14_n_0 ),
+        .I3(\irq_dest_reg_n_0_[20][4] ),
+        .I4(\irq_dest_reg_n_0_[20][3] ),
         .I5(\cpu_irq_out[8]_i_14_n_0 ),
         .O(\cpu_irq_out[8]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[8]_i_7 
        (.I0(\cpu_irq_out[8]_i_15_n_0 ),
-        .I1(\cpu_irq_out[8]_i_16_n_0 ),
-        .I2(\cpu_irq_out[8]_i_17_n_0 ),
+        .I1(\cpu_irq_out[15]_i_11_n_0 ),
+        .I2(\cpu_irq_out[24]_i_20_n_0 ),
         .I3(\irq_dest_reg_n_0_[14][4] ),
         .I4(\irq_dest_reg_n_0_[14][3] ),
-        .I5(\cpu_irq_out[24]_i_16_n_0 ),
+        .I5(\cpu_irq_out[24]_i_15_n_0 ),
         .O(\cpu_irq_out[8]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
@@ -8980,11 +8972,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\cpu_irq_out[0]_i_9_n_0 ),
         .I1(data15[3]),
         .I2(data15[4]),
-        .I3(\cpu_irq_out[0]_i_12_n_0 ),
+        .I3(\cpu_irq_out[24]_i_28_n_0 ),
         .I4(\irq_dest_reg_n_0_[11][3] ),
         .I5(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[8]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  (* SOFT_HLUTNM = "soft_lutpair129" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \cpu_irq_out[8]_i_9 
@@ -9016,72 +9008,92 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[9]_i_11 
-       (.I0(\cpu_irq_out[25]_i_10_n_0 ),
+       (.I0(\cpu_irq_out[1]_i_9_n_0 ),
         .I1(data15[3]),
         .I2(data15[4]),
-        .I3(\cpu_irq_out[25]_i_11_n_0 ),
+        .I3(\cpu_irq_out[25]_i_9_n_0 ),
         .I4(\irq_dest_reg_n_0_[15][3] ),
         .I5(\irq_dest_reg_n_0_[15][4] ),
         .O(\cpu_irq_out[9]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair117" *) 
-  LUT4 #(
-    .INIT(16'hFFEF)) 
+  LUT6 #(
+    .INIT(64'h0000000000000400)) 
     \cpu_irq_out[9]_i_12 
-       (.I0(\irq_ack[20]_i_2_n_0 ),
-        .I1(\irq_dest_reg_n_0_[20][1] ),
-        .I2(\irq_dest_reg_n_0_[20][0] ),
-        .I3(\irq_dest_reg_n_0_[20][2] ),
+       (.I0(data18[4]),
+        .I1(data18[3]),
+        .I2(data18[2]),
+        .I3(data18[0]),
+        .I4(data18[1]),
+        .I5(\irq_ack[3]_i_2_n_0 ),
         .O(\cpu_irq_out[9]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair218" *) 
+  (* SOFT_HLUTNM = "soft_lutpair212" *) 
   LUT3 #(
     .INIT(8'h04)) 
     \cpu_irq_out[9]_i_13 
-       (.I0(\irq_dest_reg_n_0_[1][4] ),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(\cpu_irq_out[17]_i_18_n_0 ),
-        .O(\cpu_irq_out[9]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair214" *) 
-  LUT3 #(
-    .INIT(8'h04)) 
-    \cpu_irq_out[9]_i_14 
        (.I0(\irq_dest_reg_n_0_[16][4] ),
         .I1(\irq_dest_reg_n_0_[16][3] ),
-        .I2(\cpu_irq_out[25]_i_29_n_0 ),
+        .I2(\cpu_irq_out[25]_i_27_n_0 ),
+        .O(\cpu_irq_out[9]_i_13_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair143" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[9]_i_14 
+       (.I0(\irq_ack[4]_i_2_n_0 ),
+        .I1(data17[1]),
+        .I2(data17[0]),
+        .I3(data17[2]),
         .O(\cpu_irq_out[9]_i_14_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[9]_i_15 
-       (.I0(\cpu_irq_out[17]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[25]_i_26_n_0 ),
         .I1(\irq_dest_reg_n_0_[8][3] ),
         .I2(\irq_dest_reg_n_0_[8][4] ),
-        .I3(\cpu_irq_out[25]_i_21_n_0 ),
+        .I3(\cpu_irq_out[25]_i_12_n_0 ),
         .I4(\irq_dest_reg_n_0_[21][3] ),
         .I5(\irq_dest_reg_n_0_[21][4] ),
         .O(\cpu_irq_out[9]_i_15_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair112" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[9]_i_16 
+       (.I0(\irq_ack[19]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[19][1] ),
+        .I2(\irq_dest_reg_n_0_[19][0] ),
+        .I3(\irq_dest_reg_n_0_[19][2] ),
+        .O(\cpu_irq_out[9]_i_16_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair118" *) 
+  LUT4 #(
+    .INIT(16'hFFEF)) 
+    \cpu_irq_out[9]_i_17 
+       (.I0(\irq_ack[1]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[1][1] ),
+        .I2(\irq_dest_reg_n_0_[1][0] ),
+        .I3(\irq_dest_reg_n_0_[1][2] ),
+        .O(\cpu_irq_out[9]_i_17_n_0 ));
   LUT6 #(
     .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[9]_i_16 
-       (.I0(\cpu_irq_out[17]_i_10_n_0 ),
+    \cpu_irq_out[9]_i_18 
+       (.I0(\cpu_irq_out[17]_i_11_n_0 ),
         .I1(\irq_dest_reg_n_0_[13][3] ),
         .I2(\irq_dest_reg_n_0_[13][4] ),
-        .I3(\cpu_irq_out[25]_i_28_n_0 ),
+        .I3(\cpu_irq_out[25]_i_19_n_0 ),
         .I4(\irq_dest_reg_n_0_[17][3] ),
         .I5(\irq_dest_reg_n_0_[17][4] ),
-        .O(\cpu_irq_out[9]_i_16_n_0 ));
+        .O(\cpu_irq_out[9]_i_18_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[9]_i_2 
-       (.I0(\cpu_irq_out[15]_i_10_n_0 ),
-        .I1(\cpu_irq_out[25]_i_18_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_8_n_0 ),
+        .I1(\cpu_irq_out[25]_i_17_n_0 ),
         .I2(\irq_dest_reg_n_0_[9][4] ),
         .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(\cpu_irq_out[25]_i_20_n_0 ),
-        .I5(\cpu_irq_out[9]_i_8_n_0 ),
+        .I4(\cpu_irq_out[9]_i_8_n_0 ),
+        .I5(\cpu_irq_out[9]_i_9_n_0 ),
         .O(\cpu_irq_out[9]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hFF04FF04FFFFFF04)) 
     \cpu_irq_out[9]_i_3 
-       (.I0(\cpu_irq_out[9]_i_9_n_0 ),
+       (.I0(\cpu_irq_out[17]_i_9_n_0 ),
         .I1(data14[3]),
         .I2(data14[4]),
         .I3(\cpu_irq_out[9]_i_10_n_0 ),
@@ -9092,60 +9104,60 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hAEAEAEAEAEFFAEAE)) 
     \cpu_irq_out[9]_i_4 
        (.I0(\cpu_irq_out[9]_i_11_n_0 ),
-        .I1(\cpu_irq_out[11]_i_12_n_0 ),
-        .I2(\cpu_irq_out[25]_i_25_n_0 ),
+        .I1(\cpu_irq_out[14]_i_18_n_0 ),
+        .I2(\cpu_irq_out[25]_i_15_n_0 ),
         .I3(\irq_dest_reg_n_0_[20][4] ),
         .I4(\irq_dest_reg_n_0_[20][3] ),
-        .I5(\cpu_irq_out[9]_i_12_n_0 ),
+        .I5(\cpu_irq_out[17]_i_14_n_0 ),
         .O(\cpu_irq_out[9]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAEAEFFAE)) 
+    .INIT(64'hFFFFFFFFFFFF22F2)) 
     \cpu_irq_out[9]_i_5 
-       (.I0(\cpu_irq_out[9]_i_13_n_0 ),
-        .I1(\cpu_irq_out[12]_i_18_n_0 ),
-        .I2(\cpu_irq_out[25]_i_15_n_0 ),
-        .I3(\cpu_irq_out[13]_i_9_n_0 ),
-        .I4(\cpu_irq_out[25]_i_9_n_0 ),
-        .I5(\cpu_irq_out[9]_i_14_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_23_n_0 ),
+        .I1(\cpu_irq_out[25]_i_14_n_0 ),
+        .I2(\cpu_irq_out[12]_i_16_n_0 ),
+        .I3(\cpu_irq_out[25]_i_22_n_0 ),
+        .I4(\cpu_irq_out[9]_i_12_n_0 ),
+        .I5(\cpu_irq_out[9]_i_13_n_0 ),
         .O(\cpu_irq_out[9]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[9]_i_6 
-       (.I0(\cpu_irq_out[15]_i_15_n_0 ),
-        .I1(\cpu_irq_out[25]_i_23_n_0 ),
+       (.I0(\cpu_irq_out[11]_i_13_n_0 ),
+        .I1(\cpu_irq_out[25]_i_16_n_0 ),
         .I2(data17[4]),
         .I3(data17[3]),
-        .I4(\cpu_irq_out[17]_i_17_n_0 ),
+        .I4(\cpu_irq_out[9]_i_14_n_0 ),
         .I5(\cpu_irq_out[9]_i_15_n_0 ),
         .O(\cpu_irq_out[9]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF22222F22)) 
     \cpu_irq_out[9]_i_7 
-       (.I0(\cpu_irq_out[13]_i_18_n_0 ),
-        .I1(\cpu_irq_out[25]_i_14_n_0 ),
-        .I2(data21[4]),
-        .I3(data21[3]),
-        .I4(\cpu_irq_out[25]_i_17_n_0 ),
-        .I5(\cpu_irq_out[9]_i_16_n_0 ),
+       (.I0(\cpu_irq_out[15]_i_20_n_0 ),
+        .I1(\cpu_irq_out[9]_i_16_n_0 ),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(\cpu_irq_out[9]_i_17_n_0 ),
+        .I5(\cpu_irq_out[9]_i_18_n_0 ),
         .O(\cpu_irq_out[9]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'h0404040404FF0404)) 
-    \cpu_irq_out[9]_i_8 
-       (.I0(\cpu_irq_out[25]_i_27_n_0 ),
-        .I1(data19[3]),
-        .I2(data19[4]),
-        .I3(\cpu_irq_out[1]_i_11_n_0 ),
-        .I4(\irq_dest_reg_n_0_[11][3] ),
-        .I5(\irq_dest_reg_n_0_[11][4] ),
-        .O(\cpu_irq_out[9]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair132" *) 
+  (* SOFT_HLUTNM = "soft_lutpair96" *) 
   LUT4 #(
     .INIT(16'hFFEF)) 
+    \cpu_irq_out[9]_i_8 
+       (.I0(\irq_ack[9]_i_2_n_0 ),
+        .I1(\irq_dest_reg_n_0_[9][1] ),
+        .I2(\irq_dest_reg_n_0_[9][0] ),
+        .I3(\irq_dest_reg_n_0_[9][2] ),
+        .O(\cpu_irq_out[9]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'h0404040404FF0404)) 
     \cpu_irq_out[9]_i_9 
-       (.I0(\irq_ack[7]_i_2_n_0 ),
-        .I1(data14[1]),
-        .I2(data14[0]),
-        .I3(data14[2]),
+       (.I0(\cpu_irq_out[25]_i_20_n_0 ),
+        .I1(data19[3]),
+        .I2(data19[4]),
+        .I3(\cpu_irq_out[25]_i_23_n_0 ),
+        .I4(\irq_dest_reg_n_0_[11][3] ),
+        .I5(\irq_dest_reg_n_0_[11][4] ),
         .O(\cpu_irq_out[9]_i_9_n_0 ));
   FDRE \cpu_irq_out_reg[0] 
        (.C(aclk),
@@ -9658,7 +9670,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[11][2] ),
         .I5(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[11]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair78" *) 
+  (* SOFT_HLUTNM = "soft_lutpair103" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[11]_i_14 
@@ -9670,55 +9682,55 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[11]_i_15 
-       (.I0(cpu_irq_out[19]),
-        .I1(cpu_irq_out[18]),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[17]),
-        .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[16]),
-        .O(\irq_ack[11]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[11]_i_16 
-       (.I0(cpu_irq_out[23]),
-        .I1(cpu_irq_out[22]),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[21]),
-        .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[20]),
-        .O(\irq_ack[11]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[11]_i_17 
-       (.I0(cpu_irq_out[27]),
-        .I1(cpu_irq_out[26]),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[25]),
-        .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[24]),
-        .O(\irq_ack[11]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[11]_i_18 
-       (.I0(cpu_irq_out[31]),
-        .I1(cpu_irq_out[30]),
-        .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[29]),
-        .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[28]),
-        .O(\irq_ack[11]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[11]_i_19 
        (.I0(cpu_irq_out[3]),
         .I1(cpu_irq_out[2]),
         .I2(\irq_dest_reg_n_0_[11][1] ),
         .I3(cpu_irq_out[1]),
         .I4(\irq_dest_reg_n_0_[11][0] ),
         .I5(cpu_irq_out[0]),
+        .O(\irq_ack[11]_i_15_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[11]_i_16 
+       (.I0(cpu_irq_out[7]),
+        .I1(cpu_irq_out[6]),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(cpu_irq_out[5]),
+        .I4(\irq_dest_reg_n_0_[11][0] ),
+        .I5(cpu_irq_out[4]),
+        .O(\irq_ack[11]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[11]_i_17 
+       (.I0(cpu_irq_out[11]),
+        .I1(cpu_irq_out[10]),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(cpu_irq_out[9]),
+        .I4(\irq_dest_reg_n_0_[11][0] ),
+        .I5(cpu_irq_out[8]),
+        .O(\irq_ack[11]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[11]_i_18 
+       (.I0(cpu_irq_out[15]),
+        .I1(cpu_irq_out[14]),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(cpu_irq_out[13]),
+        .I4(\irq_dest_reg_n_0_[11][0] ),
+        .I5(cpu_irq_out[12]),
+        .O(\irq_ack[11]_i_18_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[11]_i_19 
+       (.I0(cpu_irq_out[19]),
+        .I1(cpu_irq_out[18]),
+        .I2(\irq_dest_reg_n_0_[11][1] ),
+        .I3(cpu_irq_out[17]),
+        .I4(\irq_dest_reg_n_0_[11][0] ),
+        .I5(cpu_irq_out[16]),
         .O(\irq_ack[11]_i_19_n_0 ));
   LUT5 #(
-    .INIT(32'h202A0000)) 
+    .INIT(32'h02A20000)) 
     \irq_ack[11]_i_2 
        (.I0(\irq_ack[11]_i_4_n_0 ),
         .I1(\irq_ack_reg[11]_i_5_n_0 ),
@@ -9729,32 +9741,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[11]_i_20 
-       (.I0(cpu_irq_out[7]),
-        .I1(cpu_irq_out[6]),
+       (.I0(cpu_irq_out[23]),
+        .I1(cpu_irq_out[22]),
         .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[5]),
+        .I3(cpu_irq_out[21]),
         .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[4]),
+        .I5(cpu_irq_out[20]),
         .O(\irq_ack[11]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[11]_i_21 
-       (.I0(cpu_irq_out[11]),
-        .I1(cpu_irq_out[10]),
+       (.I0(cpu_irq_out[27]),
+        .I1(cpu_irq_out[26]),
         .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[9]),
+        .I3(cpu_irq_out[25]),
         .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[8]),
+        .I5(cpu_irq_out[24]),
         .O(\irq_ack[11]_i_21_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[11]_i_22 
-       (.I0(cpu_irq_out[15]),
-        .I1(cpu_irq_out[14]),
+       (.I0(cpu_irq_out[31]),
+        .I1(cpu_irq_out[30]),
         .I2(\irq_dest_reg_n_0_[11][1] ),
-        .I3(cpu_irq_out[13]),
+        .I3(cpu_irq_out[29]),
         .I4(\irq_dest_reg_n_0_[11][0] ),
-        .I5(cpu_irq_out[12]),
+        .I5(cpu_irq_out[28]),
         .O(\irq_ack[11]_i_22_n_0 ));
   LUT5 #(
     .INIT(32'h0000DDFD)) 
@@ -9811,7 +9823,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[2]),
         .I5(\irq_dest_reg_n_0_[12][2] ),
         .O(\irq_ack[12]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair131" *) 
+  (* SOFT_HLUTNM = "soft_lutpair84" *) 
   LUT4 #(
     .INIT(16'hD0DD)) 
     \irq_ack[12]_i_12 
@@ -9967,7 +9979,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[2]),
         .I5(\irq_dest_reg_n_0_[13][2] ),
         .O(\irq_ack[13]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair81" *) 
+  (* SOFT_HLUTNM = "soft_lutpair142" *) 
   LUT4 #(
     .INIT(16'hD0DD)) 
     \irq_ack[13]_i_14 
@@ -9979,55 +9991,55 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[13]_i_15 
-       (.I0(cpu_irq_out[19]),
-        .I1(cpu_irq_out[18]),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[17]),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[16]),
-        .O(\irq_ack[13]_i_15_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[13]_i_16 
-       (.I0(cpu_irq_out[23]),
-        .I1(cpu_irq_out[22]),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[21]),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[20]),
-        .O(\irq_ack[13]_i_16_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[13]_i_17 
-       (.I0(cpu_irq_out[27]),
-        .I1(cpu_irq_out[26]),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[25]),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[24]),
-        .O(\irq_ack[13]_i_17_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[13]_i_18 
-       (.I0(cpu_irq_out[31]),
-        .I1(cpu_irq_out[30]),
-        .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[29]),
-        .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[28]),
-        .O(\irq_ack[13]_i_18_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \irq_ack[13]_i_19 
        (.I0(cpu_irq_out[3]),
         .I1(cpu_irq_out[2]),
         .I2(\irq_dest_reg_n_0_[13][1] ),
         .I3(cpu_irq_out[1]),
         .I4(\irq_dest_reg_n_0_[13][0] ),
         .I5(cpu_irq_out[0]),
+        .O(\irq_ack[13]_i_15_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[13]_i_16 
+       (.I0(cpu_irq_out[7]),
+        .I1(cpu_irq_out[6]),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(cpu_irq_out[5]),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(cpu_irq_out[4]),
+        .O(\irq_ack[13]_i_16_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[13]_i_17 
+       (.I0(cpu_irq_out[11]),
+        .I1(cpu_irq_out[10]),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(cpu_irq_out[9]),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(cpu_irq_out[8]),
+        .O(\irq_ack[13]_i_17_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[13]_i_18 
+       (.I0(cpu_irq_out[15]),
+        .I1(cpu_irq_out[14]),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(cpu_irq_out[13]),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(cpu_irq_out[12]),
+        .O(\irq_ack[13]_i_18_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \irq_ack[13]_i_19 
+       (.I0(cpu_irq_out[19]),
+        .I1(cpu_irq_out[18]),
+        .I2(\irq_dest_reg_n_0_[13][1] ),
+        .I3(cpu_irq_out[17]),
+        .I4(\irq_dest_reg_n_0_[13][0] ),
+        .I5(cpu_irq_out[16]),
         .O(\irq_ack[13]_i_19_n_0 ));
   LUT5 #(
-    .INIT(32'hDFD5FFFF)) 
+    .INIT(32'hFD5DFFFF)) 
     \irq_ack[13]_i_2 
        (.I0(\irq_ack[13]_i_4_n_0 ),
         .I1(\irq_ack_reg[13]_i_5_n_0 ),
@@ -10038,32 +10050,32 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[13]_i_20 
-       (.I0(cpu_irq_out[7]),
-        .I1(cpu_irq_out[6]),
+       (.I0(cpu_irq_out[23]),
+        .I1(cpu_irq_out[22]),
         .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[5]),
+        .I3(cpu_irq_out[21]),
         .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[4]),
+        .I5(cpu_irq_out[20]),
         .O(\irq_ack[13]_i_20_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[13]_i_21 
-       (.I0(cpu_irq_out[11]),
-        .I1(cpu_irq_out[10]),
+       (.I0(cpu_irq_out[27]),
+        .I1(cpu_irq_out[26]),
         .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[9]),
+        .I3(cpu_irq_out[25]),
         .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[8]),
+        .I5(cpu_irq_out[24]),
         .O(\irq_ack[13]_i_21_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \irq_ack[13]_i_22 
-       (.I0(cpu_irq_out[15]),
-        .I1(cpu_irq_out[14]),
+       (.I0(cpu_irq_out[31]),
+        .I1(cpu_irq_out[30]),
         .I2(\irq_dest_reg_n_0_[13][1] ),
-        .I3(cpu_irq_out[13]),
+        .I3(cpu_irq_out[29]),
         .I4(\irq_dest_reg_n_0_[13][0] ),
-        .I5(cpu_irq_out[12]),
+        .I5(cpu_irq_out[28]),
         .O(\irq_ack[13]_i_22_n_0 ));
   LUT5 #(
     .INIT(32'h0000DDFD)) 
@@ -10111,13 +10123,13 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[14]_i_3_n_0 ),
         .O(\irq_ack[14]_i_1_n_0 ));
   LUT5 #(
-    .INIT(32'hAEAEFFAE)) 
+    .INIT(32'h8A008A8A)) 
     \irq_ack[14]_i_10 
        (.I0(\irq_ack[14]_i_19_n_0 ),
-        .I1(pcie_msi_vector_width_s[2]),
-        .I2(\irq_dest_reg_n_0_[14][2] ),
-        .I3(pcie_msi_vector_width_s[3]),
-        .I4(\irq_dest_reg_n_0_[14][3] ),
+        .I1(\irq_dest_reg_n_0_[14][2] ),
+        .I2(pcie_msi_vector_width_s[2]),
+        .I3(\irq_dest_reg_n_0_[14][3] ),
+        .I4(pcie_msi_vector_width_s[3]),
         .O(\irq_ack[14]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -10200,14 +10212,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[4]),
         .O(\irq_ack[14]_i_18_n_0 ));
   LUT6 #(
-    .INIT(64'h44D4000044D444D4)) 
+    .INIT(64'hBB2BBB2BFFFFBB2B)) 
     \irq_ack[14]_i_19 
        (.I0(\irq_dest_reg_n_0_[14][1] ),
         .I1(pcie_msi_vector_width_s[1]),
         .I2(pcie_msi_vector_width_s[0]),
         .I3(\irq_dest_reg_n_0_[14][0] ),
-        .I4(pcie_msi_vector_width_s[2]),
-        .I5(\irq_dest_reg_n_0_[14][2] ),
+        .I4(\irq_dest_reg_n_0_[14][2] ),
+        .I5(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[14]_i_19_n_0 ));
   LUT5 #(
     .INIT(32'hF7FFFFFF)) 
@@ -10239,11 +10251,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_ack_reg[14]_i_9_n_0 ),
         .O(\irq_ack[14]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hFBBAFBFBBABABABA)) 
+    .INIT(64'hAEAEAEAEEFAEEFEF)) 
     \irq_ack[14]_i_5 
        (.I0(pcie_msi_vector_width_s[5]),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
-        .I2(pcie_msi_vector_width_s[4]),
+        .I1(pcie_msi_vector_width_s[4]),
+        .I2(\irq_dest_reg_n_0_[14][4] ),
         .I3(pcie_msi_vector_width_s[3]),
         .I4(\irq_dest_reg_n_0_[14][3] ),
         .I5(\irq_ack[14]_i_10_n_0 ),
@@ -10820,13 +10832,13 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_ack_reg[18]_i_9_n_0 ),
         .O(\irq_ack[18]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hAEAEAEAEEFAEEFEF)) 
+    .INIT(64'hAAAAFFAAEFAAFFEF)) 
     \irq_ack[18]_i_5 
        (.I0(pcie_msi_vector_width_s[5]),
-        .I1(pcie_msi_vector_width_s[4]),
-        .I2(\irq_dest_reg_n_0_[18][4] ),
-        .I3(pcie_msi_vector_width_s[3]),
-        .I4(\irq_dest_reg_n_0_[18][3] ),
+        .I1(pcie_msi_vector_width_s[3]),
+        .I2(\irq_dest_reg_n_0_[18][3] ),
+        .I3(pcie_msi_vector_width_s[4]),
+        .I4(\irq_dest_reg_n_0_[18][4] ),
         .I5(\irq_ack[18]_i_10_n_0 ),
         .O(\irq_ack[18]_i_5_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair61" *) 
@@ -10974,7 +10986,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[19][3] ),
         .I5(\irq_ack[19]_i_12_n_0 ),
         .O(\irq_ack[19]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  (* SOFT_HLUTNM = "soft_lutpair71" *) 
   LUT4 #(
     .INIT(16'h8FFF)) 
     \irq_ack[1]_i_1 
@@ -10983,24 +10995,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[1]_i_2_n_0 ),
         .I3(\irq_ack[1]_i_3_n_0 ),
         .O(\irq_ack[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair127" *) 
+  (* SOFT_HLUTNM = "soft_lutpair120" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[1]_i_10 
-       (.I0(pcie_msi_vector_width_s[3]),
-        .I1(\irq_dest_reg_n_0_[1][3] ),
-        .I2(pcie_msi_vector_width_s[4]),
-        .I3(\irq_dest_reg_n_0_[1][4] ),
+       (.I0(\irq_dest_reg_n_0_[1][3] ),
+        .I1(pcie_msi_vector_width_s[3]),
+        .I2(\irq_dest_reg_n_0_[1][2] ),
+        .I3(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[1]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFF7FFFF)) 
+  (* SOFT_HLUTNM = "soft_lutpair122" *) 
+  LUT4 #(
+    .INIT(16'h4F44)) 
     \irq_ack[1]_i_11 
-       (.I0(p_2_in153_in),
-        .I1(p_1_in183_in),
-        .I2(\irq_ack_reg_n_0_[1] ),
-        .I3(pcie_msi_req_fifo_full),
-        .I4(pcie_msi_enabled),
-        .I5(\irq_dest_reg_n_0_[1][5] ),
+       (.I0(\irq_dest_reg_n_0_[1][5] ),
+        .I1(pcie_msi_vector_width_s[5]),
+        .I2(\irq_dest_reg_n_0_[1][4] ),
+        .I3(pcie_msi_vector_width_s[4]),
         .O(\irq_ack[1]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -11092,7 +11103,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[12]),
         .O(\irq_ack[1]_i_23_n_0 ));
   LUT5 #(
-    .INIT(32'hFFFF5510)) 
+    .INIT(32'hAAAAEEFE)) 
     \irq_ack[1]_i_3 
        (.I0(\irq_ack[1]_i_7_n_0 ),
         .I1(\irq_ack[1]_i_8_n_0 ),
@@ -11100,7 +11111,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[1]_i_10_n_0 ),
         .I4(\irq_ack[1]_i_11_n_0 ),
         .O(\irq_ack[1]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair73" *) 
+  (* SOFT_HLUTNM = "soft_lutpair71" *) 
   LUT3 #(
     .INIT(8'hBF)) 
     \irq_ack[1]_i_4 
@@ -11108,33 +11119,34 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_1_in183_in),
         .I2(p_2_in153_in),
         .O(\irq_ack[1]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair126" *) 
-  LUT4 #(
-    .INIT(16'h4F44)) 
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFF7FFFF)) 
     \irq_ack[1]_i_7 
-       (.I0(\irq_dest_reg_n_0_[1][5] ),
-        .I1(pcie_msi_vector_width_s[5]),
-        .I2(\irq_dest_reg_n_0_[1][4] ),
-        .I3(pcie_msi_vector_width_s[4]),
+       (.I0(p_2_in153_in),
+        .I1(p_1_in183_in),
+        .I2(\irq_ack_reg_n_0_[1] ),
+        .I3(pcie_msi_req_fifo_full),
+        .I4(pcie_msi_enabled),
+        .I5(\irq_dest_reg_n_0_[1][5] ),
         .O(\irq_ack[1]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair128" *) 
+  (* SOFT_HLUTNM = "soft_lutpair121" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[1]_i_8 
-       (.I0(\irq_dest_reg_n_0_[1][3] ),
-        .I1(pcie_msi_vector_width_s[3]),
-        .I2(\irq_dest_reg_n_0_[1][2] ),
-        .I3(pcie_msi_vector_width_s[2]),
+       (.I0(pcie_msi_vector_width_s[3]),
+        .I1(\irq_dest_reg_n_0_[1][3] ),
+        .I2(pcie_msi_vector_width_s[4]),
+        .I3(\irq_dest_reg_n_0_[1][4] ),
         .O(\irq_ack[1]_i_8_n_0 ));
   LUT6 #(
-    .INIT(64'hDDFD00F0FFFFDDFD)) 
+    .INIT(64'hF2FFF2FF22F2F2FF)) 
     \irq_ack[1]_i_9 
-       (.I0(pcie_msi_vector_width_s[0]),
-        .I1(\irq_dest_reg_n_0_[1][0] ),
-        .I2(\irq_dest_reg_n_0_[1][2] ),
-        .I3(pcie_msi_vector_width_s[2]),
-        .I4(\irq_dest_reg_n_0_[1][1] ),
-        .I5(pcie_msi_vector_width_s[1]),
+       (.I0(\irq_dest_reg_n_0_[1][2] ),
+        .I1(pcie_msi_vector_width_s[2]),
+        .I2(\irq_dest_reg_n_0_[1][1] ),
+        .I3(pcie_msi_vector_width_s[1]),
+        .I4(pcie_msi_vector_width_s[0]),
+        .I5(\irq_dest_reg_n_0_[1][0] ),
         .O(\irq_ack[1]_i_9_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair60" *) 
   LUT4 #(
@@ -11387,7 +11399,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_5_in[5]),
         .I2(p_1_in[5]),
         .O(\irq_ack[21]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair72" *) 
+  (* SOFT_HLUTNM = "soft_lutpair70" *) 
   LUT4 #(
     .INIT(16'hFF8F)) 
     \irq_ack[2]_i_1 
@@ -11396,7 +11408,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[2]_i_2_n_0 ),
         .I3(\irq_ack[2]_i_3_n_0 ),
         .O(\irq_ack[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair122" *) 
+  (* SOFT_HLUTNM = "soft_lutpair217" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \irq_ack[2]_i_10 
@@ -11512,7 +11524,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[2]_i_10_n_0 ),
         .I4(\irq_ack[2]_i_11_n_0 ),
         .O(\irq_ack[2]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair72" *) 
+  (* SOFT_HLUTNM = "soft_lutpair70" *) 
   LUT3 #(
     .INIT(8'hBF)) 
     \irq_ack[2]_i_4 
@@ -11520,7 +11532,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_1_in187_in),
         .I2(p_2_in144_in),
         .O(\irq_ack[2]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair122" *) 
+  (* SOFT_HLUTNM = "soft_lutpair117" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[2]_i_7 
@@ -11539,7 +11551,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data19[1]),
         .I5(pcie_msi_vector_width_s[1]),
         .O(\irq_ack[2]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair121" *) 
+  (* SOFT_HLUTNM = "soft_lutpair116" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[2]_i_9 
@@ -11664,7 +11676,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data18[3]),
         .I5(\irq_ack_reg[3]_i_13_n_0 ),
         .O(\irq_ack[3]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair116" *) 
+  (* SOFT_HLUTNM = "soft_lutpair139" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[3]_i_5 
@@ -11683,7 +11695,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[0]),
         .I5(data18[0]),
         .O(\irq_ack[3]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair115" *) 
+  (* SOFT_HLUTNM = "soft_lutpair138" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[3]_i_7 
@@ -11692,7 +11704,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data18[2]),
         .I3(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[3]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair116" *) 
+  (* SOFT_HLUTNM = "soft_lutpair139" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \irq_ack[3]_i_8 
@@ -11710,7 +11722,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_enabled),
         .I5(data18[5]),
         .O(\irq_ack[3]_i_9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair71" *) 
+  (* SOFT_HLUTNM = "soft_lutpair69" *) 
   LUT4 #(
     .INIT(16'hFF8F)) 
     \irq_ack[4]_i_1 
@@ -11719,7 +11731,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[4]_i_2_n_0 ),
         .I3(\irq_ack[4]_i_3_n_0 ),
         .O(\irq_ack[4]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair212" *) 
+  (* SOFT_HLUTNM = "soft_lutpair228" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \irq_ack[4]_i_10 
@@ -11827,7 +11839,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[28]),
         .O(\irq_ack[4]_i_23_n_0 ));
   LUT5 #(
-    .INIT(32'h0000FFD0)) 
+    .INIT(32'h0000FF51)) 
     \irq_ack[4]_i_3 
        (.I0(\irq_ack[4]_i_7_n_0 ),
         .I1(\irq_ack[4]_i_8_n_0 ),
@@ -11835,7 +11847,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[4]_i_10_n_0 ),
         .I4(\irq_ack[4]_i_11_n_0 ),
         .O(\irq_ack[4]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair71" *) 
+  (* SOFT_HLUTNM = "soft_lutpair69" *) 
   LUT3 #(
     .INIT(8'hBF)) 
     \irq_ack[4]_i_4 
@@ -11843,33 +11855,33 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_1_in195_in),
         .I2(p_2_in126_in),
         .O(\irq_ack[4]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair146" *) 
+  LUT4 #(
+    .INIT(16'h4F44)) 
+    \irq_ack[4]_i_7 
+       (.I0(pcie_msi_vector_width_s[3]),
+        .I1(data17[3]),
+        .I2(pcie_msi_vector_width_s[4]),
+        .I3(data17[4]),
+        .O(\irq_ack[4]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hF4FFF4FF44F4F4FF)) 
-    \irq_ack[4]_i_7 
+    \irq_ack[4]_i_8 
        (.I0(pcie_msi_vector_width_s[2]),
         .I1(data17[2]),
         .I2(data17[1]),
         .I3(pcie_msi_vector_width_s[1]),
         .I4(pcie_msi_vector_width_s[0]),
         .I5(data17[0]),
-        .O(\irq_ack[4]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair97" *) 
+        .O(\irq_ack[4]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair145" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
-    \irq_ack[4]_i_8 
+    \irq_ack[4]_i_9 
        (.I0(data17[3]),
         .I1(pcie_msi_vector_width_s[3]),
         .I2(data17[2]),
         .I3(pcie_msi_vector_width_s[2]),
-        .O(\irq_ack[4]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair96" *) 
-  LUT4 #(
-    .INIT(16'hB0BB)) 
-    \irq_ack[4]_i_9 
-       (.I0(pcie_msi_vector_width_s[3]),
-        .I1(data17[3]),
-        .I2(pcie_msi_vector_width_s[4]),
-        .I3(data17[4]),
         .O(\irq_ack[4]_i_9_n_0 ));
   LUT4 #(
     .INIT(16'hFF8F)) 
@@ -11997,7 +12009,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[0]),
         .I5(data16[0]),
         .O(\irq_ack[5]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair106" *) 
+  (* SOFT_HLUTNM = "soft_lutpair128" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[5]_i_6 
@@ -12006,7 +12018,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(data16[2]),
         .I3(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[5]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair105" *) 
+  (* SOFT_HLUTNM = "soft_lutpair127" *) 
   LUT4 #(
     .INIT(16'hB0BB)) 
     \irq_ack[5]_i_7 
@@ -12015,7 +12027,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(pcie_msi_vector_width_s[4]),
         .I3(data16[4]),
         .O(\irq_ack[5]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair105" *) 
+  (* SOFT_HLUTNM = "soft_lutpair127" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \irq_ack[5]_i_8 
@@ -12033,7 +12045,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_enabled),
         .I5(data16[5]),
         .O(\irq_ack[5]_i_9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair70" *) 
+  (* SOFT_HLUTNM = "soft_lutpair68" *) 
   LUT4 #(
     .INIT(16'hFF8F)) 
     \irq_ack[6]_i_1 
@@ -12042,7 +12054,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[6]_i_2_n_0 ),
         .I3(\irq_ack[6]_i_3_n_0 ),
         .O(\irq_ack[6]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair93" *) 
+  (* SOFT_HLUTNM = "soft_lutpair122" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \irq_ack[6]_i_10 
@@ -12150,7 +12162,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[12]),
         .O(\irq_ack[6]_i_23_n_0 ));
   LUT5 #(
-    .INIT(32'h0000FF51)) 
+    .INIT(32'h0000FFD0)) 
     \irq_ack[6]_i_3 
        (.I0(\irq_ack[6]_i_7_n_0 ),
         .I1(\irq_ack[6]_i_8_n_0 ),
@@ -12158,7 +12170,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[6]_i_10_n_0 ),
         .I4(\irq_ack[6]_i_11_n_0 ),
         .O(\irq_ack[6]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair70" *) 
+  (* SOFT_HLUTNM = "soft_lutpair68" *) 
   LUT3 #(
     .INIT(8'hBF)) 
     \irq_ack[6]_i_4 
@@ -12166,35 +12178,35 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_1_in203_in),
         .I2(p_2_in108_in),
         .O(\irq_ack[6]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair93" *) 
-  LUT4 #(
-    .INIT(16'h4F44)) 
-    \irq_ack[6]_i_7 
-       (.I0(pcie_msi_vector_width_s[4]),
-        .I1(data15[4]),
-        .I2(pcie_msi_vector_width_s[3]),
-        .I3(data15[3]),
-        .O(\irq_ack[6]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hF4FFF4FF44F4F4FF)) 
-    \irq_ack[6]_i_8 
+    \irq_ack[6]_i_7 
        (.I0(pcie_msi_vector_width_s[2]),
         .I1(data15[2]),
         .I2(data15[1]),
         .I3(pcie_msi_vector_width_s[1]),
         .I4(pcie_msi_vector_width_s[0]),
         .I5(data15[0]),
-        .O(\irq_ack[6]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair92" *) 
+        .O(\irq_ack[6]_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair87" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
-    \irq_ack[6]_i_9 
+    \irq_ack[6]_i_8 
        (.I0(data15[3]),
         .I1(pcie_msi_vector_width_s[3]),
         .I2(data15[2]),
         .I3(pcie_msi_vector_width_s[2]),
+        .O(\irq_ack[6]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair86" *) 
+  LUT4 #(
+    .INIT(16'hB0BB)) 
+    \irq_ack[6]_i_9 
+       (.I0(pcie_msi_vector_width_s[3]),
+        .I1(data15[3]),
+        .I2(pcie_msi_vector_width_s[4]),
+        .I3(data15[4]),
         .O(\irq_ack[6]_i_9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair69" *) 
+  (* SOFT_HLUTNM = "soft_lutpair67" *) 
   LUT4 #(
     .INIT(16'hFF8F)) 
     \irq_ack[7]_i_1 
@@ -12203,23 +12215,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[7]_i_2_n_0 ),
         .I3(\irq_ack[7]_i_3_n_0 ),
         .O(\irq_ack[7]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair212" *) 
+  (* SOFT_HLUTNM = "soft_lutpair133" *) 
   LUT3 #(
-    .INIT(8'hBA)) 
+    .INIT(8'hAE)) 
     \irq_ack[7]_i_10 
        (.I0(pcie_msi_vector_width_s[5]),
-        .I1(data14[4]),
-        .I2(pcie_msi_vector_width_s[4]),
+        .I1(pcie_msi_vector_width_s[4]),
+        .I2(data14[4]),
         .O(\irq_ack[7]_i_10_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFF7FFFF)) 
+    .INIT(64'hFFFFFFFFFBFFFFFF)) 
     \irq_ack[7]_i_11 
-       (.I0(p_2_in103_in),
-        .I1(p_1_in207_in),
-        .I2(\irq_ack_reg_n_0_[7] ),
-        .I3(pcie_msi_req_fifo_full),
-        .I4(pcie_msi_enabled),
-        .I5(data14[5]),
+       (.I0(pcie_msi_req_fifo_full),
+        .I1(pcie_msi_enabled),
+        .I2(data14[5]),
+        .I3(p_2_in103_in),
+        .I4(p_1_in207_in),
+        .I5(\irq_ack_reg_n_0_[7] ),
         .O(\irq_ack[7]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -12262,7 +12274,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[28]),
         .O(\irq_ack[7]_i_19_n_0 ));
   LUT5 #(
-    .INIT(32'hEFEAFFFF)) 
+    .INIT(32'hDFD5FFFF)) 
     \irq_ack[7]_i_2 
        (.I0(\irq_ack[7]_i_4_n_0 ),
         .I1(\irq_ack_reg[7]_i_5_n_0 ),
@@ -12311,7 +12323,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[12]),
         .O(\irq_ack[7]_i_23_n_0 ));
   LUT5 #(
-    .INIT(32'h0000FFD0)) 
+    .INIT(32'h0000FFE0)) 
     \irq_ack[7]_i_3 
        (.I0(\irq_ack[7]_i_7_n_0 ),
         .I1(\irq_ack[7]_i_8_n_0 ),
@@ -12319,42 +12331,41 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[7]_i_10_n_0 ),
         .I4(\irq_ack[7]_i_11_n_0 ),
         .O(\irq_ack[7]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair69" *) 
+  (* SOFT_HLUTNM = "soft_lutpair67" *) 
   LUT3 #(
-    .INIT(8'hBF)) 
+    .INIT(8'h40)) 
     \irq_ack[7]_i_4 
        (.I0(\irq_ack_reg_n_0_[7] ),
         .I1(p_1_in207_in),
         .I2(p_2_in103_in),
         .O(\irq_ack[7]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hF4FFF4FF44F4F4FF)) 
-    \irq_ack[7]_i_7 
-       (.I0(pcie_msi_vector_width_s[2]),
-        .I1(data14[2]),
-        .I2(data14[1]),
-        .I3(pcie_msi_vector_width_s[1]),
-        .I4(pcie_msi_vector_width_s[0]),
-        .I5(data14[0]),
-        .O(\irq_ack[7]_i_7_n_0 ));
   LUT4 #(
     .INIT(16'h4F44)) 
-    \irq_ack[7]_i_8 
+    \irq_ack[7]_i_7 
        (.I0(data14[3]),
         .I1(pcie_msi_vector_width_s[3]),
         .I2(data14[2]),
         .I3(pcie_msi_vector_width_s[2]),
+        .O(\irq_ack[7]_i_7_n_0 ));
+  LUT6 #(
+    .INIT(64'h44D4000044D444D4)) 
+    \irq_ack[7]_i_8 
+       (.I0(data14[1]),
+        .I1(pcie_msi_vector_width_s[1]),
+        .I2(pcie_msi_vector_width_s[0]),
+        .I3(data14[0]),
+        .I4(pcie_msi_vector_width_s[2]),
+        .I5(data14[2]),
         .O(\irq_ack[7]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair135" *) 
+  (* SOFT_HLUTNM = "soft_lutpair133" *) 
   LUT4 #(
-    .INIT(16'hB0BB)) 
+    .INIT(16'hD0DD)) 
     \irq_ack[7]_i_9 
-       (.I0(pcie_msi_vector_width_s[3]),
-        .I1(data14[3]),
-        .I2(pcie_msi_vector_width_s[4]),
-        .I3(data14[4]),
+       (.I0(data14[4]),
+        .I1(pcie_msi_vector_width_s[4]),
+        .I2(pcie_msi_vector_width_s[3]),
+        .I3(data14[3]),
         .O(\irq_ack[7]_i_9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair68" *) 
   LUT4 #(
     .INIT(16'hFFF8)) 
     \irq_ack[8]_i_1 
@@ -12363,24 +12374,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_ack[8]_i_2_n_0 ),
         .I3(\irq_ack[8]_i_3_n_0 ),
         .O(\irq_ack[8]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair84" *) 
-  LUT4 #(
-    .INIT(16'h4F44)) 
+  (* SOFT_HLUTNM = "soft_lutpair217" *) 
+  LUT3 #(
+    .INIT(8'hAE)) 
     \irq_ack[8]_i_10 
-       (.I0(pcie_msi_vector_width_s[3]),
-        .I1(\irq_dest_reg_n_0_[8][3] ),
-        .I2(pcie_msi_vector_width_s[4]),
-        .I3(\irq_dest_reg_n_0_[8][4] ),
+       (.I0(pcie_msi_vector_width_s[5]),
+        .I1(pcie_msi_vector_width_s[4]),
+        .I2(\irq_dest_reg_n_0_[8][4] ),
         .O(\irq_ack[8]_i_10_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFFF7FFFF)) 
+    .INIT(64'hFFFFFFFFFBFFFFFF)) 
     \irq_ack[8]_i_11 
-       (.I0(p_3_in[0]),
-        .I1(p_4_in[0]),
-        .I2(\irq_ack_reg_n_0_[8] ),
-        .I3(pcie_msi_req_fifo_full),
-        .I4(pcie_msi_enabled),
-        .I5(\irq_dest_reg_n_0_[8][5] ),
+       (.I0(pcie_msi_req_fifo_full),
+        .I1(pcie_msi_enabled),
+        .I2(\irq_dest_reg_n_0_[8][5] ),
+        .I3(p_3_in[0]),
+        .I4(p_4_in[0]),
+        .I5(\irq_ack_reg_n_0_[8] ),
         .O(\irq_ack[8]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -12472,7 +12482,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(cpu_irq_out[12]),
         .O(\irq_ack[8]_i_23_n_0 ));
   LUT5 #(
-    .INIT(32'h0000AAFE)) 
+    .INIT(32'h0000FF0B)) 
     \irq_ack[8]_i_3 
        (.I0(\irq_ack[8]_i_7_n_0 ),
         .I1(\irq_ack[8]_i_8_n_0 ),
@@ -12480,7 +12490,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_ack[8]_i_10_n_0 ),
         .I4(\irq_ack[8]_i_11_n_0 ),
         .O(\irq_ack[8]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair68" *) 
+  (* SOFT_HLUTNM = "soft_lutpair29" *) 
   LUT3 #(
     .INIT(8'h40)) 
     \irq_ack[8]_i_4 
@@ -12488,34 +12498,34 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(p_4_in[0]),
         .I2(p_3_in[0]),
         .O(\irq_ack[8]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair126" *) 
-  LUT3 #(
-    .INIT(8'hBA)) 
-    \irq_ack[8]_i_7 
-       (.I0(pcie_msi_vector_width_s[5]),
-        .I1(\irq_dest_reg_n_0_[8][4] ),
-        .I2(pcie_msi_vector_width_s[4]),
-        .O(\irq_ack[8]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair85" *) 
+  (* SOFT_HLUTNM = "soft_lutpair111" *) 
   LUT4 #(
-    .INIT(16'h4F44)) 
-    \irq_ack[8]_i_8 
-       (.I0(\irq_dest_reg_n_0_[8][3] ),
-        .I1(pcie_msi_vector_width_s[3]),
-        .I2(\irq_dest_reg_n_0_[8][2] ),
-        .I3(pcie_msi_vector_width_s[2]),
-        .O(\irq_ack[8]_i_8_n_0 ));
+    .INIT(16'h22F2)) 
+    \irq_ack[8]_i_7 
+       (.I0(pcie_msi_vector_width_s[3]),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(pcie_msi_vector_width_s[2]),
+        .I3(\irq_dest_reg_n_0_[8][2] ),
+        .O(\irq_ack[8]_i_7_n_0 ));
   LUT6 #(
-    .INIT(64'h44D4000044D444D4)) 
-    \irq_ack[8]_i_9 
+    .INIT(64'hBB2BBB2BFFFFBB2B)) 
+    \irq_ack[8]_i_8 
        (.I0(\irq_dest_reg_n_0_[8][1] ),
         .I1(pcie_msi_vector_width_s[1]),
         .I2(pcie_msi_vector_width_s[0]),
         .I3(\irq_dest_reg_n_0_[8][0] ),
-        .I4(pcie_msi_vector_width_s[2]),
-        .I5(\irq_dest_reg_n_0_[8][2] ),
+        .I4(\irq_dest_reg_n_0_[8][2] ),
+        .I5(pcie_msi_vector_width_s[2]),
+        .O(\irq_ack[8]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair110" *) 
+  LUT4 #(
+    .INIT(16'h4F44)) 
+    \irq_ack[8]_i_9 
+       (.I0(pcie_msi_vector_width_s[3]),
+        .I1(\irq_dest_reg_n_0_[8][3] ),
+        .I2(pcie_msi_vector_width_s[4]),
+        .I3(\irq_dest_reg_n_0_[8][4] ),
         .O(\irq_ack[8]_i_9_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair67" *) 
   LUT4 #(
     .INIT(16'hFF8F)) 
     \irq_ack[9]_i_1 
@@ -12534,7 +12544,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_dest_reg_n_0_[9][2] ),
         .I5(pcie_msi_vector_width_s[2]),
         .O(\irq_ack[9]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair140" *) 
+  (* SOFT_HLUTNM = "soft_lutpair98" *) 
   LUT4 #(
     .INIT(16'h4F44)) 
     \irq_ack[9]_i_14 
@@ -12641,7 +12651,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(\irq_dest_reg_n_0_[9][4] ),
         .I4(\irq_ack[9]_i_8_n_0 ),
         .O(\irq_ack[9]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair67" *) 
+  (* SOFT_HLUTNM = "soft_lutpair30" *) 
   LUT3 #(
     .INIT(8'h40)) 
     \irq_ack[9]_i_4 
@@ -13398,34 +13408,39 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[3]),
         .I3(s_axi_wstrb[0]),
-        .I4(\irq_inv[2]_i_3_n_0 ),
+        .I4(\irq_inv[14]_i_2_n_0 ),
         .O(\irq_dest[0][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000400000000000)) 
+    .INIT(64'h0000040000000000)) 
     \irq_dest[10][5]_i_1 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[3]),
-        .I2(\irq_inv[2]_i_2_n_0 ),
+       (.I0(\irq_dest[10][5]_i_2_n_0 ),
+        .I1(s_axi_awaddr[1]),
+        .I2(s_axi_awaddr[2]),
         .I3(s_axi_wstrb[0]),
         .I4(s_axi_awaddr[0]),
-        .I5(\irq_dest[10][5]_i_2_n_0 ),
+        .I5(\irq_dest[10][5]_i_3_n_0 ),
         .O(\irq_dest[10][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair57" *) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
   LUT2 #(
-    .INIT(4'h8)) 
+    .INIT(4'hB)) 
     \irq_dest[10][5]_i_2 
-       (.I0(s_axi_awready),
-        .I1(s_axi_awaddr[5]),
-        .O(\irq_dest[10][5]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h4000000000000000)) 
-    \irq_dest[11][5]_i_1 
        (.I0(s_axi_awaddr[4]),
         .I1(s_axi_awaddr[3]),
-        .I2(\irq_inv[2]_i_2_n_0 ),
-        .I3(\irq_dest[10][5]_i_2_n_0 ),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_wstrb[0]),
+        .O(\irq_dest[10][5]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair37" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \irq_dest[10][5]_i_3 
+       (.I0(s_axi_awready),
+        .I1(s_axi_awaddr[5]),
+        .O(\irq_dest[10][5]_i_3_n_0 ));
+  LUT4 #(
+    .INIT(16'h8000)) 
+    \irq_dest[11][5]_i_1 
+       (.I0(\irq_pend[10]_i_4_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_wstrb[0]),
+        .I3(s_axi_awready),
         .O(\irq_dest[11][5]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0000400000000000)) 
@@ -13435,9 +13450,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest[12][5]_i_2_n_0 ),
         .I3(s_axi_wstrb[0]),
         .I4(s_axi_awaddr[0]),
-        .I5(\irq_dest[10][5]_i_2_n_0 ),
+        .I5(\irq_dest[10][5]_i_3_n_0 ),
         .O(\irq_dest[12][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair149" *) 
+  (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \irq_dest[12][5]_i_2 
@@ -13445,88 +13460,102 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_awaddr[1]),
         .O(\irq_dest[12][5]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h4000000000000000)) 
+    .INIT(64'h0000000040000000)) 
     \irq_dest[13][5]_i_1 
        (.I0(s_axi_awaddr[4]),
         .I1(s_axi_awaddr[3]),
         .I2(\irq_dest[12][5]_i_2_n_0 ),
-        .I3(\irq_dest[10][5]_i_2_n_0 ),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_wstrb[0]),
+        .I3(s_axi_awready),
+        .I4(s_axi_awaddr[5]),
+        .I5(\irq_dest[1][5]_i_2_n_0 ),
         .O(\irq_dest[13][5]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h40000000)) 
+  LUT6 #(
+    .INIT(64'h0000000000400000)) 
     \irq_dest[14][5]_i_1 
-       (.I0(\irq_inv[2]_i_3_n_0 ),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[3]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_wstrb[0]),
+       (.I0(\irq_dest[14][5]_i_2_n_0 ),
+        .I1(s_axi_awready),
+        .I2(s_axi_awaddr[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[3]),
+        .I5(\irq_dest[14][5]_i_3_n_0 ),
         .O(\irq_dest[14][5]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair229" *) 
+  LUT2 #(
+    .INIT(4'hB)) 
+    \irq_dest[14][5]_i_2 
+       (.I0(s_axi_awaddr[4]),
+        .I1(s_axi_awaddr[5]),
+        .O(\irq_dest[14][5]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair153" *) 
+  LUT2 #(
+    .INIT(4'h7)) 
+    \irq_dest[14][5]_i_3 
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_wstrb[0]),
+        .O(\irq_dest[14][5]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h4000000000000000)) 
     \irq_dest[15][5]_i_1 
-       (.I0(\irq_inv[9]_i_3_n_0 ),
+       (.I0(\irq_dest[10][5]_i_2_n_0 ),
         .I1(s_axi_awaddr[5]),
-        .I2(\irq_enabled[14]_i_4_n_0 ),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awready),
-        .I5(s_axi_wstrb[0]),
+        .I2(\irq_inv[19]_i_2_n_0 ),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_wstrb[0]),
+        .I5(s_axi_awready),
         .O(\irq_dest[15][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0080000000000000)) 
+    .INIT(64'h0000000000000080)) 
     \irq_dest[16][5]_i_1 
-       (.I0(\irq_inv[12]_i_2_n_0 ),
+       (.I0(\irq_dest[16][5]_i_2_n_0 ),
         .I1(s_axi_awaddr[5]),
         .I2(s_axi_awaddr[4]),
-        .I3(\irq_dest[16][5]_i_2_n_0 ),
-        .I4(s_axi_awready),
-        .I5(s_axi_wstrb[0]),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_awaddr[3]),
+        .I5(\irq_dest[16][5]_i_3_n_0 ),
         .O(\irq_dest[16][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair151" *) 
+  (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT2 #(
-    .INIT(4'hE)) 
+    .INIT(4'h1)) 
     \irq_dest[16][5]_i_2 
-       (.I0(s_axi_awaddr[3]),
-        .I1(s_axi_awaddr[2]),
+       (.I0(s_axi_awaddr[1]),
+        .I1(s_axi_awaddr[0]),
         .O(\irq_dest[16][5]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  LUT2 #(
+    .INIT(4'h7)) 
+    \irq_dest[16][5]_i_3 
+       (.I0(s_axi_awready),
+        .I1(s_axi_wstrb[0]),
+        .O(\irq_dest[16][5]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h0004000000000000)) 
     \irq_dest[17][5]_i_1 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[4]),
         .I2(s_axi_awaddr[3]),
-        .I3(\irq_dest[5][5]_i_2_n_0 ),
+        .I3(\irq_dest[4][5]_i_2_n_0 ),
         .I4(s_axi_wstrb[0]),
         .I5(s_axi_awaddr[0]),
         .O(\irq_dest[17][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000800000000)) 
+    .INIT(64'h0000020000000000)) 
     \irq_dest[18][5]_i_1 
        (.I0(s_axi_wstrb[0]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[0]),
-        .I4(\irq_dest[18][5]_i_2_n_0 ),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[1]),
+        .I4(\irq_inv[19]_i_4_n_0 ),
         .I5(s_axi_awready),
         .O(\irq_dest[18][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair146" *) 
-  LUT3 #(
-    .INIT(8'hBF)) 
-    \irq_dest[18][5]_i_2 
-       (.I0(s_axi_awaddr[3]),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_awaddr[4]),
-        .O(\irq_dest[18][5]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0080000000000000)) 
+    .INIT(64'h0000000000000080)) 
     \irq_dest[19][5]_i_1 
        (.I0(\irq_inv[19]_i_2_n_0 ),
         .I1(s_axi_awaddr[5]),
         .I2(s_axi_awaddr[4]),
-        .I3(\irq_dest[16][5]_i_2_n_0 ),
-        .I4(s_axi_awready),
-        .I5(s_axi_wstrb[0]),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_awaddr[3]),
+        .I5(\irq_dest[16][5]_i_3_n_0 ),
         .O(\irq_dest[19][5]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000010000)) 
@@ -13535,7 +13564,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_awaddr[2]),
         .I2(s_axi_awaddr[3]),
         .I3(s_axi_awaddr[4]),
-        .I4(\irq_dest[10][5]_i_2_n_0 ),
+        .I4(\irq_dest[10][5]_i_3_n_0 ),
         .I5(\irq_dest[1][5]_i_2_n_0 ),
         .O(\irq_dest[1][5]_i_1_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair150" *) 
@@ -13549,7 +13578,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'h0000000010000000)) 
     \irq_dest[20][5]_i_1 
        (.I0(s_axi_awaddr[0]),
-        .I1(\irq_dest[5][5]_i_2_n_0 ),
+        .I1(\irq_dest[4][5]_i_2_n_0 ),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[2]),
         .I4(s_axi_wstrb[0]),
@@ -13561,101 +13590,105 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(s_axi_awaddr[3]),
         .I1(s_axi_awaddr[2]),
         .I2(s_axi_awaddr[4]),
-        .I3(\irq_dest[5][5]_i_2_n_0 ),
+        .I3(\irq_dest[4][5]_i_2_n_0 ),
         .I4(s_axi_wstrb[0]),
         .I5(s_axi_awaddr[0]),
         .O(irq_dest));
-  LUT5 #(
-    .INIT(32'h00000400)) 
-    \irq_dest[2][5]_i_1 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[3]),
-        .I3(s_axi_wstrb[0]),
-        .I4(\irq_inv[2]_i_3_n_0 ),
-        .O(\irq_dest[2][5]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h08000000)) 
-    \irq_dest[3][5]_i_1 
-       (.I0(\irq_enabled[6]_i_3_n_0 ),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_wstrb[0]),
-        .O(\irq_dest[3][5]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h10000000)) 
-    \irq_dest[4][5]_i_1 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(\irq_enabled[6]_i_3_n_0 ),
-        .I3(s_axi_wstrb[0]),
-        .I4(s_axi_awaddr[2]),
-        .O(\irq_dest[4][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000400000)) 
-    \irq_dest[5][5]_i_1 
+    .INIT(64'h0000002000000000)) 
+    \irq_dest[2][5]_i_1 
+       (.I0(\irq_inv[2]_i_2_n_0 ),
+        .I1(s_axi_awaddr[3]),
+        .I2(s_axi_wstrb[0]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[4]),
+        .I5(\irq_dest[10][5]_i_3_n_0 ),
+        .O(\irq_dest[2][5]_i_1_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000004000000)) 
+    \irq_dest[3][5]_i_1 
        (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[3]),
+        .I3(\irq_dest[3][5]_i_2_n_0 ),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[2]),
+        .O(\irq_dest[3][5]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair152" *) 
+  LUT3 #(
+    .INIT(8'h80)) 
+    \irq_dest[3][5]_i_2 
+       (.I0(s_axi_awready),
+        .I1(s_axi_wstrb[0]),
         .I2(s_axi_awaddr[0]),
-        .I3(\irq_dest[5][5]_i_2_n_0 ),
+        .O(\irq_dest[3][5]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0001000000000000)) 
+    \irq_dest[4][5]_i_1 
+       (.I0(s_axi_awaddr[0]),
+        .I1(\irq_dest[4][5]_i_2_n_0 ),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_awaddr[4]),
         .I4(s_axi_wstrb[0]),
-        .I5(s_axi_awaddr[3]),
-        .O(\irq_dest[5][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair147" *) 
+        .I5(s_axi_awaddr[2]),
+        .O(\irq_dest[4][5]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair156" *) 
   LUT3 #(
     .INIT(8'hBF)) 
-    \irq_dest[5][5]_i_2 
+    \irq_dest[4][5]_i_2 
        (.I0(s_axi_awaddr[1]),
         .I1(s_axi_awaddr[5]),
         .I2(s_axi_awready),
-        .O(\irq_dest[5][5]_i_2_n_0 ));
+        .O(\irq_dest[4][5]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000010000000)) 
+    \irq_dest[5][5]_i_1 
+       (.I0(s_axi_awaddr[4]),
+        .I1(\irq_dest[4][5]_i_2_n_0 ),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_wstrb[0]),
+        .I5(s_axi_awaddr[3]),
+        .O(\irq_dest[5][5]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0000000010000000)) 
     \irq_dest[6][5]_i_1 
        (.I0(s_axi_awaddr[0]),
         .I1(s_axi_awaddr[4]),
-        .I2(\irq_dest[10][5]_i_2_n_0 ),
-        .I3(\irq_enabled[14]_i_4_n_0 ),
+        .I2(\irq_dest[10][5]_i_3_n_0 ),
+        .I3(\irq_inv[15]_i_3_n_0 ),
         .I4(s_axi_wstrb[0]),
         .I5(s_axi_awaddr[3]),
         .O(\irq_dest[6][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h8000000000000000)) 
+    .INIT(64'h0000040000000000)) 
     \irq_dest[7][5]_i_1 
-       (.I0(s_axi_awaddr[5]),
-        .I1(\irq_dest[7][5]_i_2_n_0 ),
-        .I2(\irq_inv[19]_i_2_n_0 ),
-        .I3(s_axi_wstrb[0]),
-        .I4(s_axi_awaddr[2]),
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[4]),
+        .I3(\irq_inv[15]_i_3_n_0 ),
+        .I4(\irq_dest[1][5]_i_2_n_0 ),
         .I5(s_axi_awready),
         .O(\irq_dest[7][5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair235" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
-    \irq_dest[7][5]_i_2 
-       (.I0(s_axi_awaddr[3]),
-        .I1(s_axi_awaddr[4]),
-        .O(\irq_dest[7][5]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000040000)) 
+    .INIT(64'h0000000000000400)) 
     \irq_dest[8][5]_i_1 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_wstrb[0]),
-        .I5(\irq_dest[5][5]_i_2_n_0 ),
+       (.I0(\irq_dest[4][5]_i_2_n_0 ),
+        .I1(s_axi_wstrb[0]),
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_awaddr[0]),
+        .I5(s_axi_awaddr[2]),
         .O(\irq_dest[8][5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000004000000)) 
+    .INIT(64'h0000040000000000)) 
     \irq_dest[9][5]_i_1 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[0]),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[3]),
-        .I4(s_axi_wstrb[0]),
-        .I5(\irq_dest[5][5]_i_2_n_0 ),
+        .I4(\irq_dest[4][5]_i_2_n_0 ),
+        .I5(s_axi_wstrb[0]),
         .O(\irq_dest[9][5]_i_1_n_0 ));
   FDRE \irq_dest_reg[0][0] 
        (.C(aclk),
@@ -14450,39 +14483,48 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .Q(\irq_dest_reg_n_0_[9][5] ),
         .R(s_axi_awready_i_1_n_0));
   LUT6 #(
-    .INIT(64'hB8B8B8FFB8B8B800)) 
+    .INIT(64'hF4F4F4FFF4F4F400)) 
     \irq_enabled[0]_i_1 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_enabled[0]_i_2_n_0 ),
-        .I2(\irq_enabled[0]_i_3_n_0 ),
+       (.I0(\irq_enabled[0]_i_2_n_0 ),
+        .I1(\irq_enabled[0]_i_3_n_0 ),
+        .I2(\irq_enabled[0]_i_4_n_0 ),
         .I3(irq_inv[0]),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(\irq_enabled_reg_n_0_[0] ),
         .O(\irq_enabled[0]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000002000)) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  LUT3 #(
+    .INIT(8'hFE)) 
     \irq_enabled[0]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[2]),
-        .I2(\irq_dest[7][5]_i_2_n_0 ),
-        .I3(s_axi_wstrb[1]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[0]),
-        .O(\irq_enabled[0]_i_2_n_0 ));
-  LUT4 #(
-    .INIT(16'h7C4C)) 
-    \irq_enabled[0]_i_3 
        (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wdata[0]),
+        .I1(s_axi_awaddr[2]),
         .I2(s_axi_awaddr[1]),
-        .I3(\irq_enabled_reg_n_0_[0] ),
+        .O(\irq_enabled[0]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  LUT5 #(
+    .INIT(32'h04000000)) 
+    \irq_enabled[0]_i_3 
+       (.I0(s_axi_awaddr[4]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wdata[8]),
+        .I4(s_axi_wstrb[1]),
         .O(\irq_enabled[0]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000004)) 
+  LUT5 #(
+    .INIT(32'h05405540)) 
     \irq_enabled[0]_i_4 
-       (.I0(\irq_dest[5][5]_i_2_n_0 ),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
+       (.I0(\irq_pend[0]_i_4_n_0 ),
+        .I1(\irq_enabled_reg_n_0_[0] ),
+        .I2(s_axi_awaddr[1]),
+        .I3(s_axi_wdata[0]),
+        .I4(s_axi_awaddr[0]),
+        .O(\irq_enabled[0]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000000008)) 
+    \irq_enabled[0]_i_5 
+       (.I0(\irq_inv[12]_i_3_n_0 ),
+        .I1(\irq_dest[10][5]_i_3_n_0 ),
+        .I2(s_axi_awaddr[1]),
         .I3(s_axi_awaddr[2]),
         .I4(s_axi_awaddr[3]),
         .I5(s_axi_awaddr[4]),
@@ -14508,62 +14550,55 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0000000000400000)) 
     \irq_enabled[10]_i_3 
-       (.I0(\irq_inv[9]_i_3_n_0 ),
+       (.I0(\irq_dest[10][5]_i_2_n_0 ),
         .I1(s_axi_awaddr[5]),
         .I2(s_axi_awaddr[1]),
         .I3(s_axi_awaddr[0]),
         .I4(s_axi_wstrb[1]),
         .I5(s_axi_awaddr[2]),
         .O(\irq_enabled[10]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'h0D0D0DFF0D0D0D00)) 
+  LUT4 #(
+    .INIT(16'hABA8)) 
     \irq_enabled[11]_i_1 
-       (.I0(\irq_enabled[11]_i_2_n_0 ),
-        .I1(s_axi_wdata[8]),
-        .I2(\irq_enabled[11]_i_3_n_0 ),
-        .I3(irq_inv[11]),
-        .I4(\irq_enabled[15]_i_3_n_0 ),
-        .I5(p_4_in[3]),
+       (.I0(p_26_out[11]),
+        .I1(irq_inv[11]),
+        .I2(\irq_enabled[15]_i_3_n_0 ),
+        .I3(p_4_in[3]),
         .O(\irq_enabled[11]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0200000000000000)) 
+    .INIT(64'hCCC0FFFF88808880)) 
     \irq_enabled[11]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[4]),
-        .I2(s_axi_awaddr[2]),
-        .I3(\irq_inv[19]_i_2_n_0 ),
-        .I4(s_axi_awaddr[3]),
-        .I5(s_axi_wstrb[1]),
-        .O(\irq_enabled[11]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hC7070000C707C707)) 
-    \irq_enabled[11]_i_3 
-       (.I0(p_4_in[3]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_wdata[11]),
-        .I3(s_axi_awaddr[0]),
-        .I4(\irq_enabled[11]_i_5_n_0 ),
-        .I5(\irq_pend[10]_i_3_n_0 ),
-        .O(\irq_enabled[11]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
-  LUT5 #(
-    .INIT(32'h00800000)) 
-    \irq_enabled[11]_i_4 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wstrb[1]),
+       (.I0(\irq_pend[10]_i_4_n_0 ),
+        .I1(\irq_enabled[11]_i_4_n_0 ),
+        .I2(\irq_inv[19]_i_2_n_0 ),
         .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
-        .O(irq_inv[11]));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
-  LUT5 #(
-    .INIT(32'h07FFFFFF)) 
-    \irq_enabled[11]_i_5 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_wdata[8]),
+        .I4(\irq_pend[11]_i_4_n_0 ),
+        .I5(\irq_enabled[11]_i_5_n_0 ),
+        .O(p_26_out[11]));
+  LUT6 #(
+    .INIT(64'h0020000000000000)) 
+    \irq_enabled[11]_i_3 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[4]),
+        .I2(\irq_dest[10][5]_i_3_n_0 ),
+        .I3(s_axi_awaddr[2]),
         .I4(s_axi_wstrb[1]),
+        .I5(\irq_inv[19]_i_2_n_0 ),
+        .O(irq_inv[11]));
+  (* SOFT_HLUTNM = "soft_lutpair235" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \irq_enabled[11]_i_4 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_wdata[8]),
+        .O(\irq_enabled[11]_i_4_n_0 ));
+  LUT4 #(
+    .INIT(16'h7C4C)) 
+    \irq_enabled[11]_i_5 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[11]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_4_in[3]),
         .O(\irq_enabled[11]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hB8B8B8FFB8B8B800)) 
@@ -14582,7 +14617,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_wstrb[1]),
         .I2(s_axi_awaddr[1]),
         .I3(s_axi_awaddr[2]),
-        .I4(\irq_inv[9]_i_3_n_0 ),
+        .I4(\irq_dest[10][5]_i_2_n_0 ),
         .I5(s_axi_awaddr[5]),
         .O(\irq_enabled[12]_i_2_n_0 ));
   LUT4 #(
@@ -14593,87 +14628,92 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_awaddr[1]),
         .I3(p_4_in[4]),
         .O(\irq_enabled[12]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair14" *) 
-  LUT5 #(
-    .INIT(32'h00000080)) 
+  LUT6 #(
+    .INIT(64'h4000000000000000)) 
     \irq_enabled[12]_i_4 
-       (.I0(\irq_enabled[14]_i_3_n_0 ),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[1]),
-        .I4(s_axi_awaddr[0]),
+       (.I0(s_axi_awaddr[4]),
+        .I1(s_axi_awaddr[3]),
+        .I2(\irq_dest[12][5]_i_2_n_0 ),
+        .I3(\irq_inv[12]_i_3_n_0 ),
+        .I4(s_axi_awready),
+        .I5(s_axi_awaddr[5]),
         .O(irq_inv[12]));
-  LUT5 #(
-    .INIT(32'hABBBA888)) 
+  LUT6 #(
+    .INIT(64'hAFFFAFCFA000A0C0)) 
     \irq_enabled[13]_i_1 
-       (.I0(p_26_out[13]),
-        .I1(\irq_enabled[15]_i_3_n_0 ),
-        .I2(\irq_enabled[14]_i_3_n_0 ),
-        .I3(\irq_enabled[13]_i_3_n_0 ),
-        .I4(p_4_in[5]),
-        .O(\irq_enabled[13]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h8BBBBB888B88BB88)) 
-    \irq_enabled[13]_i_2 
        (.I0(s_axi_wdata[8]),
-        .I1(\irq_pend[13]_i_2_n_0 ),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[13]),
-        .I4(s_axi_awaddr[1]),
+        .I1(\irq_enabled[13]_i_2_n_0 ),
+        .I2(s_axi_awready),
+        .I3(\irq_enabled[13]_i_3_n_0 ),
+        .I4(\irq_enabled[13]_i_4_n_0 ),
         .I5(p_4_in[5]),
-        .O(p_26_out[13]));
-  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+        .O(\irq_enabled[13]_i_1_n_0 ));
   LUT4 #(
-    .INIT(16'h0080)) 
-    \irq_enabled[13]_i_3 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[1]),
-        .O(\irq_enabled[13]_i_3_n_0 ));
+    .INIT(16'h7C4C)) 
+    \irq_enabled[13]_i_2 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[13]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_4_in[5]),
+        .O(\irq_enabled[13]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hAAAABFFFAAAA8000)) 
+    .INIT(64'h0000800000000000)) 
+    \irq_enabled[13]_i_3 
+       (.I0(\irq_dest[12][5]_i_2_n_0 ),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[5]),
+        .I4(s_axi_awaddr[4]),
+        .I5(s_axi_awaddr[3]),
+        .O(\irq_enabled[13]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair17" *) 
+  LUT5 #(
+    .INIT(32'hFF1FFFFF)) 
+    \irq_enabled[13]_i_4 
+       (.I0(s_axi_awaddr[1]),
+        .I1(s_axi_awaddr[0]),
+        .I2(\irq_pend[15]_i_3_n_0 ),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_wstrb[1]),
+        .O(\irq_enabled[13]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hB8B8B8FFB8B8B800)) 
     \irq_enabled[14]_i_1 
-       (.I0(p_26_out[14]),
-        .I1(\irq_enabled[14]_i_3_n_0 ),
-        .I2(\irq_enabled[14]_i_4_n_0 ),
-        .I3(\irq_enabled[14]_i_5_n_0 ),
+       (.I0(s_axi_wdata[8]),
+        .I1(\irq_enabled[14]_i_2_n_0 ),
+        .I2(\irq_enabled[14]_i_3_n_0 ),
+        .I3(\irq_enabled[14]_i_4_n_0 ),
         .I4(\irq_enabled[15]_i_3_n_0 ),
         .I5(p_4_in[6]),
         .O(\irq_enabled[14]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h8BBBBB888B88BB88)) 
+    .INIT(64'h0040000000000000)) 
     \irq_enabled[14]_i_2 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_pend[14]_i_4_n_0 ),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[14]),
-        .I4(s_axi_awaddr[1]),
-        .I5(p_4_in[6]),
-        .O(p_26_out[14]));
-  (* SOFT_HLUTNM = "soft_lutpair145" *) 
+       (.I0(\irq_dest[10][5]_i_2_n_0 ),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_wstrb[1]),
+        .I5(s_axi_awaddr[2]),
+        .O(\irq_enabled[14]_i_2_n_0 ));
   LUT4 #(
-    .INIT(16'h0080)) 
+    .INIT(16'h7C4C)) 
     \irq_enabled[14]_i_3 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awready),
-        .I2(s_axi_awaddr[3]),
-        .I3(s_axi_awaddr[4]),
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[14]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_4_in[6]),
         .O(\irq_enabled[14]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair19" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
+  LUT6 #(
+    .INIT(64'h1000000000000000)) 
     \irq_enabled[14]_i_4 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[2]),
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_awaddr[4]),
+        .I2(\irq_dest[10][5]_i_3_n_0 ),
+        .I3(\irq_inv[15]_i_3_n_0 ),
+        .I4(s_axi_awaddr[3]),
+        .I5(s_axi_wstrb[1]),
         .O(\irq_enabled[14]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \irq_enabled[14]_i_5 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[0]),
-        .O(\irq_enabled[14]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAAAFCFCFAAA0C0C0)) 
     \irq_enabled[15]_i_1 
@@ -14697,49 +14737,50 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \irq_enabled[15]_i_3 
        (.I0(s_axi_awaddr[1]),
         .I1(s_axi_awaddr[0]),
-        .I2(\irq_enabled[21]_i_5_n_0 ),
+        .I2(\irq_pend[15]_i_3_n_0 ),
         .I3(s_axi_wstrb[1]),
         .I4(s_axi_awaddr[2]),
         .I5(s_axi_awready),
         .O(\irq_enabled[15]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h2000000000000000)) 
+    .INIT(64'h0080000000000000)) 
     \irq_enabled[15]_i_4 
-       (.I0(s_axi_awaddr[5]),
-        .I1(\irq_inv[9]_i_3_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[1]),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_awaddr[2]),
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_awaddr[4]),
+        .I4(s_axi_awaddr[5]),
+        .I5(\irq_inv[19]_i_2_n_0 ),
         .O(\irq_enabled[15]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFFFAFCFA000A0C0)) 
+  LUT5 #(
+    .INIT(32'hBABB8A88)) 
     \irq_enabled[16]_i_1 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_enabled[16]_i_2_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_enabled[16]_i_3_n_0 ),
-        .I4(\irq_enabled[21]_i_4_n_0 ),
-        .I5(p_5_in[0]),
+       (.I0(p_26_out[16]),
+        .I1(irq_inv[16]),
+        .I2(\irq_enabled[21]_i_4_n_0 ),
+        .I3(s_axi_awready),
+        .I4(p_5_in[0]),
         .O(\irq_enabled[16]_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'h7C4C)) 
-    \irq_enabled[16]_i_2 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wdata[16]),
-        .I2(s_axi_awaddr[1]),
-        .I3(p_5_in[0]),
-        .O(\irq_enabled[16]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0000008000000000)) 
+    .INIT(64'h8BBBBB888B88BB88)) 
+    \irq_enabled[16]_i_2 
+       (.I0(s_axi_wdata[8]),
+        .I1(\irq_pend[16]_i_2_n_0 ),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_wdata[16]),
+        .I4(s_axi_awaddr[1]),
+        .I5(p_5_in[0]),
+        .O(p_26_out[16]));
+  LUT6 #(
+    .INIT(64'h0000001000000000)) 
     \irq_enabled[16]_i_3 
-       (.I0(s_axi_awaddr[5]),
-        .I1(\irq_inv[12]_i_2_n_0 ),
-        .I2(s_axi_awaddr[4]),
-        .I3(s_axi_awaddr[3]),
-        .I4(s_axi_awaddr[2]),
-        .I5(s_axi_wstrb[1]),
-        .O(\irq_enabled[16]_i_3_n_0 ));
+       (.I0(\irq_dest[4][5]_i_2_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_awaddr[3]),
+        .I5(s_axi_awaddr[4]),
+        .O(irq_inv[16]));
   LUT6 #(
     .INIT(64'hAFFFAFCFA000A0C0)) 
     \irq_enabled[17]_i_1 
@@ -14762,7 +14803,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'h0000000000000080)) 
     \irq_enabled[17]_i_3 
        (.I0(s_axi_awaddr[5]),
-        .I1(\irq_enabled[9]_i_3_n_0 ),
+        .I1(\irq_inv[15]_i_4_n_0 ),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[3]),
         .I4(s_axi_awaddr[1]),
@@ -14781,7 +14822,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0000008000800080)) 
     \irq_enabled[18]_i_2 
-       (.I0(\irq_pend[18]_i_4_n_0 ),
+       (.I0(\irq_enabled[19]_i_5_n_0 ),
         .I1(s_axi_wstrb[1]),
         .I2(s_axi_wdata[8]),
         .I3(s_axi_awaddr[2]),
@@ -14796,11 +14837,11 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_awaddr[1]),
         .I3(p_5_in[2]),
         .O(\irq_enabled[18]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
+  (* SOFT_HLUTNM = "soft_lutpair2" *) 
   LUT5 #(
     .INIT(32'h00002A00)) 
     \irq_enabled[18]_i_4 
-       (.I0(\irq_pend[18]_i_4_n_0 ),
+       (.I0(\irq_enabled[19]_i_5_n_0 ),
         .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[0]),
         .I3(s_axi_wstrb[1]),
@@ -14817,14 +14858,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(p_5_in[3]),
         .O(\irq_enabled[19]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h8080800080008000)) 
+    .INIT(64'hA888000000000000)) 
     \irq_enabled[19]_i_2 
-       (.I0(\irq_pend[18]_i_4_n_0 ),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_wdata[8]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_awaddr[1]),
+       (.I0(\irq_enabled[19]_i_5_n_0 ),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[1]),
+        .I4(s_axi_wstrb[1]),
+        .I5(s_axi_wdata[8]),
         .O(\irq_enabled[19]_i_2_n_0 ));
   LUT4 #(
     .INIT(16'h83B3)) 
@@ -14844,6 +14885,16 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(s_axi_awaddr[3]),
         .I5(s_axi_awaddr[2]),
         .O(\irq_enabled[19]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  LUT5 #(
+    .INIT(32'h00004000)) 
+    \irq_enabled[19]_i_5 
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[1]),
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_awaddr[5]),
+        .I4(s_axi_awaddr[3]),
+        .O(\irq_enabled[19]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAACCAFFFAACCA000)) 
     \irq_enabled[1]_i_1 
@@ -14851,7 +14902,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_enabled[1]_i_2_n_0 ),
         .I2(s_axi_awready),
         .I3(\irq_enabled[1]_i_3_n_0 ),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(p_1_in183_in),
         .O(\irq_enabled[1]_i_1_n_0 ));
   LUT4 #(
@@ -14865,12 +14916,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h0000000200000000)) 
     \irq_enabled[1]_i_3 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[4]),
-        .I3(s_axi_awaddr[1]),
-        .I4(s_axi_awaddr[2]),
-        .I5(\irq_enabled[9]_i_3_n_0 ),
+       (.I0(\irq_inv[15]_i_4_n_0 ),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[5]),
         .O(\irq_enabled[1]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hAFFFAFCFA000A0C0)) 
@@ -14898,7 +14949,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_wstrb[1]),
         .I2(s_axi_awaddr[2]),
         .I3(s_axi_awaddr[1]),
-        .I4(\irq_dest[18][5]_i_2_n_0 ),
+        .I4(\irq_inv[19]_i_4_n_0 ),
         .O(\irq_enabled[20]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hAFFFAFCFA000A0C0)) 
@@ -14924,34 +14975,26 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_awaddr[1]),
-        .I3(\irq_enabled[9]_i_3_n_0 ),
+        .I3(\irq_inv[15]_i_4_n_0 ),
         .I4(s_axi_awaddr[2]),
         .I5(s_axi_awaddr[4]),
         .O(\irq_enabled[21]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair19" *) 
+  (* SOFT_HLUTNM = "soft_lutpair23" *) 
   LUT5 #(
     .INIT(32'hDFDFDFFF)) 
     \irq_enabled[21]_i_4 
        (.I0(s_axi_wstrb[2]),
         .I1(s_axi_awaddr[2]),
-        .I2(\irq_enabled[21]_i_5_n_0 ),
+        .I2(\irq_pend[15]_i_3_n_0 ),
         .I3(s_axi_awaddr[0]),
         .I4(s_axi_awaddr[1]),
         .O(\irq_enabled[21]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair228" *) 
-  LUT3 #(
-    .INIT(8'h01)) 
-    \irq_enabled[21]_i_5 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[5]),
-        .O(\irq_enabled[21]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAAAFCFCFAAA0C0C0)) 
     \irq_enabled[2]_i_1 
        (.I0(s_axi_wdata[8]),
         .I1(\irq_enabled[2]_i_2_n_0 ),
-        .I2(\irq_enabled[7]_i_5_n_0 ),
+        .I2(\irq_enabled[7]_i_4_n_0 ),
         .I3(s_axi_awready),
         .I4(\irq_enabled[2]_i_3_n_0 ),
         .I5(p_1_in187_in),
@@ -14969,303 +15012,271 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'h0000000000002000)) 
     \irq_enabled[2]_i_3 
        (.I0(s_axi_awaddr[5]),
-        .I1(\irq_dest[16][5]_i_2_n_0 ),
+        .I1(\irq_enabled[2]_i_4_n_0 ),
         .I2(s_axi_awaddr[1]),
         .I3(s_axi_wstrb[1]),
         .I4(s_axi_awaddr[4]),
         .I5(s_axi_awaddr[0]),
         .O(\irq_enabled[2]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair258" *) 
+  LUT2 #(
+    .INIT(4'hE)) 
+    \irq_enabled[2]_i_4 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[2]),
+        .O(\irq_enabled[2]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hB8B8B8FFB8B8B800)) 
+    .INIT(64'hCCCFEFEFCCC0E0E0)) 
     \irq_enabled[3]_i_1 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_enabled[3]_i_2_n_0 ),
-        .I2(\irq_enabled[3]_i_3_n_0 ),
-        .I3(irq_inv[3]),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+       (.I0(\irq_enabled[3]_i_2_n_0 ),
+        .I1(\irq_enabled[3]_i_3_n_0 ),
+        .I2(\irq_enabled[7]_i_4_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_enabled[3]_i_4_n_0 ),
         .I5(p_1_in191_in),
         .O(\irq_enabled[3]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair149" *) 
+  LUT4 #(
+    .INIT(16'h3F88)) 
+    \irq_enabled[3]_i_2 
+       (.I0(p_1_in191_in),
+        .I1(s_axi_awaddr[1]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_wdata[3]),
+        .O(\irq_enabled[3]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000080000000)) 
+    \irq_enabled[3]_i_3 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_wdata[8]),
+        .I2(\irq_enabled[6]_i_5_n_0 ),
+        .I3(s_axi_awaddr[1]),
+        .I4(s_axi_awaddr[0]),
+        .I5(s_axi_awaddr[2]),
+        .O(\irq_enabled[3]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h0000000000002000)) 
-    \irq_enabled[3]_i_2 
+    \irq_enabled[3]_i_4 
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_wstrb[1]),
         .I3(\irq_inv[19]_i_2_n_0 ),
         .I4(s_axi_awaddr[4]),
         .I5(s_axi_awaddr[2]),
-        .O(\irq_enabled[3]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair149" *) 
-  LUT4 #(
-    .INIT(16'h3F88)) 
-    \irq_enabled[3]_i_3 
-       (.I0(p_1_in191_in),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[3]),
-        .O(\irq_enabled[3]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
-  LUT5 #(
-    .INIT(32'h00800000)) 
-    \irq_enabled[3]_i_4 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
-        .O(irq_inv[3]));
+        .O(\irq_enabled[3]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'hF4F4F4FFF4F4F400)) 
+    .INIT(64'hDCDCFCFFDCDC0C00)) 
     \irq_enabled[4]_i_1 
        (.I0(\irq_enabled[4]_i_2_n_0 ),
         .I1(\irq_enabled[4]_i_3_n_0 ),
         .I2(\irq_enabled[4]_i_4_n_0 ),
-        .I3(irq_inv[4]),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(p_1_in195_in),
         .O(\irq_enabled[4]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000000000200)) 
-    \irq_enabled[4]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_awaddr[3]),
-        .I3(\irq_enabled[4]_i_6_n_0 ),
-        .I4(s_axi_awaddr[4]),
-        .I5(s_axi_awaddr[1]),
-        .O(\irq_enabled[4]_i_2_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair150" *) 
   LUT4 #(
-    .INIT(16'h3F88)) 
+    .INIT(16'h83B3)) 
+    \irq_enabled[4]_i_2 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[4]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_1_in195_in),
+        .O(\irq_enabled[4]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0200000000000000)) 
     \irq_enabled[4]_i_3 
-       (.I0(p_1_in195_in),
+       (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[4]),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_wdata[8]),
+        .I5(\irq_enabled[6]_i_5_n_0 ),
         .O(\irq_enabled[4]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000008000)) 
+    .INIT(64'hFFFFFFEFFFFFFFFF)) 
     \irq_enabled[4]_i_4 
-       (.I0(\irq_enabled[4]_i_7_n_0 ),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_wdata[8]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_awaddr[1]),
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_awaddr[3]),
+        .I2(\irq_enabled[4]_i_5_n_0 ),
+        .I3(s_axi_awaddr[4]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[5]),
         .O(\irq_enabled[4]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair12" *) 
-  LUT5 #(
-    .INIT(32'h00080000)) 
-    \irq_enabled[4]_i_5 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
-        .O(irq_inv[4]));
-  (* SOFT_HLUTNM = "soft_lutpair56" *) 
+  (* SOFT_HLUTNM = "soft_lutpair235" *) 
   LUT2 #(
     .INIT(4'h8)) 
-    \irq_enabled[4]_i_6 
+    \irq_enabled[4]_i_5 
        (.I0(s_axi_wstrb[1]),
         .I1(s_axi_awaddr[2]),
-        .O(\irq_enabled[4]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair29" *) 
-  LUT3 #(
-    .INIT(8'h10)) 
-    \irq_enabled[4]_i_7 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[5]),
-        .O(\irq_enabled[4]_i_7_n_0 ));
+        .O(\irq_enabled[4]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hB8B8B8FFB8B8B800)) 
+    .INIT(64'hAAAAFBFFAAAA0800)) 
     \irq_enabled[5]_i_1 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_enabled[5]_i_2_n_0 ),
-        .I2(\irq_enabled[5]_i_3_n_0 ),
-        .I3(\irq_enabled[5]_i_4_n_0 ),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+       (.I0(p_26_out[5]),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_awaddr[3]),
+        .I3(\irq_enabled[5]_i_3_n_0 ),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(p_1_in199_in),
         .O(\irq_enabled[5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000000008000)) 
+    .INIT(64'h8BBBBB888B88BB88)) 
     \irq_enabled[5]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[2]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_enabled[5]_i_5_n_0 ),
-        .I4(s_axi_awaddr[4]),
-        .I5(s_axi_awaddr[1]),
-        .O(\irq_enabled[5]_i_2_n_0 ));
-  LUT4 #(
-    .INIT(16'h3F88)) 
-    \irq_enabled[5]_i_3 
-       (.I0(p_1_in199_in),
-        .I1(s_axi_awaddr[1]),
+       (.I0(s_axi_wdata[8]),
+        .I1(\irq_pend[5]_i_3_n_0 ),
         .I2(s_axi_awaddr[0]),
         .I3(s_axi_wdata[5]),
+        .I4(s_axi_awaddr[1]),
+        .I5(p_1_in199_in),
+        .O(p_26_out[5]));
+  LUT6 #(
+    .INIT(64'h0000000008000000)) 
+    \irq_enabled[5]_i_3 
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_awaddr[1]),
+        .I3(s_axi_awaddr[5]),
+        .I4(s_axi_awready),
+        .I5(s_axi_awaddr[4]),
         .O(\irq_enabled[5]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h0000004000000000)) 
-    \irq_enabled[5]_i_4 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[2]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_dest[5][5]_i_2_n_0 ),
-        .I4(s_axi_awaddr[3]),
-        .I5(s_axi_wstrb[1]),
-        .O(\irq_enabled[5]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
-  LUT2 #(
-    .INIT(4'h2)) 
-    \irq_enabled[5]_i_5 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[3]),
-        .O(\irq_enabled[5]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hAAAABFFFAAAA8000)) 
+    .INIT(64'hB8B8B8FFB8B8B800)) 
     \irq_enabled[6]_i_1 
-       (.I0(p_26_out[6]),
-        .I1(\irq_enabled[6]_i_3_n_0 ),
-        .I2(\irq_enabled[14]_i_4_n_0 ),
-        .I3(\irq_enabled[14]_i_5_n_0 ),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+       (.I0(s_axi_wdata[8]),
+        .I1(\irq_enabled[6]_i_2_n_0 ),
+        .I2(\irq_enabled[6]_i_3_n_0 ),
+        .I3(irq_inv[6]),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(p_1_in203_in),
         .O(\irq_enabled[6]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h8BBBBB888B88BB88)) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  LUT5 #(
+    .INIT(32'h08000000)) 
     \irq_enabled[6]_i_2 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_pend[6]_i_3_n_0 ),
+       (.I0(\irq_enabled[6]_i_5_n_0 ),
+        .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[6]),
-        .I4(s_axi_awaddr[1]),
-        .I5(p_1_in203_in),
-        .O(p_26_out[6]));
-  (* SOFT_HLUTNM = "soft_lutpair28" *) 
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[2]),
+        .O(\irq_enabled[6]_i_2_n_0 ));
   LUT4 #(
-    .INIT(16'h0008)) 
+    .INIT(16'h7C4C)) 
     \irq_enabled[6]_i_3 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awready),
-        .I2(s_axi_awaddr[4]),
-        .I3(s_axi_awaddr[3]),
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[6]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_1_in203_in),
         .O(\irq_enabled[6]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hB8B8B8FFB8B8B800)) 
+    .INIT(64'h0000000800000000)) 
+    \irq_enabled[6]_i_4 
+       (.I0(\irq_inv[15]_i_3_n_0 ),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[4]),
+        .I5(\irq_dest[10][5]_i_3_n_0 ),
+        .O(irq_inv[6]));
+  (* SOFT_HLUTNM = "soft_lutpair147" *) 
+  LUT3 #(
+    .INIT(8'h04)) 
+    \irq_enabled[6]_i_5 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[4]),
+        .O(\irq_enabled[6]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hAACCAFFFAACCA000)) 
     \irq_enabled[7]_i_1 
        (.I0(s_axi_wdata[8]),
         .I1(\irq_enabled[7]_i_2_n_0 ),
-        .I2(\irq_enabled[7]_i_3_n_0 ),
-        .I3(irq_inv[7]),
-        .I4(\irq_enabled[7]_i_5_n_0 ),
+        .I2(s_axi_awready),
+        .I3(\irq_enabled[7]_i_3_n_0 ),
+        .I4(\irq_enabled[7]_i_4_n_0 ),
         .I5(p_1_in207_in),
         .O(\irq_enabled[7]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h8000000000000000)) 
-    \irq_enabled[7]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(\irq_dest[7][5]_i_2_n_0 ),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_wstrb[1]),
-        .O(\irq_enabled[7]_i_2_n_0 ));
   LUT4 #(
     .INIT(16'h3F88)) 
-    \irq_enabled[7]_i_3 
+    \irq_enabled[7]_i_2 
        (.I0(p_1_in207_in),
         .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[0]),
         .I3(s_axi_wdata[7]),
+        .O(\irq_enabled[7]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0400000000000000)) 
+    \irq_enabled[7]_i_3 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[4]),
+        .I3(\irq_inv[15]_i_3_n_0 ),
+        .I4(s_axi_awaddr[0]),
+        .I5(s_axi_wstrb[1]),
         .O(\irq_enabled[7]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
-  LUT5 #(
-    .INIT(32'h80000000)) 
-    \irq_enabled[7]_i_4 
-       (.I0(\irq_enabled[6]_i_3_n_0 ),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[2]),
-        .O(irq_inv[7]));
   LUT6 #(
     .INIT(64'h4440000000000000)) 
-    \irq_enabled[7]_i_5 
+    \irq_enabled[7]_i_4 
        (.I0(s_axi_awaddr[2]),
-        .I1(\irq_enabled[21]_i_5_n_0 ),
+        .I1(\irq_pend[15]_i_3_n_0 ),
         .I2(s_axi_awaddr[0]),
         .I3(s_axi_awaddr[1]),
         .I4(s_axi_wstrb[0]),
         .I5(s_axi_awready),
-        .O(\irq_enabled[7]_i_5_n_0 ));
+        .O(\irq_enabled[7]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'h7C7C7CFF4C4C4C00)) 
+    .INIT(64'hFFFF7CFF00004C00)) 
     \irq_enabled[8]_i_1 
        (.I0(s_axi_awaddr[0]),
         .I1(s_axi_wdata[8]),
         .I2(s_axi_awaddr[1]),
-        .I3(\irq_enabled[15]_i_3_n_0 ),
+        .I3(s_axi_awready),
         .I4(\irq_enabled[8]_i_2_n_0 ),
         .I5(p_4_in[0]),
         .O(\irq_enabled[8]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0008000000000000)) 
+    .INIT(64'h00000000DFDFDFFF)) 
     \irq_enabled[8]_i_2 
-       (.I0(s_axi_awready),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_awaddr[4]),
-        .I4(\irq_enabled[8]_i_3_n_0 ),
-        .I5(\irq_enabled[8]_i_4_n_0 ),
-        .O(\irq_enabled[8]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
-    \irq_enabled[8]_i_3 
        (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[3]),
-        .O(\irq_enabled[8]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair15" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
-    \irq_enabled[8]_i_4 
-       (.I0(s_axi_awaddr[0]),
         .I1(s_axi_awaddr[2]),
-        .O(\irq_enabled[8]_i_4_n_0 ));
+        .I2(\irq_pend[15]_i_3_n_0 ),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[1]),
+        .I5(\irq_pend[8]_i_3_n_0 ),
+        .O(\irq_enabled[8]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hABBBBBBBA8888888)) 
+    .INIT(64'hAFFFAFCFA000A0C0)) 
     \irq_enabled[9]_i_1 
-       (.I0(p_26_out[9]),
-        .I1(\irq_enabled[15]_i_3_n_0 ),
-        .I2(\irq_enabled[9]_i_3_n_0 ),
-        .I3(\irq_enabled[9]_i_4_n_0 ),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
+       (.I0(s_axi_wdata[8]),
+        .I1(\irq_enabled[9]_i_2_n_0 ),
+        .I2(s_axi_awready),
+        .I3(\irq_enabled[9]_i_3_n_0 ),
+        .I4(\irq_enabled[13]_i_4_n_0 ),
         .I5(p_4_in[1]),
         .O(\irq_enabled[9]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h8BBBBB888B88BB88)) 
+  LUT4 #(
+    .INIT(16'h7C4C)) 
     \irq_enabled[9]_i_2 
-       (.I0(s_axi_wdata[8]),
-        .I1(\irq_pend[9]_i_3_n_0 ),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_wdata[9]),
-        .I4(s_axi_awaddr[1]),
-        .I5(p_4_in[1]),
-        .O(p_26_out[9]));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wdata[9]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_4_in[1]),
+        .O(\irq_enabled[9]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000008000)) 
     \irq_enabled[9]_i_3 
-       (.I0(s_axi_wstrb[1]),
+       (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[0]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[1]),
+        .I5(\irq_enabled[9]_i_4_n_0 ),
         .O(\irq_enabled[9]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair148" *) 
+  (* SOFT_HLUTNM = "soft_lutpair258" *) 
   LUT2 #(
-    .INIT(4'h1)) 
+    .INIT(4'hE)) 
     \irq_enabled[9]_i_4 
-       (.I0(s_axi_awaddr[1]),
+       (.I0(s_axi_awaddr[4]),
         .I1(s_axi_awaddr[2]),
         .O(\irq_enabled[9]_i_4_n_0 ));
   FDRE \irq_enabled_reg[0] 
@@ -16104,7 +16115,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(irq_in_rising0[9]),
         .Q(\irq_in_rising_reg_n_0_[9] ),
         .R(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  (* SOFT_HLUTNM = "soft_lutpair161" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \irq_inv[0]_i_1 
@@ -16112,7 +16123,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(irq_inv[0]),
         .I2(data21[10]),
         .O(\irq_inv[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair57" *) 
   LUT4 #(
     .INIT(16'hBF80)) 
     \irq_inv[10]_i_1 
@@ -16121,84 +16131,102 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_awready),
         .I3(data110),
         .O(\irq_inv[10]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFBFFFFF00800000)) 
+  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_inv[11]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_inv[19]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
-        .I5(data100),
+        .I1(irq_inv[11]),
+        .I2(data100),
         .O(\irq_inv[11]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hBFFFFFFF80000000)) 
     \irq_inv[12]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_enabled[14]_i_3_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_inv[12]_i_2_n_0 ),
+        .I1(\irq_inv[12]_i_2_n_0 ),
+        .I2(\irq_inv[12]_i_3_n_0 ),
+        .I3(s_axi_awready),
+        .I4(s_axi_awaddr[5]),
         .I5(data90),
         .O(\irq_inv[12]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair17" *) 
-  LUT2 #(
-    .INIT(4'h1)) 
+  (* SOFT_HLUTNM = "soft_lutpair151" *) 
+  LUT4 #(
+    .INIT(16'h0040)) 
     \irq_inv[12]_i_2 
        (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_awaddr[0]),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_awaddr[4]),
         .O(\irq_inv[12]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \irq_inv[12]_i_3 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[0]),
+        .O(\irq_inv[12]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
   LUT5 #(
     .INIT(32'hBFFF8000)) 
     \irq_inv[13]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_wstrb[1]),
-        .I3(\irq_inv[13]_i_2_n_0 ),
+        .I1(\irq_enabled[5]_i_3_n_0 ),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wstrb[1]),
         .I4(data80),
         .O(\irq_inv[13]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000008000000)) 
-    \irq_inv[13]_i_2 
-       (.I0(s_axi_awready),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[2]),
-        .I5(s_axi_awaddr[4]),
-        .O(\irq_inv[13]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hFBFFFFFF08000000)) 
+    .INIT(64'hEFFFFFFF20000000)) 
     \irq_inv[14]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_enabled[14]_i_4_n_0 ),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
+        .I1(\irq_inv[14]_i_2_n_0 ),
+        .I2(\irq_inv[15]_i_3_n_0 ),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_wstrb[1]),
         .I5(data70),
         .O(\irq_inv[14]_i_1_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair147" *) 
+  LUT4 #(
+    .INIT(16'hEFFF)) 
+    \irq_inv[14]_i_2 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_awaddr[5]),
+        .I3(s_axi_awready),
+        .O(\irq_inv[14]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hBFFFFFFF80000000)) 
+    .INIT(64'hEFFFFFFF20000000)) 
     \irq_inv[15]_i_1 
        (.I0(s_axi_wdata[10]),
         .I1(\irq_inv[15]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[0]),
+        .I2(\irq_inv[15]_i_3_n_0 ),
+        .I3(\irq_inv[15]_i_4_n_0 ),
         .I4(s_axi_awready),
         .I5(data60),
         .O(\irq_inv[15]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair16" *) 
-  LUT5 #(
-    .INIT(32'h00800000)) 
+  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  LUT3 #(
+    .INIT(8'hDF)) 
     \irq_inv[15]_i_2 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_awaddr[1]),
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[4]),
         .I2(s_axi_awaddr[5]),
-        .I3(s_axi_awaddr[4]),
-        .I4(s_axi_awaddr[3]),
         .O(\irq_inv[15]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair157" *) 
+  (* SOFT_HLUTNM = "soft_lutpair17" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \irq_inv[15]_i_3 
+       (.I0(s_axi_awaddr[1]),
+        .I1(s_axi_awaddr[2]),
+        .O(\irq_inv[15]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \irq_inv[15]_i_4 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[0]),
+        .O(\irq_inv[15]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair158" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \irq_inv[16]_i_1 
@@ -16206,17 +16234,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(irq_inv[16]),
         .I2(data50),
         .O(\irq_inv[16]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000001000000000)) 
-    \irq_inv[16]_i_2 
-       (.I0(\irq_dest[5][5]_i_2_n_0 ),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_awaddr[3]),
-        .I5(s_axi_awaddr[4]),
-        .O(irq_inv[16]));
-  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT5 #(
     .INIT(32'hBFFF8000)) 
     \irq_inv[17]_i_1 
@@ -16236,61 +16253,84 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(s_axi_awaddr[4]),
         .I5(s_axi_awaddr[2]),
         .O(\irq_inv[17]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair56" *) 
-  LUT4 #(
-    .INIT(16'hFB08)) 
+  (* SOFT_HLUTNM = "soft_lutpair158" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_inv[18]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(s_axi_wstrb[1]),
-        .I2(\irq_inv[18]_i_2_n_0 ),
-        .I3(data30),
+        .I1(irq_inv[18]),
+        .I2(data30),
         .O(\irq_inv[18]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hDFFFFFFFFFFFFFFF)) 
+    .INIT(64'h0000020000000000)) 
     \irq_inv[18]_i_2 
-       (.I0(s_axi_awready),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[5]),
-        .I3(s_axi_awaddr[4]),
-        .I4(\irq_enabled[8]_i_4_n_0 ),
-        .I5(s_axi_awaddr[1]),
-        .O(\irq_inv[18]_i_2_n_0 ));
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[1]),
+        .I4(\irq_inv[19]_i_4_n_0 ),
+        .I5(s_axi_awready),
+        .O(irq_inv[18]));
   LUT6 #(
-    .INIT(64'hFFFFFFBF00000080)) 
+    .INIT(64'hFFFFBFFF00008000)) 
     \irq_inv[19]_i_1 
        (.I0(s_axi_wdata[10]),
         .I1(\irq_inv[19]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_inv[19]_i_3_n_0 ),
+        .I2(\irq_inv[19]_i_3_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_inv[19]_i_4_n_0 ),
         .I5(data20),
         .O(\irq_inv[19]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair13" *) 
+  (* SOFT_HLUTNM = "soft_lutpair3" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \irq_inv[19]_i_2 
        (.I0(s_axi_awaddr[1]),
         .I1(s_axi_awaddr[0]),
         .O(\irq_inv[19]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair28" *) 
-  LUT4 #(
-    .INIT(16'hF7FF)) 
+  (* SOFT_HLUTNM = "soft_lutpair15" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
     \irq_inv[19]_i_3 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_awaddr[3]),
-        .I3(s_axi_awready),
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[2]),
         .O(\irq_inv[19]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair58" *) 
-  LUT4 #(
-    .INIT(16'hBF80)) 
+  (* SOFT_HLUTNM = "soft_lutpair156" *) 
+  LUT3 #(
+    .INIT(8'hBF)) 
+    \irq_inv[19]_i_4 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[5]),
+        .I2(s_axi_awaddr[4]),
+        .O(\irq_inv[19]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair160" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_inv[1]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_enabled[1]_i_3_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_inv_reg_n_0_[1] ),
+        .I1(\irq_inv[1]_i_2_n_0 ),
+        .I2(\irq_inv_reg_n_0_[1] ),
         .O(\irq_inv[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair4" *) 
+  (* SOFT_HLUTNM = "soft_lutpair1" *) 
+  LUT5 #(
+    .INIT(32'h80000000)) 
+    \irq_inv[1]_i_2 
+       (.I0(s_axi_awaddr[5]),
+        .I1(\irq_inv[1]_i_3_n_0 ),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awready),
+        .O(\irq_inv[1]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair151" *) 
+  LUT4 #(
+    .INIT(16'h0001)) 
+    \irq_inv[1]_i_3 
+       (.I0(s_axi_awaddr[4]),
+        .I1(s_axi_awaddr[3]),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_awaddr[1]),
+        .O(\irq_inv[1]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
   LUT5 #(
     .INIT(32'hFBFF0800)) 
     \irq_inv[20]_i_1 
@@ -16310,7 +16350,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(s_axi_awready),
         .I5(s_axi_awaddr[0]),
         .O(\irq_inv[20]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair3" *) 
+  (* SOFT_HLUTNM = "soft_lutpair5" *) 
   LUT5 #(
     .INIT(32'hBFFF8000)) 
     \irq_inv[21]_i_1 
@@ -16337,105 +16377,108 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_inv[2]_i_2_n_0 ),
         .I2(s_axi_wstrb[1]),
         .I3(s_axi_awaddr[3]),
-        .I4(\irq_inv[2]_i_3_n_0 ),
+        .I4(\irq_inv[14]_i_2_n_0 ),
         .I5(data19[10]),
         .O(\irq_inv[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  (* SOFT_HLUTNM = "soft_lutpair148" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \irq_inv[2]_i_2 
        (.I0(s_axi_awaddr[1]),
         .I1(s_axi_awaddr[2]),
         .O(\irq_inv[2]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair146" *) 
-  LUT4 #(
-    .INIT(16'hEFFF)) 
-    \irq_inv[2]_i_3 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_awaddr[4]),
-        .I2(s_axi_awaddr[5]),
-        .I3(s_axi_awready),
-        .O(\irq_inv[2]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFBFFFFF00800000)) 
+  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  LUT5 #(
+    .INIT(32'hFFFE0002)) 
     \irq_inv[3]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_inv[19]_i_2_n_0 ),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_awaddr[3]),
+        .I3(\irq_inv[3]_i_2_n_0 ),
+        .I4(data18[10]),
+        .O(\irq_inv[3]_i_1_n_0 ));
+  LUT6 #(
+    .INIT(64'hFF7FFFFFFFFFFFFF)) 
+    \irq_inv[3]_i_2 
+       (.I0(s_axi_awaddr[1]),
+        .I1(s_axi_awaddr[0]),
         .I2(s_axi_wstrb[1]),
         .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
-        .I5(data18[10]),
-        .O(\irq_inv[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair158" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+        .I4(s_axi_awaddr[5]),
+        .I5(s_axi_awready),
+        .O(\irq_inv[3]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair38" *) 
+  LUT4 #(
+    .INIT(16'hFD20)) 
     \irq_inv[4]_i_1 
-       (.I0(s_axi_wdata[10]),
-        .I1(irq_inv[4]),
-        .I2(data17[10]),
+       (.I0(s_axi_awready),
+        .I1(\irq_enabled[4]_i_4_n_0 ),
+        .I2(s_axi_wdata[10]),
+        .I3(data17[10]),
         .O(\irq_inv[4]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair158" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+  LUT5 #(
+    .INIT(32'hFBFF0800)) 
     \irq_inv[5]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_enabled[5]_i_4_n_0 ),
-        .I2(data16[10]),
+        .I1(\irq_enabled[5]_i_3_n_0 ),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wstrb[1]),
+        .I4(data16[10]),
         .O(\irq_inv[5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFBFFFFFF08000000)) 
+    .INIT(64'hFFFFFFBF00000080)) 
     \irq_inv[6]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_enabled[14]_i_4_n_0 ),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
+        .I1(\irq_inv[15]_i_3_n_0 ),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[3]),
+        .I4(\irq_inv[14]_i_2_n_0 ),
         .I5(data15[10]),
         .O(\irq_inv[6]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair157" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+  LUT4 #(
+    .INIT(16'hBF80)) 
     \irq_inv[7]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(irq_inv[7]),
-        .I2(data14[10]),
+        .I1(\irq_enabled[7]_i_3_n_0 ),
+        .I2(s_axi_awready),
+        .I3(data14[10]),
         .O(\irq_inv[7]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFB00000008)) 
+  (* SOFT_HLUTNM = "soft_lutpair160" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_inv[8]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_inv[9]_i_2_n_0 ),
-        .I2(\irq_inv[9]_i_3_n_0 ),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[2]),
-        .I5(data130),
+        .I1(irq_inv[8]),
+        .I2(data130),
         .O(\irq_inv[8]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFBFF00000800)) 
+    .INIT(64'h0000000000001000)) 
+    \irq_inv[8]_i_2 
+       (.I0(\irq_dest[4][5]_i_2_n_0 ),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_awaddr[0]),
+        .I5(s_axi_awaddr[2]),
+        .O(irq_inv[8]));
+  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_inv[9]_i_1 
        (.I0(s_axi_wdata[10]),
-        .I1(\irq_inv[9]_i_2_n_0 ),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[0]),
-        .I4(\irq_inv[9]_i_3_n_0 ),
-        .I5(data120),
+        .I1(irq_inv[9]),
+        .I2(data120),
         .O(\irq_inv[9]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair147" *) 
-  LUT4 #(
-    .INIT(16'h0080)) 
+  LUT6 #(
+    .INIT(64'h0000000004000000)) 
     \irq_inv[9]_i_2 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awready),
-        .I2(s_axi_awaddr[5]),
-        .I3(s_axi_awaddr[1]),
-        .O(\irq_inv[9]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair228" *) 
-  LUT2 #(
-    .INIT(4'hB)) 
-    \irq_inv[9]_i_3 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[3]),
-        .O(\irq_inv[9]_i_3_n_0 ));
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_wstrb[1]),
+        .I5(\irq_dest[4][5]_i_2_n_0 ),
+        .O(irq_inv[9]));
   FDRE \irq_inv_reg[0] 
        (.C(aclk),
         .CE(1'b1),
@@ -16568,7 +16611,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(\irq_inv[9]_i_1_n_0 ),
         .Q(data120),
         .R(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair159" *) 
+  (* SOFT_HLUTNM = "soft_lutpair161" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \irq_mode[0]_i_1 
@@ -16584,56 +16627,54 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_awready),
         .I3(\irq_mode_reg_n_0_[10] ),
         .O(\irq_mode[10]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFBFFFFF00800000)) 
+  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_mode[11]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_inv[19]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
-        .I5(\irq_mode_reg_n_0_[11] ),
+        .I1(irq_inv[11]),
+        .I2(\irq_mode_reg_n_0_[11] ),
         .O(\irq_mode[11]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hBFFFFFFF80000000)) 
     \irq_mode[12]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_enabled[14]_i_3_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_inv[12]_i_2_n_0 ),
+        .I1(\irq_inv[12]_i_2_n_0 ),
+        .I2(\irq_inv[12]_i_3_n_0 ),
+        .I3(s_axi_awready),
+        .I4(s_axi_awaddr[5]),
         .I5(\irq_mode_reg_n_0_[12] ),
         .O(\irq_mode[12]_i_1_n_0 ));
   LUT5 #(
     .INIT(32'hBFFF8000)) 
     \irq_mode[13]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_wstrb[1]),
-        .I3(\irq_inv[13]_i_2_n_0 ),
+        .I1(\irq_enabled[5]_i_3_n_0 ),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wstrb[1]),
         .I4(\irq_mode_reg_n_0_[13] ),
         .O(\irq_mode[13]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFBFFFFFF08000000)) 
+    .INIT(64'hEFFFFFFF20000000)) 
     \irq_mode[14]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_enabled[14]_i_4_n_0 ),
-        .I4(\irq_enabled[14]_i_3_n_0 ),
+        .I1(\irq_inv[14]_i_2_n_0 ),
+        .I2(\irq_inv[15]_i_3_n_0 ),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_wstrb[1]),
         .I5(\irq_mode_reg_n_0_[14] ),
         .O(\irq_mode[14]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hBFFFFFFF80000000)) 
+    .INIT(64'hEFFFFFFF20000000)) 
     \irq_mode[15]_i_1 
        (.I0(s_axi_wdata[11]),
         .I1(\irq_inv[15]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[0]),
+        .I2(\irq_inv[15]_i_3_n_0 ),
+        .I3(\irq_inv[15]_i_4_n_0 ),
         .I4(s_axi_awready),
         .I5(\irq_mode_reg_n_0_[15] ),
         .O(\irq_mode[15]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair160" *) 
+  (* SOFT_HLUTNM = "soft_lutpair162" *) 
   LUT3 #(
     .INIT(8'hB8)) 
     \irq_mode[16]_i_1 
@@ -16650,31 +16691,31 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I3(s_axi_wstrb[1]),
         .I4(\irq_mode_reg_n_0_[17] ),
         .O(\irq_mode[17]_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'hFB08)) 
+  (* SOFT_HLUTNM = "soft_lutpair162" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_mode[18]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(s_axi_wstrb[1]),
-        .I2(\irq_inv[18]_i_2_n_0 ),
-        .I3(\irq_mode_reg_n_0_[18] ),
+        .I1(irq_inv[18]),
+        .I2(\irq_mode_reg_n_0_[18] ),
         .O(\irq_mode[18]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFBF00000080)) 
+    .INIT(64'hFFFFBFFF00008000)) 
     \irq_mode[19]_i_1 
        (.I0(s_axi_wdata[11]),
         .I1(\irq_inv[19]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_inv[19]_i_3_n_0 ),
+        .I2(\irq_inv[19]_i_3_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_inv[19]_i_4_n_0 ),
         .I5(\irq_mode_reg_n_0_[19] ),
         .O(\irq_mode[19]_i_1_n_0 ));
-  LUT4 #(
-    .INIT(16'hBF80)) 
+  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_mode[1]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_enabled[1]_i_3_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_mode_reg_n_0_[1] ),
+        .I1(\irq_inv[1]_i_2_n_0 ),
+        .I2(\irq_mode_reg_n_0_[1] ),
         .O(\irq_mode[1]_i_1_n_0 ));
   LUT5 #(
     .INIT(32'hFBFF0800)) 
@@ -16701,72 +16742,70 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_inv[2]_i_2_n_0 ),
         .I2(s_axi_wstrb[1]),
         .I3(s_axi_awaddr[3]),
-        .I4(\irq_inv[2]_i_3_n_0 ),
+        .I4(\irq_inv[14]_i_2_n_0 ),
         .I5(data19[11]),
         .O(\irq_mode[2]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFBFFFFF00800000)) 
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  LUT5 #(
+    .INIT(32'hFFFE0002)) 
     \irq_mode[3]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_inv[19]_i_2_n_0 ),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
-        .I5(data18[11]),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_awaddr[3]),
+        .I3(\irq_inv[3]_i_2_n_0 ),
+        .I4(data18[11]),
         .O(\irq_mode[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair161" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+  (* SOFT_HLUTNM = "soft_lutpair37" *) 
+  LUT4 #(
+    .INIT(16'hFD20)) 
     \irq_mode[4]_i_1 
-       (.I0(s_axi_wdata[11]),
-        .I1(irq_inv[4]),
-        .I2(data17[11]),
+       (.I0(s_axi_awready),
+        .I1(\irq_enabled[4]_i_4_n_0 ),
+        .I2(s_axi_wdata[11]),
+        .I3(data17[11]),
         .O(\irq_mode[4]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair161" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+  LUT5 #(
+    .INIT(32'hFBFF0800)) 
     \irq_mode[5]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_enabled[5]_i_4_n_0 ),
-        .I2(data16[11]),
+        .I1(\irq_enabled[5]_i_3_n_0 ),
+        .I2(s_axi_awaddr[3]),
+        .I3(s_axi_wstrb[1]),
+        .I4(data16[11]),
         .O(\irq_mode[5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFBFFFFFF08000000)) 
+    .INIT(64'hFFFFFFBF00000080)) 
     \irq_mode[6]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(\irq_enabled[14]_i_4_n_0 ),
-        .I4(\irq_enabled[6]_i_3_n_0 ),
+        .I1(\irq_inv[15]_i_3_n_0 ),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[3]),
+        .I4(\irq_inv[14]_i_2_n_0 ),
         .I5(data15[11]),
         .O(\irq_mode[6]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair160" *) 
-  LUT3 #(
-    .INIT(8'hB8)) 
+  LUT4 #(
+    .INIT(16'hBF80)) 
     \irq_mode[7]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(irq_inv[7]),
-        .I2(data14[11]),
+        .I1(\irq_enabled[7]_i_3_n_0 ),
+        .I2(s_axi_awready),
+        .I3(data14[11]),
         .O(\irq_mode[7]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFB00000008)) 
+  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_mode[8]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_inv[9]_i_2_n_0 ),
-        .I2(\irq_inv[9]_i_3_n_0 ),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[2]),
-        .I5(\irq_mode_reg_n_0_[8] ),
+        .I1(irq_inv[8]),
+        .I2(\irq_mode_reg_n_0_[8] ),
         .O(\irq_mode[8]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFBFF00000800)) 
+  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  LUT3 #(
+    .INIT(8'hB8)) 
     \irq_mode[9]_i_1 
        (.I0(s_axi_wdata[11]),
-        .I1(\irq_inv[9]_i_2_n_0 ),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[0]),
-        .I4(\irq_inv[9]_i_3_n_0 ),
-        .I5(\irq_mode_reg_n_0_[9] ),
+        .I1(irq_inv[9]),
+        .I2(\irq_mode_reg_n_0_[9] ),
         .O(\irq_mode[9]_i_1_n_0 ));
   FDRE \irq_mode_reg[0] 
        (.C(aclk),
@@ -16900,14 +16939,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(\irq_mode[9]_i_1_n_0 ),
         .Q(\irq_mode_reg_n_0_[9] ),
         .R(s_axi_awready_i_1_n_0));
-  LUT5 #(
-    .INIT(32'hC5C5C5F5)) 
+  LUT6 #(
+    .INIT(64'hC5F5C5C5C5F5C5F5)) 
     \irq_pend[0]_i_1 
        (.I0(\irq_pend[0]_i_2_n_0 ),
         .I1(\irq_pend[0]_i_3_n_0 ),
         .I2(s_axi_awready),
-        .I3(\irq_enabled[0]_i_2_n_0 ),
-        .I4(\irq_pend[0]_i_4_n_0 ),
+        .I3(\irq_pend[0]_i_4_n_0 ),
+        .I4(\irq_pend[0]_i_5_n_0 ),
+        .I5(\irq_pend[0]_i_6_n_0 ),
         .O(\irq_pend[0]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0041444111415541)) 
@@ -16920,63 +16960,78 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_in_rising_reg_n_0_[0] ),
         .O(\irq_pend[0]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000031000000)) 
+    .INIT(64'h0000000000000080)) 
     \irq_pend[0]_i_3 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_awaddr[2]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_wstrb[1]),
-        .I4(s_axi_wdata[9]),
-        .I5(\irq_pend[0]_i_5_n_0 ),
+       (.I0(\irq_enabled[6]_i_5_n_0 ),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_wdata[9]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[2]),
+        .I5(s_axi_awaddr[1]),
         .O(\irq_pend[0]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFF5FFFC0005000)) 
+    .INIT(64'h0000000000002000)) 
     \irq_pend[0]_i_4 
-       (.I0(\irq_pend[0]_i_6_n_0 ),
-        .I1(\irq_pend[0]_i_7_n_0 ),
-        .I2(\irq_enabled[21]_i_5_n_0 ),
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[2]),
+        .I2(\irq_pend[0]_i_7_n_0 ),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[0]),
+        .O(\irq_pend[0]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h1111131113131313)) 
+    \irq_pend[0]_i_5 
+       (.I0(\irq_pend[21]_i_3_n_0 ),
+        .I1(\irq_pend[0]_i_2_n_0 ),
+        .I2(\irq_pend[0]_i_8_n_0 ),
+        .I3(\irq_pend_reg_n_0_[0] ),
+        .I4(s_axi_wdata[0]),
+        .I5(\irq_pend[0]_i_9_n_0 ),
+        .O(\irq_pend[0]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'h757575FD75FD75FD)) 
+    \irq_pend[0]_i_6 
+       (.I0(\irq_pend[9]_i_6_n_0 ),
+        .I1(s_axi_wstrb[0]),
+        .I2(\irq_pend[0]_i_2_n_0 ),
+        .I3(s_axi_wdata[0]),
+        .I4(s_axi_awaddr[0]),
+        .I5(\irq_pend_reg_n_0_[0] ),
+        .O(\irq_pend[0]_i_6_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  LUT2 #(
+    .INIT(4'h1)) 
+    \irq_pend[0]_i_7 
+       (.I0(s_axi_awaddr[3]),
+        .I1(s_axi_awaddr[4]),
+        .O(\irq_pend[0]_i_7_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  LUT5 #(
+    .INIT(32'hFEFFFFFF)) 
+    \irq_pend[0]_i_8 
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[3]),
+        .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[2]),
         .I4(s_axi_awaddr[1]),
-        .I5(\irq_pend[0]_i_2_n_0 ),
-        .O(\irq_pend[0]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
-  LUT5 #(
-    .INIT(32'hFFFFFFFD)) 
-    \irq_pend[0]_i_5 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awaddr[3]),
-        .I4(s_axi_awaddr[4]),
-        .O(\irq_pend[0]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
-  LUT5 #(
-    .INIT(32'hF8F800FF)) 
-    \irq_pend[0]_i_6 
-       (.I0(\irq_pend_reg_n_0_[0] ),
+        .O(\irq_pend[0]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair149" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \irq_pend[0]_i_9 
+       (.I0(s_axi_wstrb[0]),
         .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wdata[0]),
-        .I3(\irq_pend[0]_i_2_n_0 ),
-        .I4(s_axi_wstrb[0]),
-        .O(\irq_pend[0]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair22" *) 
-  LUT4 #(
-    .INIT(16'h4044)) 
-    \irq_pend[0]_i_7 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wstrb[0]),
-        .I2(s_axi_wdata[0]),
-        .I3(\irq_pend_reg_n_0_[0] ),
-        .O(\irq_pend[0]_i_7_n_0 ));
+        .O(\irq_pend[0]_i_9_n_0 ));
   LUT6 #(
-    .INIT(64'hC0005555CFFF5555)) 
+    .INIT(64'h305530553055FF55)) 
     \irq_pend[10]_i_1 
        (.I0(\irq_pend[10]_i_2_n_0 ),
-        .I1(s_axi_wdata[9]),
-        .I2(\irq_pend[18]_i_3_n_0 ),
-        .I3(\irq_pend[10]_i_3_n_0 ),
-        .I4(s_axi_awready),
-        .I5(\irq_pend[10]_i_4_n_0 ),
+        .I1(\irq_pend[10]_i_3_n_0 ),
+        .I2(\irq_pend[10]_i_4_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_enabled[10]_i_3_n_0 ),
+        .I5(\irq_pend[10]_i_5_n_0 ),
         .O(\irq_pend[10]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h0041444111415541)) 
@@ -16990,98 +17045,109 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .O(\irq_pend[10]_i_2_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair16" *) 
   LUT5 #(
-    .INIT(32'h00400000)) 
+    .INIT(32'hF8FFFFFF)) 
     \irq_pend[10]_i_3 
+       (.I0(s_axi_awaddr[1]),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_wdata[9]),
+        .I4(s_axi_wstrb[1]),
+        .O(\irq_pend[10]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+  LUT5 #(
+    .INIT(32'h00400000)) 
+    \irq_pend[10]_i_4 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
         .I2(s_axi_awaddr[5]),
         .I3(s_axi_awaddr[4]),
         .I4(s_axi_awaddr[3]),
-        .O(\irq_pend[10]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'h000C0C0C0E0E0E0E)) 
-    \irq_pend[10]_i_4 
-       (.I0(\irq_pend[13]_i_4_n_0 ),
-        .I1(\irq_pend[10]_i_2_n_0 ),
-        .I2(\irq_pend[10]_i_5_n_0 ),
-        .I3(\irq_enabled[14]_i_5_n_0 ),
-        .I4(\irq_enabled[21]_i_5_n_0 ),
-        .I5(\irq_pend[10]_i_6_n_0 ),
         .O(\irq_pend[10]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'h8080808080000000)) 
+    .INIT(64'h000C0C0C0E0E0E0E)) 
     \irq_pend[10]_i_5 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(s_axi_wstrb[1]),
+       (.I0(\irq_pend[13]_i_3_n_0 ),
+        .I1(\irq_pend[10]_i_2_n_0 ),
+        .I2(\irq_pend[10]_i_6_n_0 ),
+        .I3(\irq_inv[12]_i_3_n_0 ),
+        .I4(\irq_pend[15]_i_3_n_0 ),
+        .I5(\irq_pend[10]_i_7_n_0 ),
+        .O(\irq_pend[10]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'h8080808080000000)) 
+    \irq_pend[10]_i_6 
+       (.I0(s_axi_wstrb[1]),
+        .I1(\irq_pend[15]_i_3_n_0 ),
         .I2(\irq_dest[12][5]_i_2_n_0 ),
         .I3(s_axi_awaddr[0]),
         .I4(p_3_in[2]),
         .I5(s_axi_wdata[10]),
-        .O(\irq_pend[10]_i_5_n_0 ));
+        .O(\irq_pend[10]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'h8888888800808888)) 
-    \irq_pend[10]_i_6 
+    \irq_pend[10]_i_7 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
         .I2(p_3_in[2]),
         .I3(s_axi_wdata[10]),
         .I4(s_axi_wstrb[1]),
         .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[10]_i_6_n_0 ));
+        .O(\irq_pend[10]_i_7_n_0 ));
   LUT6 #(
-    .INIT(64'hAA0AEE0E0000EE0E)) 
+    .INIT(64'hF0FFCCCCF088CCCC)) 
     \irq_pend[11]_i_1 
        (.I0(\irq_pend[11]_i_2_n_0 ),
         .I1(\irq_pend[11]_i_3_n_0 ),
-        .I2(irq_inv[11]),
-        .I3(s_axi_wdata[9]),
-        .I4(\irq_pend[11]_i_4_n_0 ),
-        .I5(s_axi_awready),
+        .I2(s_axi_wdata[9]),
+        .I3(\irq_pend[11]_i_4_n_0 ),
+        .I4(s_axi_awready),
+        .I5(\irq_pend[11]_i_5_n_0 ),
         .O(\irq_pend[11]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFFF80FFFF)) 
+    .INIT(64'hBFBB0000FFFFFFFF)) 
     \irq_pend[11]_i_2 
-       (.I0(\irq_pend[11]_i_5_n_0 ),
-        .I1(\irq_enabled[21]_i_5_n_0 ),
-        .I2(\irq_enabled[14]_i_5_n_0 ),
-        .I3(\irq_enabled[11]_i_2_n_0 ),
-        .I4(s_axi_awready),
-        .I5(\irq_pend[11]_i_6_n_0 ),
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_wdata[11]),
+        .I3(p_3_in[3]),
+        .I4(\irq_inv[15]_i_3_n_0 ),
+        .I5(\irq_pend[13]_i_3_n_0 ),
         .O(\irq_pend[11]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFF08FFFFFFFFFFFF)) 
+    .INIT(64'hFFBEBBBEEEBEAABE)) 
     \irq_pend[11]_i_3 
-       (.I0(\irq_enabled[14]_i_4_n_0 ),
-        .I1(p_3_in[3]),
-        .I2(s_axi_wdata[11]),
-        .I3(\irq_inv[19]_i_2_n_0 ),
-        .I4(\irq_enabled[4]_i_6_n_0 ),
-        .I5(\irq_enabled[21]_i_5_n_0 ),
+       (.I0(p_3_in[3]),
+        .I1(data100),
+        .I2(p_13_in),
+        .I3(\irq_mode_reg_n_0_[11] ),
+        .I4(\irq_in_falling_reg_n_0_[11] ),
+        .I5(\irq_in_rising_reg_n_0_[11] ),
         .O(\irq_pend[11]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000047CC4733)) 
+    .INIT(64'h0200000000000000)) 
     \irq_pend[11]_i_4 
-       (.I0(\irq_in_falling_reg_n_0_[11] ),
-        .I1(data100),
-        .I2(\irq_in_rising_reg_n_0_[11] ),
-        .I3(\irq_mode_reg_n_0_[11] ),
-        .I4(p_13_in),
-        .I5(p_3_in[3]),
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[4]),
+        .I2(s_axi_awaddr[2]),
+        .I3(\irq_inv[19]_i_2_n_0 ),
+        .I4(s_axi_awaddr[3]),
+        .I5(s_axi_wstrb[1]),
         .O(\irq_pend[11]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair151" *) 
-  LUT4 #(
-    .INIT(16'h0080)) 
+  LUT6 #(
+    .INIT(64'hFFFFFFFF08000000)) 
     \irq_pend[11]_i_5 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_awaddr[1]),
-        .I2(p_3_in[3]),
-        .I3(s_axi_wdata[11]),
+       (.I0(\irq_inv[15]_i_3_n_0 ),
+        .I1(p_3_in[3]),
+        .I2(s_axi_wdata[11]),
+        .I3(\irq_inv[12]_i_3_n_0 ),
+        .I4(\irq_pend[15]_i_3_n_0 ),
+        .I5(\irq_pend[11]_i_6_n_0 ),
         .O(\irq_pend[11]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h8080808080000000)) 
     \irq_pend[11]_i_6 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(s_axi_wstrb[1]),
+       (.I0(s_axi_wstrb[1]),
+        .I1(\irq_pend[15]_i_3_n_0 ),
         .I2(\irq_dest[12][5]_i_2_n_0 ),
         .I3(s_axi_awaddr[0]),
         .I4(p_3_in[3]),
@@ -17104,8 +17170,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_wstrb[1]),
         .I2(s_axi_wdata[12]),
         .I3(p_3_in[4]),
-        .I4(\irq_enabled[14]_i_4_n_0 ),
-        .I5(\irq_pend[13]_i_4_n_0 ),
+        .I4(\irq_inv[15]_i_3_n_0 ),
+        .I5(\irq_pend[13]_i_3_n_0 ),
         .O(\irq_pend[12]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hEFFEAFBEEBFAABBA)) 
@@ -17120,7 +17186,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'h8880AAAA88808080)) 
     \irq_pend[12]_i_4 
-       (.I0(\irq_pend[14]_i_6_n_0 ),
+       (.I0(\irq_pend[14]_i_5_n_0 ),
         .I1(\irq_dest[12][5]_i_2_n_0 ),
         .I2(s_axi_wdata[12]),
         .I3(p_3_in[4]),
@@ -17141,91 +17207,81 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     .INIT(64'hFFFFFFFF75770000)) 
     \irq_pend[13]_i_1 
        (.I0(s_axi_awready),
-        .I1(\irq_pend[13]_i_2_n_0 ),
-        .I2(\irq_pend[13]_i_3_n_0 ),
-        .I3(\irq_pend[13]_i_4_n_0 ),
-        .I4(\irq_pend[13]_i_5_n_0 ),
-        .I5(\irq_pend[13]_i_6_n_0 ),
+        .I1(\irq_enabled[13]_i_3_n_0 ),
+        .I2(\irq_pend[13]_i_2_n_0 ),
+        .I3(\irq_pend[13]_i_3_n_0 ),
+        .I4(\irq_pend[13]_i_4_n_0 ),
+        .I5(\irq_pend[13]_i_5_n_0 ),
         .O(\irq_pend[13]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000040000000)) 
-    \irq_pend[13]_i_2 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_awaddr[5]),
-        .I5(\irq_inv[9]_i_3_n_0 ),
-        .O(\irq_pend[13]_i_2_n_0 ));
-  LUT6 #(
     .INIT(64'h8888888800808888)) 
-    \irq_pend[13]_i_3 
+    \irq_pend[13]_i_2 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
         .I2(p_3_in[5]),
         .I3(s_axi_wdata[13]),
         .I4(s_axi_wstrb[1]),
         .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[13]_i_3_n_0 ));
+        .O(\irq_pend[13]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h0101000001000000)) 
-    \irq_pend[13]_i_4 
+    \irq_pend[13]_i_3 
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_wstrb[1]),
         .I4(s_axi_awaddr[2]),
         .I5(s_axi_awaddr[1]),
-        .O(\irq_pend[13]_i_4_n_0 ));
+        .O(\irq_pend[13]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hEFFEAFBEEBFAABBA)) 
-    \irq_pend[13]_i_5 
+    \irq_pend[13]_i_4 
        (.I0(p_3_in[5]),
         .I1(\irq_mode_reg_n_0_[13] ),
         .I2(data80),
         .I3(\irq_in_q_reg_n_0_[13] ),
         .I4(\irq_in_falling_reg_n_0_[13] ),
         .I5(\irq_in_rising_reg_n_0_[13] ),
-        .O(\irq_pend[13]_i_5_n_0 ));
+        .O(\irq_pend[13]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'h8C8C8C808C808C80)) 
-    \irq_pend[13]_i_6 
+    \irq_pend[13]_i_5 
        (.I0(s_axi_wdata[9]),
         .I1(s_axi_awready),
-        .I2(\irq_pend[13]_i_2_n_0 ),
-        .I3(\irq_pend[13]_i_7_n_0 ),
-        .I4(\irq_pend[13]_i_3_n_0 ),
-        .I5(\irq_pend[13]_i_8_n_0 ),
-        .O(\irq_pend[13]_i_6_n_0 ));
+        .I2(\irq_enabled[13]_i_3_n_0 ),
+        .I3(\irq_pend[13]_i_6_n_0 ),
+        .I4(\irq_pend[13]_i_2_n_0 ),
+        .I5(\irq_pend[13]_i_7_n_0 ),
+        .O(\irq_pend[13]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h8080808080000000)) 
-    \irq_pend[13]_i_7 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(s_axi_wstrb[1]),
+    \irq_pend[13]_i_6 
+       (.I0(s_axi_wstrb[1]),
+        .I1(\irq_pend[15]_i_3_n_0 ),
         .I2(\irq_dest[12][5]_i_2_n_0 ),
         .I3(s_axi_awaddr[0]),
         .I4(p_3_in[5]),
         .I5(s_axi_wdata[13]),
-        .O(\irq_pend[13]_i_7_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+        .O(\irq_pend[13]_i_6_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT5 #(
     .INIT(32'h00010000)) 
-    \irq_pend[13]_i_8 
+    \irq_pend[13]_i_7 
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[0]),
         .I4(s_axi_wstrb[1]),
-        .O(\irq_pend[13]_i_8_n_0 ));
+        .O(\irq_pend[13]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hF0FFCCCCF088CCCC)) 
     \irq_pend[14]_i_1 
        (.I0(\irq_pend[14]_i_2_n_0 ),
         .I1(\irq_pend[14]_i_3_n_0 ),
         .I2(s_axi_wdata[9]),
-        .I3(\irq_pend[14]_i_4_n_0 ),
+        .I3(\irq_enabled[14]_i_2_n_0 ),
         .I4(s_axi_awready),
-        .I5(\irq_pend[14]_i_5_n_0 ),
+        .I5(\irq_pend[14]_i_4_n_0 ),
         .O(\irq_pend[14]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hBFBB0000FFFFFFFF)) 
@@ -17234,8 +17290,8 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(s_axi_wstrb[1]),
         .I2(s_axi_wdata[14]),
         .I3(p_3_in[6]),
-        .I4(\irq_enabled[14]_i_4_n_0 ),
-        .I5(\irq_pend[13]_i_4_n_0 ),
+        .I4(\irq_inv[15]_i_3_n_0 ),
+        .I5(\irq_pend[13]_i_3_n_0 ),
         .O(\irq_pend[14]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'hFFBEBBBEEEBEAABE)) 
@@ -17248,142 +17304,141 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(\irq_in_rising_reg_n_0_[14] ),
         .O(\irq_pend[14]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000040000000)) 
-    \irq_pend[14]_i_4 
-       (.I0(\irq_inv[9]_i_3_n_0 ),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[2]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[14]_i_4_n_0 ));
-  LUT6 #(
     .INIT(64'h8880AAAA88808080)) 
-    \irq_pend[14]_i_5 
-       (.I0(\irq_pend[14]_i_6_n_0 ),
+    \irq_pend[14]_i_4 
+       (.I0(\irq_pend[14]_i_5_n_0 ),
         .I1(\irq_dest[12][5]_i_2_n_0 ),
         .I2(s_axi_wdata[14]),
         .I3(p_3_in[6]),
         .I4(s_axi_awaddr[0]),
-        .I5(\irq_pend[14]_i_7_n_0 ),
-        .O(\irq_pend[14]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair18" *) 
+        .I5(\irq_pend[14]_i_6_n_0 ),
+        .O(\irq_pend[14]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair19" *) 
   LUT4 #(
-    .INIT(16'h0002)) 
-    \irq_pend[14]_i_6 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[5]),
-        .I2(s_axi_awaddr[3]),
-        .I3(s_axi_awaddr[4]),
-        .O(\irq_pend[14]_i_6_n_0 ));
+    .INIT(16'h0100)) 
+    \irq_pend[14]_i_5 
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[3]),
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_wstrb[1]),
+        .O(\irq_pend[14]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h8888888800808888)) 
-    \irq_pend[14]_i_7 
+    \irq_pend[14]_i_6 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
         .I2(p_3_in[6]),
         .I3(s_axi_wdata[14]),
         .I4(s_axi_wstrb[1]),
         .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[14]_i_7_n_0 ));
+        .O(\irq_pend[14]_i_6_n_0 ));
   LUT6 #(
-    .INIT(64'hB080B080BFBFBF8F)) 
+    .INIT(64'hFFAEAAAA00AEAAAA)) 
     \irq_pend[15]_i_1 
-       (.I0(s_axi_wdata[9]),
-        .I1(\irq_enabled[15]_i_4_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_pend[15]_i_2_n_0 ),
-        .I4(\irq_pend[15]_i_3_n_0 ),
-        .I5(\irq_pend[15]_i_4_n_0 ),
+       (.I0(\irq_pend[15]_i_2_n_0 ),
+        .I1(\irq_pend[15]_i_3_n_0 ),
+        .I2(\irq_pend[15]_i_4_n_0 ),
+        .I3(\irq_enabled[15]_i_4_n_0 ),
+        .I4(s_axi_awready),
+        .I5(s_axi_wdata[9]),
         .O(\irq_pend[15]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair145" *) 
-  LUT4 #(
-    .INIT(16'h0001)) 
+  LUT6 #(
+    .INIT(64'h5100555555555555)) 
     \irq_pend[15]_i_2 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_awaddr[4]),
-        .I3(\irq_pend[15]_i_5_n_0 ),
+       (.I0(\irq_pend[15]_i_5_n_0 ),
+        .I1(s_axi_wstrb[1]),
+        .I2(s_axi_awaddr[0]),
+        .I3(\irq_inv[15]_i_3_n_0 ),
+        .I4(s_axi_awready),
+        .I5(\irq_pend[13]_i_3_n_0 ),
         .O(\irq_pend[15]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair17" *) 
-  LUT5 #(
-    .INIT(32'h8FFFFFFF)) 
+  (* SOFT_HLUTNM = "soft_lutpair229" *) 
+  LUT3 #(
+    .INIT(8'h01)) 
     \irq_pend[15]_i_3 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_wstrb[1]),
-        .I4(\irq_enabled[21]_i_5_n_0 ),
+       (.I0(s_axi_awaddr[4]),
+        .I1(s_axi_awaddr[3]),
+        .I2(s_axi_awaddr[5]),
         .O(\irq_pend[15]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'h1001504114055445)) 
+    .INIT(64'hDFDFDFDFDF7FFFFF)) 
     \irq_pend[15]_i_4 
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[1]),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(p_3_in[7]),
+        .I5(s_axi_wdata[15]),
+        .O(\irq_pend[15]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h1001504114055445)) 
+    \irq_pend[15]_i_5 
        (.I0(p_3_in[7]),
         .I1(\irq_mode_reg_n_0_[15] ),
         .I2(data60),
         .I3(\irq_in_q_reg_n_0_[15] ),
         .I4(\irq_in_falling_reg_n_0_[15] ),
         .I5(\irq_in_rising_reg_n_0_[15] ),
-        .O(\irq_pend[15]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFBFFFFF1F5FFFFF)) 
-    \irq_pend[15]_i_5 
-       (.I0(s_axi_wdata[15]),
-        .I1(p_3_in[7]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[2]),
-        .I5(s_axi_awaddr[1]),
         .O(\irq_pend[15]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hB080B080BF8FBFBF)) 
     \irq_pend[16]_i_1 
        (.I0(s_axi_wdata[9]),
-        .I1(\irq_enabled[16]_i_3_n_0 ),
+        .I1(\irq_pend[16]_i_2_n_0 ),
         .I2(s_axi_awready),
-        .I3(\irq_pend[16]_i_2_n_0 ),
+        .I3(\irq_pend[16]_i_3_n_0 ),
         .I4(\irq_pend[21]_i_3_n_0 ),
-        .I5(\irq_pend[16]_i_3_n_0 ),
+        .I5(\irq_pend[16]_i_4_n_0 ),
         .O(\irq_pend[16]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h00005D00)) 
+  LUT6 #(
+    .INIT(64'h0000020000000000)) 
     \irq_pend[16]_i_2 
-       (.I0(\irq_pend[16]_i_3_n_0 ),
-        .I1(s_axi_wstrb[2]),
-        .I2(\irq_pend[16]_i_4_n_0 ),
-        .I3(\irq_enabled[21]_i_5_n_0 ),
-        .I4(\irq_pend[16]_i_5_n_0 ),
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[1]),
+        .I2(s_axi_awaddr[0]),
+        .I3(s_axi_awaddr[4]),
+        .I4(s_axi_awaddr[3]),
+        .I5(\irq_inv[19]_i_3_n_0 ),
         .O(\irq_pend[16]_i_2_n_0 ));
+  LUT5 #(
+    .INIT(32'h0808AA0A)) 
+    \irq_pend[16]_i_3 
+       (.I0(\irq_pend[15]_i_3_n_0 ),
+        .I1(\irq_pend[16]_i_5_n_0 ),
+        .I2(\irq_pend[16]_i_4_n_0 ),
+        .I3(s_axi_wstrb[2]),
+        .I4(\irq_pend[16]_i_6_n_0 ),
+        .O(\irq_pend[16]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h00000000770C443F)) 
-    \irq_pend[16]_i_3 
+    \irq_pend[16]_i_4 
        (.I0(\irq_in_falling_reg_n_0_[16] ),
         .I1(\irq_mode_reg_n_0_[16] ),
         .I2(\irq_in_rising_reg_n_0_[16] ),
         .I3(data50),
         .I4(p_17_in89_in),
         .I5(p_1_in[0]),
-        .O(\irq_pend[16]_i_3_n_0 ));
+        .O(\irq_pend[16]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h8888888800808888)) 
+    \irq_pend[16]_i_5 
+       (.I0(s_axi_awaddr[2]),
+        .I1(s_axi_awaddr[1]),
+        .I2(p_1_in[0]),
+        .I3(s_axi_wdata[16]),
+        .I4(s_axi_wstrb[2]),
+        .I5(s_axi_awaddr[0]),
+        .O(\irq_pend[16]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hFFFF0444FFFFFFFF)) 
-    \irq_pend[16]_i_4 
+    \irq_pend[16]_i_6 
        (.I0(s_axi_wdata[16]),
         .I1(s_axi_wstrb[2]),
         .I2(p_1_in[0]),
         .I3(s_axi_awaddr[0]),
         .I4(s_axi_awaddr[1]),
         .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[16]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h4044040CFFFFFFFF)) 
-    \irq_pend[16]_i_5 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wstrb[2]),
-        .I2(s_axi_wdata[16]),
-        .I3(p_1_in[0]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[16]_i_5_n_0 ));
+        .O(\irq_pend[16]_i_6_n_0 ));
   LUT6 #(
     .INIT(64'hB080B080BF8FBFBF)) 
     \irq_pend[17]_i_1 
@@ -17397,7 +17452,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT5 #(
     .INIT(32'h0808AA0A)) 
     \irq_pend[17]_i_2 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
+       (.I0(\irq_pend[15]_i_3_n_0 ),
         .I1(\irq_pend[17]_i_4_n_0 ),
         .I2(\irq_pend[17]_i_3_n_0 ),
         .I3(s_axi_wstrb[2]),
@@ -17434,17 +17489,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(s_axi_awaddr[2]),
         .O(\irq_pend[17]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hC0005555CFFF5555)) 
+    .INIT(64'hFFFF10FFF0F0F0F0)) 
     \irq_pend[18]_i_1 
-       (.I0(\irq_pend[18]_i_2_n_0 ),
-        .I1(s_axi_wdata[9]),
-        .I2(\irq_pend[18]_i_3_n_0 ),
-        .I3(\irq_pend[18]_i_4_n_0 ),
-        .I4(s_axi_awready),
-        .I5(\irq_pend[18]_i_5_n_0 ),
+       (.I0(\irq_pend[20]_i_2_n_0 ),
+        .I1(\irq_enabled[18]_i_4_n_0 ),
+        .I2(\irq_pend[18]_i_2_n_0 ),
+        .I3(\irq_pend[18]_i_3_n_0 ),
+        .I4(\irq_pend[18]_i_4_n_0 ),
+        .I5(s_axi_awready),
         .O(\irq_pend[18]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h1001504114055445)) 
+    .INIT(64'hEFFEAFBEEBFAABBA)) 
     \irq_pend[18]_i_2 
        (.I0(p_1_in[2]),
         .I1(\irq_mode_reg_n_0_[18] ),
@@ -17453,201 +17508,154 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\irq_in_falling_reg_n_0_[18] ),
         .I5(\irq_in_rising_reg_n_0_[18] ),
         .O(\irq_pend[18]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair0" *) 
-  LUT4 #(
-    .INIT(16'h0444)) 
+  LUT6 #(
+    .INIT(64'hFFF7F7F7FFFFFFFF)) 
     \irq_pend[18]_i_3 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[0]),
-        .I3(s_axi_awaddr[1]),
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_wdata[9]),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[1]),
+        .I5(\irq_enabled[19]_i_5_n_0 ),
         .O(\irq_pend[18]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
-  LUT5 #(
-    .INIT(32'h00004000)) 
+  LUT6 #(
+    .INIT(64'h00A0208000A00000)) 
     \irq_pend[18]_i_4 
-       (.I0(s_axi_awaddr[2]),
-        .I1(s_axi_awaddr[1]),
-        .I2(s_axi_awaddr[4]),
-        .I3(s_axi_awaddr[5]),
-        .I4(s_axi_awaddr[3]),
+       (.I0(\irq_pend[21]_i_3_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_wstrb[2]),
+        .I3(s_axi_awaddr[1]),
+        .I4(s_axi_wdata[18]),
+        .I5(p_1_in[2]),
         .O(\irq_pend[18]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'h0000008F0088008F)) 
-    \irq_pend[18]_i_5 
-       (.I0(\irq_pend[18]_i_6_n_0 ),
+    .INIT(64'hFFFFFFFFF404CCCC)) 
+    \irq_pend[19]_i_1 
+       (.I0(\irq_pend[20]_i_2_n_0 ),
+        .I1(\irq_pend[19]_i_2_n_0 ),
+        .I2(\irq_enabled[19]_i_4_n_0 ),
+        .I3(s_axi_wdata[9]),
+        .I4(s_axi_awready),
+        .I5(\irq_pend[19]_i_3_n_0 ),
+        .O(\irq_pend[19]_i_1_n_0 ));
+  LUT6 #(
+    .INIT(64'hEFFEAFBEEBFAABBA)) 
+    \irq_pend[19]_i_2 
+       (.I0(p_1_in[3]),
+        .I1(\irq_mode_reg_n_0_[19] ),
+        .I2(data20),
+        .I3(p_5_in62_in),
+        .I4(\irq_in_falling_reg_n_0_[19] ),
+        .I5(\irq_in_rising_reg_n_0_[19] ),
+        .O(\irq_pend[19]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h000000000C480C00)) 
+    \irq_pend[19]_i_3 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wstrb[2]),
+        .I2(s_axi_awaddr[1]),
+        .I3(s_axi_wdata[19]),
+        .I4(p_1_in[3]),
+        .I5(\irq_pend[19]_i_4_n_0 ),
+        .O(\irq_pend[19]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
+  LUT5 #(
+    .INIT(32'hFFFFFFF7)) 
+    \irq_pend[19]_i_4 
+       (.I0(s_axi_awready),
         .I1(s_axi_awaddr[2]),
-        .I2(p_1_in[2]),
-        .I3(\irq_pend[18]_i_7_n_0 ),
-        .I4(\irq_pend[18]_i_8_n_0 ),
-        .I5(\irq_inv[19]_i_2_n_0 ),
-        .O(\irq_pend[18]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair29" *) 
-  LUT4 #(
-    .INIT(16'h0100)) 
-    \irq_pend[18]_i_6 
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_awaddr[5]),
+        .O(\irq_pend[19]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hF303F202F3330000)) 
+    \irq_pend[1]_i_1 
+       (.I0(\irq_pend[1]_i_2_n_0 ),
+        .I1(\irq_pend[1]_i_3_n_0 ),
+        .I2(\irq_enabled[1]_i_3_n_0 ),
+        .I3(s_axi_wdata[9]),
+        .I4(\irq_pend[1]_i_4_n_0 ),
+        .I5(s_axi_awready),
+        .O(\irq_pend[1]_i_1_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000001000000)) 
+    \irq_pend[1]_i_2 
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_awaddr[4]),
-        .I3(s_axi_wstrb[2]),
-        .O(\irq_pend[18]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hFF08FF000808F000)) 
-    \irq_pend[18]_i_7 
-       (.I0(s_axi_awaddr[2]),
-        .I1(\irq_pend[18]_i_6_n_0 ),
-        .I2(s_axi_awaddr[1]),
-        .I3(p_1_in[2]),
-        .I4(s_axi_wdata[18]),
-        .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[18]_i_7_n_0 ));
-  LUT5 #(
-    .INIT(32'hCCAA0FF0)) 
-    \irq_pend[18]_i_8 
-       (.I0(\irq_in_rising_reg_n_0_[18] ),
-        .I1(\irq_in_falling_reg_n_0_[18] ),
-        .I2(p_9_in71_in),
-        .I3(data30),
-        .I4(\irq_mode_reg_n_0_[18] ),
-        .O(\irq_pend[18]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'hB080B080BF8FBFBF)) 
-    \irq_pend[19]_i_1 
-       (.I0(s_axi_wdata[9]),
-        .I1(\irq_enabled[19]_i_4_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_pend[19]_i_2_n_0 ),
-        .I4(\irq_pend[21]_i_3_n_0 ),
-        .I5(\irq_pend[19]_i_3_n_0 ),
-        .O(\irq_pend[19]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h00005D00)) 
-    \irq_pend[19]_i_2 
-       (.I0(\irq_pend[19]_i_3_n_0 ),
-        .I1(s_axi_wstrb[2]),
-        .I2(\irq_pend[19]_i_4_n_0 ),
-        .I3(\irq_enabled[21]_i_5_n_0 ),
-        .I4(\irq_pend[19]_i_5_n_0 ),
-        .O(\irq_pend[19]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h00000000770C443F)) 
-    \irq_pend[19]_i_3 
-       (.I0(\irq_in_falling_reg_n_0_[19] ),
-        .I1(\irq_mode_reg_n_0_[19] ),
-        .I2(\irq_in_rising_reg_n_0_[19] ),
-        .I3(data20),
-        .I4(p_5_in62_in),
-        .I5(p_1_in[3]),
-        .O(\irq_pend[19]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFF0444FFFFFFFF)) 
-    \irq_pend[19]_i_4 
-       (.I0(s_axi_wdata[19]),
-        .I1(s_axi_wstrb[2]),
-        .I2(p_1_in[3]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[19]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h4044040CFFFFFFFF)) 
-    \irq_pend[19]_i_5 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wstrb[2]),
-        .I2(s_axi_wdata[19]),
-        .I3(p_1_in[3]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[19]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hEAAAEAAAFBFFEAAA)) 
-    \irq_pend[1]_i_1 
-       (.I0(\irq_pend[1]_i_2_n_0 ),
-        .I1(\irq_enabled[1]_i_3_n_0 ),
-        .I2(s_axi_wdata[9]),
-        .I3(s_axi_awready),
-        .I4(\irq_pend[1]_i_3_n_0 ),
-        .I5(\irq_pend[7]_i_5_n_0 ),
-        .O(\irq_pend[1]_i_1_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000072222222)) 
-    \irq_pend[1]_i_2 
-       (.I0(s_axi_awaddr[1]),
-        .I1(s_axi_wdata[1]),
-        .I2(s_axi_awaddr[2]),
-        .I3(\irq_enabled[21]_i_5_n_0 ),
+        .I3(s_axi_awaddr[2]),
         .I4(s_axi_wstrb[0]),
-        .I5(\irq_pend[1]_i_4_n_0 ),
+        .I5(\irq_inv[19]_i_2_n_0 ),
         .O(\irq_pend[1]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hEFFEAFBEEBFAABBA)) 
+    .INIT(64'h2020022A00000000)) 
     \irq_pend[1]_i_3 
+       (.I0(\irq_pend[1]_i_5_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_awaddr[1]),
+        .I3(p_2_in153_in),
+        .I4(s_axi_wdata[1]),
+        .I5(\irq_pend[15]_i_3_n_0 ),
+        .O(\irq_pend[1]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hEFFEAFBEEBFAABBA)) 
+    \irq_pend[1]_i_4 
        (.I0(p_2_in153_in),
         .I1(\irq_mode_reg_n_0_[1] ),
         .I2(\irq_inv_reg_n_0_[1] ),
         .I3(p_21_in152_in),
         .I4(\irq_in_falling_reg_n_0_[1] ),
         .I5(\irq_in_rising_reg_n_0_[1] ),
-        .O(\irq_pend[1]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hBBBBBBBBBFBFBFFF)) 
-    \irq_pend[1]_i_4 
-       (.I0(\irq_enabled[1]_i_3_n_0 ),
-        .I1(s_axi_awready),
-        .I2(p_2_in153_in),
-        .I3(s_axi_awaddr[1]),
-        .I4(s_axi_awaddr[0]),
-        .I5(s_axi_wdata[1]),
         .O(\irq_pend[1]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair20" *) 
+  LUT3 #(
+    .INIT(8'h80)) 
+    \irq_pend[1]_i_5 
+       (.I0(s_axi_awready),
+        .I1(s_axi_wstrb[0]),
+        .I2(s_axi_awaddr[2]),
+        .O(\irq_pend[1]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hB080B080BF8FBFBF)) 
+    .INIT(64'hF0FFCCCCF044CCCC)) 
     \irq_pend[20]_i_1 
-       (.I0(s_axi_wdata[9]),
-        .I1(\irq_enabled[20]_i_3_n_0 ),
-        .I2(s_axi_awready),
-        .I3(\irq_pend[20]_i_2_n_0 ),
-        .I4(\irq_pend[21]_i_3_n_0 ),
-        .I5(\irq_pend[20]_i_3_n_0 ),
+       (.I0(\irq_pend[20]_i_2_n_0 ),
+        .I1(\irq_pend[20]_i_3_n_0 ),
+        .I2(s_axi_wdata[9]),
+        .I3(\irq_enabled[20]_i_3_n_0 ),
+        .I4(s_axi_awready),
+        .I5(\irq_pend[20]_i_4_n_0 ),
         .O(\irq_pend[20]_i_1_n_0 ));
-  LUT5 #(
-    .INIT(32'h00004F00)) 
+  LUT6 #(
+    .INIT(64'h0000000400000000)) 
     \irq_pend[20]_i_2 
-       (.I0(\irq_pend[20]_i_4_n_0 ),
-        .I1(s_axi_wstrb[2]),
-        .I2(\irq_pend[20]_i_3_n_0 ),
-        .I3(\irq_enabled[21]_i_5_n_0 ),
-        .I4(\irq_pend[20]_i_5_n_0 ),
+       (.I0(\irq_inv[19]_i_2_n_0 ),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[4]),
+        .I3(s_axi_awaddr[3]),
+        .I4(s_axi_awaddr[5]),
+        .I5(s_axi_wstrb[2]),
         .O(\irq_pend[20]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0041444111415541)) 
+    .INIT(64'hEFFEAFBEEBFAABBA)) 
     \irq_pend[20]_i_3 
        (.I0(p_1_in[4]),
-        .I1(data10),
-        .I2(p_1_in53_in),
-        .I3(\irq_mode_reg_n_0_[20] ),
+        .I1(\irq_mode_reg_n_0_[20] ),
+        .I2(data10),
+        .I3(p_1_in53_in),
         .I4(\irq_in_falling_reg_n_0_[20] ),
         .I5(\irq_in_rising_reg_n_0_[20] ),
         .O(\irq_pend[20]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFF0444FFFFFFFF)) 
+    .INIT(64'h00A0208000A00000)) 
     \irq_pend[20]_i_4 
-       (.I0(s_axi_wdata[20]),
-        .I1(s_axi_wstrb[2]),
-        .I2(p_1_in[4]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
+       (.I0(\irq_pend[21]_i_3_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(s_axi_wstrb[2]),
+        .I3(s_axi_awaddr[1]),
+        .I4(s_axi_wdata[20]),
+        .I5(p_1_in[4]),
         .O(\irq_pend[20]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h4044040CFFFFFFFF)) 
-    \irq_pend[20]_i_5 
-       (.I0(s_axi_awaddr[0]),
-        .I1(s_axi_wstrb[2]),
-        .I2(s_axi_wdata[20]),
-        .I3(p_1_in[4]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[20]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hB080B080BF8FBFBF)) 
     \irq_pend[21]_i_1 
@@ -17664,10 +17672,10 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(\irq_pend[21]_i_5_n_0 ),
         .I1(s_axi_wstrb[2]),
         .I2(\irq_pend[21]_i_4_n_0 ),
-        .I3(\irq_enabled[21]_i_5_n_0 ),
+        .I3(\irq_pend[15]_i_3_n_0 ),
         .I4(\irq_pend[21]_i_6_n_0 ),
         .O(\irq_pend[21]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair21" *) 
+  (* SOFT_HLUTNM = "soft_lutpair22" *) 
   LUT4 #(
     .INIT(16'h0100)) 
     \irq_pend[21]_i_3 
@@ -17714,7 +17722,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_wdata[9]),
         .I3(s_axi_awready),
         .I4(\irq_pend[2]_i_3_n_0 ),
-        .I5(\irq_pend[7]_i_5_n_0 ),
+        .I5(\irq_pend[7]_i_3_n_0 ),
         .O(\irq_pend[2]_i_1_n_0 ));
   LUT5 #(
     .INIT(32'hDDFC5500)) 
@@ -17726,24 +17734,24 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(p_2_in144_in),
         .O(\irq_pend[2]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hEFFEAFBEEBFAABBA)) 
+    .INIT(64'hFFFFFFFFCCF055AA)) 
     \irq_pend[2]_i_3 
-       (.I0(p_2_in144_in),
-        .I1(data19[11]),
-        .I2(data19[10]),
-        .I3(p_17_in143_in),
-        .I4(\irq_in_falling_reg_n_0_[2] ),
-        .I5(\irq_in_rising_reg_n_0_[2] ),
+       (.I0(p_17_in143_in),
+        .I1(\irq_in_falling_reg_n_0_[2] ),
+        .I2(\irq_in_rising_reg_n_0_[2] ),
+        .I3(data19[10]),
+        .I4(data19[11]),
+        .I5(p_2_in144_in),
         .O(\irq_pend[2]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hE2E2E2E2E2E2FFE2)) 
+    .INIT(64'hE222E222F3FFE222)) 
     \irq_pend[3]_i_1 
        (.I0(\irq_pend[3]_i_2_n_0 ),
-        .I1(\irq_enabled[3]_i_2_n_0 ),
-        .I2(\irq_pend[7]_i_3_n_0 ),
-        .I3(\irq_pend[3]_i_3_n_0 ),
-        .I4(\irq_pend[7]_i_5_n_0 ),
-        .I5(irq_inv[3]),
+        .I1(\irq_enabled[3]_i_4_n_0 ),
+        .I2(s_axi_wdata[9]),
+        .I3(s_axi_awready),
+        .I4(\irq_pend[3]_i_3_n_0 ),
+        .I5(\irq_pend[7]_i_3_n_0 ),
         .O(\irq_pend[3]_i_1_n_0 ));
   LUT5 #(
     .INIT(32'hDDFC5500)) 
@@ -17755,12 +17763,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(p_2_in135_in),
         .O(\irq_pend[3]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFBEBBBEEEBEAABE)) 
+    .INIT(64'hEFFEAFBEEBFAABBA)) 
     \irq_pend[3]_i_3 
        (.I0(p_2_in135_in),
-        .I1(data18[10]),
-        .I2(p_13_in134_in),
-        .I3(data18[11]),
+        .I1(data18[11]),
+        .I2(data18[10]),
+        .I3(p_13_in134_in),
         .I4(\irq_in_falling_reg_n_0_[3] ),
         .I5(\irq_in_rising_reg_n_0_[3] ),
         .O(\irq_pend[3]_i_3_n_0 ));
@@ -17778,31 +17786,30 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT5 #(
     .INIT(32'hFF7FFFFF)) 
     \irq_pend[4]_i_2 
-       (.I0(s_axi_awready),
-        .I1(s_axi_wstrb[0]),
-        .I2(\irq_enabled[21]_i_5_n_0 ),
+       (.I0(s_axi_wstrb[0]),
+        .I1(s_axi_awready),
+        .I2(s_axi_awaddr[2]),
         .I3(s_axi_awaddr[1]),
-        .I4(s_axi_awaddr[2]),
+        .I4(\irq_pend[15]_i_3_n_0 ),
         .O(\irq_pend[4]_i_2_n_0 ));
   LUT6 #(
     .INIT(64'h2000000000000000)) 
     \irq_pend[4]_i_3 
        (.I0(s_axi_awaddr[2]),
         .I1(s_axi_awaddr[1]),
-        .I2(\irq_enabled[21]_i_5_n_0 ),
+        .I2(\irq_pend[15]_i_3_n_0 ),
         .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awready),
-        .I5(s_axi_wstrb[0]),
+        .I4(s_axi_wstrb[0]),
+        .I5(s_axi_awready),
         .O(\irq_pend[4]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFF01010101010101)) 
+  LUT5 #(
+    .INIT(32'h0303AA03)) 
     \irq_pend[4]_i_4 
-       (.I0(\irq_pend[7]_i_5_n_0 ),
-        .I1(\irq_pend[4]_i_5_n_0 ),
-        .I2(irq_inv[4]),
+       (.I0(s_axi_wdata[9]),
+        .I1(\irq_pend[7]_i_3_n_0 ),
+        .I2(\irq_pend[4]_i_5_n_0 ),
         .I3(s_axi_awready),
-        .I4(s_axi_wdata[9]),
-        .I5(\irq_enabled[4]_i_2_n_0 ),
+        .I4(\irq_enabled[4]_i_4_n_0 ),
         .O(\irq_pend[4]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'h000000000F33AA55)) 
@@ -17815,121 +17822,151 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(p_2_in126_in),
         .O(\irq_pend[4]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'h454545FF45454545)) 
+    .INIT(64'hCF55CF55CF550055)) 
     \irq_pend[5]_i_1 
        (.I0(\irq_pend[5]_i_2_n_0 ),
-        .I1(\irq_pend[7]_i_3_n_0 ),
-        .I2(\irq_enabled[5]_i_2_n_0 ),
-        .I3(\irq_enabled[5]_i_4_n_0 ),
-        .I4(\irq_pend[7]_i_5_n_0 ),
-        .I5(\irq_pend[5]_i_3_n_0 ),
+        .I1(s_axi_wdata[9]),
+        .I2(\irq_pend[5]_i_3_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_pend[5]_i_4_n_0 ),
+        .I5(\irq_pend[5]_i_5_n_0 ),
         .O(\irq_pend[5]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000232320232323)) 
+    .INIT(64'h00000000770C443F)) 
     \irq_pend[5]_i_2 
-       (.I0(\irq_pend[4]_i_2_n_0 ),
-        .I1(\irq_enabled[5]_i_2_n_0 ),
-        .I2(s_axi_wdata[5]),
-        .I3(s_axi_awaddr[1]),
-        .I4(p_2_in117_in),
-        .I5(\irq_pend[4]_i_3_n_0 ),
+       (.I0(\irq_in_falling_reg_n_0_[5] ),
+        .I1(data16[11]),
+        .I2(\irq_in_rising_reg_n_0_[5] ),
+        .I3(data16[10]),
+        .I4(p_5_in116_in),
+        .I5(p_2_in117_in),
         .O(\irq_pend[5]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAACC0FF0)) 
+    .INIT(64'h0000000000008000)) 
     \irq_pend[5]_i_3 
-       (.I0(\irq_in_falling_reg_n_0_[5] ),
-        .I1(\irq_in_rising_reg_n_0_[5] ),
-        .I2(p_5_in116_in),
-        .I3(data16[10]),
-        .I4(data16[11]),
-        .I5(p_2_in117_in),
+       (.I0(s_axi_awaddr[5]),
+        .I1(\irq_pend[5]_i_6_n_0 ),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[4]),
+        .I5(s_axi_awaddr[1]),
         .O(\irq_pend[5]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hAA800000AA80AAAA)) 
+    \irq_pend[5]_i_4 
+       (.I0(\irq_pend[9]_i_6_n_0 ),
+        .I1(s_axi_awaddr[0]),
+        .I2(p_2_in117_in),
+        .I3(s_axi_wdata[5]),
+        .I4(s_axi_wstrb[0]),
+        .I5(\irq_pend[5]_i_2_n_0 ),
+        .O(\irq_pend[5]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFF15550555)) 
+    \irq_pend[5]_i_5 
+       (.I0(\irq_pend[5]_i_2_n_0 ),
+        .I1(\irq_pend[5]_i_7_n_0 ),
+        .I2(\irq_pend[15]_i_3_n_0 ),
+        .I3(s_axi_awaddr[2]),
+        .I4(s_axi_awaddr[1]),
+        .I5(\irq_pend[5]_i_3_n_0 ),
+        .O(\irq_pend[5]_i_5_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair6" *) 
+  LUT2 #(
+    .INIT(4'h2)) 
+    \irq_pend[5]_i_6 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[3]),
+        .O(\irq_pend[5]_i_6_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair152" *) 
+  LUT4 #(
+    .INIT(16'h4044)) 
+    \irq_pend[5]_i_7 
+       (.I0(s_axi_awaddr[0]),
+        .I1(s_axi_wstrb[0]),
+        .I2(s_axi_wdata[5]),
+        .I3(p_2_in117_in),
+        .O(\irq_pend[5]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hCF55CF55CF550055)) 
     \irq_pend[6]_i_1 
        (.I0(\irq_pend[6]_i_2_n_0 ),
         .I1(s_axi_wdata[9]),
-        .I2(\irq_pend[6]_i_3_n_0 ),
+        .I2(\irq_enabled[6]_i_2_n_0 ),
         .I3(s_axi_awready),
-        .I4(\irq_pend[6]_i_4_n_0 ),
-        .I5(\irq_pend[6]_i_5_n_0 ),
+        .I4(\irq_pend[6]_i_3_n_0 ),
+        .I5(\irq_pend[6]_i_4_n_0 ),
         .O(\irq_pend[6]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0041444111415541)) 
+    .INIT(64'h00000000770C443F)) 
     \irq_pend[6]_i_2 
-       (.I0(p_2_in108_in),
-        .I1(data15[10]),
-        .I2(p_1_in107_in),
-        .I3(data15[11]),
-        .I4(\irq_in_falling_reg_n_0_[6] ),
-        .I5(\irq_in_rising_reg_n_0_[6] ),
+       (.I0(\irq_in_falling_reg_n_0_[6] ),
+        .I1(data15[11]),
+        .I2(\irq_in_rising_reg_n_0_[6] ),
+        .I3(data15[10]),
+        .I4(p_1_in107_in),
+        .I5(p_2_in108_in),
         .O(\irq_pend[6]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h2000000000000000)) 
-    \irq_pend[6]_i_3 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(\irq_dest[7][5]_i_2_n_0 ),
-        .I3(s_axi_awaddr[5]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[6]_i_3_n_0 ));
-  LUT6 #(
     .INIT(64'hAA800000AA80AAAA)) 
-    \irq_pend[6]_i_4 
-       (.I0(\irq_pend[9]_i_7_n_0 ),
+    \irq_pend[6]_i_3 
+       (.I0(\irq_pend[9]_i_6_n_0 ),
         .I1(s_axi_awaddr[0]),
         .I2(p_2_in108_in),
         .I3(s_axi_wdata[6]),
         .I4(s_axi_wstrb[0]),
         .I5(\irq_pend[6]_i_2_n_0 ),
-        .O(\irq_pend[6]_i_4_n_0 ));
+        .O(\irq_pend[6]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFF000077F7)) 
-    \irq_pend[6]_i_5 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(s_axi_awaddr[2]),
-        .I2(s_axi_awaddr[1]),
-        .I3(\irq_pend[6]_i_6_n_0 ),
-        .I4(\irq_pend[6]_i_2_n_0 ),
-        .I5(\irq_pend[6]_i_3_n_0 ),
-        .O(\irq_pend[6]_i_5_n_0 ));
+    .INIT(64'hFFFFFFFF15155515)) 
+    \irq_pend[6]_i_4 
+       (.I0(\irq_pend[6]_i_2_n_0 ),
+        .I1(\irq_pend[15]_i_3_n_0 ),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_awaddr[1]),
+        .I4(\irq_pend[6]_i_5_n_0 ),
+        .I5(\irq_enabled[6]_i_2_n_0 ),
+        .O(\irq_pend[6]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair153" *) 
   LUT4 #(
     .INIT(16'h4044)) 
-    \irq_pend[6]_i_6 
+    \irq_pend[6]_i_5 
        (.I0(s_axi_awaddr[0]),
         .I1(s_axi_wstrb[0]),
         .I2(s_axi_wdata[6]),
         .I3(p_2_in108_in),
-        .O(\irq_pend[6]_i_6_n_0 ));
+        .O(\irq_pend[6]_i_5_n_0 ));
   LUT6 #(
-    .INIT(64'hE2E2E2E2E2E2FFE2)) 
+    .INIT(64'hFF03ABAB0003ABAB)) 
     \irq_pend[7]_i_1 
        (.I0(\irq_pend[7]_i_2_n_0 ),
-        .I1(\irq_enabled[7]_i_2_n_0 ),
-        .I2(\irq_pend[7]_i_3_n_0 ),
-        .I3(\irq_pend[7]_i_4_n_0 ),
-        .I4(\irq_pend[7]_i_5_n_0 ),
-        .I5(irq_inv[7]),
+        .I1(\irq_pend[7]_i_3_n_0 ),
+        .I2(\irq_pend[7]_i_4_n_0 ),
+        .I3(s_axi_awready),
+        .I4(\irq_enabled[7]_i_3_n_0 ),
+        .I5(s_axi_wdata[9]),
         .O(\irq_pend[7]_i_1_n_0 ));
   LUT5 #(
-    .INIT(32'h3333BA00)) 
+    .INIT(32'hC0E0FFE0)) 
     \irq_pend[7]_i_2 
        (.I0(s_axi_awaddr[1]),
-        .I1(\irq_pend[4]_i_2_n_0 ),
-        .I2(s_axi_awaddr[0]),
-        .I3(p_2_in103_in),
-        .I4(s_axi_wdata[7]),
+        .I1(\irq_pend[4]_i_3_n_0 ),
+        .I2(p_2_in103_in),
+        .I3(s_axi_wdata[7]),
+        .I4(\irq_pend[4]_i_2_n_0 ),
         .O(\irq_pend[7]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair58" *) 
-  LUT2 #(
-    .INIT(4'h8)) 
+  LUT6 #(
+    .INIT(64'h0000800080008000)) 
     \irq_pend[7]_i_3 
-       (.I0(s_axi_awready),
-        .I1(s_axi_wdata[9]),
+       (.I0(s_axi_awaddr[2]),
+        .I1(\irq_pend[15]_i_3_n_0 ),
+        .I2(s_axi_awready),
+        .I3(s_axi_wstrb[0]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[0]),
         .O(\irq_pend[7]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hFFFFFFFFAACC0FF0)) 
+    .INIT(64'h000000005533F00F)) 
     \irq_pend[7]_i_4 
        (.I0(\irq_in_falling_reg_n_0_[7] ),
         .I1(\irq_in_rising_reg_n_0_[7] ),
@@ -17939,152 +17976,132 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I5(p_2_in103_in),
         .O(\irq_pend[7]_i_4_n_0 ));
   LUT6 #(
-    .INIT(64'h0000800080008000)) 
-    \irq_pend[7]_i_5 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(s_axi_wstrb[0]),
-        .I2(s_axi_awaddr[2]),
-        .I3(s_axi_awready),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[0]),
-        .O(\irq_pend[7]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hEE00E000EEEEE0EE)) 
+    .INIT(64'hCF55CF55CF55C055)) 
     \irq_pend[8]_i_1 
        (.I0(\irq_pend[8]_i_2_n_0 ),
-        .I1(\irq_pend[8]_i_3_n_0 ),
-        .I2(\irq_pend[8]_i_4_n_0 ),
+        .I1(s_axi_wdata[9]),
+        .I2(\irq_pend[8]_i_3_n_0 ),
         .I3(s_axi_awready),
-        .I4(s_axi_wdata[9]),
+        .I4(\irq_pend[8]_i_4_n_0 ),
         .I5(\irq_pend[8]_i_5_n_0 ),
         .O(\irq_pend[8]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h7F7F3F3F7FFFFFFF)) 
-    \irq_pend[8]_i_2 
-       (.I0(\irq_pend[8]_i_6_n_0 ),
-        .I1(s_axi_awready),
-        .I2(\irq_pend[8]_i_4_n_0 ),
-        .I3(s_axi_awaddr[2]),
-        .I4(\irq_enabled[21]_i_5_n_0 ),
-        .I5(\irq_pend[8]_i_5_n_0 ),
-        .O(\irq_pend[8]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hA8008800A8AA88AA)) 
-    \irq_pend[8]_i_3 
-       (.I0(\irq_pend[9]_i_7_n_0 ),
-        .I1(s_axi_wdata[8]),
-        .I2(p_3_in[0]),
-        .I3(s_axi_wstrb[1]),
-        .I4(s_axi_awaddr[0]),
-        .I5(\irq_pend[8]_i_5_n_0 ),
-        .O(\irq_pend[8]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFF7FFFFFFFFF)) 
-    \irq_pend[8]_i_4 
-       (.I0(\irq_enabled[8]_i_4_n_0 ),
-        .I1(s_axi_awaddr[3]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[4]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[5]),
-        .O(\irq_pend[8]_i_4_n_0 ));
-  LUT6 #(
     .INIT(64'h1001504114055445)) 
-    \irq_pend[8]_i_5 
+    \irq_pend[8]_i_2 
        (.I0(p_3_in[0]),
         .I1(\irq_mode_reg_n_0_[8] ),
         .I2(data130),
         .I3(\irq_in_q_reg_n_0_[8] ),
         .I4(\irq_in_falling_reg_n_0_[8] ),
         .I5(\irq_in_rising_reg_n_0_[8] ),
-        .O(\irq_pend[8]_i_5_n_0 ));
+        .O(\irq_pend[8]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hF0DDF0F0FFFFFFFF)) 
-    \irq_pend[8]_i_6 
-       (.I0(p_3_in[0]),
+    .INIT(64'h0000000000000200)) 
+    \irq_pend[8]_i_3 
+       (.I0(s_axi_awaddr[5]),
+        .I1(s_axi_awaddr[2]),
+        .I2(s_axi_awaddr[0]),
+        .I3(\irq_pend[8]_i_6_n_0 ),
+        .I4(s_axi_awaddr[4]),
+        .I5(s_axi_awaddr[1]),
+        .O(\irq_pend[8]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'h000022007F7F7F7F)) 
+    \irq_pend[8]_i_4 
+       (.I0(\irq_pend[15]_i_3_n_0 ),
+        .I1(\irq_pend[8]_i_7_n_0 ),
+        .I2(s_axi_awaddr[2]),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[0]),
+        .I5(\irq_pend[8]_i_2_n_0 ),
+        .O(\irq_pend[8]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hA8008800A8AA88AA)) 
+    \irq_pend[8]_i_5 
+       (.I0(\irq_pend[9]_i_6_n_0 ),
         .I1(s_axi_wdata[8]),
-        .I2(\irq_pend[8]_i_5_n_0 ),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_wstrb[1]),
-        .I5(\irq_enabled[14]_i_4_n_0 ),
+        .I2(p_3_in[0]),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[0]),
+        .I5(\irq_pend[8]_i_2_n_0 ),
+        .O(\irq_pend[8]_i_5_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  LUT2 #(
+    .INIT(4'h8)) 
+    \irq_pend[8]_i_6 
+       (.I0(s_axi_wstrb[1]),
+        .I1(s_axi_awaddr[3]),
         .O(\irq_pend[8]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'h00B0FFFFFFFFFFFF)) 
+    \irq_pend[8]_i_7 
+       (.I0(s_axi_wdata[8]),
+        .I1(p_3_in[0]),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[2]),
+        .O(\irq_pend[8]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hCF55CF55CF55C055)) 
     \irq_pend[9]_i_1 
        (.I0(\irq_pend[9]_i_2_n_0 ),
         .I1(s_axi_wdata[9]),
-        .I2(\irq_pend[9]_i_3_n_0 ),
+        .I2(\irq_enabled[9]_i_3_n_0 ),
         .I3(s_axi_awready),
-        .I4(\irq_pend[9]_i_4_n_0 ),
-        .I5(\irq_pend[9]_i_5_n_0 ),
+        .I4(\irq_pend[9]_i_3_n_0 ),
+        .I5(\irq_pend[9]_i_4_n_0 ),
         .O(\irq_pend[9]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000009A959F9)) 
+    .INIT(64'h1001504114055445)) 
     \irq_pend[9]_i_2 
-       (.I0(data120),
-        .I1(p_21_in),
-        .I2(\irq_mode_reg_n_0_[9] ),
-        .I3(\irq_in_falling_reg_n_0_[9] ),
-        .I4(\irq_in_rising_reg_n_0_[9] ),
-        .I5(p_3_in[1]),
+       (.I0(p_3_in[1]),
+        .I1(\irq_mode_reg_n_0_[9] ),
+        .I2(data120),
+        .I3(p_21_in),
+        .I4(\irq_in_falling_reg_n_0_[9] ),
+        .I5(\irq_in_rising_reg_n_0_[9] ),
         .O(\irq_pend[9]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000008000000)) 
+    .INIT(64'h00000C007F7F7F7F)) 
     \irq_pend[9]_i_3 
-       (.I0(s_axi_awaddr[5]),
-        .I1(s_axi_wstrb[1]),
-        .I2(s_axi_awaddr[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(s_axi_awaddr[3]),
-        .I5(\irq_pend[9]_i_6_n_0 ),
-        .O(\irq_pend[9]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hA0808080AA8A8A8A)) 
-    \irq_pend[9]_i_4 
-       (.I0(\irq_pend[9]_i_7_n_0 ),
-        .I1(s_axi_wdata[9]),
-        .I2(s_axi_wstrb[1]),
-        .I3(s_axi_awaddr[0]),
-        .I4(p_3_in[1]),
-        .I5(\irq_pend[9]_i_2_n_0 ),
-        .O(\irq_pend[9]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h000022007F7F7F7F)) 
-    \irq_pend[9]_i_5 
-       (.I0(\irq_enabled[21]_i_5_n_0 ),
-        .I1(\irq_pend[9]_i_8_n_0 ),
-        .I2(s_axi_awaddr[2]),
+       (.I0(s_axi_awaddr[2]),
+        .I1(\irq_pend[15]_i_3_n_0 ),
+        .I2(\irq_pend[9]_i_5_n_0 ),
         .I3(s_axi_wstrb[1]),
         .I4(s_axi_awaddr[0]),
         .I5(\irq_pend[9]_i_2_n_0 ),
+        .O(\irq_pend[9]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hA8008800A8AA88AA)) 
+    \irq_pend[9]_i_4 
+       (.I0(\irq_pend[9]_i_6_n_0 ),
+        .I1(s_axi_wdata[9]),
+        .I2(p_3_in[1]),
+        .I3(s_axi_wstrb[1]),
+        .I4(s_axi_awaddr[0]),
+        .I5(\irq_pend[9]_i_2_n_0 ),
+        .O(\irq_pend[9]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h00B0FFFFFFFFFFFF)) 
+    \irq_pend[9]_i_5 
+       (.I0(s_axi_wdata[9]),
+        .I1(p_3_in[1]),
+        .I2(s_axi_wstrb[1]),
+        .I3(s_axi_awaddr[0]),
+        .I4(s_axi_awaddr[1]),
+        .I5(s_axi_awaddr[2]),
         .O(\irq_pend[9]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair235" *) 
-  LUT2 #(
-    .INIT(4'hE)) 
-    \irq_pend[9]_i_6 
-       (.I0(s_axi_awaddr[4]),
-        .I1(s_axi_awaddr[2]),
-        .O(\irq_pend[9]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair2" *) 
+  (* SOFT_HLUTNM = "soft_lutpair4" *) 
   LUT5 #(
     .INIT(32'h00010000)) 
-    \irq_pend[9]_i_7 
+    \irq_pend[9]_i_6 
        (.I0(s_axi_awaddr[5]),
         .I1(s_axi_awaddr[3]),
         .I2(s_axi_awaddr[4]),
         .I3(s_axi_awaddr[1]),
         .I4(s_axi_awaddr[2]),
-        .O(\irq_pend[9]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'h2022FFFFFFFFFFFF)) 
-    \irq_pend[9]_i_8 
-       (.I0(s_axi_wstrb[1]),
-        .I1(s_axi_awaddr[0]),
-        .I2(s_axi_wdata[9]),
-        .I3(p_3_in[1]),
-        .I4(s_axi_awaddr[1]),
-        .I5(s_axi_awaddr[2]),
-        .O(\irq_pend[9]_i_8_n_0 ));
+        .O(\irq_pend[9]_i_6_n_0 ));
   FDRE \irq_pend_reg[0] 
        (.C(aclk),
         .CE(1'b1),
@@ -18230,9 +18247,9 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .dest_out(irq_in_sync),
         .src_clk(1'b0),
         .src_in(irq_in));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT5 #(
-    .INIT(32'h01310030)) 
+    .INIT(32'h02320030)) 
     \pcie_msi_fsm_state[0]_i_1 
        (.I0(pcie_msi_req_fifo_rd_en_i_2_n_0),
         .I1(pcie_msi_fsm_state[1]),
@@ -18250,7 +18267,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_fsm_state[1]_i_2_n_0 ),
         .O(\pcie_msi_fsm_state[1]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hFDCDFCCCF1C1FCCC)) 
+    .INIT(64'hFECEFCCCF2C2FCCC)) 
     \pcie_msi_fsm_state[1]_i_2 
        (.I0(pcie_msi_req_fifo_rd_en_i_2_n_0),
         .I1(pcie_msi_fsm_state[1]),
@@ -18271,13 +18288,13 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(\pcie_msi_fsm_state[1]_i_1_n_0 ),
         .Q(pcie_msi_fsm_state[1]),
         .R(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair162" *) 
+  (* SOFT_HLUTNM = "soft_lutpair165" *) 
   LUT1 #(
     .INIT(2'h1)) 
     \pcie_msi_req_fifo_count[0]_i_1 
        (.I0(pcie_msi_req_fifo_count_reg[0]),
         .O(\pcie_msi_req_fifo_count[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair162" *) 
+  (* SOFT_HLUTNM = "soft_lutpair165" *) 
   LUT3 #(
     .INIT(8'h96)) 
     \pcie_msi_req_fifo_count[1]_i_1 
@@ -18285,7 +18302,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_req_fifo_rd_en),
         .I2(pcie_msi_req_fifo_count_reg[1]),
         .O(\pcie_msi_req_fifo_count[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT4 #(
     .INIT(16'hA96A)) 
     \pcie_msi_req_fifo_count[2]_i_1 
@@ -18294,7 +18311,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(pcie_msi_req_fifo_count_reg[1]),
         .I3(pcie_msi_req_fifo_rd_en),
         .O(\pcie_msi_req_fifo_count[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
   LUT5 #(
     .INIT(32'hBF40FD02)) 
     \pcie_msi_req_fifo_count[3]_i_1 
@@ -18330,7 +18347,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_req_fifo_count_reg[4]),
         .I5(\pcie_msi_req_fifo_count[5]_i_4_n_0 ),
         .O(\pcie_msi_req_fifo_count[5]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  (* SOFT_HLUTNM = "soft_lutpair28" *) 
   LUT3 #(
     .INIT(8'h02)) 
     \pcie_msi_req_fifo_count[5]_i_3 
@@ -18338,7 +18355,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_req_fifo_count_reg[0]),
         .I2(pcie_msi_req_fifo_count_reg[1]),
         .O(\pcie_msi_req_fifo_count[5]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair8" *) 
+  (* SOFT_HLUTNM = "soft_lutpair11" *) 
   LUT5 #(
     .INIT(32'h40000000)) 
     \pcie_msi_req_fifo_count[5]_i_4 
@@ -18414,17 +18431,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(pcie_msi_req_fifo_rd_data0[4]),
         .Q(pcie_msi_req_fifo_rd_data[4]),
         .R(1'b0));
-  (* SOFT_HLUTNM = "soft_lutpair7" *) 
+  (* SOFT_HLUTNM = "soft_lutpair10" *) 
   LUT4 #(
-    .INIT(16'h0002)) 
+    .INIT(16'h0200)) 
     pcie_msi_req_fifo_rd_en_i_1
-       (.I0(pcie_msi_enabled),
+       (.I0(pcie_msi_req_fifo_rd_en_i_2_n_0),
         .I1(pcie_msi_fsm_state[1]),
         .I2(pcie_msi_fsm_state[0]),
-        .I3(pcie_msi_req_fifo_rd_en_i_2_n_0),
+        .I3(pcie_msi_enabled),
         .O(pcie_msi_req_fifo_rd_en_i_1_n_0));
   LUT6 #(
-    .INIT(64'h0000000000000001)) 
+    .INIT(64'hFFFFFFFFFFFFFFFE)) 
     pcie_msi_req_fifo_rd_en_i_2
        (.I0(pcie_msi_req_fifo_count_reg[3]),
         .I1(pcie_msi_req_fifo_count_reg[2]),
@@ -18444,14 +18461,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \pcie_msi_req_fifo_rd_ptr[0]_i_1 
        (.I0(pcie_msi_req_fifo_rd_ptr_reg[0]),
         .O(\pcie_msi_req_fifo_rd_ptr[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  (* SOFT_HLUTNM = "soft_lutpair167" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \pcie_msi_req_fifo_rd_ptr[1]_i_1 
        (.I0(pcie_msi_req_fifo_rd_ptr_reg[0]),
         .I1(pcie_msi_req_fifo_rd_ptr_reg[1]),
         .O(\pcie_msi_req_fifo_rd_ptr[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair164" *) 
+  (* SOFT_HLUTNM = "soft_lutpair167" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \pcie_msi_req_fifo_rd_ptr[2]_i_1 
@@ -18459,7 +18476,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_req_fifo_rd_ptr_reg[1]),
         .I2(pcie_msi_req_fifo_rd_ptr_reg[0]),
         .O(\pcie_msi_req_fifo_rd_ptr[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \pcie_msi_req_fifo_rd_ptr[3]_i_1 
@@ -18468,15 +18485,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(pcie_msi_req_fifo_rd_ptr_reg[0]),
         .I3(pcie_msi_req_fifo_rd_ptr_reg[1]),
         .O(\pcie_msi_req_fifo_rd_ptr[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair10" *) 
+  (* SOFT_HLUTNM = "soft_lutpair13" *) 
   LUT5 #(
     .INIT(32'h6AAAAAAA)) 
     \pcie_msi_req_fifo_rd_ptr[4]_i_1 
        (.I0(pcie_msi_req_fifo_rd_ptr_reg[4]),
-        .I1(pcie_msi_req_fifo_rd_ptr_reg[3]),
-        .I2(pcie_msi_req_fifo_rd_ptr_reg[1]),
-        .I3(pcie_msi_req_fifo_rd_ptr_reg[0]),
-        .I4(pcie_msi_req_fifo_rd_ptr_reg[2]),
+        .I1(pcie_msi_req_fifo_rd_ptr_reg[1]),
+        .I2(pcie_msi_req_fifo_rd_ptr_reg[0]),
+        .I3(pcie_msi_req_fifo_rd_ptr_reg[2]),
+        .I4(pcie_msi_req_fifo_rd_ptr_reg[3]),
         .O(\pcie_msi_req_fifo_rd_ptr[4]_i_1_n_0 ));
   FDRE \pcie_msi_req_fifo_rd_ptr_reg[0] 
        (.C(aclk),
@@ -18548,7 +18565,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[0]_i_4_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[0]_i_5_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair186" *) 
+  (* SOFT_HLUTNM = "soft_lutpair203" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_10 
@@ -18556,7 +18573,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[15]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[15][0] ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair174" *) 
+  (* SOFT_HLUTNM = "soft_lutpair199" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_11 
@@ -18564,7 +18581,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[17]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[17][0] ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair167" *) 
+  (* SOFT_HLUTNM = "soft_lutpair210" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_12 
@@ -18572,7 +18589,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[11]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[11][0] ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair180" *) 
+  (* SOFT_HLUTNM = "soft_lutpair196" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_13 
@@ -18590,7 +18607,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[0]_i_22_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[0]_i_23_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair181" *) 
+  (* SOFT_HLUTNM = "soft_lutpair194" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_15 
@@ -18598,7 +18615,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[8][0] ),
         .I2(\irq_ack[8]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair166" *) 
+  (* SOFT_HLUTNM = "soft_lutpair78" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_16 
@@ -18606,7 +18623,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[10][0] ),
         .I2(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair194" *) 
+  (* SOFT_HLUTNM = "soft_lutpair181" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_17 
@@ -18614,7 +18631,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[12][0] ),
         .I2(\irq_ack[12]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair190" *) 
+  (* SOFT_HLUTNM = "soft_lutpair185" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_18 
@@ -18622,7 +18639,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data15[0]),
         .I2(\irq_ack[6]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair199" *) 
+  (* SOFT_HLUTNM = "soft_lutpair176" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_19 
@@ -18630,7 +18647,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data17[0]),
         .I2(\irq_ack[4]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_19_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair173" *) 
+  (* SOFT_HLUTNM = "soft_lutpair76" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \pcie_msi_req_fifo_wr_data[0]_i_2 
@@ -18647,7 +18664,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data19[0]),
         .I5(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair197" *) 
+  (* SOFT_HLUTNM = "soft_lutpair77" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_21 
@@ -18655,7 +18672,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[3]_i_3_n_0 ),
         .I2(data18[0]),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair202" *) 
+  (* SOFT_HLUTNM = "soft_lutpair189" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_22 
@@ -18663,7 +18680,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[5]_i_3_n_0 ),
         .I2(data16[0]),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair191" *) 
+  (* SOFT_HLUTNM = "soft_lutpair186" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_23 
@@ -18671,7 +18688,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[7]_i_3_n_0 ),
         .I2(data14[0]),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair175" *) 
+  (* SOFT_HLUTNM = "soft_lutpair191" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_3 
@@ -18689,7 +18706,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[0]_i_10_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[0]_i_11_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair171" *) 
+  (* SOFT_HLUTNM = "soft_lutpair173" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_5 
@@ -18697,7 +18714,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[19]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[19][0] ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair76" *) 
+  (* SOFT_HLUTNM = "soft_lutpair198" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_6 
@@ -18705,7 +18722,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[16][0] ),
         .I2(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair185" *) 
+  (* SOFT_HLUTNM = "soft_lutpair169" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_7 
@@ -18723,7 +18740,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[0]_i_16_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[0]_i_17_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[0]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair196" *) 
+  (* SOFT_HLUTNM = "soft_lutpair168" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[0]_i_9 
@@ -18741,7 +18758,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[1]_i_4_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[1]_i_5_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair184" *) 
+  (* SOFT_HLUTNM = "soft_lutpair202" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_10 
@@ -18749,7 +18766,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[15][1] ),
         .I2(\irq_ack[15]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair174" *) 
+  (* SOFT_HLUTNM = "soft_lutpair197" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_11 
@@ -18757,7 +18774,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[17][1] ),
         .I2(\irq_ack[17]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair165" *) 
+  (* SOFT_HLUTNM = "soft_lutpair209" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_12 
@@ -18765,7 +18782,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[11][1] ),
         .I2(\irq_ack[11]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair179" *) 
+  (* SOFT_HLUTNM = "soft_lutpair205" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_13 
@@ -18783,7 +18800,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[1]_i_22_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[1]_i_23_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair181" *) 
+  (* SOFT_HLUTNM = "soft_lutpair194" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_15 
@@ -18791,7 +18808,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[8][1] ),
         .I2(\irq_ack[8]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair166" *) 
+  (* SOFT_HLUTNM = "soft_lutpair206" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_16 
@@ -18799,7 +18816,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[10][1] ),
         .I2(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair194" *) 
+  (* SOFT_HLUTNM = "soft_lutpair181" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_17 
@@ -18807,7 +18824,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[12][1] ),
         .I2(\irq_ack[12]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair190" *) 
+  (* SOFT_HLUTNM = "soft_lutpair185" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_18 
@@ -18815,7 +18832,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data15[1]),
         .I2(\irq_ack[6]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair203" *) 
+  (* SOFT_HLUTNM = "soft_lutpair176" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_19 
@@ -18823,7 +18840,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data17[1]),
         .I2(\irq_ack[4]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_19_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair233" *) 
+  (* SOFT_HLUTNM = "soft_lutpair175" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \pcie_msi_req_fifo_wr_data[1]_i_2 
@@ -18840,7 +18857,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data19[1]),
         .I5(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair197" *) 
+  (* SOFT_HLUTNM = "soft_lutpair177" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_21 
@@ -18848,7 +18865,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[3]_i_3_n_0 ),
         .I2(data18[1]),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair202" *) 
+  (* SOFT_HLUTNM = "soft_lutpair180" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_22 
@@ -18856,7 +18873,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data16[1]),
         .I2(\irq_ack[5]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair189" *) 
+  (* SOFT_HLUTNM = "soft_lutpair184" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_23 
@@ -18864,7 +18881,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data14[1]),
         .I2(\irq_ack[7]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair175" *) 
+  (* SOFT_HLUTNM = "soft_lutpair191" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_3 
@@ -18882,7 +18899,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[1]_i_10_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[1]_i_11_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair171" *) 
+  (* SOFT_HLUTNM = "soft_lutpair173" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_5 
@@ -18890,7 +18907,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[19][1] ),
         .I2(\irq_ack[19]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair200" *) 
+  (* SOFT_HLUTNM = "soft_lutpair198" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_6 
@@ -18898,7 +18915,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[16][1] ),
         .I2(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair185" *) 
+  (* SOFT_HLUTNM = "soft_lutpair169" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_7 
@@ -18916,7 +18933,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[1]_i_16_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[1]_i_17_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[1]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair206" *) 
+  (* SOFT_HLUTNM = "soft_lutpair168" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[1]_i_9 
@@ -18934,7 +18951,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[2]_i_4_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[2]_i_5_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair184" *) 
+  (* SOFT_HLUTNM = "soft_lutpair202" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_10 
@@ -18942,7 +18959,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[15][2] ),
         .I2(\irq_ack[15]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair176" *) 
+  (* SOFT_HLUTNM = "soft_lutpair197" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_11 
@@ -18950,7 +18967,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[17][2] ),
         .I2(\irq_ack[17]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair165" *) 
+  (* SOFT_HLUTNM = "soft_lutpair209" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_12 
@@ -18958,7 +18975,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[11][2] ),
         .I2(\irq_ack[11]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair179" *) 
+  (* SOFT_HLUTNM = "soft_lutpair205" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_13 
@@ -18976,7 +18993,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[2]_i_22_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[2]_i_23_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair182" *) 
+  (* SOFT_HLUTNM = "soft_lutpair195" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_15 
@@ -18984,7 +19001,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[8][2] ),
         .I2(\irq_ack[8]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair168" *) 
+  (* SOFT_HLUTNM = "soft_lutpair206" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_16 
@@ -18992,7 +19009,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[10][2] ),
         .I2(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair195" *) 
+  (* SOFT_HLUTNM = "soft_lutpair182" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_17 
@@ -19000,7 +19017,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[12][2] ),
         .I2(\irq_ack[12]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair192" *) 
+  (* SOFT_HLUTNM = "soft_lutpair187" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_18 
@@ -19008,7 +19025,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data15[2]),
         .I2(\irq_ack[6]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair203" *) 
+  (* SOFT_HLUTNM = "soft_lutpair178" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_19 
@@ -19024,16 +19041,16 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[20][2] ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h00000000FFB800B8)) 
+    .INIT(64'h00000000FFD800D8)) 
     \pcie_msi_req_fifo_wr_data[2]_i_20 
-       (.I0(data21[2]),
-        .I1(\irq_ack[1]_i_3_n_0 ),
+       (.I0(\irq_ack[1]_i_3_n_0 ),
+        .I1(data21[2]),
         .I2(\irq_dest_reg_n_0_[1][2] ),
         .I3(\irq_ack[2]_i_3_n_0 ),
         .I4(data19[2]),
         .I5(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair198" *) 
+  (* SOFT_HLUTNM = "soft_lutpair177" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_21 
@@ -19041,15 +19058,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[3]_i_3_n_0 ),
         .I2(data18[2]),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair77" *) 
+  (* SOFT_HLUTNM = "soft_lutpair189" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_22 
        (.I0(\irq_ack[6]_i_3_n_0 ),
-        .I1(data16[2]),
-        .I2(\irq_ack[5]_i_3_n_0 ),
+        .I1(\irq_ack[5]_i_3_n_0 ),
+        .I2(data16[2]),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair189" *) 
+  (* SOFT_HLUTNM = "soft_lutpair184" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_23 
@@ -19057,7 +19074,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data14[2]),
         .I2(\irq_ack[7]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair177" *) 
+  (* SOFT_HLUTNM = "soft_lutpair192" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_3 
@@ -19075,7 +19092,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[2]_i_10_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[2]_i_11_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair172" *) 
+  (* SOFT_HLUTNM = "soft_lutpair174" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_5 
@@ -19091,7 +19108,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[16][2] ),
         .I2(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair187" *) 
+  (* SOFT_HLUTNM = "soft_lutpair171" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_7 
@@ -19109,7 +19126,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[2]_i_16_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[2]_i_17_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[2]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair206" *) 
+  (* SOFT_HLUTNM = "soft_lutpair170" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[2]_i_9 
@@ -19127,7 +19144,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[3]_i_4_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[3]_i_5_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair186" *) 
+  (* SOFT_HLUTNM = "soft_lutpair203" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_10 
@@ -19135,7 +19152,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[15]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[15][3] ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_10_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair176" *) 
+  (* SOFT_HLUTNM = "soft_lutpair199" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_11 
@@ -19143,7 +19160,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[17]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[17][3] ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair167" *) 
+  (* SOFT_HLUTNM = "soft_lutpair211" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_12 
@@ -19151,7 +19168,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[11]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[11][3] ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_12_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair183" *) 
+  (* SOFT_HLUTNM = "soft_lutpair207" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_13 
@@ -19169,7 +19186,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[3]_i_22_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[3]_i_23_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_14_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair182" *) 
+  (* SOFT_HLUTNM = "soft_lutpair195" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_15 
@@ -19177,7 +19194,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[8][3] ),
         .I2(\irq_ack[8]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair168" *) 
+  (* SOFT_HLUTNM = "soft_lutpair208" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_16 
@@ -19185,7 +19202,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[10][3] ),
         .I2(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_16_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair195" *) 
+  (* SOFT_HLUTNM = "soft_lutpair182" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_17 
@@ -19193,7 +19210,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[12][3] ),
         .I2(\irq_ack[12]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair192" *) 
+  (* SOFT_HLUTNM = "soft_lutpair187" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_18 
@@ -19201,7 +19218,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data15[3]),
         .I2(\irq_ack[6]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair204" *) 
+  (* SOFT_HLUTNM = "soft_lutpair178" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_19 
@@ -19209,7 +19226,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data17[3]),
         .I2(\irq_ack[4]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_19_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair234" *) 
+  (* SOFT_HLUTNM = "soft_lutpair233" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \pcie_msi_req_fifo_wr_data[3]_i_2 
@@ -19226,7 +19243,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data19[3]),
         .I5(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_20_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair198" *) 
+  (* SOFT_HLUTNM = "soft_lutpair179" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_21 
@@ -19234,7 +19251,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[3]_i_3_n_0 ),
         .I2(data18[3]),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair205" *) 
+  (* SOFT_HLUTNM = "soft_lutpair190" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_22 
@@ -19242,7 +19259,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[5]_i_3_n_0 ),
         .I2(data16[3]),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair191" *) 
+  (* SOFT_HLUTNM = "soft_lutpair186" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_23 
@@ -19250,7 +19267,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[7]_i_3_n_0 ),
         .I2(data14[3]),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_23_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair177" *) 
+  (* SOFT_HLUTNM = "soft_lutpair192" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_3 
@@ -19268,7 +19285,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[3]_i_10_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[3]_i_11_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair172" *) 
+  (* SOFT_HLUTNM = "soft_lutpair174" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_5 
@@ -19276,7 +19293,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[19]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[19][3] ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_5_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair201" *) 
+  (* SOFT_HLUTNM = "soft_lutpair200" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_6 
@@ -19284,7 +19301,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[16][3] ),
         .I2(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair187" *) 
+  (* SOFT_HLUTNM = "soft_lutpair171" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_7 
@@ -19302,7 +19319,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[3]_i_16_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[3]_i_17_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_8_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair207" *) 
+  (* SOFT_HLUTNM = "soft_lutpair170" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[3]_i_9 
@@ -19310,41 +19327,41 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[13]_i_3_n_0 ),
         .I2(\irq_dest_reg_n_0_[13][3] ),
         .O(\pcie_msi_req_fifo_wr_data[3]_i_9_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFFFFFE)) 
+  LUT5 #(
+    .INIT(32'hFFFFFFFE)) 
     \pcie_msi_req_fifo_wr_data[4]_i_1 
        (.I0(\pcie_msi_req_fifo_wr_data[4]_i_3_n_0 ),
         .I1(\pcie_msi_req_fifo_wr_data[4]_i_4_n_0 ),
         .I2(\pcie_msi_req_fifo_wr_data[4]_i_5_n_0 ),
         .I3(\pcie_msi_req_fifo_wr_data[4]_i_6_n_0 ),
-        .I4(\pcie_msi_req_fifo_wr_data[4]_i_7_n_0 ),
-        .I5(pcie_msi_req_fifo_wr_en6_out),
+        .I4(pcie_msi_req_fifo_wr_en6_out),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair178" *) 
-  LUT3 #(
-    .INIT(8'hBA)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_10 
-       (.I0(\irq_ack[19]_i_3_n_0 ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
-        .I2(\irq_ack[18]_i_3_n_0 ),
-        .O(\pcie_msi_req_fifo_wr_data[4]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFF55551110)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_11 
+    \pcie_msi_req_fifo_wr_data[4]_i_10 
        (.I0(\pcie_msi_req_fifo_wr_data[4]_i_15_n_0 ),
         .I1(\pcie_msi_req_fifo_wr_data[4]_i_16_n_0 ),
         .I2(\pcie_msi_req_fifo_wr_data[4]_i_17_n_0 ),
         .I3(\pcie_msi_req_fifo_wr_data[4]_i_18_n_0 ),
         .I4(\pcie_msi_req_fifo_wr_data[4]_i_19_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[4]_i_20_n_0 ),
-        .O(\pcie_msi_req_fifo_wr_data[4]_i_11_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair173" *) 
+        .O(\pcie_msi_req_fifo_wr_data[4]_i_10_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair175" *) 
   LUT3 #(
     .INIT(8'hEA)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_12 
+    \pcie_msi_req_fifo_wr_data[4]_i_11 
        (.I0(\irq_ack[20]_i_3_n_0 ),
         .I1(\irq_dest_reg_n_0_[19][4] ),
         .I2(\irq_ack[19]_i_3_n_0 ),
+        .O(\pcie_msi_req_fifo_wr_data[4]_i_11_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair77" *) 
+  LUT4 #(
+    .INIT(16'hFFFE)) 
+    \pcie_msi_req_fifo_wr_data[4]_i_12 
+       (.I0(\irq_ack[13]_i_3_n_0 ),
+        .I1(\irq_ack[4]_i_3_n_0 ),
+        .I2(\irq_ack[7]_i_3_n_0 ),
+        .I3(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'hFFFFFFFFB0FF00B0)) 
@@ -19356,7 +19373,6 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[4]),
         .I5(pcie_msi_vector_width_s[5]),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_13_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair154" *) 
   LUT2 #(
     .INIT(4'hB)) 
     \pcie_msi_req_fifo_wr_data[4]_i_14 
@@ -19371,7 +19387,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[16][4] ),
         .I2(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_15_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair188" *) 
+  (* SOFT_HLUTNM = "soft_lutpair172" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_16 
@@ -19389,15 +19405,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[4]_i_26_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[4]_i_27_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_17_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair207" *) 
+  (* SOFT_HLUTNM = "soft_lutpair172" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_18 
        (.I0(\irq_ack[14]_i_3_n_0 ),
-        .I1(\irq_ack[13]_i_3_n_0 ),
-        .I2(\irq_dest_reg_n_0_[13][4] ),
+        .I1(\irq_dest_reg_n_0_[13][4] ),
+        .I2(\irq_ack[13]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_18_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair188" *) 
+  (* SOFT_HLUTNM = "soft_lutpair204" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_19 
@@ -19410,12 +19426,12 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \pcie_msi_req_fifo_wr_data[4]_i_2 
        (.I0(\irq_dest_reg_n_0_[21][4] ),
         .I1(pcie_msi_req_fifo_wr_en6_out),
-        .I2(\pcie_msi_req_fifo_wr_data[4]_i_9_n_0 ),
-        .I3(\pcie_msi_req_fifo_wr_data[4]_i_10_n_0 ),
-        .I4(\pcie_msi_req_fifo_wr_data[4]_i_11_n_0 ),
-        .I5(\pcie_msi_req_fifo_wr_data[4]_i_12_n_0 ),
+        .I2(\pcie_msi_req_fifo_wr_data[4]_i_8_n_0 ),
+        .I3(\pcie_msi_req_fifo_wr_data[4]_i_9_n_0 ),
+        .I4(\pcie_msi_req_fifo_wr_data[4]_i_10_n_0 ),
+        .I5(\pcie_msi_req_fifo_wr_data[4]_i_11_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair178" *) 
+  (* SOFT_HLUTNM = "soft_lutpair201" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_20 
@@ -19424,23 +19440,23 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(\irq_dest_reg_n_0_[17][4] ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_20_n_0 ));
   LUT5 #(
-    .INIT(32'hAEAEFFAE)) 
+    .INIT(32'hBAFFBABA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_21 
        (.I0(\pcie_msi_req_fifo_wr_data[4]_i_28_n_0 ),
-        .I1(pcie_msi_vector_width_s[2]),
-        .I2(\irq_dest_reg_n_0_[21][2] ),
-        .I3(pcie_msi_vector_width_s[3]),
-        .I4(\irq_dest_reg_n_0_[21][3] ),
+        .I1(\irq_dest_reg_n_0_[21][2] ),
+        .I2(pcie_msi_vector_width_s[2]),
+        .I3(\irq_dest_reg_n_0_[21][3] ),
+        .I4(pcie_msi_vector_width_s[3]),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_21_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair169" *) 
+  (* SOFT_HLUTNM = "soft_lutpair210" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_22 
        (.I0(\irq_ack[12]_i_3_n_0 ),
-        .I1(\irq_ack[11]_i_3_n_0 ),
-        .I2(\irq_dest_reg_n_0_[11][4] ),
+        .I1(\irq_dest_reg_n_0_[11][4] ),
+        .I2(\irq_ack[11]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_22_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair180" *) 
+  (* SOFT_HLUTNM = "soft_lutpair207" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_23 
@@ -19458,7 +19474,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(\pcie_msi_req_fifo_wr_data[4]_i_33_n_0 ),
         .I5(\pcie_msi_req_fifo_wr_data[4]_i_34_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_24_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair183" *) 
+  (* SOFT_HLUTNM = "soft_lutpair196" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_25 
@@ -19466,7 +19482,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[8][4] ),
         .I2(\irq_ack[8]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_25_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair169" *) 
+  (* SOFT_HLUTNM = "soft_lutpair208" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_26 
@@ -19474,7 +19490,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_dest_reg_n_0_[10][4] ),
         .I2(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_26_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair196" *) 
+  (* SOFT_HLUTNM = "soft_lutpair183" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_27 
@@ -19492,7 +19508,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(pcie_msi_vector_width_s[2]),
         .I5(\irq_dest_reg_n_0_[21][2] ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_28_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair193" *) 
+  (* SOFT_HLUTNM = "soft_lutpair188" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_29 
@@ -19500,16 +19516,16 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(data15[4]),
         .I2(\irq_ack[6]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_29_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair76" *) 
+  (* SOFT_HLUTNM = "soft_lutpair78" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \pcie_msi_req_fifo_wr_data[4]_i_3 
-       (.I0(\irq_ack[16]_i_3_n_0 ),
-        .I1(\irq_ack[3]_i_3_n_0 ),
-        .I2(\irq_ack[10]_i_3_n_0 ),
-        .I3(\irq_ack[17]_i_3_n_0 ),
+       (.I0(\irq_ack[15]_i_3_n_0 ),
+        .I1(\irq_ack[17]_i_3_n_0 ),
+        .I2(\irq_ack[11]_i_3_n_0 ),
+        .I3(\irq_ack[10]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair204" *) 
+  (* SOFT_HLUTNM = "soft_lutpair180" *) 
   LUT3 #(
     .INIT(8'hBA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_30 
@@ -19527,7 +19543,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(data19[4]),
         .I5(\irq_ack[3]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_31_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair199" *) 
+  (* SOFT_HLUTNM = "soft_lutpair179" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_32 
@@ -19535,7 +19551,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[3]_i_3_n_0 ),
         .I2(data18[4]),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_32_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair205" *) 
+  (* SOFT_HLUTNM = "soft_lutpair190" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_33 
@@ -19543,7 +19559,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(\irq_ack[5]_i_3_n_0 ),
         .I2(data16[4]),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_33_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair193" *) 
+  (* SOFT_HLUTNM = "soft_lutpair188" *) 
   LUT3 #(
     .INIT(8'hEA)) 
     \pcie_msi_req_fifo_wr_data[4]_i_34 
@@ -19554,40 +19570,33 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT4 #(
     .INIT(16'hFFFE)) 
     \pcie_msi_req_fifo_wr_data[4]_i_4 
-       (.I0(\irq_ack[8]_i_3_n_0 ),
-        .I1(\irq_ack[0]_i_3_n_0 ),
-        .I2(\irq_ack[11]_i_3_n_0 ),
-        .I3(\irq_ack[13]_i_3_n_0 ),
+       (.I0(\irq_ack[12]_i_3_n_0 ),
+        .I1(\irq_ack[6]_i_3_n_0 ),
+        .I2(\irq_ack[14]_i_3_n_0 ),
+        .I3(\irq_ack[16]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair77" *) 
+  (* SOFT_HLUTNM = "soft_lutpair76" *) 
   LUT4 #(
     .INIT(16'hFFFE)) 
     \pcie_msi_req_fifo_wr_data[4]_i_5 
-       (.I0(\irq_ack[14]_i_3_n_0 ),
-        .I1(\irq_ack[5]_i_3_n_0 ),
-        .I2(\irq_ack[6]_i_3_n_0 ),
-        .I3(\irq_ack[4]_i_3_n_0 ),
-        .O(\pcie_msi_req_fifo_wr_data[4]_i_5_n_0 ));
-  LUT4 #(
-    .INIT(16'hFFFE)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_6 
        (.I0(\irq_ack[9]_i_3_n_0 ),
-        .I1(\irq_ack[18]_i_3_n_0 ),
-        .I2(\irq_ack[7]_i_3_n_0 ),
-        .I3(\irq_ack[15]_i_3_n_0 ),
+        .I1(\irq_ack[20]_i_3_n_0 ),
+        .I2(\irq_ack[18]_i_3_n_0 ),
+        .I3(\irq_ack[0]_i_3_n_0 ),
+        .O(\pcie_msi_req_fifo_wr_data[4]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFFFFEFFFF)) 
+    \pcie_msi_req_fifo_wr_data[4]_i_6 
+       (.I0(\pcie_msi_req_fifo_wr_data[4]_i_12_n_0 ),
+        .I1(\irq_ack[19]_i_3_n_0 ),
+        .I2(\irq_ack[8]_i_3_n_0 ),
+        .I3(\irq_ack[5]_i_3_n_0 ),
+        .I4(\irq_ack[1]_i_3_n_0 ),
+        .I5(\irq_ack[2]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_6_n_0 ));
-  LUT5 #(
-    .INIT(32'hFFFFFFFB)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_7 
-       (.I0(\irq_ack[2]_i_3_n_0 ),
-        .I1(\irq_ack[1]_i_3_n_0 ),
-        .I2(\irq_ack[12]_i_3_n_0 ),
-        .I3(\irq_ack[20]_i_3_n_0 ),
-        .I4(\irq_ack[19]_i_3_n_0 ),
-        .O(\pcie_msi_req_fifo_wr_data[4]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'h0002000000000000)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_8 
+    \pcie_msi_req_fifo_wr_data[4]_i_7 
        (.I0(\pcie_msi_req_fifo_wr_data[4]_i_13_n_0 ),
         .I1(\irq_dest_reg_n_0_[21][5] ),
         .I2(\pcie_msi_req_fifo_wr_data[4]_i_14_n_0 ),
@@ -19598,9 +19607,17 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   (* SOFT_HLUTNM = "soft_lutpair234" *) 
   LUT2 #(
     .INIT(4'h2)) 
-    \pcie_msi_req_fifo_wr_data[4]_i_9 
+    \pcie_msi_req_fifo_wr_data[4]_i_8 
        (.I0(\irq_ack[20]_i_3_n_0 ),
         .I1(\irq_dest_reg_n_0_[20][4] ),
+        .O(\pcie_msi_req_fifo_wr_data[4]_i_8_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair193" *) 
+  LUT3 #(
+    .INIT(8'hBA)) 
+    \pcie_msi_req_fifo_wr_data[4]_i_9 
+       (.I0(\irq_ack[19]_i_3_n_0 ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .I2(\irq_ack[18]_i_3_n_0 ),
         .O(\pcie_msi_req_fifo_wr_data[4]_i_9_n_0 ));
   FDRE \pcie_msi_req_fifo_wr_data_reg[0] 
        (.C(aclk),
@@ -19643,14 +19660,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     \pcie_msi_req_fifo_wr_ptr[0]_i_1 
        (.I0(pcie_msi_req_fifo_wr_ptr_reg[0]),
         .O(p_0_in[0]));
-  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  (* SOFT_HLUTNM = "soft_lutpair166" *) 
   LUT2 #(
     .INIT(4'h6)) 
     \pcie_msi_req_fifo_wr_ptr[1]_i_1 
        (.I0(pcie_msi_req_fifo_wr_ptr_reg[0]),
         .I1(pcie_msi_req_fifo_wr_ptr_reg[1]),
         .O(p_0_in[1]));
-  (* SOFT_HLUTNM = "soft_lutpair163" *) 
+  (* SOFT_HLUTNM = "soft_lutpair166" *) 
   LUT3 #(
     .INIT(8'h6A)) 
     \pcie_msi_req_fifo_wr_ptr[2]_i_1 
@@ -19658,7 +19675,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_req_fifo_wr_ptr_reg[1]),
         .I2(pcie_msi_req_fifo_wr_ptr_reg[0]),
         .O(p_0_in[2]));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT4 #(
     .INIT(16'h6AAA)) 
     \pcie_msi_req_fifo_wr_ptr[3]_i_1 
@@ -19667,15 +19684,15 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(pcie_msi_req_fifo_wr_ptr_reg[0]),
         .I3(pcie_msi_req_fifo_wr_ptr_reg[1]),
         .O(p_0_in[3]));
-  (* SOFT_HLUTNM = "soft_lutpair9" *) 
+  (* SOFT_HLUTNM = "soft_lutpair12" *) 
   LUT5 #(
     .INIT(32'h6AAAAAAA)) 
     \pcie_msi_req_fifo_wr_ptr[4]_i_1 
        (.I0(pcie_msi_req_fifo_wr_ptr_reg[4]),
-        .I1(pcie_msi_req_fifo_wr_ptr_reg[3]),
-        .I2(pcie_msi_req_fifo_wr_ptr_reg[1]),
-        .I3(pcie_msi_req_fifo_wr_ptr_reg[0]),
-        .I4(pcie_msi_req_fifo_wr_ptr_reg[2]),
+        .I1(pcie_msi_req_fifo_wr_ptr_reg[1]),
+        .I2(pcie_msi_req_fifo_wr_ptr_reg[0]),
+        .I3(pcie_msi_req_fifo_wr_ptr_reg[2]),
+        .I4(pcie_msi_req_fifo_wr_ptr_reg[3]),
         .O(p_0_in[4]));
   FDRE \pcie_msi_req_fifo_wr_ptr_reg[0] 
        (.C(aclk),
@@ -19831,7 +19848,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(\pcie_msi_vector[4]_i_1_n_0 ),
         .Q(pcie_msi_vector[4]),
         .R(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair156" *) 
+  (* SOFT_HLUTNM = "soft_lutpair157" *) 
   LUT3 #(
     .INIT(8'h01)) 
     \pcie_msi_vector_width_s[0]_i_1 
@@ -19839,7 +19856,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_vector_width[1]),
         .I2(pcie_msi_vector_width[2]),
         .O(\pcie_msi_vector_width_s[0]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair156" *) 
+  (* SOFT_HLUTNM = "soft_lutpair157" *) 
   LUT3 #(
     .INIT(8'h02)) 
     \pcie_msi_vector_width_s[1]_i_1 
@@ -19847,21 +19864,21 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I1(pcie_msi_vector_width[1]),
         .I2(pcie_msi_vector_width[2]),
         .O(\pcie_msi_vector_width_s[1]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair259" *) 
+  (* SOFT_HLUTNM = "soft_lutpair260" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \pcie_msi_vector_width_s[2]_i_1 
        (.I0(pcie_msi_vector_width[1]),
         .I1(pcie_msi_vector_width[0]),
         .O(\pcie_msi_vector_width_s[2]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair259" *) 
+  (* SOFT_HLUTNM = "soft_lutpair260" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \pcie_msi_vector_width_s[3]_i_1 
        (.I0(pcie_msi_vector_width[1]),
         .I1(pcie_msi_vector_width[0]),
         .O(\pcie_msi_vector_width_s[3]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair258" *) 
+  (* SOFT_HLUTNM = "soft_lutpair259" *) 
   LUT2 #(
     .INIT(4'h2)) 
     \pcie_msi_vector_width_s[4]_i_1 
@@ -19874,7 +19891,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
        (.I0(pcie_msi_vector_width[2]),
         .I1(pcie_msi_vector_width[1]),
         .O(\pcie_msi_vector_width_s[5]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair258" *) 
+  (* SOFT_HLUTNM = "soft_lutpair259" *) 
   LUT2 #(
     .INIT(4'h8)) 
     \pcie_msi_vector_width_s[5]_i_2 
@@ -19917,6 +19934,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(\pcie_msi_vector_width_s[5]_i_2_n_0 ),
         .Q(pcie_msi_vector_width_s[5]),
         .R(1'b0));
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
   LUT1 #(
     .INIT(2'h1)) 
     s_axi_arready_INST_0
@@ -19927,7 +19945,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
     s_axi_awready_i_1
        (.I0(aresetn),
         .O(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT5 #(
     .INIT(32'h00D00000)) 
     s_axi_awready_i_2
@@ -19944,7 +19962,7 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .D(s_axi_awready0),
         .Q(s_axi_awready),
         .R(s_axi_awready_i_1_n_0));
-  (* SOFT_HLUTNM = "soft_lutpair11" *) 
+  (* SOFT_HLUTNM = "soft_lutpair14" *) 
   LUT3 #(
     .INIT(8'hDC)) 
     s_axi_bvalid_i_1
@@ -19960,14 +19978,14 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .Q(s_axi_bvalid),
         .R(s_axi_awready_i_1_n_0));
   LUT6 #(
-    .INIT(64'h8888888888080808)) 
+    .INIT(64'h000000008A800000)) 
     \s_axi_rdata[0]_i_1 
-       (.I0(\s_axi_rdata[0]_i_2_n_0 ),
-        .I1(\s_axi_rdata[10]_i_3_n_0 ),
-        .I2(\s_axi_rdata[0]_i_3_n_0 ),
-        .I3(\s_axi_rdata[10]_i_5_n_0 ),
-        .I4(pcie_msi_req_fifo_count_reg[0]),
-        .I5(s_axi_araddr[5]),
+       (.I0(aresetn),
+        .I1(\s_axi_rdata[0]_i_2_n_0 ),
+        .I2(s_axi_araddr[5]),
+        .I3(\s_axi_rdata[0]_i_3_n_0 ),
+        .I4(s_axi_arvalid),
+        .I5(s_axi_rvalid_reg_0),
         .O(\s_axi_rdata[0]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -19992,388 +20010,409 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[0]_i_12 
-       (.I0(\irq_dest_reg_n_0_[19][0] ),
-        .I1(\irq_dest_reg_n_0_[18][0] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[17][0] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[16][0] ),
-        .O(\s_axi_rdata[0]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h54045E0EFFFFFFFF)) 
-    \s_axi_rdata[0]_i_2 
-       (.I0(s_axi_araddr[4]),
-        .I1(\s_axi_rdata_reg[0]_i_4_n_0 ),
-        .I2(s_axi_araddr[3]),
-        .I3(\s_axi_rdata_reg[0]_i_5_n_0 ),
-        .I4(\s_axi_rdata[0]_i_6_n_0 ),
-        .I5(s_axi_araddr[5]),
-        .O(\s_axi_rdata[0]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h47FF000047FF47FF)) 
-    \s_axi_rdata[0]_i_3 
-       (.I0(\irq_enabled_reg_n_0_[0] ),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(\irq_pend_reg_n_0_[0] ),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .I4(\s_axi_rdata[0]_i_7_n_0 ),
-        .I5(\s_axi_rdata[16]_i_3_n_0 ),
-        .O(\s_axi_rdata[0]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[0]_i_6 
-       (.I0(\irq_dest_reg_n_0_[20][0] ),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(\irq_dest_reg_n_0_[21][0] ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[0]_i_12_n_0 ),
-        .O(\s_axi_rdata[0]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'h505F3030505F3F3F)) 
-    \s_axi_rdata[0]_i_7 
-       (.I0(pcie_msi_req_fifo_rd_ptr_reg[0]),
-        .I1(pcie_msi_req_fifo_wr_ptr_reg[0]),
-        .I2(\s_axi_rdata[16]_i_4_n_0 ),
-        .I3(pcie_msi_enabled),
-        .I4(\s_axi_rdata[16]_i_2_n_0 ),
-        .I5(\irq_ack_reg_n_0_[0] ),
-        .O(\s_axi_rdata[0]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[0]_i_8 
        (.I0(data18[0]),
         .I1(data19[0]),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[1][0] ),
         .I4(s_axi_araddr[0]),
         .I5(data21[0]),
-        .O(\s_axi_rdata[0]_i_8_n_0 ));
+        .O(\s_axi_rdata[0]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[0]_i_9 
+    \s_axi_rdata[0]_i_13 
        (.I0(data14[0]),
         .I1(data15[0]),
         .I2(s_axi_araddr[1]),
         .I3(data16[0]),
         .I4(s_axi_araddr[0]),
         .I5(data17[0]),
-        .O(\s_axi_rdata[0]_i_9_n_0 ));
+        .O(\s_axi_rdata[0]_i_13_n_0 ));
   LUT5 #(
-    .INIT(32'h88888808)) 
+    .INIT(32'h30773044)) 
+    \s_axi_rdata[0]_i_2 
+       (.I0(\s_axi_rdata[0]_i_4_n_0 ),
+        .I1(s_axi_araddr[4]),
+        .I2(\s_axi_rdata_reg[0]_i_5_n_0 ),
+        .I3(s_axi_araddr[3]),
+        .I4(\s_axi_rdata_reg[0]_i_6_n_0 ),
+        .O(\s_axi_rdata[0]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFEAFAEAAFEAAAEA)) 
+    \s_axi_rdata[0]_i_3 
+       (.I0(\s_axi_rdata[0]_i_7_n_0 ),
+        .I1(\s_axi_rdata[0]_i_8_n_0 ),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(\s_axi_rdata[21]_i_4_n_0 ),
+        .I4(\irq_enabled_reg_n_0_[0] ),
+        .I5(\irq_pend_reg_n_0_[0] ),
+        .O(\s_axi_rdata[0]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[0]_i_4 
+       (.I0(\irq_dest_reg_n_0_[20][0] ),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(\irq_dest_reg_n_0_[21][0] ),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[0]_i_9_n_0 ),
+        .O(\s_axi_rdata[0]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000000800000)) 
+    \s_axi_rdata[0]_i_7 
+       (.I0(pcie_msi_req_fifo_count_reg[0]),
+        .I1(s_axi_araddr[0]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[3]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[2]),
+        .O(\s_axi_rdata[0]_i_7_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[0]_i_8 
+       (.I0(pcie_msi_req_fifo_rd_ptr_reg[0]),
+        .I1(pcie_msi_req_fifo_wr_ptr_reg[0]),
+        .I2(\s_axi_rdata[16]_i_3_n_0 ),
+        .I3(pcie_msi_enabled),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
+        .I5(\irq_ack_reg_n_0_[0] ),
+        .O(\s_axi_rdata[0]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[0]_i_9 
+       (.I0(\irq_dest_reg_n_0_[19][0] ),
+        .I1(\irq_dest_reg_n_0_[18][0] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[17][0] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[16][0] ),
+        .O(\s_axi_rdata[0]_i_9_n_0 ));
+  LUT6 #(
+    .INIT(64'h11D111D111D1DDD1)) 
     \s_axi_rdata[10]_i_1 
        (.I0(\s_axi_rdata[10]_i_2_n_0 ),
-        .I1(\s_axi_rdata[10]_i_3_n_0 ),
-        .I2(\s_axi_rdata[10]_i_4_n_0 ),
-        .I3(\s_axi_rdata[10]_i_5_n_0 ),
-        .I4(s_axi_araddr[5]),
+        .I1(s_axi_araddr[5]),
+        .I2(\s_axi_rdata_reg[10]_i_3_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[10]_i_4_n_0 ),
+        .I5(s_axi_araddr[3]),
         .O(\s_axi_rdata[10]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[10]_i_10 
-       (.I0(data14[10]),
-        .I1(data15[10]),
-        .I2(s_axi_araddr[1]),
-        .I3(data16[10]),
-        .I4(s_axi_araddr[0]),
-        .I5(data17[10]),
-        .O(\s_axi_rdata[10]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[10]_i_11 
        (.I0(data100),
         .I1(data110),
         .I2(s_axi_araddr[1]),
         .I3(data120),
         .I4(s_axi_araddr[0]),
         .I5(data130),
-        .O(\s_axi_rdata[10]_i_11_n_0 ));
+        .O(\s_axi_rdata[10]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[10]_i_12 
+    \s_axi_rdata[10]_i_11 
        (.I0(data60),
         .I1(data70),
         .I2(s_axi_araddr[1]),
         .I3(data80),
         .I4(s_axi_araddr[0]),
         .I5(data90),
-        .O(\s_axi_rdata[10]_i_12_n_0 ));
+        .O(\s_axi_rdata[10]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'h0DDD0D0D0DDDDDDD)) 
+    \s_axi_rdata[10]_i_2 
+       (.I0(\irq_ack_reg_n_0_[10] ),
+        .I1(\s_axi_rdata[18]_i_5_n_0 ),
+        .I2(\s_axi_rdata[21]_i_4_n_0 ),
+        .I3(p_3_in[2]),
+        .I4(\s_axi_rdata[18]_i_4_n_0 ),
+        .I5(p_4_in[2]),
+        .O(\s_axi_rdata[10]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[10]_i_4 
+       (.I0(data10),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(data00),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[10]_i_7_n_0 ),
+        .O(\s_axi_rdata[10]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[10]_i_13 
+    \s_axi_rdata[10]_i_7 
        (.I0(data20),
         .I1(data30),
         .I2(s_axi_araddr[1]),
         .I3(data40),
         .I4(s_axi_araddr[0]),
         .I5(data50),
-        .O(\s_axi_rdata[10]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h54045E0EFFFFFFFF)) 
-    \s_axi_rdata[10]_i_2 
-       (.I0(s_axi_araddr[4]),
-        .I1(\s_axi_rdata_reg[10]_i_6_n_0 ),
-        .I2(s_axi_araddr[3]),
-        .I3(\s_axi_rdata_reg[10]_i_7_n_0 ),
-        .I4(\s_axi_rdata[10]_i_8_n_0 ),
-        .I5(s_axi_araddr[5]),
-        .O(\s_axi_rdata[10]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair155" *) 
-  LUT3 #(
-    .INIT(8'h40)) 
-    \s_axi_rdata[10]_i_3 
-       (.I0(s_axi_rvalid_reg_0),
-        .I1(s_axi_arvalid),
-        .I2(aresetn),
-        .O(\s_axi_rdata[10]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'h0D000DDDDDDDDDDD)) 
-    \s_axi_rdata[10]_i_4 
-       (.I0(\irq_ack_reg_n_0_[10] ),
-        .I1(\s_axi_rdata[21]_i_7_n_0 ),
-        .I2(p_3_in[2]),
-        .I3(\s_axi_rdata[16]_i_2_n_0 ),
-        .I4(p_4_in[2]),
-        .I5(\s_axi_rdata[21]_i_6_n_0 ),
-        .O(\s_axi_rdata[10]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair23" *) 
-  LUT5 #(
-    .INIT(32'h00400000)) 
-    \s_axi_rdata[10]_i_5 
-       (.I0(s_axi_araddr[3]),
-        .I1(s_axi_araddr[4]),
-        .I2(s_axi_araddr[1]),
-        .I3(s_axi_araddr[2]),
-        .I4(s_axi_araddr[0]),
-        .O(\s_axi_rdata[10]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[10]_i_8 
-       (.I0(data10),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(data00),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[10]_i_13_n_0 ),
-        .O(\s_axi_rdata[10]_i_8_n_0 ));
+        .O(\s_axi_rdata[10]_i_7_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[10]_i_9 
+    \s_axi_rdata[10]_i_8 
        (.I0(data18[10]),
         .I1(data19[10]),
         .I2(s_axi_araddr[1]),
         .I3(\irq_inv_reg_n_0_[1] ),
         .I4(s_axi_araddr[0]),
         .I5(data21[10]),
-        .O(\s_axi_rdata[10]_i_9_n_0 ));
+        .O(\s_axi_rdata[10]_i_8_n_0 ));
   LUT6 #(
-    .INIT(64'h0000000808080008)) 
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[10]_i_9 
+       (.I0(data14[10]),
+        .I1(data15[10]),
+        .I2(s_axi_araddr[1]),
+        .I3(data16[10]),
+        .I4(s_axi_araddr[0]),
+        .I5(data17[10]),
+        .O(\s_axi_rdata[10]_i_9_n_0 ));
+  LUT4 #(
+    .INIT(16'hBB3B)) 
     \s_axi_rdata[11]_i_1 
-       (.I0(aresetn),
-        .I1(s_axi_arvalid),
-        .I2(s_axi_rvalid_reg_0),
-        .I3(\s_axi_rdata[11]_i_2_n_0 ),
-        .I4(s_axi_araddr[5]),
-        .I5(\s_axi_rdata[11]_i_3_n_0 ),
+       (.I0(s_axi_rready),
+        .I1(aresetn),
+        .I2(s_axi_arvalid),
+        .I3(s_axi_rvalid_reg_0),
         .O(\s_axi_rdata[11]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[11]_i_10 
-       (.I0(data18[11]),
-        .I1(data19[11]),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_mode_reg_n_0_[1] ),
-        .I4(s_axi_araddr[0]),
-        .I5(data21[11]),
-        .O(\s_axi_rdata[11]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[11]_i_11 
        (.I0(data14[11]),
         .I1(data15[11]),
         .I2(s_axi_araddr[1]),
         .I3(data16[11]),
         .I4(s_axi_araddr[0]),
         .I5(data17[11]),
-        .O(\s_axi_rdata[11]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'h0DDD0D0D0DDDDDDD)) 
-    \s_axi_rdata[11]_i_2 
-       (.I0(\irq_ack_reg_n_0_[11] ),
-        .I1(\s_axi_rdata[21]_i_7_n_0 ),
-        .I2(\s_axi_rdata[21]_i_6_n_0 ),
-        .I3(p_4_in[3]),
-        .I4(\s_axi_rdata[21]_i_5_n_0 ),
-        .I5(p_3_in[3]),
-        .O(\s_axi_rdata[11]_i_2_n_0 ));
-  LUT5 #(
-    .INIT(32'hCF88CFBB)) 
-    \s_axi_rdata[11]_i_3 
-       (.I0(\s_axi_rdata[11]_i_4_n_0 ),
-        .I1(s_axi_araddr[4]),
-        .I2(\s_axi_rdata_reg[11]_i_5_n_0 ),
-        .I3(s_axi_araddr[3]),
-        .I4(\s_axi_rdata_reg[11]_i_6_n_0 ),
-        .O(\s_axi_rdata[11]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[11]_i_4 
-       (.I0(\irq_mode_reg_n_0_[20] ),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(\irq_mode_reg_n_0_[21] ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[11]_i_7_n_0 ),
-        .O(\s_axi_rdata[11]_i_4_n_0 ));
+        .O(\s_axi_rdata[11]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[11]_i_7 
-       (.I0(\irq_mode_reg_n_0_[19] ),
-        .I1(\irq_mode_reg_n_0_[18] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_mode_reg_n_0_[17] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_mode_reg_n_0_[16] ),
-        .O(\s_axi_rdata[11]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[11]_i_8 
+    \s_axi_rdata[11]_i_11 
        (.I0(\irq_mode_reg_n_0_[11] ),
         .I1(\irq_mode_reg_n_0_[10] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_mode_reg_n_0_[9] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_mode_reg_n_0_[8] ),
-        .O(\s_axi_rdata[11]_i_8_n_0 ));
+        .O(\s_axi_rdata[11]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[11]_i_9 
+    \s_axi_rdata[11]_i_12 
        (.I0(\irq_mode_reg_n_0_[15] ),
         .I1(\irq_mode_reg_n_0_[14] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_mode_reg_n_0_[13] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_mode_reg_n_0_[12] ),
+        .O(\s_axi_rdata[11]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'h11D111D111D1DDD1)) 
+    \s_axi_rdata[11]_i_2 
+       (.I0(\s_axi_rdata[11]_i_3_n_0 ),
+        .I1(s_axi_araddr[5]),
+        .I2(\s_axi_rdata_reg[11]_i_4_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[11]_i_5_n_0 ),
+        .I5(s_axi_araddr[3]),
+        .O(\s_axi_rdata[11]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h0DDD0D0D0DDDDDDD)) 
+    \s_axi_rdata[11]_i_3 
+       (.I0(\irq_ack_reg_n_0_[11] ),
+        .I1(\s_axi_rdata[18]_i_5_n_0 ),
+        .I2(\s_axi_rdata[21]_i_4_n_0 ),
+        .I3(p_3_in[3]),
+        .I4(\s_axi_rdata[18]_i_4_n_0 ),
+        .I5(p_4_in[3]),
+        .O(\s_axi_rdata[11]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[11]_i_5 
+       (.I0(\irq_mode_reg_n_0_[20] ),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(\irq_mode_reg_n_0_[21] ),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[11]_i_8_n_0 ),
+        .O(\s_axi_rdata[11]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[11]_i_8 
+       (.I0(\irq_mode_reg_n_0_[19] ),
+        .I1(\irq_mode_reg_n_0_[18] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_mode_reg_n_0_[17] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_mode_reg_n_0_[16] ),
+        .O(\s_axi_rdata[11]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[11]_i_9 
+       (.I0(data18[11]),
+        .I1(data19[11]),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_mode_reg_n_0_[1] ),
+        .I4(s_axi_araddr[0]),
+        .I5(data21[11]),
         .O(\s_axi_rdata[11]_i_9_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[12]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_4_in[4]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_3_in[4]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_3_in[4]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_4_in[4]),
         .I4(\irq_ack_reg_n_0_[12] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[12]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[13]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_4_in[5]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_3_in[5]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_3_in[5]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_4_in[5]),
         .I4(\irq_ack_reg_n_0_[13] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[13]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[14]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_4_in[6]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_3_in[6]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_3_in[6]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_4_in[6]),
         .I4(\irq_ack_reg_n_0_[14] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[14]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[15]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_4_in[7]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_3_in[7]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_3_in[7]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_4_in[7]),
         .I4(\irq_ack_reg_n_0_[15] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[15]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0F4F054F0A4F004F)) 
+    .INIT(64'h0F2F0C2F032F002F)) 
     \s_axi_rdata[16]_i_1 
-       (.I0(\s_axi_rdata[16]_i_2_n_0 ),
-        .I1(\irq_ack_reg_n_0_[16] ),
-        .I2(\s_axi_rdata[16]_i_3_n_0 ),
-        .I3(\s_axi_rdata[16]_i_4_n_0 ),
-        .I4(p_1_in[0]),
-        .I5(p_5_in[0]),
+       (.I0(\irq_ack_reg_n_0_[16] ),
+        .I1(\s_axi_rdata[21]_i_6_n_0 ),
+        .I2(\s_axi_rdata[16]_i_2_n_0 ),
+        .I3(\s_axi_rdata[16]_i_3_n_0 ),
+        .I4(p_5_in[0]),
+        .I5(p_1_in[0]),
         .O(\s_axi_rdata[16]_i_1_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  (* SOFT_HLUTNM = "soft_lutpair27" *) 
   LUT5 #(
-    .INIT(32'hFFFFDD4D)) 
+    .INIT(32'h00080700)) 
     \s_axi_rdata[16]_i_2 
        (.I0(s_axi_araddr[0]),
-        .I1(s_axi_araddr[2]),
-        .I2(s_axi_araddr[1]),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[3]),
         .I3(s_axi_araddr[4]),
-        .I4(s_axi_araddr[3]),
+        .I4(s_axi_araddr[2]),
         .O(\s_axi_rdata[16]_i_2_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair25" *) 
-  LUT5 #(
-    .INIT(32'h01114000)) 
-    \s_axi_rdata[16]_i_3 
-       (.I0(s_axi_araddr[3]),
-        .I1(s_axi_araddr[2]),
-        .I2(s_axi_araddr[0]),
-        .I3(s_axi_araddr[1]),
-        .I4(s_axi_araddr[4]),
-        .O(\s_axi_rdata[16]_i_3_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair26" *) 
   LUT5 #(
     .INIT(32'h00151454)) 
-    \s_axi_rdata[16]_i_4 
+    \s_axi_rdata[16]_i_3 
        (.I0(s_axi_araddr[3]),
         .I1(s_axi_araddr[1]),
         .I2(s_axi_araddr[0]),
         .I3(s_axi_araddr[4]),
         .I4(s_axi_araddr[2]),
-        .O(\s_axi_rdata[16]_i_4_n_0 ));
+        .O(\s_axi_rdata[16]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[17]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_5_in[1]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_1_in[1]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_1_in[1]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_5_in[1]),
         .I4(\irq_ack_reg_n_0_[17] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[17]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h8A808A80FFFF8A80)) 
+    .INIT(64'hBAFFBAFF8AFFBAFF)) 
     \s_axi_rdata[18]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_5_in[2]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_1_in[2]),
-        .I4(\irq_ack_reg_n_0_[18] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+       (.I0(s_axi_rready),
+        .I1(s_axi_rvalid_reg_0),
+        .I2(s_axi_arvalid),
+        .I3(aresetn),
+        .I4(\s_axi_rdata[18]_i_3_n_0 ),
+        .I5(s_axi_araddr[5]),
         .O(\s_axi_rdata[18]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'h8A808A80FFFF8A80)) 
+    \s_axi_rdata[18]_i_2 
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_1_in[2]),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_5_in[2]),
+        .I4(\irq_ack_reg_n_0_[18] ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
+        .O(\s_axi_rdata[18]_i_2_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair27" *) 
+  LUT5 #(
+    .INIT(32'h03070707)) 
+    \s_axi_rdata[18]_i_3 
+       (.I0(s_axi_araddr[2]),
+        .I1(s_axi_araddr[4]),
+        .I2(s_axi_araddr[3]),
+        .I3(s_axi_araddr[1]),
+        .I4(s_axi_araddr[0]),
+        .O(\s_axi_rdata[18]_i_3_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  LUT5 #(
+    .INIT(32'h000015AA)) 
+    \s_axi_rdata[18]_i_4 
+       (.I0(s_axi_araddr[2]),
+        .I1(s_axi_araddr[0]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[4]),
+        .I4(s_axi_araddr[3]),
+        .O(\s_axi_rdata[18]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  LUT5 #(
+    .INIT(32'hFFFFDFFF)) 
+    \s_axi_rdata[18]_i_5 
+       (.I0(s_axi_araddr[2]),
+        .I1(s_axi_araddr[4]),
+        .I2(s_axi_araddr[0]),
+        .I3(s_axi_araddr[1]),
+        .I4(s_axi_araddr[3]),
+        .O(\s_axi_rdata[18]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hFA00F8F800000000)) 
     \s_axi_rdata[19]_i_1 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
         .I1(p_5_in[3]),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
+        .I2(\s_axi_rdata[19]_i_2_n_0 ),
         .I3(p_1_in[3]),
-        .I4(\irq_ack_reg_n_0_[19] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
+        .I5(\s_axi_rdata[21]_i_5_n_0 ),
         .O(\s_axi_rdata[19]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h8888888888080808)) 
+    .INIT(64'h0000200000000000)) 
+    \s_axi_rdata[19]_i_2 
+       (.I0(\irq_ack_reg_n_0_[19] ),
+        .I1(s_axi_araddr[3]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[0]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[2]),
+        .O(\s_axi_rdata[19]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'h000000008A800000)) 
     \s_axi_rdata[1]_i_1 
-       (.I0(\s_axi_rdata[1]_i_2_n_0 ),
-        .I1(\s_axi_rdata[10]_i_3_n_0 ),
-        .I2(\s_axi_rdata[1]_i_3_n_0 ),
-        .I3(pcie_msi_req_fifo_count_reg[1]),
-        .I4(\s_axi_rdata[10]_i_5_n_0 ),
-        .I5(s_axi_araddr[5]),
+       (.I0(aresetn),
+        .I1(\s_axi_rdata[1]_i_2_n_0 ),
+        .I2(s_axi_araddr[5]),
+        .I3(\s_axi_rdata[1]_i_3_n_0 ),
+        .I4(s_axi_arvalid),
+        .I5(s_axi_rvalid_reg_0),
         .O(\s_axi_rdata[1]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -20388,42 +20427,62 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[1]_i_11 
+       (.I0(data14[1]),
+        .I1(data15[1]),
+        .I2(s_axi_araddr[1]),
+        .I3(data16[1]),
+        .I4(s_axi_araddr[0]),
+        .I5(data17[1]),
+        .O(\s_axi_rdata[1]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[1]_i_12 
        (.I0(\irq_dest_reg_n_0_[19][1] ),
         .I1(\irq_dest_reg_n_0_[18][1] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[17][1] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_dest_reg_n_0_[16][1] ),
-        .O(\s_axi_rdata[1]_i_11_n_0 ));
+        .O(\s_axi_rdata[1]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[1]_i_13 
+       (.I0(\irq_dest_reg_n_0_[11][1] ),
+        .I1(\irq_dest_reg_n_0_[10][1] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[9][1] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[8][1] ),
+        .O(\s_axi_rdata[1]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[1]_i_14 
+       (.I0(\irq_dest_reg_n_0_[15][1] ),
+        .I1(\irq_dest_reg_n_0_[14][1] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[13][1] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[12][1] ),
+        .O(\s_axi_rdata[1]_i_14_n_0 ));
   LUT5 #(
-    .INIT(32'h111BFFFF)) 
+    .INIT(32'h0E3E0232)) 
     \s_axi_rdata[1]_i_2 
-       (.I0(s_axi_araddr[4]),
-        .I1(\s_axi_rdata[1]_i_4_n_0 ),
-        .I2(s_axi_araddr[3]),
+       (.I0(\s_axi_rdata_reg[1]_i_4_n_0 ),
+        .I1(s_axi_araddr[3]),
+        .I2(s_axi_araddr[4]),
         .I3(\s_axi_rdata[1]_i_5_n_0 ),
-        .I4(s_axi_araddr[5]),
+        .I4(\s_axi_rdata_reg[1]_i_6_n_0 ),
         .O(\s_axi_rdata[1]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h47FF000047FF47FF)) 
+    .INIT(64'hF400F400F4FFF400)) 
     \s_axi_rdata[1]_i_3 
-       (.I0(p_1_in183_in),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(p_2_in153_in),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .I4(\s_axi_rdata[1]_i_6_n_0 ),
-        .I5(\s_axi_rdata[16]_i_3_n_0 ),
-        .O(\s_axi_rdata[1]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'h303F5050303F5F5F)) 
-    \s_axi_rdata[1]_i_4 
        (.I0(\s_axi_rdata[1]_i_7_n_0 ),
         .I1(\s_axi_rdata[1]_i_8_n_0 ),
-        .I2(s_axi_araddr[3]),
-        .I3(\s_axi_rdata[1]_i_9_n_0 ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[1]_i_10_n_0 ),
-        .O(\s_axi_rdata[1]_i_4_n_0 ));
+        .I2(\s_axi_rdata[1]_i_9_n_0 ),
+        .I3(\s_axi_rdata[18]_i_3_n_0 ),
+        .I4(pcie_msi_req_fifo_count_reg[1]),
+        .I5(\s_axi_rdata[21]_i_6_n_0 ),
+        .O(\s_axi_rdata[1]_i_3_n_0 ));
   LUT6 #(
     .INIT(64'hCDFD0000CDFDFFFF)) 
     \s_axi_rdata[1]_i_5 
@@ -20432,264 +20491,251 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I2(s_axi_araddr[0]),
         .I3(\irq_dest_reg_n_0_[21][1] ),
         .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[1]_i_11_n_0 ),
+        .I5(\s_axi_rdata[1]_i_12_n_0 ),
         .O(\s_axi_rdata[1]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'h5050303F5F5F303F)) 
-    \s_axi_rdata[1]_i_6 
+    \s_axi_rdata[1]_i_7 
        (.I0(pcie_msi_req_fifo_rd_ptr_reg[1]),
         .I1(pcie_msi_req_fifo_wr_ptr_reg[1]),
-        .I2(\s_axi_rdata[16]_i_4_n_0 ),
+        .I2(\s_axi_rdata[16]_i_3_n_0 ),
         .I3(\irq_ack_reg_n_0_[1] ),
-        .I4(\s_axi_rdata[16]_i_2_n_0 ),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
         .I5(pcie_msi_vector_width[0]),
-        .O(\s_axi_rdata[1]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[1]_i_7 
-       (.I0(\irq_dest_reg_n_0_[11][1] ),
-        .I1(\irq_dest_reg_n_0_[10][1] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[9][1] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[8][1] ),
         .O(\s_axi_rdata[1]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+  LUT4 #(
+    .INIT(16'hEAAA)) 
     \s_axi_rdata[1]_i_8 
-       (.I0(\irq_dest_reg_n_0_[15][1] ),
-        .I1(\irq_dest_reg_n_0_[14][1] ),
+       (.I0(s_axi_araddr[4]),
+        .I1(s_axi_araddr[2]),
         .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[13][1] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[12][1] ),
+        .I3(s_axi_araddr[0]),
         .O(\s_axi_rdata[1]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+  LUT4 #(
+    .INIT(16'hA808)) 
     \s_axi_rdata[1]_i_9 
-       (.I0(data14[1]),
-        .I1(data15[1]),
-        .I2(s_axi_araddr[1]),
-        .I3(data16[1]),
-        .I4(s_axi_araddr[0]),
-        .I5(data17[1]),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_1_in183_in),
+        .I2(\s_axi_rdata[21]_i_6_n_0 ),
+        .I3(p_2_in153_in),
         .O(\s_axi_rdata[1]_i_9_n_0 ));
   LUT6 #(
-    .INIT(64'hB800B800FFFFB800)) 
+    .INIT(64'hFA00F8F800000000)) 
     \s_axi_rdata[20]_i_1 
-       (.I0(p_5_in[4]),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(p_1_in[4]),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .I4(\irq_ack_reg_n_0_[20] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_5_in[4]),
+        .I2(\s_axi_rdata[20]_i_2_n_0 ),
+        .I3(p_1_in[4]),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
+        .I5(\s_axi_rdata[21]_i_5_n_0 ),
         .O(\s_axi_rdata[20]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'hAFAFFFAFAFAF3FAF)) 
-    \s_axi_rdata[21]_i_1 
-       (.I0(s_axi_rready),
-        .I1(\s_axi_rdata[21]_i_4_n_0 ),
-        .I2(aresetn),
-        .I3(s_axi_arvalid),
-        .I4(s_axi_rvalid_reg_0),
-        .I5(s_axi_araddr[5]),
-        .O(\s_axi_rdata[21]_i_1_n_0 ));
+    .INIT(64'h0000200000000000)) 
+    \s_axi_rdata[20]_i_2 
+       (.I0(\irq_ack_reg_n_0_[20] ),
+        .I1(s_axi_araddr[3]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[0]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[2]),
+        .O(\s_axi_rdata[20]_i_2_n_0 ));
   LUT4 #(
     .INIT(16'hF2FF)) 
-    \s_axi_rdata[21]_i_2 
+    \s_axi_rdata[21]_i_1 
        (.I0(s_axi_arvalid),
         .I1(s_axi_rvalid_reg_0),
         .I2(s_axi_rready),
         .I3(aresetn),
+        .O(\s_axi_rdata[21]_i_1_n_0 ));
+  LUT6 #(
+    .INIT(64'hEE000000EA00EA00)) 
+    \s_axi_rdata[21]_i_2 
+       (.I0(\s_axi_rdata[21]_i_3_n_0 ),
+        .I1(\s_axi_rdata[21]_i_4_n_0 ),
+        .I2(p_5_in[5]),
+        .I3(\s_axi_rdata[21]_i_5_n_0 ),
+        .I4(p_1_in[5]),
+        .I5(\s_axi_rdata[21]_i_6_n_0 ),
         .O(\s_axi_rdata[21]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'hB800B800FFFFB800)) 
+    .INIT(64'h0000200000000000)) 
     \s_axi_rdata[21]_i_3 
-       (.I0(p_5_in[5]),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(p_1_in[5]),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .I4(\irq_ack_reg_n_0_[21] ),
-        .I5(\s_axi_rdata[21]_i_7_n_0 ),
+       (.I0(\irq_ack_reg_n_0_[21] ),
+        .I1(s_axi_araddr[3]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[0]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[2]),
         .O(\s_axi_rdata[21]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair26" *) 
+  (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT5 #(
-    .INIT(32'h000015FF)) 
+    .INIT(32'h01030302)) 
     \s_axi_rdata[21]_i_4 
        (.I0(s_axi_araddr[2]),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(s_axi_araddr[4]),
-        .I4(s_axi_araddr[3]),
+        .I1(s_axi_araddr[4]),
+        .I2(s_axi_araddr[3]),
+        .I3(s_axi_araddr[1]),
+        .I4(s_axi_araddr[0]),
         .O(\s_axi_rdata[21]_i_4_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair24" *) 
+  (* SOFT_HLUTNM = "soft_lutpair0" *) 
   LUT5 #(
-    .INIT(32'hFFFFEC33)) 
+    .INIT(32'h00004000)) 
     \s_axi_rdata[21]_i_5 
-       (.I0(s_axi_araddr[0]),
-        .I1(s_axi_araddr[2]),
-        .I2(s_axi_araddr[1]),
-        .I3(s_axi_araddr[4]),
-        .I4(s_axi_araddr[3]),
+       (.I0(s_axi_araddr[5]),
+        .I1(\s_axi_rdata[18]_i_3_n_0 ),
+        .I2(aresetn),
+        .I3(s_axi_arvalid),
+        .I4(s_axi_rvalid_reg_0),
         .O(\s_axi_rdata[21]_i_5_n_0 ));
   (* SOFT_HLUTNM = "soft_lutpair25" *) 
   LUT5 #(
-    .INIT(32'h00001554)) 
+    .INIT(32'hFFFFBB2B)) 
     \s_axi_rdata[21]_i_6 
-       (.I0(s_axi_araddr[4]),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(s_axi_araddr[2]),
+       (.I0(s_axi_araddr[2]),
+        .I1(s_axi_araddr[0]),
+        .I2(s_axi_araddr[1]),
+        .I3(s_axi_araddr[4]),
         .I4(s_axi_araddr[3]),
         .O(\s_axi_rdata[21]_i_6_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair23" *) 
-  LUT5 #(
-    .INIT(32'hFFFFBFFF)) 
-    \s_axi_rdata[21]_i_7 
-       (.I0(s_axi_araddr[3]),
-        .I1(s_axi_araddr[2]),
-        .I2(s_axi_araddr[0]),
-        .I3(s_axi_araddr[1]),
-        .I4(s_axi_araddr[4]),
-        .O(\s_axi_rdata[21]_i_7_n_0 ));
   LUT6 #(
-    .INIT(64'h8888888888080808)) 
+    .INIT(64'h11D111D111D1DDD1)) 
     \s_axi_rdata[2]_i_1 
        (.I0(\s_axi_rdata[2]_i_2_n_0 ),
-        .I1(\s_axi_rdata[10]_i_3_n_0 ),
-        .I2(\s_axi_rdata[2]_i_3_n_0 ),
-        .I3(\s_axi_rdata[10]_i_5_n_0 ),
-        .I4(pcie_msi_req_fifo_count_reg[2]),
-        .I5(s_axi_araddr[5]),
+        .I1(s_axi_araddr[5]),
+        .I2(\s_axi_rdata_reg[2]_i_3_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[2]_i_4_n_0 ),
+        .I5(s_axi_araddr[3]),
         .O(\s_axi_rdata[2]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[2]_i_10 
-       (.I0(\irq_dest_reg_n_0_[11][2] ),
-        .I1(\irq_dest_reg_n_0_[10][2] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[9][2] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[8][2] ),
-        .O(\s_axi_rdata[2]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[2]_i_11 
-       (.I0(\irq_dest_reg_n_0_[15][2] ),
-        .I1(\irq_dest_reg_n_0_[14][2] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[13][2] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[12][2] ),
-        .O(\s_axi_rdata[2]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[2]_i_12 
-       (.I0(\irq_dest_reg_n_0_[19][2] ),
-        .I1(\irq_dest_reg_n_0_[18][2] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[17][2] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[16][2] ),
-        .O(\s_axi_rdata[2]_i_12_n_0 ));
-  LUT6 #(
-    .INIT(64'h00E233E2FFFFFFFF)) 
-    \s_axi_rdata[2]_i_2 
-       (.I0(\s_axi_rdata_reg[2]_i_4_n_0 ),
-        .I1(s_axi_araddr[3]),
-        .I2(\s_axi_rdata_reg[2]_i_5_n_0 ),
-        .I3(s_axi_araddr[4]),
-        .I4(\s_axi_rdata[2]_i_6_n_0 ),
-        .I5(s_axi_araddr[5]),
-        .O(\s_axi_rdata[2]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h47FF000047FF47FF)) 
-    \s_axi_rdata[2]_i_3 
-       (.I0(p_1_in187_in),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(p_2_in144_in),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .I4(\s_axi_rdata[2]_i_7_n_0 ),
-        .I5(\s_axi_rdata[16]_i_3_n_0 ),
-        .O(\s_axi_rdata[2]_i_3_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[2]_i_6 
-       (.I0(\irq_dest_reg_n_0_[20][2] ),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(\irq_dest_reg_n_0_[21][2] ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[2]_i_12_n_0 ),
-        .O(\s_axi_rdata[2]_i_6_n_0 ));
-  LUT6 #(
-    .INIT(64'h505F3030505F3F3F)) 
-    \s_axi_rdata[2]_i_7 
-       (.I0(pcie_msi_req_fifo_rd_ptr_reg[2]),
-        .I1(pcie_msi_req_fifo_wr_ptr_reg[2]),
-        .I2(\s_axi_rdata[16]_i_4_n_0 ),
-        .I3(pcie_msi_vector_width[1]),
-        .I4(\s_axi_rdata[16]_i_2_n_0 ),
-        .I5(\irq_ack_reg_n_0_[2] ),
-        .O(\s_axi_rdata[2]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[2]_i_8 
        (.I0(data18[2]),
         .I1(data19[2]),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[1][2] ),
         .I4(s_axi_araddr[0]),
         .I5(data21[2]),
-        .O(\s_axi_rdata[2]_i_8_n_0 ));
+        .O(\s_axi_rdata[2]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[2]_i_9 
+    \s_axi_rdata[2]_i_11 
        (.I0(data14[2]),
         .I1(data15[2]),
         .I2(s_axi_araddr[1]),
         .I3(data16[2]),
         .I4(s_axi_araddr[0]),
         .I5(data17[2]),
+        .O(\s_axi_rdata[2]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[2]_i_12 
+       (.I0(\irq_dest_reg_n_0_[11][2] ),
+        .I1(\irq_dest_reg_n_0_[10][2] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[9][2] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[8][2] ),
+        .O(\s_axi_rdata[2]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[2]_i_13 
+       (.I0(\irq_dest_reg_n_0_[15][2] ),
+        .I1(\irq_dest_reg_n_0_[14][2] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[13][2] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[12][2] ),
+        .O(\s_axi_rdata[2]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'h008A0A8AA08AAA8A)) 
+    \s_axi_rdata[2]_i_2 
+       (.I0(\s_axi_rdata[2]_i_5_n_0 ),
+        .I1(\s_axi_rdata[2]_i_6_n_0 ),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(\s_axi_rdata[21]_i_4_n_0 ),
+        .I4(p_1_in187_in),
+        .I5(p_2_in144_in),
+        .O(\s_axi_rdata[2]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[2]_i_4 
+       (.I0(\irq_dest_reg_n_0_[20][2] ),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(\irq_dest_reg_n_0_[21][2] ),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[2]_i_9_n_0 ),
+        .O(\s_axi_rdata[2]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFFFFFFFDFFFFFFF)) 
+    \s_axi_rdata[2]_i_5 
+       (.I0(pcie_msi_req_fifo_count_reg[2]),
+        .I1(s_axi_araddr[2]),
+        .I2(s_axi_araddr[0]),
+        .I3(s_axi_araddr[1]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[3]),
+        .O(\s_axi_rdata[2]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'h505F3030505F3F3F)) 
+    \s_axi_rdata[2]_i_6 
+       (.I0(pcie_msi_req_fifo_rd_ptr_reg[2]),
+        .I1(pcie_msi_req_fifo_wr_ptr_reg[2]),
+        .I2(\s_axi_rdata[16]_i_3_n_0 ),
+        .I3(pcie_msi_vector_width[1]),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
+        .I5(\irq_ack_reg_n_0_[2] ),
+        .O(\s_axi_rdata[2]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[2]_i_9 
+       (.I0(\irq_dest_reg_n_0_[19][2] ),
+        .I1(\irq_dest_reg_n_0_[18][2] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[17][2] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[16][2] ),
         .O(\s_axi_rdata[2]_i_9_n_0 ));
-  LUT5 #(
-    .INIT(32'h0000AE00)) 
+  LUT6 #(
+    .INIT(64'h000000008A800000)) 
     \s_axi_rdata[3]_i_1 
-       (.I0(\s_axi_rdata[3]_i_2_n_0 ),
-        .I1(\s_axi_rdata[16]_i_3_n_0 ),
-        .I2(\s_axi_rdata[3]_i_3_n_0 ),
-        .I3(\s_axi_rdata[10]_i_3_n_0 ),
-        .I4(\s_axi_rdata[3]_i_4_n_0 ),
+       (.I0(aresetn),
+        .I1(\s_axi_rdata[3]_i_2_n_0 ),
+        .I2(s_axi_araddr[5]),
+        .I3(\s_axi_rdata[3]_i_3_n_0 ),
+        .I4(s_axi_arvalid),
+        .I5(s_axi_rvalid_reg_0),
         .O(\s_axi_rdata[3]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[3]_i_10 
-       (.I0(data14[3]),
-        .I1(data15[3]),
-        .I2(s_axi_araddr[1]),
-        .I3(data16[3]),
-        .I4(s_axi_araddr[0]),
-        .I5(data17[3]),
-        .O(\s_axi_rdata[3]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[3]_i_11 
-       (.I0(\irq_dest_reg_n_0_[11][3] ),
-        .I1(\irq_dest_reg_n_0_[10][3] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[9][3] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[8][3] ),
-        .O(\s_axi_rdata[3]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[3]_i_12 
        (.I0(\irq_dest_reg_n_0_[15][3] ),
         .I1(\irq_dest_reg_n_0_[14][3] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[13][3] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_dest_reg_n_0_[12][3] ),
+        .O(\s_axi_rdata[3]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[3]_i_11 
+       (.I0(data18[3]),
+        .I1(data19[3]),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I4(s_axi_araddr[0]),
+        .I5(data21[3]),
+        .O(\s_axi_rdata[3]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[3]_i_12 
+       (.I0(data14[3]),
+        .I1(data15[3]),
+        .I2(s_axi_araddr[1]),
+        .I3(data16[3]),
+        .I4(s_axi_araddr[0]),
+        .I5(data17[3]),
         .O(\s_axi_rdata[3]_i_12_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -20701,377 +20747,350 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
         .I4(s_axi_araddr[0]),
         .I5(\irq_dest_reg_n_0_[16][3] ),
         .O(\s_axi_rdata[3]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'hFFFFFFFFFFFF8A80)) 
+  LUT5 #(
+    .INIT(32'h00AA0FCC)) 
     \s_axi_rdata[3]_i_2 
-       (.I0(\s_axi_rdata[21]_i_6_n_0 ),
-        .I1(p_1_in191_in),
-        .I2(\s_axi_rdata[21]_i_5_n_0 ),
-        .I3(p_2_in135_in),
-        .I4(\s_axi_rdata[3]_i_5_n_0 ),
-        .I5(s_axi_araddr[5]),
+       (.I0(\s_axi_rdata_reg[3]_i_4_n_0 ),
+        .I1(\s_axi_rdata_reg[3]_i_5_n_0 ),
+        .I2(\s_axi_rdata[3]_i_6_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(s_axi_araddr[3]),
         .O(\s_axi_rdata[3]_i_2_n_0 ));
   LUT6 #(
-    .INIT(64'h505F3030505F3F3F)) 
+    .INIT(64'hFFEAFAEAAFEAAAEA)) 
     \s_axi_rdata[3]_i_3 
-       (.I0(pcie_msi_req_fifo_rd_ptr_reg[3]),
-        .I1(pcie_msi_req_fifo_wr_ptr_reg[3]),
-        .I2(\s_axi_rdata[16]_i_4_n_0 ),
-        .I3(pcie_msi_vector_width[2]),
-        .I4(\s_axi_rdata[16]_i_2_n_0 ),
-        .I5(\irq_ack_reg_n_0_[3] ),
+       (.I0(\s_axi_rdata[3]_i_7_n_0 ),
+        .I1(\s_axi_rdata[3]_i_8_n_0 ),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(\s_axi_rdata[21]_i_4_n_0 ),
+        .I4(p_1_in191_in),
+        .I5(p_2_in135_in),
         .O(\s_axi_rdata[3]_i_3_n_0 ));
   LUT6 #(
-    .INIT(64'hAAAA02A2A0A002A2)) 
-    \s_axi_rdata[3]_i_4 
-       (.I0(s_axi_araddr[5]),
-        .I1(\s_axi_rdata_reg[3]_i_6_n_0 ),
-        .I2(s_axi_araddr[3]),
-        .I3(\s_axi_rdata_reg[3]_i_7_n_0 ),
-        .I4(s_axi_araddr[4]),
-        .I5(\s_axi_rdata[3]_i_8_n_0 ),
-        .O(\s_axi_rdata[3]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000008000000)) 
-    \s_axi_rdata[3]_i_5 
-       (.I0(pcie_msi_req_fifo_count_reg[3]),
-        .I1(s_axi_araddr[0]),
-        .I2(s_axi_araddr[2]),
-        .I3(s_axi_araddr[1]),
-        .I4(s_axi_araddr[4]),
-        .I5(s_axi_araddr[3]),
-        .O(\s_axi_rdata[3]_i_5_n_0 ));
-  LUT6 #(
     .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[3]_i_8 
+    \s_axi_rdata[3]_i_6 
        (.I0(\irq_dest_reg_n_0_[20][3] ),
         .I1(s_axi_araddr[1]),
         .I2(s_axi_araddr[0]),
         .I3(\irq_dest_reg_n_0_[21][3] ),
         .I4(s_axi_araddr[2]),
         .I5(\s_axi_rdata[3]_i_13_n_0 ),
+        .O(\s_axi_rdata[3]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000020000000)) 
+    \s_axi_rdata[3]_i_7 
+       (.I0(pcie_msi_req_fifo_count_reg[3]),
+        .I1(s_axi_araddr[2]),
+        .I2(s_axi_araddr[0]),
+        .I3(s_axi_araddr[1]),
+        .I4(s_axi_araddr[4]),
+        .I5(s_axi_araddr[3]),
+        .O(\s_axi_rdata[3]_i_7_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[3]_i_8 
+       (.I0(pcie_msi_req_fifo_rd_ptr_reg[3]),
+        .I1(pcie_msi_req_fifo_wr_ptr_reg[3]),
+        .I2(\s_axi_rdata[16]_i_3_n_0 ),
+        .I3(pcie_msi_vector_width[2]),
+        .I4(\s_axi_rdata[21]_i_6_n_0 ),
+        .I5(\irq_ack_reg_n_0_[3] ),
         .O(\s_axi_rdata[3]_i_8_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[3]_i_9 
-       (.I0(data18[3]),
-        .I1(data19[3]),
+       (.I0(\irq_dest_reg_n_0_[11][3] ),
+        .I1(\irq_dest_reg_n_0_[10][3] ),
         .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[1][3] ),
+        .I3(\irq_dest_reg_n_0_[9][3] ),
         .I4(s_axi_araddr[0]),
-        .I5(data21[3]),
+        .I5(\irq_dest_reg_n_0_[8][3] ),
         .O(\s_axi_rdata[3]_i_9_n_0 ));
   LUT6 #(
-    .INIT(64'h00000000FFEA0000)) 
+    .INIT(64'h11D111D111D1DDD1)) 
     \s_axi_rdata[4]_i_1 
-       (.I0(s_axi_araddr[5]),
-        .I1(pcie_msi_req_fifo_count_reg[4]),
-        .I2(\s_axi_rdata[10]_i_5_n_0 ),
-        .I3(\s_axi_rdata[4]_i_2_n_0 ),
-        .I4(\s_axi_rdata[10]_i_3_n_0 ),
-        .I5(\s_axi_rdata[4]_i_3_n_0 ),
+       (.I0(\s_axi_rdata[4]_i_2_n_0 ),
+        .I1(s_axi_araddr[5]),
+        .I2(\s_axi_rdata_reg[4]_i_3_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[4]_i_4_n_0 ),
+        .I5(s_axi_araddr[3]),
         .O(\s_axi_rdata[4]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[4]_i_10 
-       (.I0(\irq_dest_reg_n_0_[15][4] ),
-        .I1(\irq_dest_reg_n_0_[14][4] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[13][4] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[12][4] ),
-        .O(\s_axi_rdata[4]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[4]_i_11 
        (.I0(data18[4]),
         .I1(data19[4]),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[1][4] ),
         .I4(s_axi_araddr[0]),
         .I5(data21[4]),
-        .O(\s_axi_rdata[4]_i_11_n_0 ));
+        .O(\s_axi_rdata[4]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[4]_i_12 
+    \s_axi_rdata[4]_i_11 
        (.I0(data14[4]),
         .I1(data15[4]),
         .I2(s_axi_araddr[1]),
         .I3(data16[4]),
         .I4(s_axi_araddr[0]),
         .I5(data17[4]),
-        .O(\s_axi_rdata[4]_i_12_n_0 ));
-  LUT5 #(
-    .INIT(32'hA0A0CFC0)) 
-    \s_axi_rdata[4]_i_2 
-       (.I0(p_1_in195_in),
-        .I1(p_2_in126_in),
-        .I2(\s_axi_rdata[21]_i_6_n_0 ),
-        .I3(\s_axi_rdata[4]_i_4_n_0 ),
-        .I4(\s_axi_rdata[21]_i_5_n_0 ),
-        .O(\s_axi_rdata[4]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hA080A888A282AA8A)) 
-    \s_axi_rdata[4]_i_3 
-       (.I0(s_axi_araddr[5]),
-        .I1(s_axi_araddr[3]),
-        .I2(s_axi_araddr[4]),
-        .I3(\s_axi_rdata[4]_i_5_n_0 ),
-        .I4(\s_axi_rdata_reg[4]_i_6_n_0 ),
-        .I5(\s_axi_rdata_reg[4]_i_7_n_0 ),
-        .O(\s_axi_rdata[4]_i_3_n_0 ));
-  LUT5 #(
-    .INIT(32'hA0A0CFC0)) 
-    \s_axi_rdata[4]_i_4 
-       (.I0(pcie_msi_req_fifo_rd_ptr_reg[4]),
-        .I1(pcie_msi_req_fifo_wr_ptr_reg[4]),
-        .I2(\s_axi_rdata[16]_i_4_n_0 ),
-        .I3(\irq_ack_reg_n_0_[4] ),
-        .I4(\s_axi_rdata[16]_i_2_n_0 ),
-        .O(\s_axi_rdata[4]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[4]_i_5 
-       (.I0(\irq_dest_reg_n_0_[20][4] ),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(\irq_dest_reg_n_0_[21][4] ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[4]_i_8_n_0 ),
-        .O(\s_axi_rdata[4]_i_5_n_0 ));
+        .O(\s_axi_rdata[4]_i_11_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[4]_i_8 
-       (.I0(\irq_dest_reg_n_0_[19][4] ),
-        .I1(\irq_dest_reg_n_0_[18][4] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[17][4] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[16][4] ),
-        .O(\s_axi_rdata[4]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[4]_i_9 
+    \s_axi_rdata[4]_i_12 
        (.I0(\irq_dest_reg_n_0_[11][4] ),
         .I1(\irq_dest_reg_n_0_[10][4] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[9][4] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_dest_reg_n_0_[8][4] ),
-        .O(\s_axi_rdata[4]_i_9_n_0 ));
+        .O(\s_axi_rdata[4]_i_12_n_0 ));
   LUT6 #(
-    .INIT(64'h00000000FFFE0000)) 
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[4]_i_13 
+       (.I0(\irq_dest_reg_n_0_[15][4] ),
+        .I1(\irq_dest_reg_n_0_[14][4] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[13][4] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[12][4] ),
+        .O(\s_axi_rdata[4]_i_13_n_0 ));
+  LUT6 #(
+    .INIT(64'h0000000002A2AAAA)) 
+    \s_axi_rdata[4]_i_2 
+       (.I0(\s_axi_rdata[4]_i_5_n_0 ),
+        .I1(p_1_in195_in),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_2_in126_in),
+        .I4(\s_axi_rdata[21]_i_4_n_0 ),
+        .I5(\s_axi_rdata[4]_i_6_n_0 ),
+        .O(\s_axi_rdata[4]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[4]_i_4 
+       (.I0(\irq_dest_reg_n_0_[20][4] ),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(\irq_dest_reg_n_0_[21][4] ),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[4]_i_9_n_0 ),
+        .O(\s_axi_rdata[4]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hFFDFFFFFFFFFFFFF)) 
+    \s_axi_rdata[4]_i_5 
+       (.I0(pcie_msi_req_fifo_count_reg[4]),
+        .I1(s_axi_araddr[2]),
+        .I2(s_axi_araddr[4]),
+        .I3(s_axi_araddr[3]),
+        .I4(s_axi_araddr[1]),
+        .I5(s_axi_araddr[0]),
+        .O(\s_axi_rdata[4]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hAA08A0080A080008)) 
+    \s_axi_rdata[4]_i_6 
+       (.I0(\s_axi_rdata[16]_i_2_n_0 ),
+        .I1(\irq_ack_reg_n_0_[4] ),
+        .I2(\s_axi_rdata[21]_i_6_n_0 ),
+        .I3(\s_axi_rdata[16]_i_3_n_0 ),
+        .I4(pcie_msi_req_fifo_wr_ptr_reg[4]),
+        .I5(pcie_msi_req_fifo_rd_ptr_reg[4]),
+        .O(\s_axi_rdata[4]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[4]_i_9 
+       (.I0(\irq_dest_reg_n_0_[19][4] ),
+        .I1(\irq_dest_reg_n_0_[18][4] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[17][4] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[16][4] ),
+        .O(\s_axi_rdata[4]_i_9_n_0 ));
+  LUT5 #(
+    .INIT(32'h00002000)) 
     \s_axi_rdata[5]_i_1 
        (.I0(\s_axi_rdata[5]_i_2_n_0 ),
-        .I1(\s_axi_rdata[5]_i_3_n_0 ),
-        .I2(s_axi_araddr[5]),
-        .I3(\s_axi_rdata[5]_i_4_n_0 ),
-        .I4(\s_axi_rdata[10]_i_3_n_0 ),
-        .I5(\s_axi_rdata[5]_i_5_n_0 ),
+        .I1(s_axi_rvalid_reg_0),
+        .I2(s_axi_arvalid),
+        .I3(aresetn),
+        .I4(\s_axi_rdata[5]_i_3_n_0 ),
         .O(\s_axi_rdata[5]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[5]_i_10 
-       (.I0(\irq_dest_reg_n_0_[15][5] ),
-        .I1(\irq_dest_reg_n_0_[14][5] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[13][5] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[12][5] ),
-        .O(\s_axi_rdata[5]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[5]_i_11 
-       (.I0(data18[5]),
-        .I1(data19[5]),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[1][5] ),
-        .I4(s_axi_araddr[0]),
-        .I5(data21[5]),
-        .O(\s_axi_rdata[5]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[5]_i_12 
        (.I0(data14[5]),
         .I1(data15[5]),
         .I2(s_axi_araddr[1]),
         .I3(data16[5]),
         .I4(s_axi_araddr[0]),
         .I5(data17[5]),
-        .O(\s_axi_rdata[5]_i_12_n_0 ));
+        .O(\s_axi_rdata[5]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[5]_i_13 
-       (.I0(\irq_dest_reg_n_0_[19][5] ),
-        .I1(\irq_dest_reg_n_0_[18][5] ),
-        .I2(s_axi_araddr[1]),
-        .I3(\irq_dest_reg_n_0_[17][5] ),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_dest_reg_n_0_[16][5] ),
-        .O(\s_axi_rdata[5]_i_13_n_0 ));
-  LUT6 #(
-    .INIT(64'h0200003000003000)) 
-    \s_axi_rdata[5]_i_2 
-       (.I0(\irq_ack_reg_n_0_[5] ),
-        .I1(s_axi_araddr[3]),
-        .I2(s_axi_araddr[4]),
-        .I3(s_axi_araddr[1]),
-        .I4(s_axi_araddr[2]),
-        .I5(s_axi_araddr[0]),
-        .O(\s_axi_rdata[5]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000008000000)) 
-    \s_axi_rdata[5]_i_3 
-       (.I0(pcie_msi_req_fifo_full),
-        .I1(s_axi_araddr[0]),
-        .I2(s_axi_araddr[2]),
-        .I3(s_axi_araddr[1]),
-        .I4(s_axi_araddr[4]),
-        .I5(s_axi_araddr[3]),
-        .O(\s_axi_rdata[5]_i_3_n_0 ));
-  LUT4 #(
-    .INIT(16'hE200)) 
-    \s_axi_rdata[5]_i_4 
-       (.I0(p_2_in117_in),
-        .I1(\s_axi_rdata[21]_i_5_n_0 ),
-        .I2(p_1_in199_in),
-        .I3(\s_axi_rdata[21]_i_6_n_0 ),
-        .O(\s_axi_rdata[5]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hF0F05030F0005030)) 
-    \s_axi_rdata[5]_i_5 
-       (.I0(\s_axi_rdata_reg[5]_i_6_n_0 ),
-        .I1(\s_axi_rdata_reg[5]_i_7_n_0 ),
-        .I2(s_axi_araddr[5]),
-        .I3(s_axi_araddr[3]),
-        .I4(s_axi_araddr[4]),
-        .I5(\s_axi_rdata[5]_i_8_n_0 ),
-        .O(\s_axi_rdata[5]_i_5_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[5]_i_8 
-       (.I0(\irq_dest_reg_n_0_[20][5] ),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(\irq_dest_reg_n_0_[21][5] ),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[5]_i_13_n_0 ),
-        .O(\s_axi_rdata[5]_i_8_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[5]_i_9 
+    \s_axi_rdata[5]_i_11 
        (.I0(\irq_dest_reg_n_0_[11][5] ),
         .I1(\irq_dest_reg_n_0_[10][5] ),
         .I2(s_axi_araddr[1]),
         .I3(\irq_dest_reg_n_0_[9][5] ),
         .I4(s_axi_araddr[0]),
         .I5(\irq_dest_reg_n_0_[8][5] ),
+        .O(\s_axi_rdata[5]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[5]_i_12 
+       (.I0(\irq_dest_reg_n_0_[15][5] ),
+        .I1(\irq_dest_reg_n_0_[14][5] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[13][5] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[12][5] ),
+        .O(\s_axi_rdata[5]_i_12_n_0 ));
+  LUT5 #(
+    .INIT(32'hFFFFAABA)) 
+    \s_axi_rdata[5]_i_2 
+       (.I0(\s_axi_rdata[5]_i_4_n_0 ),
+        .I1(\s_axi_rdata[18]_i_3_n_0 ),
+        .I2(pcie_msi_req_fifo_full),
+        .I3(\s_axi_rdata[21]_i_6_n_0 ),
+        .I4(s_axi_araddr[5]),
+        .O(\s_axi_rdata[5]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hA080A282A888AA8A)) 
+    \s_axi_rdata[5]_i_3 
+       (.I0(s_axi_araddr[5]),
+        .I1(s_axi_araddr[3]),
+        .I2(s_axi_araddr[4]),
+        .I3(\s_axi_rdata[5]_i_5_n_0 ),
+        .I4(\s_axi_rdata_reg[5]_i_6_n_0 ),
+        .I5(\s_axi_rdata_reg[5]_i_7_n_0 ),
+        .O(\s_axi_rdata[5]_i_3_n_0 ));
+  LUT6 #(
+    .INIT(64'hF4FFF44444444444)) 
+    \s_axi_rdata[5]_i_4 
+       (.I0(\s_axi_rdata[18]_i_5_n_0 ),
+        .I1(\irq_ack_reg_n_0_[5] ),
+        .I2(p_2_in117_in),
+        .I3(\s_axi_rdata[21]_i_6_n_0 ),
+        .I4(p_1_in199_in),
+        .I5(\s_axi_rdata[21]_i_4_n_0 ),
+        .O(\s_axi_rdata[5]_i_4_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[5]_i_5 
+       (.I0(\irq_dest_reg_n_0_[20][5] ),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(\irq_dest_reg_n_0_[21][5] ),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[5]_i_8_n_0 ),
+        .O(\s_axi_rdata[5]_i_5_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[5]_i_8 
+       (.I0(\irq_dest_reg_n_0_[19][5] ),
+        .I1(\irq_dest_reg_n_0_[18][5] ),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[17][5] ),
+        .I4(s_axi_araddr[0]),
+        .I5(\irq_dest_reg_n_0_[16][5] ),
+        .O(\s_axi_rdata[5]_i_8_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[5]_i_9 
+       (.I0(data18[5]),
+        .I1(data19[5]),
+        .I2(s_axi_araddr[1]),
+        .I3(\irq_dest_reg_n_0_[1][5] ),
+        .I4(s_axi_araddr[0]),
+        .I5(data21[5]),
         .O(\s_axi_rdata[5]_i_9_n_0 ));
   LUT6 #(
-    .INIT(64'hFF40F540FA40F040)) 
+    .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[6]_i_1 
-       (.I0(\s_axi_rdata[16]_i_2_n_0 ),
-        .I1(\irq_ack_reg_n_0_[6] ),
-        .I2(\s_axi_rdata[16]_i_3_n_0 ),
-        .I3(\s_axi_rdata[16]_i_4_n_0 ),
-        .I4(p_2_in108_in),
-        .I5(p_1_in203_in),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_2_in108_in),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_1_in203_in),
+        .I4(\irq_ack_reg_n_0_[6] ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[6]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h1000000010001000)) 
+    .INIT(64'h8A808A80FFFF8A80)) 
     \s_axi_rdata[7]_i_1 
-       (.I0(s_axi_araddr[5]),
-        .I1(s_axi_rvalid_reg_0),
-        .I2(s_axi_arvalid),
-        .I3(aresetn),
-        .I4(\s_axi_rdata[10]_i_5_n_0 ),
-        .I5(\s_axi_rdata[7]_i_2_n_0 ),
+       (.I0(\s_axi_rdata[21]_i_4_n_0 ),
+        .I1(p_2_in103_in),
+        .I2(\s_axi_rdata[18]_i_4_n_0 ),
+        .I3(p_1_in207_in),
+        .I4(\irq_ack_reg_n_0_[7] ),
+        .I5(\s_axi_rdata[18]_i_5_n_0 ),
         .O(\s_axi_rdata[7]_i_1_n_0 ));
   LUT6 #(
-    .INIT(64'h0BBB0B0B0BBBBBBB)) 
-    \s_axi_rdata[7]_i_2 
-       (.I0(\s_axi_rdata[21]_i_7_n_0 ),
-        .I1(\irq_ack_reg_n_0_[7] ),
-        .I2(\s_axi_rdata[21]_i_6_n_0 ),
-        .I3(p_1_in207_in),
-        .I4(\s_axi_rdata[21]_i_5_n_0 ),
-        .I5(p_2_in103_in),
-        .O(\s_axi_rdata[7]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'h0000000808080008)) 
+    .INIT(64'h11D111D111D1DDD1)) 
     \s_axi_rdata[8]_i_1 
-       (.I0(aresetn),
-        .I1(s_axi_arvalid),
-        .I2(s_axi_rvalid_reg_0),
-        .I3(\s_axi_rdata[8]_i_2_n_0 ),
-        .I4(s_axi_araddr[5]),
-        .I5(\s_axi_rdata[8]_i_3_n_0 ),
+       (.I0(\s_axi_rdata[8]_i_2_n_0 ),
+        .I1(s_axi_araddr[5]),
+        .I2(\s_axi_rdata_reg[8]_i_3_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[8]_i_4_n_0 ),
+        .I5(s_axi_araddr[3]),
         .O(\s_axi_rdata[8]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[8]_i_10 
-       (.I0(p_4_in[7]),
-        .I1(p_4_in[6]),
-        .I2(s_axi_araddr[1]),
-        .I3(p_4_in[5]),
-        .I4(s_axi_araddr[0]),
-        .I5(p_4_in[4]),
-        .O(\s_axi_rdata[8]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[8]_i_11 
-       (.I0(p_1_in191_in),
-        .I1(p_1_in187_in),
-        .I2(s_axi_araddr[1]),
-        .I3(p_1_in183_in),
-        .I4(s_axi_araddr[0]),
-        .I5(\irq_enabled_reg_n_0_[0] ),
-        .O(\s_axi_rdata[8]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[8]_i_12 
        (.I0(p_1_in207_in),
         .I1(p_1_in203_in),
         .I2(s_axi_araddr[1]),
         .I3(p_1_in199_in),
         .I4(s_axi_araddr[0]),
         .I5(p_1_in195_in),
+        .O(\s_axi_rdata[8]_i_10_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[8]_i_11 
+       (.I0(p_4_in[3]),
+        .I1(p_4_in[2]),
+        .I2(s_axi_araddr[1]),
+        .I3(p_4_in[1]),
+        .I4(s_axi_araddr[0]),
+        .I5(p_4_in[0]),
+        .O(\s_axi_rdata[8]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[8]_i_12 
+       (.I0(p_4_in[7]),
+        .I1(p_4_in[6]),
+        .I2(s_axi_araddr[1]),
+        .I3(p_4_in[5]),
+        .I4(s_axi_araddr[0]),
+        .I5(p_4_in[4]),
         .O(\s_axi_rdata[8]_i_12_n_0 ));
   LUT5 #(
-    .INIT(32'h5F3F5F30)) 
+    .INIT(32'h0000EAFB)) 
     \s_axi_rdata[8]_i_2 
-       (.I0(p_4_in[0]),
-        .I1(p_3_in[0]),
-        .I2(\s_axi_rdata[21]_i_6_n_0 ),
-        .I3(\s_axi_rdata[21]_i_5_n_0 ),
-        .I4(\s_axi_rdata[8]_i_4_n_0 ),
+       (.I0(\s_axi_rdata[9]_i_5_n_0 ),
+        .I1(\s_axi_rdata[21]_i_6_n_0 ),
+        .I2(pcie_msi_req_fifo_rd_en_i_2_n_0),
+        .I3(\irq_ack_reg_n_0_[8] ),
+        .I4(\s_axi_rdata[8]_i_5_n_0 ),
         .O(\s_axi_rdata[8]_i_2_n_0 ));
-  LUT5 #(
-    .INIT(32'hCF88CFBB)) 
-    \s_axi_rdata[8]_i_3 
-       (.I0(\s_axi_rdata[8]_i_5_n_0 ),
-        .I1(s_axi_araddr[4]),
-        .I2(\s_axi_rdata_reg[8]_i_6_n_0 ),
-        .I3(s_axi_araddr[3]),
-        .I4(\s_axi_rdata_reg[8]_i_7_n_0 ),
-        .O(\s_axi_rdata[8]_i_3_n_0 ));
-  LUT4 #(
-    .INIT(16'h0151)) 
-    \s_axi_rdata[8]_i_4 
-       (.I0(\s_axi_rdata[16]_i_4_n_0 ),
-        .I1(\irq_ack_reg_n_0_[8] ),
-        .I2(\s_axi_rdata[16]_i_2_n_0 ),
-        .I3(pcie_msi_req_fifo_rd_en_i_2_n_0),
-        .O(\s_axi_rdata[8]_i_4_n_0 ));
   LUT6 #(
     .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[8]_i_5 
+    \s_axi_rdata[8]_i_4 
        (.I0(p_5_in[4]),
         .I1(s_axi_araddr[1]),
         .I2(s_axi_araddr[0]),
         .I3(p_5_in[5]),
         .I4(s_axi_araddr[2]),
         .I5(\s_axi_rdata[8]_i_8_n_0 ),
+        .O(\s_axi_rdata[8]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair29" *) 
+  LUT4 #(
+    .INIT(16'hE200)) 
+    \s_axi_rdata[8]_i_5 
+       (.I0(p_4_in[0]),
+        .I1(\s_axi_rdata[18]_i_4_n_0 ),
+        .I2(p_3_in[0]),
+        .I3(\s_axi_rdata[21]_i_4_n_0 ),
         .O(\s_axi_rdata[8]_i_5_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
@@ -21086,293 +21105,324 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[8]_i_9 
-       (.I0(p_4_in[3]),
-        .I1(p_4_in[2]),
+       (.I0(p_1_in191_in),
+        .I1(p_1_in187_in),
         .I2(s_axi_araddr[1]),
-        .I3(p_4_in[1]),
+        .I3(p_1_in183_in),
         .I4(s_axi_araddr[0]),
-        .I5(p_4_in[0]),
+        .I5(\irq_enabled_reg_n_0_[0] ),
         .O(\s_axi_rdata[8]_i_9_n_0 ));
-  LUT5 #(
-    .INIT(32'h0000FE00)) 
+  LUT6 #(
+    .INIT(64'h11D111D111D1DDD1)) 
     \s_axi_rdata[9]_i_1 
        (.I0(\s_axi_rdata[9]_i_2_n_0 ),
         .I1(s_axi_araddr[5]),
-        .I2(\s_axi_rdata[10]_i_5_n_0 ),
-        .I3(\s_axi_rdata[10]_i_3_n_0 ),
-        .I4(\s_axi_rdata[9]_i_3_n_0 ),
+        .I2(\s_axi_rdata_reg[9]_i_3_n_0 ),
+        .I3(s_axi_araddr[4]),
+        .I4(\s_axi_rdata[9]_i_4_n_0 ),
+        .I5(s_axi_araddr[3]),
         .O(\s_axi_rdata[9]_i_1_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
     \s_axi_rdata[9]_i_10 
-       (.I0(p_3_in[3]),
-        .I1(p_3_in[2]),
-        .I2(s_axi_araddr[1]),
-        .I3(p_3_in[1]),
-        .I4(s_axi_araddr[0]),
-        .I5(p_3_in[0]),
-        .O(\s_axi_rdata[9]_i_10_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[9]_i_11 
-       (.I0(p_3_in[7]),
-        .I1(p_3_in[6]),
-        .I2(s_axi_araddr[1]),
-        .I3(p_3_in[5]),
-        .I4(s_axi_araddr[0]),
-        .I5(p_3_in[4]),
-        .O(\s_axi_rdata[9]_i_11_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[9]_i_12 
-       (.I0(p_1_in[3]),
-        .I1(p_1_in[2]),
-        .I2(s_axi_araddr[1]),
-        .I3(p_1_in[1]),
-        .I4(s_axi_araddr[0]),
-        .I5(p_1_in[0]),
-        .O(\s_axi_rdata[9]_i_12_n_0 ));
-  LUT5 #(
-    .INIT(32'hA0A0CFC0)) 
-    \s_axi_rdata[9]_i_2 
-       (.I0(p_4_in[1]),
-        .I1(p_3_in[1]),
-        .I2(\s_axi_rdata[21]_i_6_n_0 ),
-        .I3(\s_axi_rdata[9]_i_4_n_0 ),
-        .I4(\s_axi_rdata[21]_i_5_n_0 ),
-        .O(\s_axi_rdata[9]_i_2_n_0 ));
-  LUT6 #(
-    .INIT(64'hAAAA02A2A0A002A2)) 
-    \s_axi_rdata[9]_i_3 
-       (.I0(s_axi_araddr[5]),
-        .I1(\s_axi_rdata_reg[9]_i_5_n_0 ),
-        .I2(s_axi_araddr[3]),
-        .I3(\s_axi_rdata_reg[9]_i_6_n_0 ),
-        .I4(s_axi_araddr[4]),
-        .I5(\s_axi_rdata[9]_i_7_n_0 ),
-        .O(\s_axi_rdata[9]_i_3_n_0 ));
-  (* SOFT_HLUTNM = "soft_lutpair154" *) 
-  LUT4 #(
-    .INIT(16'hFEAE)) 
-    \s_axi_rdata[9]_i_4 
-       (.I0(\s_axi_rdata[16]_i_4_n_0 ),
-        .I1(\irq_ack_reg_n_0_[9] ),
-        .I2(\s_axi_rdata[16]_i_2_n_0 ),
-        .I3(pcie_msi_req_fifo_full),
-        .O(\s_axi_rdata[9]_i_4_n_0 ));
-  LUT6 #(
-    .INIT(64'hCDFD0000CDFDFFFF)) 
-    \s_axi_rdata[9]_i_7 
-       (.I0(p_1_in[4]),
-        .I1(s_axi_araddr[1]),
-        .I2(s_axi_araddr[0]),
-        .I3(p_1_in[5]),
-        .I4(s_axi_araddr[2]),
-        .I5(\s_axi_rdata[9]_i_12_n_0 ),
-        .O(\s_axi_rdata[9]_i_7_n_0 ));
-  LUT6 #(
-    .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[9]_i_8 
        (.I0(p_2_in135_in),
         .I1(p_2_in144_in),
         .I2(s_axi_araddr[1]),
         .I3(p_2_in153_in),
         .I4(s_axi_araddr[0]),
         .I5(\irq_pend_reg_n_0_[0] ),
-        .O(\s_axi_rdata[9]_i_8_n_0 ));
+        .O(\s_axi_rdata[9]_i_10_n_0 ));
   LUT6 #(
     .INIT(64'hAFA0CFCFAFA0C0C0)) 
-    \s_axi_rdata[9]_i_9 
+    \s_axi_rdata[9]_i_11 
        (.I0(p_2_in103_in),
         .I1(p_2_in108_in),
         .I2(s_axi_araddr[1]),
         .I3(p_2_in117_in),
         .I4(s_axi_araddr[0]),
         .I5(p_2_in126_in),
+        .O(\s_axi_rdata[9]_i_11_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[9]_i_12 
+       (.I0(p_3_in[3]),
+        .I1(p_3_in[2]),
+        .I2(s_axi_araddr[1]),
+        .I3(p_3_in[1]),
+        .I4(s_axi_araddr[0]),
+        .I5(p_3_in[0]),
+        .O(\s_axi_rdata[9]_i_12_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[9]_i_13 
+       (.I0(p_3_in[7]),
+        .I1(p_3_in[6]),
+        .I2(s_axi_araddr[1]),
+        .I3(p_3_in[5]),
+        .I4(s_axi_araddr[0]),
+        .I5(p_3_in[4]),
+        .O(\s_axi_rdata[9]_i_13_n_0 ));
+  LUT5 #(
+    .INIT(32'h0000ABEF)) 
+    \s_axi_rdata[9]_i_2 
+       (.I0(\s_axi_rdata[9]_i_5_n_0 ),
+        .I1(\s_axi_rdata[21]_i_6_n_0 ),
+        .I2(\irq_ack_reg_n_0_[9] ),
+        .I3(pcie_msi_req_fifo_full),
+        .I4(\s_axi_rdata[9]_i_6_n_0 ),
+        .O(\s_axi_rdata[9]_i_2_n_0 ));
+  LUT6 #(
+    .INIT(64'hCDFD0000CDFDFFFF)) 
+    \s_axi_rdata[9]_i_4 
+       (.I0(p_1_in[4]),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(p_1_in[5]),
+        .I4(s_axi_araddr[2]),
+        .I5(\s_axi_rdata[9]_i_9_n_0 ),
+        .O(\s_axi_rdata[9]_i_4_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair26" *) 
+  LUT5 #(
+    .INIT(32'hFFBFFEFF)) 
+    \s_axi_rdata[9]_i_5 
+       (.I0(s_axi_araddr[3]),
+        .I1(s_axi_araddr[1]),
+        .I2(s_axi_araddr[0]),
+        .I3(s_axi_araddr[4]),
+        .I4(s_axi_araddr[2]),
+        .O(\s_axi_rdata[9]_i_5_n_0 ));
+  (* SOFT_HLUTNM = "soft_lutpair30" *) 
+  LUT4 #(
+    .INIT(16'hE200)) 
+    \s_axi_rdata[9]_i_6 
+       (.I0(p_4_in[1]),
+        .I1(\s_axi_rdata[18]_i_4_n_0 ),
+        .I2(p_3_in[1]),
+        .I3(\s_axi_rdata[21]_i_4_n_0 ),
+        .O(\s_axi_rdata[9]_i_6_n_0 ));
+  LUT6 #(
+    .INIT(64'hAFA0CFCFAFA0C0C0)) 
+    \s_axi_rdata[9]_i_9 
+       (.I0(p_1_in[3]),
+        .I1(p_1_in[2]),
+        .I2(s_axi_araddr[1]),
+        .I3(p_1_in[1]),
+        .I4(s_axi_araddr[0]),
+        .I5(p_1_in[0]),
         .O(\s_axi_rdata[9]_i_9_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[0] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[0]_i_1_n_0 ),
         .Q(s_axi_rdata[0]),
         .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[0]_i_4 
-       (.I0(\s_axi_rdata[0]_i_8_n_0 ),
-        .I1(\s_axi_rdata[0]_i_9_n_0 ),
-        .O(\s_axi_rdata_reg[0]_i_4_n_0 ),
-        .S(s_axi_araddr[2]));
   MUXF7 \s_axi_rdata_reg[0]_i_5 
        (.I0(\s_axi_rdata[0]_i_10_n_0 ),
         .I1(\s_axi_rdata[0]_i_11_n_0 ),
         .O(\s_axi_rdata_reg[0]_i_5_n_0 ),
         .S(s_axi_araddr[2]));
+  MUXF7 \s_axi_rdata_reg[0]_i_6 
+       (.I0(\s_axi_rdata[0]_i_12_n_0 ),
+        .I1(\s_axi_rdata[0]_i_13_n_0 ),
+        .O(\s_axi_rdata_reg[0]_i_6_n_0 ),
+        .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[10] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[10]_i_1_n_0 ),
         .Q(s_axi_rdata[10]),
-        .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[10]_i_6 
-       (.I0(\s_axi_rdata[10]_i_9_n_0 ),
-        .I1(\s_axi_rdata[10]_i_10_n_0 ),
-        .O(\s_axi_rdata_reg[10]_i_6_n_0 ),
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[10]_i_3 
+       (.I0(\s_axi_rdata_reg[10]_i_5_n_0 ),
+        .I1(\s_axi_rdata_reg[10]_i_6_n_0 ),
+        .O(\s_axi_rdata_reg[10]_i_3_n_0 ),
+        .S(s_axi_araddr[3]));
+  MUXF7 \s_axi_rdata_reg[10]_i_5 
+       (.I0(\s_axi_rdata[10]_i_8_n_0 ),
+        .I1(\s_axi_rdata[10]_i_9_n_0 ),
+        .O(\s_axi_rdata_reg[10]_i_5_n_0 ),
         .S(s_axi_araddr[2]));
-  MUXF7 \s_axi_rdata_reg[10]_i_7 
-       (.I0(\s_axi_rdata[10]_i_11_n_0 ),
-        .I1(\s_axi_rdata[10]_i_12_n_0 ),
-        .O(\s_axi_rdata_reg[10]_i_7_n_0 ),
+  MUXF7 \s_axi_rdata_reg[10]_i_6 
+       (.I0(\s_axi_rdata[10]_i_10_n_0 ),
+        .I1(\s_axi_rdata[10]_i_11_n_0 ),
+        .O(\s_axi_rdata_reg[10]_i_6_n_0 ),
         .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[11] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
-        .D(\s_axi_rdata[11]_i_1_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
+        .D(\s_axi_rdata[11]_i_2_n_0 ),
         .Q(s_axi_rdata[11]),
-        .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[11]_i_5 
-       (.I0(\s_axi_rdata[11]_i_8_n_0 ),
-        .I1(\s_axi_rdata[11]_i_9_n_0 ),
-        .O(\s_axi_rdata_reg[11]_i_5_n_0 ),
-        .S(s_axi_araddr[2]));
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[11]_i_4 
+       (.I0(\s_axi_rdata_reg[11]_i_6_n_0 ),
+        .I1(\s_axi_rdata_reg[11]_i_7_n_0 ),
+        .O(\s_axi_rdata_reg[11]_i_4_n_0 ),
+        .S(s_axi_araddr[3]));
   MUXF7 \s_axi_rdata_reg[11]_i_6 
-       (.I0(\s_axi_rdata[11]_i_10_n_0 ),
-        .I1(\s_axi_rdata[11]_i_11_n_0 ),
+       (.I0(\s_axi_rdata[11]_i_9_n_0 ),
+        .I1(\s_axi_rdata[11]_i_10_n_0 ),
         .O(\s_axi_rdata_reg[11]_i_6_n_0 ),
+        .S(s_axi_araddr[2]));
+  MUXF7 \s_axi_rdata_reg[11]_i_7 
+       (.I0(\s_axi_rdata[11]_i_11_n_0 ),
+        .I1(\s_axi_rdata[11]_i_12_n_0 ),
+        .O(\s_axi_rdata_reg[11]_i_7_n_0 ),
         .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[12] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[12]_i_1_n_0 ),
         .Q(s_axi_rdata[12]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[13] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[13]_i_1_n_0 ),
         .Q(s_axi_rdata[13]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[14] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[14]_i_1_n_0 ),
         .Q(s_axi_rdata[14]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[15] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[15]_i_1_n_0 ),
         .Q(s_axi_rdata[15]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[16] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[16]_i_1_n_0 ),
         .Q(s_axi_rdata[16]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[17] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[17]_i_1_n_0 ),
         .Q(s_axi_rdata[17]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[18] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
-        .D(\s_axi_rdata[18]_i_1_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
+        .D(\s_axi_rdata[18]_i_2_n_0 ),
         .Q(s_axi_rdata[18]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[19] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[19]_i_1_n_0 ),
         .Q(s_axi_rdata[19]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(1'b0));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[1] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[1]_i_1_n_0 ),
         .Q(s_axi_rdata[1]),
         .R(1'b0));
+  MUXF7 \s_axi_rdata_reg[1]_i_4 
+       (.I0(\s_axi_rdata[1]_i_10_n_0 ),
+        .I1(\s_axi_rdata[1]_i_11_n_0 ),
+        .O(\s_axi_rdata_reg[1]_i_4_n_0 ),
+        .S(s_axi_araddr[2]));
+  MUXF7 \s_axi_rdata_reg[1]_i_6 
+       (.I0(\s_axi_rdata[1]_i_13_n_0 ),
+        .I1(\s_axi_rdata[1]_i_14_n_0 ),
+        .O(\s_axi_rdata_reg[1]_i_6_n_0 ),
+        .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[20] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[20]_i_1_n_0 ),
         .Q(s_axi_rdata[20]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(1'b0));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[21] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
-        .D(\s_axi_rdata[21]_i_3_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
+        .D(\s_axi_rdata[21]_i_2_n_0 ),
         .Q(s_axi_rdata[21]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(1'b0));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[2] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[2]_i_1_n_0 ),
         .Q(s_axi_rdata[2]),
-        .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[2]_i_4 
-       (.I0(\s_axi_rdata[2]_i_8_n_0 ),
-        .I1(\s_axi_rdata[2]_i_9_n_0 ),
-        .O(\s_axi_rdata_reg[2]_i_4_n_0 ),
-        .S(s_axi_araddr[2]));
-  MUXF7 \s_axi_rdata_reg[2]_i_5 
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[2]_i_3 
+       (.I0(\s_axi_rdata_reg[2]_i_7_n_0 ),
+        .I1(\s_axi_rdata_reg[2]_i_8_n_0 ),
+        .O(\s_axi_rdata_reg[2]_i_3_n_0 ),
+        .S(s_axi_araddr[3]));
+  MUXF7 \s_axi_rdata_reg[2]_i_7 
        (.I0(\s_axi_rdata[2]_i_10_n_0 ),
         .I1(\s_axi_rdata[2]_i_11_n_0 ),
-        .O(\s_axi_rdata_reg[2]_i_5_n_0 ),
+        .O(\s_axi_rdata_reg[2]_i_7_n_0 ),
+        .S(s_axi_araddr[2]));
+  MUXF7 \s_axi_rdata_reg[2]_i_8 
+       (.I0(\s_axi_rdata[2]_i_12_n_0 ),
+        .I1(\s_axi_rdata[2]_i_13_n_0 ),
+        .O(\s_axi_rdata_reg[2]_i_8_n_0 ),
         .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[3] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[3]_i_1_n_0 ),
         .Q(s_axi_rdata[3]),
         .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[3]_i_6 
+  MUXF7 \s_axi_rdata_reg[3]_i_4 
        (.I0(\s_axi_rdata[3]_i_9_n_0 ),
         .I1(\s_axi_rdata[3]_i_10_n_0 ),
-        .O(\s_axi_rdata_reg[3]_i_6_n_0 ),
+        .O(\s_axi_rdata_reg[3]_i_4_n_0 ),
         .S(s_axi_araddr[2]));
-  MUXF7 \s_axi_rdata_reg[3]_i_7 
+  MUXF7 \s_axi_rdata_reg[3]_i_5 
        (.I0(\s_axi_rdata[3]_i_11_n_0 ),
         .I1(\s_axi_rdata[3]_i_12_n_0 ),
-        .O(\s_axi_rdata_reg[3]_i_7_n_0 ),
+        .O(\s_axi_rdata_reg[3]_i_5_n_0 ),
         .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[4] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[4]_i_1_n_0 ),
         .Q(s_axi_rdata[4]),
-        .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[4]_i_6 
-       (.I0(\s_axi_rdata[4]_i_9_n_0 ),
-        .I1(\s_axi_rdata[4]_i_10_n_0 ),
-        .O(\s_axi_rdata_reg[4]_i_6_n_0 ),
-        .S(s_axi_araddr[2]));
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[4]_i_3 
+       (.I0(\s_axi_rdata_reg[4]_i_7_n_0 ),
+        .I1(\s_axi_rdata_reg[4]_i_8_n_0 ),
+        .O(\s_axi_rdata_reg[4]_i_3_n_0 ),
+        .S(s_axi_araddr[3]));
   MUXF7 \s_axi_rdata_reg[4]_i_7 
-       (.I0(\s_axi_rdata[4]_i_11_n_0 ),
-        .I1(\s_axi_rdata[4]_i_12_n_0 ),
+       (.I0(\s_axi_rdata[4]_i_10_n_0 ),
+        .I1(\s_axi_rdata[4]_i_11_n_0 ),
         .O(\s_axi_rdata_reg[4]_i_7_n_0 ),
+        .S(s_axi_araddr[2]));
+  MUXF7 \s_axi_rdata_reg[4]_i_8 
+       (.I0(\s_axi_rdata[4]_i_12_n_0 ),
+        .I1(\s_axi_rdata[4]_i_13_n_0 ),
+        .O(\s_axi_rdata_reg[4]_i_8_n_0 ),
         .S(s_axi_araddr[2]));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[5] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[5]_i_1_n_0 ),
         .Q(s_axi_rdata[5]),
         .R(1'b0));
@@ -21389,24 +21439,29 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[6] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[6]_i_1_n_0 ),
         .Q(s_axi_rdata[6]),
-        .R(\s_axi_rdata[21]_i_1_n_0 ));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[7] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[7]_i_1_n_0 ),
         .Q(s_axi_rdata[7]),
-        .R(1'b0));
+        .R(\s_axi_rdata[18]_i_1_n_0 ));
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[8] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[8]_i_1_n_0 ),
         .Q(s_axi_rdata[8]),
-        .R(1'b0));
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[8]_i_3 
+       (.I0(\s_axi_rdata_reg[8]_i_6_n_0 ),
+        .I1(\s_axi_rdata_reg[8]_i_7_n_0 ),
+        .O(\s_axi_rdata_reg[8]_i_3_n_0 ),
+        .S(s_axi_araddr[3]));
   MUXF7 \s_axi_rdata_reg[8]_i_6 
        (.I0(\s_axi_rdata[8]_i_9_n_0 ),
         .I1(\s_axi_rdata[8]_i_10_n_0 ),
@@ -21420,21 +21475,25 @@ module icyradio_axi_irq_controller_0_0_axi_irq_controller
   (* X_INTERFACE_INFO = "xilinx.com:interface:aximm:1.0 s_axi RDATA" *) 
   FDRE \s_axi_rdata_reg[9] 
        (.C(aclk),
-        .CE(\s_axi_rdata[21]_i_2_n_0 ),
+        .CE(\s_axi_rdata[21]_i_1_n_0 ),
         .D(\s_axi_rdata[9]_i_1_n_0 ),
         .Q(s_axi_rdata[9]),
-        .R(1'b0));
-  MUXF7 \s_axi_rdata_reg[9]_i_5 
-       (.I0(\s_axi_rdata[9]_i_8_n_0 ),
-        .I1(\s_axi_rdata[9]_i_9_n_0 ),
-        .O(\s_axi_rdata_reg[9]_i_5_n_0 ),
-        .S(s_axi_araddr[2]));
-  MUXF7 \s_axi_rdata_reg[9]_i_6 
+        .R(\s_axi_rdata[11]_i_1_n_0 ));
+  MUXF8 \s_axi_rdata_reg[9]_i_3 
+       (.I0(\s_axi_rdata_reg[9]_i_7_n_0 ),
+        .I1(\s_axi_rdata_reg[9]_i_8_n_0 ),
+        .O(\s_axi_rdata_reg[9]_i_3_n_0 ),
+        .S(s_axi_araddr[3]));
+  MUXF7 \s_axi_rdata_reg[9]_i_7 
        (.I0(\s_axi_rdata[9]_i_10_n_0 ),
         .I1(\s_axi_rdata[9]_i_11_n_0 ),
-        .O(\s_axi_rdata_reg[9]_i_6_n_0 ),
+        .O(\s_axi_rdata_reg[9]_i_7_n_0 ),
         .S(s_axi_araddr[2]));
-  (* SOFT_HLUTNM = "soft_lutpair155" *) 
+  MUXF7 \s_axi_rdata_reg[9]_i_8 
+       (.I0(\s_axi_rdata[9]_i_12_n_0 ),
+        .I1(\s_axi_rdata[9]_i_13_n_0 ),
+        .O(\s_axi_rdata_reg[9]_i_8_n_0 ),
+        .S(s_axi_araddr[2]));
   LUT3 #(
     .INIT(8'h74)) 
     s_axi_rvalid_i_1

@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Fri Nov 22 16:57:02 2024
+-- Date        : Fri Feb 13 12:11:11 2026
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
--- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_axi_i2s_0 -prefix
---               icyradio_axi_i2s_0_ icyradio_axi_i2s_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim
+--               /home/joao/icyradio/firmware/a100t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_0/icyradio_axi_i2s_0_sim_netlist.vhdl
 -- Design      : icyradio_axi_i2s_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -26,6 +26,8 @@ entity icyradio_axi_i2s_0_xpm_cdc_single is
   attribute DEST_SYNC_FF of icyradio_axi_i2s_0_xpm_cdc_single : entity is 4;
   attribute INIT_SYNC_FF : integer;
   attribute INIT_SYNC_FF of icyradio_axi_i2s_0_xpm_cdc_single : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_i2s_0_xpm_cdc_single : entity is "xpm_cdc_single";
   attribute SIM_ASSERT_CHK : integer;
   attribute SIM_ASSERT_CHK of icyradio_axi_i2s_0_xpm_cdc_single : entity is 0;
   attribute SRC_INPUT_REG : integer;
@@ -364,11 +366,11 @@ use UNISIM.VCOMPONENTS.ALL;
 entity icyradio_axi_i2s_0_xpm_cdc_handshake is
   port (
     src_clk : in STD_LOGIC;
-    src_in : in STD_LOGIC_VECTOR ( 47 downto 0 );
+    src_in : in STD_LOGIC_VECTOR ( 48 downto 0 );
     src_send : in STD_LOGIC;
     src_rcv : out STD_LOGIC;
     dest_clk : in STD_LOGIC;
-    dest_out : out STD_LOGIC_VECTOR ( 47 downto 0 );
+    dest_out : out STD_LOGIC_VECTOR ( 48 downto 0 );
     dest_req : out STD_LOGIC;
     dest_ack : in STD_LOGIC
   );
@@ -378,6 +380,8 @@ entity icyradio_axi_i2s_0_xpm_cdc_handshake is
   attribute DEST_SYNC_FF of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 4;
   attribute INIT_SYNC_FF : integer;
   attribute INIT_SYNC_FF of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 1;
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is "xpm_cdc_handshake";
   attribute SIM_ASSERT_CHK : integer;
   attribute SIM_ASSERT_CHK of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 1;
   attribute SRC_SYNC_FF : integer;
@@ -385,7 +389,7 @@ entity icyradio_axi_i2s_0_xpm_cdc_handshake is
   attribute VERSION : integer;
   attribute VERSION of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 0;
   attribute WIDTH : integer;
-  attribute WIDTH of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 48;
+  attribute WIDTH of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is 49;
   attribute XPM_MODULE : string;
   attribute XPM_MODULE of icyradio_axi_i2s_0_xpm_cdc_handshake : entity is "TRUE";
   attribute keep_hierarchy : string;
@@ -398,14 +402,14 @@ architecture STRUCTURE of icyradio_axi_i2s_0_xpm_cdc_handshake is
   signal dest_hsdata_en : STD_LOGIC;
   attribute DIRECT_ENABLE : boolean;
   attribute DIRECT_ENABLE of dest_hsdata_en : signal is std.standard.true;
-  signal dest_hsdata_ff : STD_LOGIC_VECTOR ( 47 downto 0 );
+  signal dest_hsdata_ff : STD_LOGIC_VECTOR ( 48 downto 0 );
   attribute RTL_KEEP : string;
   attribute RTL_KEEP of dest_hsdata_ff : signal is "true";
   attribute xpm_cdc of dest_hsdata_ff : signal is "HANDSHAKE";
   signal dest_req_ff : STD_LOGIC;
   signal dest_req_nxt : STD_LOGIC;
   signal p_0_in : STD_LOGIC;
-  signal src_hsdata_ff : STD_LOGIC_VECTOR ( 47 downto 0 );
+  signal src_hsdata_ff : STD_LOGIC_VECTOR ( 48 downto 0 );
   signal src_sendd_ff : STD_LOGIC;
   attribute KEEP : string;
   attribute KEEP of \dest_hsdata_ff_reg[0]\ : label is "true";
@@ -492,6 +496,8 @@ architecture STRUCTURE of icyradio_axi_i2s_0_xpm_cdc_handshake is
   attribute XPM_CDC of \dest_hsdata_ff_reg[46]\ : label is "HANDSHAKE";
   attribute KEEP of \dest_hsdata_ff_reg[47]\ : label is "true";
   attribute XPM_CDC of \dest_hsdata_ff_reg[47]\ : label is "HANDSHAKE";
+  attribute KEEP of \dest_hsdata_ff_reg[48]\ : label is "true";
+  attribute XPM_CDC of \dest_hsdata_ff_reg[48]\ : label is "HANDSHAKE";
   attribute KEEP of \dest_hsdata_ff_reg[4]\ : label is "true";
   attribute XPM_CDC of \dest_hsdata_ff_reg[4]\ : label is "HANDSHAKE";
   attribute KEEP of \dest_hsdata_ff_reg[5]\ : label is "true";
@@ -520,7 +526,7 @@ architecture STRUCTURE of icyradio_axi_i2s_0_xpm_cdc_handshake is
   attribute XPM_CDC of xpm_cdc_single_src2dest_inst : label is "SINGLE";
   attribute XPM_MODULE of xpm_cdc_single_src2dest_inst : label is "TRUE";
 begin
-  dest_out(47 downto 0) <= dest_hsdata_ff(47 downto 0);
+  dest_out(48 downto 0) <= dest_hsdata_ff(48 downto 0);
 \dest_hsdata_ff_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => dest_clk,
@@ -857,6 +863,14 @@ begin
       Q => dest_hsdata_ff(47),
       R => '0'
     );
+\dest_hsdata_ff_reg[48]\: unisim.vcomponents.FDRE
+     port map (
+      C => dest_clk,
+      CE => dest_hsdata_en,
+      D => src_hsdata_ff(48),
+      Q => dest_hsdata_ff(48),
+      R => '0'
+    );
 \dest_hsdata_ff_reg[4]\: unisim.vcomponents.FDRE
      port map (
       C => dest_clk,
@@ -930,7 +944,7 @@ dest_req_ff_reg: unisim.vcomponents.FDRE
       Q => dest_req_ff,
       R => '0'
     );
-\src_hsdata_ff[47]_i_1\: unisim.vcomponents.LUT1
+\src_hsdata_ff[48]_i_1\: unisim.vcomponents.LUT1
     generic map(
       INIT => X"1"
     )
@@ -1274,6 +1288,14 @@ dest_req_ff_reg: unisim.vcomponents.FDRE
       Q => src_hsdata_ff(47),
       R => '0'
     );
+\src_hsdata_ff_reg[48]\: unisim.vcomponents.FDRE
+     port map (
+      C => src_clk,
+      CE => p_0_in,
+      D => src_in(48),
+      Q => src_hsdata_ff(48),
+      R => '0'
+    );
 \src_hsdata_ff_reg[4]\: unisim.vcomponents.FDRE
      port map (
       C => src_clk,
@@ -1530,17 +1552,19 @@ use UNISIM.VCOMPONENTS.ALL;
 entity icyradio_axi_i2s_0_axi_i2s is
   port (
     s_axi_rvalid_reg_0 : out STD_LOGIC;
+    i2s_bclk_reg_0 : out STD_LOGIC;
     s_axi_wready : out STD_LOGIC;
-    s_axi_rdata : out STD_LOGIC_VECTOR ( 20 downto 0 );
+    s_axi_rdata : out STD_LOGIC_VECTOR ( 21 downto 0 );
     m_axis_tdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    irq : out STD_LOGIC;
     s_axi_bvalid : out STD_LOGIC;
     s_axi_arready : out STD_LOGIC;
-    i2s_bclk_reg_0 : out STD_LOGIC;
     m_axis_tvalid_reg_0 : out STD_LOGIC;
-    s_axis_tready_reg_0 : out STD_LOGIC;
+    i2s_lrclk_reg_0 : out STD_LOGIC;
     i2s_sdata_out : out STD_LOGIC;
-    i2s_lrclk : out STD_LOGIC;
+    s_axis_tready_reg_0 : out STD_LOGIC;
     i2s_mclk : out STD_LOGIC;
+    s_axi_araddr : in STD_LOGIC_VECTOR ( 2 downto 0 );
     s_axi_arvalid : in STD_LOGIC;
     s_axi_rready : in STD_LOGIC;
     aresetn : in STD_LOGIC;
@@ -1548,17 +1572,18 @@ entity icyradio_axi_i2s_0_axi_i2s is
     aclk : in STD_LOGIC;
     i2s_src_clk : in STD_LOGIC;
     i2s_src_resetn : in STD_LOGIC;
-    s_axi_wdata : in STD_LOGIC_VECTOR ( 19 downto 0 );
+    s_axi_wdata : in STD_LOGIC_VECTOR ( 20 downto 0 );
     s_axi_wstrb : in STD_LOGIC_VECTOR ( 2 downto 0 );
     s_axi_bready : in STD_LOGIC;
     s_axi_wvalid : in STD_LOGIC;
     s_axi_awvalid : in STD_LOGIC;
-    s_axi_araddr : in STD_LOGIC_VECTOR ( 2 downto 0 );
     m_axis_tready : in STD_LOGIC;
     s_axis_tdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
-    s_axis_tvalid : in STD_LOGIC;
-    i2s_sdata_in : in STD_LOGIC
+    i2s_sdata_in : in STD_LOGIC;
+    s_axis_tvalid : in STD_LOGIC
   );
+  attribute ORIG_REF_NAME : string;
+  attribute ORIG_REF_NAME of icyradio_axi_i2s_0_axi_i2s : entity is "axi_i2s";
 end icyradio_axi_i2s_0_axi_i2s;
 
 architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
@@ -1566,9 +1591,11 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal \FSM_sequential_i2s_fsm_state[0]_i_2_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[0]_i_3_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[1]_i_1_n_0\ : STD_LOGIC;
+  signal \FSM_sequential_i2s_fsm_state[1]_i_2_n_0\ : STD_LOGIC;
+  signal \FSM_sequential_i2s_fsm_state[1]_i_3_n_0\ : STD_LOGIC;
+  signal \FSM_sequential_i2s_fsm_state[1]_i_4_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[2]_i_11_n_0\ : STD_LOGIC;
-  signal \FSM_sequential_i2s_fsm_state[2]_i_12_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[2]_i_1_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[2]_i_2_n_0\ : STD_LOGIC;
   signal \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\ : STD_LOGIC;
@@ -1583,37 +1610,41 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal i2s_bclk_div_a : STD_LOGIC;
   signal \i2s_bclk_div_cnt[7]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_bclk_div_cnt[7]_i_3_n_0\ : STD_LOGIC;
+  signal \i2s_bclk_div_cnt[7]_i_4_n_0\ : STD_LOGIC;
   signal i2s_bclk_div_cnt_reg : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal i2s_bclk_i_1_n_0 : STD_LOGIC;
+  signal i2s_bclk_i_2_n_0 : STD_LOGIC;
   signal i2s_bclk_i_3_n_0 : STD_LOGIC;
   signal i2s_bclk_i_4_n_0 : STD_LOGIC;
-  signal i2s_bclk_i_5_n_0 : STD_LOGIC;
-  signal i2s_bclk_i_6_n_0 : STD_LOGIC;
   signal \^i2s_bclk_reg_0\ : STD_LOGIC;
-  signal \i2s_bclk_rising__0\ : STD_LOGIC;
-  signal i2s_bclk_toggle : STD_LOGIC;
-  signal i2s_bit_cnt : STD_LOGIC_VECTOR ( 4 downto 0 );
-  signal \i2s_bit_cnt[4]_i_1_n_0\ : STD_LOGIC;
-  signal \i2s_bit_cnt[4]_i_4_n_0\ : STD_LOGIC;
-  signal \i2s_bit_cnt[4]_i_5_n_0\ : STD_LOGIC;
+  signal i2s_bit_cnt : STD_LOGIC_VECTOR ( 5 downto 0 );
+  signal \i2s_bit_cnt[2]_i_1_n_0\ : STD_LOGIC;
+  signal \i2s_bit_cnt[4]_i_2_n_0\ : STD_LOGIC;
+  signal \i2s_bit_cnt[5]_i_1_n_0\ : STD_LOGIC;
+  signal \i2s_bit_cnt[5]_i_3_n_0\ : STD_LOGIC;
   signal \i2s_bit_cnt_reg_n_0_[0]\ : STD_LOGIC;
   signal \i2s_bit_cnt_reg_n_0_[1]\ : STD_LOGIC;
   signal \i2s_bit_cnt_reg_n_0_[2]\ : STD_LOGIC;
   signal \i2s_bit_cnt_reg_n_0_[3]\ : STD_LOGIC;
   signal \i2s_bit_cnt_reg_n_0_[4]\ : STD_LOGIC;
-  signal i2s_chan_bit_sz : STD_LOGIC;
-  signal i2s_chan_bit_sz_a8_out : STD_LOGIC;
+  signal \i2s_bit_cnt_reg_n_0_[5]\ : STD_LOGIC;
+  signal i2s_chan_bit_sz : STD_LOGIC_VECTOR ( 1 downto 0 );
+  signal i2s_chan_cnt : STD_LOGIC_VECTOR ( 2 to 2 );
   signal \i2s_chan_cnt[0]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_chan_cnt[1]_i_1_n_0\ : STD_LOGIC;
+  signal \i2s_chan_cnt[1]_i_2_n_0\ : STD_LOGIC;
   signal \i2s_chan_cnt[2]_i_1_n_0\ : STD_LOGIC;
-  signal \i2s_chan_cnt[2]_i_2_n_0\ : STD_LOGIC;
   signal \i2s_chan_cnt[2]_i_3_n_0\ : STD_LOGIC;
+  signal \i2s_chan_cnt[2]_i_4_n_0\ : STD_LOGIC;
+  signal \i2s_chan_cnt[2]_i_5_n_0\ : STD_LOGIC;
+  signal \i2s_chan_cnt[2]_i_6_n_0\ : STD_LOGIC;
   signal \i2s_chan_cnt_reg_n_0_[0]\ : STD_LOGIC;
   signal \i2s_chan_cnt_reg_n_0_[1]\ : STD_LOGIC;
   signal \i2s_chan_cnt_reg_n_0_[2]\ : STD_LOGIC;
   signal i2s_chan_en : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal i2s_chan_en_a : STD_LOGIC;
   signal i2s_chan_max : STD_LOGIC_VECTOR ( 2 downto 0 );
+  signal i2s_chan_max_a : STD_LOGIC;
   signal i2s_clk_div_en : STD_LOGIC;
   signal \i2s_clk_div_en_a__1\ : STD_LOGIC;
   signal i2s_clk_div_en_a_i_1_n_0 : STD_LOGIC;
@@ -1624,8 +1655,9 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal i2s_lb_en : STD_LOGIC;
   signal i2s_lb_en_a_i_1_n_0 : STD_LOGIC;
   signal i2s_lb_en_a_i_2_n_0 : STD_LOGIC;
-  signal \^i2s_lrclk\ : STD_LOGIC;
   signal i2s_lrclk_div : STD_LOGIC_VECTOR ( 15 downto 0 );
+  signal \i2s_lrclk_div_a[15]_i_1_n_0\ : STD_LOGIC;
+  signal \i2s_lrclk_div_a[7]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_lrclk_div_cnt[0]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_lrclk_div_cnt[0]_i_3_n_0\ : STD_LOGIC;
   signal i2s_lrclk_div_cnt_reg : STD_LOGIC_VECTOR ( 15 downto 0 );
@@ -1661,6 +1693,7 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal \i2s_lrclk_div_cnt_reg[8]_i_1_n_6\ : STD_LOGIC;
   signal \i2s_lrclk_div_cnt_reg[8]_i_1_n_7\ : STD_LOGIC;
   signal i2s_lrclk_i_1_n_0 : STD_LOGIC;
+  signal \^i2s_lrclk_reg_0\ : STD_LOGIC;
   signal i2s_lrclk_toggle0 : STD_LOGIC;
   signal \i2s_lrclk_toggle0_carry__0_i_1_n_0\ : STD_LOGIC;
   signal \i2s_lrclk_toggle0_carry__0_i_2_n_0\ : STD_LOGIC;
@@ -1683,19 +1716,21 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal i2s_mclk_i_3_n_0 : STD_LOGIC;
   signal i2s_mclk_i_4_n_0 : STD_LOGIC;
   signal i2s_mclk_i_5_n_0 : STD_LOGIC;
+  signal i2s_mclk_i_6_n_0 : STD_LOGIC;
+  signal i2s_mclk_i_7_n_0 : STD_LOGIC;
   signal i2s_mclk_toggle : STD_LOGIC;
   signal i2s_pause : STD_LOGIC;
   signal i2s_pause_a_i_1_n_0 : STD_LOGIC;
-  signal \i2s_paused1__4\ : STD_LOGIC;
   signal i2s_paused_a_i_1_n_0 : STD_LOGIC;
   signal i2s_paused_i_1_n_0 : STD_LOGIC;
   signal i2s_paused_i_2_n_0 : STD_LOGIC;
+  signal i2s_paused_i_3_n_0 : STD_LOGIC;
+  signal i2s_paused_i_4_n_0 : STD_LOGIC;
   signal i2s_sdata_in_sr : STD_LOGIC_VECTOR ( 30 downto 0 );
   signal \i2s_sdata_in_sr[30]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_sdata_in_sr[30]_i_3_n_0\ : STD_LOGIC;
-  signal i2s_sdata_in_sr_bit_cnt : STD_LOGIC_VECTOR ( 5 downto 0 );
+  signal i2s_sdata_in_sr_bit_cnt : STD_LOGIC_VECTOR ( 4 downto 0 );
   signal \i2s_sdata_in_sr_bit_cnt[5]_i_1_n_0\ : STD_LOGIC;
-  signal \i2s_sdata_in_sr_bit_cnt[5]_i_3_n_0\ : STD_LOGIC;
   signal \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\ : STD_LOGIC;
   signal \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\ : STD_LOGIC;
   signal \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\ : STD_LOGIC;
@@ -1734,18 +1769,18 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal \i2s_sdata_in_sr_reg_n_0_[9]\ : STD_LOGIC;
   signal i2s_sdata_out_int_i_1_n_0 : STD_LOGIC;
   signal i2s_sdata_out_int_i_2_n_0 : STD_LOGIC;
+  signal i2s_sdata_out_int_i_4_n_0 : STD_LOGIC;
+  signal i2s_sdata_out_int_i_5_n_0 : STD_LOGIC;
+  signal i2s_sdata_out_int_reg_i_3_n_0 : STD_LOGIC;
   signal i2s_sdata_out_int_reg_n_0 : STD_LOGIC;
   signal i2s_sdata_out_sr : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal \i2s_sdata_out_sr[31]_i_2_n_0\ : STD_LOGIC;
   signal i2s_sdata_out_sr_bit_cnt : STD_LOGIC_VECTOR ( 5 downto 0 );
-  signal \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\ : STD_LOGIC;
-  signal \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\ : STD_LOGIC;
-  signal \i2s_sdata_out_sr_bit_cnt[0]_i_4_n_0\ : STD_LOGIC;
-  signal \i2s_sdata_out_sr_bit_cnt[0]_i_5_n_0\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\ : STD_LOGIC;
+  signal \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt[5]_i_1_n_0\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt[5]_i_4_n_0\ : STD_LOGIC;
-  signal \i2s_sdata_out_sr_bit_cnt[5]_i_5_n_0\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\ : STD_LOGIC;
@@ -1785,48 +1820,64 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal \i2s_sdata_out_sr_reg_n_0_[8]\ : STD_LOGIC;
   signal \i2s_sdata_out_sr_reg_n_0_[9]\ : STD_LOGIC;
   signal i2s_src_resetn_a_i_1_n_0 : STD_LOGIC;
-  signal m_axis_tdata1_in : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal irq_enabled : STD_LOGIC_VECTOR ( 8 downto 0 );
+  signal \irq_enabled[7]_i_1_n_0\ : STD_LOGIC;
+  signal \irq_enabled[8]_i_1_n_0\ : STD_LOGIC;
+  signal \irq_enabled[8]_i_2_n_0\ : STD_LOGIC;
+  signal irq_pend3_in : STD_LOGIC_VECTOR ( 7 to 7 );
+  signal \irq_pend[7]_i_1_n_0\ : STD_LOGIC;
+  signal \irq_pend[8]_i_1_n_0\ : STD_LOGIC;
+  signal \irq_pend[8]_i_2_n_0\ : STD_LOGIC;
+  signal \irq_pend_reg_n_0_[7]\ : STD_LOGIC;
   signal \m_axis_tdata[31]_i_1_n_0\ : STD_LOGIC;
   signal \m_axis_tdata[31]_i_2_n_0\ : STD_LOGIC;
-  signal \m_axis_tvalid0__3\ : STD_LOGIC;
-  signal \m_axis_tvalid1__6\ : STD_LOGIC;
   signal m_axis_tvalid_i_1_n_0 : STD_LOGIC;
   signal m_axis_tvalid_i_2_n_0 : STD_LOGIC;
   signal m_axis_tvalid_i_3_n_0 : STD_LOGIC;
   signal m_axis_tvalid_i_4_n_0 : STD_LOGIC;
   signal m_axis_tvalid_i_5_n_0 : STD_LOGIC;
-  signal m_axis_tvalid_i_6_n_0 : STD_LOGIC;
   signal \^m_axis_tvalid_reg_0\ : STD_LOGIC;
   signal p_0_in : STD_LOGIC;
   signal p_0_in_0 : STD_LOGIC;
   signal \p_0_in__0\ : STD_LOGIC_VECTOR ( 7 downto 0 );
   signal \p_0_in__1\ : STD_LOGIC_VECTOR ( 7 downto 0 );
-  signal p_1_in : STD_LOGIC_VECTOR ( 15 downto 7 );
-  signal p_27_in : STD_LOGIC;
+  signal p_1_in : STD_LOGIC_VECTOR ( 0 to 0 );
+  signal p_20_in : STD_LOGIC;
   signal s_axi_awready0 : STD_LOGIC;
   signal \^s_axi_bvalid\ : STD_LOGIC;
   signal s_axi_bvalid_i_1_n_0 : STD_LOGIC;
   signal \s_axi_rdata[0]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[16]_i_1_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[17]_i_1_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[18]_i_1_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[1]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[20]_i_1_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[21]_i_1_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[2]_i_2_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[31]_i_1_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[31]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[31]_i_3_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[3]_i_2_n_0\ : STD_LOGIC;
   signal \s_axi_rdata[4]_i_2_n_0\ : STD_LOGIC;
-  signal s_axi_rdata_1 : STD_LOGIC_VECTOR ( 31 downto 0 );
+  signal \s_axi_rdata[5]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[6]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[7]_i_2_n_0\ : STD_LOGIC;
+  signal \s_axi_rdata[8]_i_2_n_0\ : STD_LOGIC;
+  signal s_axi_rdata_1 : STD_LOGIC_VECTOR ( 15 downto 0 );
   signal s_axi_rvalid_i_1_n_0 : STD_LOGIC;
   signal \^s_axi_rvalid_reg_0\ : STD_LOGIC;
   signal \^s_axi_wready\ : STD_LOGIC;
-  signal s_axis_tready023_out : STD_LOGIC;
   signal s_axis_tready_i_1_n_0 : STD_LOGIC;
   signal s_axis_tready_i_2_n_0 : STD_LOGIC;
   signal s_axis_tready_i_3_n_0 : STD_LOGIC;
   signal s_axis_tready_i_4_n_0 : STD_LOGIC;
   signal s_axis_tready_i_5_n_0 : STD_LOGIC;
+  signal s_axis_tready_i_6_n_0 : STD_LOGIC;
+  signal s_axis_tready_i_7_n_0 : STD_LOGIC;
   signal \^s_axis_tready_reg_0\ : STD_LOGIC;
   signal sync_aclk_to_i2s_src_clk_dst_req : STD_LOGIC;
-  signal sync_aclk_to_i2s_src_clk_in : STD_LOGIC_VECTOR ( 47 downto 0 );
-  signal sync_aclk_to_i2s_src_clk_out : STD_LOGIC_VECTOR ( 47 downto 0 );
+  signal sync_aclk_to_i2s_src_clk_in : STD_LOGIC_VECTOR ( 48 downto 0 );
+  signal sync_aclk_to_i2s_src_clk_out : STD_LOGIC_VECTOR ( 48 downto 0 );
   signal sync_aclk_to_i2s_src_clk_src_done : STD_LOGIC;
   signal sync_aclk_to_i2s_src_clk_src_req : STD_LOGIC;
   signal sync_aclk_to_i2s_src_clk_src_req_i_1_n_0 : STD_LOGIC;
@@ -1841,11 +1892,7 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   signal \NLW_i2s_lrclk_toggle0_carry__0_CO_UNCONNECTED\ : STD_LOGIC_VECTOR ( 3 downto 2 );
   signal \NLW_i2s_lrclk_toggle0_carry__0_O_UNCONNECTED\ : STD_LOGIC_VECTOR ( 3 downto 0 );
   attribute SOFT_HLUTNM : string;
-  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[2]_i_12\ : label is "soft_lutpair12";
-  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[2]_i_4\ : label is "soft_lutpair7";
-  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[2]_i_5\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[2]_i_7\ : label is "soft_lutpair14";
-  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[2]_i_8\ : label is "soft_lutpair25";
+  attribute SOFT_HLUTNM of \FSM_sequential_i2s_fsm_state[1]_i_2\ : label is "soft_lutpair7";
   attribute FSM_ENCODED_STATES : string;
   attribute FSM_ENCODED_STATES of \FSM_sequential_i2s_fsm_state_reg[0]\ : label is "I2S_FSM_STATE_RD_FIRST:000,I2S_FSM_STATE_WAIT_BCLK_SYNC:010,I2S_FSM_STATE_ACTIVE:011,I2S_FSM_STATE_RESET:100,I2S_FSM_STATE_WAIT_LRCLK_SYNC:001";
   attribute FSM_ENCODED_STATES of \FSM_sequential_i2s_fsm_state_reg[1]\ : label is "I2S_FSM_STATE_RD_FIRST:000,I2S_FSM_STATE_WAIT_BCLK_SYNC:010,I2S_FSM_STATE_ACTIVE:011,I2S_FSM_STATE_RESET:100,I2S_FSM_STATE_WAIT_LRCLK_SYNC:001";
@@ -1863,84 +1910,83 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   attribute VERSION : integer;
   attribute VERSION of aclk_to_i2s_src_clk_sync : label is 0;
   attribute WIDTH : integer;
-  attribute WIDTH of aclk_to_i2s_src_clk_sync : label is 48;
+  attribute WIDTH of aclk_to_i2s_src_clk_sync : label is 49;
   attribute XPM_CDC : string;
   attribute XPM_CDC of aclk_to_i2s_src_clk_sync : label is "HANDSHAKE";
   attribute XPM_MODULE : string;
   attribute XPM_MODULE of aclk_to_i2s_src_clk_sync : label is "TRUE";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[0]_i_1\ : label is "soft_lutpair30";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[1]_i_1\ : label is "soft_lutpair30";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[2]_i_1\ : label is "soft_lutpair19";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[3]_i_1\ : label is "soft_lutpair9";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[4]_i_1\ : label is "soft_lutpair9";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[6]_i_1\ : label is "soft_lutpair22";
-  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[7]_i_2\ : label is "soft_lutpair22";
-  attribute SOFT_HLUTNM of i2s_bclk_i_1 : label is "soft_lutpair28";
-  attribute SOFT_HLUTNM of i2s_bclk_i_5 : label is "soft_lutpair19";
-  attribute SOFT_HLUTNM of \i2s_bit_cnt[0]_i_1\ : label is "soft_lutpair26";
-  attribute SOFT_HLUTNM of \i2s_bit_cnt[1]_i_1\ : label is "soft_lutpair26";
-  attribute SOFT_HLUTNM of \i2s_bit_cnt[2]_i_1\ : label is "soft_lutpair11";
-  attribute SOFT_HLUTNM of \i2s_bit_cnt[3]_i_1\ : label is "soft_lutpair11";
-  attribute SOFT_HLUTNM of \i2s_bit_cnt[4]_i_3\ : label is "soft_lutpair6";
-  attribute SOFT_HLUTNM of \i2s_chan_cnt[0]_i_1\ : label is "soft_lutpair1";
-  attribute SOFT_HLUTNM of \i2s_chan_cnt[1]_i_1\ : label is "soft_lutpair1";
-  attribute SOFT_HLUTNM of \i2s_chan_cnt[2]_i_3\ : label is "soft_lutpair3";
+  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[1]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[2]_i_1\ : label is "soft_lutpair22";
+  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[3]_i_1\ : label is "soft_lutpair4";
+  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[4]_i_1\ : label is "soft_lutpair4";
+  attribute SOFT_HLUTNM of \i2s_bclk_div_cnt[7]_i_2\ : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of i2s_bclk_i_2 : label is "soft_lutpair17";
+  attribute SOFT_HLUTNM of \i2s_bit_cnt[0]_i_1\ : label is "soft_lutpair25";
+  attribute SOFT_HLUTNM of \i2s_bit_cnt[1]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \i2s_bit_cnt[2]_i_1\ : label is "soft_lutpair15";
+  attribute SOFT_HLUTNM of \i2s_bit_cnt[4]_i_2\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \i2s_bit_cnt[5]_i_3\ : label is "soft_lutpair25";
+  attribute SOFT_HLUTNM of \i2s_chan_cnt[1]_i_2\ : label is "soft_lutpair9";
+  attribute SOFT_HLUTNM of \i2s_chan_cnt[2]_i_2\ : label is "soft_lutpair9";
+  attribute SOFT_HLUTNM of \i2s_chan_cnt[2]_i_3\ : label is "soft_lutpair14";
+  attribute SOFT_HLUTNM of \i2s_chan_cnt[2]_i_4\ : label is "soft_lutpair6";
   attribute ADDER_THRESHOLD : integer;
   attribute ADDER_THRESHOLD of \i2s_lrclk_div_cnt_reg[0]_i_2\ : label is 11;
   attribute ADDER_THRESHOLD of \i2s_lrclk_div_cnt_reg[12]_i_1\ : label is 11;
   attribute ADDER_THRESHOLD of \i2s_lrclk_div_cnt_reg[4]_i_1\ : label is 11;
   attribute ADDER_THRESHOLD of \i2s_lrclk_div_cnt_reg[8]_i_1\ : label is 11;
-  attribute SOFT_HLUTNM of i2s_lrclk_i_1 : label is "soft_lutpair28";
-  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[1]_i_1\ : label is "soft_lutpair23";
+  attribute SOFT_HLUTNM of i2s_lrclk_i_1 : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[0]_i_1\ : label is "soft_lutpair23";
+  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[1]_i_1\ : label is "soft_lutpair19";
   attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[2]_i_1\ : label is "soft_lutpair23";
-  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[3]_i_1\ : label is "soft_lutpair10";
-  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[4]_i_1\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[3]_i_1\ : label is "soft_lutpair5";
+  attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[4]_i_1\ : label is "soft_lutpair5";
   attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[6]_i_1\ : label is "soft_lutpair24";
   attribute SOFT_HLUTNM of \i2s_mclk_div_cnt[7]_i_2\ : label is "soft_lutpair24";
-  attribute SOFT_HLUTNM of i2s_paused_a_i_1 : label is "soft_lutpair29";
-  attribute SOFT_HLUTNM of i2s_paused_i_1 : label is "soft_lutpair25";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[0]_i_1\ : label is "soft_lutpair20";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[10]_i_1\ : label is "soft_lutpair35";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[11]_i_1\ : label is "soft_lutpair36";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[12]_i_1\ : label is "soft_lutpair36";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[13]_i_1\ : label is "soft_lutpair37";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[14]_i_1\ : label is "soft_lutpair37";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[15]_i_1\ : label is "soft_lutpair38";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[16]_i_1\ : label is "soft_lutpair38";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[17]_i_1\ : label is "soft_lutpair39";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[18]_i_1\ : label is "soft_lutpair39";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[19]_i_1\ : label is "soft_lutpair40";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[1]_i_1\ : label is "soft_lutpair31";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[20]_i_1\ : label is "soft_lutpair40";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[21]_i_1\ : label is "soft_lutpair41";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[22]_i_1\ : label is "soft_lutpair41";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[23]_i_1\ : label is "soft_lutpair42";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[24]_i_1\ : label is "soft_lutpair42";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[25]_i_1\ : label is "soft_lutpair43";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[26]_i_1\ : label is "soft_lutpair43";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[27]_i_1\ : label is "soft_lutpair44";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[28]_i_1\ : label is "soft_lutpair44";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[29]_i_1\ : label is "soft_lutpair45";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[2]_i_1\ : label is "soft_lutpair31";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[30]_i_2\ : label is "soft_lutpair45";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[3]_i_1\ : label is "soft_lutpair32";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[4]_i_1\ : label is "soft_lutpair32";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[5]_i_1\ : label is "soft_lutpair33";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[6]_i_1\ : label is "soft_lutpair33";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[7]_i_1\ : label is "soft_lutpair34";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[8]_i_1\ : label is "soft_lutpair34";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[9]_i_1\ : label is "soft_lutpair35";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[0]_i_1\ : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[1]_i_1\ : label is "soft_lutpair4";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[4]_i_1\ : label is "soft_lutpair5";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[5]_i_2\ : label is "soft_lutpair5";
-  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[5]_i_3\ : label is "soft_lutpair13";
-  attribute SOFT_HLUTNM of i2s_sdata_out_INST_0 : label is "soft_lutpair20";
-  attribute SOFT_HLUTNM of \i2s_sdata_out_sr[0]_i_1\ : label is "soft_lutpair7";
-  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[0]_i_1\ : label is "soft_lutpair18";
-  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[1]_i_1\ : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[4]_i_2\ : label is "soft_lutpair8";
-  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[5]_i_3\ : label is "soft_lutpair18";
+  attribute SOFT_HLUTNM of i2s_mclk_i_1 : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of i2s_mclk_i_5 : label is "soft_lutpair19";
+  attribute SOFT_HLUTNM of i2s_paused_a_i_1 : label is "soft_lutpair28";
+  attribute SOFT_HLUTNM of i2s_paused_i_2 : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of i2s_paused_i_3 : label is "soft_lutpair8";
+  attribute SOFT_HLUTNM of i2s_paused_i_4 : label is "soft_lutpair14";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[0]_i_1\ : label is "soft_lutpair18";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[10]_i_1\ : label is "soft_lutpair34";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[11]_i_1\ : label is "soft_lutpair35";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[12]_i_1\ : label is "soft_lutpair35";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[13]_i_1\ : label is "soft_lutpair36";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[14]_i_1\ : label is "soft_lutpair36";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[15]_i_1\ : label is "soft_lutpair37";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[16]_i_1\ : label is "soft_lutpair37";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[17]_i_1\ : label is "soft_lutpair38";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[18]_i_1\ : label is "soft_lutpair38";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[19]_i_1\ : label is "soft_lutpair39";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[1]_i_1\ : label is "soft_lutpair30";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[20]_i_1\ : label is "soft_lutpair39";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[21]_i_1\ : label is "soft_lutpair40";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[22]_i_1\ : label is "soft_lutpair40";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[23]_i_1\ : label is "soft_lutpair41";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[24]_i_1\ : label is "soft_lutpair41";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[25]_i_1\ : label is "soft_lutpair42";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[26]_i_1\ : label is "soft_lutpair42";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[27]_i_1\ : label is "soft_lutpair43";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[28]_i_1\ : label is "soft_lutpair43";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[29]_i_1\ : label is "soft_lutpair44";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[2]_i_1\ : label is "soft_lutpair30";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[30]_i_2\ : label is "soft_lutpair44";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[3]_i_1\ : label is "soft_lutpair31";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[4]_i_1\ : label is "soft_lutpair31";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[5]_i_1\ : label is "soft_lutpair32";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[6]_i_1\ : label is "soft_lutpair32";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[7]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[8]_i_1\ : label is "soft_lutpair33";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr[9]_i_1\ : label is "soft_lutpair34";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[0]_i_1\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[1]_i_1\ : label is "soft_lutpair21";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[2]_i_1\ : label is "soft_lutpair3";
+  attribute SOFT_HLUTNM of \i2s_sdata_in_sr_bit_cnt[3]_i_1\ : label is "soft_lutpair3";
+  attribute SOFT_HLUTNM of i2s_sdata_out_INST_0 : label is "soft_lutpair18";
+  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[4]_i_2\ : label is "soft_lutpair10";
+  attribute SOFT_HLUTNM of \i2s_sdata_out_sr_bit_cnt[5]_i_4\ : label is "soft_lutpair10";
   attribute DEST_EXT_HSK of i2s_src_clk_to_aclk_sync : label is 0;
   attribute DEST_SYNC_FF of i2s_src_clk_to_aclk_sync : label is 4;
   attribute INIT_SYNC_FF of i2s_src_clk_to_aclk_sync : label is 1;
@@ -1950,52 +1996,24 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   attribute WIDTH of i2s_src_clk_to_aclk_sync : label is 2;
   attribute XPM_CDC of i2s_src_clk_to_aclk_sync : label is "HANDSHAKE";
   attribute XPM_MODULE of i2s_src_clk_to_aclk_sync : label is "TRUE";
-  attribute SOFT_HLUTNM of i2s_src_resetn_a_i_1 : label is "soft_lutpair29";
-  attribute SOFT_HLUTNM of \m_axis_tdata[0]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \m_axis_tdata[10]_i_1\ : label is "soft_lutpair55";
-  attribute SOFT_HLUTNM of \m_axis_tdata[11]_i_1\ : label is "soft_lutpair55";
-  attribute SOFT_HLUTNM of \m_axis_tdata[12]_i_1\ : label is "soft_lutpair54";
-  attribute SOFT_HLUTNM of \m_axis_tdata[13]_i_1\ : label is "soft_lutpair54";
-  attribute SOFT_HLUTNM of \m_axis_tdata[14]_i_1\ : label is "soft_lutpair53";
-  attribute SOFT_HLUTNM of \m_axis_tdata[15]_i_1\ : label is "soft_lutpair53";
-  attribute SOFT_HLUTNM of \m_axis_tdata[16]_i_1\ : label is "soft_lutpair52";
-  attribute SOFT_HLUTNM of \m_axis_tdata[17]_i_1\ : label is "soft_lutpair52";
-  attribute SOFT_HLUTNM of \m_axis_tdata[18]_i_1\ : label is "soft_lutpair51";
-  attribute SOFT_HLUTNM of \m_axis_tdata[19]_i_1\ : label is "soft_lutpair51";
-  attribute SOFT_HLUTNM of \m_axis_tdata[20]_i_1\ : label is "soft_lutpair50";
-  attribute SOFT_HLUTNM of \m_axis_tdata[21]_i_1\ : label is "soft_lutpair50";
-  attribute SOFT_HLUTNM of \m_axis_tdata[22]_i_1\ : label is "soft_lutpair49";
-  attribute SOFT_HLUTNM of \m_axis_tdata[23]_i_1\ : label is "soft_lutpair49";
-  attribute SOFT_HLUTNM of \m_axis_tdata[24]_i_1\ : label is "soft_lutpair48";
-  attribute SOFT_HLUTNM of \m_axis_tdata[25]_i_1\ : label is "soft_lutpair48";
-  attribute SOFT_HLUTNM of \m_axis_tdata[26]_i_1\ : label is "soft_lutpair47";
-  attribute SOFT_HLUTNM of \m_axis_tdata[27]_i_1\ : label is "soft_lutpair47";
-  attribute SOFT_HLUTNM of \m_axis_tdata[28]_i_1\ : label is "soft_lutpair46";
-  attribute SOFT_HLUTNM of \m_axis_tdata[29]_i_1\ : label is "soft_lutpair46";
-  attribute SOFT_HLUTNM of \m_axis_tdata[2]_i_1\ : label is "soft_lutpair59";
-  attribute SOFT_HLUTNM of \m_axis_tdata[30]_i_1\ : label is "soft_lutpair21";
-  attribute SOFT_HLUTNM of \m_axis_tdata[31]_i_3\ : label is "soft_lutpair17";
-  attribute SOFT_HLUTNM of \m_axis_tdata[3]_i_1\ : label is "soft_lutpair59";
-  attribute SOFT_HLUTNM of \m_axis_tdata[4]_i_1\ : label is "soft_lutpair58";
-  attribute SOFT_HLUTNM of \m_axis_tdata[5]_i_1\ : label is "soft_lutpair58";
-  attribute SOFT_HLUTNM of \m_axis_tdata[6]_i_1\ : label is "soft_lutpair57";
-  attribute SOFT_HLUTNM of \m_axis_tdata[7]_i_1\ : label is "soft_lutpair57";
-  attribute SOFT_HLUTNM of \m_axis_tdata[8]_i_1\ : label is "soft_lutpair56";
-  attribute SOFT_HLUTNM of \m_axis_tdata[9]_i_1\ : label is "soft_lutpair56";
-  attribute SOFT_HLUTNM of m_axis_tvalid_i_2 : label is "soft_lutpair12";
-  attribute SOFT_HLUTNM of m_axis_tvalid_i_4 : label is "soft_lutpair17";
-  attribute SOFT_HLUTNM of m_axis_tvalid_i_6 : label is "soft_lutpair3";
-  attribute SOFT_HLUTNM of m_axis_tvalid_i_7 : label is "soft_lutpair13";
-  attribute SOFT_HLUTNM of s_axi_arready_INST_0 : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of i2s_src_resetn_a_i_1 : label is "soft_lutpair28";
+  attribute SOFT_HLUTNM of \irq_enabled[8]_i_2\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of \irq_pend[7]_i_2\ : label is "soft_lutpair29";
+  attribute SOFT_HLUTNM of \irq_pend[8]_i_2\ : label is "soft_lutpair20";
+  attribute SOFT_HLUTNM of m_axis_tvalid_i_3 : label is "soft_lutpair8";
+  attribute SOFT_HLUTNM of m_axis_tvalid_i_5 : label is "soft_lutpair1";
+  attribute SOFT_HLUTNM of s_axi_arready_INST_0 : label is "soft_lutpair26";
   attribute SOFT_HLUTNM of s_axi_awready_i_2 : label is "soft_lutpair2";
   attribute X_INTERFACE_INFO : string;
   attribute X_INTERFACE_INFO of s_axi_awready_reg : label is "xilinx.com:interface:aximm:1.0 s_axi AWREADY";
   attribute SOFT_HLUTNM of s_axi_bvalid_i_1 : label is "soft_lutpair2";
   attribute X_INTERFACE_INFO of s_axi_bvalid_reg : label is "xilinx.com:interface:aximm:1.0 s_axi BVALID";
-  attribute SOFT_HLUTNM of \s_axi_rdata[16]_i_1\ : label is "soft_lutpair15";
-  attribute SOFT_HLUTNM of \s_axi_rdata[17]_i_1\ : label is "soft_lutpair15";
-  attribute SOFT_HLUTNM of \s_axi_rdata[18]_i_1\ : label is "soft_lutpair16";
-  attribute SOFT_HLUTNM of \s_axi_rdata[20]_i_1\ : label is "soft_lutpair16";
+  attribute SOFT_HLUTNM of \s_axi_rdata[16]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \s_axi_rdata[17]_i_1\ : label is "soft_lutpair13";
+  attribute SOFT_HLUTNM of \s_axi_rdata[18]_i_1\ : label is "soft_lutpair12";
+  attribute SOFT_HLUTNM of \s_axi_rdata[20]_i_1\ : label is "soft_lutpair12";
+  attribute SOFT_HLUTNM of \s_axi_rdata[21]_i_1\ : label is "soft_lutpair11";
+  attribute SOFT_HLUTNM of \s_axi_rdata[31]_i_3\ : label is "soft_lutpair11";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[0]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[10]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[11]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
@@ -2008,6 +2026,7 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[18]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[1]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[20]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
+  attribute X_INTERFACE_INFO of \s_axi_rdata_reg[21]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[2]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[31]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[3]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
@@ -2017,12 +2036,15 @@ architecture STRUCTURE of icyradio_axi_i2s_0_axi_i2s is
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[7]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[8]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
   attribute X_INTERFACE_INFO of \s_axi_rdata_reg[9]\ : label is "xilinx.com:interface:aximm:1.0 s_axi RDATA";
-  attribute SOFT_HLUTNM of s_axi_rvalid_i_1 : label is "soft_lutpair27";
+  attribute SOFT_HLUTNM of s_axi_rvalid_i_1 : label is "soft_lutpair26";
   attribute X_INTERFACE_INFO of s_axi_rvalid_reg : label is "xilinx.com:interface:aximm:1.0 s_axi RVALID";
-  attribute SOFT_HLUTNM of s_axis_tready_i_6 : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of s_axis_tready_i_2 : label is "soft_lutpair7";
+  attribute SOFT_HLUTNM of s_axis_tready_i_3 : label is "soft_lutpair6";
+  attribute SOFT_HLUTNM of s_axis_tready_i_6 : label is "soft_lutpair1";
+  attribute SOFT_HLUTNM of sync_aclk_to_i2s_src_clk_src_req_i_1 : label is "soft_lutpair29";
 begin
   i2s_bclk_reg_0 <= \^i2s_bclk_reg_0\;
-  i2s_lrclk <= \^i2s_lrclk\;
+  i2s_lrclk_reg_0 <= \^i2s_lrclk_reg_0\;
   i2s_mclk <= \^i2s_mclk\;
   m_axis_tvalid_reg_0 <= \^m_axis_tvalid_reg_0\;
   s_axi_bvalid <= \^s_axi_bvalid\;
@@ -2031,190 +2053,217 @@ begin
   s_axis_tready_reg_0 <= \^s_axis_tready_reg_0\;
 \FSM_sequential_i2s_fsm_state[0]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"AAAAAAAAAAAABF00"
+      INIT => X"AAAAEEEFAAAA2220"
     )
         port map (
       I0 => \FSM_sequential_i2s_fsm_state[0]_i_2_n_0\,
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\,
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\,
+      I1 => \FSM_sequential_i2s_fsm_state[1]_i_3_n_0\,
+      I2 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
+      I3 => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\,
+      I4 => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\,
+      I5 => \i2s_fsm_state__0\(0),
       O => \FSM_sequential_i2s_fsm_state[0]_i_1_n_0\
     );
 \FSM_sequential_i2s_fsm_state[0]_i_2\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"00000000555555D5"
+      INIT => X"11F1111111111111"
     )
         port map (
-      I0 => \i2s_fsm_state__0\(0),
-      I1 => \i2s_bclk_rising__0\,
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_fsm_state__0\(0),
       I2 => \i2s_fsm_state__0\(1),
-      I3 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
-      I4 => \FSM_sequential_i2s_fsm_state[0]_i_3_n_0\,
-      I5 => \i2s_fsm_state__0\(2),
+      I3 => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\,
+      I4 => m_axis_tvalid_i_5_n_0,
+      I5 => \FSM_sequential_i2s_fsm_state[0]_i_3_n_0\,
       O => \FSM_sequential_i2s_fsm_state[0]_i_2_n_0\
     );
-\FSM_sequential_i2s_fsm_state[0]_i_3\: unisim.vcomponents.LUT4
+\FSM_sequential_i2s_fsm_state[0]_i_3\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"A808"
+      INIT => X"45405555"
     )
         port map (
-      I0 => p_0_in_0,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_4_n_0\,
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => i2s_sdata_out_int_i_5_n_0,
       I2 => \i2s_chan_cnt_reg_n_0_[2]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_5_n_0\,
+      I3 => i2s_sdata_out_int_i_4_n_0,
+      I4 => p_0_in_0,
       O => \FSM_sequential_i2s_fsm_state[0]_i_3_n_0\
     );
 \FSM_sequential_i2s_fsm_state[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"05500550055030F0"
+      INIT => X"AAAAEEEFAAAA2220"
     )
         port map (
-      I0 => \i2s_fsm_state__0\(2),
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\,
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\,
-      O => \FSM_sequential_i2s_fsm_state[1]_i_1_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_1\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"AAAAAAFBAAAAAA08"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_2_n_0\,
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\,
+      I0 => \FSM_sequential_i2s_fsm_state[1]_i_2_n_0\,
+      I1 => \FSM_sequential_i2s_fsm_state[1]_i_3_n_0\,
       I2 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
       I3 => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\,
       I4 => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\,
-      I5 => \i2s_fsm_state__0\(2),
-      O => \FSM_sequential_i2s_fsm_state[2]_i_1_n_0\
+      I5 => \i2s_fsm_state__0\(1),
+      O => \FSM_sequential_i2s_fsm_state[1]_i_1_n_0\
     );
-\FSM_sequential_i2s_fsm_state[2]_i_10\: unisim.vcomponents.LUT6
+\FSM_sequential_i2s_fsm_state[1]_i_2\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"FFFFFFFFFFFFFFFE"
-    )
-        port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
-      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
-      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_11\: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"0400"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(1),
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => sync_i2s_src_clk_to_aclk_in(1),
-      I3 => \^i2s_lrclk\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_11_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_12\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(1),
-      I1 => \i2s_fsm_state__0\(0),
-      O => \FSM_sequential_i2s_fsm_state[2]_i_12_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_2\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"EEEEEEEEEEE0E0E0"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\,
-      I1 => m_axis_tvalid_i_6_n_0,
-      I2 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
-      I3 => p_0_in_0,
-      I4 => \m_axis_tvalid1__6\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_9_n_0\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_2_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_3\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"44440000C0FF0000"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\,
-      I1 => \m_axis_tvalid1__6\,
-      I2 => p_0_in_0,
-      I3 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
-      I4 => i2s_bclk_toggle,
-      I5 => \^i2s_bclk_reg_0\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_4\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"7"
+      INIT => X"06"
     )
         port map (
       I0 => \i2s_fsm_state__0\(0),
       I1 => \i2s_fsm_state__0\(1),
-      O => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\
+      I2 => \i2s_fsm_state__0\(2),
+      O => \FSM_sequential_i2s_fsm_state[1]_i_2_n_0\
     );
-\FSM_sequential_i2s_fsm_state[2]_i_5\: unisim.vcomponents.LUT5
+\FSM_sequential_i2s_fsm_state[1]_i_3\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"FFFF0008"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\,
-      I1 => m_axis_tready,
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \i2s_fsm_state__0\(2),
-      O => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_6\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"8000FF0080000000"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_11_n_0\,
-      I1 => i2s_clk_div_en,
-      I2 => i2s_lrclk_toggle0,
-      I3 => i2s_bclk_toggle,
-      I4 => \^i2s_bclk_reg_0\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_12_n_0\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_7\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"8"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(1),
-      I1 => \i2s_fsm_state__0\(2),
-      O => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_8\: unisim.vcomponents.LUT3
-    generic map(
-      INIT => X"7F"
-    )
-        port map (
-      I0 => \i2s_paused1__4\,
-      I1 => i2s_pause,
-      I2 => \i2s_chan_cnt[2]_i_2_n_0\,
-      O => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\
-    );
-\FSM_sequential_i2s_fsm_state[2]_i_9\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"FFFFFFFFFFFFFFEF"
+      INIT => X"BBBABBBBBBBBBBBB"
     )
         port map (
       I0 => \i2s_fsm_state__0\(2),
-      I1 => \^i2s_bclk_reg_0\,
+      I1 => \FSM_sequential_i2s_fsm_state[2]_i_9_n_0\,
+      I2 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
+      I3 => \FSM_sequential_i2s_fsm_state[1]_i_4_n_0\,
+      I4 => i2s_clk_div_en,
+      I5 => i2s_lrclk_toggle0,
+      O => \FSM_sequential_i2s_fsm_state[1]_i_3_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[1]_i_4\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"B"
+    )
+        port map (
+      I0 => sync_i2s_src_clk_to_aclk_in(1),
+      I1 => \^i2s_lrclk_reg_0\,
+      O => \FSM_sequential_i2s_fsm_state[1]_i_4_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"AAAAAAAACECECECC"
+    )
+        port map (
+      I0 => \FSM_sequential_i2s_fsm_state[2]_i_2_n_0\,
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\,
+      I3 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
+      I4 => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\,
+      I5 => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_1_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_10\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"FFFFFFFF7F7FFF7F"
+    )
+        port map (
+      I0 => \i2s_bit_cnt_reg_n_0_[2]\,
+      I1 => \i2s_bit_cnt_reg_n_0_[0]\,
+      I2 => \i2s_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_bit_cnt_reg_n_0_[4]\,
+      I4 => i2s_chan_bit_sz(1),
+      I5 => \i2s_bit_cnt_reg_n_0_[5]\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_11\: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"2FF2"
+    )
+        port map (
+      I0 => i2s_chan_bit_sz(1),
+      I1 => \i2s_bit_cnt_reg_n_0_[4]\,
+      I2 => i2s_chan_bit_sz(0),
+      I3 => \i2s_bit_cnt_reg_n_0_[3]\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_11_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_2\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"5555555545445555"
+    )
+        port map (
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => i2s_sdata_out_int_reg_i_3_n_0,
+      I3 => p_0_in_0,
+      I4 => m_axis_tvalid_i_5_n_0,
+      I5 => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_2_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_3\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"00000000FFFFFF7F"
+    )
+        port map (
+      I0 => i2s_lrclk_toggle0,
+      I1 => i2s_clk_div_en,
+      I2 => \^i2s_lrclk_reg_0\,
+      I3 => sync_i2s_src_clk_to_aclk_in(1),
+      I4 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
+      I5 => \FSM_sequential_i2s_fsm_state[2]_i_9_n_0\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_3_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_4\: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"0010"
+    )
+        port map (
+      I0 => i2s_sdata_out_int_reg_i_3_n_0,
+      I1 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I2 => \i2s_fsm_state__0\(0),
+      I3 => s_axis_tready_i_6_n_0,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_5\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"7F770000FFFFFFFF"
+    )
+        port map (
+      I0 => \i2s_fsm_state__0\(0),
+      I1 => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\,
+      I2 => i2s_sdata_out_int_reg_i_3_n_0,
+      I3 => p_0_in_0,
+      I4 => m_axis_tvalid_i_5_n_0,
+      I5 => \i2s_fsm_state__0\(1),
+      O => \FSM_sequential_i2s_fsm_state[2]_i_5_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_6\: unisim.vcomponents.LUT3
+    generic map(
+      INIT => X"04"
+    )
+        port map (
+      I0 => \^m_axis_tvalid_reg_0\,
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => \^s_axis_tready_reg_0\,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_6_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_7\: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"FEFF"
+    )
+        port map (
+      I0 => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\,
+      I1 => \FSM_sequential_i2s_fsm_state[2]_i_11_n_0\,
+      I2 => \i2s_chan_cnt[2]_i_6_n_0\,
+      I3 => i2s_pause,
+      O => \FSM_sequential_i2s_fsm_state[2]_i_7_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_8\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"FFFDFFFFFFFFFFFF"
+    )
+        port map (
+      I0 => \^i2s_bclk_reg_0\,
+      I1 => i2s_bclk_i_2_n_0,
       I2 => i2s_bclk_i_3_n_0,
       I3 => i2s_bclk_i_4_n_0,
-      I4 => i2s_bclk_i_5_n_0,
-      I5 => i2s_bclk_i_6_n_0,
+      I4 => i2s_clk_div_en,
+      I5 => \i2s_fsm_state__0\(0),
+      O => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\
+    );
+\FSM_sequential_i2s_fsm_state[2]_i_9\: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"BAAA"
+    )
+        port map (
+      I0 => \i2s_fsm_state__0\(1),
+      I1 => \i2s_fsm_state__0\(0),
+      I2 => m_axis_tready,
+      I3 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
       O => \FSM_sequential_i2s_fsm_state[2]_i_9_n_0\
     );
 \FSM_sequential_i2s_fsm_state_reg[0]\: unisim.vcomponents.FDRE
@@ -2245,24 +2294,24 @@ aclk_to_i2s_src_clk_sync: entity work.icyradio_axi_i2s_0_xpm_cdc_handshake
      port map (
       dest_ack => '0',
       dest_clk => i2s_src_clk,
-      dest_out(47 downto 0) => sync_aclk_to_i2s_src_clk_out(47 downto 0),
+      dest_out(48 downto 0) => sync_aclk_to_i2s_src_clk_out(48 downto 0),
       dest_req => sync_aclk_to_i2s_src_clk_dst_req,
       src_clk => aclk,
-      src_in(47 downto 0) => sync_aclk_to_i2s_src_clk_in(47 downto 0),
+      src_in(48 downto 0) => sync_aclk_to_i2s_src_clk_in(48 downto 0),
       src_rcv => sync_aclk_to_i2s_src_clk_src_done,
       src_send => sync_aclk_to_i2s_src_clk_src_req
     );
 \i2s_bclk_div_a[7]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000008000000000"
+      INIT => X"0000200000000000"
     )
         port map (
       I0 => \^s_axi_wready\,
-      I1 => s_axi_awaddr(1),
-      I2 => s_axi_awaddr(0),
-      I3 => s_axi_awaddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(32),
-      I5 => s_axi_wstrb(0),
+      I1 => sync_aclk_to_i2s_src_clk_in(32),
+      I2 => s_axi_wstrb(0),
+      I3 => s_axi_awaddr(0),
+      I4 => s_axi_awaddr(1),
+      I5 => s_axi_awaddr(2),
       O => i2s_bclk_div_a
     );
 \i2s_bclk_div_a_reg[0]\: unisim.vcomponents.FDRE
@@ -2348,48 +2397,48 @@ aclk_to_i2s_src_clk_sync: entity work.icyradio_axi_i2s_0_xpm_cdc_handshake
     );
 \i2s_bclk_div_cnt[2]_i_1\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"78"
+      INIT => X"6A"
     )
         port map (
-      I0 => i2s_bclk_div_cnt_reg(0),
+      I0 => i2s_bclk_div_cnt_reg(2),
       I1 => i2s_bclk_div_cnt_reg(1),
-      I2 => i2s_bclk_div_cnt_reg(2),
+      I2 => i2s_bclk_div_cnt_reg(0),
       O => \p_0_in__0\(2)
     );
 \i2s_bclk_div_cnt[3]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7F80"
+      INIT => X"6AAA"
     )
         port map (
-      I0 => i2s_bclk_div_cnt_reg(1),
+      I0 => i2s_bclk_div_cnt_reg(3),
       I1 => i2s_bclk_div_cnt_reg(0),
-      I2 => i2s_bclk_div_cnt_reg(2),
-      I3 => i2s_bclk_div_cnt_reg(3),
+      I2 => i2s_bclk_div_cnt_reg(1),
+      I3 => i2s_bclk_div_cnt_reg(2),
       O => \p_0_in__0\(3)
     );
 \i2s_bclk_div_cnt[4]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"7FFF8000"
+      INIT => X"6AAAAAAA"
     )
         port map (
-      I0 => i2s_bclk_div_cnt_reg(2),
-      I1 => i2s_bclk_div_cnt_reg(0),
+      I0 => i2s_bclk_div_cnt_reg(4),
+      I1 => i2s_bclk_div_cnt_reg(2),
       I2 => i2s_bclk_div_cnt_reg(1),
-      I3 => i2s_bclk_div_cnt_reg(3),
-      I4 => i2s_bclk_div_cnt_reg(4),
+      I3 => i2s_bclk_div_cnt_reg(0),
+      I4 => i2s_bclk_div_cnt_reg(3),
       O => \p_0_in__0\(4)
     );
 \i2s_bclk_div_cnt[5]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"7FFFFFFF80000000"
+      INIT => X"6AAAAAAAAAAAAAAA"
     )
         port map (
-      I0 => i2s_bclk_div_cnt_reg(3),
-      I1 => i2s_bclk_div_cnt_reg(1),
+      I0 => i2s_bclk_div_cnt_reg(5),
+      I1 => i2s_bclk_div_cnt_reg(3),
       I2 => i2s_bclk_div_cnt_reg(0),
-      I3 => i2s_bclk_div_cnt_reg(2),
-      I4 => i2s_bclk_div_cnt_reg(4),
-      I5 => i2s_bclk_div_cnt_reg(5),
+      I3 => i2s_bclk_div_cnt_reg(1),
+      I4 => i2s_bclk_div_cnt_reg(2),
+      I5 => i2s_bclk_div_cnt_reg(4),
       O => \p_0_in__0\(5)
     );
 \i2s_bclk_div_cnt[6]_i_1\: unisim.vcomponents.LUT2
@@ -2397,41 +2446,54 @@ aclk_to_i2s_src_clk_sync: entity work.icyradio_axi_i2s_0_xpm_cdc_handshake
       INIT => X"6"
     )
         port map (
-      I0 => \i2s_bclk_div_cnt[7]_i_3_n_0\,
-      I1 => i2s_bclk_div_cnt_reg(6),
+      I0 => i2s_bclk_div_cnt_reg(6),
+      I1 => \i2s_bclk_div_cnt[7]_i_4_n_0\,
       O => \p_0_in__0\(6)
     );
 \i2s_bclk_div_cnt[7]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"B"
+      INIT => X"7"
     )
         port map (
-      I0 => i2s_bclk_toggle,
-      I1 => i2s_clk_div_en,
+      I0 => i2s_clk_div_en,
+      I1 => \i2s_bclk_div_cnt[7]_i_3_n_0\,
       O => \i2s_bclk_div_cnt[7]_i_1_n_0\
     );
 \i2s_bclk_div_cnt[7]_i_2\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"78"
+      INIT => X"6A"
     )
         port map (
-      I0 => \i2s_bclk_div_cnt[7]_i_3_n_0\,
-      I1 => i2s_bclk_div_cnt_reg(6),
-      I2 => i2s_bclk_div_cnt_reg(7),
+      I0 => i2s_bclk_div_cnt_reg(7),
+      I1 => \i2s_bclk_div_cnt[7]_i_4_n_0\,
+      I2 => i2s_bclk_div_cnt_reg(6),
       O => \p_0_in__0\(7)
     );
 \i2s_bclk_div_cnt[7]_i_3\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"EFFEFFFFFFFFEFFE"
+    )
+        port map (
+      I0 => i2s_bclk_i_4_n_0,
+      I1 => i2s_bclk_i_3_n_0,
+      I2 => i2s_bclk_div_cnt_reg(6),
+      I3 => i2s_bclk_div(6),
+      I4 => i2s_bclk_div_cnt_reg(7),
+      I5 => i2s_bclk_div(7),
+      O => \i2s_bclk_div_cnt[7]_i_3_n_0\
+    );
+\i2s_bclk_div_cnt[7]_i_4\: unisim.vcomponents.LUT6
     generic map(
       INIT => X"8000000000000000"
     )
         port map (
       I0 => i2s_bclk_div_cnt_reg(5),
       I1 => i2s_bclk_div_cnt_reg(3),
-      I2 => i2s_bclk_div_cnt_reg(1),
-      I3 => i2s_bclk_div_cnt_reg(0),
+      I2 => i2s_bclk_div_cnt_reg(0),
+      I3 => i2s_bclk_div_cnt_reg(1),
       I4 => i2s_bclk_div_cnt_reg(2),
       I5 => i2s_bclk_div_cnt_reg(4),
-      O => \i2s_bclk_div_cnt[7]_i_3_n_0\
+      O => \i2s_bclk_div_cnt[7]_i_4_n_0\
     );
 \i2s_bclk_div_cnt_reg[0]\: unisim.vcomponents.FDRE
      port map (
@@ -2561,71 +2623,54 @@ aclk_to_i2s_src_clk_sync: entity work.icyradio_axi_i2s_0_xpm_cdc_handshake
       Q => i2s_bclk_div(7),
       R => '0'
     );
-i2s_bclk_i_1: unisim.vcomponents.LUT3
+i2s_bclk_i_1: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"60"
+      INIT => X"FE000100"
     )
         port map (
-      I0 => \^i2s_bclk_reg_0\,
-      I1 => i2s_bclk_toggle,
-      I2 => i2s_clk_div_en,
+      I0 => i2s_bclk_i_2_n_0,
+      I1 => i2s_bclk_i_3_n_0,
+      I2 => i2s_bclk_i_4_n_0,
+      I3 => i2s_clk_div_en,
+      I4 => \^i2s_bclk_reg_0\,
       O => i2s_bclk_i_1_n_0
     );
 i2s_bclk_i_2: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"0002"
+      INIT => X"6FF6"
     )
         port map (
-      I0 => i2s_bclk_i_3_n_0,
-      I1 => i2s_bclk_i_4_n_0,
-      I2 => i2s_bclk_i_5_n_0,
-      I3 => i2s_bclk_i_6_n_0,
-      O => i2s_bclk_toggle
+      I0 => i2s_bclk_div(7),
+      I1 => i2s_bclk_div_cnt_reg(7),
+      I2 => i2s_bclk_div(6),
+      I3 => i2s_bclk_div_cnt_reg(6),
+      O => i2s_bclk_i_2_n_0
     );
-i2s_bclk_i_3: unisim.vcomponents.LUT5
+i2s_bclk_i_3: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"82000082"
+      INIT => X"6FF6FFFFFFFF6FF6"
     )
         port map (
-      I0 => i2s_clk_div_en,
-      I1 => i2s_bclk_div(6),
-      I2 => i2s_bclk_div_cnt_reg(6),
-      I3 => i2s_bclk_div(7),
-      I4 => i2s_bclk_div_cnt_reg(7),
+      I0 => i2s_bclk_div(3),
+      I1 => i2s_bclk_div_cnt_reg(3),
+      I2 => i2s_bclk_div_cnt_reg(4),
+      I3 => i2s_bclk_div(4),
+      I4 => i2s_bclk_div_cnt_reg(5),
+      I5 => i2s_bclk_div(5),
       O => i2s_bclk_i_3_n_0
     );
-i2s_bclk_i_4: unisim.vcomponents.LUT4
+i2s_bclk_i_4: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"6FF6"
+      INIT => X"6FF6FFFFFFFF6FF6"
     )
         port map (
-      I0 => i2s_bclk_div_cnt_reg(5),
-      I1 => i2s_bclk_div(5),
-      I2 => i2s_bclk_div_cnt_reg(2),
-      I3 => i2s_bclk_div(2),
+      I0 => i2s_bclk_div(0),
+      I1 => i2s_bclk_div_cnt_reg(0),
+      I2 => i2s_bclk_div_cnt_reg(1),
+      I3 => i2s_bclk_div(1),
+      I4 => i2s_bclk_div_cnt_reg(2),
+      I5 => i2s_bclk_div(2),
       O => i2s_bclk_i_4_n_0
-    );
-i2s_bclk_i_5: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"6FF6"
-    )
-        port map (
-      I0 => i2s_bclk_div_cnt_reg(1),
-      I1 => i2s_bclk_div(1),
-      I2 => i2s_bclk_div_cnt_reg(0),
-      I3 => i2s_bclk_div(0),
-      O => i2s_bclk_i_5_n_0
-    );
-i2s_bclk_i_6: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"6FF6"
-    )
-        port map (
-      I0 => i2s_bclk_div_cnt_reg(4),
-      I1 => i2s_bclk_div(4),
-      I2 => i2s_bclk_div_cnt_reg(3),
-      I3 => i2s_bclk_div(3),
-      O => i2s_bclk_i_6_n_0
     );
 i2s_bclk_reg: unisim.vcomponents.FDRE
      port map (
@@ -2637,108 +2682,107 @@ i2s_bclk_reg: unisim.vcomponents.FDRE
     );
 \i2s_bit_cnt[0]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"2"
+      INIT => X"1"
     )
         port map (
-      I0 => \i2s_bit_cnt[4]_i_4_n_0\,
+      I0 => \i2s_fsm_state__0\(2),
       I1 => \i2s_bit_cnt_reg_n_0_[0]\,
       O => i2s_bit_cnt(0)
     );
 \i2s_bit_cnt[1]_i_1\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"28"
+      INIT => X"06"
     )
         port map (
-      I0 => \i2s_bit_cnt[4]_i_4_n_0\,
+      I0 => \i2s_bit_cnt_reg_n_0_[1]\,
       I1 => \i2s_bit_cnt_reg_n_0_[0]\,
-      I2 => \i2s_bit_cnt_reg_n_0_[1]\,
+      I2 => \i2s_fsm_state__0\(2),
       O => i2s_bit_cnt(1)
     );
 \i2s_bit_cnt[2]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"2A80"
+      INIT => X"1540"
     )
         port map (
-      I0 => \i2s_bit_cnt[4]_i_4_n_0\,
-      I1 => \i2s_bit_cnt_reg_n_0_[1]\,
-      I2 => \i2s_bit_cnt_reg_n_0_[0]\,
-      I3 => \i2s_bit_cnt_reg_n_0_[2]\,
-      O => i2s_bit_cnt(2)
-    );
-\i2s_bit_cnt[3]_i_1\: unisim.vcomponents.LUT5
-    generic map(
-      INIT => X"2AAA8000"
-    )
-        port map (
-      I0 => \i2s_bit_cnt[4]_i_4_n_0\,
+      I0 => \i2s_fsm_state__0\(2),
       I1 => \i2s_bit_cnt_reg_n_0_[0]\,
       I2 => \i2s_bit_cnt_reg_n_0_[1]\,
       I3 => \i2s_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_bit_cnt_reg_n_0_[3]\,
-      O => i2s_bit_cnt(3)
+      O => \i2s_bit_cnt[2]_i_1_n_0\
     );
-\i2s_bit_cnt[4]_i_1\: unisim.vcomponents.LUT4
+\i2s_bit_cnt[3]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0830"
+      INIT => X"0444444440000000"
     )
         port map (
-      I0 => \i2s_bclk_rising__0\,
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => \i2s_fsm_state__0\(2),
-      I3 => \i2s_fsm_state__0\(1),
-      O => \i2s_bit_cnt[4]_i_1_n_0\
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I2 => \i2s_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_bit_cnt_reg_n_0_[0]\,
+      I4 => \i2s_bit_cnt_reg_n_0_[2]\,
+      I5 => \i2s_bit_cnt_reg_n_0_[3]\,
+      O => i2s_bit_cnt(3)
     );
-\i2s_bit_cnt[4]_i_2\: unisim.vcomponents.LUT6
+\i2s_bit_cnt[4]_i_1\: unisim.vcomponents.LUT6
     generic map(
       INIT => X"2AAAAAAA80000000"
     )
         port map (
-      I0 => \i2s_bit_cnt[4]_i_4_n_0\,
-      I1 => \i2s_bit_cnt_reg_n_0_[2]\,
-      I2 => \i2s_bit_cnt_reg_n_0_[1]\,
+      I0 => \i2s_bit_cnt[4]_i_2_n_0\,
+      I1 => \i2s_bit_cnt_reg_n_0_[3]\,
+      I2 => \i2s_bit_cnt_reg_n_0_[2]\,
       I3 => \i2s_bit_cnt_reg_n_0_[0]\,
-      I4 => \i2s_bit_cnt_reg_n_0_[3]\,
+      I4 => \i2s_bit_cnt_reg_n_0_[1]\,
       I5 => \i2s_bit_cnt_reg_n_0_[4]\,
       O => i2s_bit_cnt(4)
     );
-\i2s_bit_cnt[4]_i_3\: unisim.vcomponents.LUT5
+\i2s_bit_cnt[4]_i_2\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"00000100"
+      INIT => X"2"
     )
         port map (
-      I0 => i2s_bclk_i_6_n_0,
-      I1 => i2s_bclk_i_5_n_0,
-      I2 => i2s_bclk_i_4_n_0,
-      I3 => i2s_bclk_i_3_n_0,
-      I4 => \^i2s_bclk_reg_0\,
-      O => \i2s_bclk_rising__0\
+      I0 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I1 => \i2s_fsm_state__0\(2),
+      O => \i2s_bit_cnt[4]_i_2_n_0\
     );
-\i2s_bit_cnt[4]_i_4\: unisim.vcomponents.LUT6
+\i2s_bit_cnt[5]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"000000004FFFFFFF"
+      INIT => X"AAAE"
     )
         port map (
-      I0 => \i2s_bit_cnt_reg_n_0_[4]\,
-      I1 => i2s_chan_bit_sz,
-      I2 => \i2s_bit_cnt[4]_i_5_n_0\,
-      I3 => \i2s_bit_cnt_reg_n_0_[3]\,
-      I4 => \i2s_bit_cnt_reg_n_0_[2]\,
-      I5 => \i2s_fsm_state__0\(2),
-      O => \i2s_bit_cnt[4]_i_4_n_0\
+      I0 => \i2s_chan_cnt[2]_i_3_n_0\,
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => \i2s_fsm_state__0\(1),
+      I3 => \i2s_fsm_state__0\(0),
+      O => \i2s_bit_cnt[5]_i_1_n_0\
     );
-\i2s_bit_cnt[4]_i_5\: unisim.vcomponents.LUT2
+\i2s_bit_cnt[5]_i_2\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"8"
+      INIT => X"4404444400400000"
     )
         port map (
-      I0 => \i2s_bit_cnt_reg_n_0_[0]\,
-      I1 => \i2s_bit_cnt_reg_n_0_[1]\,
-      O => \i2s_bit_cnt[4]_i_5_n_0\
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I2 => \i2s_bit_cnt_reg_n_0_[4]\,
+      I3 => \i2s_bit_cnt[5]_i_3_n_0\,
+      I4 => \i2s_bit_cnt_reg_n_0_[3]\,
+      I5 => \i2s_bit_cnt_reg_n_0_[5]\,
+      O => i2s_bit_cnt(5)
+    );
+\i2s_bit_cnt[5]_i_3\: unisim.vcomponents.LUT3
+    generic map(
+      INIT => X"7F"
+    )
+        port map (
+      I0 => \i2s_bit_cnt_reg_n_0_[1]\,
+      I1 => \i2s_bit_cnt_reg_n_0_[0]\,
+      I2 => \i2s_bit_cnt_reg_n_0_[2]\,
+      O => \i2s_bit_cnt[5]_i_3_n_0\
     );
 \i2s_bit_cnt_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
-      CE => \i2s_bit_cnt[4]_i_1_n_0\,
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
       D => i2s_bit_cnt(0),
       Q => \i2s_bit_cnt_reg_n_0_[0]\,
       R => \m_axis_tdata[31]_i_1_n_0\
@@ -2746,7 +2790,7 @@ i2s_bclk_reg: unisim.vcomponents.FDRE
 \i2s_bit_cnt_reg[1]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
-      CE => \i2s_bit_cnt[4]_i_1_n_0\,
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
       D => i2s_bit_cnt(1),
       Q => \i2s_bit_cnt_reg_n_0_[1]\,
       R => \m_axis_tdata[31]_i_1_n_0\
@@ -2754,15 +2798,15 @@ i2s_bclk_reg: unisim.vcomponents.FDRE
 \i2s_bit_cnt_reg[2]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
-      CE => \i2s_bit_cnt[4]_i_1_n_0\,
-      D => i2s_bit_cnt(2),
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
+      D => \i2s_bit_cnt[2]_i_1_n_0\,
       Q => \i2s_bit_cnt_reg_n_0_[2]\,
       R => \m_axis_tdata[31]_i_1_n_0\
     );
 \i2s_bit_cnt_reg[3]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
-      CE => \i2s_bit_cnt[4]_i_1_n_0\,
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
       D => i2s_bit_cnt(3),
       Q => \i2s_bit_cnt_reg_n_0_[3]\,
       R => \m_axis_tdata[31]_i_1_n_0\
@@ -2770,100 +2814,168 @@ i2s_bclk_reg: unisim.vcomponents.FDRE
 \i2s_bit_cnt_reg[4]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
-      CE => \i2s_bit_cnt[4]_i_1_n_0\,
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
       D => i2s_bit_cnt(4),
       Q => \i2s_bit_cnt_reg_n_0_[4]\,
       R => \m_axis_tdata[31]_i_1_n_0\
     );
-i2s_chan_bit_sz_a_reg: unisim.vcomponents.FDRE
+\i2s_bit_cnt_reg[5]\: unisim.vcomponents.FDRE
+     port map (
+      C => i2s_src_clk,
+      CE => \i2s_bit_cnt[5]_i_1_n_0\,
+      D => i2s_bit_cnt(5),
+      Q => \i2s_bit_cnt_reg_n_0_[5]\,
+      R => \m_axis_tdata[31]_i_1_n_0\
+    );
+\i2s_chan_bit_sz_a[1]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"0000000000002000"
+    )
+        port map (
+      I0 => \^s_axi_wready\,
+      I1 => sync_aclk_to_i2s_src_clk_in(48),
+      I2 => s_axi_wstrb(2),
+      I3 => s_axi_awaddr(0),
+      I4 => s_axi_awaddr(2),
+      I5 => s_axi_awaddr(1),
+      O => i2s_chan_max_a
+    );
+\i2s_chan_bit_sz_a_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => i2s_chan_bit_sz_a8_out,
+      CE => i2s_chan_max_a,
       D => s_axi_wdata(19),
       Q => sync_aclk_to_i2s_src_clk_in(33),
       R => p_0_in
     );
-i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
+\i2s_chan_bit_sz_a_reg[1]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => i2s_chan_max_a,
+      D => s_axi_wdata(20),
+      Q => sync_aclk_to_i2s_src_clk_in(34),
+      R => p_0_in
+    );
+\i2s_chan_bit_sz_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
       D => sync_aclk_to_i2s_src_clk_out(33),
-      Q => i2s_chan_bit_sz,
+      Q => i2s_chan_bit_sz(0),
       R => '0'
     );
-\i2s_chan_cnt[0]_i_1\: unisim.vcomponents.LUT4
+\i2s_chan_bit_sz_reg[1]\: unisim.vcomponents.FDRE
+     port map (
+      C => i2s_src_clk,
+      CE => sync_aclk_to_i2s_src_clk_dst_req,
+      D => sync_aclk_to_i2s_src_clk_out(34),
+      Q => i2s_chan_bit_sz(1),
+      R => '0'
+    );
+\i2s_chan_cnt[0]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"0F10"
+      INIT => X"0F03A0A8"
     )
         port map (
-      I0 => \i2s_chan_cnt[2]_i_2_n_0\,
-      I1 => \i2s_fsm_state__0\(2),
-      I2 => \i2s_chan_cnt[2]_i_3_n_0\,
-      I3 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I0 => \i2s_chan_cnt[1]_i_2_n_0\,
+      I1 => \i2s_chan_cnt[2]_i_3_n_0\,
+      I2 => \i2s_chan_cnt[2]_i_4_n_0\,
+      I3 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I4 => \i2s_chan_cnt_reg_n_0_[0]\,
       O => \i2s_chan_cnt[0]_i_1_n_0\
     );
-\i2s_chan_cnt[1]_i_1\: unisim.vcomponents.LUT5
+\i2s_chan_cnt[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"01FF1000"
+      INIT => X"22FF222F88008880"
     )
         port map (
-      I0 => \i2s_chan_cnt[2]_i_2_n_0\,
-      I1 => \i2s_fsm_state__0\(2),
-      I2 => \i2s_chan_cnt_reg_n_0_[0]\,
-      I3 => \i2s_chan_cnt[2]_i_3_n_0\,
-      I4 => \i2s_chan_cnt_reg_n_0_[1]\,
+      I0 => \i2s_chan_cnt[1]_i_2_n_0\,
+      I1 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I2 => \i2s_chan_cnt[2]_i_3_n_0\,
+      I3 => \i2s_chan_cnt[2]_i_4_n_0\,
+      I4 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I5 => \i2s_chan_cnt_reg_n_0_[1]\,
       O => \i2s_chan_cnt[1]_i_1_n_0\
     );
-\i2s_chan_cnt[2]_i_1\: unisim.vcomponents.LUT6
+\i2s_chan_cnt[1]_i_2\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"0111FFFF10000000"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_chan_cnt[2]_i_2_n_0\,
+      I0 => \i2s_chan_cnt[2]_i_6_n_0\,
       I1 => \i2s_fsm_state__0\(2),
-      I2 => \i2s_chan_cnt_reg_n_0_[0]\,
-      I3 => \i2s_chan_cnt_reg_n_0_[1]\,
-      I4 => \i2s_chan_cnt[2]_i_3_n_0\,
-      I5 => \i2s_chan_cnt_reg_n_0_[2]\,
+      O => \i2s_chan_cnt[1]_i_2_n_0\
+    );
+\i2s_chan_cnt[2]_i_1\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"AFABA0A8"
+    )
+        port map (
+      I0 => i2s_chan_cnt(2),
+      I1 => \i2s_chan_cnt[2]_i_3_n_0\,
+      I2 => \i2s_chan_cnt[2]_i_4_n_0\,
+      I3 => \i2s_chan_cnt[2]_i_5_n_0\,
+      I4 => \i2s_chan_cnt_reg_n_0_[2]\,
       O => \i2s_chan_cnt[2]_i_1_n_0\
     );
-\i2s_chan_cnt[2]_i_2\: unisim.vcomponents.LUT6
+\i2s_chan_cnt[2]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"9009000000009009"
+      INIT => X"04444000"
     )
         port map (
-      I0 => i2s_chan_max(1),
-      I1 => \i2s_chan_cnt_reg_n_0_[1]\,
-      I2 => i2s_chan_max(0),
-      I3 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_chan_cnt[2]_i_6_n_0\,
+      I2 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I3 => \i2s_chan_cnt_reg_n_0_[1]\,
       I4 => \i2s_chan_cnt_reg_n_0_[2]\,
-      I5 => i2s_chan_max(2),
-      O => \i2s_chan_cnt[2]_i_2_n_0\
+      O => i2s_chan_cnt(2)
     );
-\i2s_chan_cnt[2]_i_3\: unisim.vcomponents.LUT5
+\i2s_chan_cnt[2]_i_3\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"00800F00"
+      INIT => X"0080"
     )
         port map (
-      I0 => \i2s_bclk_rising__0\,
-      I1 => \i2s_paused1__4\,
+      I0 => m_axis_tvalid_i_5_n_0,
+      I1 => \i2s_fsm_state__0\(1),
       I2 => \i2s_fsm_state__0\(0),
       I3 => \i2s_fsm_state__0\(2),
-      I4 => \i2s_fsm_state__0\(1),
       O => \i2s_chan_cnt[2]_i_3_n_0\
     );
-\i2s_chan_cnt[2]_i_4\: unisim.vcomponents.LUT6
+\i2s_chan_cnt[2]_i_4\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"8000800000008000"
+      INIT => X"10"
     )
         port map (
-      I0 => \i2s_bit_cnt_reg_n_0_[2]\,
-      I1 => \i2s_bit_cnt_reg_n_0_[3]\,
-      I2 => \i2s_bit_cnt_reg_n_0_[0]\,
-      I3 => \i2s_bit_cnt_reg_n_0_[1]\,
-      I4 => i2s_chan_bit_sz,
-      I5 => \i2s_bit_cnt_reg_n_0_[4]\,
-      O => \i2s_paused1__4\
+      I0 => \i2s_fsm_state__0\(0),
+      I1 => \i2s_fsm_state__0\(1),
+      I2 => \i2s_fsm_state__0\(2),
+      O => \i2s_chan_cnt[2]_i_4_n_0\
+    );
+\i2s_chan_cnt[2]_i_5\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"FFFFFFFFF6FFFFF6"
+    )
+        port map (
+      I0 => \i2s_bit_cnt_reg_n_0_[3]\,
+      I1 => i2s_chan_bit_sz(0),
+      I2 => \i2s_bit_cnt_reg_n_0_[5]\,
+      I3 => i2s_chan_bit_sz(1),
+      I4 => \i2s_bit_cnt_reg_n_0_[4]\,
+      I5 => \i2s_bit_cnt[5]_i_3_n_0\,
+      O => \i2s_chan_cnt[2]_i_5_n_0\
+    );
+\i2s_chan_cnt[2]_i_6\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"6FF6FFFFFFFF6FF6"
+    )
+        port map (
+      I0 => i2s_chan_max(2),
+      I1 => \i2s_chan_cnt_reg_n_0_[2]\,
+      I2 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I3 => i2s_chan_max(0),
+      I4 => \i2s_chan_cnt_reg_n_0_[1]\,
+      I5 => i2s_chan_max(1),
+      O => \i2s_chan_cnt[2]_i_6_n_0\
     );
 \i2s_chan_cnt_reg[0]\: unisim.vcomponents.FDRE
      port map (
@@ -2895,7 +3007,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
     )
         port map (
       I0 => \^s_axi_wready\,
-      I1 => sync_aclk_to_i2s_src_clk_in(47),
+      I1 => sync_aclk_to_i2s_src_clk_in(48),
       I2 => s_axi_wstrb(1),
       I3 => s_axi_awaddr(0),
       I4 => s_axi_awaddr(2),
@@ -2907,7 +3019,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(8),
-      Q => sync_aclk_to_i2s_src_clk_in(37),
+      Q => sync_aclk_to_i2s_src_clk_in(38),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[1]\: unisim.vcomponents.FDRE
@@ -2915,7 +3027,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(9),
-      Q => sync_aclk_to_i2s_src_clk_in(38),
+      Q => sync_aclk_to_i2s_src_clk_in(39),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[2]\: unisim.vcomponents.FDRE
@@ -2923,7 +3035,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(10),
-      Q => sync_aclk_to_i2s_src_clk_in(39),
+      Q => sync_aclk_to_i2s_src_clk_in(40),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[3]\: unisim.vcomponents.FDRE
@@ -2931,7 +3043,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(11),
-      Q => sync_aclk_to_i2s_src_clk_in(40),
+      Q => sync_aclk_to_i2s_src_clk_in(41),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[4]\: unisim.vcomponents.FDRE
@@ -2939,7 +3051,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(12),
-      Q => sync_aclk_to_i2s_src_clk_in(41),
+      Q => sync_aclk_to_i2s_src_clk_in(42),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[5]\: unisim.vcomponents.FDRE
@@ -2947,7 +3059,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(13),
-      Q => sync_aclk_to_i2s_src_clk_in(42),
+      Q => sync_aclk_to_i2s_src_clk_in(43),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[6]\: unisim.vcomponents.FDRE
@@ -2955,7 +3067,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(14),
-      Q => sync_aclk_to_i2s_src_clk_in(43),
+      Q => sync_aclk_to_i2s_src_clk_in(44),
       R => p_0_in
     );
 \i2s_chan_en_a_reg[7]\: unisim.vcomponents.FDRE
@@ -2963,14 +3075,14 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => i2s_chan_en_a,
       D => s_axi_wdata(15),
-      Q => sync_aclk_to_i2s_src_clk_in(44),
+      Q => sync_aclk_to_i2s_src_clk_in(45),
       R => p_0_in
     );
 \i2s_chan_en_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(37),
+      D => sync_aclk_to_i2s_src_clk_out(38),
       Q => i2s_chan_en(0),
       R => '0'
     );
@@ -2978,7 +3090,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(38),
+      D => sync_aclk_to_i2s_src_clk_out(39),
       Q => i2s_chan_en(1),
       R => '0'
     );
@@ -2986,7 +3098,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(39),
+      D => sync_aclk_to_i2s_src_clk_out(40),
       Q => i2s_chan_en(2),
       R => '0'
     );
@@ -2994,7 +3106,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(40),
+      D => sync_aclk_to_i2s_src_clk_out(41),
       Q => i2s_chan_en(3),
       R => '0'
     );
@@ -3002,7 +3114,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(41),
+      D => sync_aclk_to_i2s_src_clk_out(42),
       Q => i2s_chan_en(4),
       R => '0'
     );
@@ -3010,7 +3122,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(42),
+      D => sync_aclk_to_i2s_src_clk_out(43),
       Q => i2s_chan_en(5),
       R => '0'
     );
@@ -3018,7 +3130,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(43),
+      D => sync_aclk_to_i2s_src_clk_out(44),
       Q => i2s_chan_en(6),
       R => '0'
     );
@@ -3026,52 +3138,39 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(44),
+      D => sync_aclk_to_i2s_src_clk_out(45),
       Q => i2s_chan_en(7),
       R => '0'
-    );
-\i2s_chan_max_a[2]_i_1\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0000000000002000"
-    )
-        port map (
-      I0 => \^s_axi_wready\,
-      I1 => sync_aclk_to_i2s_src_clk_in(47),
-      I2 => s_axi_wstrb(2),
-      I3 => s_axi_awaddr(0),
-      I4 => s_axi_awaddr(2),
-      I5 => s_axi_awaddr(1),
-      O => i2s_chan_bit_sz_a8_out
     );
 \i2s_chan_max_a_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => i2s_chan_bit_sz_a8_out,
+      CE => i2s_chan_max_a,
       D => s_axi_wdata(16),
-      Q => sync_aclk_to_i2s_src_clk_in(34),
+      Q => sync_aclk_to_i2s_src_clk_in(35),
       R => p_0_in
     );
 \i2s_chan_max_a_reg[1]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => i2s_chan_bit_sz_a8_out,
+      CE => i2s_chan_max_a,
       D => s_axi_wdata(17),
-      Q => sync_aclk_to_i2s_src_clk_in(35),
+      Q => sync_aclk_to_i2s_src_clk_in(36),
       R => p_0_in
     );
 \i2s_chan_max_a_reg[2]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => i2s_chan_bit_sz_a8_out,
+      CE => i2s_chan_max_a,
       D => s_axi_wdata(18),
-      Q => sync_aclk_to_i2s_src_clk_in(36),
+      Q => sync_aclk_to_i2s_src_clk_in(37),
       R => p_0_in
     );
 \i2s_chan_max_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(34),
+      D => sync_aclk_to_i2s_src_clk_out(35),
       Q => i2s_chan_max(0),
       R => '0'
     );
@@ -3079,7 +3178,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(35),
+      D => sync_aclk_to_i2s_src_clk_out(36),
       Q => i2s_chan_max(1),
       R => '0'
     );
@@ -3087,7 +3186,7 @@ i2s_chan_bit_sz_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(36),
+      D => sync_aclk_to_i2s_src_clk_out(37),
       Q => i2s_chan_max(2),
       R => '0'
     );
@@ -3112,7 +3211,7 @@ i2s_clk_div_en_a_i_2: unisim.vcomponents.LUT6
       I2 => s_axi_awaddr(0),
       I3 => s_axi_wstrb(0),
       I4 => s_axi_wdata(1),
-      I5 => sync_aclk_to_i2s_src_clk_in(47),
+      I5 => sync_aclk_to_i2s_src_clk_in(48),
       O => \i2s_clk_div_en_a__1\
     );
 i2s_clk_div_en_a_reg: unisim.vcomponents.FDRE
@@ -3139,7 +3238,7 @@ i2s_en_a_i_1: unisim.vcomponents.LUT4
       I0 => s_axi_wdata(1),
       I1 => \^s_axi_wready\,
       I2 => \i2s_en_a__1\,
-      I3 => sync_aclk_to_i2s_src_clk_in(47),
+      I3 => sync_aclk_to_i2s_src_clk_in(48),
       O => i2s_en_a_i_1_n_0
     );
 i2s_en_a_i_2: unisim.vcomponents.LUT6
@@ -3160,14 +3259,14 @@ i2s_en_a_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => '1',
       D => i2s_en_a_i_1_n_0,
-      Q => sync_aclk_to_i2s_src_clk_in(47),
+      Q => sync_aclk_to_i2s_src_clk_in(48),
       R => p_0_in
     );
 i2s_en_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(47),
+      D => sync_aclk_to_i2s_src_clk_out(48),
       Q => i2s_en,
       R => '0'
     );
@@ -3181,7 +3280,7 @@ i2s_lb_en_a_i_1: unisim.vcomponents.LUT6
       I2 => s_axi_wstrb(0),
       I3 => s_axi_awaddr(0),
       I4 => i2s_lb_en_a_i_2_n_0,
-      I5 => sync_aclk_to_i2s_src_clk_in(45),
+      I5 => sync_aclk_to_i2s_src_clk_in(46),
       O => i2s_lb_en_a_i_1_n_0
     );
 i2s_lb_en_a_i_2: unisim.vcomponents.LUT2
@@ -3198,47 +3297,47 @@ i2s_lb_en_a_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => '1',
       D => i2s_lb_en_a_i_1_n_0,
-      Q => sync_aclk_to_i2s_src_clk_in(45),
+      Q => sync_aclk_to_i2s_src_clk_in(46),
       R => p_0_in
     );
 i2s_lb_en_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(45),
+      D => sync_aclk_to_i2s_src_clk_out(46),
       Q => i2s_lb_en,
       R => '0'
     );
 \i2s_lrclk_div_a[15]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000020000000000"
+      INIT => X"0020000000000000"
     )
         port map (
       I0 => \^s_axi_wready\,
-      I1 => s_axi_awaddr(1),
-      I2 => s_axi_awaddr(0),
-      I3 => s_axi_awaddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(32),
-      I5 => s_axi_wstrb(1),
-      O => p_1_in(15)
+      I1 => s_axi_awaddr(0),
+      I2 => s_axi_awaddr(1),
+      I3 => sync_aclk_to_i2s_src_clk_in(32),
+      I4 => s_axi_wstrb(1),
+      I5 => s_axi_awaddr(2),
+      O => \i2s_lrclk_div_a[15]_i_1_n_0\
     );
 \i2s_lrclk_div_a[7]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000020000000000"
+      INIT => X"0020000000000000"
     )
         port map (
       I0 => \^s_axi_wready\,
-      I1 => s_axi_awaddr(1),
-      I2 => s_axi_awaddr(0),
-      I3 => s_axi_awaddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(32),
-      I5 => s_axi_wstrb(0),
-      O => p_1_in(7)
+      I1 => s_axi_awaddr(0),
+      I2 => s_axi_awaddr(1),
+      I3 => sync_aclk_to_i2s_src_clk_in(32),
+      I4 => s_axi_wstrb(0),
+      I5 => s_axi_awaddr(2),
+      O => \i2s_lrclk_div_a[7]_i_1_n_0\
     );
 \i2s_lrclk_div_a_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(0),
       Q => sync_aclk_to_i2s_src_clk_in(0),
       R => p_0_in
@@ -3246,7 +3345,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[10]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(10),
       Q => sync_aclk_to_i2s_src_clk_in(10),
       R => p_0_in
@@ -3254,7 +3353,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[11]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(11),
       Q => sync_aclk_to_i2s_src_clk_in(11),
       R => p_0_in
@@ -3262,7 +3361,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[12]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(12),
       Q => sync_aclk_to_i2s_src_clk_in(12),
       R => p_0_in
@@ -3270,7 +3369,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[13]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(13),
       Q => sync_aclk_to_i2s_src_clk_in(13),
       R => p_0_in
@@ -3278,7 +3377,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[14]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(14),
       Q => sync_aclk_to_i2s_src_clk_in(14),
       R => p_0_in
@@ -3286,7 +3385,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[15]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(15),
       Q => sync_aclk_to_i2s_src_clk_in(15),
       R => p_0_in
@@ -3294,7 +3393,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[1]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(1),
       Q => sync_aclk_to_i2s_src_clk_in(1),
       R => p_0_in
@@ -3302,7 +3401,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[2]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(2),
       Q => sync_aclk_to_i2s_src_clk_in(2),
       R => p_0_in
@@ -3310,7 +3409,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[3]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(3),
       Q => sync_aclk_to_i2s_src_clk_in(3),
       R => p_0_in
@@ -3318,7 +3417,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[4]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(4),
       Q => sync_aclk_to_i2s_src_clk_in(4),
       R => p_0_in
@@ -3326,7 +3425,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[5]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(5),
       Q => sync_aclk_to_i2s_src_clk_in(5),
       R => p_0_in
@@ -3334,7 +3433,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[6]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(6),
       Q => sync_aclk_to_i2s_src_clk_in(6),
       R => p_0_in
@@ -3342,7 +3441,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[7]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(7),
+      CE => \i2s_lrclk_div_a[7]_i_1_n_0\,
       D => s_axi_wdata(7),
       Q => sync_aclk_to_i2s_src_clk_in(7),
       R => p_0_in
@@ -3350,7 +3449,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[8]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(8),
       Q => sync_aclk_to_i2s_src_clk_in(8),
       R => p_0_in
@@ -3358,7 +3457,7 @@ i2s_lb_en_reg: unisim.vcomponents.FDRE
 \i2s_lrclk_div_a_reg[9]\: unisim.vcomponents.FDRE
      port map (
       C => aclk,
-      CE => p_1_in(15),
+      CE => \i2s_lrclk_div_a[15]_i_1_n_0\,
       D => s_axi_wdata(9),
       Q => sync_aclk_to_i2s_src_clk_in(9),
       R => p_0_in
@@ -3702,7 +3801,7 @@ i2s_lrclk_i_1: unisim.vcomponents.LUT3
       INIT => X"60"
     )
         port map (
-      I0 => \^i2s_lrclk\,
+      I0 => \^i2s_lrclk_reg_0\,
       I1 => i2s_lrclk_toggle0,
       I2 => i2s_clk_div_en,
       O => i2s_lrclk_i_1_n_0
@@ -3712,7 +3811,7 @@ i2s_lrclk_reg: unisim.vcomponents.FDRE
       C => i2s_src_clk,
       CE => '1',
       D => i2s_lrclk_i_1_n_0,
-      Q => \^i2s_lrclk\,
+      Q => \^i2s_lrclk_reg_0\,
       R => '0'
     );
 i2s_lrclk_toggle0_carry: unisim.vcomponents.CARRY4
@@ -3757,12 +3856,12 @@ i2s_lrclk_toggle0_carry: unisim.vcomponents.CARRY4
       INIT => X"9009000000009009"
     )
         port map (
-      I0 => i2s_lrclk_div_cnt_reg(13),
-      I1 => i2s_lrclk_div(13),
+      I0 => i2s_lrclk_div_cnt_reg(14),
+      I1 => i2s_lrclk_div(14),
       I2 => i2s_lrclk_div_cnt_reg(12),
       I3 => i2s_lrclk_div(12),
-      I4 => i2s_lrclk_div(14),
-      I5 => i2s_lrclk_div_cnt_reg(14),
+      I4 => i2s_lrclk_div(13),
+      I5 => i2s_lrclk_div_cnt_reg(13),
       O => \i2s_lrclk_toggle0_carry__0_i_2_n_0\
     );
 i2s_lrclk_toggle0_carry_i_1: unisim.vcomponents.LUT6
@@ -3770,10 +3869,10 @@ i2s_lrclk_toggle0_carry_i_1: unisim.vcomponents.LUT6
       INIT => X"9009000000009009"
     )
         port map (
-      I0 => i2s_lrclk_div_cnt_reg(10),
-      I1 => i2s_lrclk_div(10),
-      I2 => i2s_lrclk_div_cnt_reg(9),
-      I3 => i2s_lrclk_div(9),
+      I0 => i2s_lrclk_div_cnt_reg(9),
+      I1 => i2s_lrclk_div(9),
+      I2 => i2s_lrclk_div_cnt_reg(10),
+      I3 => i2s_lrclk_div(10),
       I4 => i2s_lrclk_div(11),
       I5 => i2s_lrclk_div_cnt_reg(11),
       O => i2s_lrclk_toggle0_carry_i_1_n_0
@@ -3783,10 +3882,10 @@ i2s_lrclk_toggle0_carry_i_2: unisim.vcomponents.LUT6
       INIT => X"9009000000009009"
     )
         port map (
-      I0 => i2s_lrclk_div_cnt_reg(7),
-      I1 => i2s_lrclk_div(7),
-      I2 => i2s_lrclk_div_cnt_reg(6),
-      I3 => i2s_lrclk_div(6),
+      I0 => i2s_lrclk_div_cnt_reg(6),
+      I1 => i2s_lrclk_div(6),
+      I2 => i2s_lrclk_div_cnt_reg(7),
+      I3 => i2s_lrclk_div(7),
       I4 => i2s_lrclk_div(8),
       I5 => i2s_lrclk_div_cnt_reg(8),
       O => i2s_lrclk_toggle0_carry_i_2_n_0
@@ -3796,10 +3895,10 @@ i2s_lrclk_toggle0_carry_i_3: unisim.vcomponents.LUT6
       INIT => X"9009000000009009"
     )
         port map (
-      I0 => i2s_lrclk_div_cnt_reg(4),
-      I1 => i2s_lrclk_div(4),
-      I2 => i2s_lrclk_div_cnt_reg(3),
-      I3 => i2s_lrclk_div(3),
+      I0 => i2s_lrclk_div_cnt_reg(3),
+      I1 => i2s_lrclk_div(3),
+      I2 => i2s_lrclk_div_cnt_reg(4),
+      I3 => i2s_lrclk_div(4),
       I4 => i2s_lrclk_div(5),
       I5 => i2s_lrclk_div_cnt_reg(5),
       O => i2s_lrclk_toggle0_carry_i_3_n_0
@@ -3809,24 +3908,24 @@ i2s_lrclk_toggle0_carry_i_4: unisim.vcomponents.LUT6
       INIT => X"9009000000009009"
     )
         port map (
-      I0 => i2s_lrclk_div_cnt_reg(1),
-      I1 => i2s_lrclk_div(1),
-      I2 => i2s_lrclk_div_cnt_reg(0),
-      I3 => i2s_lrclk_div(0),
+      I0 => i2s_lrclk_div_cnt_reg(0),
+      I1 => i2s_lrclk_div(0),
+      I2 => i2s_lrclk_div_cnt_reg(1),
+      I3 => i2s_lrclk_div(1),
       I4 => i2s_lrclk_div(2),
       I5 => i2s_lrclk_div_cnt_reg(2),
       O => i2s_lrclk_toggle0_carry_i_4_n_0
     );
 \i2s_mclk_div_a[7]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000000000002000"
+      INIT => X"0000000000000800"
     )
         port map (
       I0 => \^s_axi_wready\,
-      I1 => sync_aclk_to_i2s_src_clk_in(32),
-      I2 => s_axi_wstrb(0),
-      I3 => s_axi_awaddr(1),
-      I4 => s_axi_awaddr(2),
+      I1 => s_axi_awaddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(32),
+      I3 => s_axi_wstrb(0),
+      I4 => s_axi_awaddr(1),
       I5 => s_axi_awaddr(0),
       O => i2s_mclk_div_a
     );
@@ -3913,48 +4012,48 @@ i2s_lrclk_toggle0_carry_i_4: unisim.vcomponents.LUT6
     );
 \i2s_mclk_div_cnt[2]_i_1\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"78"
+      INIT => X"6A"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(0),
+      I0 => i2s_mclk_div_cnt_reg(2),
       I1 => i2s_mclk_div_cnt_reg(1),
-      I2 => i2s_mclk_div_cnt_reg(2),
+      I2 => i2s_mclk_div_cnt_reg(0),
       O => \p_0_in__1\(2)
     );
 \i2s_mclk_div_cnt[3]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"7F80"
+      INIT => X"6AAA"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(1),
+      I0 => i2s_mclk_div_cnt_reg(3),
       I1 => i2s_mclk_div_cnt_reg(0),
-      I2 => i2s_mclk_div_cnt_reg(2),
-      I3 => i2s_mclk_div_cnt_reg(3),
+      I2 => i2s_mclk_div_cnt_reg(1),
+      I3 => i2s_mclk_div_cnt_reg(2),
       O => \p_0_in__1\(3)
     );
 \i2s_mclk_div_cnt[4]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"7FFF8000"
+      INIT => X"6AAAAAAA"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(2),
-      I1 => i2s_mclk_div_cnt_reg(0),
+      I0 => i2s_mclk_div_cnt_reg(4),
+      I1 => i2s_mclk_div_cnt_reg(2),
       I2 => i2s_mclk_div_cnt_reg(1),
-      I3 => i2s_mclk_div_cnt_reg(3),
-      I4 => i2s_mclk_div_cnt_reg(4),
+      I3 => i2s_mclk_div_cnt_reg(0),
+      I4 => i2s_mclk_div_cnt_reg(3),
       O => \p_0_in__1\(4)
     );
 \i2s_mclk_div_cnt[5]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"7FFFFFFF80000000"
+      INIT => X"6AAAAAAAAAAAAAAA"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(3),
-      I1 => i2s_mclk_div_cnt_reg(1),
+      I0 => i2s_mclk_div_cnt_reg(5),
+      I1 => i2s_mclk_div_cnt_reg(3),
       I2 => i2s_mclk_div_cnt_reg(0),
-      I3 => i2s_mclk_div_cnt_reg(2),
-      I4 => i2s_mclk_div_cnt_reg(4),
-      I5 => i2s_mclk_div_cnt_reg(5),
+      I3 => i2s_mclk_div_cnt_reg(1),
+      I4 => i2s_mclk_div_cnt_reg(2),
+      I5 => i2s_mclk_div_cnt_reg(4),
       O => \p_0_in__1\(5)
     );
 \i2s_mclk_div_cnt[6]_i_1\: unisim.vcomponents.LUT2
@@ -3962,8 +4061,8 @@ i2s_lrclk_toggle0_carry_i_4: unisim.vcomponents.LUT6
       INIT => X"6"
     )
         port map (
-      I0 => \i2s_mclk_div_cnt[7]_i_3_n_0\,
-      I1 => i2s_mclk_div_cnt_reg(6),
+      I0 => i2s_mclk_div_cnt_reg(6),
+      I1 => \i2s_mclk_div_cnt[7]_i_3_n_0\,
       O => \p_0_in__1\(6)
     );
 \i2s_mclk_div_cnt[7]_i_1\: unisim.vcomponents.LUT2
@@ -3977,12 +4076,12 @@ i2s_lrclk_toggle0_carry_i_4: unisim.vcomponents.LUT6
     );
 \i2s_mclk_div_cnt[7]_i_2\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"78"
+      INIT => X"6A"
     )
         port map (
-      I0 => \i2s_mclk_div_cnt[7]_i_3_n_0\,
-      I1 => i2s_mclk_div_cnt_reg(6),
-      I2 => i2s_mclk_div_cnt_reg(7),
+      I0 => i2s_mclk_div_cnt_reg(7),
+      I1 => \i2s_mclk_div_cnt[7]_i_3_n_0\,
+      I2 => i2s_mclk_div_cnt_reg(6),
       O => \p_0_in__1\(7)
     );
 \i2s_mclk_div_cnt[7]_i_3\: unisim.vcomponents.LUT6
@@ -3992,8 +4091,8 @@ i2s_lrclk_toggle0_carry_i_4: unisim.vcomponents.LUT6
         port map (
       I0 => i2s_mclk_div_cnt_reg(5),
       I1 => i2s_mclk_div_cnt_reg(3),
-      I2 => i2s_mclk_div_cnt_reg(1),
-      I3 => i2s_mclk_div_cnt_reg(0),
+      I2 => i2s_mclk_div_cnt_reg(0),
+      I3 => i2s_mclk_div_cnt_reg(1),
       I4 => i2s_mclk_div_cnt_reg(2),
       I5 => i2s_mclk_div_cnt_reg(4),
       O => \i2s_mclk_div_cnt[7]_i_3_n_0\
@@ -4136,53 +4235,77 @@ i2s_mclk_i_1: unisim.vcomponents.LUT3
       I2 => i2s_clk_div_en,
       O => i2s_mclk_i_1_n_0
     );
-i2s_mclk_i_2: unisim.vcomponents.LUT6
+i2s_mclk_i_2: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"0000000090090000"
+      INIT => X"00000090"
     )
         port map (
       I0 => i2s_mclk_div_cnt_reg(7),
       I1 => i2s_mclk_div(7),
-      I2 => i2s_mclk_div_cnt_reg(6),
-      I3 => i2s_mclk_div(6),
-      I4 => i2s_clk_div_en,
-      I5 => i2s_mclk_i_3_n_0,
+      I2 => i2s_mclk_i_3_n_0,
+      I3 => i2s_mclk_i_4_n_0,
+      I4 => i2s_mclk_i_5_n_0,
       O => i2s_mclk_toggle
     );
-i2s_mclk_i_3: unisim.vcomponents.LUT6
+i2s_mclk_i_3: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"FFFFFFFFBEFFFFBE"
+      INIT => X"D00000D0"
     )
         port map (
-      I0 => i2s_mclk_i_4_n_0,
-      I1 => i2s_mclk_div_cnt_reg(1),
-      I2 => i2s_mclk_div(1),
-      I3 => i2s_mclk_div_cnt_reg(0),
-      I4 => i2s_mclk_div(0),
-      I5 => i2s_mclk_i_5_n_0,
+      I0 => i2s_mclk_div(2),
+      I1 => i2s_mclk_div_cnt_reg(2),
+      I2 => i2s_clk_div_en,
+      I3 => i2s_mclk_div(3),
+      I4 => i2s_mclk_div_cnt_reg(3),
       O => i2s_mclk_i_3_n_0
     );
-i2s_mclk_i_4: unisim.vcomponents.LUT4
+i2s_mclk_i_4: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"6FF6"
+      INIT => X"EFEEFFFFEFEEEFEE"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(4),
-      I1 => i2s_mclk_div(4),
-      I2 => i2s_mclk_div_cnt_reg(3),
-      I3 => i2s_mclk_div(3),
+      I0 => i2s_mclk_i_6_n_0,
+      I1 => i2s_mclk_i_7_n_0,
+      I2 => i2s_mclk_div_cnt_reg(0),
+      I3 => i2s_mclk_div(0),
+      I4 => i2s_mclk_div(4),
+      I5 => i2s_mclk_div_cnt_reg(4),
       O => i2s_mclk_i_4_n_0
     );
 i2s_mclk_i_5: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"6FF6"
+      INIT => X"4FF4"
     )
         port map (
-      I0 => i2s_mclk_div_cnt_reg(5),
-      I1 => i2s_mclk_div(5),
-      I2 => i2s_mclk_div_cnt_reg(2),
-      I3 => i2s_mclk_div(2),
+      I0 => i2s_mclk_div(0),
+      I1 => i2s_mclk_div_cnt_reg(0),
+      I2 => i2s_mclk_div(6),
+      I3 => i2s_mclk_div_cnt_reg(6),
       O => i2s_mclk_i_5_n_0
+    );
+i2s_mclk_i_6: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"66F666F6FFFF66F6"
+    )
+        port map (
+      I0 => i2s_mclk_div(1),
+      I1 => i2s_mclk_div_cnt_reg(1),
+      I2 => i2s_mclk_div(5),
+      I3 => i2s_mclk_div_cnt_reg(5),
+      I4 => i2s_mclk_div(4),
+      I5 => i2s_mclk_div_cnt_reg(4),
+      O => i2s_mclk_i_6_n_0
+    );
+i2s_mclk_i_7: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"4F44"
+    )
+        port map (
+      I0 => i2s_mclk_div(5),
+      I1 => i2s_mclk_div_cnt_reg(5),
+      I2 => i2s_mclk_div(2),
+      I3 => i2s_mclk_div_cnt_reg(2),
+      O => i2s_mclk_i_7_n_0
     );
 i2s_mclk_reg: unisim.vcomponents.FDRE
      port map (
@@ -4202,7 +4325,7 @@ i2s_pause_a_i_1: unisim.vcomponents.LUT6
       I2 => s_axi_wstrb(0),
       I3 => s_axi_awaddr(0),
       I4 => i2s_lb_en_a_i_2_n_0,
-      I5 => sync_aclk_to_i2s_src_clk_in(46),
+      I5 => sync_aclk_to_i2s_src_clk_in(47),
       O => i2s_pause_a_i_1_n_0
     );
 i2s_pause_a_reg: unisim.vcomponents.FDRE
@@ -4210,14 +4333,14 @@ i2s_pause_a_reg: unisim.vcomponents.FDRE
       C => aclk,
       CE => '1',
       D => i2s_pause_a_i_1_n_0,
-      Q => sync_aclk_to_i2s_src_clk_in(46),
+      Q => sync_aclk_to_i2s_src_clk_in(47),
       R => p_0_in
     );
 i2s_pause_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => sync_aclk_to_i2s_src_clk_dst_req,
-      D => sync_aclk_to_i2s_src_clk_out(46),
+      D => sync_aclk_to_i2s_src_clk_out(47),
       Q => i2s_pause,
       R => '0'
     );
@@ -4239,28 +4362,49 @@ i2s_paused_a_reg: unisim.vcomponents.FDRE
       Q => data0(3),
       R => '0'
     );
-i2s_paused_i_1: unisim.vcomponents.LUT3
+i2s_paused_i_1: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"B8"
+      INIT => X"AAAAAEFFAAAAA200"
     )
         port map (
       I0 => i2s_pause,
-      I1 => i2s_paused_i_2_n_0,
-      I2 => sync_i2s_src_clk_to_aclk_in(1),
+      I1 => \i2s_fsm_state__0\(1),
+      I2 => i2s_paused_i_2_n_0,
+      I3 => i2s_paused_i_3_n_0,
+      I4 => i2s_paused_i_4_n_0,
+      I5 => sync_i2s_src_clk_to_aclk_in(1),
       O => i2s_paused_i_1_n_0
     );
-i2s_paused_i_2: unisim.vcomponents.LUT6
+i2s_paused_i_2: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"337733777F337733"
+      INIT => X"0008"
     )
         port map (
-      I0 => \i2s_fsm_state__0\(1),
-      I1 => i2s_en,
-      I2 => \FSM_sequential_i2s_fsm_state[2]_i_8_n_0\,
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \i2s_bclk_rising__0\,
-      I5 => \i2s_fsm_state__0\(2),
+      I0 => m_axis_tvalid_i_5_n_0,
+      I1 => i2s_pause,
+      I2 => \i2s_chan_cnt[2]_i_6_n_0\,
+      I3 => \i2s_chan_cnt[2]_i_5_n_0\,
       O => i2s_paused_i_2_n_0
+    );
+i2s_paused_i_3: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"2"
+    )
+        port map (
+      I0 => \i2s_fsm_state__0\(0),
+      I1 => \i2s_fsm_state__0\(2),
+      O => i2s_paused_i_3_n_0
+    );
+i2s_paused_i_4: unisim.vcomponents.LUT4
+    generic map(
+      INIT => X"02FF"
+    )
+        port map (
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_fsm_state__0\(1),
+      I2 => \i2s_fsm_state__0\(0),
+      I3 => i2s_en,
+      O => i2s_paused_i_4_n_0
     );
 i2s_paused_reg: unisim.vcomponents.FDRE
      port map (
@@ -4272,405 +4416,376 @@ i2s_paused_reg: unisim.vcomponents.FDRE
     );
 \i2s_sdata_in_sr[0]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"A808"
+      INIT => X"00E2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => i2s_sdata_in,
-      I2 => i2s_lb_en,
-      I3 => i2s_sdata_out_int_reg_n_0,
+      I0 => i2s_sdata_in,
+      I1 => i2s_lb_en,
+      I2 => i2s_sdata_out_int_reg_n_0,
+      I3 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(0)
     );
 \i2s_sdata_in_sr[10]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[9]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[9]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(10)
     );
 \i2s_sdata_in_sr[11]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[10]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[10]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(11)
     );
 \i2s_sdata_in_sr[12]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[11]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[11]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(12)
     );
 \i2s_sdata_in_sr[13]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[12]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[12]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(13)
     );
 \i2s_sdata_in_sr[14]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[13]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[13]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(14)
     );
 \i2s_sdata_in_sr[15]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[14]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[14]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(15)
     );
 \i2s_sdata_in_sr[16]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[15]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[15]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(16)
     );
 \i2s_sdata_in_sr[17]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[16]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[16]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(17)
     );
 \i2s_sdata_in_sr[18]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[17]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[17]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(18)
     );
 \i2s_sdata_in_sr[19]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[18]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[18]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(19)
     );
 \i2s_sdata_in_sr[1]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[0]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[0]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(1)
     );
 \i2s_sdata_in_sr[20]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[19]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[19]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(20)
     );
 \i2s_sdata_in_sr[21]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[20]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[20]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(21)
     );
 \i2s_sdata_in_sr[22]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[21]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[21]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(22)
     );
 \i2s_sdata_in_sr[23]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[22]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[22]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(23)
     );
 \i2s_sdata_in_sr[24]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[23]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[23]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(24)
     );
 \i2s_sdata_in_sr[25]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[24]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[24]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(25)
     );
 \i2s_sdata_in_sr[26]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[25]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[25]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(26)
     );
 \i2s_sdata_in_sr[27]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[26]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[26]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(27)
     );
 \i2s_sdata_in_sr[28]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[27]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[27]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(28)
     );
 \i2s_sdata_in_sr[29]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[28]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[28]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(29)
     );
 \i2s_sdata_in_sr[2]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[1]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[1]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(2)
     );
 \i2s_sdata_in_sr[30]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"4430"
+      INIT => X"AAAE"
     )
         port map (
-      I0 => m_axis_tvalid_i_4_n_0,
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => \i2s_fsm_state__0\(2),
-      I3 => \i2s_fsm_state__0\(1),
+      I0 => m_axis_tvalid_i_2_n_0,
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => \i2s_fsm_state__0\(1),
+      I3 => \i2s_fsm_state__0\(0),
       O => \i2s_sdata_in_sr[30]_i_1_n_0\
     );
 \i2s_sdata_in_sr[30]_i_2\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[29]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[29]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(30)
     );
 \i2s_sdata_in_sr[30]_i_3\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"000000007FFFFFFF"
+      INIT => X"EAAAAAAAAAAAAAAA"
     )
         port map (
-      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
+      I0 => \i2s_fsm_state__0\(2),
       I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
       I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
       I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
       I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      I5 => \i2s_fsm_state__0\(2),
+      I5 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
       O => \i2s_sdata_in_sr[30]_i_3_n_0\
     );
 \i2s_sdata_in_sr[3]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[2]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[2]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(3)
     );
 \i2s_sdata_in_sr[4]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[3]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[3]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(4)
     );
 \i2s_sdata_in_sr[5]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[4]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[4]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(5)
     );
 \i2s_sdata_in_sr[6]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[5]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[5]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(6)
     );
 \i2s_sdata_in_sr[7]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[6]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[6]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(7)
     );
 \i2s_sdata_in_sr[8]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[7]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[7]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(8)
     );
 \i2s_sdata_in_sr[9]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"8"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr[30]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_reg_n_0_[8]\,
+      I0 => \i2s_sdata_in_sr_reg_n_0_[8]\,
+      I1 => \i2s_sdata_in_sr[30]_i_3_n_0\,
       O => i2s_sdata_in_sr(9)
     );
-\i2s_sdata_in_sr_bit_cnt[0]_i_1\: unisim.vcomponents.LUT4
+\i2s_sdata_in_sr_bit_cnt[0]_i_1\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"0040"
+      INIT => X"2"
     )
         port map (
-      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => m_axis_tvalid_i_4_n_0,
+      I0 => m_axis_tvalid_i_2_n_0,
+      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
       O => i2s_sdata_in_sr_bit_cnt(0)
     );
-\i2s_sdata_in_sr_bit_cnt[1]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_in_sr_bit_cnt[1]_i_1\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"14000000"
+      INIT => X"28"
     )
         port map (
-      I0 => m_axis_tvalid_i_4_n_0,
+      I0 => m_axis_tvalid_i_2_n_0,
       I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
       I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
-      I3 => \i2s_fsm_state__0\(1),
-      I4 => \i2s_fsm_state__0\(0),
       O => i2s_sdata_in_sr_bit_cnt(1)
     );
-\i2s_sdata_in_sr_bit_cnt[2]_i_1\: unisim.vcomponents.LUT6
+\i2s_sdata_in_sr_bit_cnt[2]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"1540000000000000"
+      INIT => X"2A80"
     )
         port map (
-      I0 => m_axis_tvalid_i_4_n_0,
-      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
-      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_fsm_state__0\(1),
-      I5 => \i2s_fsm_state__0\(0),
-      O => i2s_sdata_in_sr_bit_cnt(2)
-    );
-\i2s_sdata_in_sr_bit_cnt[3]_i_1\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0000000015554000"
-    )
-        port map (
-      I0 => m_axis_tvalid_i_4_n_0,
+      I0 => m_axis_tvalid_i_2_n_0,
       I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
       I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
       I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
-      O => i2s_sdata_in_sr_bit_cnt(3)
+      O => i2s_sdata_in_sr_bit_cnt(2)
     );
-\i2s_sdata_in_sr_bit_cnt[4]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_in_sr_bit_cnt[3]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"14000000"
+      INIT => X"2AAA8000"
     )
         port map (
-      I0 => m_axis_tvalid_i_4_n_0,
-      I1 => \i2s_sdata_in_sr_bit_cnt[5]_i_3_n_0\,
-      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
-      I3 => \i2s_fsm_state__0\(1),
-      I4 => \i2s_fsm_state__0\(0),
+      I0 => m_axis_tvalid_i_2_n_0,
+      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
+      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
+      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
+      O => i2s_sdata_in_sr_bit_cnt(3)
+    );
+\i2s_sdata_in_sr_bit_cnt[4]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"2AAAAAAA80000000"
+    )
+        port map (
+      I0 => m_axis_tvalid_i_2_n_0,
+      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
+      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
+      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
+      I5 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
       O => i2s_sdata_in_sr_bit_cnt(4)
     );
 \i2s_sdata_in_sr_bit_cnt[5]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"55D555C000C0FFC0"
+      INIT => X"FFFFFFFF000F8888"
     )
         port map (
-      I0 => m_axis_tvalid_i_4_n_0,
-      I1 => \^m_axis_tvalid_reg_0\,
-      I2 => m_axis_tready,
-      I3 => \i2s_fsm_state__0\(2),
-      I4 => \i2s_fsm_state__0\(1),
-      I5 => \i2s_fsm_state__0\(0),
+      I0 => \^m_axis_tvalid_reg_0\,
+      I1 => m_axis_tready,
+      I2 => \i2s_fsm_state__0\(0),
+      I3 => \i2s_fsm_state__0\(1),
+      I4 => \i2s_fsm_state__0\(2),
+      I5 => m_axis_tvalid_i_2_n_0,
       O => \i2s_sdata_in_sr_bit_cnt[5]_i_1_n_0\
-    );
-\i2s_sdata_in_sr_bit_cnt[5]_i_2\: unisim.vcomponents.LUT5
-    generic map(
-      INIT => X"00008000"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_bit_cnt[5]_i_3_n_0\,
-      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => m_axis_tvalid_i_4_n_0,
-      O => i2s_sdata_in_sr_bit_cnt(5)
-    );
-\i2s_sdata_in_sr_bit_cnt[5]_i_3\: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"8000"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
-      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
-      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
-      O => \i2s_sdata_in_sr_bit_cnt[5]_i_3_n_0\
     );
 \i2s_sdata_in_sr_bit_cnt_reg[0]\: unisim.vcomponents.FDRE
      port map (
@@ -4716,7 +4831,7 @@ i2s_paused_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \i2s_sdata_in_sr_bit_cnt[5]_i_1_n_0\,
-      D => i2s_sdata_in_sr_bit_cnt(5),
+      D => \m_axis_tdata[31]_i_2_n_0\,
       Q => p_0_in_0,
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -4980,12 +5095,12 @@ i2s_sdata_out_INST_0: unisim.vcomponents.LUT3
     );
 i2s_sdata_out_int_i_1: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"2222E22200000000"
+      INIT => X"22222E2200000000"
     )
         port map (
       I0 => i2s_sdata_out_int_reg_n_0,
       I1 => i2s_sdata_out_int_i_2_n_0,
-      I2 => \m_axis_tvalid1__6\,
+      I2 => i2s_sdata_out_int_reg_i_3_n_0,
       I3 => \i2s_sdata_out_sr_reg_n_0_[31]\,
       I4 => \i2s_fsm_state__0\(2),
       I5 => i2s_en,
@@ -4993,16 +5108,42 @@ i2s_sdata_out_int_i_1: unisim.vcomponents.LUT6
     );
 i2s_sdata_out_int_i_2: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"00008A0000FF0000"
+      INIT => X"000F0000000FE000"
     )
         port map (
-      I0 => p_27_in,
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\,
-      I2 => \m_axis_tvalid1__6\,
+      I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I1 => i2s_sdata_out_int_reg_i_3_n_0,
+      I2 => \i2s_fsm_state__0\(1),
       I3 => \i2s_fsm_state__0\(0),
       I4 => \i2s_fsm_state__0\(2),
-      I5 => \i2s_fsm_state__0\(1),
+      I5 => s_axis_tready_i_6_n_0,
       O => i2s_sdata_out_int_i_2_n_0
+    );
+i2s_sdata_out_int_i_4: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"05F5030305F5F3F3"
+    )
+        port map (
+      I0 => i2s_chan_en(1),
+      I1 => i2s_chan_en(0),
+      I2 => \i2s_chan_cnt_reg_n_0_[1]\,
+      I3 => i2s_chan_en(3),
+      I4 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I5 => i2s_chan_en(2),
+      O => i2s_sdata_out_int_i_4_n_0
+    );
+i2s_sdata_out_int_i_5: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"05F5030305F5F3F3"
+    )
+        port map (
+      I0 => i2s_chan_en(5),
+      I1 => i2s_chan_en(4),
+      I2 => \i2s_chan_cnt_reg_n_0_[1]\,
+      I3 => i2s_chan_en(7),
+      I4 => \i2s_chan_cnt_reg_n_0_[0]\,
+      I5 => i2s_chan_en(6),
+      O => i2s_sdata_out_int_i_5_n_0
     );
 i2s_sdata_out_int_reg: unisim.vcomponents.FDRE
      port map (
@@ -5014,568 +5155,571 @@ i2s_sdata_out_int_reg: unisim.vcomponents.FDRE
     );
 i2s_sdata_out_int_reg_i_3: unisim.vcomponents.MUXF7
      port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[0]_i_4_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_5_n_0\,
-      O => \m_axis_tvalid1__6\,
+      I0 => i2s_sdata_out_int_i_4_n_0,
+      I1 => i2s_sdata_out_int_i_5_n_0,
+      O => i2s_sdata_out_int_reg_i_3_n_0,
       S => \i2s_chan_cnt_reg_n_0_[2]\
     );
-\i2s_sdata_out_sr[0]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[0]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"00008CCC"
+      INIT => X"02AA022A02AA02AA"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_5_n_0\,
-      I1 => s_axis_tdata(0),
-      I2 => \i2s_fsm_state__0\(1),
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => s_axis_tdata(0),
+      I1 => \i2s_fsm_state__0\(1),
+      I2 => \i2s_fsm_state__0\(0),
+      I3 => \i2s_fsm_state__0\(2),
+      I4 => s_axis_tready_i_4_n_0,
+      I5 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
       O => i2s_sdata_out_sr(0)
     );
-\i2s_sdata_out_sr[10]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[10]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[9]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(10),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(10),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[9]\,
       O => i2s_sdata_out_sr(10)
     );
-\i2s_sdata_out_sr[11]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[11]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[10]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(11),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(11),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[10]\,
       O => i2s_sdata_out_sr(11)
     );
-\i2s_sdata_out_sr[12]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[12]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[11]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(12),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(12),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[11]\,
       O => i2s_sdata_out_sr(12)
     );
-\i2s_sdata_out_sr[13]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[13]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[12]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(13),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(13),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[12]\,
       O => i2s_sdata_out_sr(13)
     );
-\i2s_sdata_out_sr[14]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[14]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[13]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(14),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(14),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[13]\,
       O => i2s_sdata_out_sr(14)
     );
-\i2s_sdata_out_sr[15]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[15]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[14]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(15),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(15),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[14]\,
       O => i2s_sdata_out_sr(15)
     );
-\i2s_sdata_out_sr[16]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[16]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[15]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(16),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(16),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[15]\,
       O => i2s_sdata_out_sr(16)
     );
-\i2s_sdata_out_sr[17]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[17]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[16]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(17),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(17),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[16]\,
       O => i2s_sdata_out_sr(17)
     );
-\i2s_sdata_out_sr[18]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[18]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[17]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(18),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(18),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[17]\,
       O => i2s_sdata_out_sr(18)
     );
-\i2s_sdata_out_sr[19]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[19]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[18]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(19),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(19),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[18]\,
       O => i2s_sdata_out_sr(19)
     );
-\i2s_sdata_out_sr[1]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[0]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(1),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(1),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[0]\,
       O => i2s_sdata_out_sr(1)
     );
-\i2s_sdata_out_sr[20]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[20]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[19]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(20),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(20),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[19]\,
       O => i2s_sdata_out_sr(20)
     );
-\i2s_sdata_out_sr[21]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[21]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[20]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(21),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(21),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[20]\,
       O => i2s_sdata_out_sr(21)
     );
-\i2s_sdata_out_sr[22]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[22]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[21]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(22),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(22),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[21]\,
       O => i2s_sdata_out_sr(22)
     );
-\i2s_sdata_out_sr[23]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[23]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[22]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(23),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(23),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[22]\,
       O => i2s_sdata_out_sr(23)
     );
-\i2s_sdata_out_sr[24]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[24]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[23]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(24),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(24),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[23]\,
       O => i2s_sdata_out_sr(24)
     );
-\i2s_sdata_out_sr[25]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[25]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[24]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(25),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(25),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[24]\,
       O => i2s_sdata_out_sr(25)
     );
-\i2s_sdata_out_sr[26]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[26]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[25]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(26),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(26),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[25]\,
       O => i2s_sdata_out_sr(26)
     );
-\i2s_sdata_out_sr[27]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[27]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[26]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(27),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(27),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[26]\,
       O => i2s_sdata_out_sr(27)
     );
-\i2s_sdata_out_sr[28]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[28]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[27]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(28),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(28),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[27]\,
       O => i2s_sdata_out_sr(28)
     );
-\i2s_sdata_out_sr[29]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[29]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[28]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(29),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(29),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[28]\,
       O => i2s_sdata_out_sr(29)
     );
-\i2s_sdata_out_sr[2]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[2]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[1]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(2),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(2),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[1]\,
       O => i2s_sdata_out_sr(2)
     );
-\i2s_sdata_out_sr[30]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[30]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[29]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(30),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(30),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[29]\,
       O => i2s_sdata_out_sr(30)
     );
-\i2s_sdata_out_sr[31]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[31]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[30]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(31),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(31),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[30]\,
       O => i2s_sdata_out_sr(31)
     );
-\i2s_sdata_out_sr[3]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[31]_i_2\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"17"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[2]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(3),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_fsm_state__0\(0),
+      I1 => \i2s_fsm_state__0\(2),
+      I2 => \i2s_fsm_state__0\(1),
+      O => \i2s_sdata_out_sr[31]_i_2_n_0\
+    );
+\i2s_sdata_out_sr[3]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"C8F8C8C8C888C8C8"
+    )
+        port map (
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(3),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[2]\,
       O => i2s_sdata_out_sr(3)
     );
-\i2s_sdata_out_sr[4]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[4]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[3]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(4),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(4),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[3]\,
       O => i2s_sdata_out_sr(4)
     );
-\i2s_sdata_out_sr[5]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[5]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[4]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(5),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(5),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[4]\,
       O => i2s_sdata_out_sr(5)
     );
-\i2s_sdata_out_sr[6]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[6]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[5]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(6),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(6),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[5]\,
       O => i2s_sdata_out_sr(6)
     );
-\i2s_sdata_out_sr[7]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[7]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[6]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(7),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(7),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[6]\,
       O => i2s_sdata_out_sr(7)
     );
-\i2s_sdata_out_sr[8]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[8]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[7]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(8),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(8),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[7]\,
       O => i2s_sdata_out_sr(8)
     );
-\i2s_sdata_out_sr[9]_i_1\: unisim.vcomponents.LUT5
+\i2s_sdata_out_sr[9]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000F0E2"
+      INIT => X"C8F8C8C8C888C8C8"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_reg_n_0_[8]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => s_axis_tdata(9),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
+      I0 => \i2s_sdata_out_sr[31]_i_2_n_0\,
+      I1 => s_axis_tdata(9),
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => s_axis_tready_i_4_n_0,
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_reg_n_0_[8]\,
       O => i2s_sdata_out_sr(9)
     );
-\i2s_sdata_out_sr_bit_cnt[0]_i_1\: unisim.vcomponents.LUT4
+\i2s_sdata_out_sr_bit_cnt[0]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0001"
+      INIT => X"0004000000000000"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I2 => \i2s_fsm_state__0\(2),
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\,
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I2 => s_axis_tready_i_4_n_0,
+      I3 => \i2s_fsm_state__0\(2),
+      I4 => \i2s_fsm_state__0\(0),
+      I5 => \i2s_fsm_state__0\(1),
       O => i2s_sdata_out_sr_bit_cnt(0)
-    );
-\i2s_sdata_out_sr_bit_cnt[0]_i_2\: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"57F7"
-    )
-        port map (
-      I0 => \FSM_sequential_i2s_fsm_state[2]_i_10_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_4_n_0\,
-      I2 => \i2s_chan_cnt_reg_n_0_[2]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt[0]_i_5_n_0\,
-      O => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[0]_i_3\: unisim.vcomponents.LUT3
-    generic map(
-      INIT => X"7F"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(1),
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => p_27_in,
-      O => \i2s_sdata_out_sr_bit_cnt[0]_i_3_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[0]_i_4\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"CACAFFF0CACA0F00"
-    )
-        port map (
-      I0 => i2s_chan_en(1),
-      I1 => i2s_chan_en(3),
-      I2 => \i2s_chan_cnt_reg_n_0_[1]\,
-      I3 => i2s_chan_en(0),
-      I4 => \i2s_chan_cnt_reg_n_0_[0]\,
-      I5 => i2s_chan_en(2),
-      O => \i2s_sdata_out_sr_bit_cnt[0]_i_4_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[0]_i_5\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"CACAFFF0CACA0F00"
-    )
-        port map (
-      I0 => i2s_chan_en(5),
-      I1 => i2s_chan_en(7),
-      I2 => \i2s_chan_cnt_reg_n_0_[1]\,
-      I3 => i2s_chan_en(4),
-      I4 => \i2s_chan_cnt_reg_n_0_[0]\,
-      I5 => i2s_chan_en(6),
-      O => \i2s_sdata_out_sr_bit_cnt[0]_i_5_n_0\
     );
 \i2s_sdata_out_sr_bit_cnt[1]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"41000000"
+      INIT => X"20000020"
     )
         port map (
       I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I3 => \i2s_fsm_state__0\(1),
-      I4 => \i2s_fsm_state__0\(0),
+      I1 => s_axis_tready_i_4_n_0,
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
+      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
       O => i2s_sdata_out_sr_bit_cnt(1)
     );
 \i2s_sdata_out_sr_bit_cnt[2]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"5401000000000000"
+      INIT => X"2020200000000020"
     )
         port map (
       I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_fsm_state__0\(1),
-      I5 => \i2s_fsm_state__0\(0),
+      I1 => s_axis_tready_i_4_n_0,
+      I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
+      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
+      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
       O => i2s_sdata_out_sr_bit_cnt(2)
     );
 \i2s_sdata_out_sr_bit_cnt[3]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000000055540001"
+      INIT => X"0F00000000000E00"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
+      I2 => s_axis_tready_i_4_n_0,
+      I3 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I4 => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\,
+      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
       O => i2s_sdata_out_sr_bit_cnt(3)
     );
 \i2s_sdata_out_sr_bit_cnt[4]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"0000000055540001"
+      INIT => X"0000C9C800000000"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
       I2 => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
+      I4 => s_axis_tready_i_4_n_0,
+      I5 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
       O => i2s_sdata_out_sr_bit_cnt(4)
     );
-\i2s_sdata_out_sr_bit_cnt[4]_i_2\: unisim.vcomponents.LUT2
+\i2s_sdata_out_sr_bit_cnt[4]_i_2\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"E"
-    )
-        port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      O => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[5]_i_1\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0F000FFF8F888888"
-    )
-        port map (
-      I0 => s_axis_tvalid,
-      I1 => \^s_axis_tready_reg_0\,
-      I2 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
-      I3 => \i2s_fsm_state__0\(0),
-      I4 => \i2s_fsm_state__0\(1),
-      I5 => \i2s_fsm_state__0\(2),
-      O => \i2s_sdata_out_sr_bit_cnt[5]_i_1_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[5]_i_2\: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0000FFFF0000FFA9"
-    )
-        port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[5]_i_4_n_0\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt[5]_i_5_n_0\,
-      I4 => \i2s_fsm_state__0\(2),
-      I5 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
-      O => i2s_sdata_out_sr_bit_cnt(5)
-    );
-\i2s_sdata_out_sr_bit_cnt[5]_i_3\: unisim.vcomponents.LUT3
-    generic map(
-      INIT => X"FD"
-    )
-        port map (
-      I0 => p_27_in,
-      I1 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I2 => \i2s_fsm_state__0\(2),
-      O => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\
-    );
-\i2s_sdata_out_sr_bit_cnt[5]_i_4\: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"FFFE"
+      INIT => X"FE"
     )
         port map (
       I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
       I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
       I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
-      O => \i2s_sdata_out_sr_bit_cnt[5]_i_4_n_0\
+      O => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\
     );
-\i2s_sdata_out_sr_bit_cnt[5]_i_5\: unisim.vcomponents.LUT2
+\i2s_sdata_out_sr_bit_cnt[4]_i_3\: unisim.vcomponents.LUT3
     generic map(
-      INIT => X"B"
+      INIT => X"40"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I1 => p_27_in,
-      O => \i2s_sdata_out_sr_bit_cnt[5]_i_5_n_0\
+      I0 => \i2s_fsm_state__0\(2),
+      I1 => \i2s_fsm_state__0\(0),
+      I2 => \i2s_fsm_state__0\(1),
+      O => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\
+    );
+\i2s_sdata_out_sr_bit_cnt[5]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"AAAEAAAAAAAAAAAA"
+    )
+        port map (
+      I0 => s_axis_tready_i_2_n_0,
+      I1 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      I2 => s_axis_tready_i_4_n_0,
+      I3 => \i2s_fsm_state__0\(2),
+      I4 => \i2s_fsm_state__0\(0),
+      I5 => \i2s_fsm_state__0\(1),
+      O => \i2s_sdata_out_sr_bit_cnt[5]_i_1_n_0\
+    );
+\i2s_sdata_out_sr_bit_cnt[5]_i_2\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"11111111FFFF7FF7"
+    )
+        port map (
+      I0 => \i2s_fsm_state__0\(1),
+      I1 => \i2s_fsm_state__0\(0),
+      I2 => \i2s_sdata_out_sr_bit_cnt[5]_i_4_n_0\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
+      I4 => s_axis_tready_i_4_n_0,
+      I5 => \i2s_fsm_state__0\(2),
+      O => i2s_sdata_out_sr_bit_cnt(5)
+    );
+\i2s_sdata_out_sr_bit_cnt[5]_i_3\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"FFFFFFFFFFFFFFFE"
+    )
+        port map (
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
+      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
+      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
+      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      O => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\
+    );
+\i2s_sdata_out_sr_bit_cnt[5]_i_4\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"00000001"
+    )
+        port map (
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
+      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
+      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
+      O => \i2s_sdata_out_sr_bit_cnt[5]_i_4_n_0\
     );
 \i2s_sdata_out_sr_bit_cnt_reg[0]\: unisim.vcomponents.FDRE
      port map (
@@ -5911,223 +6055,193 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
       Q => data0(31),
       R => '0'
     );
-\m_axis_tdata[0]_i_1\: unisim.vcomponents.LUT4
+irq_INST_0: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"00E2"
+      INIT => X"F888"
     )
         port map (
-      I0 => i2s_sdata_in,
+      I0 => irq_enabled(7),
+      I1 => \irq_pend_reg_n_0_[7]\,
+      I2 => irq_enabled(8),
+      I3 => p_20_in,
+      O => irq
+    );
+\irq_enabled[7]_i_1\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"02000000"
+    )
+        port map (
+      I0 => \^s_axi_wready\,
+      I1 => s_axi_awaddr(2),
+      I2 => s_axi_awaddr(0),
+      I3 => s_axi_wstrb(0),
+      I4 => s_axi_awaddr(1),
+      O => \irq_enabled[7]_i_1_n_0\
+    );
+\irq_enabled[8]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"FBFFFFFF08000000"
+    )
+        port map (
+      I0 => s_axi_wdata(8),
+      I1 => \^s_axi_wready\,
+      I2 => \irq_enabled[8]_i_2_n_0\,
+      I3 => s_axi_wstrb(1),
+      I4 => s_axi_awaddr(1),
+      I5 => irq_enabled(8),
+      O => \irq_enabled[8]_i_1_n_0\
+    );
+\irq_enabled[8]_i_2\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"E"
+    )
+        port map (
+      I0 => s_axi_awaddr(2),
+      I1 => s_axi_awaddr(0),
+      O => \irq_enabled[8]_i_2_n_0\
+    );
+\irq_enabled_reg[0]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(0),
+      Q => irq_enabled(0),
+      R => p_0_in
+    );
+\irq_enabled_reg[1]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(1),
+      Q => irq_enabled(1),
+      R => p_0_in
+    );
+\irq_enabled_reg[2]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(2),
+      Q => irq_enabled(2),
+      R => p_0_in
+    );
+\irq_enabled_reg[3]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(3),
+      Q => irq_enabled(3),
+      R => p_0_in
+    );
+\irq_enabled_reg[4]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(4),
+      Q => irq_enabled(4),
+      R => p_0_in
+    );
+\irq_enabled_reg[5]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(5),
+      Q => irq_enabled(5),
+      R => p_0_in
+    );
+\irq_enabled_reg[6]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(6),
+      Q => irq_enabled(6),
+      R => p_0_in
+    );
+\irq_enabled_reg[7]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \irq_enabled[7]_i_1_n_0\,
+      D => s_axi_wdata(7),
+      Q => irq_enabled(7),
+      R => p_0_in
+    );
+\irq_enabled_reg[8]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => '1',
+      D => \irq_enabled[8]_i_1_n_0\,
+      Q => irq_enabled(8),
+      R => p_0_in
+    );
+\irq_pend[7]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"7FFF7FFF3FFF0000"
+    )
+        port map (
+      I0 => s_axi_wdata(7),
+      I1 => s_axi_wstrb(0),
+      I2 => \irq_pend[8]_i_2_n_0\,
+      I3 => \^s_axi_wready\,
+      I4 => irq_pend3_in(7),
+      I5 => \irq_pend_reg_n_0_[7]\,
+      O => \irq_pend[7]_i_1_n_0\
+    );
+\irq_pend[7]_i_2\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"8"
+    )
+        port map (
+      I0 => sync_aclk_to_i2s_src_clk_src_req,
+      I1 => sync_aclk_to_i2s_src_clk_src_done,
+      O => irq_pend3_in(7)
+    );
+\irq_pend[8]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"7FFF7FFF3FFF0000"
+    )
+        port map (
+      I0 => s_axi_wdata(8),
+      I1 => s_axi_wstrb(1),
+      I2 => \irq_pend[8]_i_2_n_0\,
+      I3 => \^s_axi_wready\,
+      I4 => sync_i2s_src_clk_to_aclk_dst_req,
+      I5 => p_20_in,
+      O => \irq_pend[8]_i_1_n_0\
+    );
+\irq_pend[8]_i_2\: unisim.vcomponents.LUT3
+    generic map(
+      INIT => X"40"
+    )
+        port map (
+      I0 => s_axi_awaddr(2),
+      I1 => s_axi_awaddr(0),
+      I2 => s_axi_awaddr(1),
+      O => \irq_pend[8]_i_2_n_0\
+    );
+\irq_pend_reg[7]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => '1',
+      D => \irq_pend[7]_i_1_n_0\,
+      Q => \irq_pend_reg_n_0_[7]\,
+      R => p_0_in
+    );
+\irq_pend_reg[8]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => '1',
+      D => \irq_pend[8]_i_1_n_0\,
+      Q => p_20_in,
+      R => p_0_in
+    );
+\m_axis_tdata[0]_i_1\: unisim.vcomponents.LUT3
+    generic map(
+      INIT => X"B8"
+    )
+        port map (
+      I0 => i2s_sdata_out_int_reg_n_0,
       I1 => i2s_lb_en,
-      I2 => i2s_sdata_out_int_reg_n_0,
-      I3 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(0)
-    );
-\m_axis_tdata[10]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[9]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(10)
-    );
-\m_axis_tdata[11]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[10]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(11)
-    );
-\m_axis_tdata[12]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[11]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(12)
-    );
-\m_axis_tdata[13]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[12]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(13)
-    );
-\m_axis_tdata[14]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[13]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(14)
-    );
-\m_axis_tdata[15]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[14]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(15)
-    );
-\m_axis_tdata[16]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[15]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(16)
-    );
-\m_axis_tdata[17]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[16]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(17)
-    );
-\m_axis_tdata[18]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[17]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(18)
-    );
-\m_axis_tdata[19]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[18]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(19)
-    );
-\m_axis_tdata[1]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[0]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(1)
-    );
-\m_axis_tdata[20]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[19]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(20)
-    );
-\m_axis_tdata[21]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[20]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(21)
-    );
-\m_axis_tdata[22]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[21]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(22)
-    );
-\m_axis_tdata[23]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[22]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(23)
-    );
-\m_axis_tdata[24]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[23]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(24)
-    );
-\m_axis_tdata[25]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[24]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(25)
-    );
-\m_axis_tdata[26]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[25]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(26)
-    );
-\m_axis_tdata[27]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[26]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(27)
-    );
-\m_axis_tdata[28]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[27]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(28)
-    );
-\m_axis_tdata[29]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[28]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(29)
-    );
-\m_axis_tdata[2]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[1]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(2)
-    );
-\m_axis_tdata[30]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[29]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(30)
+      I2 => i2s_sdata_in,
+      O => p_1_in(0)
     );
 \m_axis_tdata[31]_i_1\: unisim.vcomponents.LUT1
     generic map(
@@ -6137,94 +6251,24 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
       I0 => i2s_en,
       O => \m_axis_tdata[31]_i_1_n_0\
     );
-\m_axis_tdata[31]_i_2\: unisim.vcomponents.LUT4
+\m_axis_tdata[31]_i_2\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"AABA"
+      INIT => X"8000000000000000"
     )
         port map (
-      I0 => m_axis_tvalid_i_5_n_0,
-      I1 => \i2s_fsm_state__0\(0),
-      I2 => \i2s_fsm_state__0\(2),
-      I3 => \i2s_fsm_state__0\(1),
+      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
+      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
+      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
+      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
+      I5 => m_axis_tvalid_i_2_n_0,
       O => \m_axis_tdata[31]_i_2_n_0\
-    );
-\m_axis_tdata[31]_i_3\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[30]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(31)
-    );
-\m_axis_tdata[3]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[2]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(3)
-    );
-\m_axis_tdata[4]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[3]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(4)
-    );
-\m_axis_tdata[5]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[4]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(5)
-    );
-\m_axis_tdata[6]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[5]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(6)
-    );
-\m_axis_tdata[7]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[6]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(7)
-    );
-\m_axis_tdata[8]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[7]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(8)
-    );
-\m_axis_tdata[9]_i_1\: unisim.vcomponents.LUT2
-    generic map(
-      INIT => X"2"
-    )
-        port map (
-      I0 => \i2s_sdata_in_sr_reg_n_0_[8]\,
-      I1 => \i2s_fsm_state__0\(2),
-      O => m_axis_tdata1_in(9)
     );
 \m_axis_tdata_reg[0]\: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(0),
+      D => p_1_in(0),
       Q => m_axis_tdata(0),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6232,7 +6276,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(10),
+      D => \i2s_sdata_in_sr_reg_n_0_[9]\,
       Q => m_axis_tdata(10),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6240,7 +6284,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(11),
+      D => \i2s_sdata_in_sr_reg_n_0_[10]\,
       Q => m_axis_tdata(11),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6248,7 +6292,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(12),
+      D => \i2s_sdata_in_sr_reg_n_0_[11]\,
       Q => m_axis_tdata(12),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6256,7 +6300,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(13),
+      D => \i2s_sdata_in_sr_reg_n_0_[12]\,
       Q => m_axis_tdata(13),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6264,7 +6308,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(14),
+      D => \i2s_sdata_in_sr_reg_n_0_[13]\,
       Q => m_axis_tdata(14),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6272,7 +6316,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(15),
+      D => \i2s_sdata_in_sr_reg_n_0_[14]\,
       Q => m_axis_tdata(15),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6280,7 +6324,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(16),
+      D => \i2s_sdata_in_sr_reg_n_0_[15]\,
       Q => m_axis_tdata(16),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6288,7 +6332,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(17),
+      D => \i2s_sdata_in_sr_reg_n_0_[16]\,
       Q => m_axis_tdata(17),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6296,7 +6340,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(18),
+      D => \i2s_sdata_in_sr_reg_n_0_[17]\,
       Q => m_axis_tdata(18),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6304,7 +6348,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(19),
+      D => \i2s_sdata_in_sr_reg_n_0_[18]\,
       Q => m_axis_tdata(19),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6312,7 +6356,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(1),
+      D => \i2s_sdata_in_sr_reg_n_0_[0]\,
       Q => m_axis_tdata(1),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6320,7 +6364,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(20),
+      D => \i2s_sdata_in_sr_reg_n_0_[19]\,
       Q => m_axis_tdata(20),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6328,7 +6372,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(21),
+      D => \i2s_sdata_in_sr_reg_n_0_[20]\,
       Q => m_axis_tdata(21),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6336,7 +6380,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(22),
+      D => \i2s_sdata_in_sr_reg_n_0_[21]\,
       Q => m_axis_tdata(22),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6344,7 +6388,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(23),
+      D => \i2s_sdata_in_sr_reg_n_0_[22]\,
       Q => m_axis_tdata(23),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6352,7 +6396,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(24),
+      D => \i2s_sdata_in_sr_reg_n_0_[23]\,
       Q => m_axis_tdata(24),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6360,7 +6404,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(25),
+      D => \i2s_sdata_in_sr_reg_n_0_[24]\,
       Q => m_axis_tdata(25),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6368,7 +6412,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(26),
+      D => \i2s_sdata_in_sr_reg_n_0_[25]\,
       Q => m_axis_tdata(26),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6376,7 +6420,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(27),
+      D => \i2s_sdata_in_sr_reg_n_0_[26]\,
       Q => m_axis_tdata(27),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6384,7 +6428,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(28),
+      D => \i2s_sdata_in_sr_reg_n_0_[27]\,
       Q => m_axis_tdata(28),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6392,7 +6436,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(29),
+      D => \i2s_sdata_in_sr_reg_n_0_[28]\,
       Q => m_axis_tdata(29),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6400,7 +6444,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(2),
+      D => \i2s_sdata_in_sr_reg_n_0_[1]\,
       Q => m_axis_tdata(2),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6408,7 +6452,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(30),
+      D => \i2s_sdata_in_sr_reg_n_0_[29]\,
       Q => m_axis_tdata(30),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6416,7 +6460,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(31),
+      D => \i2s_sdata_in_sr_reg_n_0_[30]\,
       Q => m_axis_tdata(31),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6424,7 +6468,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(3),
+      D => \i2s_sdata_in_sr_reg_n_0_[2]\,
       Q => m_axis_tdata(3),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6432,7 +6476,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(4),
+      D => \i2s_sdata_in_sr_reg_n_0_[3]\,
       Q => m_axis_tdata(4),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6440,7 +6484,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(5),
+      D => \i2s_sdata_in_sr_reg_n_0_[4]\,
       Q => m_axis_tdata(5),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6448,7 +6492,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(6),
+      D => \i2s_sdata_in_sr_reg_n_0_[5]\,
       Q => m_axis_tdata(6),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6456,7 +6500,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(7),
+      D => \i2s_sdata_in_sr_reg_n_0_[6]\,
       Q => m_axis_tdata(7),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6464,7 +6508,7 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(8),
+      D => \i2s_sdata_in_sr_reg_n_0_[7]\,
       Q => m_axis_tdata(8),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
@@ -6472,93 +6516,71 @@ i2s_src_resetn_a_reg: unisim.vcomponents.FDRE
      port map (
       C => i2s_src_clk,
       CE => \m_axis_tdata[31]_i_2_n_0\,
-      D => m_axis_tdata1_in(9),
+      D => \i2s_sdata_in_sr_reg_n_0_[8]\,
       Q => m_axis_tdata(9),
       R => \m_axis_tdata[31]_i_1_n_0\
     );
 m_axis_tvalid_i_1: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"EEFE220200000000"
+      INIT => X"B1BFA0A000000000"
     )
         port map (
-      I0 => \^m_axis_tvalid_reg_0\,
-      I1 => m_axis_tvalid_i_2_n_0,
-      I2 => m_axis_tvalid_i_3_n_0,
-      I3 => m_axis_tvalid_i_4_n_0,
-      I4 => m_axis_tvalid_i_5_n_0,
+      I0 => m_axis_tvalid_i_2_n_0,
+      I1 => m_axis_tvalid_i_3_n_0,
+      I2 => m_axis_tvalid_i_4_n_0,
+      I3 => m_axis_tready,
+      I4 => \^m_axis_tvalid_reg_0\,
       I5 => i2s_en,
       O => m_axis_tvalid_i_1_n_0
     );
-m_axis_tvalid_i_2: unisim.vcomponents.LUT5
+m_axis_tvalid_i_2: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"1F101010"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(0),
-      I1 => \i2s_fsm_state__0\(1),
-      I2 => \i2s_fsm_state__0\(2),
-      I3 => m_axis_tready,
-      I4 => \^m_axis_tvalid_reg_0\,
-      O => m_axis_tvalid_i_2_n_0
-    );
-m_axis_tvalid_i_3: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"8000000000000000"
-    )
-        port map (
-      I0 => m_axis_tvalid_i_6_n_0,
-      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
-      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
-      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
-      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
-      I5 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      O => m_axis_tvalid_i_3_n_0
-    );
-m_axis_tvalid_i_4: unisim.vcomponents.LUT4
-    generic map(
-      INIT => X"FFDF"
-    )
-        port map (
-      I0 => \m_axis_tvalid1__6\,
-      I1 => p_0_in_0,
-      I2 => \i2s_bclk_rising__0\,
-      I3 => \i2s_fsm_state__0\(2),
-      O => m_axis_tvalid_i_4_n_0
-    );
-m_axis_tvalid_i_5: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0100000000000000"
+      INIT => X"0000000000004000"
     )
         port map (
       I0 => \i2s_fsm_state__0\(2),
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
-      I2 => p_0_in_0,
-      I3 => \m_axis_tvalid1__6\,
-      I4 => \m_axis_tvalid0__3\,
-      I5 => \i2s_bclk_rising__0\,
-      O => m_axis_tvalid_i_5_n_0
+      I1 => \i2s_fsm_state__0\(0),
+      I2 => \i2s_fsm_state__0\(1),
+      I3 => m_axis_tvalid_i_5_n_0,
+      I4 => i2s_sdata_out_int_reg_i_3_n_0,
+      I5 => p_0_in_0,
+      O => m_axis_tvalid_i_2_n_0
     );
-m_axis_tvalid_i_6: unisim.vcomponents.LUT3
+m_axis_tvalid_i_3: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"A8"
+      INIT => X"00088888"
     )
         port map (
-      I0 => \i2s_fsm_state__0\(0),
-      I1 => \i2s_fsm_state__0\(1),
-      I2 => \i2s_fsm_state__0\(2),
-      O => m_axis_tvalid_i_6_n_0
+      I0 => m_axis_tready,
+      I1 => \^m_axis_tvalid_reg_0\,
+      I2 => \i2s_fsm_state__0\(1),
+      I3 => \i2s_fsm_state__0\(0),
+      I4 => \i2s_fsm_state__0\(2),
+      O => m_axis_tvalid_i_3_n_0
     );
-m_axis_tvalid_i_7: unisim.vcomponents.LUT5
+m_axis_tvalid_i_4: unisim.vcomponents.LUT5
     generic map(
       INIT => X"80000000"
     )
         port map (
-      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
-      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
-      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
-      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
-      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
-      O => \m_axis_tvalid0__3\
+      I0 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[3]\,
+      I1 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[0]\,
+      I2 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[1]\,
+      I3 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[2]\,
+      I4 => \i2s_sdata_in_sr_bit_cnt_reg_n_0_[4]\,
+      O => m_axis_tvalid_i_4_n_0
+    );
+m_axis_tvalid_i_5: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"00000004"
+    )
+        port map (
+      I0 => \^i2s_bclk_reg_0\,
+      I1 => i2s_clk_div_en,
+      I2 => i2s_bclk_i_4_n_0,
+      I3 => i2s_bclk_i_3_n_0,
+      I4 => i2s_bclk_i_2_n_0,
+      O => m_axis_tvalid_i_5_n_0
     );
 m_axis_tvalid_reg: unisim.vcomponents.FDRE
      port map (
@@ -6622,195 +6644,206 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
       Q => \^s_axi_bvalid\,
       R => p_0_in
     );
-\s_axi_rdata[0]_i_1\: unisim.vcomponents.LUT5
+\s_axi_rdata[0]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"8A8ABA8A"
+      INIT => X"88BB8888B8BBB8BB"
     )
         port map (
       I0 => \s_axi_rdata[0]_i_2_n_0\,
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(0),
-      I4 => s_axi_araddr(0),
+      I1 => s_axi_araddr(2),
+      I2 => irq_enabled(0),
+      I3 => s_axi_araddr(1),
+      I4 => sync_aclk_to_i2s_src_clk_in(32),
+      I5 => s_axi_araddr(0),
       O => s_axi_rdata_1(0)
     );
-\s_axi_rdata[0]_i_2\: unisim.vcomponents.LUT6
+\s_axi_rdata[0]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"55D144D111D100D1"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => s_axi_araddr(2),
-      I1 => s_axi_araddr(0),
-      I2 => sync_aclk_to_i2s_src_clk_in(32),
-      I3 => s_axi_araddr(1),
+      I0 => sync_aclk_to_i2s_src_clk_in(0),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(16),
+      I3 => s_axi_araddr(0),
       I4 => sync_aclk_to_i2s_src_clk_in(24),
-      I5 => sync_aclk_to_i2s_src_clk_in(16),
       O => \s_axi_rdata[0]_i_2_n_0\
     );
 \s_axi_rdata[10]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(39),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(10),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(10),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(40),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(10)
     );
 \s_axi_rdata[11]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(40),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(11),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(11),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(41),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(11)
     );
 \s_axi_rdata[12]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(41),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(12),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(12),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(42),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(12)
     );
 \s_axi_rdata[13]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(42),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(13),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(13),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(43),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(13)
     );
 \s_axi_rdata[14]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(43),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(14),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(14),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(44),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(14)
     );
 \s_axi_rdata[15]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(44),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(15),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(15),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(45),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(15)
     );
 \s_axi_rdata[16]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"000D"
+      INIT => X"0045"
     )
         port map (
-      I0 => s_axi_araddr(0),
-      I1 => sync_aclk_to_i2s_src_clk_in(34),
-      I2 => s_axi_araddr(1),
+      I0 => s_axi_araddr(1),
+      I1 => sync_aclk_to_i2s_src_clk_in(35),
+      I2 => s_axi_araddr(0),
       I3 => s_axi_araddr(2),
-      O => s_axi_rdata_1(16)
+      O => \s_axi_rdata[16]_i_1_n_0\
     );
 \s_axi_rdata[17]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"0008"
+      INIT => X"0040"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(35),
+      I0 => s_axi_araddr(1),
       I1 => s_axi_araddr(0),
-      I2 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(36),
       I3 => s_axi_araddr(2),
-      O => s_axi_rdata_1(17)
+      O => \s_axi_rdata[17]_i_1_n_0\
     );
 \s_axi_rdata[18]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"0008"
+      INIT => X"0040"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(36),
+      I0 => s_axi_araddr(1),
       I1 => s_axi_araddr(0),
-      I2 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(37),
       I3 => s_axi_araddr(2),
-      O => s_axi_rdata_1(18)
+      O => \s_axi_rdata[18]_i_1_n_0\
     );
-\s_axi_rdata[1]_i_1\: unisim.vcomponents.LUT5
+\s_axi_rdata[1]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"8A8ABA8A"
+      INIT => X"88BBB8888888B888"
     )
         port map (
       I0 => \s_axi_rdata[1]_i_2_n_0\,
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(1),
+      I1 => s_axi_araddr(2),
+      I2 => irq_enabled(1),
+      I3 => s_axi_araddr(1),
       I4 => s_axi_araddr(0),
+      I5 => sync_aclk_to_i2s_src_clk_in(48),
       O => s_axi_rdata_1(1)
     );
-\s_axi_rdata[1]_i_2\: unisim.vcomponents.LUT6
+\s_axi_rdata[1]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"55C050C005C000C0"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => s_axi_araddr(2),
-      I1 => sync_aclk_to_i2s_src_clk_in(47),
-      I2 => s_axi_araddr(0),
-      I3 => s_axi_araddr(1),
+      I0 => sync_aclk_to_i2s_src_clk_in(1),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(17),
+      I3 => s_axi_araddr(0),
       I4 => sync_aclk_to_i2s_src_clk_in(25),
-      I5 => sync_aclk_to_i2s_src_clk_in(17),
       O => \s_axi_rdata[1]_i_2_n_0\
     );
 \s_axi_rdata[20]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"0008"
+      INIT => X"0040"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(33),
+      I0 => s_axi_araddr(1),
       I1 => s_axi_araddr(0),
-      I2 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(33),
       I3 => s_axi_araddr(2),
-      O => s_axi_rdata_1(20)
+      O => \s_axi_rdata[20]_i_1_n_0\
     );
-\s_axi_rdata[2]_i_1\: unisim.vcomponents.LUT5
+\s_axi_rdata[21]_i_1\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"8A8ABA8A"
+      INIT => X"0040"
+    )
+        port map (
+      I0 => s_axi_araddr(1),
+      I1 => s_axi_araddr(0),
+      I2 => sync_aclk_to_i2s_src_clk_in(34),
+      I3 => s_axi_araddr(2),
+      O => \s_axi_rdata[21]_i_1_n_0\
+    );
+\s_axi_rdata[2]_i_1\: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"88BBB8888888B888"
     )
         port map (
       I0 => \s_axi_rdata[2]_i_2_n_0\,
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(2),
+      I1 => s_axi_araddr(2),
+      I2 => irq_enabled(2),
+      I3 => s_axi_araddr(1),
       I4 => s_axi_araddr(0),
+      I5 => sync_aclk_to_i2s_src_clk_in(47),
       O => s_axi_rdata_1(2)
     );
-\s_axi_rdata[2]_i_2\: unisim.vcomponents.LUT6
+\s_axi_rdata[2]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"55C050C005C000C0"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => s_axi_araddr(2),
-      I1 => sync_aclk_to_i2s_src_clk_in(46),
-      I2 => s_axi_araddr(0),
-      I3 => s_axi_araddr(1),
+      I0 => sync_aclk_to_i2s_src_clk_in(2),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(18),
+      I3 => s_axi_araddr(0),
       I4 => sync_aclk_to_i2s_src_clk_in(26),
-      I5 => sync_aclk_to_i2s_src_clk_in(18),
       O => \s_axi_rdata[2]_i_2_n_0\
     );
 \s_axi_rdata[31]_i_1\: unisim.vcomponents.LUT4
@@ -6835,126 +6868,172 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
     );
 \s_axi_rdata[31]_i_3\: unisim.vcomponents.LUT4
     generic map(
-      INIT => X"0008"
+      INIT => X"0040"
     )
         port map (
-      I0 => data0(31),
+      I0 => s_axi_araddr(1),
       I1 => s_axi_araddr(0),
-      I2 => s_axi_araddr(1),
+      I2 => data0(31),
       I3 => s_axi_araddr(2),
-      O => s_axi_rdata_1(31)
+      O => \s_axi_rdata[31]_i_3_n_0\
     );
-\s_axi_rdata[3]_i_1\: unisim.vcomponents.LUT5
+\s_axi_rdata[3]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"8A8ABA8A"
+      INIT => X"88BBB8888888B888"
     )
         port map (
       I0 => \s_axi_rdata[3]_i_2_n_0\,
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(3),
+      I1 => s_axi_araddr(2),
+      I2 => irq_enabled(3),
+      I3 => s_axi_araddr(1),
       I4 => s_axi_araddr(0),
+      I5 => data0(3),
       O => s_axi_rdata_1(3)
     );
-\s_axi_rdata[3]_i_2\: unisim.vcomponents.LUT6
+\s_axi_rdata[3]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"55C050C005C000C0"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => s_axi_araddr(2),
-      I1 => data0(3),
-      I2 => s_axi_araddr(0),
-      I3 => s_axi_araddr(1),
+      I0 => sync_aclk_to_i2s_src_clk_in(3),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(19),
+      I3 => s_axi_araddr(0),
       I4 => sync_aclk_to_i2s_src_clk_in(27),
-      I5 => sync_aclk_to_i2s_src_clk_in(19),
       O => \s_axi_rdata[3]_i_2_n_0\
     );
-\s_axi_rdata[4]_i_1\: unisim.vcomponents.LUT5
+\s_axi_rdata[4]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"8A8ABA8A"
+      INIT => X"88BBB8888888B888"
     )
         port map (
       I0 => \s_axi_rdata[4]_i_2_n_0\,
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(4),
+      I1 => s_axi_araddr(2),
+      I2 => irq_enabled(4),
+      I3 => s_axi_araddr(1),
       I4 => s_axi_araddr(0),
+      I5 => sync_aclk_to_i2s_src_clk_in(46),
       O => s_axi_rdata_1(4)
     );
-\s_axi_rdata[4]_i_2\: unisim.vcomponents.LUT6
+\s_axi_rdata[4]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"55C050C005C000C0"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => s_axi_araddr(2),
-      I1 => sync_aclk_to_i2s_src_clk_in(45),
-      I2 => s_axi_araddr(0),
-      I3 => s_axi_araddr(1),
+      I0 => sync_aclk_to_i2s_src_clk_in(4),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(20),
+      I3 => s_axi_araddr(0),
       I4 => sync_aclk_to_i2s_src_clk_in(28),
-      I5 => sync_aclk_to_i2s_src_clk_in(20),
       O => \s_axi_rdata[4]_i_2_n_0\
     );
-\s_axi_rdata[5]_i_1\: unisim.vcomponents.LUT6
+\s_axi_rdata[5]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"00A000A00FC000C0"
+      INIT => X"88B88888"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(21),
-      I1 => sync_aclk_to_i2s_src_clk_in(29),
+      I0 => \s_axi_rdata[5]_i_2_n_0\,
+      I1 => s_axi_araddr(2),
       I2 => s_axi_araddr(1),
-      I3 => s_axi_araddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(5),
-      I5 => s_axi_araddr(0),
+      I3 => s_axi_araddr(0),
+      I4 => irq_enabled(5),
       O => s_axi_rdata_1(5)
     );
-\s_axi_rdata[6]_i_1\: unisim.vcomponents.LUT6
+\s_axi_rdata[5]_i_2\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"00A000A00FC000C0"
+      INIT => X"30BB3088"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(22),
-      I1 => sync_aclk_to_i2s_src_clk_in(30),
+      I0 => sync_aclk_to_i2s_src_clk_in(5),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(21),
+      I3 => s_axi_araddr(0),
+      I4 => sync_aclk_to_i2s_src_clk_in(29),
+      O => \s_axi_rdata[5]_i_2_n_0\
+    );
+\s_axi_rdata[6]_i_1\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"88B88888"
+    )
+        port map (
+      I0 => \s_axi_rdata[6]_i_2_n_0\,
+      I1 => s_axi_araddr(2),
       I2 => s_axi_araddr(1),
-      I3 => s_axi_araddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(6),
-      I5 => s_axi_araddr(0),
+      I3 => s_axi_araddr(0),
+      I4 => irq_enabled(6),
       O => s_axi_rdata_1(6)
+    );
+\s_axi_rdata[6]_i_2\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"30BB3088"
+    )
+        port map (
+      I0 => sync_aclk_to_i2s_src_clk_in(6),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(22),
+      I3 => s_axi_araddr(0),
+      I4 => sync_aclk_to_i2s_src_clk_in(30),
+      O => \s_axi_rdata[6]_i_2_n_0\
     );
 \s_axi_rdata[7]_i_1\: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"00A000A00FC000C0"
+      INIT => X"B8B8B8888888B888"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(23),
-      I1 => sync_aclk_to_i2s_src_clk_in(31),
+      I0 => \s_axi_rdata[7]_i_2_n_0\,
+      I1 => s_axi_araddr(2),
       I2 => s_axi_araddr(1),
-      I3 => s_axi_araddr(2),
-      I4 => sync_aclk_to_i2s_src_clk_in(7),
-      I5 => s_axi_araddr(0),
+      I3 => irq_enabled(7),
+      I4 => s_axi_araddr(0),
+      I5 => \irq_pend_reg_n_0_[7]\,
       O => s_axi_rdata_1(7)
+    );
+\s_axi_rdata[7]_i_2\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"30BB3088"
+    )
+        port map (
+      I0 => sync_aclk_to_i2s_src_clk_in(7),
+      I1 => s_axi_araddr(1),
+      I2 => sync_aclk_to_i2s_src_clk_in(23),
+      I3 => s_axi_araddr(0),
+      I4 => sync_aclk_to_i2s_src_clk_in(31),
+      O => \s_axi_rdata[7]_i_2_n_0\
     );
 \s_axi_rdata[8]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"20FF2000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(37),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(8),
-      I4 => s_axi_araddr(0),
+      I0 => s_axi_araddr(1),
+      I1 => s_axi_araddr(0),
+      I2 => sync_aclk_to_i2s_src_clk_in(8),
+      I3 => s_axi_araddr(2),
+      I4 => \s_axi_rdata[8]_i_2_n_0\,
       O => s_axi_rdata_1(8)
+    );
+\s_axi_rdata[8]_i_2\: unisim.vcomponents.LUT5
+    generic map(
+      INIT => X"AFC0A0C0"
+    )
+        port map (
+      I0 => p_20_in,
+      I1 => irq_enabled(8),
+      I2 => s_axi_araddr(1),
+      I3 => s_axi_araddr(0),
+      I4 => sync_aclk_to_i2s_src_clk_in(38),
+      O => \s_axi_rdata[8]_i_2_n_0\
     );
 \s_axi_rdata[9]_i_1\: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"02023000"
+      INIT => X"00883000"
     )
         port map (
-      I0 => sync_aclk_to_i2s_src_clk_in(38),
-      I1 => s_axi_araddr(1),
-      I2 => s_axi_araddr(2),
-      I3 => sync_aclk_to_i2s_src_clk_in(9),
-      I4 => s_axi_araddr(0),
+      I0 => sync_aclk_to_i2s_src_clk_in(9),
+      I1 => s_axi_araddr(2),
+      I2 => sync_aclk_to_i2s_src_clk_in(39),
+      I3 => s_axi_araddr(0),
+      I4 => s_axi_araddr(1),
       O => s_axi_rdata_1(9)
     );
 \s_axi_rdata_reg[0]\: unisim.vcomponents.FDRE
@@ -7017,7 +7096,7 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
      port map (
       C => aclk,
       CE => \s_axi_rdata[31]_i_2_n_0\,
-      D => s_axi_rdata_1(16),
+      D => \s_axi_rdata[16]_i_1_n_0\,
       Q => s_axi_rdata(16),
       R => \s_axi_rdata[31]_i_1_n_0\
     );
@@ -7025,7 +7104,7 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
      port map (
       C => aclk,
       CE => \s_axi_rdata[31]_i_2_n_0\,
-      D => s_axi_rdata_1(17),
+      D => \s_axi_rdata[17]_i_1_n_0\,
       Q => s_axi_rdata(17),
       R => \s_axi_rdata[31]_i_1_n_0\
     );
@@ -7033,7 +7112,7 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
      port map (
       C => aclk,
       CE => \s_axi_rdata[31]_i_2_n_0\,
-      D => s_axi_rdata_1(18),
+      D => \s_axi_rdata[18]_i_1_n_0\,
       Q => s_axi_rdata(18),
       R => \s_axi_rdata[31]_i_1_n_0\
     );
@@ -7049,8 +7128,16 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
      port map (
       C => aclk,
       CE => \s_axi_rdata[31]_i_2_n_0\,
-      D => s_axi_rdata_1(20),
+      D => \s_axi_rdata[20]_i_1_n_0\,
       Q => s_axi_rdata(19),
+      R => \s_axi_rdata[31]_i_1_n_0\
+    );
+\s_axi_rdata_reg[21]\: unisim.vcomponents.FDRE
+     port map (
+      C => aclk,
+      CE => \s_axi_rdata[31]_i_2_n_0\,
+      D => \s_axi_rdata[21]_i_1_n_0\,
+      Q => s_axi_rdata(20),
       R => \s_axi_rdata[31]_i_1_n_0\
     );
 \s_axi_rdata_reg[2]\: unisim.vcomponents.FDRE
@@ -7065,8 +7152,8 @@ s_axi_bvalid_reg: unisim.vcomponents.FDRE
      port map (
       C => aclk,
       CE => \s_axi_rdata[31]_i_2_n_0\,
-      D => s_axi_rdata_1(31),
-      Q => s_axi_rdata(20),
+      D => \s_axi_rdata[31]_i_3_n_0\,
+      Q => s_axi_rdata(21),
       R => \s_axi_rdata[31]_i_1_n_0\
     );
 \s_axi_rdata_reg[3]\: unisim.vcomponents.FDRE
@@ -7143,92 +7230,85 @@ s_axi_rvalid_reg: unisim.vcomponents.FDRE
       Q => \^s_axi_rvalid_reg_0\,
       R => p_0_in
     );
-s_axis_tready_i_1: unisim.vcomponents.LUT5
+s_axis_tready_i_1: unisim.vcomponents.LUT6
     generic map(
-      INIT => X"FECE0000"
+      INIT => X"F2FFF2F200000000"
     )
         port map (
       I0 => \^s_axis_tready_reg_0\,
       I1 => s_axis_tready_i_2_n_0,
       I2 => s_axis_tready_i_3_n_0,
       I3 => s_axis_tready_i_4_n_0,
-      I4 => i2s_en,
+      I4 => s_axis_tready_i_5_n_0,
+      I5 => i2s_en,
       O => s_axis_tready_i_1_n_0
     );
-s_axis_tready_i_2: unisim.vcomponents.LUT6
+s_axis_tready_i_2: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"0000000100000000"
+      INIT => X"00088888"
     )
         port map (
-      I0 => s_axis_tready_i_5_n_0,
-      I1 => \FSM_sequential_i2s_fsm_state[2]_i_4_n_0\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
-      I3 => \i2s_fsm_state__0\(2),
-      I4 => \i2s_sdata_out_sr_bit_cnt[0]_i_2_n_0\,
-      I5 => p_27_in,
+      I0 => \^s_axis_tready_reg_0\,
+      I1 => s_axis_tvalid,
+      I2 => \i2s_fsm_state__0\(1),
+      I3 => \i2s_fsm_state__0\(0),
+      I4 => \i2s_fsm_state__0\(2),
       O => s_axis_tready_i_2_n_0
     );
-s_axis_tready_i_3: unisim.vcomponents.LUT6
+s_axis_tready_i_3: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"1111F1111111F000"
+      INIT => X"00000001"
     )
         port map (
-      I0 => \i2s_fsm_state__0\(0),
-      I1 => \i2s_fsm_state__0\(1),
-      I2 => \^s_axis_tready_reg_0\,
-      I3 => s_axis_tvalid,
-      I4 => \i2s_fsm_state__0\(2),
-      I5 => s_axis_tready023_out,
-      O => s_axis_tready_i_3_n_0
-    );
-s_axis_tready_i_4: unisim.vcomponents.LUT6
-    generic map(
-      INIT => X"0000000000000001"
-    )
-        port map (
-      I0 => \i2s_fsm_state__0\(0),
+      I0 => \^s_axis_tready_reg_0\,
       I1 => \i2s_fsm_state__0\(2),
       I2 => \i2s_fsm_state__0\(1),
-      I3 => s_axis_tready_i_5_n_0,
-      I4 => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\,
-      I5 => \^s_axis_tready_reg_0\,
-      O => s_axis_tready_i_4_n_0
+      I3 => \i2s_fsm_state__0\(0),
+      I4 => \i2s_sdata_out_sr_bit_cnt[5]_i_3_n_0\,
+      O => s_axis_tready_i_3_n_0
     );
-s_axis_tready_i_5: unisim.vcomponents.LUT4
+s_axis_tready_i_4: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"FFFE"
+      INIT => X"E"
     )
         port map (
-      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
-      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      I0 => i2s_sdata_out_int_reg_i_3_n_0,
+      I1 => s_axis_tready_i_6_n_0,
+      O => s_axis_tready_i_4_n_0
+    );
+s_axis_tready_i_5: unisim.vcomponents.LUT6
+    generic map(
+      INIT => X"0001000000000000"
+    )
+        port map (
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[1]\,
+      I1 => s_axis_tready_i_7_n_0,
+      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
       I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
+      I4 => \i2s_sdata_out_sr_bit_cnt[4]_i_3_n_0\,
+      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[0]\,
       O => s_axis_tready_i_5_n_0
     );
 s_axis_tready_i_6: unisim.vcomponents.LUT5
     generic map(
-      INIT => X"01000000"
+      INIT => X"FFFDFFFF"
     )
         port map (
-      I0 => i2s_bclk_i_6_n_0,
-      I1 => i2s_bclk_i_5_n_0,
-      I2 => i2s_bclk_i_4_n_0,
-      I3 => i2s_bclk_i_3_n_0,
+      I0 => i2s_clk_div_en,
+      I1 => i2s_bclk_i_4_n_0,
+      I2 => i2s_bclk_i_3_n_0,
+      I3 => i2s_bclk_i_2_n_0,
       I4 => \^i2s_bclk_reg_0\,
-      O => p_27_in
+      O => s_axis_tready_i_6_n_0
     );
-s_axis_tready_i_7: unisim.vcomponents.LUT6
+s_axis_tready_i_7: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"0000000000000001"
+      INIT => X"E"
     )
         port map (
-      I0 => \^s_axis_tready_reg_0\,
-      I1 => \i2s_sdata_out_sr_bit_cnt[4]_i_2_n_0\,
-      I2 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[2]\,
-      I3 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
-      I4 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
-      I5 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[5]\,
-      O => s_axis_tready023_out
+      I0 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[4]\,
+      I1 => \i2s_sdata_out_sr_bit_cnt_reg_n_0_[3]\,
+      O => s_axis_tready_i_7_n_0
     );
 s_axis_tready_reg: unisim.vcomponents.FDRE
      port map (
@@ -7374,7 +7454,6 @@ architecture STRUCTURE of icyradio_axi_i2s_0 is
   attribute X_INTERFACE_INFO of s_axis_tdata : signal is "xilinx.com:interface:axis:1.0 s_axis TDATA";
   attribute X_INTERFACE_PARAMETER of s_axis_tdata : signal is "XIL_INTERFACENAME s_axis, TDATA_NUM_BYTES 4, TDEST_WIDTH 0, TID_WIDTH 0, TUSER_WIDTH 0, HAS_TREADY 1, HAS_TSTRB 0, HAS_TKEEP 0, HAS_TLAST 0, FREQ_HZ 49152000, PHASE 0.0, CLK_DOMAIN icyradio_FPGA_CLK1, LAYERED_METADATA undef, INSERT_VIP 0";
 begin
-  irq <= \<const0>\;
   s_axi_awready <= \^s_axi_wready\;
   s_axi_bresp(1) <= \<const0>\;
   s_axi_bresp(0) <= \<const0>\;
@@ -7388,8 +7467,7 @@ begin
   s_axi_rdata(24) <= \<const0>\;
   s_axi_rdata(23) <= \<const0>\;
   s_axi_rdata(22) <= \<const0>\;
-  s_axi_rdata(21) <= \<const0>\;
-  s_axi_rdata(20) <= \^s_axi_rdata\(20);
+  s_axi_rdata(21 downto 20) <= \^s_axi_rdata\(21 downto 20);
   s_axi_rdata(19) <= \<const0>\;
   s_axi_rdata(18 downto 0) <= \^s_axi_rdata\(18 downto 0);
   s_axi_rresp(1) <= \<const0>\;
@@ -7404,12 +7482,13 @@ inst: entity work.icyradio_axi_i2s_0_axi_i2s
       aclk => aclk,
       aresetn => aresetn,
       i2s_bclk_reg_0 => i2s_bclk,
-      i2s_lrclk => i2s_lrclk,
+      i2s_lrclk_reg_0 => i2s_lrclk,
       i2s_mclk => i2s_mclk,
       i2s_sdata_in => i2s_sdata_in,
       i2s_sdata_out => i2s_sdata_out,
       i2s_src_clk => i2s_src_clk,
       i2s_src_resetn => i2s_src_resetn,
+      irq => irq,
       m_axis_tdata(31 downto 0) => m_axis_tdata(31 downto 0),
       m_axis_tready => m_axis_tready,
       m_axis_tvalid_reg_0 => m_axis_tvalid,
@@ -7420,12 +7499,12 @@ inst: entity work.icyradio_axi_i2s_0_axi_i2s
       s_axi_awvalid => s_axi_awvalid,
       s_axi_bready => s_axi_bready,
       s_axi_bvalid => s_axi_bvalid,
-      s_axi_rdata(20) => \^s_axi_rdata\(31),
-      s_axi_rdata(19) => \^s_axi_rdata\(20),
+      s_axi_rdata(21) => \^s_axi_rdata\(31),
+      s_axi_rdata(20 downto 19) => \^s_axi_rdata\(21 downto 20),
       s_axi_rdata(18 downto 0) => \^s_axi_rdata\(18 downto 0),
       s_axi_rready => s_axi_rready,
       s_axi_rvalid_reg_0 => s_axi_rvalid,
-      s_axi_wdata(19) => s_axi_wdata(20),
+      s_axi_wdata(20 downto 19) => s_axi_wdata(21 downto 20),
       s_axi_wdata(18 downto 0) => s_axi_wdata(18 downto 0),
       s_axi_wready => \^s_axi_wready\,
       s_axi_wstrb(2 downto 0) => s_axi_wstrb(2 downto 0),

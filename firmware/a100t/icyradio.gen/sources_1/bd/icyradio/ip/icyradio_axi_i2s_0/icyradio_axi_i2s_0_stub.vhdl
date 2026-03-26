@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Fri Nov 22 16:57:02 2024
+-- Date        : Fri Feb 13 12:11:11 2026
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
--- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_axi_i2s_0 -prefix
---               icyradio_axi_i2s_0_ icyradio_axi_i2s_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub
+--               /home/joao/icyradio/firmware/a100t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_axi_i2s_0/icyradio_axi_i2s_0_stub.vhdl
 -- Design      : icyradio_axi_i2s_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2

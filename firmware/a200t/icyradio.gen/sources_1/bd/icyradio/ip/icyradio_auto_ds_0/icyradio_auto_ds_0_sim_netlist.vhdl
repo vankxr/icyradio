@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Sat Nov 23 13:20:07 2024
+-- Date        : Sat Nov 23 13:20:06 2024
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
--- Command     : write_vhdl -force -mode funcsim
---               /home/joao/icyradio/firmware/a200t/icyradio.gen/sources_1/bd/icyradio/ip/icyradio_auto_ds_0/icyradio_auto_ds_0_sim_netlist.vhdl
+-- Command     : write_vhdl -force -mode funcsim -rename_top icyradio_auto_ds_0 -prefix
+--               icyradio_auto_ds_0_ icyradio_auto_ds_0_sim_netlist.vhdl
 -- Design      : icyradio_auto_ds_0
 -- Purpose     : This VHDL netlist is a functional simulation representation of the design and should not be modified or
 --               synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -52,8 +52,6 @@ entity icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_axi4lite_downsizer is
     s_axi_wvalid : in STD_LOGIC;
     s_axi_araddr : in STD_LOGIC_VECTOR ( 31 downto 0 )
   );
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_axi4lite_downsizer : entity is "axi_dwidth_converter_v2_1_29_axi4lite_downsizer";
 end icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_axi4lite_downsizer;
 
 architecture STRUCTURE of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_axi4lite_downsizer is
@@ -2469,8 +2467,6 @@ entity icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_top is
   attribute C_S_AXI_ID_WIDTH of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_top : entity is 1;
   attribute DowngradeIPIdentifiedWarnings : string;
   attribute DowngradeIPIdentifiedWarnings of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_top : entity is "yes";
-  attribute ORIG_REF_NAME : string;
-  attribute ORIG_REF_NAME of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_top : entity is "axi_dwidth_converter_v2_1_29_top";
   attribute P_AXI3 : integer;
   attribute P_AXI3 of icyradio_auto_ds_0_axi_dwidth_converter_v2_1_29_top : entity is 1;
   attribute P_AXI4 : integer;

@@ -2,11 +2,11 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.2 (lin64) Build 4029153 Fri Oct 13 20:13:54 MDT 2023
--- Date        : Fri Nov 22 16:33:13 2024
+-- Date        : Thu Mar  6 16:08:33 2025
 -- Host        : node4-dev running 64-bit Ubuntu 22.04.4 LTS
 -- Command     : write_vhdl -force -mode synth_stub -rename_top icyradio_axi_spi_1_0 -prefix
---               icyradio_axi_spi_1_0_ icyradio_axi_spi_1_0_stub.vhdl
--- Design      : icyradio_axi_spi_1_0
+--               icyradio_axi_spi_1_0_ icyradio_axi_spi_0_0_stub.vhdl
+-- Design      : icyradio_axi_spi_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7a100tfgg484-2
 -- --------------------------------------------------------------------------------
