@@ -181,8 +181,14 @@ uint64_t AXII2S::setClockFrequencies(uint64_t input_freq, uint64_t mclk_freq, ui
 
     switch(this->getSampleSize())
     {
+        case AXII2S::ChannelBitSize::BIT_SZ_8:
+            bclk_freq *= 8;
+        break;
         case AXII2S::ChannelBitSize::BIT_SZ_16:
             bclk_freq *= 16;
+        break;
+        case AXII2S::ChannelBitSize::BIT_SZ_24:
+            bclk_freq *= 24;
         break;
         case AXII2S::ChannelBitSize::BIT_SZ_32:
             bclk_freq *= 32;
@@ -353,14 +359,32 @@ bool AXII2S::channelEnabled(uint8_t chan)
 
 void AXII2S::setSampleSize(enum AXII2S::ChannelBitSize bit_sz)
 {
+    uint32_t val;
+
+    switch(bit_sz)
+    {
+        case AXII2S::ChannelBitSize::BIT_SZ_8:
+            val = AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_8BIT;
+        break;
+        case AXII2S::ChannelBitSize::BIT_SZ_16:
+            val = AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_16BIT;
+        break;
+        case AXII2S::ChannelBitSize::BIT_SZ_24:
+            val = AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_24BIT;
+        break;
+        case AXII2S::ChannelBitSize::BIT_SZ_32:
+            val = AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_32BIT;
+        break;
+        default:
+            throw std::invalid_argument("AXI I2S: Invalid sample size");
+    }
+
     std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
     uint32_t ctrl = this->readReg(AXI_I2S_REG_CTRL);
 
-    if(bit_sz == AXII2S::ChannelBitSize::BIT_SZ_32)
-        ctrl |= AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ;
-    else
-        ctrl &= ~AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ;
+    ctrl &= ~AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_32BIT;
+    ctrl |= val;
 
     this->writeReg(AXI_I2S_REG_CTRL, ctrl);
 }
@@ -368,5 +392,17 @@ enum AXII2S::ChannelBitSize AXII2S::getSampleSize()
 {
     std::lock_guard<std::recursive_mutex> lock(this->mutex);
 
-    return (this->readReg(AXI_I2S_REG_CTRL) & AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ) ? AXII2S::ChannelBitSize::BIT_SZ_32 : AXII2S::ChannelBitSize::BIT_SZ_16;
+    switch(this->readReg(AXI_I2S_REG_CTRL) & AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_32BIT)
+    {
+        case AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_8BIT:
+            return AXII2S::ChannelBitSize::BIT_SZ_8;
+        case AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_16BIT:
+            return AXII2S::ChannelBitSize::BIT_SZ_16;
+        case AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_24BIT:
+            return AXII2S::ChannelBitSize::BIT_SZ_24;
+        case AXI_I2S_REG_CTRL_I2S_CHAN_BIT_SZ_32BIT:
+            return AXII2S::ChannelBitSize::BIT_SZ_32;
+        default:
+            throw std::runtime_error("AXI I2S: Invalid sample size");
+    }
 }
